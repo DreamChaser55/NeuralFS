@@ -1,0 +1,34 @@
+  Cargo
+
+*is-cargo-known-delay*
+    Is cargo known (delay) (Boolean operator)
+    Returns true if all of the specified objects' cargo is known
+    by the player (i.e. they have scanned each one.
+
+    Returns a boolean value after <delay> seconds when all cargo
+    is known. Takes 2 or more arguments...
+    1: Delay in seconds after which sexpression will return true
+    when all cargo scanned. Rest: Names of ships/cargo to check
+    for cargo known.
+*cap-subsys-cargo-known-delay*
+    Is capital ship subsystem cargo known (delay) (Boolean
+    operator)
+    Returns true if all of the specified subsystem cargo is
+    known by the player.
+    Note: Cargo must be explicitly named.
+
+    Returns a boolean value after <delay> seconds when all cargo
+    is known. Takes 3 or more arguments...
+    1: Delay in seconds after which sexpression will return true
+    when all cargo scanned.
+    2: Name of capital ship
+    Rest: Names of subsystems to check for cargo known..
+*is-cargo*
+    Is Cargo (Status operator)
+    Checks whether the specified ship or ship subsystem contains
+    a particular cargo.
+    Takes 2 or 3 arguments...
+    1: Name of the cargo
+    2: Name of the ship (ship does not need to be in-mission)
+    3: Name of the ship subsystem (Optional. Ship must be in-
+    mission)

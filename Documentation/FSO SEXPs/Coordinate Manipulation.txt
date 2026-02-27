@@ -1,0 +1,204 @@
+  Coordinate Manipulation
+
+*set-object-position*
+    set-object-position
+    Instantaneously sets an object's spatial coordinates.Takes 4
+    arguments...
+    1: The name of a ship, wing, or waypoint (object does not
+    need to be in-mission).
+    2: The new X coordinate.
+    3: The new Y coordinate.
+    4: The new Z coordinate.
+*set-object-orientation*
+    set-object-orientation
+    Instantaneously sets an object's spatial orientation.Takes 4
+    arguments...
+    1: The name of a ship or wing (ship/wing does not need to be
+    in-mission).
+    2: The new pitch angle, in degrees. The angle can be any
+    number; it does not have to be between 0 and 360.
+    3: The new bank angle, in degrees. The angle can be any can
+    be any number; it does not have to be between 0 and 360.
+    4: The new heading angle, in degrees. The angle can be any
+    number; it does not have to be between 0 and 360.
+*set-object-facing*
+    set-object-facing
+    Sets an object's orientation to face the specified
+    coordinates. Takes 4 arguments...
+    1: The name of a ship or wing (ship/wing does not need to be
+    in-mission).
+    2: The X coordinate to face.
+    3: The Y coordinate to face.
+    4: The Z coordinate to face.
+    5: Turn time in milliseconds (optional)
+    6: Bank (optional). Enter a non-zero value to enable banking.
+    Note that if Turn time is specified, this needs to be called
+    once per frame, as the rotation is reset every frame.
+    Note that Turn time is the time for the object to rotate a
+    full revolution, *not* how long it will take to do this turn.
+*set-object-facing-object*
+    set-object-facing-object
+    Sets an object's orientation to face the specified object.
+    Takes 2 arguments...
+    1: The name of a ship or wing (ship/wing does not need to be
+    in-mission).
+    2: The object to face (object does not need to be in-mission).
+    3: Turn time in milliseconds (optional)
+    4: Bank (optional). Enter a non-zero value to enable banking.
+    Note that if Turn time is specified, this needs to be called
+    once per frame, as the rotation is reset every frame.
+    Note that Turn time is the time for the object to rotate a
+    full revolution, *not* how long it will take to do this turn.
+*set-object-speed-x*
+    set-object-speed-x (deprecated in favor of ship-maneuver)
+    Sets the X speed of a ship or wing (ship/wing must be in-
+    mission).Takes 2 or 3 arguments...
+    1: The name of the object.
+    2: The speed to set.
+    3: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*set-object-speed-y*
+    set-object-speed-y (deprecated in favor of ship-maneuver)
+    Sets the Y speed of a ship or wing (ship/wing must be in-
+    mission).Takes 2 or 3 arguments...
+    1: The name of the object.
+    2: The speed to set.
+    3: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*set-object-speed-z*
+    set-object-speed-z (deprecated in favor of ship-maneuver)
+    Sets the Z speed of a ship or wing (ship/wing must be in-
+    mission).Takes 2 or 3 arguments...
+    1: The name of the object.
+    2: The speed to set.
+    3: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*ship-maneuver*
+    ship-maneuver
+    Combines the effects of the ship-rot-maneuver and ship-lat-
+    maneuver sexps. Takes 10 or 11 arguments:
+    1: The name of a ship or wing (ship/wing must be in-mission).
+    2: Duration of the maneuver, in milliseconds. Specifying 0
+    or 1 indicates infinite duration.
+    3: Heading movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum heading velocity, or 0 to not modify
+    the ship's current value
+    4: Pitch movement velocity, as a percentage (-100 to 100) of
+    the tabled maximum pitch velocity, or 0 to not modify the
+    ship's current value
+    5: Bank movement velocity, as a percentage (-100 to 100) of
+    the tabled maximum bank velocity, or 0 to not modify the
+    ship's current value
+    6: Whether to apply all of the rotational velocity values
+    even if any of them are 0
+    7: Vertical movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum vertical velocity, or 0 to not modify
+    the ship's current value
+    8: Sideways movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum sideways velocity, or 0 to not modify
+    the ship's current value
+    9: Forward movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum forward velocity, or 0 to not modify
+    the ship's current value
+    10: Whether to apply all of the lateral velocity values even
+    if any of them are 0
+    11: Maneuver flags (optional): a bitfield with any of the
+    following options:
+    1 or 2^0: don't bank when changing heading
+    2 or 2^1: allow maneuvers exceeding tabled maximums (outside
+    the -100 to 100 range)
+    4 or 2^2: instantaneously jump to the goal velocity
+    8 or 2^3: keeps old, but still active, maneuver values that
+    were not overwritten
+*ship-rot-maneuver*
+    ship-rot-maneuver
+    Causes a ship to move in a rotational direction. For the
+    purposes of this sexp, this means the ship rotates along its
+    own heading, pitch, or bank axis (or a combination of axes)
+    without regard to normal ship rotation rules. You may find
+    it necessary to disable the ship AI (e.g. by issuing a play-
+    dead order) before running this sexp.
+
+    Takes 6 or 7 arguments:
+    1: The name of a ship or wing (ship/wing must be in-mission).
+    2: Duration of the maneuver, in milliseconds. Specifying 0
+    or 1 indicates infinite duration.
+    3: Heading movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum heading velocity, or 0 to not modify
+    the ship's current value
+    4: Pitch movement velocity, as a percentage (-100 to 100) of
+    the tabled maximum pitch velocity, or 0 to not modify the
+    ship's current value
+    5: Bank movement velocity, as a percentage (-100 to 100) of
+    the tabled maximum bank velocity, or 0 to not modify the
+    ship's current value
+    6: Whether to apply all of the above velocity values even if
+    any of them are 0
+    7: Maneuver flags (optional): a bitfield with any of the
+    following options:
+    1 or 2^0: don't bank when changing heading
+    2 or 2^1: allow maneuvers exceeding tabled maximums (outside
+    the -100 to 100 range)
+    4 or 2^2: instantaneously jump to the goal velocity
+    8 or 2^3: keeps old, but still active, maneuver values that
+    were not overwritten
+*ship-lat-maneuver*
+    ship-lat-maneuver
+    Causes a ship to move in a lateral direction. For the
+    purposes of this sexp, this means the ship translates along
+    its own X, Y, or Z axis (or a combination of axes) without
+    regard to normal ship movement rules. You may find it
+    necessary to disable the ship AI (e.g. by issuing a play-
+    dead order) before running this sexp.
+
+    Takes 6 or 7 arguments:
+    1: The name of a ship or wing (ship/wing must be in-mission).
+    2: Duration of the maneuver, in milliseconds. Specifying 0
+    or 1 indicates infinite duration.
+    3: Vertical movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum vertical velocity, or 0 to not modify
+    the ship's current value
+    4: Sideways movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum sideways velocity, or 0 to not modify
+    the ship's current value
+    5: Forward movement velocity, as a percentage (-100 to 100)
+    of the tabled maximum forward velocity, or 0 to not modify
+    the ship's current value
+    6: Whether to apply all of the above velocity values even if
+    any of them are 0
+    7: Maneuver flags (optional): a bitfield with any of the
+    following options:
+    1 or 2^0: don't bank when changing heading (which won't have
+    any affect for lat-maneuver)
+    2 or 2^1: allow maneuvers exceeding tabled maximums (outside
+    the -100 to 100 range)
+    4 or 2^2: instantaneously jump to the goal velocity
+    8 or 2^3: keeps old, but still active, maneuver values that
+    were not overwritten
+*set-immobile*
+    set-immobile
+    Prevents the specified ship(s) from changing position or
+    orientation (at least until the death roll starts) by
+    setting the "immobile" flag. Opposite of set-mobile. NOTE:
+    This also clears the "don't-change-position" and "don't-
+    change-orientation" flags to avoid any surprises or
+    conflicts with the "immobile" flag.
+    Takes 1 or more arguments...
+    All: List of ships on which to modify flags (ships do not
+    need to be in-mission)
+*set-mobile*
+    set-mobile
+    Allows the specified ship(s) to change position and
+    orientation by clearing the "immobile" flag. Opposite of
+    set-immobile. NOTE: This also clears the "don't-change-
+    position" and "don't-change-orientation" flags to avoid any
+    surprises or conflicts with the "immobile" flag.
+    Takes 1 or more arguments...
+    All: List of ships on which to modify flags (ships do not
+    need to be in-mission)

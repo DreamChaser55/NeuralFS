@@ -1,0 +1,121 @@
+  Variables
+
+*modify-variable*
+    Modify-variable (Misc. operator)
+    Modifies variable to specified value
+
+    Takes 2 arguments...
+    1: Name of Variable.
+    2: Value to be set.
+*get-variable-by-index*
+    get-variable-by-index (originally variable-array-get)
+    Gets the value of the variable specified by the given index.
+    This is an alternate way to access variables rather than by
+    their names, and it enables cool features such as arrays and
+    pointers.
+
+    Please note that only numeric variables are supported. Any
+    attempt to access a string variable will result in a value
+    of SEXP_NAN_FOREVER being returned.
+
+    Takes 1 argument...
+    1: Index of variable, from 0 to 249.
+*set-variable-by-index*
+    set-variable-by-index (originally variable-array-set)
+    Sets the value of the variable specified by the given index.
+    This is an alternate way to modify variables rather than by
+    their names, and it enables cool features such as arrays and
+    pointers.
+
+    In contrast to get-variable-by-index, note that this sexp
+    *does* allow the modification of string variables.
+
+    Takes 2 arguments...
+    1: Index of variable, from 0 to 249.
+    2: Value to be set.
+*copy-variable-from-index*
+    copy-variable-from-index
+    Retrieves the value of the variable specified by the given
+    index and stores it in another variable. This is very
+    similar to get-variable-by-index, except the result is
+    stored in a new variable rather than being returned by
+    value. One important difference is that this sexp can be
+    used to copy string variables as well as numeric variables.
+
+    Takes 2 arguments...
+    1: Index of source variable, from 0 to 249.
+    2: Destination variable. The type of this variable must
+    match the type of the variable referenced by the index.
+*copy-variable-between-indexes*
+    copy-variable-between-indexes
+    Retrieves the value of the variable specified by the first
+    index and stores it in the variable specified by the second
+    index. The first variable is not modified.
+
+    Takes 2 arguments...
+    1: Index of source variable, from 0 to 249.
+    2: Index of destination variable, from 0 to 249. The types
+    of both variables must match.
+*int-to-string*
+    int-to-string
+    Converts an integer into a string. The destination must be a
+    string variable.
+    Takes 2 argument...
+    1: Integer to convert
+    2: String variable to contain the result
+*string-concatenate*
+    string-concatenate (deprecated in favor of string-
+    concatenate-block)
+    Concatenates two strings, putting the result into a string
+    variable. If the length of the string will exceed the sexp
+    variable token limit (31), it will be truncated.
+
+    Takes 3 arguments...
+    1: First string
+    2: Second string
+    3: String variable to hold the result
+*string-concatenate-block*
+    string-concatenate-block
+    Concatenates two or more strings, putting the result into a
+    string variable. If the length of the string will exceed the
+    sexp variable token limit (31), it will be truncated.
+
+    Takes 3 or more arguments...
+    1: String variable to hold the result
+    Rest: Strings to concatenate. At least two of these are
+    required; the rest are optional.
+*string-get-substring*
+    string-get-substring
+    Extracts a substring from a parent string, putting the
+    result into a string variable. If the length of the string
+    will exceed the sexp variable token limit (31), it will be
+    truncated.
+
+    Takes 3 arguments...
+    1: Parent string
+    2: Index at which the substring begins (0-based)
+    3: Length of the substring
+    4: String variable to hold the result
+*string-set-substring*
+    string-set-substring
+    Replaces a substring from a parent string with a new string,
+    putting the result into a string variable. If the length of
+    the string will exceed the sexp variable token limit (31),
+    it will be truncated.
+
+    Takes 3 arguments...
+    1: Parent string
+    2: Index at which the substring begins (0-based)
+    3: Length of the substring
+    4: New substring (which can be a different length than the
+    old substring)
+    5: String variable to hold the result
+*modify-variable-xstr*
+    modify-variable-xstr
+    Sets a variable to a localized string.
+
+    Takes 3 arguments...
+    1: Name of Variable.
+    2: The default text if no localized version is available.
+    3: The XSTR index. If set to -1 then the default value will
+    be used

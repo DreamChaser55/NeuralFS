@@ -1,0 +1,34 @@
+  Multiplayer
+
+*num-players*
+    Num players (Status operator)
+    Returns the current number of players (multiplayer) playing
+    in the current mission.
+
+    Returns a numeric value. Takes no arguments.
+*team-score*
+    team-score
+    Get the score of a multi team vs team game.
+    1: Team index (1 for team 1 and 2 for team 2)
+*ship-deaths*
+    ship-deaths
+    Returns the # times a ship that is a player start has died.
+    The ship specified in the first field should be the ship
+    that could have a player in.it
+    Only really useful for multiplayer.
+*respawns-left*
+    respawns-left
+    Returns the # respawns a player (or AI that could have been
+    a player) has remaining.
+    The ship specified in the first field should be the player
+    start.
+    Only really useful for multiplayer.
+*is-player*
+    is-player
+    Returns true if all the ships specified are currently under
+    control of a player.
+    1 (SinglePlayer) When true ships under AI control return
+    false even if they are the player ship
+    (Multiplayer) When true ships that are respawning return
+    true if the player is still connected
+    Rest List of ships to test

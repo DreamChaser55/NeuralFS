@@ -1,0 +1,46 @@
+  Armor and Damage Types
+
+*set-armor-type*
+    set-armor-type
+    Sets the armor type for a ship or subsystem
+    1: Ship subsystem is on (ship must be in-mission)
+    2: Set = true/Reset to default = false
+    3: Armor type to set or <none>
+    rest: Subsystems to set (hull for ship, shield for shields)
+*weapon-set-damage-type*
+    weapon-set-damage-type
+    Sets the damage type for weapons or their shockwaves
+    1: True = set weapon, False = set shockwave
+    2: damage type to set or <none>
+    3: Set = true/Reset to default = false
+    rest: Weapons to set
+*ship-set-damage-type*
+    ship-set-damage-type
+    Sets the damage type for ships collision or debris
+    1: true = set collision, False = set debris
+    2: Damage type to set or <none>
+    3: Set = true/Reset to default = false
+    rest: Ships to set (ship must be in-mission)
+*ship-set-shockwave-damage-type*
+    ship-set-shockwave-damage-type
+    Sets the shockwave damage type for a class of ship. All
+    ships of that class are changed.
+    1: Damage type to set or <none>
+    2: Set = true/Reset to default = false
+    rest: Ship classes to set
+*field-set-damage-type*
+    field-set-damage-type
+    Sets the damage type for asteroid/debris fields
+    1: Damage type to set or <none>
+    2: Set = true/Reset to default = false
+*set-friendly-damage-caps*
+    set-friendly-damage-caps
+    Sets limits on damage weapons and beams can do to friendly
+    targets on the current difficulty level. Takes 1 to 3
+    arguments.
+    Arguments left blank will leave the values unmodified.
+    1: Maximum damage beams can do to targets on the same team
+    as the firer. -1 means no limit. 2: Maximum damage weapons
+    (and their shockwaves) can do to targets on the same team as
+    the firer. -1 means no limit. 3: Maximum damage weapons (and
+    their shockwaves) can do to their firer. -1 means no limit.

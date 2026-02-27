@@ -1,0 +1,318 @@
+fsif_version: "2.2"
+
+mission_info:
+  name: "Into the Void"
+  author: "NeuralFS"
+  description: "The GTD Erebus enters the Shivan subspace pocket known as The Void."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: ["subspace", "fullneb"]
+
+environment:
+  star_count: 0
+  ambient_light_level: 15
+  nebula:
+    enabled: true
+    pattern: "nbackred"
+    storm: "none"
+    awacs: 3000
+    show_backgrounds: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Hercules"
+      count: 4
+    - class: "GTF Apollo"
+      count: 2
+    - class: "GTF Valkyrie"
+      count: 2
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 12
+    - name: "Avenger"
+      count: 12
+    - name: "Banshee"
+      count: 8
+    - name: "MX-50"
+      count: 160
+    - name: "Hornet"
+      count: 80
+
+entities:
+  ship_templates:
+    hercules_heavy:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "Banshee"]
+        secondary: ["Hornet"]
+    valkyrie_interceptor:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    manticore_fighter:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["MX-50#Shivan"]
+    basilisk_heavy:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Hornet#Shivan"]
+    dragon_stealth:
+      class: "SF Dragon"
+      team: "Hostile"
+      ai_class: "General"
+      flags: ["invulnerable", "hidden-from-sensors"]
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+    bio_spire_sentry:
+      class: "GTSG Watchdog"
+      team: "Hostile"
+      ai_class: "Captain"
+      flags: ["scannable"]
+
+  ships:
+    - name: "Alpha 1"
+      template: "hercules_heavy"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 2"
+      template: "hercules_heavy"
+      location: [50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 3"
+      template: "hercules_heavy"
+      location: [-50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 4"
+      template: "hercules_heavy"
+      location: [0, 50, 0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTD Erebus"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0, 0, -2000]
+      arrival_cue: |
+        ( true )
+      flags: ["escort"]
+      escort_priority: 100
+      subsystems:
+        status: custom
+        list:
+          - { name: "engines", health: 80 }
+          - { name: "communication", health: 70 }
+
+    - name: "Bio-Spire 1"
+      template: "bio_spire_sentry"
+      location: [1000, 500, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 60 )
+    - name: "Bio-Spire 2"
+      template: "bio_spire_sentry"
+      location: [-1000, -500, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 60 )
+    - name: "Bio-Spire 3"
+      template: "bio_spire_sentry"
+      location: [0, 1000, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 60 )
+
+    - name: "Arjuna 1"
+      template: "dragon_stealth"
+      location: [0, 0, 5000]
+      arrival_cue: |
+        ( has-time-elapsed 300 )
+      departure_cue: |
+        ( or 
+          ( has-time-elapsed 310 ) 
+          ( targeted "Arjuna 1" ) 
+        )
+
+  wings:
+    - name: "Beta"
+      template: "valkyrie_interceptor"
+      count: 3
+      position: [-200, 0, -500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "GTD Erebus" 89 )
+
+    - name: "Brahma"
+      template: "manticore_fighter"
+      count: 4
+      position: [2000, 0, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 60 )
+      waves: 3
+      wave_threshold: 1
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+    - name: "Krishna"
+      template: "basilisk_heavy"
+      count: 3
+      position: [0, 2000, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 300 )
+      waves: 2
+      ai_goals: |
+        ( ai-chase "GTD Erebus" 89 )
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "Following the destruction of the Styx hive, we have successfully stabilized the anomaly's core. The GTD Erebus is prepared to make the jump into the pocket we've designated 'The Void.'"
+        voice_name: "Achernar"
+      - text: "We are entering unknown territory. This pocket appears to be a Shivan nursery or shipyard, disconnected from the standard subspace network. Our goal is to locate the source of the infection."
+        voice_name: "Achernar"
+      - text: "Upon arrival, expect the environment to be hostile. Your ship's computer has been updated with the latest sensor dampening filters, but expect glitches."
+        voice_name: "Achernar"
+
+  briefing:
+    stages:
+      - text: "This is it, Alpha. We're jumping the Erebus directly into the anomaly. We'll be blind for the first sixty seconds of transit."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "Erebus" }
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Hercules", pos: [0, -500], label: "Alpha" }
+      - text: "Once we emerge, Alpha will fly point. We've detected three static signatures near the entry point. They look like the Spires we saw on the Styx. Take them out before the Erebus's shields can be targeted."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Sentry Gun", team: "Hostile", pos: [500, 500], label: "Spires" }
+      - text: "Intelligence is issuing a new weapon for this mission—the Banshee laser. It's designed to puncture Shivan shields more effectively. You'll need it out there."
+        voice_name: "Achernar"
+
+  debriefing:
+    stages:
+      - condition: |
+          ( has-time-elapsed 600 )
+        text: "We are in. The Void is... more vast than we imagined. The Erebus is holding together, but the crew is reporting auditory hallucinations. We need to find the GTI lab and get out of here."
+        voice_name: "Achernar"
+      - condition: |
+          ( is-destroyed-delay 0 "GTD Erebus" )
+        text: "The Erebus was lost during the transit. The infection has claimed our finest ship and her crew. Sol is now undefended from the horrors within the Void."
+        voice_name: "Achernar"
+
+  events:
+    - name: "Transit Emergence"
+      formula: |
+        ( when
+          ( has-time-elapsed 60 )
+          ( do-nothing )
+        )
+      directive_text: "Protect the GTD Erebus"
+    
+    - name: "Subspace Bleed"
+      formula: |
+        ( every-time
+          ( and
+            ( > ( mission-time ) 60 )
+            ( = ( mod ( mission-time ) 60 ) 0 )
+          )
+          ( sabotage-subsystem "Alpha 1" "hull" 1 )
+          ( hud-force-emp-effect 100 5000 "none" )
+        )
+
+    - name: "Spires Scanned"
+      formula: |
+        ( when
+          ( and
+            ( is-cargo-known-delay 0 "Bio-Spire 1" )
+            ( is-cargo-known-delay 0 "Bio-Spire 2" )
+            ( is-cargo-known-delay 0 "Bio-Spire 3" )
+          )
+          ( do-nothing )
+        )
+
+    - name: "Dragon Scanned"
+      formula: |
+        ( when
+          ( is-cargo-known-delay 0 "Arjuna 1" )
+          ( do-nothing )
+        )
+
+    - name: "Msg: Red world"
+      formula: |
+        ( when
+          ( has-time-elapsed 65 )
+          ( send-message "Alpha 2" "Normal" "Red world" )
+        )
+
+    - name: "Msg: Spire Feed"
+      formula: |
+        ( when
+          ( < ( distance "Alpha 1" "Bio-Spire 1" ) 500 )
+          ( send-message "Alpha 3" "Normal" "Spire Feed" )
+        )
+
+    - name: "Banshee Demo Msg"
+      formula: |
+        ( when
+          ( and
+            ( has-time-elapsed 70 )
+            ( not ( is-destroyed-delay 0 "Bio-Spire 1" ) )
+          )
+          ( send-message "#Command" "High" "Use Banshee" )
+        )
+
+  goals:
+    - name: "Protect Erebus"
+      type: "Primary"
+      message: "Protect the GTD Erebus during the 10-minute transit period."
+      formula: |
+        ( and 
+          ( not ( is-destroyed-delay 0 "GTD Erebus" ) ) 
+          ( has-time-elapsed 600 ) 
+        )
+    - name: "Destroy Spires"
+      type: "Primary"
+      message: "Destroy the 3 Bio-Spires guarding the entry point."
+      formula: |
+        ( and
+          ( is-destroyed-delay 0 "Bio-Spire 1" )
+          ( is-destroyed-delay 0 "Bio-Spire 2" )
+          ( is-destroyed-delay 0 "Bio-Spire 3" )
+        )
+    - name: "Scan Spires"
+      type: "Secondary"
+      message: "Identify (scan) the 3 Bio-Spires."
+      formula: |
+        ( is-event-true-delay "Spires Scanned" 0 )
+    - name: "Protect Beta"
+      type: "Bonus"
+      message: "Protect all ships in Beta wing."
+      formula: |
+        ( = ( num-ships-in-wing "Beta" ) 3 )
+
+  messages:
+    - name: "Red world"
+      message: "I... I think I'm going to be sick. The stars... they're gone. It's just red. Everything is red."
+      voice_name: "Charon"
+    - name: "Spire Feed"
+      message: "Look at the Spires. They're not just turrets, they're... umbilical cords. They're feeding something."
+      voice_name: "Fenrir"
+    - name: "Use Banshee"
+      message: "Alpha, use your Banshee lasers to strip the Spires' shields. Your standard guns won't be as effective."
+      voice_name: "Achernar"
+
+audio:
+  briefing_music: "FS1-BRIEF5"
+  mission_music: "1: Genesis"

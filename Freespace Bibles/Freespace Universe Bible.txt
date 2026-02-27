@@ -1,0 +1,1756 @@
+Freespace Universe
+
+FreeSpace is a space combat simulation series by Volition, Inc. and Interplay Entertainment. Set in the 24th century, humans (Terrans) have developed faster-than-light space travel via subspace, enabling interstellar expansion. Terrans soon encounter the Vasudans, another sentient species, but cultural differences lead to a 14-year war between the Galactic Terran Alliance (GTA) and the Parliamentary Vasudan Empire (PVE).
+
+FreeSpace 1:
+FreeSpace — The Great War, also known as Conflict: Freespace or Freespace 1 (FS1), was released in 1998. Player is a pilot for the Galactic Terran Alliance (GTA), which has been at war with the Parliamentary Vasudan Navy (PVN) for 14 years. A third race, the technologically superior and enigmatic Shivans, suddenly appears, attacking both sides. This forces the GTA and PVN to form a truce to combat the Shivans. FS1 was well-received for its solid gameplay, controls, and compelling plot. It also had excellent mod support, including the FreeSpace Editor (FRED) for mission creation. The game's alternate title, "Descent: FreeSpace – The Great War", has little connection to the separate Descent series of games.
+Story of FreeSpace 1:
+Terrans and Vasudans are locked in a 14-year war with billions of casualties. A new enemy, the Shivans, emerges, attacking both sides and forcing them to unite to save their civilizations.
+
+Silent Threat Expansion:
+Silent Threat, an expansion for FreeSpace 1 released later in 1998, features a new campaign about the Hades Rebellion, a rogue faction within the GTA. It introduces new ships, weapons, command briefings, and fan-created missions. The expansion was considered decent.
+Story of Silent Threat:
+During the Great War with the Shivans, the player is commissioned by Galactic Terran Intelligence (GTI) for special operations to preserve the fragile Terran-Vasudan peace treaty, navigating possible deception by the GTI itself amid the wider war with the Shivans.
+
+FreeSpace 2:
+Released in 1999, FreeSpace 2 (FS2) continues the story 32 years after FS1. Terrans and Vasudans increased their cooperation and formed the Galactic Terran-Vasudan Alliance (GTVA). However, the Neo-Terran Front arises and rebels against the GTVA, opposing the alliance with the Vasudans. FS2 improved upon FS1 with new features such as beam weapons for capital ships, new ships like the corvettes, missions in nebula environments and additional fighters and weapons for the player.
+
+Features:
+Engage massive, detailed capital ships and destroyers.
+Experience advanced physics and breathtaking explosion effects.
+Command intelligent wingmen, request reinforcements, and support ships in real-time space combat.
+The AI adapts to your abilities, guiding skilled wingmen and cunning opponents.
+Navigate deadly 3D asteroid fields.
+Choose from five difficulty levels: very easy, easy, medium, hard, and insane.
+Advance in rank, earn medals and ribbons, and access more advanced ships and weapons.
+Enjoy event-driven music tailored to the action.
+Detailed branching campaign influenced by your performance.
+High-resolution cinematic cutscenes with an epic storyline.
+
+Universe of FreeSpace:
+The FreeSpace universe continues human history as they interact with two alien species. Canon events span 2335 to 2367, focusing on these dates. In 2335, the Terrans (humans) and Vasudans had been at war for fourteen years when the technologically superior Shivans appeared. The two species united to combat the Shivans, known as the Great War (chronicled in FS1). The Shivans were defeated, but the Vasudan homeworld was destroyed, and contact with Earth was lost.
+Shortly after FS1, the Hades Rebellion occurred. Rogue elements of Galactic Terran Intelligence built the GTD Hades with Shivan weaponry. This rebellion ended with the Hades's destruction, documented in the Silent Threat expansion.
+The Reconstruction period (2335-2367) saw the Terrans and Vasudans rebuilding and forming the Galactic Terran-Vasudan Alliance (GTVA). Eighteen months before FreeSpace 2, Admiral Aken Bosch led a military coup - the Neo-Terran Front (NTF), threatening the GTVA.
+FS 2 covers the final weeks of the NTF rebellion and the Shivans' return, known as the Second Shivan Incursion or Second Great War. The NTF is defeated, but the Shivans gather a powerful fleet in the Capella system. The GTVA destroys the subspace nodes leading out of Capella, isolating the Shivan fleet.
+The era after this, with no canon events, is called the Post-Capella Era by the community.
+The FreeSpace galaxy has numerous star systems, navigable through subspace using fixed-position jump nodes. The time required to travel through subspace is unclear; the last mission of FS1 suggests a 10-minute window to complete the mission before the SD Lucifer enters Sol through the Delta Serpentis-Sol jump node.
+
+Races and Factions of FreeSpace:
+
+Terrans:
+Terrans (humans) originate from Earth (Terra) in the Sol (solar) system. Though physically weak, they are highly intelligent and versatile, evolving from nomadic primates to a spacefaring race. The Terran civilization developed stable nation-states that eventually unified into the Galactic Terran Alliance (GTA). Terrans have colonized twelve worlds outside Sol and established outposts on fifteen others. The Galactic Terran Intelligence (GTI) is the GTA's intelligence arm, responsible for intelligence gathering, strategic planning and research and development of new military technologies used against alliance's adversaries. Special Operations Command (SOC) is closely related to Galactic Terran Intelligence and serves as GTI's combat arm.
+
+Vasudans:
+Vasudans are tall, skeletal-looking bipeds with powerful musculature from Vasuda Prime, a harsh desert planet in the Vasuda system. Both of the twin continents of Vasuda Prime are almost entirely desert, and most of the above-ground water is undrinkable. Their society and culture is complex, with numerous social tests and protocols. Misunderstanding these protocols, such as The Conversation, contributed to the beginning of the Terran-Vasudan War. The Vasudan government, the Parliamentary Vasudan Empire (PVE), is a parliamentary system with an Imperial family and Ambassadors, who are quasi-royal go-betweens between the Parliament and the Imperial family. The Parliamentary Vasudan Navy (PVN) is the space military branch. Driven by resource scarcity, Vasudans intensified space exploration to find habitable planets.
+
+Hammer of Light:
+The Hammer of Light (HoL) is a hostile Vasudan cult that worships the Shivans, viewing them as cosmic destroyers and preservers. Active during the Great War, they believe in ancient prophecies foretelling the Shivans' arrival.
+
+Shivans:
+Shivans are an enigmatic species whose origins and motives remain unknown. They have multiple eyes, five legs and can run equally well over a floor or over a ceiling, suggesting an evolution in a zero-gravity environment. Shivans possess strong claws and strange thoracic compartments. They may be robots or organic beings in exo-skeletons, but such hypotheses are mostly considered only unfounded speculations. All communication attempts with Shivans have failed, so we still do not know why they seem focused on the destruction of all other sentient species. Most likely, we will not learn anything more about the Shivan species until we have actually captured and studied a Shivan.
+
+Ancients:
+The Ancients, now extinct, were an advanced species with an extensive interstellar empire, wiped out by the Shivans around 8,000 years ago. Their knowledge of subspace tracking, discovered in ruins in the Altair system, enabled the destruction of the Lucifer. The Ancients also built the Knossos portals that provided a link between Shivan and GTVA-held space, which allowed the Second Shivan Incursion to occur in 2367. Evidence suggests a relationship between the Ancients and primitive Vasudans, as their languages are similar, and Vasudan legends seemingly reference the Ancients as their ancestors. The Hammer of Light's prophecies about cosmic destroyers may also stem from Ancients' warnings about the Shivans.
+
+Subspace:
+Subspace is an n-dimensional tunnel between one point in the universe and another. A vessel equipped with a subspace jump drive can travel through this tunnel in a matter of minutes, making a journey that might otherwise take decades or even centuries at light speed. A subspace jump drive synchronizes a ship's vibrations with the subspace continuum, creating a vortex that can be traversed. There are two types of subspace jumps: intrasystem jump (within a single star system) and intersystem jump (between star systems).
+Intrasystem Jumps: Both large and small vessels use these to travel short distances within a star system. The presence of an intense gravitational field is required, prohibiting travel beyond the boundaries of a star system.
+Intersystem Jumps: Some ships use intersystem subspace jump nodes for travel between star systems. Initially, only large ships could generate sufficient power to make these jumps, but in 2335, the development of small intersystem jump drives for fighters and bombers allowed for critical missions, like the destruction of the SD Lucifer. These small intersystem jump drives are expensive and used sparingly.
+Most subspace nodes are unstable and short-lived, but some remain stable for centuries and are strategically important locations. Jump drives require time to recharge. This process can take many minutes. Larger ships can't jump near intersystem jump nodes, necessitating sublight travel to and from these nodes. This is why pilots often escort ships to and from a node or are tasked with preventing enemy ships from reaching a node.
+
+Timeline:
+    2300-2321: Unification Era
+		Sometime during this period, Terrans discovered Subspace, unified under the Galactic Terran Alliance (GTA), explored the nearest star systems and set up colonies in several systems. This era covers the period from before the discovery of subspace to the first contact with the Vasudans.
+    2321-2335: The 14-Year War (Terran-Vasudan War)
+		Shortly after the first contact, the Terran-Vasudan War, or the 14-Year War, broke out. Heavy and sustained casualties were suffered on both sides, but both species learned valuable lessons in adaptation and the development of new technologies. This period spans from the first contact with the Vasudans to the signing of the treaty that officially ended the 14-Year War.
+    2335: The Great War (First Shivan Incursion)
+		The Great War was the first invasion of the menacing Shivans in the year 2335. The outbreak of this war caused Terrans and Vasudans to set aside their differences, sign a peace treaty and combat the mutual threat of the Shivans. The Shivan armada, led by the powerful superdestroyer SD Lucifer with impervious shields, marched through the Terran and Vasudan lines of defense, destroyed the Vasudan homeworld of Vasuda Prime and then set a course for Earth. Ultimately, Ancient artifacts discovered in Deneb and Altair led to the Lucifer's destruction while exiting the jump node to Sol. The jump node was collapsed by the events, severing Earth from the subspace network.
+    2335: The Hades Rebellion
+		The Hades Rebellion was an attempted coup initiated by rogue elements of Galactic Terran Intelligence following the events of the Great War. It was cataloged in the Silent Threat campaign.
+    2335-2366: Reconstruction Era
+		The Reconstruction Era was a series of political and historical events which led to advancement of Terran and Vasudan technology and preparation for the threat of another Shivan incursion. This era included many major events, such as the formation of the Galactic Terran-Vasudan Alliance (GTVA) and signing of the Beta Aquilae Convention (BETAC).
+    2366-2367: The NTF Rebellion
+		The NTF Rebellion was an open rebellion against the Galactic Terran-Vasudan Alliance by Admiral Aken Bosch and his loyalists in the Neo-Terran Front.
+    2367: The Second Shivan Incursion
+		The Second Shivan Incursion was the second invasion of Terran-Vasudan space by the Shivans.
+    2367-2400: Post-Capella Era
+		 The Post-Capella period is the era which occurs after the Destruction of Capella.
+
+List of known star systems with their subspace jump node connections (based on official Freespace jump node map):
+
+Adhara
+   - Procyon
+   - Epsilon Pegasi
+   - unknown system
+Aldebaran
+   - Alpha Centauri
+   - Altair
+Alpha Centauri
+   - Aldebaran
+   - Sirius
+   - Vasuda
+Alphard
+   - Dubhe
+   - Wolf 359
+Altair
+   - Aldebaran
+   - unknown system
+Antares
+   - Beta Aquilae
+   - Beta Cygni
+   - Ribos
+   - Vasuda
+   - Vega
+Barnard's Star
+   - Dubhe
+   - Luyten 726-8
+Beta Aquilae
+   - Antares
+   - Delta Serpentis
+   - Vega
+Beta Cygni
+   - Antares
+   - Betelgeuse
+Betelgeuse
+   - Beta Cygni
+Binary System
+   - Nebula System
+   - unknown system
+Capella
+   - Epsilon Pegasi
+   - Gamma Draconis
+   - Vega
+Delta Serpentis
+   - Beta Aquilae
+   - Ross 128
+   - Sol
+Deneb
+   - Sirius
+   - Vasuda
+   - Vega
+Dubhe
+   - Alphard
+   - Barnard's Star
+   - unknown system
+Epsilon Pegasi
+   - Adhara
+   - Capella
+   - Mirfak
+   - Polaris
+Gamma Draconis
+   - Capella
+   - Nebula System
+Ikeya
+   - Ribos
+Laramis
+   - Luyten 726-8
+   - Ross 128
+Luyten 726-8
+   - Barnard's Star
+   - Laramis
+   - Wolf 359
+Mirfak
+   - Epsilon Pegasi
+   - unknown system
+Nebula System
+   - Gamma Draconis
+   - Binary System
+Polaris
+   - Epsilon Pegasi
+   - Regulus
+Procyon
+   - Adhara
+Regulus
+   - Polaris
+   - Sirius
+   - unknown system
+Ribos
+   - Antares
+   - Ikeya
+Ross 128
+   - Delta Serpentis
+   - Laramis
+Sirius
+   - Alpha Centauri
+   - Deneb
+   - Regulus
+Sol
+   - Delta Serpentis
+Vasuda
+   - Alpha Centauri
+   - Antares
+   - Deneb
+Vega
+   - Beta Aquilae
+   - Capella
+   - Deneb
+   - Antares
+Wolf 359
+   - Alphard
+   - Luyten
+
+Node Inconsistencies:
+There are some jump node connections that are apparently used in FreeSpace lore, but are not illustrated on the official Freespace jump node map.
+	Deneb - Altair
+		Used by the player's squadron and Omega wing of transports in Act 3. The node is seen in Reaching the Zenith (Act 3 mission 4) and used in Running the Gauntlet (Act 3 mission 5) and Black Omega (Act 3 mission 6). Xenolinguists are transported from Deneb to Altair to retrieve the ancient records and then back to Deneb to rejoin the Terran fleet.
+	Sirius - Delta Serpentis
+		Used by the SD Lucifer and GTD Bastion in Clash of the Titans (Act 3 mission 7). The Bastion unsuccessfully tries to intercept the SD Lucifer before it can jump from Sirius to Delta Serpentis. Lucifer is on the way to attack Sol.
+	Ribos - Beta Cygni
+		This jump corridor may have been alluded to in Paving the Way (Act 1 mission 6), when Admiral Wolf says that standard procedure would have the Galatea circumvent the Antares-Beta Cygni jump corridor and make two jumps. Jumping from Antares to Betelgeuse and then to Beta Cygni would satisfy this requirement, but so would Antares to Ribos and then to Beta Cygni, through the possible Ribos-Beta Cygni corridor.
+It is likely that these jump nodes really exist, but are simply too unstable to be safely used under normal circumstances, hence are missing from the official node map. But in extraordinary or desperate circumstances, even such unstable jump nodes are sometimes used by military ships. Also, Shivan subspace jump drives are more efficient than Terran and Vasudan ones, so they can effectively use jump nodes that are hardly usable for Terran and Vasudan ships - this can explain the Lucifer jumping from Sirius to Delta Serpentis.
+
+Ship size classes (from smallest to largest, with average length specified):
+1. Fighters (20 meters)
+2. Bombers (40 meters)
+3. Cruisers (250 meters)
+4. Corvettes - introduced in Freespace 2 (750 meters)
+5. Destroyers (2000 meters)
+6. Superdestroyers or Juggernauts (3000-6000 meters)
+
+Destroyers and superdestroyers/juggernauts are called Capital Ships. Fleets are always led by a Capital Ship. Only corvettes, destroyers, superdestroyers and installations (stations) have fighterbays capable of holding fighters and bombers (cruisers cannot carry fighters/bombers). Fighters and bombers are typically deployed in wings containing from 3 to 6 ships.
+All ships have destroyable subsystems, such as engines, weapons, navigation, sensors and communications. Larger ships also have turrets and dockpoints.
+
+Friendly Terran wing names: Alpha, Beta, Gamma, Delta, Epsilon, Zeta, Eta
+Enemy Terran wing names: Bragi, Buri, Freki, Geri, Hrid, Roskva, Scald, Skadi
+Friendly Vasudan wing names: Theta, Iota, Kappa, Lambda, Mu, Nu, Xi, Omicron, Pi, Rho, Sigma
+Enemy Vasudan wing names: Aquarius, Aries, Cancer, Capricorn, Gemini, Leo, Libra, Pisces, Sagittarius, Scorpio, Taurus, Virgo
+Enemy Shivan wing names: Brahma, Vishnu, Durga, Rama, Krishna, Indra, Arjuna, Deva, Bheema, Kali, Genma, Asura
+
+In most missions, the Player is the leader of Alpha wing (Alpha 1), but there are exceptions.
+
+Terran spacecraft classes
+
+	Fighters (prefix GTF)
+		GTF Apollo
+			The GTF Apollo is the most common GTA fighter. It is highly versatile and can perform multiple roles, including space superiority, interception and assault.
+		GTF Ulysses
+			Affectionately nicknamed The Bat by its pilots, the GTF Ulysses is a well-designed craft that has had a far longer useful life than its engineers ever imagined. Developed jointly by Terran and Vasudan contractors, the Ulysses was first deployed near the end of the Great War. Its excellent maneuverability and high top speed give it an agility that pilots love, but at a cost of thin armor and a small secondary weapon loadout.
+		GTF Valkyrie
+			Using the old GTF Angel Scout Fighter as a template, the GTA created the Valkyrie Interceptor Fighter. It has two additional engines, as well as an additional set of primary hardpoints. This makes the Valkyrie the best bomber interceptor in the fleet. Its speed is unmatched in the GTA, and its maneuverability is above average. Its only drawbacks are a small secondary payload and weak hull.
+		GTF Hercules
+			The GTF Hercules is the slowest and most unmanageable fighter in the fleet. This is offset, however, by its overpowering weaponry and shielding. It carries 6 primary weapons, as well as two full secondary missile banks. This heavy assault fighter is best suited for assault missions and bomber escort.
+		GTF Loki
+			Designed by GTI engineers, the GTF Loki is undoubtedly the best reconaissance craft in Terran or Vasudan service. Its hull shape and shielded reactor chamber lends itself to providing a low sensor profile, and is yet capable of very high speed maneuvers. However, its relatively light armament and low armor rating make it unsuitable for extended firefights.
+	
+	Bombers (prefix GTB)
+		GTB Athena
+			The smallest bomber in the fleet, the Athena has oftentimes been mistaken for a fighter. However, one should not be fooled by its small size. The Athena can carry light bombs, and most missiles. It also has the ability to dogfight well. Its strong shielding and hull make it the favored "Lightning Bomber" of the GTA.
+		GTB Medusa
+			The Medusa is the standard attack bomber in the GTA. Its strong shielding and large secondary capacity make it the favored attack craft against cruiser class targets. As the first bomber to carry the Tsunami bomb, the Medusa is considered the staple of any bomber pilot's career.
+		GTB Ursa
+			The Ursa is the first bomber designed specifically for the purpose of annihilating capital ships. It carries a massive payload and is the only bomber in the GTA which can equip the Harbinger Bomb. Strong shielding and hull make the Ursa very difficult to destroy.
+		GTB Zeus
+			Another product of GTI R&D, the Zeus strike bomber is a worthy successor to the Athena. Its balanced design and increased reactor capacity give it remarkable speed for a bomber, yet it still remains capable of carrying the powerful Tsunami bombs. These features will make the Zeus a versatile and effective weapon against capital ships.
+	
+	Transports (prefix GTT)
+		GTT Elysium
+			Since the start of space colonization, this standard transport has been used by everyone, both civilian and military. While it has undergone minor changes time and again, it remains a simple design: A vehicle meant to transport personnel from one place to another.
+	
+	Freighters (prefix GTFr)
+		GTFr Chronos
+			The Chronos is a freighter of civilian design. As the Terran Vasudan war dragged on, more and more of these vessels were commissioned by the GTA for use in military operations. These vessels are slow but possess relatively strong hull.
+		GTFr Poseidon
+			The Poseidon is the standard military freighter in the GTA. It is designed to protect its cargo from any kind of attack, and has four turrets with which to do so.
+	
+	Cruisers (prefix GTC)
+		GTC Fenris
+			The mainstay of the Terran Fleet, these vessels have served in both strike and defense purposes. From nose to tail it measures 260 meters. With a full array of weapon systems and a strong enough hull to withstand the strongest enemy warheads, a Fenris Cruiser can be found in almost any system that the GTA is operating in. The Fenris cruiser was originally designed as a strike weapon, hence its fast speed and decent turning rate. It was later decided that a second line of cruisers would be produced, for defensive purposes, once it became apparent that the Terran-Vasudan war wouldn't be over in a few months.
+		GTC Leviathan
+			After the Vasudans began making incursions into GTA space, command decided that it needed a new defensive cruiser. Changes to the Fenris led to the GTC Leviathan line of cruisers, produced as mobile defense battleships. Their speed and maneuverability were greatly reduced in tradeoff for more powerful weapons and a stronger hull. Production was discontinued when the GTA thought they would win the Vasudan war after the Battle of Gulnara, and then the production was started up again after the defeat at the Talania system. Because of the on-again off-again nature of this vessel's production, almost all of the Leviathan Cruisers have different armaments, but all have consistent hulls and speeds.
+	
+	Destroyers (prefix GTD)
+		GTD Orion
+			The Orion is the capital ship of the GTA. Measuring a frightening 2.1 kilometers in length, the cost to build one of these far outweighs the cost of paying the crew of this ship for 3 years. There is no more important symbol of Terran Pride than a ship like the Galatea or the Intrepid cruising past a colonized planet, patrolling the system and ensuring safety. In the course of the 14 year war, very few of these have ever been lost, making the destruction of an Orion a truly horrible defeat.
+	
+	Juggernauts (prefix GTD)
+		GTD Hades
+			The GTD Hades was a fusion of Terran and Shivan military technologies. It was constructed by Galactic Terran Intelligence (GTI), a rogue branch of the GTA. In 2335, GTI leaders sought to overthrow the provisional GTA government established in Delta Serpentis. After the defeat of the GTI and the destruction of the Hades, the GTA classified the details of this research at level Omega. There are rumors that the Alliance has attempted to reconstruct the Hades to learn more about the GTI's activities. These reports have yet to be confirmed by government sources.
+	
+	Installations (prefix GTI)
+		GTI Arcadia
+			Early Terran space stations were constructed much smaller, and were mostly used for Zero-G research purposes. Later on, with advancements in space construction technologies, stations grew bigger and bigger. When the first Arcadia-class station was commissioned, GTA decided to rename it to an Installation rather than a Space Station. Used for a variety of purposes, almost all major systems are home to at least one Installation, which is often used as the center of trade and communications. Home to scores of small ship, including repair vessels, fighters, and transports, an Arcadia class Installation is always a safe haven for a convoy of freighters or ships returning from battle. Where the Orion is the symbol of Terran power, the Arcadia is the shining beacon of stability. 
+	
+	Science Vessels (prefix GTSC)
+		GTSC Faustus
+			The Faustus Science vessel was, and still is, a civilian craft. However, in the 14 years since the Terran-Vasudan war began, more and more of these were commissioned by the GTA in order to pursue military research. However, its obvious value, poor fighting capabilities, and lack of speed make it a prime target for enemy ships; hence, you will rarely find many of these anywhere near the front lines of battle.
+	
+	Escape Pods (prefix GTEP)
+		GTEP Hermes
+			The Hermes Escape Pod has been used since the destruction of the GTD Goliath over 12 years ago. They are used by the crews of destroyers and installations to escape destruction. It is always best to be prepared.
+	
+	Support Ships (prefix GTS)
+		GTS Centaur
+			The Centaur support ship is designed to get in and out of battle as quickly as possible. It is fast and quite maneuverable, allowing it to dock with fighters in a minimum amount of time. Most notable about the Centaur, however, is its extremely large explosion radius. The amount of warheads carried on a support ship makes it very dangerous to be close to an exploding Centaur.
+	
+	Training Drones (prefix GTDr)
+		GTDr Amazon
+			The Amazon is a simple and cheap unmanned drone, used for basic combat training. They carry only the weakest training weaponry.
+		GTDr Amazon Advanced
+			The Advanced Amazon is a larger (but still inexpensive) unmanned drone, used by the GTA for subsystem and large target training.
+	
+	Navigation Buoys (no prefix)
+		Terran NavBuoy
+			An unmanned navigation buoy.
+
+	Sentry Guns (prefix GTSG)
+		GTSG Watchdog
+			The Watchdog is the standard unmanned defensive sentry turret for the GTA. It fires two standard plasma bursts at any nearby hostile targets.
+		GTSG Cerberus
+			The Cerberus is an advanced version of the Watchdog, with stronger weaponry and the ability to withstand more damage.
+	
+	Cargo Containers (no prefix)
+		TC 2
+			The TC2 is the standard issue cargo container in the GTA for deep space cargo transport. It has all the electronics and systems needed to preserve any cargo within it at whatever conditions are necessary. TC2s are cheap to manufacture, and heavily used throughout the Alliance.
+		TAC 1
+			The TAC 1 is a heavily armored container, usually for carrying volatile or dangerous substances. It is also the preferred supply container for use in front line operations.
+		TTC 1
+			The TTC 1 is another example of civilian equipment used by the GTA military. It is primarily a Tech Container, used for research purposes, especially Zero-G development operations. It is not very strong, however, and is a priority target of enemy attacks.
+
+Vasudan spacecraft classes
+
+	Fighters (prefix PVF)
+		PVF Anubis
+			The Anubis is the weakest fighter in the Vasudan Navy. However, they are extremely cheap to manufacture, and are often used in swarm situations to try to overwhelm the opponent with numbers. A few radical Vasudans have been known to load the ship with explosives and attempt to steer themselves into GTA capital ships. The first occurrence of this was the battle of Rexias 4, where the GTD Goliath was destroyed by a squadron of kamikaze pilots.
+		PVF Horus
+			The Horus interceptor can outrun any ship in the PVN or the GTA. This makes it extremely dangerous. Its above average weapons capacity, combined with its good maneuverability and shielding make this one of the most well designed Interceptors in the galaxy. This ship is responsible for the destruction of more GTA bombers than any other.
+		PVF Seth
+			As the slowest fighter in the PVN, the Seth has earned itself a reputation as the Turtle of the Vasudan fleet. Even though it is quite compact in size, the Seth can carry a massive payload, and has a lot of shielding. Its standard impulse engines aren't very powerful, but the Seth gains an incredible speed boost when using its afterburners. The Seth is primarily used is convoy attacks and capital ship escort duties.
+		PVF Thoth
+			The Thoth is the most dangerous fighter to be created by the PVN. Manufactured solely at the Altairian Ship Yards, the Thoth has only been produced in small numbers as of yet. When the Altairian Yards defected to the Hammer of Light rebels, the production of Thoths by the PVN dropped to nil. The Thoth is now completely in the hands of the Hammer of Light.
+	
+	Bombers (prefix PVB)
+		PVB Amun
+			The Amun is the Vasudans' heaviest bomber class ship. It carries a massive payload and has been responsible for the destruction of 3 Orion-class destroyers in the past 2 years. Fortunately, it is slow and has low maneuverability, making it an easy target for our fighters. Fighter pilots should be wary of the two turrets on this ship: they are not to be ignored.
+		PVB Osiris
+			The Osiris has now become the standard bomber for use in PVN operations. It has replaced the Amun, correcting many of the faults of its predecessor. It is not quite as sturdy, but it has nearly the same weapons capacity, and is faster and more maneuverable.
+	
+	Transports (prefix PVT)
+		PVT Isis
+			The Isis transport is quite fast and maneuverable for a ship of its size. Most often it is used for personnel transfer, although occasionally they have been known to act as repair ships and tugboats. It is well protected with its turrets and it is not unheard of for the PVN to use a wing of Isises to conduct an assault on a fortified position.
+	
+	Freighters (prefix PVFr)
+		PVFr Bast
+			The Bast freighter is unarmed, and considered a non threat. We believe that it is mainly used by Vasudan civilians, but we have seen some in front line operations. It has very low target value, but should be destroyed if encountered at the front, as any kind of resupply ship is a danger to the GTA.
+		PVFr Ma'at
+			With three turrets, the Ma'at is a hairy target for GTA pilots to attack. However, it is slow enough that it can be destroyed with enough patience. As always, supply ships for the PVN are considered to be valid targets.
+		PVFr Satis
+			The dreaded Satis freighter was thought to be a warship when it was first encountered in Aldebaran. It has five turrets and a strong hull, making it quite dangerous to the inexperienced pilot. However, most experienced pilots in the GTA know enough to attack the Satis' main weakness: its weak plating around the turrets. Disarming a Satis is most often the best way to destroy it.
+	
+	Cruisers (prefix PVC)
+		PVC Aten
+			The Aten class cruiser, while far stronger than most of the Vasudans warships, falls short as a attack cruiser. It does not have the armor or the firepower to stand up to GTA weaponry. With a cruiser speed of 25 m/s and only six weapon turrets, the Aten just cannot muster the kind of firepower needed to do real damage to targets of size. Most GTA pilots have learned to exploit the primary weakness of the Aten: its extremely weak weapons subsystem. The Aten class cruiser is considered by the GTA to be a Class B threat.
+	
+	Destroyers (prefix PVD)
+		PVD Typhon
+			Where the Aten cruiser failed, the Typhon succeeded well past expectations. The Typhon is an incredible work of engineering and the model of Vasudan technology. When the first one was sighted at the Vega Engagement, it was laughed at by our technicians as a foolish display of non-utilitarian design. The subsequent destruction of the GTD Eisenhower and the total decimation of the 4th fleet changed their minds very quickly. The Typhon should never be underestimated. It wields massive weaponry, and has more armor plating than any Terran Destroyer. Its only known weakness is its turret armor, which is significant, but lower than expected. In the two years since this ship first appeared, we have only managed to destroy two of them. The Typhon is considered a Class A threat to any ships within the same system. Do not engage without backup.
+	
+	Installations (prefix PVI)
+		PVI Karnak
+			The gargantuan Karnak installation is the Vasudans' answer to the GTI Arcadia. This monstrous facility bristles with dozens of turrets and can house up to two full squadrons of fighters. Its primary purpose is to serve as a construction and maintenance yard for the Vasudan fleets. Because of its enormous logistical and strategic value, the Karnak is considered a class A threat.
+	
+	Escape Pods (prefix PVEP)
+		PVEP Ra
+			The Ra has been used by Vasudans since our first encounter with them. Every Vasudan capital ship or installation has a few of these lifeboats.
+	
+	Support Ships (prefix PVS)
+		PVS Scarab
+			The Scarab is very similar to our Centaur. It is used for in flight rearming of fighters and bombers. In longer engagements, these ships can mean the difference between victory and defeat. The major difference between this ship and the Centaur is that the Scarab is unmanned.
+	
+	Sentry Guns (prefix PVSG)
+		PVSG Ankh
+			The Ankh is the standard Vasudan sentry gun. Its most common usage is guarding supply depots.
+	
+	Cargo Containers (no prefix)
+		VC 3
+			The standard Vasudan cargo container is only slightly different from our own. The primary difference is that the Vasudan cargo containers are atmospheric as well as deep-space. Vasudans used standardized cargo containers well before we did, as they needed to transport raw materials from other systems to their own barren world. Our cargo container was modelled after theirs, although ours is slightly superior in durability.
+		VAC 4
+			the VAC 4 series of cargo is much like its normal counterpart, only it has much more armor plating. However, this container not dangerous in itself and is nothing more than ML-16 laser bait without protection of some kind.
+
+Shivan spacecraft classes
+
+	Fighters (prefix SF)
+		SF Scorpion
+			We originally thought the Scorpion was the Shivans' best fighter. However, we now believe that the Scorpion is nothing more than a Shivan scout ship. Their vast numbers and seeming unimportance to the Shivan war effort leads us to this belief. Regardless of its purpose, the Scorpion is highly maneuverable, fast, and difficult to destroy. It can also do damage equivalent to our space superiority fighters.
+		SF Basilisk
+			The Basilisk seems to be a Shivan heavy attack fighter. It is not as maneuverable as other Shivan fighters, but it packs quite a punch, and it is very resistant to our weaponry. Most often they have been used in attacking our supply convoys and transports.
+		SF Manticore
+			We believe that the Manticore is a Shivan interceptor. It has a very high top speed, and its maneuverability is quite good. However, its shield system isn't strong enough to withstand constant fighting for long, which leads us to believe the Manticore's primary purpose is to destroy enemy bombers.
+		SF Dragon
+			The Shivan Dragon is easily the most impressive fightercraft we have yet seen. Its maneuverability is unmatched, and it has quite a few other advantages, including a good top speed, powerful afterburners, and strong shields. It is the only Shivan fighter we have been able to study up close, and we have learned a great deal about Shivan engineering from it. It seems that the Shivan shield systems are extremely strong, but their hulls are weaker than our own. They also rely on primary weapons far more then secondaries, as evidenced by the Dragon's small missile capacity.
+	
+	Bombers (prefix SB)
+		SB Shaitan
+			The Shaitan bomber is only slightly superior to our own bombers - its shielding is better, but its payload capacity seems to be far worse. Perhaps the Shivans were so assured that they would only need one payload bay to destroy a target.
+		SB Nephilim
+			The Nephilim class bomber is the most alien of the Shivan ships. We are still unsure as to why the Shivans chose this odd shape for arguably their most powerful attack craft. However, with four primary cannons and two turrets, as well as a massive payload, the Nephilim is undoubtedly a serious threat to the GTA. We have already lost two Orion class destroyers to a wing of Nephilims. Unless we learn a weakness soon, we will most likely lose more. The Nephilim has been designated a Class A threat to GTA destroyers and cruisers.
+		SB Seraphim
+			The newly encountered Seraphim class bomber is the Shivans' latest threat. It is three times larger than a Nephilim and carries a massive payload at least 150% the size of the Nephilim. With strong hulls and almost impenetrable shield system, the Seraphim is easily the most dangerous bomber we have yet encountered. The Seraphim has been designated a Class A threat to all GTA destroyers and cruisers.
+	
+	Transports (prefix ST)
+		ST Azrael
+			The Azrael is most likely a Shivan transport. While we are not completely sure of its uses, we do know that they can house many Shivans. It is not very heavily armored, and its weaponry is not too strong. This makes the Azrael the most common target for capture attempts.
+	
+	Freighters (prefix SFr)
+		SFr Mephisto
+			The Mephisto freighter behaves much like one of our own, only it is far more powerful and dangerous. Very little data is available on this ship class.
+		SFr Asmodeus
+			Almost no data is available on the Asmodeus freighter. We are aware that it has a strong hull and four turrets. Any further data on this ship should be immediately delivered to Terran Intelligence.
+	
+	Cruisers (prefix SC)
+		SC Cain
+			The Cain is by far the most common cruiser in the Shivan fleet. It is also the weakest. However, the Cain should not be underestimated. It has many turrets, as well as a cluster bomb defensive mechanism. As a strike cruiser, the Cain mostly appears in attacks against GTA or PVN capital ships and cruisers. In these cases, it should be destroyed immediately. The primary weakness of the Cain appears to be its unshielded turrets. Most of the turrets on the Cain can be destroyed with minimal damage. The Cain is a Class B threat.
+		SC Lilith
+			While far more rare than its counterpart (Cain-class cruiser), the Lilith is one of the most ferocious cruisers we have had the misfortune of combating. It has extremely strong weapon systems, as well as a very thick armor which our cannons can barely penetrate. One on one, the Lilith can easily destroy any of our cruisers. It is for this reason that they should be considered a primary target for all bomber squadrons in the GTA. The Lilith should be considered a Class A threat to any ships that encounter it.
+	
+	Destroyers (prefix SD)
+		SD Demon
+			While the Demon-class Destroyer is easily one of the most massive ships we have yet seen, it is not the biggest or most powerful in the Shivan armada - that honor is reserved for their Superdestroyers. However, the Demon is still quite dangerous, with a plethora of missile turrets and two full squadrons of fighters and bombers. It is suggested that these capital ships should be destroyed by bombers, as all cruisers that have attempted to engage a Demon have been destroyed. The Demon is a Class A threat in any allied system.
+	
+	Superdestroyers (prefix SD)
+		SD Lucifer
+			The Lucifer is the greatest threat to the survival of the GTA, the PVN, and both the Terran and Vasudan species. It wields three massive Flux Cannons which can destroy one of our capital ships in a few hits. These same cannons have been seen bombarding colonized worlds. With four full fighter squadrons, and a massive array of defensive turrets, the Lucifer will be extremely difficult to destroy.
+			The fact that it is protected by a shielding system which makes it completely impervious to any kind of kinetic or plasma damage makes it impossible to destroy. We have yet to find a way to breach this shielding technology. It is hoped that a solution will be found soon. Assuming that a solution is found, we have managed to gather enough data on the Lucifer to destroy it. In a recon mission, we were able to determine that the Lucifer is powered by five reactors across its surface. If these reactors are destroyed in a short amount of time, the Lucifer will be stopped.
+			If we cannot stop the Lucifer, we do not expect to be able to defeat the Shivans.
+			We have no way of knowing if there are more than one Lucifer-class destroyers. However, any that exist should be considered more dangerous than a Class A threat.
+	
+	Sentry Guns (prefix SSG)
+		SSG Trident
+			We believe that the main purpose of the Trident is to guard Shivan repair and supply depots. It is not too strong, but can be dangerous in mass quantities.
+	
+	Cargo Containers (no prefix)
+		SC 5
+			Our scientists believe that the Shivans use cargo containers such as these as storage depots. We have yet to see a Shivan land on a planet. This leads us to believe that the Shivans plan on keeping all of their materials and resources in deep space, stored in containers like these.
+		SAC 2
+			What we have dubbed the SAC 2 is simply a more heavily armored form of the standard Shivan cargo container. We believe that this is where the Shivans keep their more precious supplies. SAC 2 containers are to be captured or destroyed at every opportunity.
+
+Named Terran Ships:
+
+Galactic Terran Alliance
+
+GTS Charon
+    GTS Centaur-class support ship
+    Captured Arjuna 1 during "Enter the Dragon"
+
+GTEP Plato Escape
+    GTEP Hermes-class escape pod
+    Launched from the GTSC Plato during "Out of the Dark, Into the Night"
+    Escaped to Ribos
+
+GTT Omega
+    NOTE: generic name
+    GTT Elysium-class transport
+        CO: Lieutenant Alexander McCarthy
+    Defected to the Vasudans before "Small Deadly Space" (Act 1 Mission 3)
+    Escaped from the GTD Intrepid
+    Arrived at a secured Vasudan cargo depot in Antares.
+    Docked and transferred cargo (weapon prototypes) from a cargo container in "Small Deadly Space", then escaped the area
+    Arrived at a Vasudan rendezvous point to give the GTW-5 Avenger Prototypes to the Vasudans in "Avenging Angels"
+    Disabled by Alpha and Beta wings of the 242nd Suicide Kings of the GTD Galatea in "Avenging Angels"
+    Captured by GTT Comet
+
+GTT Comet
+    GTT Elysium-class transport
+    Dispatched to capture the rogue GTT Omega during "Avenging Angels"
+
+GTFr Halkins
+    GTFr Chronos-class freighter
+    Dispatched to capture the SC Taranis in "First Strike"
+    Docked with SC Taranis and towed it to Ribos (Tombaugh Station) at the end of "First Strike"
+    Destroyed by SD Lucifer after "First Strike"
+
+GTFr Nelson
+    GTFr Chronos-class freighter
+    Attacked and destroyed by Vishnu wing in The Aftermath
+
+GTFr Mascheri
+    GTFr Poseidon-class freighter
+    Drops cargo during training exercise
+
+GTSC Plato
+    GTSC Faustus-class science cruiser
+    Dispatched to Antares to transport the Avenger Prototype to Ribos from Antares in "Out of the Dark, Into the Night"
+    Attacked by the PVC Taurus and two Vasudan attack squads
+    Witnessed the destruction of the Taurus and its escorts by several unknown fighters (The Shivans)
+    Attacked by a second wave of unknown fighters
+    Launched a GTEP Hermes-class escape pod
+    Destroyed by the Shivans
+
+GTSC Asimov
+    GTSC Faustus-class science cruiser
+    Assigned to Project Tsunami
+    Attacked by Shivan forces in the Antares system
+    Docked with GTT Spomer
+    Transferred information and crew to GTT Spomer
+
+GTSC Aquilae Communications
+    GTSC Faustus-class science cruiser serving as a subspace comm relay, stationed near the GTI Beta Aquilae Installation
+    Must be defended in "A Failure to Communicate"
+    Receives transmission from Vasudan refugees in the Altair system
+
+GTC Orff
+    GTC Fenris-class cruiser
+    Suffered an engine breakdown in the Betelgeuse system before "Eve of Destruction" (Act 1 Mission 1)
+    Attacked by several Vasudan wings, remnants of a convoy the GTA hit a week before
+    After being repaired, relieved Terran forces attacking a Vasudan cargo depot in Antares
+    Attacked the GTD Hades in "Secrets Revealed" (Silent Threat)
+
+GTC Gladiator
+    GTC Fenris-class cruiser
+    Encountered in the "Clash of the Titans" mission
+
+GTC Neptune
+    GTC Leviathan-class cruiser
+    Acted as an attacker to Alpha 1 during a training exercise
+
+GTC Ravage
+    GTC Fenris-class cruiser
+
+GTD Goliath
+    GTD Orion-class destroyer
+    Does not appear in any missions
+    Destroyed by Vasudan kamikaze pilots
+
+GTD Eisenhower
+    GTD Orion-class destroyer
+    Does not appear in any missions
+    Destroyed by a Typhon-class destroyer
+
+GTD Galatea
+    GTD Orion-class destroyer
+        Commanding Officer: Admiral Wolf
+    Known squadrons:
+        242nd Suicide Kings
+    Dispatched to Antares to reinforce Operation: Thresher in "Eve of Destruction"
+    Ordered to capture traitor Lieutenant Alexander McCarthy after "Small Deadly Space"
+    Withdrew from Antares after the first sighting of the Shivans
+    Acquired Shivan shields from a cargo depot in Ikeya after "Pandora's Box"
+    Ordered to capture the SC Taranis before it escaped from Ikeya
+    Reinforced Alpha and Beta wings after a failed attack on a Hammer of Light depot in Antares
+    Attacked by SC Hellions 1 and SC Hellions 2, destroyed both cruisers
+    Ordered to relocate to Beta Aquilae to blockade the route to Vasuda Prime from Shivan attack
+    Attacked by Hammer of Light forces
+    Attacked by PVC Mauler
+    Destroyed PVC Mauler
+    Attacked by Shivan forces during "Evangelist"
+    Ordered to Deneb with the GTD Bastion once Shivans circumvented Terran blockade of the route to Vasuda Prime at Antares and Beta Aquilae
+    Attacked and destroyed by SD Lucifer in Deneb during "Doomsday" (launched 3 GTEP Hermes-class escape pods)
+
+GTD Bastion
+    GTD Orion-class destroyer
+        Commanding Officer: Admiral Shima
+    Known squadrons:
+        23rd Flying Panthers
+        109th Flaming Skulls
+        53rd Hammerheads
+        79th Predators
+        13th Reapers
+        47th Cutthroats
+        1st Avenging Angels
+        33rd Jokers
+        66th Black Knights
+        81st Screaming Weasels
+    Sent on a Special Operations mission to acquire Shivan technology in Ikeya
+	After the destruction of the GTD Galatea, the doomed destroyer's fighter and bomber complement transferred to GTD Bastion
+    Failed to chase the Lucifer into subspace, but its fighters and bombers successfully intercepted and destroyed the Shivan superdestroyer in "Good Luck"
+
+GTD Intrepid
+    GTD Orion-class destroyer
+        Commanding Officer: Admiral Po
+    Lieutenant Alexander McCarthy was stationed on the Intrepid before stealing the Avenger prototype.
+
+GTD Amadeus
+    Does not appear in any missions
+    GTD Orion-class destroyer
+    Destroyed by Shivans in Vega
+
+GTD Soyakaze
+    GTD Orion-class destroyer
+    Alpha 1's carrier during the latter part of Silent Threat
+    Does not appear in any missions
+
+GTI Riviera
+    Does not appear in any missions
+    Shown in the opening cutscene of FS1
+    GTI Arcadia-class installation based in Ross 128
+    Attacked and destroyed by SD Lucifer
+	Probably the site of the first contact between Terrans and Shivans, the contact was classified until the events of "Out of the Dark, into the Night"
+
+GTI Tombaugh
+    Does not appear in any missions
+    GTA installation based in Ribos
+	SC Taranis was hauled here after its capture
+    Attacked and destroyed by SD Lucifer
+
+GTI Beta Cygni Installation
+    GTI Arcadia-class outpost based in Beta Cygni
+    Launched shield prototypes in "The Hammer and the Anvil"
+
+GTI Beta Aquilae Installation
+    GTI Arcadia-class outpost based in Beta Aquilae
+    Destroyed by SD Lucifer during "A Failure to Communicate" (launched 4 GTEP Hermes-class escape pods)
+
+GTI Talus
+    Referred to as "Talus Mining Facility" in "Cloak and Dagger" (Silent Threat) briefing
+    Mined asteroids and produced warheads (presumably) for the GTA
+    Defeated pirate attack prior to "Cloak and Dagger"
+    Evacuated while under attack from pirates and Shivans
+    Destroyed by Terran bombers to prevent capture by pirates
+
+Galactic Terran Intelligence
+
+GTSC Einstein
+    GTSC Faustus-class science cruiser
+    Reportedly destroyed at the Shivan Ross 128 massacre
+    Arrived in a containment field
+    Destroyed by Alpha and Beta wings
+    Launched several escape pods
+
+GTC Odin
+    GTC Leviathan-class cruiser
+    Engaged Shivan forces at Ross 128
+    Destroyed by Alpha and Beta wings
+
+GTC Leviathan
+    GTC Leviathan-class cruiser
+    Engaged Shivan forces at Ross 128
+    Destroyed by Alpha and Beta wings
+
+GTC Vidar
+    GTC Leviathan-class cruiser
+    Attacked Krios's escape pods
+    Destroyed by Alpha and Beta wings
+
+GTD Myrmidon
+    GTD Orion-class destroyer
+    Arrived to retrieve the Einstein's escape pods
+
+GTD Minnow
+    GTD Orion-class destroyer
+    Arrived to retrieve the Einstein's escape pods
+
+GTD Hades
+    GTD Hades-class superdestroyer
+    Arrived at Jotunheim to reinforce GTI defenses
+    Destroyed by Alpha and Beta wings and GTC Orff
+    The only Hades class destroyer to appear in the game
+
+GTI Jotunheim
+    GTI outpost
+    Attacked and destroyed by Alpha and Beta wings
+
+Named Vasudan Ships:
+
+Parliamentary Vasudan Navy
+
+Freighter 1 and Freighter 2
+    Bast-class freighters
+    Transiting Vasudan supply depot in Antares in "Small Deadly Space"
+    Carrying Cargo 1 and Cargo 2
+    Attacked by Alpha and Beta wings
+    Attempted to escape
+    If the ships survive, they appear in "Avenging Angels"
+
+PVFr Andromeda
+    Arrives about 10,000 meters from Beta Cygni Installation in "The Hammer and the Anvil"
+    Requests help from Alpha and Beta wings, claiming that its convoy came under attack from the HoL
+    Destroyed by HoL fighters. If saved (very hard to do), it goes to the Cygni Installation
+
+PVD Hope
+    Engaged in battle in Antares before "Last Hope"
+    Jumped to Beta Aquilae to repair damage
+    Attacked by Shivans
+    Successfully defended by Alpha and Beta wings
+
+PVC Mecross
+    Defends Vasuda-Aldebaran-Sirius jump node cluster in "Exodus"
+    If it survives, it destroys SC Thunder in "Last Hope" and departs
+
+PVD Pinnacle
+    Has one of the most skilled crews in the PVN
+    Escorted Tombaugh Station survivors in "The Aftermath"
+
+PVT Rasputin
+    Carrying Vasudan command staff in "Avenging Angels"
+    Attempts to dock with McCarthy's GTT Omega to transfer the Avenger prototype
+    Disabled and captured by GTI
+
+PVC Taurus
+    Last Vasudan cruiser left in the Antares system before "Out of the Dark, Into the Night"
+    Attempted to attack the GTSC Plato
+    Destroyed by one of the first Shivan attacks
+
+
+Hammer of Light
+
+PVD Anvil
+    HoL flagship
+    Attacks Omega wing in "Black Omega" as Omega carries the Altair artifacts
+    Destroyed by fighters and bombers from the GTD Bastion
+
+PVC Benedict
+    Arrived during the attack on the SC Zenith in "Reaching the Zenith"
+    Destroyed by Alpha, Beta, and Gamma wings
+
+PVC Malthusa
+    Defended HoL cargo depot in Beta Aquilae
+    Destroyed by Shivans 40 seconds before mission starts in "La Ruota della Fortuna"
+
+PVC Mauler
+    Attempts to kamikaze GTD Galatea in "Tenderizer"
+    Destroyed by Alpha and Beta wings
+
+PVD Prophecy
+    Attempts to block Alpha 1's path to the node in "The Great Hunt"
+
+PVC Ramses
+    Defends HoL cargo depot in Beta Cygni during "The Darkness and the Light"
+    Alpha 1 assigned to disable and disarm the Ramses for Omega transports to capture
+    Attacked by SC Taranis and it's fighter/bomber escort
+    Destroyed by Shivans
+	
+Named Shivan Ships:
+
+SC Abel
+	Lilith-class cruiser
+    Attempted to secure Vasuda-Aldebaran-Sirius jump node cluster in "Exodus" alongside SC Cain
+    Destroyed by GTA/PVN fighters
+
+ST Unnamed Azrael-class ship
+    Does not appear in any missions
+    Disabled by GTA wing in Antares (presumably)
+    Boarded by GTA marines during Hallfight cutscene
+
+SFr Ashtaroth and SFr Ba'al
+    SFr Asmodeus-class freighters
+    Destroyed in "Shell Game"
+
+SC Cain
+    Cain-class cruiser
+    Attempted to secure Vasuda-Aldebaran-Sirius jump node cluster in "Exodus" alongside SC Abel
+    Destroyed by GTA/PVN fighters
+
+SC Taranis
+    SC Cain-class cruiser
+    Ambushed a GTA wing from the GTD Bastion attempting to scan Shivan cargo in Ikeya
+    Attacked the HoL cruiser Ramses, disrupting a GTA capture operation
+    Disarmed and disabled by Alpha, Beta and Gamma wings from the GTD Galatea
+    Docking attempt by GTT Omega 1 and 2 failed
+    Captured and towed by GTFr Halkins to Tombaugh Station in Ribos
+    Tracked by Shivans through subspace to Tombaugh Station
+    Destroyed by SD Lucifer at Tombaugh Station
+
+SC Hellfire 1-4
+    Wing of 4 Shivan cruisers
+    Hellfire 1 was Lilith class, the rest was Cain class
+    Attempted to rejoin Shivan fleet through Delta Serpentis jump node in "Hellfire" (Silent Threat)
+    All destroyed by Alpha, Beta, and Gamma wings
+
+SC Hellions 1 & 2
+    SC Lilith and SC Cain-class cruisers
+    Attacked GTD Galatea in Antares during "La Ruota della Fortuna"
+    Destroyed by GTD Galatea and her escorts
+
+SC Raja
+    SC Cain-class cruiser.
+    Present during "Evangelist" (only appears if player fails to scan capital ships in "Playing Judas")
+    Destroyed by Alpha, Beta and Gamma in "Evangelist"
+
+SD Eva
+    SD Demon-class destroyer
+    Led secondary assault fleet against Vasuda Prime
+    Destroyed by Alpha, Beta and Gamma in "Evangelist"
+
+SD Tantalus
+    SD Demon-class destroyer
+    Attacks GTD Bastion in "Clash of the Titans"
+    Destroyed by GTD Bastion and it's fighter/bomber complement
+
+SD Lucifer
+    SD Lucifer-class superdestroyer
+    Destroyed GTI Riviera in Ross 128
+    Destroyed Tombaugh Station in Ribos
+    Outmaneuvered Terran and Vasudan positions and jumped to Deneb through an uncharted node
+    Destroyed GTD Galatea and GTD Legion in Deneb
+    Bombarded Vasuda Prime for 13 hours, rendering the planet uninhabitable
+    Advanced to Beta Aquilae and destroyed Beta Aquilae Installation
+    Sent fighters against Omega wing as it transported Altair artifacts to Terran space
+    Destroyed in Delta Serpentis-Sol jump node after its reactors were breached by Harbinger bombs from Bastion's bombers
+    Collapsed Delta Serpentis-Sol jump node with its explosion
+    Front half (at least) remained in Sol system
+
+SC Zenith
+    Lilith-class cruiser
+    Guarded an unspecified jump node to Deneb in "Reaching the Zenith"
+    Destroyed by Alpha, Beta, and Gamma wings before being able to call for reinforcements
+
+It is important to note that all mentioned names of Shivan ships are man-made military designations. Since all attempts to communicate with Shivans have failed, we do not know the actual names of Shivan ships used by Shivans themselves, or whether they even have ship names.
+
+Terran Weaponry
+
+1. Primary Weapons (Guns)
+	GTW ML-16 Laser: High rate of fire, low hull damage, negligible shield penetration. Can be equipped by every fighter/bomber.
+	GTW-15 Avenger: Good hull damage, decent shield suppression. Compatible with every fighter/bomber.
+	GTW Flail: High velocity and rate of fire, low damage per shot, decent against shields. Has kinetic effects on target. Cannot be equipped by GFT Valkyrie and GTB Medusa.
+	GTW Prometheus: The ultimate hull killer, also pretty good against shields. High power consumption. Cannot be equipped by GTB Athena.
+	GTW Banshee: The ultimate shield killer. Low hull damage. High power consumption. Low compatibility: can only be equipped by GTF Valkyrie, GTF Hercules and GTF Loki.
+	GTW Disruptor / GTM D-Advanced: Low hull damage, high subsystem damage. Useful for disabling engines or destroying turrets on capital ships without killing the ship. Disruptor can be equipped by every fighter/bomber except the GTB Medusa. D-Advanced is experimental and only compatible with GTF Ulysses.
+
+2. Secondary Weapons (Missiles)
+	GTM MX-50: Heat-seeking. Weak damage, weak tracking.
+	GTM Fury: Small, fast dumbfire missiles, low yield, high rate of fire. Use in close combat situations.
+	GTM Interceptor: Aspect-seeking, high velocity, pretty high damage.
+	GTM Hornet: Aspect-seeking swarm (4 missiles per volley). High hull damage, if all 4 missiles hit the target.
+	GTM Phoenix V: Aspect-seeking, High yield, relatively slow velocity, low rate of fire. Anti-bomber (interception) missile.
+	GTM Synaptic: Area suppression cluster weapon. Releases small heat-seeking "bomblets". Can only be equipped by bombers.
+	GTM Stiletto / GTM D-missile: Zero hull damage, massive subsystem and turret damage.
+	GTM Tsunami: Anti-cruiser bomb. Heavy hull damage, slow lock. Fits only on GTB Medusa and GTB Ursa.
+	GTM Harbinger: Anti-capital ship bomb. Nuclear yield. Very slow lock. Massive damage and massive blast radius. Only fits on GTB Ursa.
+
+FreeSpace 1 campaign is split into 3 acts. Each act contains around 10 missions, as well as cutscenes and high-level command briefings. Outline of the campaign and each mission (with briefings, walkthroughs and debriefings) follows.
+
+ACT 1
+
+Introductory cutscene (shown before the first Command Briefing 1.1)
+
+(Yellow patterns move about the screen, the Interplay logo appears before the colors turn more into blue with black spots. The Volition logo appears while the pattern goes more intense, before revealing it to be part of an engine plume of a lone heavily damaged GTF Apollo flying away)
+Lt. Ash (The pilot): Oh God! They're following me. Mayday! This is Lieutenant Ash on Terran patrol, wing Gamma three-niner reporting. Taken heavy damage. Requesting immediate fighter cover and rescue. Come in, anybody! Mayday! Requesting immediate assistance! Anyone please?!
+(The camera switches over a GTI Arcadia with the following subtitle)
+(GTA Installation Riviera - Ross 128 System)
+Riviera tech: Barely receiving you, Gamma three-niner, this is Terran outpost Riviera responding. What is your situation?
+Lt. Ash: Oh thank God! My wing was ambushed. We didn't have a chance. I'm sure they're tracking me.
+Riviera tech: Calm down, sir. Who attacked you? Was it the Vasudans?
+Lt. Ash: Vasudans were killed, too. They slaughtered everyone.
+(Flashback: An Unknown Fighter from behind shoots at Ash. The pilot dodges the attack)
+Riviera tech: Sir, you have to calm down. You were attacked by Vasudans, is that true?
+Lt. Ash: No! No! We were in a skirmish with a Vasudan patrol and they just came out of nowhere and killed everyone.
+Riviera tech: (raising hands in frustration) Who came out of nowhere, pilot?
+Lt. Ash: I don't know. They weren't Vasudan and they weren't Terran. Oh God. They had these death black ships. (Riviera tech keeps trying to interrupt him). And they flew like... their weapons were too much. They wasted everyone.
+(Flashback: The same unknown fighter again shoots at Ash, hitting the Apollo's hull several times)
+Riviera tech: Pilot, sit tight! We're sending recovery craft right now.
+Lt. Ash: Send fighters! I... I know they're following me. Send everything you've have now!
+Riviera tech: Sir, I don't have anyone else on scope. You're home free. It's going to be alright.
+(The Apollo is within view of Riviera)
+Lt Ash: No it isn't! You don't understand! You weren't there...
+(Flashback: Another hit impacts the hull, the Apollo begins to slow down)
+Lt Ash: I can feel them following me.
+(Jump points form from behind, a colossal jump point forms in front of him)
+Lt. Ash: (Panicking) Oh my god. I'm dead! We're all dead!
+Riviera tech: Picking up unknown jump signatures.
+(An unknown destroyer begins to work its way into space from the jump point, rapidly closing the distance from it and Ash)
+Riviera tech: Scramble the fighters!
+Lt. Ash: It's too late. Oh God!
+Riviera tech: What the hell is that?
+(A swarm of unknown fighters shoots at Ash, impacting numerous times)
+Lt. Ash: (As his fighter explodes) Aaaaargghhhhhh!
+(The front half of the Apollo blocks the screen, the Freespace name is shown, before going to the main menu)
+
+Command Briefing 1.1:
+
+Ship: GTD Galatea
+Location: Betelgeuse System
+Date: 1/10/2335
+
+Operation Thresher
+Operation Thresher in the Antares system did not proceed as planned. Terran Command estimates Terran losses at 504 pilots dead, fourteen missing and presumed dead.
+The Vasudan foothold on Vasuda Prime and the subspace node remains solid. However, their supply lines have been cut off, which means they are most likely lacking reinforcements and supplies.
+Expect more news on that front in tomorrow's briefing.
+
+Rumors
+There have been many rumors about the appearance of another sentient species. These are rumors, nothing more. Investigation of the Ross 128 attack has determined nothing.
+Concern yourselves with the known enemy, the Vasudans. There is to be no more talk of phantom ships.
+
+New Pilots
+Let this serve as a "welcome aboard" to all newly-arrived pilots aboard the Galatea. Since you're here, your flight records must speak highly of you already. Serve the Galatea well, she's a fine ship.
+Report to your flight stations at 0830 for your squadron briefings.
+
+Technologies
+Familiarize yourself with the specifications of the GTD Orion-class destroyer, the Apollo Space Superiority Fighter, and the ML-16 Laser. Information on all of these can be found in the Tech Database.
+
+ACT 1 MISSION 1 - 1.1 "Eve of Destruction":
+
+Briefing:
+Pilot Attend: Welcome to the GTD Galatea. Your first assignment as a part of the Galatea's crew is to stand the 3rd watch. You will patrol the area surrounding the GTC Orff. The GTC Orff suffered an engine breakdown in the Betelgeuse system, and is awaiting repairs.
+You will be on watch with one other ship, Alpha 2. Since this is your first watch, Alpha 2 will be piloted by Lt. Harbison, a seasoned veteran and top-notch pilot.
+You will begin your watch by jumping to Betelgeuse near the GTC Orff
+We have reports of Vasudan fighters in this system, so stay alert. Engage and destroy any hostiles that threaten the Orff.
+At the end of your watch, you will be relieved by Delta wing. Upon Delta's arrival, you are to return to base.
+Your primary objective will be to protect the Orff until the end of your watch. We expect you to carry out your orders to the letter.
+You may confirm your ship hardware and weapons loadout for this mission. If found satisfactory, commit to the mission. GTD Galatea quarterdeck signing off.
+
+Walkthrough:
+You'd almost have to try to fail this mission to actually fail it. It is arguably more difficult to fail this mission than it is to destroy the Lucifer. At first all is quiet. Then suddenly two damaged Anubis fighters (Virgo wing) jump in. After you destroy those, two more damaged Anubis fighters (Cancer wing) will attack the Orff. Next will be three more damaged Anubis fighters (Aries wing). Three more damaged Anubis fighters (Leo wing). Lastly, three damaged Anubis fighters (Pisces wing) will challenge you. Delta wing will then relieve you of your post.
+
+Debriefing:
+You did a fine job on your first watch, Pilot. Your strong sense of duty will serve the Alliance well.
+The presence of Vasudans in this system gives us little reason to worry. The ships that attacked you and the Orff were probably remnants of the Vasudan convoy that we hit last week.
+
+ACT 1 MISSION 2 - 1.2 "The Field of Battle":
+
+Briefing:
+There have been a number of recent attacks by the Vasudans in the Betelgeuse system. They have been making strikes on Terran convoys en route to the Betelgeuse-Beta Cygni jump point. The Vasudan attacks have been staged from a nearby asteroid field.
+Terran Intelligence is certain that there are four small attack wings responsible for the attacks on our convoys. There have also been reports of a Vasudan ace piloting one of the Seth class fighters in that area.
+You are to sweep the asteroid field and take out the four Vasudan attack wings. Be aware that the asteroids will be causing interference with your sensors. You won't be able to target the Vasudans until they are near, but they won't see you either.
+If you encounter the Vasudan ace, you may use your discretion as to whether or not to engage him. Keep in mind that your primary objective is to take out the four attack wings. Check your loadouts and commit when ready.
+
+Walkthrough:
+If you fly straight at the beginning of the mission, you will see a formation of red dots flashing on your radar. The group that is the farthest to the left is Pisces wing. The topmost is Cancer, the top-right one is Virgo, and the bottom-right one is Aries wing. Keep one group of red dots in the center of your radar and fly straight at it.
+You will eventually encounter a wing of 3 Anubis fighters. Destroy them and fly toward another wing. Repeat this process again. All the enemy wings are identical.
+After you destroy the third wing of fighters, the Vasudan Ace will jump in, flying a Seth-class fighter. The Ace will shoot missiles at you upon encounter, so make sharp turns or just keep flying in circles until you have dodged the missiles; use whatever missile evading technique you're most comfortable with. Once you have neutralized the attack wings and the Ace, jump out.
+
+Debriefing:
+Nicely done, pilot. By destroying the Vasudan attack wings you have helped to ensure that our convoys will make it through this subspace node.
+Dispatching the Vasudan Ace showed outstanding skill, pilot. You and your squad are to be commended.
+We are awarding you the Distinguished Flying Cross for this accomplishment.
+
+ACT 1 MISSION 3 - 1.3 "Small Deadly Space":
+
+Briefing:
+Terran intelligence has detected unusual activity in the Vasudan cargo depot in Antares and the Galatea has moved into the system to investigate. You are to destroy all hostiles in the area. When the area is clear, our salvage crews will pick up the cargo for analysis. Do not destroy any cargo.
+The contents of the cargo containers is not known. Due to the unusual activity, GTA intelligence suspects they have military value.
+You will be flying this mission with Epsilon wing from the 3rd squadron. Delta wing will be available for reinforcements if necessary. If you get into trouble, don't hesitate to call them in.
+Reconnaissance missions have determined that there are typically two wings of Vasudan fighters guarding the depot. The fighters are your primary concern.
+Recon has also determined that this depot is heavily used. Taking control of it will seriously impede Vasudan attacks from this system in the future.
+It is likely that there will be freighters in the area transporting cargo. All Vasudan vessels must be destroyed! None must escape, as they will surely bring reinforcements. Once you have secured the area, the GTC Orff will arrive and maintain watch over the outpost. Good luck, pilot. GTA command out.
+
+Walkthrough:
+As soon as you begin the mission, target Freighter 1 (a Bast-class freighter) and then target its engine subsystem. Switch primary weapons to Disruptor. Destroy Freighter 1's engines and then proceed to do the same with Freighter 2 (a Ma'at-class freighter).
+Next, target Cargo 2. Get within 150 units of Cargo 2; scan it. This will complete your bonus objective. Eliminate any remaining enemies — Anubis fighters — that your wingmen haven't destroyed, and then clear out the freighters. Momentarily, an Omega transport will jump in. Whilst waiting, you may opt for scanning the all the cargo containers, just so you won't go bored waiting for the Omega to take the prototypes away.
+After Omega has captured the prototypes, a couple of waves of enemy Anubis fighters will jump in. Deal with them. The mission objectives are done when the Orff jumps in. Jump back to base. 
+
+Debriefing:
+The destruction of the Vasudan fighters was very important. Not only have we gained control of that depot but we've shown the Vasudans in this sector we are not to be trifled with.
+Elimination of the Vasudan freighters will hinder the transport of necessary supplies to their forces in that sector.
+All Vasudan cargo was captured and brought to our base. Intelligence will analyze it.
+It appears that among the cargo were some stolen weapons prototypes. We had feared that the Vasudans had already found and moved them from the area. Recapturing the weapons would have been a great victory.
+It appears that our Elysium transport, the Omega, illegally hauled away the contents of one of the containers. We are not sure who was aboard the transport, but Intelligence suspects it's a group of renegade humans. We are attempting to locate the transport now.
+
+Command Briefing 1.2:
+
+GTD Galatea
+Antares System
+1/15/2335
+
+Lt. McCarthy
+Terran Command has informed us that Lt. Alex McCarthy, formerly stationed onboard the GTD Intrepid, has defected to the Vasudans along with an unknown number of fighters and several personnel.
+He has also managed to steal the plans for the Avenger prototype cannon. These need to be recovered immediately.
+Vasudan agents under Terran control have leaked information regarding McCarthy's plans in the Antares system. Since the Galatea is already in Antares, we have been assigned to lead an attack on McCarthy's forces.
+This operation is to be carried out by the numbers. Traitors to the Terran cause are not to be tolerated. McCarthy will serve as an example when he is brought in.
+
+New Technology: Valkyrie Interceptor
+The Galatea has received a full complement of the new Valkyrie Interceptor Fighters.
+Some of you may remember the Angel Scout Fighter. It has been completely modified and fitted with two additional engines, making it the fastest fighter in the fleet. It has been re-designated the Valkyrie. It should enable you to make short work of enemy fighters.
+Report for mission briefing in twenty minutes. 
+
+ACT 1 MISSION 4 - 1.4 "Avenging Angels":
+
+Briefing:
+Plans for the Avenger weapon prototype have been stolen by Lt. McCarthy. His transport has been located here in Antares. It has been designated Omega.
+One of McCarthy's accomplices has been captured, and revealed his intentions for the stolen plans. Not surprisingly, McCarthy intends to sell the Avenger to the Vasudans. His Vasudan contact has been designated Rasputin.
+Your squadron will arrive before the exchange takes place. You are to destroy all hostile fighters, including any renegade Terrans. However, we want McCarthy alive. Your ships have been equipped with Disruptors suitable for disabling the Omega.
+Alpha wing and Beta wing, each consisting of four fighters, will be sent in to carry out the mission. You will jump in approximately six kilometers away from the exchange. Get to the Omega as soon as possible.
+Expect to encounter significant resistance. Beta wing will focus on attacking the Vasudan forces. Alpha wing will be expected to disable the Omega. Request Beta wing's assistance if necessary.
+After McCarthy's transport is disabled, the GTT Comet will jump into the area and dock with it. You are to ensure the safety of the Comet, especially during the docking operation with Omega. After the Comet and the Omega have left the area, it is your responsibility to eliminate hostiles. Once the area is clear, you are to jump back to the GTD Galatea.
+Note that you will be required to engage Terran pilots. These pilots are traitors to the Alliance, and no quarter should be given. Thousands of lives are at stake. Do not hesitate to use deadly force on the traitors.
+If you encounter significant resistance or experience severe losses, Delta wing will be sent by Terran command to assist. If further assistance is needed, call in Epsilon wing. Good luck, pilot.
+
+Walkthrough:
+When you arrive there will be one wing of Horus Interceptors (Aries wing), one wing of Anubis fighters (Cancer wing) and two wings of Apollo fighters (Traitor Alpha and Beta) present. Target Omega and order all fighters to ignore it. After this target the Rasputin's engines. Take them out using your Disruptor cannon. GT Intelligence 1 (Elysium) and GT Intelligence 2 (Valkyrie) will then jump in to capture it.
+Next target is Omega's engines. Disable the Omega using your Disruptor cannon. The GTT Comet will jump in to capture the Omega. By this time your wingmen should have taken out all the fighters, but if they haven't, proceed to do so yourself.
+Soon after you disable the Omega, one wing of Anubis fighters (Virgo wing) will jump in to attack it. Destroy them quickly so they don't hurt Omega too much. The Comet will then dock with Omega and jump out with it.
+Return to base at this point.
+
+Debriefing:
+We were able to recover the Avenger prototype. Good job. McCarthy has been apprehended and will go to trial soon.
+Intelligence has told us that you were cautious and managed to disable the Rasputin. Key Vasudan personnel were on board, and their capture will assist our cause.
+This was an intelligent decision on your part, and you are to be commended for your attention to detail.
+Intelligence has requested that you be awarded a Commendation Medal for your part in this capture.
+
+Ancients 1 cutscene (shown before Mission 1.5)
+
+Ours was a proud people, and always the strongest. For thousands of years our empire expanded. For so long we could imagine ourselves alone in the universe. For so long never did we encounter advanced life. And we travelled faster and further, spreading in our galaxy and before long we could see the day when our reachable systems would have been exploited. And then there would be nowhere else to go.
+And we discovered subspace. It gave us our galaxy and it gave us the universe. And we saw other advanced life. And we subdued it or we crushed it. In months the extermination of billions of years of evolution on a similar but slower path. With subspace, our empire would surely know no boundaries.
+
+ACT 1 MISSION 5 - 1.5 "Out of the Dark, Into the Night":
+
+Briefing:
+With the Antares system nearly secure, Command has decided that the GTSC Plato will carry the prototype for the Avenger Attack Cannon through the Antares system. It will proceed to the Ribos system, where production of the Avenger will begin.
+Intelligence has determined that only one Vasudan cruiser remains in this system, the Taurus. If the Vasudans decide to attack the Plato on its way to Ribos, they will certainly use the Taurus.
+The number of Vasudan attack craft in this system is minimal. Intelligence estimates at most two strike squads. If something should go wrong, the Plato is equipped with an escape pod. The escape pod will attempt to make the subspace jump to Ribos.
+Alpha wing will provide cover for the Plato, and, if necessary, the Plato's escape pod. The safety of the prototype is vital, and all Vasudan threats must be eliminated.
+Pay special attention to any Vasudan bombers that may arrive. Bombers will be the greatest threat to the Plato during this operation.
+When you've cleared the area of hostile bombers, eliminate other threats and continue escorting the Plato to the intersystem subspace node.
+
+Walkthrough:
+Everything is quiet for a while until 3 Anubis fighters and 1 Osiris bomber (Aries wing) jump in. Take out the Osiris bomber. Don't hesitate to use a lot of your Fury missiles on it, then aid your wingmen in taking out the rest of the fighters. After this all is quiet for quite some time until the Taurus jumps in, and with it four Anubis fighters and one Osiris bomber (Virgo wing). They will be about 9,000 units (meters) away, so stay with the Plato. After a while four Unknown class fighters (actually Shivan ships - 2 Scorpions and 2 Shaitans, but we do not know it yet) will attack the Taurus. When the Vasudan fighters attack the unknowns, notice that the attacks hit an invisible shield. Command will order you to visually identify the ships. Better to just stay with the Plato. When you receive the message, "What the hell? They took out the Taurus already!", get ready for some action.
+The four unknowns will jump out and four more will jump in to attack the Plato. The Shaitan-class flat ships ships are bombers. The Scorpions are fighters and will be flying around fast.
+The Plato will be destroyed, but the escape pod should make it without difficulty. The bombers will jump out and one single Scorpion will remain in the area. Attack it with Fury missiles, as the ML-16 is useless against its shields. Expend all of your Furys at the Scorpion if need be. Eventually, it will die and you will complete your bonus objective. 
+
+Debriefing:
+From your ship's sensor's records, it appears there was little you could have done to protect the Plato. Its loss will be mourned, but at least her crew is safe.
+Intelligence has analyzed the data you provided from the attempted visual identification. There is no record of such ships. They do not appear to be Vasudan. The conclusion is that they belong to a new species. These ships are not detectable by our sensors. Worse, they appear to have some type of energy-shielding system, making them nearly immune to our attacks.
+But the greatest concern is their weapons. They are more powerful than anything in the GTA or PVE arsenal.
+We believe the data you gathered will prove valuable in discovering a weakness in this new adversary.
+In all of their recent attacks in Terran Space, not one of these unknown fighters has been destroyed. It is hoped that a weakness will be found soon.
+
+Command Briefing 1.3:
+
+GTD Galatea
+Antares System
+1/18/2335
+
+The Shivans
+Terran Command has confirmed the existence of a new species. Until further contact is established, Command has designated them "Shivans".
+The Shivans have inflicted heavy casualties to both Terran and Vasudan forces in the Beta Cygni and Vega systems, and appear to be making a rapid push into other key systems along the Terran-Vasudan front. All contact has been lost with our forces in the Ikeya and Ross 128 systems.
+
+The Vasudans
+The Vasudan government has contacted the GTA and proposed a cease fire. Considering the reports regarding the Vasudan and Terran losses to the Shivans, this should not come as a surprise.
+Terran Command has not yet responded.
+Expect to hear more from Terran Command on this later today.
+
+Hostile Contacts
+All Shivan forces should be considered a serious threat.
+You are authorized to engage any Shivan ship that stands in the way of your mission objectives.
+Attempts to establish communication with the Shivans have failed. Intelligence will continue its attempts to learn more about this new adversary.
+
+Shivan Technologies
+What little information has been learned about Shivan technology concerns their fighter shielding system. This shield system makes them nearly impervious to our ML-16 Laser.
+R&D is currently modifying the Avenger Prototype cannon to make it more useful against the shields.
+Additionally, our fighters cannot target their ships due to our lack of data regarding the Shivan electronics systems. Plans are currently underway to remedy this situation.
+
+Orders
+Terran Intelligence is working around the clock to give us more information.
+Until then, we have been ordered to move into the Beta Cygni system and monitor any activity. 
+
+ACT 1 MISSION 6 - 1.6 "Paving the Way":
+
+Briefing:
+Due to increased encounters with Shivan forces, Terran Command has ordered the Galatea to the Beta Cygni system to monitor Shivan activity. The Galatea has taken a beating since her last repair, and there isn't time to follow the safest route.
+The Antares-Beta Cygni Jump Node lies in the center of a dense asteroid field, making it one the least used jump nodes in the galaxy. Standard procedure would have us circumvent this node completely, requiring two jumps. Now we have no choice.
+Weapons systems have taken damage from enemy bombers. The Galatea should be able to make it through the asteroid field, but Alpha wing will be deployed to destroy approaching asteroids.
+Alpha wing will fly point for the Galatea and destroy any asteroids that cross its flight path.
+Asteroids that are considered a threat to the Galatea will be marked with white targeting brackets. Destroy these asteroids first.
+Once the Galatea has jumped out, you are to report to the GTD Bastion, stationed at Antares. The Bastion will take you to Ikeya for your next mission. Your wing will rendezvous with the Galatea in Beta Cygni upon completion of that mission.
+In the event of enemy attack, you are to cover the Galatea's escape from the system at any cost.
+
+Walkthrough:
+This is a very easy mission on medium, but not on the higher difficulties, if you're trying to get the secondary objective of keeping the Galatea above 50 percent hull integrity. Fly around destroying the asteroids with white targeting brackets around them. Your MX-50s are useless in this mission, because the MX-50 missiles do not home in on asteroids. Hence Furies are the only viable option as secondary weapon.
+The main mistake you might make is to sit there pounding an asteroid with lasers and rockets until it blows up. This is a waste of time and ammunition. Fire 4 Furies at each asteroid while shooting your primaries at it, then move on to the next target. It takes a whole second or so for the rockets to reach their target, so don't sit there watching them. Saving time is crucial on insane difficulty.
+Near the end of the mission, two Shivan bombers (Shaitan) will attack. Alpha 2 will engage them so just keep destroying asteroids. It's not that difficult to kill them, so on the lower difficulty levels you may want to take the bombers out. Make sure that you are not in front of the Galatea when she jumps out once reaching the node, or you will be killed in the collision.
+Remember that your ML-16s need very little energy. Divert all but one tick power from your primary recharge to your engines. I suggest the Valkyrie interceptor. The faster you are, the more quickly you can get from one side of the Galatea to the other, should the situation require it.
+
+Debriefing:
+GTD Bastion here. The Galatea made it to Beta Cygni. Our reports show it took moderate damage. It will be in repair for approximately two days.
+You did an acceptable job, given the difficult circumstances. Report to briefing at 0800.
+
+Command Briefing 1.4:
+
+GTD Bastion
+Antares System
+1/21/2335
+
+Welcome to the GTD Bastion.
+We just received a transmission from the Galatea. She's doing fine and the bridge thanks you for the skillful escort through the field.
+You will rendezvous with her in the Beta Cygni system soon. We are currently under way to the Ikeya system for your next mission.
+For your excellence in destroying the Shivan fighter while escorting the Plato, as well as your successful escort of the Galatea in the asteroid field, we are awarding you the Distinguished Flying Cross. Wear it proudly. 
+
+ACT 1 MISSION 7 - 1.7 "Pandora's Box":
+
+Briefing:
+Welcome to the GTD Bastion. The Bastion is on a special ops mission to investigate and acquire Shivan technology.
+This includes weaponry, shielding, and stealth technology. Intelligence has determined that at least one point of entry into our space lies in the Ikeya system.
+At least five cargo depots of unknown origin have been located in Ikeya. These cargo formations are different than any Vasudan or Terran formation, and are believed to belong to the Shivans.
+Reconnaissance indicates that the depot is protected by six sentry guns on the outer edges. This depot provides a prime opportunity to gather more information about the Shivans. Their offensive activity in this system is at a minimum and we do not believe they will make a serious attempt to defend this depot.
+Long range scanners indicate that some of these cargo containers contain unusual electronics. They appear similar to those used to give the Shivans their shielding technology. A short range scan of these containers is the primary objective in this operation.
+Further reconnaissance indicates another container group may contain parts for a Shivan sensor array. A short range scan of this group should provide crucial data needed to adjust ship sensors to attain radar lock on Shivan fighters. Scanning these containers is your secondary objective.
+You will jump in approximately six kilometers from the cargo depot. Proceed to the cargo depot quickly, and eliminate all sentry guns. This will enable our freighters to collect the cargo after you have scanned it.
+
+Walkthrough:
+When you enter the mission, your wingmen and Command will chat, wingmen being uneasy about the situation. Head toward the cargo depot. A Dragon-class fighter will jump in and quickly jump out, likely a recon. Continue toward the depot. Another Dragon will enter and exit quickly. When you get reasonably close to the cargo, some of the cargo containers will begin to explode. When the fireworks is done, there will only be six left when there was 36 to begin with. This will trigger the arrival of three wings of Shivans (2 Manticore and 1 Scorpion) and the Taranis cruiser. The Taranis is very hard to kill. Don't waste your time attacking it as it has one wing of Manticores guarding it. Command will order you to scan the remaining cargo, so do it ASAP. 2 containers will have nothing and 4 will have Sensor Arrays. Then you may proceed to jump out. Your wingmen are quite capable of holding off the Shivans until you are done. You don't need to give them orders, they know what to do.
+
+Debriefing:
+It is fortunate that you were able to escape the Shivan trap. Your persistence in obtaining the data we needed is commendable.
+While you were unable to gather the shield data, another of our Ikeya task forces was successful in acquiring it. The data you did gather about Shivan sensor technology will be vital in combating the Shivan forces. Our technicians now believe they will be able to implement a targeting solution for Shivan ships.
+Good work, pilot.
+
+Laboratory cutscene (shown before Command Briefing 1.5)
+
+Terran scientist: Ready?
+Vasudan scientist: All set. Starting sequence fifty-two gamma. 5... 4... 3... (Power levels stead at 1.2 gigawatts.) 2... 1... Heat sinks are holding steady.
+Terran scientists: And sequence 2 in 3... 2... 1... mark. That's it. It held. Reading 59 percent energy loss but it held!
+
+Command Briefing 1.5:
+
+GTD Galatea
+Beta Cygni System
+1/25/2335
+
+Cease Fire
+The GTA has signed a cease-fire and non-aggression pact with the Vasudans.
+Command has already expressed great relief, largely due to the huge drain on military and economic resources the war has caused in the past few years.
+The end of a 14-year war should bring peace. Unfortunately there is no time to breathe easy.
+After the 3rd Fleet lost the GTD Amadeus in the Vega system, the GTA and the Parliament of Vasuda have both declared open states of war against the Shivan forces.
+
+Vasudan Dissent
+Unfortunately, not all Vasudan forces have agreed to the cease-fire. Reports have been received of attacks by a rogue group of Vasudans calling themselves the "Hammer of Light".
+Hammer of Light (HOL) appears to be willfully aiding the Shivan cause, citing some Vasudan legend about the coming of an all-powerful race.
+If you encounter any HOL forces, you are to treat them as hostile and are to use any force necessary to neutralize them.
+
+New Technology: Shivan Tracking
+With the vital data gathered by the Galatea at the Ikeya Depot, our technicians now know enough about Shivan technology to successfully target their ships. You should also be able to track them on radar.
+New Technology: Avenger Cannon
+The Avenger Cannon is now being loaded on every Terran and Vasudan ship in the Galaxy. You will find these cannons far more effective against the Shivan shields.
+New Technology: Shield System
+A strike squad sent from the 5th fleet into the Ikeya system was able to recover some Shivan shield prototypes. Fully functioning versions of this technology are being developed for use on GTA fighters.
+The shields themselves are being transferred through the Beta Cygni system to the Antares system. This shipment must arrive in Antares.
+
+Report to mission briefing in 30 minutes. 
+
+ACT 1 MISSION 8 - 1.8 "The Hammer and the Anvil":
+
+Briefing:
+At roughly 1400 hours a large convoy carrying one of our newly developed shield prototypes was deployed from the Beta Cygni installation. It was expected that the Shivans would attack the convoy.
+The Shivans destroyed the convoy. What the Shivans do not know is that the convoy was a decoy. There were a total of 4 working prototypes, only one of which was destroyed.
+You are to take two wings of fighters to escort the three remaining shield prototypes. The Shivans should just think you are just another shipment headed for Antares. There are four jump nodes in Antares, which should give us opportunity to divert the Shivans from our true intent and from the path to Earth.
+You are to accompany the freighters until the Vasudans arrive to escort them on the second leg. Do not leave the freighters until they have jumped to the Antares system.
+The Shivans have hit everything sent from this installation. Expect resistance. Many pilots lost their lives today that the chances for success on this mission would be greater. You will succeed.
+Dismissed.
+
+Walkthrough:
+A recommended ship is the GTF Valkyrie with both banks of Avengers with Fury missiles. All wingmen should all carry full Avengers.
+This is one of the first hard missions. At first all will be quiet, then two wings consisting of two Shivan Basilisks (Arjuna wing) will jump in, followed by the allied Vasudan Andromeda, Omega 1-3, and Rho wing (consisting of one single fighter). The Andromeda will call for assistance as Hammer of Light forces have already damaged it down to 35% hull integrity. Soon HoL fighters will jump in and go after Andromeda.
+Ignore the Andromeda's pleas. If you save it you do not receive anything, plus it's extremely tough to do anyway. Just let the two wings of HoL ships toy around with it and then they won't hurt you. Quite soon after the Andromeda is attacked, Shivan Krishna wing will arrive.
+Krishna wing will attack the cargo. Eliminate them quickly. Krishna wing is followed by Rama wing. Eliminate these quickly too. Lastly will be, in succession, two wings of Basilisks. After you dispatch them, some HoL fighters will arrive.
+If you scanned the bonus cargo in the previous mission, then the HoL fighters will arrive posing as friendly reinforcements. This makes the mission much easier, as you have time to prepare for their attack and perhaps even kill a few before they turn hostile. Target one of the Seth fighters and eliminate it. Target the other Seth and eliminate it too. Shoot the Anubises if you have time. Omicron 1 will jump in and tell you that the reinforcements are really the Hammer of Light. That is why you should have shot the reinforcements. They will be easy to kill now.
+After you destroy the Hammer of Light ships, stay by the cargo and wait until they reach the jump node and jump out. Then proceed to do the same. 
+
+Debriefing:
+Well done, pilot! You were able to get two of the three shield prototypes out of harm's way and off to the scientists back on Earth. Your efforts today will certainly even the odds a bit with the Shivans. Great job!
+
+ACT 1 MISSION 9 - 1.9 "The Darkness and the Light:
+
+Briefing:
+The radical splinter group known as the Hammer of Light has been conducting many surprise attacks on convoys throughout Beta Cygni. These attacks must be stopped. The Hammer of Light presence is to be eliminated from this system once and for all.
+A Hammer of Light cargo depot which is believed to be the primary supply center for all Hammer of Light activities in this system has been located.
+This depot is guarded by a wing of Seth class fighters as well as an Aten class cruiser, the Ramses. The Hammer of Light does not have shielding technology, so this operation should be simple.
+Your primary objective is to capture the Aten cruiser Ramses. You are to disable and disarm it with Disruptor cannons, then protect the Omega transports while they capture it.
+Do not destroy the Ramses. The crew will be interrogated to learn more about the Hammer of Light.
+Once the Ramses has been disabled and disarmed, destroy all cargo in the area. The Hammer of Light can not be permitted to resupply. The containers store Vasudan supplies useless to the GTA.
+You are to lead Alpha wing on this operation. Your ships are equipped with our new shielding system. In case of any unforeseen problems, await further orders from Command.
+
+Walkthrough:
+Once you arrive, order your wingmen to ignore the Ramses. Avoid the HoL fighters and pass around their flank to destroy one of the "Turtle" wing Satis freighters for a bonus objective. Although the four Satises will put up a lot of flak if attacked while together, one of the freighters breaks from formation and is an easy target. You get nothing special for destroying all four, and your chances of disabling are slim, so bug out and start attacking the cargo.
+By the time you've destroyed the cargo, unless you are extremely fast, the Taranis should have jumped in. Order your wingmen to depart if they aren't dead already. You now have a choice to make, you can either jump out now, or choose to destroy the Shivan fighters and bombers. Scorpion wing has a 45 to 60 second delay between waves, which is enough for you to finish off the cargo if you need more time. Once the Ramses is at 4% hull or around there, proceed to kill it yourself. Your resume looks better with an Aten cruiser kill on it.
+Note that the HoL crew of the Ramses apparently "embraces their fate" with the Shivans; the Ramses will not fire at the Taranis, even when Taranis fires at the Ramses. If you do manage to maul the Taranis, however, the Ramses is set to self-destruct anyway. If the Taranis is disarmed, has less than 30 points left on her engine system or gets his hull below 20% integrity, the Ramses will be triggered to self-destruct, so the mission is scripted in such a way that you cannot save the Ramses or destroy the Taranis.
+
+Debriefing:
+Unfortunately, the Taranis has been interfering with all operations in the Beta Cygni system.
+The destruction of the Ramses, while unfortunate, was not your fault. It is good that you destroyed the cargo before the Shivans were able to capture it.
+Although the Taranis prevented you from capturing the Ramses, allowing the Shivans to capture the cargo is a serious blow to the safety of this system.
+The destruction of the escaping freighters is important. The Hammer of Light will have a difficult time starting up their Beta Cygni operations again without supplies.
+It is disturbing that the Hammer of Light fighters have shield technology after all.
+It seems that this rebellion is far greater in scope than we had initially hoped.
+
+Capture mission command briefing cutscene (shown before Command Briefing 1.6)
+
+Admiral Wolf: Good morning, pilots. I'm going to get right to it. The Shivan forces are sprouting up everywhere and it's no secret that our frontlines are taking a beating. As you probably know, no one has been able to communicate with them and Terran Intelligence has no leads on their origins or their motives. On the upside, their shielding technology seems to be working just fine for us. By this afternoon all fighters stationed on the Galatea will have been fitted with them. Try to keep them intact, alright?
+The cruiser Taranis is suspected to be the source of command for the Shivans in this sector. It's here in the Ikeya system and we suspect it's low on fighters and supplies due to its recent attack runs. We have reason to believe it will soon jump to another system to resupply. We don't know where it will jump to, but there is only one known subspace node out of Ikeya leading to Ribos and we intend to blockade it.
+In the interests of learning more about the slippery bastards we're going to attempt something bold. The capture of the Taranis. If this goes off it will give us the opportunity to examine Shivan technology up close, and bag a few live Shivans in the process. In order to do this, we will conduct a series of missions designed to take out the cruiser's escorts and defenses. Time to chip away at the boulder, people. That is all. Report to your flight leaders for your orders.
+Dismissed.
+
+Command Briefing 1.6:
+
+GTD Galatea
+Ikeya System
+1/31/2335
+
+The Taranis
+Initial attacks have gone off without a hitch, and the Taranis is on her last leg. Delta and Epsilon wings have destroyed most of the Taranis' fighter escort. It is time to finish the job.
+To this end, Terran Command has sent a full wing of Athena bombers, equipped with the newly developed Stiletto bomb.
+
+New Technology: Athena Bomber
+The Athena is our most maneuverable bomber. It carries a massive payload, yet, in dogfights, is nearly as effective as a fighter.
+New Technology: Stiletto Space Bomb
+The Stiletto bomb has now been thoroughly tested back in Sol and is now ready for use. It can be used to destroy subsystems on any ship and should prove more effective than the Disruptor cannon. The electronics seeking device should make it simple to use. Just point and shoot.
+Stiletto homing capabilities are limited, so make sure you get a clean shot before you launch. The Stiletto should be especially useful in destroying the Taranis' engines and weapons systems.
+All Athena bombers will be equipped with Stilettos and will be piloted by Alpha wing. The mission to capture the Taranis will commence soon.
+
+ACT 1 MISSION 10 - 1.10 "First Strike":
+
+Briefing:
+The Cain-class cruiser Taranis has been chased from the Ribos system back to the Ikeya system. It is low on supplies, and, due to recent engagements, is lightly guarded.
+Long range sensors indicated that only two fighters and three bombers remain to protect the Taranis.
+The Taranis is heading to the Ribos subspace node, where it will probably resupply. This will allow for a small window of opportunity in which to conduct a strike.
+Your primary objective is to disable and disarm the Taranis in order to enable its capture. This will be our first attempt to capture a major Shivan vessel. Three wings will be assigned to this task.
+Alpha wing will be flying Athena bombers. These bombers just arrived on the Galatea and are equipped with the new Stiletto bomb. The Stiletto is capable of destroying subsystems in one hit. Alpha's primary responsibility will be to disarm and disable the Taranis. Beta wing is assigned to escort Alpha and protect it from fighter attacks. Beta will fly Apollo-class fighters.
+Gamma will fly Valkyries and should engage any hostile fighters and bombers in the area. If needed elsewhere, they can be assigned to any task that you see fit.
+Once the Taranis has been disarmed and disabled, Omega transports will arrive and capture it. When the Taranis has been captured, you are to return to the Galatea for debriefing.
+Do not allow the Taranis to escape or be destroyed. Good luck.
+
+Walkthrough:
+Order your wingmen to ignore the Taranis. They will engage all the enemy fighters and bombers. On your way to the Taranis, you might want to throw a missile or two at one of the enemies. Then switch your secondary weapon to Stiletto disruptor missile. Target the Taranis's engines and take them out with the Stilettos and proceed to take out the turrets using your Stilettos. Omega 1 and 2 will jump in momentarily.
+Omega 1 will dock with the Taranis but say the attachment was unsuccessful. Then Omega 2 will dock and try to penetrate the hull. After a short time, Omega 2 will give up. After that, the Halkins freighter will jump in and dock with the Taranis. The Halkins will ask for time to brace the attachment and then head to the Ribos jump node. All this while you are fighting 4 Rama Basilisk wings and 2 Vishnu Scorpion wings throughout the mission.
+After the Halkins has departed with the Taranis, return to base. 
+
+Debriefing:
+Congratulations, Alpha 1. You were instrumental in the first capture of a major Shivan vessel! The Halkins freighter is taking her to the Tombaugh station, where engineers will be able to study Shivan technology and learn more about their methods and motives.
+Meanwhile, feel free to relax for a few days. You deserve it. In recognition of your continuing service to the GTA, you have been awarded the Medal of Good Conduct.
+
+Ancients 2 cutscene (shown at the end of Act 1, after Mission 1.10)
+
+When the destroyers came for us, we attacked. Never had we been defeated. They are like the others. Strange, hideous, resisting, fighting. Only these were not like the others. They did not die.
+We made our first retreat. We could forego one system. We left it to the destroyers and went elsewhere. But they followed, they hunted us. They followed us when we retreated, discovered where we lived.
+For a long time, we did not know why they chased us. They were no ordinary enemy. They did not seek our territory, our technology, our resources.
+Now we know our crime was sin.
+
+END OF ACT 1
+
+ACT 2
+
+Command Briefing 2.1:
+
+GTD Galatea
+Ribos System
+2/11/2335
+
+Tombaugh Station Attack
+We've just received some discouraging news from Terran Command, pilots. At 0300 today, after the captured Taranis was towed to Tombaugh installation in the Ribos system, the Shivans staged a major ambush. There isn't a lot of confirmation from the footage yet, but it's clear that a Shivan destroyer of massive proportions jumped in and destroyed Tombaugh station, along with all its defenses. We have designated this new class of Destroyer "SD Lucifer".
+Debris from the station is still falling from orbit on Ribos 4.
+
+Terran and Vasudan fighters and cruisers engaged the Lucifer, but were wiped out quickly. Footage suggests that the Lucifer was using a new type of shield, impervious to any of our attacks. Needless to say, this is grim news. If the Shivans indeed have managed to shield a vessel of that magnitude, it's merely a matter of time before they wipe out all front-line installations and march through to our home systems.
+
+Since all attempts at communication with the Shivans have ended in violence, it appears very unlikely that a diplomatic solution will work.
+
+System Status
+At this point, the Shivans have control of Beta Cygni, Betelgeuse, Ross 128, Ikeya, and Regulus. Most of the Vasudan forces are gathering in Vega for a counterstrike, while we are gathering our fleet in Antares for an effort to retake Ribos and Beta Cygni. Oddly enough, the Shivans don't seem to be interested in taking control of any planets in the systems, or gathering natural resources. Instead they seem to be focused on controlling individual jump nodes.
+
+New Technology: Flail Cannon
+Research and Development teams at Sol have recently completed development on a few new weapons.
+A group of Terran scientists has returned from a previously unexplored system known as Laramis, and bring with them a new weapon called the Flail.
+The Flail is quite different from our typical energy cannons. Please consult the weapons database in Galatea's computer network for more details.
+
+New Technology: Interceptor Missile
+Our communications with Vasudan technicians have yielded the Interceptor missile. By combining the Vasudan-designed engine with a Terran warhead, we were able to produce the most powerful anti-fighter weapon yet. It's an aspect-seeking missile, and requires a few seconds to lock onto the enemy's engine signature, but its speed and accuracy make it lethal. Use it well.
+
+ACT 2 MISSION 1 - 2.1 "The Aftermath":
+
+Briefing:
+The survivors of the Tombaugh attack must be evacuated from the Ribos system immediately. We do not have sufficient firepower to retake Ribos at this time. Your wing's objective is to escort the Iota transports. Other wings will be accompanying this convoy. Alpha wing will be in charge of this operation and will have command authority. The convoy must reach the designated checkpoint. Escort from this point onward will be provided by allied Vasudan forces, led by the PVD Pinnacle.
+Hostile forces have been spotted all over this system, and there is a good chance that our convoy will be attacked by Shivan fighters.
+All hostile forces should be eliminated. The PVD Pinnacle will be arriving at the designated checkpoint. This Typhon class destroyer has one of the most skilled crews in the PVE. It will escort the refugees for the remainder of their journey.
+Help the PVD Pinnacle until it has dismissed you, then return to base. Many lives depend on this operation. Good luck.
+
+Walkthrough:
+You will like the Interceptor a lot in this mission, I guarantee it. At first, your wingmen will chat away heartily. At precisely 1:15 into the mission, the GTFR Nelson will startle you by jumping in ahead. Unfortunately, the damaged freighter stands no chance, as Shivan Vishnu wing will jump in right after and destroy it quickly. After this, many wings of Shivan fighters and bombers will jump in and attack. There will be lots of them, so just pick them off one by one, going after the bombers first.
+Before you know it, you'll be done and the PVD Pinnacle will jump in. If there are any leftover Shivans when the Pinnacle jumps in, they will jump out. Once the Pinnacle has arrived, two wings of Basilisks will attack. They are easy prey, just eliminate them and jump out.
+
+Debriefing:
+You safely escorted most of the refugees in Iota transports and for that you are to be commended. It is unfortunate that so many had to lose their lives. They will be mourned.
+
+ACT 2 MISSION 2 - 2.2 "The Big Bang":
+
+Briefing:
+Red alert! The GTSC Asimov and the GTC Ravage are under attack in the Antares system.
+The GTS Asimov was working on project Tsunami, which involves hyperactive substances. These substances are extremely volatile. If the Asimov is destroyed, the reagents are likely to reach critical mass. Analysis predicts a shockwave of up to five kilometers in radius.
+The station is in bad shape. We need to clear the area, then transport the scientists out of there.
+When the area is secure, the GTT Spomer will jump in and retrieve the scientists. After they have been safely evacuated, return to base.
+We have five ships in the hangar. We have no time to get them fully loaded out. Suit up! You're launching in two minutes.
+
+Walkthrough:
+There will be a lot of Shivans in the area when you arrive. Eliminate Indra wing first and proceed to eliminate any stray Scorpions that are still left in the area. Pay special attention to any bombers that arrive, give these targets priority. When the area is clear of Rama, Indra, and Vishnu wings, the GTT Spomer will jump in and dock with the GTSC Asimov. After a bit of dramatic pauses and whatnot, it will depart. Proceed to eliminate any present hostiles and jump out.
+
+Debriefing:
+Great job, pilot. You managed to protect the GTSC Asimov. All the data for project Tsunami has been secured, and it should be completed within days. The crew of the GTC Ravage thanks you for saving their lives. The Shivans will find their assault on Antares far more difficult with the Ravage on board. For saving the crew of the GTC Ravage, we are awarding you the Medal of Conspicuous Gallantry.
+
+Hall fight cutscene (shown after Mission 2.2)
+
+(Captured Shivan freighter. Antares system.)
+-Control, this is boarding party Bravo Two. Entering disabled freighter.
+-Roger Bravo Two. Keep the chatter to a minimum.
+-Bravo Two, your signal is getting weak.
+-Copy that. Point go.
+-No sign of anything.
+-Squad two, go.
+-Probably all dead, anyway.
+-Cut the chatter, dammit.
+-Hear that?
+-Contact 30 meters ahead.
+-Report, Bravo Two.
+-Form up, everyone.
+-Visual?
+-Negative. I don't...
+-Whoah!
+-What the hell is that!
+-Oh my God!
+-Open fire!
+-Die!
+-Fall back.
+-Bravo Two, what's going on? Please respond.
+-Oh my God! No. No!
+
+Command Briefing 2.2:
+
+GTD Galatea
+Antares System
+2/15/2335
+
+Our Mission
+The Hammer of Light has decimated the Vasudan fleet at Vega. Most of the surviving Vasudan forces have retreated to Deneb and Antares. Because our fleet is also holding Antares, relations between the PVE and the GTA have been strained. In order to quell the tension, we have been ordered to eliminate all Hammer of Light outposts in the vicinity. Fortunately, we have some new tools to assist us.
+
+New Technology: Phoenix V Missile
+Our first new weapon is the Phoenix V anti-bomber warhead. This missile can puncture even the thickest of shields, and can also be used effectively against larger targets, like freighters. More details are available in Galatea's computer database.
+
+New Technology: Medusa Bomber
+We have also acquired a wing of the new Medusa bombers. Though they are slower and less maneuverable than the Athena, they are far more powerful. Once again, full details can be found in Galatea's computer database.
+
+New Technology: Tsunami Space Bomb
+The new Tsunami bomb is the ultimate anti-cruiser weapon, and can be carried by the Medusas. Just a few of these will take out any cruiser, and the Hammer of Light Aten-class cruisers are no exception. You'll be using this bomb quite often against major Hammer of Light outposts.
+
+ACT 2 MISSION 3 - 2.3 "La Ruota della Fortuna":
+
+Briefing:
+Here in the Antares system we have detected a small HOL base of operations. Your squadron is being sent to eliminate it.
+You will destroy all Hammer of Light ships, then jump back to the Galatea. The Galatea will be monitoring you in case the situation gets out of hand. Good luck.
+
+Walkthrough:
+"La Ruota Della Fortuna" is Italian for "The Wheel of Fortune". When you arrive, the Hammer of Light outpost will be gone and some damaged Shivans will be around. Destroy them quickly and wait for the Galatea's assistance. Once the Galatea arrives, Hellions 1 and 2 will arrive (Cain class cruiser and Lilith class cruiser). Order all fighters to attack Hellions 1 while you destroy any fighters or bombers. Once Hellions 1 is down, order your wingmen to destroy Hellions 2. You should still be attacking all fighters that threaten the Galatea. Once the area is clear and the Galatea has left, jump out.
+
+Debriefing:
+We are pleased that you were able to suppress the Shivan influence in the Antares system. Their arrival was unexpected, and battling the Shivans always takes a heavy toll on our forces. Fortunately, we can take some bitter comfort in the fact that they "helped" us eliminate the Hammer of Light presence in Antares.
+Upon evaluating this mission, we have concluded that the Hammer of Light was gathered in the Antares system only to lure the Shivans to the area. Now that a Shivan presence in Antares has been established, our job will become harder - but they can be beaten, as you have shown today. Good work, pilot.
+
+ACT 2 MISSION 4 - 2.4 "Where Eagles Dare":
+
+Briefing:
+In this mission we will be assaulting a secondary supply and rearming facility under Hammer of Light control. It is located in an asteroid belt in the Antares system. Intelligence indicates the main defenses will be two sentry guns and one wing of HoL Vasudan fighters.
+Recently, the transfer of cargo in this area has increased dramatically. It appears to be coming from the Ribos system. This jump node to the Ribos system is approximately ten kilometers away. It will be the only means of escape. All of the Gemini transports must be destroyed before they reach the subspace node.
+A wing to GTA freighters will jump in to recover remaining cargo. Keep the area secure until they are finished. Good luck.
+
+Walkthrough:
+When you arrive, there will be two wings of three Seth fighters in the area. Eliminate them first, then take out the Gemini transports. After you have done that proceed to the jump node and destroy the sentry gun and the six Anubis fighters that should have arrived by now.
+Once the sentry gun is down, your freighters will arrive to take the cargo. Taurus wing will have arrived by now so just destroy them. Once the area is secured, return to base.
+
+Debriefing:
+Excellent work. The area has been secured and no Hammer of Light ships escaped. Your persistence in accomplishing your objectives is to be commended.
+
+Command Briefing 2.3:
+
+GTD Galatea
+Antares System
+2/19/2335
+
+The Tombaugh Attack
+Terran Intelligence has spent the last two weeks analyzing flight data from the Tombaugh station attack. The data on the Shivan Lucifer has been given special attention. Intelligence believes the Shivans were tracking the captured Taranis Cruiser through subspace to the station.
+
+The Lucifer
+Intelligence doesn't know how the Shivans tracked the Taranis cruiser, but they've got a team of engineers trying to figure it out. They are also analyzing the shield system on the Lucifer. Unlike the shields on the Shivan fighters and bombers, this shield appears impervious, not merely somewhat resistant, to all of our weapons.
+
+The Shivans Attack Plan
+With the loss of Tombaugh Station, the Shivans have gained control of the Ribos subspace node. That leaves only two subspace jumps between the Lucifer fleet and the Vasudan homeworld.
+We must defend Vasuda Prime. Not only is it the humane thing to do, but it's in our own interests. If the Shivans gain control of that system, it will be a short walk to Earth, itself.
+
+The Location of Sol
+While their proximity to Earth is cause for concern, we have no reason to believe that the Shivans know the location of our homeworld. There are multiple star systems between the Ribos node and Sol and the Shivans will likely have to examine them all. It is obvious, however, that they are narrowing it down, and we can't afford to give up one more inch.
+
+Our Orders
+The Lucifer-class destroyer was last sighted in the Ribos system, leading us to believe that Antares is the focal point for the next Shivan offensive. We're going to move the Galatea and its fleet to the Beta Aquilae system, in case the Shivans decide to attack Vasuda Prime through there.
+Command is sending another Orion-class destroyer, the GTD Bastion, to the Antares system to help us with the blockade. But for the time being we're the only defense.
+
+New Technologies: Hercules Fighter and Synaptic Cluster Bomb
+I am pleased to announce we have two new weapons to use against the Shivans, the Hercules Heavy Assault Fighter, and the Synaptic Cluster Bomb. You may study these in the ship's database. We believe they will prove very useful. 
+
+ACT 2 MISSION 5 - 2.5 "Tenderizer":
+
+Briefing:
+In order to protect Vasuda Prime, the GTD Galatea will be moving from Antares to Beta Aquilae.
+Alpha and Beta will provide support.
+The sentry guns surrounding the jump node were severely damaged in the recent Hammer of Light attack. Alpha wing will inspect the sentry guns to determine if they are salvageable. Beta wing will provide cover.
+The Galatea will jump into Antares, reset its coordinates, recharge its subspace drive, then jump to Beta Aquilae. Lately, the Hammer of Light has been attacking all ships passing through the jump node. It is your responsibility to destroy all enemy ships that you encounter.
+After the Galatea jumps to Beta Aquilae, you will be contacted by the Detiula Installation in the Antares system. There you will receive your briefing and move on to your next mission. Intelligence has specifically requested you and your wing for these missions. Good luck, pilot.
+
+Walkthrough:
+Fly to the Watchdogs at mission start and open fire as soon as your scan begins, as they'll soon turn hostile. A few warmup wings of HoL redshirts will arrive. Next are a few bomber waves. The bombers are equipped with Stilettos and Synaptics and are trying to disable the Galatea, and therefore aren't much of a threat to her, although there are several Amuns thrown in. Their heavy turrets will make short work of your wingmen on higher difficulties, so either don't bother defending the Galatea (Stiletto hits won't really hurt her) or load your wing with the best-armored ships available (Hercules and Medusa in this case).
+Next are the kamikazes. The Anubises do 4000 damage and the Seths 6000, so try to go for the latter even if they are slightly more difficult to kill. However, the kamikazes really won't do that much damage; the only scary thing they send at you is the explosives-packed Aten (PVC Mauler).
+On lower difficulties, you can simply kill the cruiser, but a more efficient tactic is to disable it with Stiletto and then rearm as your wingmen finish it off. You will proceed from this mission directly to the next one, so try to keep some wingmen alive and watch out for your hull.
+
+Debriefing:
+Good work pilot. You successfully provided cover for the Galatea during this difficult node transit operation. While enemy attacks resulted in moderate damage, control and repair teams report no harm to critical systems. Thank you for your service. But we have no time waste now, an urgent matter has come up. Stay in your fighter, you will jump directly into your next mission ASAP.
+
+ACT 2 MISSION 6 - 2.6 "Shell Game":
+
+Briefing:
+We have reason to believe that the Shivan Destroyer Eva is in the Antares system near the Antares-Vega jump node. You will jump to this subspace node ASAP and investigate. Destroy any hostiles.
+Further orders will be given to you in mission. Delta wing will be flying Medusa bombers and will assist you. If you need further assistance, call in Epsilon wing. Galactic Terran Intelligence out.
+
+Walkthrough:
+The Eva jumps out to Vega before you can reach it. Delta wing is available as reinforcements; this is a hard mission, so don't be afraid to call them in. Killing an Azrael triggers enemy fighters to arrive, so focus on the freighters first, or wait until they depart, as destroying them is only a secondary objective. The Scorpions are pathetically armed and are attacking your wingmen, not you specifically, so there's little immediate threat. In fact, one of the Shivan wings will depart once Beta is destroyed.
+Once the freighters are all destroyed or departed, kill one Azrael and wait for a fighter wing to arrive. Kill the other transport and finish off the following fighters. Then get that cargo scanned and witness a bit of GTT Stern and GTT Dobbs drama with booby-trapped cargo containers.
+
+Debriefing:
+We have recovered two of the abandoned cargo containers. Intelligence believes analysis will prove useful so that the Stern and Dobbs won't have been lost in vain.
+You are awarded the Good Conduct medal for your continuing service to the Alliance.
+
+Command Briefing 2.4:
+
+GTD Galatea
+Deneb System
+2/20/2335
+
+Our Orders
+We are under general quarters because a fighter patrol detected advance ships from the Lucifer fleet approaching Vasuda Prime.
+Somehow, the Shivan forces have circumvented our blockade at Antares, and now control the Deneb system. We are en route to Deneb as we speak. ETA is thirty-five minutes, so when you leave here, report to your wing station for immediate mission briefings.
+The Lucifer itself is behind the vanguard force, so we can expect it to make an appearance at any time.
+
+New Technology: Ulysses Advanced Fighter
+The Vasudan-Terran Ulysses project has been completed, and the Galatea has received a complement of these fighters. It is the most maneuverable craft ever developed by the PVN or the GTA, and it should be extremely useful in this next series of sorties. It can also be equipped with the Prometheus cannon, the most powerful cannon weapon we've ever developed. Use them both well.
+
+Capturing a Shivan Fighter
+Intelligence has concocted a daring plan to enable us to learn more about the Shivans. We are going to attempt to capture a Shivan fighter. Suit up and report to your wing stations for briefings immediately.
+
+ACT 2 MISSION 7 - 2.7 "Enter the Dragon":
+
+Briefing:
+The Shivans have established quite a base of operations in the Deneb system. They have multiple supply depots scattered across the system, as well as several repair centers for their damaged fighters.
+Each of their repair stations consists of a Cain-class cruiser and extra supplies. The SC Shakti is one such cruiser in the area.
+All fighters in the area around the Shakti are badly damaged and in need of repair. This makes them easy targets. One of our objectives is to put this repair station out of commission. This will greatly reduce Shivan capacity in the Deneb system.
+One of the fighters being repaired by the Shakti is a Dragon-class fighter, designated "Arjuna 1." The Dragon is the Shivans' most maneuverable craft, and the most dangerous.
+Intelligence has requested that we capture the Dragon for research purposes. Since the Arjuna 1 Dragon is very low on power, it is in a weakened state, and is the best candidate for this operation. You must disable Arjuna 1 by destroying its engine subsystem.
+Once Arjuna 1 has been disabled, the Charon (GTS Centaur class) will dock with it and jump back to the Galatea. We must capture Arjuna 1. We cannot allow it to be destroyed. To this end, we've equipped it with our advanced disruptor cannon. Use it to take out its engines.
+Since this station is so poorly defended, we are only sending Alpha and Beta to attack. Alpha will cover Beta until the Shakti has been destroyed. Then Alpha will attempt to disable Arjuna 1.
+If Alpha fails to disable Arjuna 1, Delta wing will be available. As Delta is currently guarding the Bastion, we will only send them if it is imperative. However, we believe you can do it without their help.
+Because we are custom outfitting your ship, you will not be able to customize your loadout. You have your orders. Dismissed.
+
+Walkthrough:
+Attack the fighters but disregard Arjuna 1. Order all of your wingmen to disable it while you go about your business; even on Insane, your friendlies can easily disable the Dragon, which saves you a lot of trouble. You should have no need to call in Delta, which is only armed with Disruptors.
+Once all fighters are taken care of, destroy the Morkali, an Azrael docked with Shakti. Then kill the sentries, cargo and join in against the Shakti.
+When the Lorkonius (an Azrael Transport) jumps in, order all wingmen to kill it. If you don't, you won't have time to kill it. It only stays for about 45 seconds. You may have to keep ordering your wingmen to attack as they tend to go off-task. By now the Charon should have jumped out carrying Arjuna 1. Once in a blue moon the Centaur will be disabled by the Cain's turret fire, which will result in mission failure.
+
+Debriefing:
+Great work Alpha 1. We've destroyed a Shivan repair depot, and managed to get ahold of an intact Shivan fighter. Our technicians are currently working on reverse-engineering it.
+For your excellent piloting abilities, the GTA has decided to award you the Distinguished Flying Cross. Congratulations.
+
+Command Briefing 2.5:
+
+GTD Galatea
+Deneb System
+2/31/2335
+
+Our Orders
+We have now entered the Deneb system. After your investigation of the SD Eva at Antares-Vega jump node, Terran Command has deduced that the Shivans will be attempting a multiple pronged attack on Vasuda Prime coming from Deneb and Antares.
+The Intrepid and the Minnow will be in charge of protecting the Antares-Vasuda node, while the Galatea and the Bastion will be guarding Deneb.
+
+The Shivan Attack
+We expect the main force of the Shivan attack will come through Antares, led by the Lucifer. A smaller secondary force, led by the Demon-class destroyer Eva, will come through Deneb. The Shivans already control the Vega-Deneb Jump Node, so our defense will have to be at the Deneb-Vasuda Jump Node.
+Finding and destroying the Eva destroyer is our top priority.
+
+The Captured Shivan Dragon
+As you know, we captured a Shivan Dragon-class fighter in Beta Aquilae. Our technicians have retro-fitted this alien fighter with Terran instrumentation and gotten it into working condition.
+However, there are a few flaws with our redesign. We could not get the Shivan weaponry to operate, so this fighter has been equipped with Terran weaponry. We also could not properly operate the lateral thrusters or afterburners, so the ship's maneuverability is limited.
+We also have had some difficulty with the Shivan engine systems. In test runs, the Dragon engines broke down for short periods of time. We are looking into this problem as we speak.
+The capture of this Shivan fighter will bring great strides in fighter technology to the Alliance.
+
+ACT 2 MISSION 8 - 2.8 "Playing Judas":
+
+Briefing:
+In this mission we will be using the captured Shivan Dragon-class fighter on a scouting mission in the Deneb system.
+The Shivans seem to be bringing in a large number of vessels into the Deneb system through the Vega Jump Node. We believe this is in preparation for a preliminary assault on Vasuda Prime.
+Because the Shivans have tight control over the Vega-Deneb jump node, we cannot send in a Terran scout. By flying the Shivan Dragon, we believe you will be able to slip in undetected.
+There are four Shivan fighters in the area, maintaining tight patrol. If you come in to close contact with these fighters, they will certainly scan your ship, detect your presence, and open fire. Avoid contact with any of the Arjuna fighters.
+Arjuna seems to be maintaining consistent patterns in their patrol.
+On arrival, observe their flight pattern and plan your course to avoid contact.
+In the event that you are engaged by Arjuna wing, return to base immediately.
+Your primary objective is to conduct a close scan of all ships that pass through the Vega-Deneb Jump Node. This includes warships, freighters, and transports. Try to determine the contents of any cargo in the area, as well.
+We have reason to believe that a Shivan Demon-class destroyer, the Eva, will be passing through the area. If it does, it is imperative that you scan it. Remember that your fighter is only partially functional, and it's flight systems will behave unpredictably. Be careful. Command out.
+
+Walkthrough:
+Don't shoot anything. Fly toward cargo 1 and 2. Scan them. Scan the Kali freighters that have by now warped in. Next quickly scan cargo 3 and 4 to complete your bonus objective. More freighters. Scan them. A brief pause. Monitor Arjuna 1-3 to make sure you are far away. Last group of freighters. Scan them.
+More pause. Keep monitoring Arjuna. Your warp drives die now. Eva jumps in. Scan it. Pause. Keep monitoring Arjuna. Lucifer jumps in.
+Scan it. Put your shield level up. Scroll through the Lucifer's subsystems until you see Fighterbay 1. Command orders you to look inside. Fly by it. Don't go in it. Rama wing will detect you. Fly around in random directions or attack the fighters until your jump drives have come back online. Jump out fast.
+You can also finish the mission successfully by putting the engine level up to the max and then go for the fighterbay of the Lucifer. When Rama detects you, fly straight away from all the ships until your jump drives have come back online. Don't hesitate to use your countermeasures and then jump out fast. Alternately, and recommended for higher difficulties, is that you can also use parts of the Lucifer's body to shield yourself until you can escape.
+
+Debriefing:
+Pilot, you bring us terrible news. If both the Eva and the Lucifer are here in Deneb, it will be extremely difficult to stop the Shivan attack. Still, you did an excellent job scanning the Shivan warships. Well done.
+The fact that you were also able to scan the Shivan supply ships is truly outstanding. Your courage and piloting skills are to be commended.
+However, the news is bad. The Shivans have enough supplies in those ships to sustain a lengthy assault on Vasuda Prime. We believe their attack force will consist of at least eight full squadrons of fighters, both Genma cruisers, the Eva, and the Lucifer. Things do not look good.
+The cargo you identified contains parts for Shivan fighters. This leads us to believe that the Shivans will set up a base in the Deneb sector, near Vasuda Prime. This information will be invaluable in planning our counterstrike.
+
+Ancients 3 cutscene (shown after Mission 2.8)
+
+And we retreated to our home system. Abandoned our empire. We believed at home we would be safe. For they are not a terrestrial species.
+We know when we entered subspace we were trespassers. But our planet is our home. And yet still they came. And our world is gone.
+
+ACT 2 MISSION 9 - 2.9 "Evangelist":
+
+Briefing:
+The SD Eva has entered the Deneb system. She is fully armed and poised to attack the Deneb-Vasuda Prime Jump Node. She is protected by Arjuna and Krishna wings.
+Alpha wing will lead an attack squadron to destroy the Eva. Alpha wing will fly bombers. Gamma and Beta will cover them.
+We suggest you damage the weapons subsystem on the Eva before you launch your Tsunami bombs. This will prevent the Eva from shooting them down.
+You may need to call in a support ship to rearm yourself. It is estimated that at least twenty Tsunami bombs will be needed to take the Eva down.
+Destroying the Eva is imperative. With the Lucifer in the system as well, we cannot tolerate the presence of another Shivan capital ship.
+Good luck.
+
+Walkthrough:
+Destroy Arjuna wing first, then take out Krishna wing. After these wings are eliminated, fly to the Demon's weak spot, the totally undefended area inside the "tentacles" near the fighterbay. Go there and destroy the Eva's weapons subsystem, which will render her weapons totally inaccurate.
+Kill the stray fighters that jump in and between breaks unload on the Eva. When the Eva goes below 20% hull integrity, call in a support ship and rearm. By that time you will probably gotten the "hurry up" call from the Galatea. Once the Eva is eliminated, you will be sent directly to the next mission without extensive debriefing and such. You'll have the same amount of ordnance at the beginning of the next mission as when you leave this one. That is why I told you to rearm yourself.
+
+Debriefing:
+Good job destroying the Eva, but we have no time to celebrate. The Galatea is under heavy attack. Jump back to her ASAP and help with the defense.
+
+ACT 2 MISSION 10 - 2.10 "Doomsday":
+
+Briefing:
+The Galatea is under fire from Shivan forces and looks sure to be lost. Long range sensors indicate at least four wings of bombers and interceptors. The Lucifer is also somewhere in the area. The Galatea must be protected until we can evacuate the personnel.
+
+Walkthrough:
+This mission is pretty straightforward. First, destroy all the bombers and then the fighters. Keep doing so. Before you know it, the escape pods will be gone and the Lucifer will jump in. At this time, move to about 2,000 units away from the Galatea, and then wait. The Galatea will be destroyed by the Lucifer. You cannot prevent it, just stay away from the shockwave.
+If you play on at least Medium difficulty and manage to defend all escape pods, you'll get a new medal: Galatea Survivor.
+
+Debriefing:
+The Galatea has been destroyed. Many lives, many friends are gone. Everyone in the Terran Alliance feel this loss deeply. Yet, greater is the tragedy of the Vasudans. There is nothing between the Shivan fleet and Vasuda Prime. Soon their homeworld will be gone. Our fighters fought bravely to preserve the Galatea, but there was nothing to be done. The Lucifer was too powerful.
+Many lives were saved by the Hermes escape pods. For that we are thankful. But we mourn the loss of Admiral Wolf. He was a great commander and he died with the ship he loved.
+All surviving pilots are reassigned to the GTD Bastion. Though we all lost friends on the Galatea, there is no time to mourn the dead. We hope for the chance to avenge their deaths.
+For surviving the death of your capital ship, and saving the lives of many others due to your actions, the GTA has awarded you the Galatea Survivor medal.
+
+Ancients 4 cutscene (shown at the end of Act 2, after Mission 2.10)
+
+There are a few of us left. We know we will soon be gone. And so we can see our fate as others will see it. There will be little legacy. No great expressions of what we once were. Our technology, our achievements if ever they are seen again will spawn none of the awe that filled our conquests.
+We know our fate. We are being eliminated. When we traveled subspace, the cosmic destroyers took note.
+When we conquered and colonized in galaxies where we had no place, the destruction and the anguish and the loss were the clarion call of our doom. And so the destroyers came for us.
+
+END OF ACT 2
+
+ACT 3
+
+Command Briefing 3.1:
+
+GTD Bastion
+Alpha Centauri System
+3/1/2335
+
+New Assignments
+This is Admiral Shima. I'll be delivering your command briefs while you're onboard the GTD Bastion. I extend a welcome to all pilots formerly stationed on the Galatea. I wish your reassignments could have come under better circumstances.
+The loss of the Galatea is a great blow to all of us. We've lost many friends and loved ones. We've also lost many great pilots. We will need to double our efforts if we plan on stopping the Shivan fleet.
+
+Destruction of Vasuda Prime
+This brings me to the reason for this briefing. As some of you may have already heard, shortly after the destruction of the Galatea at nineteen-hundred last night, we received word that the Shivan Lucifer made the jump to Vasuda Prime. The Lucifer fleet bombarded Vasuda Prime from orbit for thirteen hours straight.
+
+Aftermath of Vasuda Attack
+Most escaping transport ships were destroyed. All major Vasudan cities were leveled, and most of the landmass was rendered uninhabitable. All of our attacks launched from the nearby installations were defeated.
+We have lost contact with all Terran ships in the area, but it appears that the Shivan fleet has now moved on. It's estimated that four billion innocent Vasudans lost their lives in the attack.
+Terran Command is preparing to help evacuate all survivors to other habitable worlds in the area.
+
+Our Orders
+What we need to concentrate on now is keeping the Lucifer fleet from making further moves towards Earth. We've been put on standby status and ordered to assist in all evacuation operations in Vasuda Prime and the surrounding systems.
+We've lost Deneb. Antares is virtually undefended. Vasuda is a contested system.
+
+New Technology: Banshee Laser
+The Banshee laser is now ready for deployment. We just received a partial shipment of them. The Banshee is specifically designed to take down Shivan shields.
+New Technology: Hornet Swarm Missile
+We have also received a full supply of Hornet Swarm missiles. These are the best anti-fighter missiles in our arsenal, and we expect they will receive heavy use on the Bastion. Full details are available in the Tech Database.
+
+ACT 3 MISSION 1 - 3.1 "Exodus":
+
+Briefing:
+Pilot Attend: As you know, Vasuda Prime has been devastated. Our focus must now turn to the evacuation of the survivors. You are to take your wing to the subspace node cluster in the Alpha Centauri system.
+There are 3 subspace nodes in this sector. They lead to Vasuda, Aldebaran, and Sirius. Civilians will be transported from Vasuda to Aldebaran.
+Vasudan warships will travel to and from both the Sirius and Vasuda Jump points.
+Because of the strategic importance of this system, we expect the Shivans to try and secure it quickly. You will ensure the safe passage of all Allied vessels in the area. Additional orders will be sent to you as they arise.
+
+Walkthrough:
+Again, this is a very simple strategy. Stay with the ships you are supposed to escort, and then kill the Shivans when they jump in. First you will escort Kappa wing of transports. Then you will escort another Kappa wing. Then Mu wing will jump in. The third Kappa wing will pass through the sector. Then you will escort Theta wing. Finally a break in routine - the Cain and the Abel will jump in (Cain and Lilith classes, in that order). Destroy them. Then the PVC Mecross, an allied Vasudan Aten-class cruiser, will jump in. When the Shivans attack, go for the Nephilim bombers first. I cannot emphasize this enough. If you kill the Basilisks first, then the Mecross will be toast and you will have wasted 15 minutes of your life. Kill the Nephilim bombers first.
+There are Vasudan fighter wings who will help with escorting some convoys. Some of these wings can be given orders. For at least the Horus wing a "Cover Me" order can be very useful.
+
+Debriefing:
+You did a good job in protecting the Vasudan transports. Through your actions we were able to save countless lives. You should feel proud of this accomplishment. We did lose two refugee ships during this evacuation operation. We have contacted the PVE and expressed our regrets. You were also able to keep the area secured until we established a stronger foothold in the system. Well done.
+
+ACT 3 MISSION 2 - 3.2 "Last Hope":
+
+Briefing:
+The PVD Hope, a Typhon-class destroyer, is leaving the Antares system after an intense battle. It has sustained moderate damage and will be jumping to the Beta Aquilae system.
+We are sending two wings to help cover the Hope while it is being repaired. The Vasudans are sending their own fighters to stand guard over the Hope, but it will be some time before they arrive.
+The Hope should be in the system when you arrive. We do not believe the Shivans have enough forces in the system to mount a serious attack, but their strategies are difficult to predict.
+
+Walkthrough:
+This is a relatively tough one. The strategy is very simple though. Focus on the Nephilim or Shaitan bombers. This is your number one priority. The Hope will jump in pretty soon after you jump in. It will be at 36% hull integrity. Three Nephilim bombers will jump in at nearly the same time as the Hope. After just a short time five more Nephilim bombers will jump in to entertain you. Two more will attack once the rest are down. Your wingmen will do a fine job of handling the bombers, although note that the Hope's weapon subsystem and turrets are mostly broken so you will have to shoot down bombs yourself. The Interceptor works great for this.
+The Isis Repair should have arrived by now to repair the Hope. One single Dragon will jump in, shortly followed by two Shaitans accompanied by two Manticores attacking the Hope. Soon the Cain class cruiser Lightning will arrive. You will be surprised how quickly it goes down if you order everyone to attack it. Then the Cain class Thunder will jump in with two Manticores as escort. After a short while the PVC Mecross will arrive to aid you. A wing of three Dragon-class fighters will attack after this. Two rounds of four Nephilim and two Scorpions will finally test you. The Vasudan reinforcements should arrive after this and you should be alright.
+If the Mecross did not survive the previous mission, then the Mecross will not be in this mission to assist you in attacking the Thunder.
+
+Debriefing:
+Well done, Pilot. This mission was quite a bit more intense than we had expected, thanks to the Shivans. Fortunately you were able to hang on until the Vasudan reinforcements arrived. Very impressive. For protecting one of the few remaining Vasudan Typhon-class destroyers, you are awarded the medal of Conspicuous Gallantry. Wear it proudly.
+
+ACT 3 MISSION 3 - 3.3 "A Failure to Communicate":
+
+Briefing:
+Red Alert! The Beta Aquilae Installation is under attack. The Lucifer has been sighted in the area. Protect the installation at all costs. Additional orders will be given to you on site. Move it, pilot!
+
+Walkthrough:
+This is a red alert scramble mission. Your load-out will be a Valkyrie interceptor with Prometheus and Avenger cannons and (8) Phoenix V missiles and you have no time to change it.
+As soon as you enter the mission, you should start afterburning towards the fore-end of the SD Lucifer. When the installation goes critical and starts exploding, target Deva 2 and order your wingmen to attack it, then go after Deva 1 yourself. Make sure you are flying directly into the Dragon's path. Once it enters Phoenix V range, slow down, lock on, then afterburn and fire your ordnance.
+Deva 1 should be hit by the force of two Phoenix Vs and go down right away, if it doesn't, start over, you don't have time to deal with two SF Dragons. If Deva 1 is, in fact, destroyed immediately, try to destroy Deva 2 as quickly as possible (if your wingmen haven't already) - you need to get it down near-instantly or the next Shivan wave will decimate the Hermes escape pods from the installation. With Deva 2 safely out of the way, order Alpha and Beta to protect Escape 2 and Escape 4, and afterburn to catch up with the pods. When Karna wing of SF Basilisk fighters arrive, be sure to eliminate it ASAP. Be ready for several wings of fighters and bombers.
+After destroying all enemy wings targeting the pods and the Hope, afterburn over to the Aquilae Communications station (a nearby GTSC Faustus science cruiser) and protect it from further attacks. After some time, the attacks stop and you'll be clear to return to base.
+If the PVD Hope did not survive the previous mission, then the PVD Pinnacle will be available to assist you instead in guarding the communications station. 
+
+Debriefing:
+There was nothing you could do to preserve the Aquilae Installation. There was too little time and the Lucifer is too powerful. Fortunately you were able to save some of the escape pods. The survivors thank you and look forward to the chance to avenge the destruction of the installation. By protecting the Beta Aquilae Communications Terminal, we are able to keep in contact with our forces in the outer systems. Losing the communications terminal would have been a severe blow. Well done pilot.
+
+Command Briefing 3.2:
+
+GTD Bastion
+Ribos System
+3/2/2335
+
+State of the Alliance
+We have now lost vital ground to the Shivans in the Antares system and Sirius. The number of systems between the Shivans and Earth are dwindling fast. Fortunately, we were able to save the Beta Aquilae communications terminal. We have lost contact with the majority of subspace communication posts located in other systems.
+
+Transmission from Altair
+The following subspace transmission was picked up by the Terran listening outpost in the Beta Aquilae system.
+"We are a group of Vasudan refugees seeking the assistance of any Terran ships. We were onboard a Vasudan science outpost when it was destroyed by the Shivans. We managed to land on this uncharted planet when our escape pod lost power. It's uninhabited, but we uncovered the remains of an ancient civilization. They were neither Terran, nor Vasudan, nor Shivan. Our scanning equipment was able to locate a storage device of some sort. It was heavily protected, which suggests it stores something quite valuable, possibly information or technology. We are attempting to decipher the language of the device, but are fearful of Shivan attacks. I say this because it is immediately apparent that this planet was also destroyed by Shivan weapons. This is difficult to believe, considering the age of the remains, but the evidence is conclusive. What we ask is for rescue and an escort away from this planet. Our scientists are not normally a superstitious group, but having one's homeworld destroyed tends to shake your beliefs. Please send an armed rescue as soon as possible to these coordinates."
+
+Our Orders
+Your next series of missions will require both massive firepower and intelligence. For this reason, I am assigning Alpha 1 to lead these missions. We will be attempting to rescue the Vasudan refugees from Altair.
+
+New Technology: Intersystem Jump Drives
+This mission will be facilitated by the new subspace drive we have received. For years, the GTA has tried to give a fighter the ability to do intersystem jumps. After monitoring the Beta Aquilae engagements, the GTA subspace science center on Mars has finally been able to solve the puzzle. Many GTA fighters are currently being equipped with intersystem subspace drives.
+
+New Technology: Project Ursa
+Research and Development have nearly completed project Ursa, which should be our best bet at defeating the Shivan Lucifer Destroyer. For those of you that haven't been keeping up, Project Ursa is an attempt to make a new type of Heavy Bomber capable of carrying the Harbinger bomb.
+We expect that a wing of Ursas will be available to you on your return trip from Altair.
+
+New Technology: Harbinger Bomb
+The Harbinger will assist us greatly in any attacks against capital ships. Until recently, Harbingers were reserved for planetary attacks only. With this project nearing completion, we may be able to finally defeat the Lucifer.
+
+New Technology: Disruptor Missile
+You may want to use the new Disruptor missile to assist you in the next few missions. It is the only missile in our arsenal which allows us to completely shut down a cruiser for a short amount of time. It's definitely worth a look, details are in the Tech Database. 
+
+ACT 3 MISSION 4 - 3.4 "Reaching the Zenith":
+
+Briefing:
+As you already know, the Shivans have begun a massive offensive. They have completely cut us off from all of the outer colonies, and have our forces confined to nine systems that form the heart of Terran space.
+However, in what used to be Vasudan space at Altair, a group of Vasudan refugees has apparently unearthed records from a long dead civilization. Terran Command believes the information in these records to be of great importance.
+We have located one potential weak point in the Shivan barrier encircling us. The jump node to the Altair system in Deneb is being guarded by only one cruiser, the SC Zenith.
+The Zenith is currently on patrol with just two wings of Shivan fighters, the Arjuna wing of interceptors, and the Rama wing of superiority fighters. However, we believe they are able to call in reinforcements.
+Your primary objective will be to destroy the Zenith. Take out the Zenith's communications system first to prevent it from calling in reinforcements. If you're unable to do that, go after all weapons systems, including turrets and missile launchers.
+Alpha wing will provide cover for the bombers. Gamma wing will assist Alpha and will attempt to take out the communications system on Zenith. Beta wing will fly bombers equipped with Tsunami bombs and will be targeting suspected weak points on the Zenith's hull.
+After you have completed these tasks, stand by for further orders. Good luck, Alpha 1.
+
+Walkthrough:
+This mission involves three wings out of four, almost a whole squadron. By default, Alpha wing consists of Ulysses-class space superiority fighters, armed with Prometheus and Avenger cannons and 40 Hornets. Beta consists of Medusa bombers, armed with Avenger cannons, 5 Stilettos, 5 Synaptic anti-fighter bombs and 5 Tsunamis. Gamma consists of Hercules-class heavy assault fighters, outfitted with Banshee lasers, Disruptor cannons, 15 Interceptor secondary missiles and 5 Phoenix anti-bomber missiles.
+As a space superiority fighter, your job in this mission is to engage the Shivan interceptors before they threaten Beta wing's bombers or Gamma wing's heavy fighters. Initially, the Dragons are your primary concern. If you can, hit them at long range with your Hornets. After the initial clash is over, locate Gamma wing and fly escort. Gamma will attempt to destroy the SC Zenith's communications subsystem, although you can accomplish this easily yourself if they fail. You have several minutes to destroy it before some Scorpions begin to arrive.
+Eventually, a Hammer of Light cruiser, the PVC Aten-class Benedict will jump in some distance from your position, along with a wing of Thoth-class space superiority fighters. Abandon your position and focus taking out as many of the Thoths as possible before they reach your squadron. Keep in mind the Thoth has twice the firepower of your Ulysses, so use caution on your approach.
+When the Zenith finally goes down, order Beta wing to attack the PVC Benedict. If Beta wing is eliminated, order Gamma to do it. If Gamma wing is eliminated at this point, the mission is forfeit. Before the Benedict goes down, rearm. You will be starting the next mission immediately.
+
+Debriefing:
+Good work destroying both enemy cruisers and their escorts. Call in a support ship and rearm. We have a priority mission for you soon. Stand by, sending new orders now.
+
+ACT 3 MISSION 5 - 3.5 "Running the Gauntlet":
+
+Briefing:
+As you already know, we are sending scientists to the Altair system to investigate records found on Altair IV. Command hopes they will aid us in our war with the Shivans.
+The Rosetta is currently carrying the scientists. It will rendezvous with the two transports, Omega 1 and Omega 2. All three ships should be arriving within a few minutes.
+Omega wing will dock with the Rosetta as soon as they arrive. Oversee this personnel transfer, then escort Omega 1 and Omega 2 to the Altair Jump Node.
+
+Walkthrough:
+The Rosetta and Omega wing will jump in soon. Then 4 Shaitans will jump in and attack the Rosetta and Omega wing. There are 5 waves of Shaitans, so once you have destroyed the fifth, head toward the jump node. You may want to use camping tactics here.
+Soon after Omega 2 has completed the docking procedure with Rosetta, the Lucifer will jump in behind the jump node. He will launch fighters at Omega wing. Always take out the Basilisks first, then take out any others. If you engage the Scorpions and let some Basilisks slip away, you may be prone to large amounts of unhealthy frustration. Note that at the end of the mission, the transports will pass close to the Lucifer, so the Basilisks won't have to travel a long distance to unleash a fury of Hornets at either transport. If you lose one Omega during this stage, you can choose to be a maximalist and restart the mission or be satisfied with saving one transport. Saving one Omega is enough, but you must defend both transports if you want to get the only grantable Medal of Valor after the next mission.
+After both Omegas have departed, jump out.
+If you fail to destroy the Zenith in the previous mission, it will be present in the middle of the jump node when this mission starts and will be a thorn throughout the game, complicating your efforts to escort both transports into the jump node. 
+
+Debriefing:
+You managed to get both transports to the Altair system. If the information at Altair 4 proves as valuable as the Vasudan refugees suspect, then the Terran and Vasudan people will owe you a great debt. Well done, pilot. The crew of the Rosetta also sends their thanks. When the Lucifer jumped in, they all but gave up hope of survival. Your squadron was able to hold off the enemy and that is most impressive. For this, you are awarded the Commendation Medal.
+
+Ancients 5 cutscene (shown after Mission 3.5)
+
+There is little left for us. Little time. But much irony.
+We did discover they are not invulnerable. The destroyers that darkened our skies like a plague can be harmed. But we have no way to deliver the hurt.
+We have the knowledge but not the means. And so this is our legacy. In subspace, they cannot use their shields. And into subspace they can be tracked.
+
+ACT 3 MISSION 6 - 3.6 "Black Omega":
+
+Briefing:
+We have successfully extracted the records from Altair IV. They have been partially deciphered and are being moved back to Terran Space. Omega transports will once again be handling the movement of the scientists and the records.
+Unfortunately, the Altair system is still controlled by Hammer of Light. One of their flagships, the Anvil, is stationed here, and has gotten word of our presence in this system. It is currently blocking the vector to the Deneb subspace node.
+The Anvil carries with it a powerful contingent of Vasudan fighters. Intelligence reports two squadrons: one of advanced Thoth space superiority fighters, and one of Horus Interceptors. These fighters have defended the Anvil well.
+Intelligence has also detected the presence of a third wing of Vasudan bombers in this system. They will undoubtedly attack our fleeing transports.
+Your strike force will once again consist of Alpha, Beta, and Gamma wings. Gamma will provide escort for Alpha while Alpha attacks the Anvil. Beta will ensure the safety of the transports and maintain our fighter superiority.
+The Anvil must be destroyed. We are equipping Alpha with Harbinger bombs. These bombs require exact placement and careful maneuvering, but will do massive damage to the Anvil. Beta and Gamma must ensure that the Harbingers reach their target.
+Our primary goal, however, is to ensure that Omega 1 and Omega 2 reach the jump node. Destroying the Anvil is the best way to accomplish this goal. This mission is of grave importance. Do not fail, pilot. Good luck.
+
+Walkthrough:
+Leo wing of bombers arrives first and is the greatest threat to the transports. Head toward the jump node. While you're heading there, order your wingmen to engage enemy. By this time the Leo bombers should have arrived. Dispatch them. Now you are free to attack the Anvil. Use Harbingers and be surprised at how much damage two of them will do. Keep hitting the Anvil with Harbingers. If fighters start attacking Omega 2, tell Gamma wing to protect Omega 2. Once the Anvil is down, destroy any remaining fighters and then stay with the transports until they depart.
+If you play on at least Medium difficulty and save both transports, you'll receive the Medal of Valor.
+If only one Omega transport survived the last mission, then only one Omega transport will be in this mission. In this scenario, you receive the Medal of Valor, no matter your performance in this mission (as long as you save the one remaining transport, of course).
+
+Debriefing:
+Mission accomplished, Pilot. We haven't yet been briefed on the full importance of the ancient records, but Terran Command is extremely pleased. Further orders are expected soon.
+It is impressive that you managed to destroy a primary flagship of the Hammer of Light. Perhaps this will put an end to their resistance. Fighting the Hammer of Light has been a great strain on the Terran-Vasudan alliance. For this we are awarding you the Medal of Honor. This is a rare and coveted medal given only to the finest pilots in the GTA. Congratulations.
+
+Command Briefing 3.3:
+
+GTD Bastion
+Sirius System
+3/29/2335
+
+The Lucifer
+The Shivans have finally determined the location of the Sol system. The Lucifer has moved into position here in Sirius for the subspace jump to Delta Serpentis.
+From Delta Serpentis, he will certainly make the jump to Sol to destroy our homeworld.
+
+Lucifer's Vulnerability
+From the records you retrieved in Altair, we have discovered the means to destroy the Lucifer. As you know, our shield systems do not work in subspace. The same holds true for the Lucifer. More importantly, the records contain the information to enable us to track a capital ship into and inside subspace.
+If we can track the Lucifer into subspace, we believe a small strike force may be sufficient to destroy it.
+
+Our Orders
+We have been assigned the task of destroying the Lucifer before he reaches Sol. The Bastion is currently en route to intercept the Lucifer at the Sirius-Delta Serpentis subspace node.
+The Bastion will attempt to provide close cover, while Ursa bombers deliver a payload of Harbingers. We believe that without the shielding system it's relied on so heavily, the Lucifer will be vulnerable.
+Keep in mind that this is a time critical operation. If we do not enter subspace soon after the Lucifer, we cannot launch our attack.
+
+Destroying the Lucifer
+From your earlier scans of the Lucifer in the Deneb system, we have determined that it is powered by five primary reactors. These reactors are spread out across the Lucifer.
+If all five reactors are destroyed in a short period of time, the Lucifer won't have a chance of surviving.
+We don't have much time. Report for mission briefings immediately.
+
+ACT 3 MISSION 7 - 3.7 "Clash of the Titans":
+
+Briefing:
+We have few chances to stop the Lucifer. It is heading to the Sol system but we have an opportunity to head them off at Sirius, at the jump node to Delta Serpentis.
+If you encounter the Lucifer in Sirius hold it off until the rest of the fleet can catch up to you.
+
+Walkthrough:
+When you arrive, you find out that the Lucifer has already jumped through the node. Moments later a Shivan ambush force led by a Demon-class destroyer, the Tantalus, arrives. This is why you should make all of Alpha wing Valkyries (including yourself) since they have a high top speed and acceleration, which is ideal for intercepting bombers, and equip them with Banshee and Prometheus cannons since the Ulysses can't use them. Give them Hornet missiles, but give yourself Interceptors. Assign Alpha wing to protect the Bastion. Make all of Beta wing Ursa bombers and equip them with Harbingers, Synaptics (for defense), and Stilettos. Have them attack the Tantalus while you provide cover for the Bastion. Your job is to target all of the bombers first (VERY IMPORTANT) before they can reach the Bastion. The ones to look out for are the Nephilims (initially) and Shaitans (later). A helpful way of protecting the Bastion is to target all of the megabombs being delivered if you can't intercept all of the bombers in time. Use the Interceptors (in single-fire mode) that you equipped to target the bombs since they have a faster lock and velocity. Once you cleaned them up, go for rest of the packs, especially Basilisks since they have nasty swarm missiles. When you're done with them, the Tantalus should be very low on health. Feel free to destroy it with whatever remaining fighters you have. In a moment, the Bastion will jump out at the node and the mission will be complete.
+
+Debriefing:
+The Bastion was severely damaged in this battle. More of the burden of destroying the Lucifer will shift to the bombers. The Bastion will be of limited assistance.
+We are now proceeding to the Delta Serpentis system.
+
+ACT 3 MISSION 8 - 3.8 "The Great Hunt":
+
+Briefing:
+In a few minutes we will be entering the Delta Serpentis system. We will then begin the most important engagement in our history. We will fight for the very survival of Earth.
+Our plan is to rapidly close the distance with the Lucifer so that the Bastion is able to enter subspace just behind him. Once in subspace, we will attack and destroy the Lucifer.
+Your task will be to provide cover for the Bastion so that it can quickly converge on the Lucifer.
+That Destroyer must be stopped at all costs. Failure is absolutely not an option here, pilots.
+
+Walkthrough:
+When the mission begins, the Lucifer is already at the node to Sol and will jump soon. Get ready for a lot of action. Attack the six Basilisks (Deva and Arjuna wings) in front of the Bastion first, then head toward the node to Sol. Command will order you to go to the node quickly. Expect resistance, a lot of resistance. 6 Manticores (Krishna and Rama) will be the first to challenge you. Then 4 Basilisks (Bheema) will attack. 3 Hammer of Light Thoths (Virgo) will be next in the gauntlet. 3 more Basilisks (Asura) will keep you on your toes. 4 Scorpions (Indra) will next be stepping in your way. By 3:55 mission time, Epsilon wing will be ready to join you from the Bastion. 4 more Thoths (Aries) will challenge you. Durga and Genma wings with 4 Basilisks will be your next foes. The Prophecy (Typhon-class HoL destroyer) will arrive next and is exactly what you need at this point (*sarcasm*). You'll never destroy it, so keep going. Finally, 3 waves of 3 Dragons (oh, great..) will be your last enemy. Now that was a lot of fighting. Jump at the node when you reach it.
+
+Debriefing:
+There is no debriefing, you proceed immediately to the briefing of the next mission.
+
+ACT 3 MISSION 9 - 3.9 "Good Luck":
+
+Briefing:
+Your objective is to destroy the Lucifer. The Lucifer has five reactors located on its main hull. In order to eliminate the Lucifer, these reactors must be destroyed.
+
+Walkthrough:
+This mission is the last one, takes place in subspace and is easier than it would seem, given its importance. Usually dogfighting Shivans for 10 minutes will win it for you; the Shivans don't pose much of a threat with their shields gone. The best strategy, however, and one that becomes necessary on the higher difficulty levels, is to follow your wing's lead and destroy the Lucifer's weapons subsystem first. This will prevent the Lucifer from shooting down Delta wing's bombs, and Delta only has a limited supply (and can't call in support ship and rearm inside subspace). Delta starts the mission a few kilometers behind you, so you'll even have enough time to destroy the subsystem before they close within bombing range. Once the weapon subsystem is destroyed, just protect Delta until they destroy all of the five reactors. Be advised that your shields also do not work in subspace, so keep an eye on your hull integrity and dodge enemy fire as much as you can.
+
+After all five Lucifer's reactors are destroyed, the mission ends and the Endgame cutscene will play.
+
+Endgame cutscene (shown at the end of Act 3, after the final Mission 3.9)
+
+(Shows the attack on the SD Lucifer inside the Sol-Delta Serpentis jump node, the destruction of the Shivan superdestroyer and the collapse of the jump node. Victorious Terran fighters and bombers fly away from the exploding wreck towards the Earth.)
+I know why the Ancient ones were destroyed, and I know what they knew. I know that if not for the Shivans, they would have perished long before. Without the Shivans, someone would have discovered the Ancients in their infancy and eliminated them, just surely as they eliminated countless billions of others.
+I believe it is only the destroyers who are killed. The Shivans are the great destroyers, but they are also the great preservers. That is why when we moved into space there was no one powerful enough to kill us.
+Long had we been the destroyer. Our turn had nearly come.
+In the Vasudan war, we learned how to adapt. We learned how to study our enemy. We learned how to overcome. We learned how to survive. And so we did.
+All the jump points from Earth are gone. But the Shivans can rebuild them. I'm told we can expect them again, but not in my lifetime. Such is liberation.
+
+END OF ACT 3 AND THE END OF FREESPACE 1

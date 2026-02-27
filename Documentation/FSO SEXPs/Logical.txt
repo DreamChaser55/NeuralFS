@@ -1,0 +1,142 @@
+Logical
+
+*true*
+    True (Boolean operator)
+    A true boolean state
+
+    Returns a boolean value.
+*false*
+    False (Boolean operator)
+    A false boolean state
+
+    Returns a boolean value.
+*and*
+    And (Boolean operator)
+    And is true if all of its arguments are true.
+
+    Returns a boolean value. Takes 2 or more boolean arguments.
+*and-in-sequence*
+    And in sequence (Boolean operator)
+    Returns true if all of its arguments have become true in the
+    order they are listed in.
+    NOTE 1: This is more strict than might be apparent. If argument
+    2 becomes true while argument 1 is still pending, then the
+    operator will immediately return false because the arguments did
+    not become true in the correct sequence.
+    NOTE 2: This operator should not be used with when-argument or
+    any -argument SEXPs because its method of caching arguments is
+    not compatible.
+    Returns a boolean value. Takes 2 or more boolean arguments.
+*or*
+    Or (Boolean operator)
+    Or is true if any of its arguments are true.
+
+    Returns a boolean value. Takes 2 or more boolean arguments.
+*not*
+    Not (Boolean operator)
+    Returns opposite boolean value of argument (True becomes false,
+    and false becomes true).
+
+    Returns a boolean value. Takes 1 boolean argument.
+*xor*
+    Xor (Boolean operator)
+    Xor is true if exactly one of its arguments is true.
+
+    Returns a boolean value. Takes 2 or more boolean arguments.
+*=*
+    Equals (Boolean operator)
+    Is true if all of its arguments are equal.
+
+    Returns a boolean value. Takes 2 or more numeric arguments.
+*!=*
+    Not Equal To (Boolean operator)
+    Is true if the first argument is not equal to any of the
+    subsequent arguments.
+
+    Returns a boolean value. Takes 2 or more numeric arguments.
+*>*
+    Greater Than (Boolean operator)
+    True if the first argument is greater than the subsequent
+    argument(s).
+
+    Returns a boolean value. Takes 2 numeric arguments.
+*>=*
+    Greater Than Or Equal To (Boolean operator)
+    True if the first argument is greater than or equal to the
+    subsequent argument(s).
+
+    Returns a boolean value. Takes 2 numeric arguments.
+*<*
+    Less Than (Boolean operator)
+    True if the first argument is less than the subsequent argument(s).
+
+    Returns a boolean value. Takes 2 numeric arguments.
+*<=*
+    Less Than Or Equal To (Boolean operator)
+    True if the first argument is less than or equal to the
+    subsequent argument(s).
+
+    Returns a boolean value. Takes 2 numeric arguments.
+*string-equals*
+    String Equals (Boolean operator)
+    Is true if all of its arguments are equal.
+
+    Returns a boolean value. Takes 2 or more string arguments.
+*string-greater-than*
+    String Greater Than (Boolean operator)
+    True if the first argument is greater than all of the other
+    arguments.
+
+    Returns a boolean value. Takes 2 or more string arguments.
+*string-less-than*
+    String Less Than (Boolean operator)
+    True if the first argument is less than all of the other arguments.
+
+    Returns a boolean value. Takes 2 or more string arguments.
+*perform-actions-bool-first*
+    perform-actions-bool-first
+    This sexp allows actions to be performed as part of a
+    conditional test. It is most useful for assigning variables or
+    performing some sort of pre-test action within the conditional
+    part of "when", etc. It works well as the first branch of an
+    "and" sexp, provided it returns true so as to not affect the
+    return value of the "and".
+
+    Returns a boolean value (note well the distinction between
+    perform-actions-bool-first and perform-actions-bool-last). Takes
+    2 or more arguments.
+    1: A boolean value to return after all successive actions have
+    been performed. NOTE: Even though this value is not returned
+    until the actions are performed, it is evaluated BEFORE any of
+    the actions.
+    Rest: Actions to perform, which would normally appear in a
+    "when" sexp.
+*perform-actions-bool-last*
+    perform-actions-bool-last
+    This sexp allows actions to be performed as part of a
+    conditional test. It is most useful for assigning variables or
+    performing some sort of pre-test action within the conditional
+    part of "when", etc. It works well as the first branch of an
+    "and" sexp, provided it returns true so as to not affect the
+    return value of the "and".
+
+    Returns a boolean value (note well the distinction between
+    perform-actions-bool-first and perform-actions-bool-last). Takes
+    2 or more arguments.
+    1: A boolean value to return after all successive actions have
+    been performed. NOTE: This parameter is evaluated AFTER all of
+    the actions have been performed.
+    Rest: Actions to perform, which would normally appear in a
+    "when" sexp.
+*has-time-elapsed*
+    Has time elapsed (Boolean operator)
+    Becomes true when the specified amount of time has elapsed
+    (Mission time becomes greater than or equal to the specified time).
+    Returns a boolean value. Takes 1 numeric argument...
+    1: The amount of time in seconds.
+*has-time-elapsed-msecs*
+    Has time elapsed, in milliseconds (Boolean operator)
+    Becomes true when the specified amount of time has elapsed
+    (Mission time becomes greater than or equal to the specified time).
+    Returns a boolean value. Takes 1 numeric argument...
+    1: The amount of time in milliseconds.

@@ -1,0 +1,206 @@
+  Distance and Coordinates
+
+*distance*
+    Distance (Status operator)
+    Returns the distance between two objects. These can be
+    ships, wings, or waypoints. (Evaluation returns NAN until
+    both objects are in-mission).
+    When a wing or team is given (for either argument), the
+    result will be the closest distance.
+
+    NOTE: The standard retail SEXP measures between the center
+    of one ship and the bounding box of another. It is
+    recommended to use center-distance or bbox-distance.
+
+    Returns a numeric value. Takes 2 arguments...
+    1: The name of one of the objects.
+    2: The name of the other object.
+*distance-to-center*
+    Distance-To-Center (Status operator)
+    Returns the distance between the centers of two objects.
+    These can be ships, wings, or waypoints. (Evaluation returns
+    NAN until both objects are in-mission).
+    When a wing or team is given (for either argument), the
+    result will be the closest distance.
+
+    Returns a numeric value. Takes 2 arguments...
+    1: The name of one of the objects.
+    2: The name of the other object.
+*distance-to-bbox*
+    Distance-To-BBox (Status operator)
+    Returns the distance between the bounding boxes of two
+    objects. These can be ships, wings, or waypoints.
+    (Evaluation returns NAN until both objects are in-mission).
+    When a wing or team is given (for either argument), the
+    result will be the closest distance.
+
+    Returns a numeric value. Takes 2 arguments...
+    1: The name of one of the objects.
+    2: The name of the other object.
+*distance-center-to-subsystem*
+    Center distance from ship subsystem (Status operator)
+    Returns the distance between the center of an object and the
+    center of a ship subsystem. The object can be a ship, wing,
+    or waypoint. (Evaluation returns NAN until both objects are
+    in-mission).
+    When a wing or team is given, the result will be the closest
+    distance.
+
+    Returns a numeric value. Takes 3 arguments...
+    1: The name of the object.
+    2: The name of the ship which houses the subsystem.
+    3: The name of the subsystem.
+*distance-bbox-to-subsystem*
+    BBox distance from ship subsystem (Status operator)
+    Returns the distance between the bounding box of an object
+    and the center of a ship subsystem. The object can be a
+    ship, wing, or waypoint. (Evaluation returns NAN until both
+    objects are in-mission).
+    When a wing or team is given, the result will be the closest
+    distance.
+
+    Returns a numeric value. Takes 3 arguments...
+    1: The name of the object.
+    2: The name of the ship which houses the subsystem.
+    3: The name of the subsystem.
+*distance-to-nav*
+    distance-to-nav
+    Returns the distance from the center of the player ship to a
+    nav point. Takes 1 argument... 1: The name of the navpoint
+*num-within-box*
+    Number of specified objects in the box specified
+    1: Box center (X)
+    2: Box center (Y)
+    3: Box center (Z)
+    4: Box half-width (distance +/- away from center X)
+    5: Box half-height (distance +/- away from center Y)
+    6: Box half-depth (distance +/- away from center Z)
+    Rest: Ships or wings to check
+*is-in-box*
+    Whether an object is in the box specified. If a second ship
+    is specified, the box is relative to that ship's reference
+    frame.
+    1: Ships, wings, or points to check
+    2: Min X
+    3: Max X
+    4: Min Y
+    5: Max Y
+    6: Min Z
+    7: Max Z
+    8: Ship to use as reference frame (optional).
+*special-warp-dist*
+    special-warp-dist
+    Returns distance to the plane of the knossos device in
+    percent length of ship
+    (ie, 100 means front of ship is 1 ship length from plane of
+    knossos device)
+    1: Ship name
+*get-object-x*
+    get-object-x
+    Returns the absolute X coordinate of a set of coordinates
+    relative to a particular object (or object's subsystem). The
+    input coordinates are the coordinates relative to the
+    object's position and orientation. If no input coordinates
+    are specified, the coordinate returned is the coordinate of
+    the object (or object's subsystem) itself. Takes 1 to 5
+    arguments...
+    1: The name of a ship, wing, or waypoint (evaluation returns
+    NAN until object is in-mission).
+    2: A ship subsystem (or "<none>" if the first argument is
+    not a ship - optional).
+    3: The relative X coordinate (optional).
+    4: The relative Y coordinate (optional).
+    5: The relative Z coordinate (optional).
+*get-object-y*
+    get-object-y
+    Returns the absolute Y coordinate of a set of coordinates
+    relative to a particular object (or object's subsystem). The
+    input coordinates are the coordinates relative to the
+    object's position and orientation. If no input coordinates
+    are specified, the coordinate returned is the coordinate of
+    the object (or object's subsystem) itself. Takes 1 to 5
+    arguments...
+    1: The name of a ship, wing, or waypoint (evaluation returns
+    NAN until object is in-mission).
+    2: A ship subsystem (or "<none>" if the first argument is
+    not a ship - optional).
+    3: The relative X coordinate (optional).
+    4: The relative Y coordinate (optional).
+    5: The relative Z coordinate (optional).
+*get-object-z*
+    get-object-z
+    Returns the absolute Z coordinate of a set of coordinates
+    relative to a particular object (or object's subsystem). The
+    input coordinates are the coordinates relative to the
+    object's position and orientation. If no input coordinates
+    are specified, the coordinate returned is the coordinate of
+    the object (or object's subsystem) itself. Takes 1 to 5
+    arguments...
+    1: The name of a ship, wing, or waypoint (evaluation returns
+    NAN until object is in-mission).
+    2: A ship subsystem (or "<none>" if the first argument is
+    not a ship - optional).
+    3: The relative X coordinate (optional).
+    4: The relative Y coordinate (optional).
+    5: The relative Z coordinate (optional).
+*get-object-pitch*
+    get-object-pitch
+    Returns the pitch angle, in degrees, of a particular object.
+    The returned value will be between 0 and 360. Takes 1
+    argument...
+    1: The name of a ship or wing (evaluation returns NAN until
+    ship/wing is in-mission).
+*get-object-bank*
+    get-object-bank
+    Returns the bank angle, in degrees, of a particular object.
+    The returned value will be between 0 and 360. Takes 1
+    argument...
+    1: The name of a ship or wing (evaluation returns NAN until
+    ship/wing is in-mission).
+*get-object-heading*
+    get-object-heading
+    Returns the heading angle, in degrees, of a particular
+    object. The returned value will be between 0 and 360. Takes
+    1 argument...
+    1: The name of a ship or wing (evaluation returns NAN until
+    ship/wing is in-mission).
+*get-object-speed-x*
+    get-object-speed-x
+    Returns the X speed of a ship or wing as an integer
+    (evaluation returns NAN until ship/wing is in-mission).Takes
+    2 or 3 arguments...
+    1: The name of the object.
+    2: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*get-object-speed-y*
+    get-object-speed-y
+    Returns the Y speed of a ship or wing as an integer
+    (evaluation returns NAN until ship/wing is in-mission).Takes
+    2 or 3 arguments...
+    1: The name of the object.
+    2: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*get-object-speed-z*
+    get-object-speed-z
+    Returns the Z speed of a ship or wing as an integer
+    (evaluation returns NAN until ship/wing is in-mission).Takes
+    2 or 3 arguments...
+    1: The name of the object.
+    2: Whether the speed on the axis should be set according to
+    the universe grid (when false) or according to the object's
+    facing (when true); You almost always want to set this to
+    true; (optional; defaults to false).
+*angle-facing-object*
+    angle-facing-object
+    Returns the angle between the forward vector of a ship and
+    the vector from the ship to another object.
+    This is effectively the FoV the ship would need to see the
+    object.
+
+    Returns a numeric value. Takes 2 arguments...
+    1: The name of the ship from which to check.
+    2: The name of the object to check.

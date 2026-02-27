@@ -1,0 +1,177 @@
+  Ship Status
+
+*is-in-mission*
+    Is-In-Mission (Status operator)
+    Checks whether a given ship or wing is presently in the
+    mission. This sexp doesn't check the arrival list or exited
+    status; it only tests to see if the ship is active or the
+    wing has at least one ship present. This means that
+    internally the sexp only returns SEXP_TRUE or SEXP_FALSE and
+    does not use any of the special shortcut values. This is
+    useful for ships created with ship-create, as those ships
+    will not have used the conventional ship arrival list.
+
+    Takes 1 or more string arguments, which are checked against
+    the ship list and wing list. (If more than 1 argument is
+    specified, the sexp will only evaluate to true if all
+    arguments are in the mission simultaneously.)
+*is-docked*
+    Is-Docked (Status operator)
+    Checks whether the specified ships are currently docked.
+    This sexp is different from has-docked-delay, which will
+    return true if the ships have docked at any point in the
+    past. The has-docked-delay sexp checks the mission log,
+    whereas the is-docked sexp examines the actual dockpoints.
+
+    Takes 1 or more arguments. (If more than 2 arguments are
+    specified, the sexp will only evaluate to true if all ships
+    are docked simultaneously.)
+    If a single argument is supplied, the sexp will evaluate to
+    true if anything is docked to the host ship. (Evaluation
+    returns NAN until all ships are in-mission).
+    1: The host ship.
+    Rest: Ship to check as docked to the host ship.
+*is-ship-visible*
+    is-ship-visible
+    Check whether ship is visible on a certain ship's radar.
+    Returns 0 - not visible, 1 - partially visible, 2 - fully
+    visible.
+    Note: In multiplayer, the second argument *must* be supplied
+    or this SEXP will default to the first player.
+    Takes 1 or 2 arguments...
+    1: Name of ship to check
+    2 (optional): Name of the viewing ship. Defaults to the
+    player's ship in single-player mode. If this ship is not in-
+    mission, the SEXP will return 0.
+*is-ship-stealthy*
+    is-ship-stealthy
+    Check whether ship is currently stealthy.
+    True if stealth flag set, false otherwise. Takes 1 argument...
+    1: Name of ship to check
+*is-friendly-stealth-visible*
+    is-friendly-stealth-visible
+    Check whether ship will be visible to radar as a stealth
+    friendly.
+    Takes 1 argument...
+    1: Name of ship to check
+*is-iff*
+    Is IFF (Boolean operator)
+    True if ship(s) or wing(s) are all of the specified team/IFF.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Team (e.g. "friendly", "hostile", "neutral", "unknown").
+    Rest: Name of ship or wing to check (ship/wing does not need
+    to be in-mission).
+*is-species*
+    Is Species (Boolean operator)
+    True if ship(s) or wing(s) are all of the specified species.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Species (e.g. "Terran", "Vasudan", "Shivan").
+    Rest: Name of ship or wing to check (ship/wing does not need
+    to be in-mission).
+*is-ai-class*
+    Is AI Class (Boolean operator)
+    True if ship or ship subsystem(s) is/are all of the
+    specified AI class.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: AI class ("None", "Coward", "Lieutenant", etc.)
+    2: Name of ship to check (evaluation returns NAN until ship
+    is in-mission).
+    Rest: Name of ship subsystem(s) to check (optional)
+*is-ship-type*
+    Is Ship Type (Boolean operator)
+    True if ship or ships is/are all of the specified ship type.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Ship type ("fighter", "bomber", etc.)
+    2: Name of ship to check (ship/wing does not need to be in-
+    mission) .
+*is-ship-class*
+    Is Ship Class (Boolean operator)
+    True if ship or ships is/are all of the specified ship class.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Ship class
+    2: Name of ship to check (ship/wing does not need to be in-
+    mission) .
+*is-facing*
+    Is Facing (Boolean training operator)
+    Is true as long as the second object is within the first
+    ship's specified forward cone. A forward cone is defined as
+    any point that the angle between the vector of the ship and
+    point, and the forward facing vector is within the given
+    angle. If the distance between the two is greater than the
+    fourth parameter, this will return false.
+
+    Returns a boolean value. Takes 3 or 4 argument...
+    1: Ship to check from.
+    2: Object to check is within forward cone.
+    3: Angle in degrees of the forward cone.
+    4: Range in meters (optional).
+*is_tagged*
+    is-tagged
+    Returns whether a given ship is tagged or not (evaluation
+    returns NAN until ship is in-mission)
+*has-been-tagged-delay*
+    Has ship been tagged (delay) (Boolean operator)
+    Returns true if all of the specified ships have been tagged.
+
+    Returns a boolean value after <delay> seconds when all ships
+    have been tagged. (Event evaluation is deferred until the
+    ships are in-mission). Takes 2 or more arguments...
+    1: Delay in seconds after which sexpression will return true
+    when all ships have been tagged.
+    Rest: Names of ships to check if tagged.
+*are-ship-flags-set*
+    Are ship flags set (Boolean operator)
+    Returns true if all of the specified flags have been set for
+    this particular ship.
+
+    Takes 2 or more arguments...
+    1: Name of the ship (ship does not have to be in-mission).
+    Rest: Ship, object, parse object, or ai flags which might be
+    set for this ship.
+*are-wing-flags-set*
+    Are wing flags set (Boolean operator)
+    Returns true if all of the specified flags have been set for
+    this particular wing.
+
+    Takes 2 or more arguments...
+    1: Name of the wing (wing does not have to be in-mission).
+    Rest: Wing flags which might be set for this wing.
+*has-armor-type*
+    has-armor-type (Status operator)
+    Checks if a given ship has a specific armor type.
+
+    Takes 3 arguments...
+    1: The ship to check (evaluation returns NAN until ship is
+    in-mission)
+    2: The armor type to check
+    3: The subsystem armor to check
+*is-ship-emp-active*
+    Is ship emp active (Boolean operator)
+    Returns true if all of the specified ships are currently
+    experiencing EMP effects.
+
+    Returns a boolean value if all ships are currently EMP'd.
+    (Evaluation is deferred until all ships are in-mission).
+    Takes 1 or more arguments...
+    All: Name of the ships to check.
+*get-throttle-speed*
+    Get-Throttle-Speed (Training operator)
+    Returns the current throttle speed that the ship has been
+    set to. Reverse speeds are returned as a negative value.
+    Takes 1 argument...
+    1: Name of the player ship to check the throttle value for.
+*current-speed*
+    current-speed
+    Returns the speed of the given object. Takes 1 argument...
+    1: Name of the object
+*is-nav-linked*
+    is-nav-linked
+    Determines if a ship is linked for autopilot ("set-nav-
+    carry" or "set-nav-needslink" + linked)Takes 1 argument...
+    1: Ship to check (evaluation returns NAN until ship is in-
+    mission)

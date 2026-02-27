@@ -1,0 +1,241 @@
+  Beams and Turrets
+
+*fire-beam*
+    fire-beam
+    Fire a beam weapon from a specified subsystem
+    1: Ship which will be firing (ship must be in-mission)
+    2: Turret which will fire the beam (note, this turret must
+    have at least 1 beam weapon on it)
+    3: Ship which will be targeted
+    4: Subsystem to target (optional)
+    5: Whether to force the beam to fire (disregarding FOV and
+    subsystem status) (optional)
+*fire-beam-at-coordinates*
+    fire-beam-at-coordinates
+    Fire a beam weapon from a specified subsystem at a set of
+    coordinates. Not compatible with multiplayer.
+    1: Ship which will be firing (ship must be in-mission)
+    2: Turret which will fire the beam (note, this turret must
+    have at least 1 beam weapon on it)
+    3: x coordinate to be targeted
+    4: y coordinate to be targeted
+    5: z coordinate to be targeted
+    6: (Optional Operator) Whether to force the beam to fire
+    (disregarding FOV and subsystem status). Defaults to False
+    7: second x coordinate to be targeted (optional; only used
+    for slash beams)
+    8: second y coordinate to be targeted (optional; only used
+    for slash beams)
+    9: second z coordinate to be targeted (optional; only used
+    for slash beams)
+*beam-create*
+    beam-create
+    Fire a beam weapon from the specified coordinates to the
+    specified target. Not compatible with multiplayer.
+    1: Beam weapon to fire
+    2: Parent ship (for kill credit, if applicable, must be in-
+    mission; or "<none>")
+    3: Team for this beam to be on (related to difficulty-based
+    damage)
+    4: X coordinate to fire from
+    5: Y coordinate to fire from
+    6: Z coordinate to fire from
+    7: Target ship (must be in-mission or "<none>")
+    8: Target subsystem (optional; can be "<none>")
+    9: X coordinate to fire at (optional)
+    10: Y coordinate to fire at (optional)
+    11: Z coordinate to fire at (optional)
+    12: Second X coordinate to fire at (optional; used for slash
+    beams)
+    13: Second Y coordinate to fire at (optional; used for slash
+    beams)
+    14: Second Z coordinate to fire at (optional; used for slash
+    beams)
+*beam-free*
+    beam-free
+    Sets one or more turrets to allow beam weapons firing. When
+    a beam-equipped turret is activated, there will be a short
+    random delay (between 50 and 4000 milliseconds) before firing.
+    1: Ship to be operated on (ship must be in-mission)
+    2, 3, etc : List of turrets to activate
+*beam-free-all*
+    beam-free-all
+    Sets all beam weapons on the specified ship to be active
+    (ship must be in-mission). For each beam-equipped turret,
+    there will be a different short random delay (between 50 and
+    4000 milliseconds) before firing.
+*beam-lock*
+    beam-lock
+    Sets one or more turrets to NOT allow beam weapons firing.
+    1: Ship to be operated on (ship must be in-mission)
+    2, 3, etc : List of turrets to deactivate
+*beam-lock-all*
+    beam-lock-all
+    Sets all beam turrets on the specified ship to be
+    deactivated (ship must be in-mission)
+*turret-free*
+    turret-free
+    Sets one or more turrets to allow standard primary or
+    secondary weapons firing. When a turret is activated, there
+    will be a short random delay (between 50 and 4000
+    milliseconds) before firing.
+    1: Ship to be operated on (ship must be in-mission)
+    2, 3, etc : List of turrets to activate
+*turret-free-all*
+    turret-free-all
+    Sets all standard primary or secondary weapon turrets on the
+    specified ship to be active (ship must be in-mission). For
+    each turret, there will be a different short random delay
+    (between 50 and 4000 milliseconds) before firing.
+*turret-lock*
+    turret-lock
+    Sets one or more turrets to NOT allow standard primary or
+    secondary weapons firing.
+    1: Ship to be operated on (ship must be in-mission)
+    2, 3, etc : List of turrets to deactivate
+*turret-lock-all*
+    turret-lock-all
+    Sets all turret weapons on the specified ship to be
+    deactivated (ship must be in-mission)
+*turret-tagged-only*
+    turret-tagged-only
+    Makes turrets target and hence fire strictly at tagged objects
+    All: Ship name (ship must be in-mission)
+    NOTE: Will not stop a turret already firing at an untagged ship
+*turret-tagged-clear*
+    turret-tagged-clear
+    Relaxes restriction on turrets targeting only tagged ships
+    All: Ship name (ship must be in-mission)
+*turret-tagged-specific*
+    turret-tagged-specific
+    Specific turrets on a ship only fire at tagged targets, as
+    opposed to all turrets doing this using turret-tagged-only
+    It is safe to slave turrets already slaved
+    Takes 2 or more arguments...
+    1: Name of ship to slave some turrets to target only tagged
+    ships (ship must be in-mission)
+    Rest: Turrets to slave
+*turret-tagged-clear-specific*
+    turret-tagged-clear-specific
+    Specific turrets on a ship are free to fire on untagged
+    ships, as opposed to all turrets doing this using turret-
+    tagged-clear
+    It is safe to unslave turrets already free
+    Takes 2 or more arguments...
+    1: Name of ship to unslave some turrets to target any
+    hostile ship (ship must be in-mission)
+    Rest: Turrets to unslave
+*turret-change-weapon*
+    turret-change-weapon
+    Sets a given turret weapon slot to the specified weapon
+    1: Ship turret is on (ship must be in-mission)
+    2: Turret
+    3: Weapon to set slot to
+    4: Primary slot (or 0 to use secondary)
+    5: Secondary slot (or 0 to use primary)
+*turret-set-direction-preference*
+    turret-set-direction-preference
+    Sets specified ship turrets direction preference to the
+    specified value
+    1: Ship turrets are on (ship must be in-mission)
+    2: Preference to set, 0 to disable, or negative to reset to
+    default
+    rest: Turrets to set
+*turret-set-rate-of-fire*
+    turret-set-rate-of-fire
+    Sets specified ship turrets rate of fire to the specified value
+    1: Ship turrets are on (ship must be in-mission)
+    2: Rate to set in percentage format (200 = 2x, 50 = .5x), 0
+    to set to number of fire points, or negative to reset to
+    default
+    rest: Turrets to set
+*turret-set-optimum-range*
+    turret-set-optimum-range
+    Sets specified ship turrets optimum range to the specified
+    value
+    1: Ship turrets are on (ship must be in-mission)
+    2: Priority to set, 0 to disable, or negative to reset to
+    default
+    rest: Turrets to set
+*turret-set-target-priorities*
+    turret-set-target-priorities
+    Sets target priorities for the specified ship turret
+    1: Ship turret is on (ship must be in-mission)
+    2: Turret to set
+    3: True = Set new list, False = Reset to turret default
+    rest: Priorities to set (max 32) or blank for no priorities
+*turret-set-inaccuracy*
+    turret-set-inaccuracy
+    Makes the specified turrets more inaccurate by firing their
+    shots in a cone, like field of fire.This will only decrease
+    their accuracy, it cannot make the weapons more accurate
+    than normal.
+    Does not work on beams.
+    1: Ship turret(s) are on (ship must be in-mission)
+    2: TENTHS of a degree. (i.e. 100 = 10 degrees)
+    rest: (optional) Turrets to set. If omitted affects all
+    turrets on the ship.
+*turret-set-target-order*
+    turret-set-target-order
+    Sets targeting order of a given turret
+    1: Ship turret is on (ship must be in-mission)
+    2: Turret
+    rest: Target order type (Bombs,ships,asteroids)
+*ship-turret-target-order*
+    ship-turret-target-order
+    Sets targeting order of all turrets on a given ship
+    1: Ship turrets are on (ship must be in-mission)
+    rest: Target order type (Bombs,ships,asteroids)
+*turret-subsys-target-disable*
+    turret-subsys-target-disable
+    Prevents turrets from targeting only the subsystems when
+    targeting large targets
+    1: Ship to be operated on (ship must be in-mission)
+    rest: List of turrets that are affected
+*turret-subsys-target-enable*
+    turret-subsys-target-enable
+    Sets turret to target the subsystems when targeting large
+    targets
+    1: Ship to be operated on (ship must be in-mission)
+    rest: List of turrets that are affected
+*turret-set-forced-target*
+    turret-set-forced-target
+    Forces one or more turrets to target a specific ship. Will
+    hang on to this target until dead or cleared by turret-
+    clear-forced-target
+    Will still not fire if the target is protected or otherwise
+    an unsuitable target for the turret weapons
+    1: Ship to target (ship must be in-mission)
+    2: Ship turrets are on (ship must be in-mission)
+    rest: Turrets to set
+*turret-set-forced-subsys-target*
+    turret-set-forced-subsys-target
+    Forces one or more turrets to target a specific subsystem on
+    a particular ship. Will hang on to this subsystem target
+    until destroyed or cleared by turret-clear-forced-target
+    Will still not fire if the target is protected or otherwise
+    an unsuitable target for the turret weapons
+    1: Ship to target (ship must be in-mission)
+    2: Subsystem to target
+    3: Ship turrets are on (ship must be in-mission)
+    rest: Turrets to set
+*turret-clear-forced-target*
+    turret-clear-forced-target
+    Clears any targets set by turret-set-forced-target
+    1: Ship turrets are on (ship must be in-mission)
+    rest: Turrets to have their targets cleared
+*turret-set-primary-ammo*
+    turret-set-primary-ammo
+    Sets the turret's primary bank ammo, only works with
+    ballistic weapons
+    1: Ship turret is on (ship must be in-mission)
+    2: Turret the bank is on
+    3: Bank to add ammo to
+    4: Amount to add
+*turret-set-secondary-ammo*
+    turret-set-secondary-ammo
+    Sets the turret's secondary bank ammo
+    1: Ship turret is on (ship must be in-mission)
+    2: Turret the bank is on
+    3: Bank to add ammo to
+    4: Amount to add

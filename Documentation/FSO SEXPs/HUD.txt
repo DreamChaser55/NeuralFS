@@ -1,0 +1,118 @@
+  HUD
+
+*hud-disable*
+    hud-disable
+    Sets whether the hud is disabled. Takes 1 argument...
+    1: Flag (1 to disable, 0 to re-enable)
+*hud-disable-except-messages*
+    hud-disable-except-messages
+    Sets whether the hud (except for messages) is disabled.
+    Takes 1 argument...
+    1: Flag (1 to disable, 0 to re-enable)
+*hud-set-custom-gauge-active*
+    hud-set-custom-gauge-active
+    Activates or deactivates a custom hud gauge defined in
+    hud_gauges.tbl.Takes 2 Arguments...
+    1: Boolean, whether or not to display this gauge
+    Rest: HUD Gauge name
+*hud-set-builtin-gauge-active*
+    hud-set-builtin-gauge-active
+    Activates or deactivates a builtin hud gauge grouping.Takes
+    2 Arguments...
+    1: Boolean, whether or not to display this gauge
+    Rest: HUD Gauge Group name
+*hud-set-text*
+    hud-set-text
+    Sets the text value of a given HUD gauge. Works for custom
+    gauges only. Takes 2 arguments...
+    1: HUD gauge to be modified
+    2: Text to be set
+*hud-set-text-num*
+    hud-set-text-num
+    Sets the text value of a given HUD gauge to a number. Works
+    for custom gauges only. Takes 2 arguments...
+    1: HUD gauge to be modified
+    2: Number to be set
+*hud-set-message*
+    hud-set-message
+    Sets the text value of a given HUD gauge to a message from
+    the mission's message list. Works for custom gauges only.
+    Takes 2 arguments...
+    1: HUD gauge to be modified
+    2: Message
+*hud-set-directive*
+    hud-set-directive
+    Sets the text of a given custom hud gauge to the provided
+    text.Takes 2 Arguments...
+    1: HUD Gauge name
+    2: Text that will be displayed. This text will be treated as
+    directive text, meaning that references to mapped keys will
+    be replaced with the user's preferences.
+*hud-set-frame*
+    hud-set-frame
+    Sets the frame of a given HUD gauge's associated image.
+    Works for custom and certain retail gauges. Takes 2
+    arguments...
+    1: HUD gauge to be modified
+    2: Frame number to be changed to
+*hud-set-coords*
+    hud-set-coords
+    Sets the coordinates of a given HUD gauge. Works for custom
+    and retail gauges. The coordinates can be configured to
+    scale according to screen resolution via the '$HUD-set-
+    coords base resolution' option in game_settings.tbl. Takes 3
+    arguments...
+    1: HUD gauge to be modified
+    2: Coordinate X component
+    2: Coordinate Y component
+*hud-set-color*
+    hud-set-color
+    Sets the color of a given HUD gauge. Works for custom and
+    retail gauges. Takes 4 arguments...
+    1: HUD gauge to be modified
+    2: Red component (0-255)
+    3: Green component (0-255)
+    4: Blue component (0-255)
+*hud-display-gauge*
+    hud-display-gauge <milliseconds> <gauge>
+    Causes specified hud gauge to appear or disappear for so
+    many milliseconds. Takes 1 argument...
+    1: Number of milliseconds that the warpout gauge should
+    appear on the HUD. 0 will immediately cause the gauge to
+    disappear.
+    2: Name of HUD element. Must be one of:
+    warpout - the "Subspace drive active" box that appears above
+    the viewscreen.
+*hud-gauge-set-active*
+    hud-gauge-set-active (deprecated)
+    Activates or deactivates a given hud gauge. Works for custom
+    and retail gauges.Takes 2 Arguments...
+    1: HUD Gauge name
+    2: Boolean, whether or not to display this gauge
+*hud-activate-gauge-type*
+    hud-activate-gauge-type (deprecated)
+    Activates or deactivates all hud gauges of a given
+    type.Takes 2 Arguments...
+    1: Gauge Type
+    2: Boolean, whether or not to display this gauge
+*hud-clear-messages*
+    hud-clear-messages
+    Clears active messages displayed on the HUD.Takes no arguments
+*hud-set-max-targeting-range*
+    hud-set-max-targeting-range
+    Sets the farthest distance at which an object can be
+    targeted. Takes 1 argument...
+    : Maximum targeting distance (0 for infinite)
+*hud-force-sensor-static*
+    hud-force-sensor-static
+    Activates or deactivates hud static as if sensors are
+    damaged.Takes 1 Argument...
+    1: Boolean, whether or not to enable sensor static
+*hud-force-emp-effect*
+    hud-force-emp-effect
+    Activates or deactivates emp effect for the player.Takes 2
+    or more Arguments...
+    1: Number, emp intensity (0 to 500)
+    2: Number, emp duration in milliseconds
+    3: String or message to display. "none" to display nothing.
+    Defaults to "Emp"

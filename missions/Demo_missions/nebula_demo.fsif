@@ -1,0 +1,166 @@
+fsif_version: "2.5"
+
+mission_info:
+  name: "Nebula Patrol"
+  author: "NeuralFS Demo"
+  description: "A demo mission showcasing FSIF's full nebula support. Patrol the sector and survive the ambush."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  star_count: 200
+  ambient_light_level: 5
+  fog:
+    near_mult: 1.0
+    far_mult: 1.0
+  suns: []
+  starbitmaps: []
+  nebula:
+    enabled: true
+    pattern: "nbackblue1"
+    poofs: ["PoofPurp01", "PoofPurp02"]
+    storm: "s_medium"
+    awacs: 2000.0
+    fog:
+      near_mult: 0.5
+      far_mult: 0.8
+    show_backgrounds: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - { class: "GTF Ulysses", count: 4 }
+    - { class: "GTF Hercules", count: 4 }
+
+entities:
+  ship_templates:
+    friendly_fighter:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Prometheus", "Avenger"]
+        secondary: ["Hornet"]
+    hostile_fighter:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Lieutenant"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
+
+  ships:
+    - name: "Nav Buoy"
+      class: "Terran NavBuoy"
+      team: "Hostile"
+      location: [500.0, 100.0, 2000.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "SC Dakini"
+      class: "SC Cain"
+      team: "Hostile"
+      location: [2000.0, 200.0, 2500.0]
+      arrival_anchor: "Alpha 1"
+      arrival_location: "In front of ship"
+      arrival_distance: 2500
+      arrival_cue: |
+        ( < ( distance "Alpha 1" "Nav Buoy" ) 800 )
+      departure_cue: |
+        ( false )
+
+  wings:
+    - name: "Alpha"
+      template: "friendly_fighter"
+      count: 4
+      position: [0.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+          ( ai-chase-any 89 )
+
+    - name: "Cancer"
+      template: "hostile_fighter"
+      count: 3
+      waves: 2
+      position: [2000.0, 0.0, 2000.0]
+      arrival_anchor: "SC Dakini"
+      arrival_location: "Near Ship"
+      arrival_distance: 500
+      arrival_cue: |
+        ( has-arrived-delay 8 "SC Dakini" )
+      ai_goals: |
+          ( ai-chase-any 80 )
+
+    - name: "Beta"
+      template: "friendly_fighter"
+      count: 4
+      position: [-500.0, 0.0, 500.0]
+
+  reinforcement_wings:
+    - name: "Beta"
+      num_times: 1
+
+  waypoints: {}
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "We have received a distress signal from the nebula sector. Investigate immediately."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Authoritative, urgent command"
+        ani: "fafdemo_CB1"
+
+  briefing:
+    stages:
+      - text: "Command has detected anomalous readings in the nebula. Alpha, proceed to the Nav Buoy."
+        voice_name: "Achernar"
+        voice_style_instructions: "Military briefing, directive"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
+          - { type: "Waypoint", team: "Hostile", pos: [500, 2000], label: "Nav Buoy" }
+      - text: "Visibility is low. Keep your eyes open for ambushes."
+        voice_name: "Achernar"
+        voice_style_instructions: "Cautionary, serious"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-destroyed-delay 0 "SC Dakini" )
+        text: "Excellent work. The Shivan cruiser has been neutralized."
+        voice_name: "Achernar"
+        voice_style_instructions: "Commendatory, relieved"
+      - condition: |
+          ( not ( is-destroyed-delay 0 "SC Dakini" ) )
+        text: "The Shivan cruiser escaped. We will have to deal with it later."
+        voice_name: "Achernar"
+        voice_style_instructions: "Disappointed, serious"
+
+  events:
+    - name: "Ambush Warning"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "SC Dakini" )
+          ( send-message "#Command" "High" "Ambush" )
+        )
+      directive_text: "Ambush detected!"
+
+  goals:
+    - name: "Destroy Cain"
+      type: "Primary"
+      message: "Destroy the Shivan Cruiser SC Cain."
+      formula: |
+        ( is-destroyed-delay 0 "SC Dakini" )
+
+  messages:
+    - name: "Ambush"
+      message: "Hostile contacts detected! Engage at will."
+      voice_name: "Charon"
+      voice_style_instructions: "Alarmed, combat shout"
+
+audio:
+  mission_music: "1: Genesis"
+  briefing_music: "Brief1"

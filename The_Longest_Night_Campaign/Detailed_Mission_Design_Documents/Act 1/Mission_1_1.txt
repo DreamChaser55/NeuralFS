@@ -1,0 +1,125 @@
+MISSION DESIGN DOCUMENT
+Mission 1.1: "Burning Skies"
+
+================================================================================
+PURPOSE & EXPERIENCE
+- Mission Fantasy: Surviving a disaster. The player is small in a battle between giants.
+- Tension: Extreme. The Ross 128 installation is destroyed, and the Stalwart is fleeing.
+- Plot Advance: Establishes the threat (Lucifer) and forces the desperate jump to Laramis.
+
+================================================================================
+FICTION VIEWER (Intro)
+"PERSONAL LOG: Lt. Commander Vance, XO, GTD Stalwart.
+Date: January 7, 2335. 0500 Hours.
+
+It's been three days since we arrived in Ross 128. Three days of scanning debris, three days of silence. The Einstein is gone. The Riviera outpost is just... gone. No distress beacon, no bodies, just a cloud of expanding gas where a station used to be.
+
+The crew is on edge. They're jumping at shadows. I caught a sensor tech trying to recalibrate the long-range scanners for the fifth time today. He swears he's seeing 'ghosts'—signatures that appear and vanish in a single sweep.
+
+I told him to get some sleep. I told him we're alone out here.
+
+I think I lied."
+
+================================================================================
+ENVIRONMENT & SETUP
+- System: Ross 128 (Near GTI Riviera debris field).
+- Background: A massive nebula cloud (generic FS1 background). Debris from the destroyed station.
+- Objects:
+  - GTI Riviera (Wreckage/Debris) - Burning.
+  - Nav Buoys (marking the jump node to Delta Serpentis).
+  - Cargo containers (scattered, burning).
+
+================================================================================
+PARTICIPANTS
+Allied (Terran):
+- GTD Stalwart (Orion Destroyer) - Player's carrier.
+- GTC Crecy (Fenris Cruiser) - Escort.
+- Alpha Wing (Player, 4x Apollo) - "Void Walkers".
+- Beta Wing (4x Apollo) - Covering the Stalwart.
+
+Hostile (Shivan):
+- SD Lucifer (Superdestroyer) - Invulnerable. The "force of nature".
+- SC Tenebris (Cain Cruiser) - Leading the pursuit.
+- Rama Wing (4x Manticore) - Interceptors.
+- Krishna Wing (4x Scorpion) - Space Superiority.
+- Bheema Wing (4x Basilisk) - Heavy Attack/Bomber.
+
+================================================================================
+PLAYER CRAFT
+- Ship: GTF Apollo (Standard issue).
+- Weapons: ML-16 Laser, MX-50 Missiles (No shields).
+- Restrictions: No advanced tech available yet.
+
+================================================================================
+OBJECTIVES
+Primary:
+1. Protect the GTD Stalwart until subspace drive is charged (Time limit).
+2. Destroy Shivan bombers (Bheema Wing).
+3. Escape to the uncharted node.
+
+Secondary:
+- Destroy SC Tenebris's fighter bay (stops reinforcements).
+
+================================================================================
+BRIEFINGS
+
+Command Briefing (Act 1 Intro):
+"This is Captain Haddock of the GTC Crecy.
+The Stalwart is currently coordinating with Command, so you're stuck with me.
+We've been poking around this graveyard for 72 hours. No survivors.
+Whatever hit the Riviera didn't leave anything for us to save.
+Our orders are to hold position until the science teams finish their analysis.
+I know you're bored, pilots. I know you want to get back to the front lines.
+But trust me... boring is good. Boring keeps you alive."
+
+Mission Briefing:
+1. "Alert! Red Alert! All hands to battle stations!"
+2. "We have multiple subspace signatures inbound. Massive scale."
+3. "The Riviera wreckage... something is coming through the debris field."
+4. "It's the Lucifer! It's blocking the Delta Serpentis node!"
+5. "We are cut off! All wings, launch immediately! Buy us time to spin up the FTL drives!"
+
+================================================================================
+IN-MISSION MESSAGES
+- Start:
+  - Stalwart (Vance): "All wings, launch! We have incoming hostiles. Massive signature detected!"
+  - Alpha 2: "Look at the size of that thing! It's blocking the sun!"
+- Lucifer Arrival:
+  - Computer: "Warning. Capital class signature detected. Class: Unknown. Threat: Extreme."
+  - Lucifer (Visual): Fires massive flux cannons at a fleeing transport (scripted death).
+- Combat:
+  - Stalwart: "Drives are at 40%. Keep those bombers off us!"
+  - Beta 1: "They're fast! My sensors can't lock on!" (Alluding to lack of shivan shield tracking).
+- Climax:
+  - Stalwart: "The node to Delta Serpentis is completely cut off. We have no choice. Navigation, lock in the anomaly coordinates."
+  - Stalwart: "Drives at 90%. Alpha, land immediately or get left behind!"
+- Departure:
+  - Stalwart: "Engaging jump drive. God help us all."
+
+================================================================================
+EVENT FLOW
+1. 00:00 - Mission Start. Stalwart and Crecy are near the Riviera wreckage.
+2. 00:30 - SD Lucifer arrives at long range (blocking the main exit).
+3. 00:45 - SC Tenebris jumps in closer to the Stalwart, launching fighters.
+4. 01:00 - Rama (Manticore) and Krishna (Scorpion) wings engage Alpha/Beta.
+5. 02:00 - Bheema (Basilisk) wing arrives, targeting Stalwart's engines. PRIMARY THREAT.
+6. 04:00 - Stalwart announces jump readiness.
+7. 04:30 - Player must dock or be within 500m of Stalwart (depending on FRED capabilities, usually "Red Alert" ends mission if player is near). *Simplification*: Player just needs to jump out or be near Stalwart when it jumps.
+8. 05:00 - Stalwart jumps. Mission ends.
+
+================================================================================
+DEBRIEFING
+Success:
+"We made it. We're alive.
+The Stalwart has successfully jumped into the anomaly. Navigation is trying to figure out where the hell we are.
+Sensors are clearing... looks like a nebula.
+We've lost contact with Command. We've lost contact with everyone.
+Get some rest, pilot. It's going to be a long night."
+
+Failure (Stalwart Destroyed):
+"The Stalwart has been destroyed. You are stranded in deep space with no carrier and no way home. The Shivans are closing in..."
+
+================================================================================
+QA NOTES
+- Ensure the Lucifer stays far enough away not to instant-kill the player with flux cannons, but visible enough to be terrifying.
+- Bheema wing balance: 4 bombers might be too much for unshielded Apollos if they all fire swarm missiles. Reduce to 3 or make them focus fire on Stalwart.

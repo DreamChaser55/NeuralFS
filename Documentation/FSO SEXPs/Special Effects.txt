@@ -1,0 +1,189 @@
+  Special Effects
+
+*set-post-effect*
+    set-post-effect
+    Configures a post-processing effect. Takes 2 arguments...
+    1: Effect type
+    2: Effect intensity (0 - 100). 3: (Optional) Red (0 - 255).
+    4: (Optional) Green (0 - 255). 5: (Optional) Blue (0 - 255).
+*reset-post-effects*
+    reset-post-effects
+    Resets all post-processing effects to their default values.
+    Takes no arguments.
+*ship-effect*
+    ship-effect
+    Plays an animated shader effect on the ship(s) or wing(s).
+    Takes 3 or more arguments...
+    1: Effect name (as defined in post_processing.tbl)
+    2: How long the effect should take in milliseconds
+    Rest: Ship or wing name (ship must be in-mission)
+*ship-create*
+    ship-create
+    Creates a new ship
+    Takes 5 to 10 arguments...
+    1: Name of new ship (use "<none>" for a default name)
+    2: Class of new ship
+    3: X position
+    4: Y position
+    5: Z position
+    6: Pitch (optional)
+    7: Bank (optional)
+    8: Heading (optional)
+    9: Team (optional; overrides ships.tbl default if set)
+    10: Show in mission log (optional; defaults to true)
+*weapon-create*
+    weapon-create
+    Creates a new weapon
+    Takes 5 to 10 arguments...
+    1: Name of parent ship (or "<none>" for no parent)
+    2: Class of new weapon
+    3: X position
+    4: Y position
+    5: Z position
+    6: Pitch (optional)
+    7: Bank (optional)
+    8: Heading (optional)
+    9: Targeted ship (optional)
+    10: Targeted subsystem (optional)
+*ship-vanish*
+    ship-vanish
+    Makes the named ship vanish (no log and vanish)
+    Single Player Only! Warning: This will cause ship exit not
+    to be logged, so 'has-departed', etc. will not work
+    1: List of ship names to vanish (ship must be in-mission)
+*ship-vaporize*
+    ship-vaporize
+    Sets the ship to vaporize when it is destroyed. Does not
+    actually destroy the ship - use self-destruct for that.
+    Takes 1 or more arguments...
+    All: List of ships on which to set the vaporize flag (ships
+    do not need to be in-mission)
+*ship-no-vaporize*
+    ship-no-vaporize
+    Sets the ship to not vaporize when it is destroyed. Does not
+    actually destroy the ship - use self-destruct for that.
+    Takes 1 or more arguments...
+    All: List of ships on which to unset the vaporize flag
+    (ships do not need to be in-mission)
+*set-explosion-option*
+    set-explosion-option
+    Sets an explosion option on a particular ship. Takes 3 or
+    more arguments...
+    1: Ship name (ship must be in-mission)
+    2: Explosion option
+    3: Explosion value (for shockwave speed, 0 will produce no
+    shockwave; for death roll time, 0 will use the default time)
+    Use Add-Data to specify additional explosion options in
+    repeating option-value pairs, just like Send-Message-List
+    can have additional messages in source-priority-message-
+    delay groups.
+
+    IMPORTANT: Each additional option in the list MUST HAVE two
+    entries; any option without the two proper fields will be
+    ignored, as will any successive options.
+*create-bolt*
+    create-bolt
+    Creates a lightning bolt at the specified location Takes 8
+    arguments...
+    1: The bolt type to create
+    2: Origin X
+    3: Origin Y
+    4: Origin Z
+    5: Strike X
+    6: Strike Y
+    7: Strike Z
+    8: (Optional) Whether or not to play the default lightning
+    sounds. Defaults to true
+*explosion-effect*
+    explosion-effect
+    Causes an explosion at a given origin, with the given
+    parameters. Takes 11 to 14 arguments...
+    1: Origin X
+    2: Origin Y
+    3: Origin Z
+    4: Damage
+    5: Blast force
+    6: Size of explosion (if 0, explosion will not be visible)
+    7: Inner radius to apply damage (if 0, explosion will not be
+    visible)
+    8: Outer radius to apply damage (if 0, explosion will not be
+    visible)
+    9: Shockwave speed (if 0, there will be no shockwave)
+    10: Fireball Type (unique ID of a fireball entry, OR a
+    number: 0 = medium explosion [default, 1st in table], 1 =
+    large explosion 1 [4th in table], 2 = large explosion 2 [5th
+    in table], 3 or greater the respective entry in fireball.tbl)
+    11: Sound (index into sounds.tbl or name of the sound entry)
+    12: EMP intensity (optional)
+    13: EMP duration in seconds (optional)
+    14: Whether to use the full EMP time for capship turrets
+    (optional, defaults to false)
+*warp-effect*
+    warp-effect
+    Causes a subspace warp effect at a given origin, facing
+    toward a given location, with the given parameters.
+    Takes 12 to 14 arguments...
+    1: Origin X
+    2: Origin Y
+    3: Origin Z
+    4: Location X
+    5: Location Y
+    6: Location Z
+    7: Radius
+    8: Duration in seconds (values smaller than 4 are ignored)
+    9: Warp opening sound (index into sounds.tbl or name of the
+    sound entry)
+    10: Warp closing sound (index into sounds.tbl or name of the
+    sound entry)
+    11: Fireball Type (unique ID of a fireball entry, OR a
+    number: 0 for standard blue [default], 1 for Knossos green,
+    2 or greater the respective entry in fireball.tbl)
+    12: Shape (0 for 2-D [default], 1 for 3-D)
+    13: Duration of the opening effect, in milliseconds (and
+    also the closing effect if the next argument is not specified)
+    14: Duration of the closing effect, in milliseconds
+*clear-weapons*
+    clear-weapons
+    Removes all live weapons currently in the mission 1:
+    (Optional) Remove only this specific class of weapon
+*clear-debris*
+    clear-debris
+    Removes all ship debris currently in the mission 1:
+    (Optional) Remove only debris from this specific class of ship
+*set-time-compression*
+    set-time-compression
+    Sets the time compression and prevents it from being changed
+    by the user. Takes 1 to 3 arguments...
+    1: New time compression (% of 1x)
+    2: Time in ms for change to take
+    3: Time compression to start from
+*reset-time-compression*
+    reset-time-compression
+    Resets the time compression - that is to say, time
+    compression is set back to 1x, and the time compression
+    controls are unlocked. Always call this when done with set-
+    time-compression.
+*call-ssm-strike*
+    call-ssm-strike
+    Calls a subspace missile strike on the specified ship.
+    Requires a ssm table (ssm.tbl).
+    Takes 3 arguments...
+    1: Strike name.
+    2: Calling team.
+    Rest: List of ships the strike will be called on.
+*set-gravity-accel*
+    set-gravity-accel
+    Sets the gravity acceleration rate in units of 0.01 m/s^2
+    e.g. '981' would be earth gravity, 9.81 m/s^2.
+    1: Acceleration rate
+*force-rearm*
+    force-rearm
+    Forces a ship to instantly begin a rearm sequence as if
+    docked to a support ship
+    Takes 1 or more arguments
+    ALL: The ship to rearm
+*abort-rearm*
+    abort-rearm
+    Forces a ship to instantly abort a rearm sequence
+    Takes 1 or more arguments
+    ALL: The ship to abort rearm

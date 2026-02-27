@@ -1,0 +1,197 @@
+  Mission and Campaign
+
+*invalidate-goal*
+    Invalidate goal (Action operator)
+    Makes a mission goal invalid, which causes it to not show up
+    on mission goals screen, or be evaluated.
+    Takes 1 or more arguments...
+    All: Name of mission goal to invalidate.
+*validate-goal*
+    Validate goal (Action operator)
+    Makes a mission goal valid again, so it shows up on mission
+    goals screen.
+    Takes 1 or more arguments...
+    All: Name of mission goal to validate.
+*red-alert*
+    red-alert
+    Causes Red Alert status in a mission. This function ends the
+    current mission, and moves to the next mission in the
+    campaign under red alert status. There should only be one
+    branch from a mission that uses this expression
+
+    Takes no arguments.
+*end-mission*
+    end-mission
+    Ends the mission without the usual jump-out sequence. This
+    immediately dumps the player back into a normal debriefing.
+    Red-alert status is not invoked.
+    1: End Mission even if the player is dead (optional;
+    defaults to true)
+    2: Boot the player out into the main hall instead of going
+    to the debriefing (optional; defaults to false; not
+    supported in multi)
+    3: Go to the mainhall instead of starting the next mission
+    (optional; defaults to false; not yet tested in multi)
+*force-jump*
+    force-jump
+    Forces activation of the player's subspace drive, thus
+    ending the mission. Takes no arguments.
+*end-campaign*
+    end-campaign
+    Ends the builtin campaign. Should only be used by the main
+    FreeSpace campaign
+    1: End Campaign even if the player is dead (optional;
+    defaults to true)
+*set-debriefing-toggled*
+    set-debriefing-toggled
+    Sets or clears the "toggle debriefing" mission flag. If set,
+    the mission will have its debriefing turned off, unless it
+    is a multiplayer dogfight mission, in which case its
+    debriefing will be turned on. Takes 1 argument.
+*set-debriefing-persona*
+    set-debriefing-persona
+    Sets the numeric prefix to be used for debriefing voice
+    files in automatic debriefing stages (promotions, ace
+    badges, traitor). This is usually specified in the campaign
+    editor, but it can be overridden mid-mission with this sexp.
+    Takes 1 argument.
+*set-traitor-override*
+    set-traitor-override
+    Sets the override debriefing info for the traitor debrief.
+    Must be tabled in traitor.tbl.
+*allow-treason*
+    allow-treason
+    Turns the Allow Traitor switch on or off in mission. Takes 0
+    arguments.
+    1: True/False.
+*grant-promotion*
+    Grant promotion (Action operator)
+    In a single player game, grants the player an automatic
+    promotion to the next rank which they can obtain. If they
+    are already at the highest rank, this operator has no
+    effect. It takes no arguments.
+*grant-medal*
+    Grant medal (Action operator)
+    In single player missions, this function grants the given
+    medal to the player. Currently, only 1 medal will be allowed
+    to be given per mission.
+
+    Takes 1 argument...
+    1: Name of medal to grant to player.
+*allow-ship*
+    Allow ship (Action operator)
+    This operator makes the given ship type available to the
+    player team. Players will be able to have ships of this type
+    in their starting wings in all future missions of this
+    campaign.
+
+    Takes 1 argument...
+    1: Name of ship type (or ship class) to allow.
+*allow-weapon*
+    Allow weapon (Action operator)
+    This operator makes the given weapon available to the player
+    team. Players will be able to equip ships with in all future
+    missions of this campaign.
+
+    Takes 1 argument...
+    1: Name of weapon (primary or secondary) to allow.
+*tech-add-ships*
+    Tech add ship (Action operator)
+    This operator makes the given ship type available in the
+    techroom database. Players will then be able to view this
+    ship's specs there.
+
+    Takes 1 or more arguments...
+    All: Name of ship type (or ship class) to add.
+*tech-add-weapons*
+    Tech add weapon (Action operator)
+    This operator makes the given weapon available in the
+    techroom database. Players will then be able to view this
+    weapon's specs there.
+
+    Takes 1 or more arguments...
+    All: Name of weapon (primary or secondary) to add.
+*tech-add-intel*
+    Tech add intel (Action operator, deprecated in favor of
+    tech-add-intel-xstr)
+    This operator makes the given intel entry available in the
+    techroom database. Players will then be able to view this
+    intel entry there.
+
+    Takes 1 or more arguments...
+    All: Name of intel entry to add.
+*tech-remove-intel*
+    Tech remove intel (Action operator, deprecated in favor of
+    tech-remove-intel-xstr)
+    This operator removes the given intel entry in the techroom
+    database. Players will then not be able to view this intel
+    entry there.
+
+    Takes 1 or more arguments...
+    All: Name of intel entry to remove.
+*tech-add-intel-xstr*
+    Tech add intel XSTR (Action operator)
+    This operator makes the given intel entry available in the
+    techroom database. Players will then be able to view this
+    intel entry there.
+
+    Takes 2 or more arguments...
+    1: Name of intel entry to add.
+    2: XSTR ID of intel entry, or -1 if there is no XSTR entry.
+    Use Add-Data for multiple entries.
+
+    IMPORTANT: Each additional entry in the list MUST HAVE two
+    fields; any entry without both fields will be ignored, as
+    will any successive entries.
+*tech-remove-intel-xstr*
+    Tech remove intel XSTR (Action operator)
+    This operator removes the given intel entry, so it is no
+    longer available in the techroom database. Players will then
+    not be able to view this intel entry there.
+
+    Takes 2 or more arguments...
+    1: Name of intel entry to remove.
+    2: XSTR ID of intel entry, or -1 if there is no XSTR entry.
+    Use Add-Data for multiple entries.
+
+    IMPORTANT: Each additional entry in the list MUST HAVE two
+    fields; any entry without both fields will be ignored, as
+    will any successive entries.
+*tech-reset-to-default*
+    Tech reset to default (Action operator)
+    This operator resets the tech room to the default
+    represented in the tables. This is useful for starting new
+    campaigns, so that the player will not see tech entries
+    carried over from previous campaigns.
+
+    Takes no arguments.
+*change-player-score*
+    Change Player Score (Action operator)
+    This operator allows direct alteration of the player's score
+    for this mission.
+
+    Takes 2 or more arguments. 1: Amount to alter the player's
+    score by.
+    Rest: Name of ship the player is flying.
+*change-team-score*
+    Change Team Score (Action operator)
+    This operator allows direct alteration of the team's score
+    for a TvT mission (Does nothing otherwise).
+
+    Takes 2 arguments. 1: Amount to alter the team's score by.
+    2: The team to alter the score for. (0 will add the score to
+    all teams!)
+*set-respawns*
+    set-respawns
+    Set the # respawns a player (or AI that could have been a
+    player) has used.
+    1: Number of respawns used up
+    Rest: The player start ship to operate on.
+    Only really useful for multiplayer.
+*add-remove-hotkey*
+    add-remove-hotkey
+    Add or remove hotkey for the specified ship(s) or wing(s)
+    Takes 3 or more arguments
+    1: Boolean. True adds hotkey and false removes hotkey.
+    2: Integer of hotkey to add or remove. 0=F5, 1=F6, ...
+    (rest): Name(s) of ship(s) or wing(s)

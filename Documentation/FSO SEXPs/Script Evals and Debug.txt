@@ -1,0 +1,53 @@
+  Script Evals and Debug
+
+*script-eval-bool*
+    script-eval-bool
+    Evaluates script to return a boolean
+
+    Takes 1 argument...
+    1: Script
+*script-eval-num*
+    script-eval-num
+    Evaluates script to return a number
+
+    Takes 1 argument...
+    1: Script
+*script-eval*
+    script-eval (deprecated in favor of script-eval-block)
+    Evaluates the given scripts, one script per argument
+    Takes at least 1 argument...
+    All: Script to evaluate
+*script-eval-block*
+    script-eval-block
+    Evaluates the concatenation of all arguments as a single script
+    Takes at least 1 argument...
+    All: Script to evaluate
+*multi-eval*
+    multi-eval
+    Evaluates script
+
+    Takes at least 2 arguments...
+    1: Script to evaluate
+    2: True/False - Should the script evaluate on the server?
+    (rest): List of players who should evaluate this script. If
+    no player is given, all clients will execute the script
+*script-eval-string*
+    script-eval-string
+    Evaluates script to return a string
+
+    Takes a multiple of 2 arguments...
+    1: Script (without a leading 'return')
+    2: String variable to hold the result
+*debug*
+    debug
+    Pops up a warning on debug builds (and optionally on release
+    builds)
+    Takes 1 or more arguments...
+    1: Limit warning to debug builds. If false, display warning in
+    release builds too. Defaults to true.
+    2: A short string which will appear in the warning, or a message
+    if the string matches a message name.
+*do-nothing*
+    Do-nothing (Action operator)
+    Does nothing. This is used as the default for any required
+    action arguments of an operator.

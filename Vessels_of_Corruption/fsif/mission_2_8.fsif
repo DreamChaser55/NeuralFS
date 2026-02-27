@@ -1,0 +1,308 @@
+fsif_version: "2.2"
+
+fiction_viewer: "internal_bleeding_story.txt"
+
+mission_info:
+  name: "Internal Bleeding"
+  author: "NeuralFS"
+  description: "Defend the GTD Erebus from Shivan Breach Pods."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: ["subspace", "fullneb", "red_alert"]
+
+environment:
+  star_count: 0
+  ambient_light_level: 20
+  nebula:
+    enabled: true
+    pattern: "nbackred"
+    storm: "s_standard"
+    awacs: 3000
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Hercules"
+      count: 4
+    - class: "GTF Apollo"
+      count: 2
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 12
+    - name: "Avenger"
+      count: 12
+    - name: "Flail"
+      count: 12
+    - name: "MX-50"
+      count: 160
+    - name: "Hornet"
+      count: 80
+
+entities:
+  ship_templates:
+    hercules_heavy:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "Flail"]
+        secondary: ["Hornet"]
+    valkyrie_interceptor:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    breach_pod:
+      class: "ST Azrael"
+      team: "Hostile"
+      ai_class: "General"
+      flags: ["no-shields", "kamikaze"]
+    scorpion_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    manticore_fighter:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["MX-50#Shivan"]
+
+  ships:
+    - name: "Alpha 1"
+      template: "hercules_heavy"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 2"
+      template: "hercules_heavy"
+      location: [50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 3"
+      template: "hercules_heavy"
+      location: [-50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 4"
+      template: "hercules_heavy"
+      location: [0, 50, 0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTD Erebus"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0, 0, -2000]
+      arrival_cue: |
+        ( true )
+      flags: ["escort"]
+      escort_priority: 100
+      subsystems:
+        status: custom
+        list:
+          - { name: "communication", health: 100 }
+          - { name: "fighterbay", health: 100 }
+
+  wings:
+    - name: "Beta"
+      template: "valkyrie_interceptor"
+      count: 3
+      position: [0, 0, -1500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "GTD Erebus" 89 )
+
+    - name: "Pod Wave 1"
+      template: "breach_pod"
+      count: 4
+      position: [0, 0, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 10 )
+      ai_goals: |
+        ( ai-dock "GTD Erebus" "dockpoint 1" "front docking bay" 89 )
+
+    - name: "Pod Wave 2"
+      template: "breach_pod"
+      count: 4
+      position: [0, -2000, 0]
+      arrival_cue: |
+        ( has-time-elapsed 120 )
+      ai_goals: |
+        ( ai-dock "GTD Erebus" "dockpoint 1" "front docking bay" 89 )
+
+    - name: "Pod Wave 3"
+      template: "breach_pod"
+      count: 8
+      position: [2000, 0, 0]
+      arrival_cue: |
+        ( has-time-elapsed 360 )
+      ai_goals: |
+        ( ai-dock "GTD Erebus" "dockpoint 1" "front docking bay" 89 )
+
+    - name: "Brahma"
+      template: "scorpion_fighter"
+      count: 4
+      position: [2000, 2000, 2000]
+      arrival_cue: |
+        ( has-time-elapsed 240 )
+      waves: 3
+      wave_threshold: 1
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+    - name: "Krishna"
+      template: "manticore_fighter"
+      count: 3
+      position: [-2000, 1000, 1000]
+      arrival_cue: |
+        ( has-time-elapsed 480 )
+      ai_goals: |
+        ( ai-destroy-subsystem "GTD Erebus" "communication" 89 )
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "Red Alert! The SD Malphas has launched a direct assault on the Erebus. They aren't using bombers—they're using high-speed boarding pods."
+        voice_name: "Achernar"
+      - text: "These 'Breach Pods' are filled with Shivan ground troops and biological spores. If they penetrate the hull, we lose the ship from the inside out."
+        voice_name: "Achernar"
+      - text: "All available fighters are to be scrambled immediately. You are the last line of defense. If the Erebus falls, we are all dead."
+        voice_name: "Achernar"
+
+  briefing:
+    stages:
+      - text: "Alpha, scramble! The pods are already coming in. They're targeting the weaker hull sections near the engine block and the bridge."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "Erebus" }
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Hercules", pos: [0, -200], label: "Alpha" }
+          - { type: "Cargo Wing", team: "Hostile", pos: [0, 500], label: "Pods" }
+      - text: "These pods are fast but have no shields. Use your Hornet missiles to take out them at range. Do not let them touch the hull."
+        voice_name: "Achernar"
+      - text: "We're already picking up reports of breaches on Deck 12. Security is engaging, but we can't take many more hits. Go!"
+        voice_name: "Achernar"
+
+  debriefing:
+    stages:
+      - condition: |
+          ( and 
+            ( > ( hits-left "GTD Erebus" ) 60 ) 
+            ( is-destroyed-delay 0 "Pod Wave 3" ) 
+          )
+        text: "We've escaped the Void, but the Erebus is a mess. We have Shivan organisms in the ventilation systems and half the crew is in quarantine."
+        voice_name: "Achernar"
+      - condition: |
+          ( < ( hits-left "GTD Erebus" ) 10 )
+        text: "The Erebus was boarded and over-run. The last transmission from the bridge was a single word: 'Beautiful.' The Void has claimed us all."
+        voice_name: "Achernar"
+
+  events:
+    - name: "Pod Impact Wave 1"
+      formula: |
+        ( every-time
+          ( or
+            ( has-docked-delay "Pod Wave 1 1" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 1 2" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 1 3" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 1 4" "GTD Erebus" 1 0 )
+          )
+          ( sabotage-subsystem "GTD Erebus" "hull" 5 )
+          ( send-message "#Command" "High" "Breach alert" )
+        )
+    
+    - name: "Pod Impact Wave 2"
+      formula: |
+        ( every-time
+          ( or
+            ( has-docked-delay "Pod Wave 2 1" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 2 2" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 2 3" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 2 4" "GTD Erebus" 1 0 )
+          )
+          ( sabotage-subsystem "GTD Erebus" "hull" 5 )
+          ( send-message "#Command" "High" "Breach alert" )
+        )
+
+    - name: "Pod Impact Wave 3"
+      formula: |
+        ( every-time
+          ( or
+            ( has-docked-delay "Pod Wave 3 1" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 2" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 3" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 4" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 5" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 6" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 7" "GTD Erebus" 1 0 )
+            ( has-docked-delay "Pod Wave 3 8" "GTD Erebus" 1 0 )
+          )
+          ( sabotage-subsystem "GTD Erebus" "hull" 5 )
+          ( send-message "#Command" "High" "Breach alert" )
+        )
+
+    - name: "Msg: Security"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Erebus" ) 90 )
+          ( send-message "#Command" "High" "Security breach" )
+        )
+
+    - name: "Msg: Scratching"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message "Alpha 3" "Normal" "Scratching" )
+        )
+
+    - name: "The Whisper Event"
+      formula: |
+        ( when
+          ( has-time-elapsed 400 )
+          ( send-message "#Command" "High" "Open door" )
+        )
+
+  goals:
+    - name: "Protect Erebus"
+      type: "Primary"
+      message: "Protect the GTD Erebus from Breach Pods."
+      formula: |
+        ( > ( hits-left "GTD Erebus" ) 60 )
+    - name: "Destroy Fighters"
+      type: "Primary"
+      message: "Destroy all Shivan fighters (Brahma and Krishna wings)."
+      formula: |
+        ( and 
+          ( is-destroyed-delay 0 "Brahma" ) 
+          ( is-destroyed-delay 0 "Krishna" ) 
+        )
+    - name: "Protect Comms"
+      type: "Secondary"
+      message: "Protect the Erebus's primary communications array."
+      formula: |
+        ( not ( is-subsystem-destroyed-delay "GTD Erebus" "communication" 0 ) )
+
+  messages:
+    - name: "Breach alert"
+      message: "Hull breach detected! Security teams to Deck 12! They're inside!"
+      voice_name: "Achernar"
+    - name: "Security breach"
+      message: "Breach on Deck 4! They're in the vents! They're... oh god, they're not using guns, they're using needles!"
+      voice_name: "Alnilam"
+    - name: "Scratching"
+      message: "I can hear them through the hull. They're scratching. They're scratching at the cockpit!"
+      voice_name: "Fenrir"
+    - name: "Open door"
+      message: "Open... the... door. Let... the... light... in."
+      voice_name: "Despina"
+
+audio:
+  briefing_music: "FS1-BRIEF1"
+  mission_music: "FS1-7: Marauder"

@@ -1,0 +1,266 @@
+  Cutscenes
+
+*set-cutscene-bars*
+    set-cutscene-bars
+    Shows bars at the top and bottom of screen. Takes 0 or 1
+    arguments...
+    1: Milliseconds for bars to slide in
+*unset-cutscene-bars*
+    unset-cutscene-bars
+    Removes cutscene bars. Takes 0 or 1 arguments...
+    1: Milliseconds for bars to slide out
+*fade-in*
+    fade-in
+    Fades in. Takes 0 to 4 arguments...
+    1: Time to fade in (in milliseconds)
+    2: Color to fade from (optional). If arguments 3 and 4 are
+    specified, this is the R component of an RGB color.
+    Otherwise it is 1 for white, 2 for red, and any other number
+    for black.
+    3: G component of an RGB color (optional)
+    4: B component of an RGB color (optional)
+*fade-out*
+    fade-out
+    Fades out. Takes 0 to 4 arguments...
+    1: Time to fade out (in milliseconds)
+    2: Color to fade to (optional). If arguments 3 and 4 are
+    specified, this is the R component of an RGB color.
+    Otherwise it is 1 for white, 2 for red, and any other number
+    for black.
+    3: G component of an RGB color (optional)
+    4: B component of an RGB color (optional)
+*set-camera*
+    set-camera
+    Sets SEXP camera, or another specified cutscene camera.
+    Takes 0 to 1 arguments...
+    (optional)
+    1: Camera name (created if nonexistent)
+*set-camera-position*
+    set-camera-position
+    Sets the camera position to a spot in mission space. Takes 3
+    to 6 arguments...
+    1: X position
+    2: Y position
+    3: Z position
+    (optional)
+    4: Total turn time (milliseconds)
+    5: Time to spend accelerating/decelerating (milliseconds)
+    6: Time to spend decelerating (milliseconds)
+*set-camera-facing*
+    set-camera-facing
+    Makes the camera face the given point. Takes 3 to 6
+    arguments...
+    1: X position to face
+    2: Y position to face
+    3: Z position to face
+    (optional)
+    4: Total turn time (milliseconds)
+    5: Time to spend accelerating/decelerating (milliseconds)
+    6: Time to spend decelerating (milliseconds)
+*set-camera-facing-object*
+    set-camera-facing-object
+    Makes the camera face the given object. Takes 1 to 4
+    arguments...
+    1: Object to face
+    (optional)
+    2: Total turn time (milliseconds)
+    3: Time to spend accelerating/decelerating (milliseconds)
+    4: Time to spend decelerating (milliseconds)
+*set-camera-rotation*
+    set-camera-rotation
+    Sets the camera rotation. Takes 3 to 6 arguments...
+    1: Pitch (degrees)
+    2: Bank (degrees)
+    3: Heading (degrees)
+    (optional)
+    4: Total turn time (milliseconds)
+    5: Time to spend accelerating/decelerating (milliseconds)
+    6: Time to spend decelerating (milliseconds)
+*set-camera-host*
+    set-camera-host
+    Sets the object and subystem camera should view from. Camera
+    position is offset from the host. If the selected subsystem
+    or one of its children has an eyepoint bound to it it will
+    be used for the camera position and orientation.If the
+    selected subsystem is a turret and has no eyepoint the
+    camera will be at the first firing point and look along the
+    firing direction.If a valid camera target is set the
+    direction to the target will override any other
+    orientation.Takes 1 to 2 arguments...
+    1: Ship to mount camera on
+    (optional)
+    2: Subystem to mount camera on
+*set-camera-target*
+    set-camera-target
+    Sets the object and subystem camera should track. Camera
+    orientation is offset from the target. Takes 1 to 2
+    arguments...
+    1: Ship to track
+    (optional)
+    2: Subystem to track
+*set-camera-fov*
+    set-camera-fov
+    Sets the camera field of view. Takes 1 to 4 arguments...
+    1: New FOV (degrees)
+    (optional)
+    2: Total zoom time (milliseconds)
+    3: Time to spend accelerating/decelerating (milliseconds)
+    4: Time to spend decelerating (milliseconds)
+*set-fov*
+    set-fov
+    Sets the field of view - overrides all camera settings. Will
+    also override cockpit FOV settings. Takes 1 argument...
+    1: New FOV (degrees)
+*get-fov*
+    get-fov
+    Returns the current field of view (in degrees) from the Main
+    camera.
+
+    Returns a numeric value. Takes no arguments.
+*reset-fov*
+    reset-fov
+    Resets the field of view.
+*reset-camera*
+    reset-camera
+    Releases cutscene camera control. Takes 1 optional argument...
+    (optional)
+    1: Reset camera data (Position, facing, FOV...) (default: false)
+*show-subtitle*
+    show-subtitle (deprecated)
+    Displays a subtitle, either an image or a string of text.
+    Please note that, in images without an alpha channel, black
+    pixels will be treated as transparent. In images with an
+    alpha channel, black pixels will be drawn as expected.
+
+    As this operator tries to combine two functions into one and
+    does not adjust coordinates for screen formats, it has been
+    deprecated.
+
+    Takes 4 to 14 arguments...
+    1: X position (negative value to be from right of screen)
+    2: Y position (negative value to be from bottom of screen)
+    3: Text to display
+    4: Time to be displayed, not including fadein/out
+    5: Image name (optional)
+    6: Fade in time (optional)
+    7: Center horizontally? (optional)
+    8: Center vertically? (optional)
+    9: Width (optional)
+    10: Text red component (0-255) (optional)
+    11: Text green component (0-255) (optional)
+    12: Text blue component (0-255) (optional)
+    13: Drawn after shading? (optional; defaults to false)
+    14: Line vertical spacing, as a percentage, for displaying
+    multi-line subtitles (optional; defaults to 100)
+*show-subtitle-text*
+    show-subtitle-text
+    Displays a subtitle in the form of text. Note that because
+    of the constraints of the subtitle system, textual subtitles
+    are currently limited to 255 characters or fewer.
+
+    Certain arguments can be specified in a percentage of the
+    screen or an absolute number of pixels. This is controlled
+    by the '$Show-subtitle uses pixels' game_settings.tbl
+    option. Whether percentages or pixels, the subtitle can be
+    configured to scale according to screen resolution via the
+    '$Show-subtitle base resolution' option.
+
+    Takes 6 to 15 arguments...
+    1: Text to display, or the name of a message containing text
+    2: X position (percentage/pixels) - positive measures from
+    the left; negative measures from the right
+    3: Y position (percentage/pixels) - positive measures from
+    the top; negative measures from the bottom
+    4: Center horizontally? (if true, overrides argument #2)
+    5: Center vertically? (if true, overrides argument #3)
+    6: Time (in milliseconds) to be displayed, not including
+    fade-in/fade-out
+    7: Fade time (in milliseconds) to be used for both fade-in
+    and fade-out (optional)
+    8: Paragraph width (percentage/pixels) (optional; 0 uses
+    default 200 pixels)
+    9: Text red component (0-255) (optional)
+    10: Text green component (0-255) (optional)
+    11: Text blue component (0-255) (optional)
+    12: Text font (optional)
+    13: Drawn after shading? (optional; defaults to false)
+    14: Line vertical spacing (percentage/pixels), for
+    displaying multi-line subtitles (optional; defaults to 100%)
+    15: Adjust subtitle width if screen aspect ratio is
+    different from base resolution? (optional; has no effect if
+    subtitle base resolution is not specified; defaults to true)
+*show-subtitle-image*
+    show-subtitle-image
+    Displays a subtitle in the form of an image. Please note
+    that, in images without an alpha channel, black pixels will
+    be treated as transparent. In images with an alpha channel,
+    black pixels will be drawn as expected.
+
+    Certain arguments can be specified in a percentage of the
+    screen or an absolute number of pixels. This is controlled
+    by the '$Show-subtitle uses pixels' game_settings.tbl
+    option. Whether percentages or pixels, the subtitle can be
+    configured to scale according to screen resolution via the
+    '$Show-subtitle base resolution' option.
+
+    Takes 8 to 11 arguments...
+    1: Image to display
+    2: X position (percentage/pixels) - positive measures from
+    the left; negative measures from the right
+    3: Y position (percentage/pixels) - positive measures from
+    the top; negative measures from the bottom
+    4: Center horizontally? (if true, overrides argument #2)
+    5: Center vertically? (if true, overrides argument #3)
+    6: Image width (percentage/pixels) (0 uses original width)
+    7: Image height (percentage/pixels) (0 uses original height)
+    8: Time (in milliseconds) to be displayed, not including
+    fade-in/fade-out
+    9: Fade time (in milliseconds) to be used for both fade-in
+    and fade-out (optional)
+    10: Drawn after shading? (optional; defaults to false)
+    11: Adjust subtitle width/height if screen aspect ratio is
+    different from base resolution? (optional; has no effect if
+    subtitle base resolution is not specified; defaults to true)
+*clear-subtitles*
+    clear-subtitles
+    Clears the subtitle queue completely.
+*lock-perspective*
+    lock-perspective
+    Prevents or allows the player from changing the view mode.
+    Takes 1 or 2 arguments...
+    1: True to lock the view mode, false to unlock it
+    2: What view mode to lock; 0 for first-person, 1 for chase,
+    2 for external, 3 for top-down, or -1 to not change the
+    current view mode
+    3: If in first-person, true to lock the hat/slew/free-look/
+    target-track mode, false to unlock it (optional)
+*set-camera-shudder*
+    set-camera-shudder
+    Causes the camera to shudder. Currently this will only work
+    if the camera is showing the player's viewpoint (i.e. the HUD).
+
+    Takes 2 to 4 arguments...
+    1: Time (in milliseconds)
+    2: Intensity. For comparison, the Maxim has an intensity of
+    1440.
+    3: Perpetual (optional). Whether the effect is perpetual,
+    i.e. does not decay.
+    4: Everywhere (optional). Whether the effect is applied to
+    all camera views.
+*supernova-start*
+    supernova-start
+    1: Time in seconds that the supernova lasts. Note that it
+    will actually hit the player at SUPERNOVA_HIT_TIME seconds.
+    If you want the HUD gauge to adjust for this, use the
+    '$Supernova hits at zero' game_settings.tbl option.
+*supernova-stop*
+    supernova-stop
+    Stops a supernova in progress.
+    Note this only works if the camera hasn't cut to the
+    player's death animation yet.
+*set-motion-debris-override*
+    set-motion-debris-override
+    Controls whether or not motion debris should be active.
+    This overrides any choice made by the user through the -
+    nomotiondebris commandline flag.Takes 1 argument...
+    1: Boolean: True will disable motion debris, False reenable it.

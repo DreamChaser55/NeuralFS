@@ -1,0 +1,316 @@
+AI goals
+
+*ai-chase*
+    Ai-chase (Ship goal)
+    Causes the specified ship to chase and attack the specified target.
+
+    Takes 2 to 4 arguments...
+    1: Name of ship to chase.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-chase-ship-class*
+    Ai-chase ship class (Ship goal)
+    Causes the specified ship to chase and attack the specified
+    target ship class.
+
+    Takes 2 to 4 arguments...
+    1: Name of ship class to chase.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-chase-any*
+    Ai-chase-any (Ship goal)
+    Causes the specified ship to chase and attack any ship on the
+    opposite team.
+
+    Takes 1 or 2 arguments...
+    1: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    2 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-guard*
+    Ai-guard (Ship goal)
+    Causes the specified ship to guard a ship from other ships not
+    on the same team.
+
+    Takes 2 arguments...
+    1: Name of ship to guard.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-destroy-subsystem*
+    Ai-destroy subsys (Ship goal)
+    Causes the specified ship to attack and try and destroy the
+    specified subsystem on the specified ship.
+
+    Takes 3 or 4 arguments...
+    1: Name of ship subsystem is on.
+    2: Name of subsystem on the ship to attack and destroy.
+    3: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    4 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    5 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-disable-ship*
+    Ai-disable-ship (Ship/wing goal)
+    This AI goal causes a ship/wing to destroy all of the engine
+    subsystems on the specified ship. This goal is different than
+    ai-destroy-subsystem since a ship may have multiple engine
+    subsystems requiring the use of > 1 ai-destroy-subsystem goals.
+    Please note that this goal will call "protect-ship" on the
+    target to prevent overzealous AI ships from destroying it in the
+    process of disabling it. It will also clear attack goals from
+    any other AI ships which have goals to attack the target. If the
+    ship must be destroyed later on, be sure to call an "unprotect-
+    ship" sexp, or consider using ai-disable-ship-tactical.
+
+    Takes 2 or 3 arguments...
+    1: Name of ship whose engine subsystems should be destroyed
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-disable-ship-tactical*
+    Ai-disable-ship-tactical (Ship/wing goal)
+    This AI goal causes a ship/wing to destroy all of the engine
+    subsystems on the specified ship. This goal is different than
+    ai-destroy-subsystem since a ship may have multiple engine
+    subsystems requiring the use of > 1 ai-destroy-subsystem goals.
+    This goal is specifically a "tactical disable" of its target,
+    performing the specific task without implying anything else. It
+    does not protect the target ship, nor does it clear attack goals
+    from other AI ships attacking the target ship.
+
+    Takes 2 or 3 arguments...
+    1: Name of ship whose engine subsystems should be destroyed
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-disarm-ship*
+    Ai-disarm-ship (Ship/wing goal)
+    This AI goal causes a ship/wing to destroy all of the turret
+    subsystems on the specified ship. This goal is different than
+    ai-destroy-subsystem since a ship may have multiple turret
+    subsystems requiring the use of > 1 ai-destroy-subsystem goals.
+    Please note that this goal may call "protect-ship" on the target
+    to prevent overzealous AI ships from destroying it in the
+    process of disarming it. It will also clear attack goals from
+    any other AI ships which have goals to attack the target. If the
+    ship must be destroyed later on, be sure to call an "unprotect-
+    ship" sexp, or consider using ai-disarm-ship-tactical.
+
+    Takes 2 arguments...
+    1: Name of ship whose turret subsystems should be destroyed
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-disarm-ship-tactical*
+    Ai-disarm-ship-tactical (Ship/wing goal)
+    This AI goal causes a ship/wing to destroy all of the turret
+    subsystems on the specified ship. This goal is different than
+    ai-destroy-subsystem since a ship may have multiple turret
+    subsystems requiring the use of > 1 ai-destroy-subsystem goals.
+    This goal is specifically a "tactical disarm" of its target,
+    performing the specific task without implying anything else. It
+    does not protect the target ship, nor does it clear attack goals
+    from other AI ships attacking the target ship.
+
+    Takes 2 arguments...
+    1: Name of ship whose turret subsystems should be destroyed
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-warp-out*
+    Ai-warp-out (Ship/Wing Goal)
+    Causes the specified ship/wing to immediately warp out of the
+    mission, from its current location. It will warp even if its
+    departure cue is specified as a hangar bay.
+
+    Takes 1 argument...
+    1: Goal priority (number between 0 and 89).
+*ai-dock*
+    Ai-dock (Ship goal)
+    Causes one ship to dock with another ship.
+
+    Takes 4 arguments...
+    1: Name of dockee ship (The ship that "docker" will dock with).
+    2: Docker's docking point - Which dock point docker uses to dock.
+    3: Dockee's docking point - Which dock point on dockee docker
+    will move to.
+    4: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    5 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-undock*
+    Ai-undock (Ship goal)
+    Causes the specified ship to undock from who it is currently
+    docked with.
+
+    Takes 1 or 2 arguments...
+    1: Goal priority (number between 0 and 89).
+    2 (optional): Ship to undock from. If none is specified, the
+    code will pick the first docked ship.
+*ai-rearm-repair*
+    Ai-rearm-repair (Ship goal)
+    Causes the specified ship to rearm and/or repair another ship.
+    Typically only works on support ships.
+
+    Takes 2 arguments...
+    1: Name of ship to rearm or repair.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+*ai-waypoints*
+    Ai-waypoints (Ship goal)
+    Causes the specified ship to fly a waypoint path continuously.
+
+    Takes 2 arguments...
+    1: Name of waypoint path to fly.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+    4 (optional): Starting index (1-n) of the waypoint path.
+    5 (optional): Whether to fly the waypoint path in reverse.
+*ai-waypoints-once*
+    Ai-waypoints once (Ship goal)
+    Causes the specified ship to fly a waypoint path.
+
+    Takes 2 arguments...
+    1: Name of waypoint path to fly.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+    4 (optional): Starting index (1-n) of the waypoint path.
+    5 (optional): Whether to fly the waypoint path in reverse.
+*ai-ignore*
+    Ai-ignore (Ship goal)
+    Tells the specified ship to ignore the given target and not
+    consider it when picking something to attack, but ALSO sets the
+    protect-ship flag on the target so that NO ship can attack it.
+    Only 1 target can be ignored at a time, and the protect-ship
+    flag will remain set on the target unless some other sexp
+    explicitly removes it or instructs a ship to attack the target.
+    In most cases mission designers will want to use ai-ignore-new
+    instead.
+
+    Takes 2 arguments...
+    1: Name of target to ignore.
+    2: Goal priority (number between 0 and 89) - note, this does not
+    imply any ranking of ignored targets.
+*ai-ignore-new*
+    Ai-ignore-new (Ship goal)
+    Tells the specified ship to ignore the given target and not
+    consider it when picking something to attack. Up to 7 targets
+    can be ignored at a time. Targets ignored by any given ship do
+    not affect targets ignored by any other ship.
+
+    Takes 2 arguments...
+    1: Name of target to ignore.
+    2: Goal priority (number between 0 and 89) - note, this does not
+    imply any ranking of ignored targets.
+*ai-form-on-wing*
+    Ai-form-on-wing (Ship Goal)
+    Causes the ship to form on the specified ship's wing. This works
+    analogous to the player order, and will cause all other goals
+    specified for the ship to be purged.
+
+    Takes 1 argument...
+    1: Ship to form on.
+*ai-fly-to-ship*
+    Ai-fly-to-ship (Ship goal)
+    Causes the specified ship to fly towards another ship's position.
+
+    Takes 2 arguments...
+    1: Name of ship to fly towards.
+    2: Goal priority (number between 0 and 200. Player orders have a
+    priority of 90-100).
+    3: Distance from the target ship to fly to (optional; defaults
+    to 300).
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+    5 (optional): Whether the ship should always stay in a
+    particular location as if escorting the target; defaults to false.
+*ai-stay-near-ship*
+    Ai-stay near ship (Ship goal)
+    Causes the specified ship to park itself near the given ship and
+    move closer if the other ship moves too far away from it.
+
+    Takes 3 to 5 arguments...
+    1: Name of ship to stay near.
+    2: Goal priority (number between 0 and 89).
+    3: Distance to stay within (optional; defaults to 300).
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+    5 (optional): Whether the ship should always stay in a
+    particular location as if escorting the target; defaults to false.
+*ai-evade-ship*
+    Ai-evade ship (Ship goal)
+    Causes the specified ship to go into evade mode and run away
+    like the coward it is.
+
+    Takes 2 arguments...
+    1: Name of ship to evade from.
+    2: Goal priority (number between 0 and 89).
+*ai-keep-safe-distance*
+    Ai-keep safe distance (Ship goal)
+    Tells the specified ship to stay a safe distance away from any
+    ship that isn't on the same team as it.
+
+    Takes 1 argument...
+    1: Goal priority (number between 0 and 89).
+*ai-stay-still*
+    Ai-stay still (Ship goal)
+    Causes the specified ship to stay still. The ship will do
+    nothing until attacked at which time the ship will come to life
+    and defend itself.
+
+    Takes 2 arguments...
+    1: Ship or waypoint the ship staying still will directly face
+    (behavior currently not implemented, but the token is still required; use any ship/waypoint)
+    2: Goal priority (number between 0 and 89).
+*ai-play-dead*
+    Ai-play-dead (Ship goal)
+    Causes the specified ship to pretend that it is dead and not do
+    anything. This expression should be used to indicate that a ship
+    has no pilot and cannot respond to any enemy threats. A ship
+    playing dead will not respond to any attack.
+
+    Do note that the ship's goal list is cleared, which means that
+    if it receives any other goal in any way, it will immediately
+    come back to life. Use ai-play-dead-persistent to prevent this
+    from happening.
+
+    Takes 1 argument...
+    1: Goal priority (number between 0 and 89).
+*ai-play-dead-persistent*
+    Ai-play-dead-persistent (Ship goal)
+    Causes the specified ship to pretend that it is dead and not do
+    anything. This goal behaves exactly like ai-play-dead, with the
+    important difference that the ship will not immediately come
+    back to life whenever it is given an order or a new goal of any
+    priority. The only ways this goal can be removed are via remove-
+    goal, clear-goals, or a new goal of a *higher* priority.
+
+    Takes 1 argument...
+    1: Goal priority (number between 0 and 89).

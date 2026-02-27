@@ -1,0 +1,76 @@
+  Cargo
+
+*transfer-cargo*
+    Transfer Cargo (Action operator)
+    Transfers the cargo from one ship to another ship.
+
+    Takes 2 arguments...
+    1: Name of ship that cargo is being transferred from (ship
+    must be in-mission).
+    2: Name of ship that cargo is being transferred to (ship
+    must be in-mission).
+*exchange-cargo*
+    Exchange Cargo (Action operator)
+    Exchanges the cargos of two ships. If one of the two ships
+    contains no cargo, the cargo is transferred instead.
+    Takes 2 arguments...
+    1: Name of one of the ships (ship must be in-mission).
+    2: Name of the other ship (ship must be in-mission).
+*set-cargo*
+    Set Cargo (Action operator)
+    Sets the cargo on a ship or ship subsystem. The cargo-no-
+    deplete flag status is carried through to the new cargo.
+    Takes 2 or 3 arguments...
+    1: Name of the cargo
+    2: Name of the ship (does not need to be in-mission)
+    3: Name of the ship subsystem (optional)
+*jettison-cargo-delay*
+    jettison-cargo-delay (deprecated)
+    Causes a cargo carrying ship to jettison its cargo without
+    the undocking procedure. Takes 2 or more arguments...
+    1: Ship to jettison cargo (ship must be in-mission)
+    2: Delay after which to jettison cargo (note that this isn't
+    actually used)
+    Rest (optional): Cargo to jettison. If no optional arguments
+    are specified, the ship jettisons all cargo.
+*jettison-cargo*
+    jettison-cargo
+    Causes a cargo carrying ship to jettison its cargo without
+    the undocking procedure. This is an upgrade of the old
+    jettison-cargo-delay sexp which a) didn't use a delay, and
+    b) botched the physics calculations. Takes 1 or more
+    arguments...
+    1: Ship to jettison cargo (ship must be in-mission)
+    2 (optional): Speed with which to jettison cargo (defaults
+    to 25)
+    Rest (optional): Cargo to jettison. If no cargo arguments
+    are specified, the ship jettisons all cargo.
+*set-docked*
+    set-docked
+    Causes one ship to become instantly docked to another at the
+    specified docking ports (both ships must be in-mission).
+    Takes 4 arguments...
+    1: Docker ship
+    2: Docker point
+    3: Dockee ship
+    4: Dockee point
+*cargo-no-deplete*
+    cargo-no-deplete
+    Causes the named ship to have unlimited cargo.
+    Note: only applies to BIG or HUGE ships
+    Takes 1 or more arguments...
+    1: Name of one of the ships (ship does not need to be in-
+    mission).
+    2: optional: 1 disallow depletion, 0 allow depletion.
+*set-scanned*
+    set-scanned
+    Sets the cargo on the specified ship or ship subsystem as
+    known or scanned. Takes 1 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    Rest: Name of a subsystem on that ship (optional)
+*set-unscanned*
+    set-unscanned
+    Sets the cargo on the specified ship or ship subsystem as
+    unknown or unscanned. Takes 1 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    Rest: Name of a subsystem on that ship (optional)

@@ -1,0 +1,17 @@
+  Variables
+
+*string-to-int*
+    string-to-int
+    Converts a string into an integer. All non-numeric
+    characters (except for the negative sign) will be ignored,
+    as will any fractional part of a decimal number. This
+    behavior is somewhat different than the atoi() function in C
+    or C++, which will abort if it encounters any non-numeric
+    character. For a string like "turret31", this sexp will
+    return 31, but atoi() will return 0.
+
+    Takes 1 argument...
+    1: String to convert
+*string-get-length*
+    string-get-length
+    Returns the length of the specified string. Takes 1 argument.

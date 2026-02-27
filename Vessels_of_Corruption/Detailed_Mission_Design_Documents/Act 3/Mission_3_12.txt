@@ -1,0 +1,83 @@
+# Mission Design Document: The Final Seal (3.12)
+
+## Purpose and Player Experience
+- **Mission Fantasy**: A suicide run into the heart of a cosmic nightmare. The player is the "Final Seal," sacrificing their escape to ensure the survival of their species.
+- **Plot Advancement**: The destruction of the Singularity Anchor and the SD Malphas. The collapse of the Void node. Concludes the campaign.
+- **Tone**: Heroic, tragic, and otherworldly. The music should be melancholic yet driving.
+
+## Environment and Setup
+- **Datestamp**: 07 Dec 2335
+- **System**: The Singularity (Void Core)
+- **Location**: The absolute center of the Void anomaly.
+- **Backgrounds**: A blinding white and violet core that pulses with immense power. The physics of space are visibly breaking—ships seem to stretch and warp.
+- **Hazards**: "Core Fluctuation" – Massive energy surges that drain shields to zero for 5 seconds every 2 minutes. High density of Shivan mines.
+
+## Participants
+- **Allied**:
+    - **GTD Erebus (Orion-class)**: Status: 30% Hull. It is the "Anchor" for the player's jump out. It will not survive.
+    - **Alpha Wing (Player)**: 4x GTB Ursa (The Heavy Hitters).
+    - **Beta Wing**: 4x GTB Ursa.
+    - **Gamma Wing**: 6x GTF Hercules (Final Escort).
+- **Hostile/Neutral**:
+    - **SD Malphas (Infected Demon)**: The Brood Mother. It is merged with the Singularity Anchor.
+    - **Singularity Anchor (Subsystem)**: The target that keeps the node open.
+    - **Shivan Dragon (SF Dragon)**: 4 wings of 3 (Arjuna, Krishna, Rama, Vishnu).
+    - **Shivan Seraphim (SB Seraphim)**: 2 wings of 3.
+    - **The Core Destroyer (Custom Shivan Superdestroyer)**: Distant, slowly emerging from the white core.
+
+## Player Craft and Loadout
+- **Default Ship**: GTB Ursa.
+- **Allowed Ships**: GTB Ursa only.
+- **Default Loadout**: GTW Prometheus, GTW Flail, GTM Harbinger (4x), GTM Synaptic.
+
+## Objectives and Directives
+- **Primary**:
+    - Destroy the 4 Bio-Nodes on the SD Malphas.
+    - Destroy the Singularity Anchor.
+    - Destroy the SD Malphas.
+- **Secondary**:
+    - Protect the GTD Erebus until the Anchor is destroyed.
+- **Bonus**:
+    - Destroy the emerging Shivan "Core Destroyer" (requires multiple Harbingers).
+
+## Command Briefing
+- **Stage 1**: This is the end of the line. The data from the Malphas scan has identified the "Singularity Anchor"—the device that keeps the Void node stable. If we destroy it, the node will collapse, trapping everything inside.
+- **Stage 2**: The SD Malphas has moved to the core to protect the Anchor. We are taking the Erebus in. She’s falling apart, but she’ll give us the sensor lock we need to deliver the Harbingers.
+- **Stage 3**: Once the Anchor is gone, the node will begin to collapse. You will have a thirty-second window to jump out before the rift seals forever. Alpha 1, you have been our finest pilot. Lead us one last time.
+
+## Mission Briefing
+- **Stage 1**: Alpha, the Malphas is fused with the core. You'll need to destroy the four Bio-Nodes on its hull to expose the Singularity Anchor. These nodes are protected by Shivan shield generators.
+- **Stage 2**: The environment is highly unstable. Your shields will fail periodically. Coordinate with Gamma wing to provide cover during these blackouts.
+- **Stage 3**: Once the Anchor is exposed, hit it with everything. If the Core Destroyer emerges from the white light, use your remaining Harbingers on it. We don't want that thing anywhere near the node when it closes.
+
+## In-mission Communications
+- **Erebus Command**: "We're losing the outer hull! Engineering is flooded! Alpha, hit those nodes now!"
+- **Alpha 2 (Vane)**: "The light... it's so bright. I can't see my HUD! Alpha 1, stay on my wing!"
+- **Alpha 3 (Kael)**: "The Malphas is opening... its hull is splitting like a mouth! It's trying to swallow the Erebus!"
+- **Erebus Command**: "Anchor exposed! All wings, unload Harbingers! Go! Go! Go!"
+- **The Whisper**: (Calm, final) "The... seal... is... broken. We... are... one."
+- **Erebus Command (Final)**: "Anchor destroyed! The node is collapsing! Alpha, jump! Jump now! We'll... we'll hold them off from here. Good luck, pilots."
+
+## Event Flow and Timing
+- **00:00**: Alpha wing jumps into the Core. The visuals are blinding. The Malphas is 4km ahead, massive and terrifying.
+- **03:00**: Bio-Nodes 1 and 2 are destroyed. Shivan Dragons (Arjuna) engage.
+- **06:00**: Shields go down due to Core Fluctuation. Massive Shivan bomber wave (Seraphims) attacks.
+- **08:00**: Singularity Anchor is exposed. It glows with a brilliant violet light.
+- **10:00**: Anchor destroyed. A massive subspace vortex begins to form.
+- **11:00**: The Erebus is pulled into the vortex. The player has 30 seconds to initiate their jump drive.
+
+## Event Logic Sketch
+- **Suicide Choice**: If the player doesn't jump in time, they receive a special "MIA" ending. If they jump, they return to Adhara space alone.
+- **Core Destroyer**: This ship is mostly for show but can be destroyed for a high score/medal. It has 2,000,000 HP.
+
+## New Ships/Weapons
+- **Singularity Anchor**: High-priority structural target.
+- **Shivan Core Destroyer**: Massive, translucent superdestroyer.
+
+## Debriefing (Campaign Finale)
+- **Success (Jumped)**: The Adhara anomaly is gone. The Erebus, Admiral Kress, and the Malphas are all sealed within the Void forever. You are the only one who returned. The infection has been stopped, but the cost was our soul.
+- **Success (MIA)**: You chose to stay. The last thing you saw was the white light of the core closing over you. You are a hero of the Alliance, but you are a ghost now.
+
+## QA Notes
+- The "blinding" light should be handled with a white-out effect that doesn't literally blind the player but adds to the atmosphere.
+- The 30-second window must be clearly timed on the HUD.

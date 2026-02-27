@@ -1,0 +1,369 @@
+fsif_version: "2.5"
+
+fiction_viewer: "story.txt"
+
+mission_info:
+  name: "FSIF All Features Showcase"
+  author: "NeuralFS Demo"
+  description: "FSIF Demo Mission"
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+  disallow_support: false
+
+environment:
+  star_count: 700
+  ambient_light_level: 10
+  fog: { near_mult: 1.0, far_mult: 1.0 }
+  suns:
+    - { texture: SunWhite, angles: [0.000000, 0.000000, 0.523599], scale: 1.5 }
+    - { texture: SunSiriusA, angles: [0.087266, 0.000000, 2.356194], scale: 2.0 }
+  starbitmaps:
+    - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 }, div: { x: 2, y: 2 } }
+    - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 }, div: { x: 1, y: 1 } }
+    - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 }, div: { x: 1, y: 1 } }
+  nebula: { enabled: false }
+  asteroid_field:
+    name: "Field_Main"
+    genre: "asteroid"           # asteroid | debris
+    type: "active"              # active | passive
+    density: 10
+    average_speed: 5.0
+    bounds:
+      min: [-2500.0, -1500.0, -2500.0]
+      max: [ 2500.0,  1500.0,  2500.0]
+    targets: ["GTC Fenris 1", "GTFr Poseidon 1"]
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - { class: "GTF Ulysses", count: 4 }
+    - { class: "GTF Hercules", count: 2 }
+    - { class: "GTB Ursa", count: 2 }
+
+entities:
+  ship_templates:
+    friendly_fighter:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      ai_class: "General"
+      flags: ["cargo-known"]
+      weapons:
+        primary: ["Prometheus", "Avenger"]
+        secondary: ["Hornet"]
+    enemy_fighter:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
+    enemy_bomber:
+      class: "SB Nephilim"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan"]
+    transport:
+      class: "GTT Elysium"
+      team: "Friendly"
+      ai_class: "Lieutenant"
+      flags: ["primaries-locked", "secondaries-locked"]
+    cruiser:
+      class: "GTC Fenris"
+      team: "Friendly"
+      ai_class: "Captain"
+      flags: ["escort"]
+    freighter:
+      class: "GTFr Poseidon"
+      team: "Friendly"
+      ai_class: "Lieutenant"
+
+  ships:
+    - name: "Nav Buoy"
+      class: "Terran NavBuoy"
+      team: "Hostile"
+      location: [500.0, 0.0, 500.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTC Fenris 1"
+      template: "cruiser"
+      location: [0.0, 0.0, 0.0]
+      escort_priority: 90
+      subsystems:
+        status: custom
+        list:
+          - { name: "sensors", health: 80 }
+          - { name: "engine",  health: 60 }
+      arrival_cue: |
+        ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( is-event-true-delay "Fenris depart" 0 )
+
+    - name: "GTT Elysium 1"
+      template: "transport"
+      location: [-60.0, 0.0, 120.0]
+      # Pre-spawn docked as DOCKER to the Fenris (DOCKEE)
+      dock:
+        with: "GTC Fenris 1"
+        docker_point: "topside docking"   # on Elysium
+        dockee_point: "Docking bay 1"     # on Fenris
+      arrival_cue: |
+        ( false )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 5 )
+
+    - name: "GTFr Poseidon 1"
+      template: "freighter"
+      location: [800.0, 0.0, 1500.0]
+      flags: ["hidden-from-sensors"]
+      arrival_delay: 10
+      arrival_cue: |
+        ( true )
+
+    - name: "TAC 1 Cargo"
+      class: "TAC 1"
+      team: "Hostile"
+      location: [900.0, 0.0, 1500.0]
+      flags: ["scannable"]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTS Centaur 1"
+      class: "GTS Centaur"
+      team: "Friendly"
+      location: [-1500.0, 100.0, -1200.0]
+      flags: ["weapons-locked"]
+      arrival_cue: |
+        ( true )
+
+  wings:
+    - name: "Alpha"
+      template: "friendly_fighter"
+      count: 4
+      position: [-200.0, 0.0, -200.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+          ( ai-guard "GTC Fenris 1" 95 )
+
+    - name: "Beta"
+      template: "friendly_fighter"
+      count: 3
+      position: [150.0, 0.0, -150.0]
+      arrival_location: "In front of ship"
+      arrival_anchor: "<any friendly player>"
+      arrival_distance: 1500
+      arrival_delay: 5
+      arrival_cue: |
+        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+      ai_goals: |
+          ( ai-chase-any 70 )
+
+    - name: "Zeta"
+      template: "enemy_fighter"
+      count: 4
+      position: [0.0, 0.0, 1800.0]
+      waves: 2
+      wave_threshold: 1
+      wave_delay_min: 8
+      wave_delay_max: 14
+      arrival_location: "In front of ship"
+      arrival_anchor: "<any friendly player>"
+      arrival_distance: 1800
+      arrival_delay: 10
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+          ( ai-chase-any 60 )
+
+    - name: "Chi"
+      template: "enemy_bomber"
+      count: 3
+      position: [0.0, 0.0, 1500.0]
+      waves: 1
+      arrival_location: "Above ship"
+      arrival_anchor: "GTC Fenris 1"
+      arrival_distance: 1500
+      arrival_cue: |
+        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+      ai_goals: |
+          ( ai-chase "GTC Fenris 1" 90 )
+
+    - name: "Delta"
+      template: "friendly_fighter"
+      count: 3
+      position: [-500.0, 0.0, -400.0]
+      ai_goals: |
+          ( ai-guard "GTC Fenris 1" 80 )
+
+  waypoints:
+    DeparturePath:
+      - [1000.0, 0.0, 0.0]
+      - [2000.0, 0.0, 0.0]
+      - [2800.0, 0.0, 0.0]
+    JumpNodeLoc:
+      - [3000.0, 0.0, 0.0]
+
+  reinforcement_wings:
+    - name: "Delta"
+      num_times: 1
+  reinforcement_ships:
+    - name: "GTS Centaur 1"
+      num_times: 1
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "Our convoy will rendezvous at the Nav Buoy and transfer cargo."
+        ani: "brief-01.ani"
+        voice_style_instructions: "officer speaking, authoritative"
+        voice_name: "Gacrux"
+      - text: "Alpha will escort the Fenris and cover the transport during the operation."
+        ani: "brief-02.ani"
+        voice_style_instructions: "military briefing, directive"
+        voice_name: "Gacrux"
+
+  briefing:
+    stages:
+      - text: "Rendezvous at Nav Buoy and scan the marked container."
+        voice_style_instructions: "military briefing, directive"
+        voice_name: "Gacrux"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha", highlighted: true }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
+          - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [150, 50], label: "Elysium" }
+          - { type: "Cargo", team: "Hostile", pos: [800, 1000], label: "Cargo" }
+          - { type: "Waypoint", team: "Friendly", pos: [500, 500], label: "Nav Buoy" }
+      - text: "Zeta will attack from the front; expect follow-up bombers targeting the Fenris."
+        voice_style_instructions: "military briefing, directive"
+        voice_name: "Gacrux"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
+          - { type: "Fighter Wing", team: "Hostile", class: "SF Basilisk", pos: [200, 1200], label: "Zeta" }
+          - { type: "Bomber Wing", team: "Hostile", class: "SB Nephilim", pos: [600, 1500], label: "Chi" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
+      - text: "The operation occurs near the jump node; keep the area clear."
+        voice_style_instructions: "directive, summarizing"
+        voice_name: "Gacrux"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
+          - { type: "Jump Node", team: "Hostile", pos: [1000, 0], label: "Delta Serpentis Jump Node" }
+          - { type: "Planet", team: "Hostile", pos: [2000, 3000], label: "Planet" }
+          - { type: "Asteroid Field", team: "Hostile", pos: [0, 1000], label: "Field" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-destroyed-delay 0 "GTC Fenris 1" )
+        text: "The Fenris was destroyed. We failed the escort."
+        voice_name: "Gacrux"
+      - condition: |
+          ( not ( is-cargo-known-delay 0 "TAC 1 Cargo" ) )
+        text: "You failed to scan the marked cargo. Intelligence lost valuable data."
+        voice_name: "Gacrux"
+      - condition: |
+          ( true )
+        text: "Excellent work. The convoy transferred cargo and withdrew successfully."
+        voice_name: "Gacrux"
+
+  events:
+    - name: "Intro directive"
+      formula: |
+        ( when 
+          ( true )
+          ( send-message "#Command" "High" "Rendezvous and Scan" )
+        )
+      directive_text: "Rendezvous at Nav Buoy and scan the marked cargo"
+
+    - name: "Scan complete"
+      formula: |
+        ( when
+          ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+          ( send-message "#Command" "Normal" "Scan complete" )
+        )
+
+    - name: "Fenris depart"
+      formula: |
+        ( when
+          ( < ( distance "GTC Fenris 1" "JumpNodeLoc:1" ) 800 )
+          ( send-message "#Command" "Normal" "Fenris departing" )
+        )
+
+    - name: "Transfer complete"
+      formula: |
+        ( when
+          ( is-event-true-delay "Scan complete" 0 )
+          ( send-message "#Command" "Normal" "Transfer complete" )
+          ( add-goal "GTT Elysium 1" ( ai-undock 89 ) )
+          ( add-goal "GTC Fenris 1" ( ai-waypoints "DeparturePath" 89 ) )
+        )
+
+    - name: "Reinforcements available"
+      formula: |
+        ( when
+          ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+          ( send-message-list "#Command" "High" "Reinforcements available" 0 )
+        )
+
+    - name: "Call Delta (directive)"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "Reinforcements available" 0 )
+            ( percent-ships-arrived 100 "Delta" )
+          )
+          ( do-nothing )
+        )
+      directive_text: "Call Delta wing if needed"
+
+  goals:
+    - name: "Protect the Fenris"
+      type: "Primary"
+      message: "Ensure GTC Fenris 1 survives until departure."
+      formula: |
+        ( is-event-true-delay "Fenris depart" 0 )
+    - name: "Scan the cargo"
+      type: "Secondary"
+      message: "Scan the marked cargo container."
+      formula: |
+        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+    - name: "Eliminate bomber ace"
+      type: "Bonus"
+      message: "Destroy one of the Nephilim bombers."
+      formula: |
+        ( percent-ships-destroyed 33 "Chi 1" "Chi 2" "Chi 3" )
+
+  messages:
+    - name: "Rendezvous and Scan"
+      message: "Alpha, proceed to Nav Buoy and scan the marked cargo."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Commanding, clear directive"
+    - name: "Scan complete"
+      message: "Scan complete. Uploading data now."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Informative, professional"
+    - name: "Fenris departing"
+      message: "Fenris is departing the area. Maintain cover until jump."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Alert, informative"
+    - name: "Transfer complete"
+      message: "Cargo transfer complete. Prepare for departure."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Successful tone, informative"
+    - name: "Reinforcements available"
+      message: "Delta wing is available as reinforcement. Use the Reinforcements menu to call them."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Helpful, informative"
+
+audio:
+  mission_music: "1: Genesis"
+  briefing_music: "Brief1"
+
+jump_nodes:
+  - { name: "Delta Serpentis Jump Node", position: [3000.0, 0.0, 0.0] }

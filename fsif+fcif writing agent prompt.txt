@@ -1,0 +1,36 @@
+Here are the relevant documents:
+
+Freespace Universe Bible (condensed):
+@/Freespace\ Bibles/FS_Universe_Bible_Condensed.txt 
+
+NeuralFS:
+@/README.md 
+@/Documentation/index.md 
+
+FSIF:
+@/Documentation/fsif/specification.md 
+@/Documentation/fsif/authoring-guide.md 
+
+FSO:
+@/Documentation/FSO\ and\ fs2\ format/FSO_Tokens_Reference.md 
+@/Documentation/FSO\ SEXPs/INDEX.md 
+
+FCIF:
+@/Documentation/fcif/specification.md
+
+FSIF Converter:
+@/FSIF_to_FS2_Converter/README.md 
+
+FCIF Converter:
+@/FCIF_to_FC2_Converter/README.md 
+
+FSIF Demo:
+@/missions/Demo_missions/general_demo.fsif 
+
+FCIF Demo:
+@/campaigns/Demo_campaigns/campaign_demo.fcif
+
+Read the @/<campaign_folder>/Campaign_Bible.txt . Read the mission design docs in @/<campaign_folder>/Detailed_Mission_Design_Documents folder.
+
+1. Write fsif missions based on the provided campaign Bible and mission design docs. Place them into the '/<campaign_folder>/fsif/' folder.
+2. After all fsif missions are written, write a FCIF campaign definition file based on the campaign Bible, mission design docs and mission progression in the written fsif files. Place it into the '/<campaign_folder>/' folder (alongside Campaign_Bible.txt).

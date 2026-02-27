@@ -1,0 +1,144 @@
+  Messages and Personas
+
+*send-message*
+    Send message (Action operator)
+    Sends a message to the player. Can be sent by a ship, wing,
+    or special source. To send it from a special source, make
+    the first character of the first argument a "#".
+
+    High and Normal priorities are not interrupted by anything
+    and take precedence over built-in messages.
+    Low priority may be interrupted by built-in messages.
+    If the sender is destroyed, Normal and Low priority messages
+    will not be sent. High priority messages will be reassigned
+    to Command and will be sent if one of the following is true:
+    1. The message has no persona
+    2. The message has a wingman persona, the message's filename
+    starts with 1_ through 6_, and there exists a corresponding
+    filename starting with TC_ that can be used instead
+
+    Takes 3 arguments...
+    1: Name of who the message is from.
+    2: Priority of message ("Low", "Normal" or "High").
+    3: Name of message (from message list).
+*send-builtin-message*
+    Send builtin message (Action operator)
+    Sends a builtin message (from messages.tbl) to the player.
+    The message is sent exactly the same way as it would be if
+    it were sent automatically; i.e. the sender's persona and
+    species are considered, as is the mission mood and any
+    message filters, and disable-builtin-messages is respected.
+    Due to technical limitations, all #special sources are
+    treated as #Command.
+    It is legal to send a message from a source which can't
+    normally send it, so long as appropriate messages are
+    defined in messages.tbl. For example, this can be used to
+    make a cruiser send a Help message.
+
+    Takes 4 or more arguments...
+    1: The type of message to send.
+    2: The message's subject (used with message filters). If you
+    don't know what this means, set it to <none>. 3: Pick a
+    random sender? If this is false, the first available sender
+    will be used.
+    Rest: Who should send the message - a ship, a wing,
+    #Command, or <any wingman>.
+*send-message-list*
+    send-message-list
+    Sends a series of delayed messages. All times are
+    accumulated. Takes arguments in multiples of 4.
+    1: Name of who the message is from.
+    2: Priority of message ("Low", "Normal" or "High").
+    3: Name of message (from message list).
+    4: Delay from previous message in list (if any) in ms
+    Use Add-Data for multiple messages.
+
+    IMPORTANT: Each additional message in the list MUST HAVE
+    four entries; any message without the four proper fields
+    will be ignored, as will any successive messages.
+
+    See send-message for the message priority descriptions.
+*send-message-chain*
+    send-message-chain
+    This works just like send-message-list, but if the event
+    specified in the first argument becomes true, all un-played
+    messages are cancelled.
+    1: The event that will cancel the message chain.
+    2: Name of who the message is from.
+    3: Priority of message ("Low", "Normal" or "High").
+    4: Name of message (from message list).
+    5: Delay from previous message in list (if any) in ms
+    Use Add-Data for multiple messages.
+
+    IMPORTANT: Each additional message in the list MUST HAVE
+    four entries; any message without the four proper fields
+    will be ignored, as will any successive messages.
+
+    See send-message for the message priority descriptions.
+*send-random-message*
+    Send random message (Action operator)
+    Sends a random message to the player from those supplied.
+    Can be sent by a ship, wing, or special source. To send it
+    from a special source, make the first character of the first
+    argument a "#".
+
+    Takes 3 or more arguments...
+    1: Name of who the message is from.
+    2: Priority of message ("Low", "Normal" or "High"). Rest:
+    Name of message (from message list).
+*scramble-messages*
+    scramble-messages
+    Causes messages to be sent or received as if the player had
+    sustained communications subsystem or EMP damage. This
+    effect can be reversed using unscramble-messages. Takes zero
+    or more arguments.
+    All (Optional): Name of the ship for which to scramble
+    messages. If no ships are specified, message scrambling will
+    be turned on for the player.
+*unscramble-messages*
+    unscramble-messages
+    Undoes the effects of scramble-messages, causing messages to
+    be sent or received clearly (conditions permitting). Takes
+    zero or more arguments.
+    All (Optional): Name of the ship for which to scramble
+    messages. If no ships are specified, message scrambling will
+    be turned off for the player.
+*disable-builtin-messages*
+    Disable builtin messages (Action operator)
+    Turns the built in messages sent by command or pilots off
+    Takes 0 or more arguments....
+    If no arguments are supplied all built in messages are
+    disabled.
+    Using the Any Wingman option silences for all ships in wings.
+    All: Name of ship to be silenced (ship does not need to be
+    in-mission).
+*enable-builtin-messages*
+    Enable builtin messages (Action operator)
+    Turns the built in messages sent by command or pilots on
+    Takes 0 or more arguments...
+    If no arguments are supplied any ships not given individual
+    silence orders will be able
+    to send built in messages. Command will also be unsilenced
+    Using the Any Wingman option cancels radio silence for all
+    ships in wings.
+    All: Name of ship to allow to talk (ship does not need to be
+    in-mission).
+*set-persona*
+    Set Persona (Action operator)
+    Sets the persona of the supplied ship to the persona supplied
+    Takes 2 or more arguments...
+    1: Persona to use. Rest: Name of the ship (ship must be in-
+    mission).
+*set-death-message*
+    set-death-message
+    Sets the message displayed when the specified players are
+    killed. Takes 1 or more arguments...
+    1: The message
+    Rest: The players for whom this message is displayed
+    (optional) (currently not implemented)
+*set-mission-mood*
+    set Mission Mood (Action operator)
+    Sets the mood of the mission, this affects the choice of
+    builtin messages sent by wingmen
+    Takes 1 argument...
+    1: Mission mood (from messages.tbl) to use.

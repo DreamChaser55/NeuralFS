@@ -1,0 +1,77 @@
+# Mission Design Document: Necromancer's Hand (2.6)
+
+## Purpose and Player Experience
+- **Mission Fantasy**: A clinical, cold-blooded strike against our own people. The player realizes that the enemy isn't just "out there," it's "in here."
+- **Plot Advancement**: Discovery of GTI's rogue experiments with Shivan matter on human subjects. Confrontation with the "Protocol Necromancer."
+- **Tone**: Clinical, sterile, yet morally repulsive.
+
+## Environment and Setup
+- **Datestamp**: 07 Nov 2335
+- **System**: The Void
+- **Location**: Orbiting a massive Shivan crystalline structure.
+- **Backgrounds**: Deep red Void nebula. The "GTI Black Lab" is a modified GTSC Faustus moored to Shivan spires.
+- **Hazards**: High-precision automated sentry guns (Watchdogs) protecting the lab.
+
+## Participants
+- **Allied**:
+    - **Alpha Wing (Player)**: 4x GTF Apollo (fitted with high-speed sensor arrays).
+    - **Beta Wing**: 3x GTB Athena (Strike wing).
+- **Hostile/Neutral**:
+    - **GTSC Necromancer (Faustus-class)**: Rogue GTI Research Lab.
+    - **GTT Pandora (Elysium-class)**: Transport carrying the lead scientist.
+    - **Bragi Wing**: 4x GTF Loki (Rogue GTI escort).
+    - **Brahma Wing**: 3x SF Scorpion (Shivan guardians).
+    - **GTSG Watchdog**: 8x Sentry guns.
+
+## Player Craft and Loadout
+- **Default Ship**: GTF Apollo.
+- **Allowed Ships**: GTF Apollo, GTF Loki.
+- **Default Loadout**: GTW-15 Avenger, GTW Flail, GTM Interceptor.
+
+## Objectives and Directives
+- **Primary**:
+    - Destroy all automated sentry guns (GTSG Watchdog).
+    - Scan the GTSC Necromancer's 3 data hubs.
+    - Destroy the GTSC Necromancer.
+- **Secondary**:
+    - Disable and capture the GTT Pandora (Lead scientist).
+- **Bonus**:
+    - Destroy the Shivan escorts (Brahma wing).
+
+## Command Briefing
+- **Stage 1**: Intelligence has tracked an encrypted GTI signal to a facility moored deep within the Void. This is the heart of "Project Necromancer."
+- **Stage 2**: Preliminary scans show the facility is a hybrid of Terran architecture and Shivan bio-matter. It is being used to process human subjects for "re-writing."
+- **Stage 3**: High Command has disavowed this facility. Your orders are to extract the research data and then sanitize the site. No one involved in this project can be allowed to return to GTA space.
+
+## Mission Briefing
+- **Stage 1**: Alpha, you'll clear the sentry guns. They are GTI-issue, but they've been modified with Shivan optics. They won't miss.
+- **Stage 2**: Once the perimeter is clear, move in close to the Necromancer. We need to scan the three external data hubs to download their logs. 
+- **Stage 3**: A GTI transport, the Pandora, is scheduled to depart. Disable it. We need the lead researcher alive for interrogation. Once the data is secure, Beta will level the facility.
+
+## In-mission Communications
+- **Alpha 1 (Player)**: (Comm silence).
+- **GTI Director**: "Alpha wing, you are interfering in a project that ensures the survival of the human race. You are shortsighted fools!"
+- **Alpha 2 (Vane)**: "I'm scanning the hubs now... My god, the logs... they're injecting Shivan spores into the pilots' nervous systems while they're still conscious."
+- **Alpha 3 (Kael)**: "Look at the Loki wing. Their cockpits... they're blacked out. I don't think there are humans in there anymore."
+- **Erebus Command**: "Alpha wing, do not read the logs. Just extract the data. Disable the Pandora now!"
+- **GTI Scientist (Pandora)**: "You don't understand! We are becoming more! We are transcending the flesh!"
+
+## Event Flow and Timing
+- **00:00**: Alpha wing jumps in. The Lab is moored to pulsing purple spires.
+- **01:30**: Bragi wing (Rogue GTI Lokis) attacks. They fight with mechanical precision.
+- **03:00**: Brahma wing (Shivans) joins the fight, defending the GTI facility.
+- **05:00**: Player must scan the hubs. HUB 1: Biology, HUB 2: Subspace, HUB 3: Human Trials.
+- **07:00**: GTT Pandora attempts to jump. Player must disable its engines.
+- **09:00**: Beta wing arrives and destroys the Necromancer. Massive explosion of purple and white light.
+
+## Event Logic Sketch
+- **Betrayal**: The Shivan wing (Brahma) is set to 'Protect' the GTI Lab, confirming the alliance.
+- **Pandora Capture**: If the Pandora is destroyed, a secondary objective fails, but the mission continues.
+
+## Debriefing
+- **Success**: The Necromancer is ashes. The data you recovered is being encrypted at Level Omega. We have the lead scientist in custody, though he hasn't stopped laughing since we boarded his ship.
+- **Failure**: The data escaped. GTI's "New Humans" are now one step closer to Sol. We cannot afford to let our own technology be turned against us in this way.
+
+## QA Notes
+- The GTI Loki wing should be slightly more skilled than standard AI to emphasize their "augmentation."
+- The hubs are small; the player needs to fly steady to scan them.

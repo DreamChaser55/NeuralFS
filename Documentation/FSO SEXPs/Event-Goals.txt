@@ -1,0 +1,164 @@
+Event/Goals
+
+*is-goal-true-delay*
+    Mission Goal True (Boolean operator)
+    Returns true N seconds after the specified goal in the this
+    mission is true (or succeeded). It returns false otherwise.
+
+    This operator works by checking the mission log. Since goal
+    status is evaluated after event status, a delay of 0 will cause
+    an event to become true on the frame after the goal becomes true.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of seconds to delay before returning true.
+*is-goal-false-delay*
+    Mission Goal False (Boolean operator)
+    Returns true N seconds after the specified goal in the this
+    mission is false (or failed). It returns false otherwise.
+
+    This operator works by checking the mission log. Since goal
+    status is evaluated after event status, a delay of 0 will cause
+    an event to become true on the frame after the goal becomes false.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of seconds to delay before returning true.
+*is-goal-incomplete*
+    Mission Goal Incomplete (Boolean operator)
+    Returns true if the specified goal in the this mission is
+    incomplete. This sexpression will only be useful in conjunction
+    with another sexpression likehas-time-elapsed. Used alone, it
+    will return true upon mission startup.Returns a boolean value.
+    Takes 1 argument...
+    1: Name of the event in the mission.
+*is-event-true-delay*
+    Mission Event True (Boolean operator)
+    Returns true N seconds after the specified event in the this
+    mission is true (or succeeded). It returns false otherwise.
+
+    NOTE: For a delay of 0 (if used in-mission), this operator will
+    become true on the frame after the specified event becomes true.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of seconds to delay before returning true.
+    3: (Optional) Defaults to False. When set to false, directives
+    will only appear as soon as the specified event is true.
+    When set to true, the event only affects whether the directive
+    succeeds/fails, and has no effect on when it appears
+*is-event-true-msecs-delay*
+    Mission Event True (Boolean operator)
+    Returns true N milliseconds after the specified event in the
+    this mission is true (or succeeded). It returns false otherwise.
+
+    NOTE: For a delay of 0 (if used in-mission), this operator will
+    become true on the frame after the specified event becomes true.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of milliseconds to delay before returning true.
+    3: (Optional) Defaults to False. When set to false, directives
+    will only appear as soon as the specified event is true.
+    When set to true, the event only affects whether the directive
+    succeeds/fails, and has no effect on when it appears
+*is-event-false-delay*
+    Mission Event False (Boolean operator)
+    Returns true N seconds after the specified event in the this
+    mission is false (or failed). It returns false otherwise.
+
+    NOTE: For a delay of 0 (if used in-mission), this operator will
+    become true on the frame after the specified event becomes false.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of seconds to delay before returning true.
+    3: (Optional) Defaults to False. When set to false, directives
+    will only appear as soon as the specified event is true.
+    When set to true, the event only affects whether the directive
+    succeeds/fails, and has no effect on when it appears
+*is-event-false-msecs-delay*
+    Mission Event False (Boolean operator)
+    Returns true N milliseconds after the specified event in the
+    this mission is false (or failed). It returns false otherwise.
+
+    NOTE: For a delay of 0 (if used in-mission), this operator will
+    become true on the frame after the specified event becomes false.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the event in the mission.
+    2: Number of milliseconds to delay before returning true.
+    3: (Optional) Defaults to False. When set to false, directives
+    will only appear as soon as the specified event is true.
+    When set to true, the event only affects whether the directive
+    succeeds/fails, and has no effect on when it appears
+*is-event-incomplete*
+    Mission Event Incomplete (Boolean operator)
+    Returns true if the specified event in the this mission is
+    incomplete. This sexpression will only be useful in conjunction
+    with another sexpression likehas-time-elapsed. Used alone, it
+    will return true upon mission startup.Returns a boolean value.
+    Takes 1 argument...
+    1: Name of the event in the mission.
+*is-previous-goal-true*
+    Previous Mission Goal True (Boolean operator)
+    Returns true if the specified goal in the specified mission is
+    true (or succeeded). It returns false otherwise.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the mission.
+    2: Name of the goal in the mission.
+    3: (Optional) True/False which signifies what this sexpression
+    should return when this mission is played as a single mission.
+*is-previous-goal-false*
+    Previous Mission Goal False (Boolean operator)
+    Returns true if the specified goal in the specified mission is
+    false (or failed). It returns false otherwise.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the mission.
+    2: Name of the goal in the mission.
+    3: (Optional) True/False which signifies what this sexpression
+    should return when this mission is played as a single mission.
+*is-previous-event-true*
+    Previous Mission Event True (Boolean operator)
+    Returns true if the specified event in the specified mission is
+    true (or succeeded). It returns false otherwise.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the mission.
+    2: Name of the event in the mission.
+    3: (Optional) True/False which signifies what this sexpression
+    should return when this mission is played as a single mission.
+*is-previous-event-false*
+    Previous Mission Event False (Boolean operator)
+    Returns true if the specified event in the specified mission is
+    false (or failed). It returns false otherwise.
+
+    Returns a boolean value. Takes 2 required arguments and 1
+    optional argument...
+    1: Name of the mission.
+    2: Name of the event in the mission.
+    3: (Optional) True/False which signifies what this sexpression
+    should return when this mission is played as a single mission.
+*reset-event*
+    Reset-Event (Action operator)
+    Clears all information associated with an event, resetting SEXP
+    nodes and status flags so that it is as if the event had never
+    been evaluated.Takes 1 or more arguments...
+    All: Name of the event
+*reset-goal*
+    Reset-Goal (Action operator)
+    Clears all information associated with a goal, resetting SEXP
+    nodes and status flags so that it is as if the goal had never
+    been evaluated.Takes 1 or more arguments...
+    All: Name of the goal

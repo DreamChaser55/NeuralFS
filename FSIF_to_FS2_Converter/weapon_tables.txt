@@ -1,0 +1,3620 @@
+;
+;  weapons.tbl
+;
+;  file to specify the weapon characteristics for Freespace weapons
+;
+;  weapons fall into three categories -- see weapon.doc in the
+;  freespace Specs folder for more information.
+;
+;  Real FreeSpace weapons!
+;  From weapons.doc, Adam's spec.
+;  7 Light Laser Cannon: Much like Descent lasers.  Less powerful than Heavies.
+;  7 Heavy Laser Cannon: Self-explanatory.  Fires slightly slower.
+;  7 Mass Driver Cannon: Fires shells of some sort, but oddly uses energy, since it's a cannon.
+;  7 Flail Cannon: Rapid-fire energy-based weapon.  Shoots many smaller, rapid lasers.
+;  7 Neutron Flux Cannon: Similar to Heavy Lasers, but more punch.  Could use a better name here.
+;
+;  --------------------
+;  Ordering of entries:
+;  --------------------
+;
+;  All primary weapons are listed in the first section, followed by secondary weapons in the next.
+;  Within each of these 2 sections, normal weapons should be listed first, followed by weapons
+;  that are only allowed on big ships, and following that, weapons that aren't allowed on any ships.
+;
+;  -------------------------------
+;  A note regarding weapon sounds:
+;  -------------------------------
+;
+;  The index corresponds to the sounds.tbl index.  If you want a new weapon sound, you must first
+;  add it to sounds.tbl.  If you don't want to assign a sound, put -1 as the index.
+;
+;  ---------------
+;  Missile damage:
+;  ---------------
+;
+;  The following fields determine the missile damage:
+;    $Damage:          The damage applied within the inner radius of the blast
+;    $Inner Radius:    The radius at which damage is 100% of $Damage field (0 for impact only)
+;    $Outer Radius:    The radius at which damage is applied.  $Damage decreases linearly from $Inner Radius to $Outer Radius
+;    $Shockwave Speed: The speed of the shockwave (0 for no shockwave)
+;
+;  ---------------
+;  Interface Art:
+;  ---------------
+;
+;  $Icon: filename that holds icon frames used in weapons selection
+;  $Anim: filename that holds weapon animation used in weapons selection
+;
+;  ---------------
+;  Misc
+;  ----------------
+;  $Impact Explosion:        Filename of animation to play when weapon impacts
+;  $Impact Explosion Radius: How big the explosion is.  Required if Impact Explosion is not none
+;
+
+#Primary Weapons
+
+;; All these descriptions are from Duncan's weapons doc in the specs directory.  I added in little translations
+;; to help me fix the numbers for the weapons.  All weapons are in approximately the order of power, as well as the
+;; order in which you will have access to them.
+
+; ----------------------------------------------------------------------------------
+$Name: ML-16 Laser
++Title: XSTR("GTW ML-16 Laser", 505)
++Description:
+XSTR("Standard issue
+Medium Hull Damage", 506)
+$end_multi_text
++Tech Title: XSTR("GTW ML-16 Laser", 505)
++Tech Anim: cb_ml16
++Tech Description:
+XSTR("Argon laser weapon - uses transparent ceramic technology in order to create an optical system that is extremely durable and stable under battle conditions - provides adequate destructive damage to the hull of enemy ships by vaporizing molecular bonds at the target area and destabilizing molecular bonds across the grain of the hull material.
+
+The GTA issues ML-16 Lasers to every fighter and bomber in service.", 507)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow06
+@Laser Glow: 2_laserglow03
+@Laser Color: 190, 150, 250
+@Laser Length: 7.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 450.0
+$Fire Wait: 0.2
+$Damage: 5
+$Armor Factor: 1.0
+$Shield Factor: 0.1
+$Subsystem Factor: 0.3
+$Lifetime: 2.0
+$Energy Consumed: 0.20
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 167
+$ImpactSnd: 85
+$Flags: ( "in tech database" "player allowed" )
+$Icon: icon_ml16
+$Anim: ml16
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Vasudan Light Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 200, 30, 30
+@Laser Length: 3.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.5
+$Damage: 5
+$Armor Factor: 1.0
+$Shield Factor: 0.2
+$Subsystem Factor: 1.0
+$Lifetime: 3.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 107
+$ImpactSnd: 85
+$Flags: ( )
+$Icon: icon_vll
+$Anim: vll
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Equivalent to the Vasudan Light Laser, but with a shorter name
+;
+$Name: VLL-9 Laser
++Title: XSTR("PVW VLL-9 Laser", 508)
++Description:
+XSTR("Standard issue
+Medium Hull Damage", 506)
+$end_multi_text
++Tech Title: XSTR("PVW VLL-9 Laser", 508)
++Tech Anim: cb_vll
++Tech Description:
+XSTR("Neon laser weapon - uses silvered optics to create a coherent package of energy that is extremely reliable under battle conditions - energy package infuses plasma bolt which is fired at a rate of 2 rounds/second - high thermal mass vaporizes most materials upon impact - prolonged application will cause material integrity failure and hull breach.
+
+Standard issue to Vasudan ensigns.  This cheap, mass-produced laser cannon is similar in performance to the ML-16 but is slightly more effective against insulated subsystems.", 509)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 200, 30, 30
+@Laser Length: 3.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.5
+$Damage: 10
+$Armor Factor: 1.0
+$Shield Factor: 0.1
+$Subsystem Factor: 1.0
+$Lifetime: 3.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 107
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_vll
+$Anim: vll
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Disruptor
++Title: XSTR("GTW-41 Disruptor Cannon", 510)
++Description:
+XSTR("Standard issue
+Tactical Weapon
+Damages Subsystems", 511)
+$end_multi_text
++Tech Title: XSTR("GTW-41 Disruptor Cannon", 510)
++Tech Anim: cb_disruptor
++Tech Description:
+XSTR("A gas-focused krypton laser - when the ship is in flight, the chamber of the GTW-41 rotates at a constant speed - a small amount of NO2 is injected into the container .05 ms prior to the emission of the laser light - the rotation of the NO2 in the chamber focuses the laser pulse to a state that is only very slightly (1%) diffused - after the laser pulse is emitted from the chamber into space, the chamber expels the NO2 into space (thus expelling ionized molecules and moisture) - the process repeats for each subsequent burst of laser energy - as this laser is very slightly diffused, it is not effective as a destructive weapon, but as a tactical weapon - the Disruptor Cannon is best suited and is used for the permanent disabling of enemy ship subsystems.
+
+The Disruptor Cannon should be utilized in all capture operations in order to minimize risk of target's destruction.", 512)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow02
+@Laser Glow: 2_laserglow03
+@Laser Color: 150, 150, 250
+@Laser Length: 9.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 475.0
+$Fire Wait: 0.3
+$Damage: 15 ;; Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Armor Factor: 0.5
+$Shield Factor: 0.1
+$Subsystem Factor: 1.0
+$Lifetime: 1.35
+$Energy Consumed: 0.25
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 165
+$ImpactSnd: 85
+$Flags: ( "Puncture" "in tech database" "player allowed" )
+$Icon: icon_disruptor
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; This is the main weapon that Terran and Vasudan ships will use to disable and disarm other ships.  It doesn't
+;; do much regular damage against a ship, making it useful mainly for subsystem attacking.  You should know about this laser
+;; already.
+;
+$Name: D-Advanced
++Title: XSTR("GTW-41x Advanced Disruptor", 513)
++Description:
+XSTR("Advanced Version
+Tactical Weapon
+Damages Subsystems", 514)
+$end_multi_text
++Tech Title: XSTR("GTW-41x Advanced Disruptor", 513)
++Tech Anim: cb_dadvanced
++Tech Description:
+XSTR("The Advanced Disruptor Cannon is much like the GTW-41 Disruptor.  However, its speed and higher subsystems damage make it much more useful in operations against faster moving targets.", 515)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow02
+@Laser Glow: 2_laserglow03
+@Laser Color: 150, 150, 250
+@Laser Length: 15.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 575.0
+$Fire Wait: 0.6
+$Damage: 25 ;; Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Armor Factor: 0.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 1.5
+$Energy Consumed: 0.75
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 165
+$ImpactSnd: 85
+$Flags: ( "player allowed" "Puncture" )
+$Icon: icon_dadvanced
+$Anim: dadvanced
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+; Advanced Disruptor
+;
+$Name: Akheton SDG
++Title: XSTR("GVW Akheton SDG", 516)
++Description:
+XSTR("Tactical Weapon
+Subsystem Disruption", 517)
+$end_multi_text
++Tech Title: XSTR("GVW Akheton SDG", 3885)
++Tech Anim:	cb_scalpel
++Tech Description:
+XSTR("A gas-focused krypton laser - fixed position firing chamber with quartz-timed injector - dynamic magnetization of the diffused laser pulse responds to feedback from targeting sensors - enhanced gaseous acceleration technology results in higher projectile velocity - as this laser is very slightly diffused, it is not effective as a destructive weapon, but as a tactical weapon - best suited and used for the permanent disabling of enemy ship subsystems.
+
+The Akheton Subsystem Disruptor Gun is a Vasudan retrofit of the GTW-41x Advanced Disruptor cannon.  Alongside the Prometheus Retrofit it is being pushed into mass production as part of a new generation of standard-issue weaponry, replacing the ML-16s and Disruptor Cannons used since the war between our species ten years ago.  While optimized for next-generation warships currently in development, older fighters may be unable to keep up with its demanding power requirements.", 518)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: newglo1
+@Laser Glow: 2_laserglow03
+@Laser Color: 150, 150, 250
+@Laser Color2: 150, 150, 250
+@Laser Length: 20.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 500.0
+$Fire Wait: 0.35
+$Damage: 30
+$Armor Factor: 0.0
+$Shield Factor: 0.5
+$Subsystem Factor: 1.0
+$Lifetime: 1.5
+$Energy Consumed:	1.6
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 77
+$ImpactSnd: 85
+$Flags: ( "player allowed" "Puncture" )
+$Icon: iconScalpel
+$Anim: Scalpel
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; This weapon does twice as much damage as the ML-16, but it's slower and doesn't fire nearly as fast.  However,
+;; it is still preferred over the ML-16 in any ship that can carry it.  Its extra damage against hulls make it one of the
+;; best big ship attacking weapons.  It's also good against the Vasudan fighters.  However, its poor anti-shield capabilities
+;; make it a bad choice for dogfighting Shivans, although many still consider it better than the ML-16.
+;; (Note: This was originally called the Phalanx.)
+;
+$Name: Avenger
++Title: XSTR("GTW-15 Avenger Cannon", 519)
++Description:
+XSTR("Special Issue
+Projectile Weapon
+Low Shield Damage", 520)
+$end_multi_text
++Tech Title: XSTR("GTW-15 Avenger Cannon", 519)
++Tech Anim: cb_avenger
++Tech Description:
+XSTR("A rapid-fire, computer-controlled radar and gun system - capable of firing at a rate of more than 4500 rounds per minute - used primarily for close-defense situations - uses closed-loop radar technology to locate, identify, and direct a stream of highly destructive 45mm projectiles to the target.
+
+With the advent of shield technology, the Avenger is preferred over the ML-16 in any ship that can carry it.  Its extra damage against hulls make it one of the best anti cruiser weapons.  It has also proven very effective against Vasudan fighters.  However, its substandard anti-shield capabilities make it a poor choice for dogfighting Shivans, although far better than the ML-16.", 521)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 140, 140, 60
+@Laser Length: 10.0
+@Laser Head Radius: 1.20
+@Laser Tail Radius: 0.60
+$Mass: 0.4
+$Velocity: 525.0
+$Fire Wait: 0.25
+$Damage: 16
+$Armor Factor: 1.25
+$Shield Factor: 0.85
+$Subsystem Factor: 0.35
+$Lifetime: 1.9
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 162
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_avenger
+$Anim: avenger
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Flail
++Title: XSTR("GTW-32 Flail Rifle", 522)
++Description:
+XSTR("Special Issue
+Low Energy Usage
+Kinetic Weapon
+Moderate Shield Damage", 523)
+$end_multi_text
++Tech Title: XSTR("GTW-32 Flail Rifle", 522)
++Tech Anim: cb_flail
++Tech Description:
+XSTR("A rapid-fire, low energy, ceramic optic focused, krypton laser - used in tactical situations to distract or lead an enemy to their destruction at the hands of other allied fighters - this weapon, if used over an extended period of in-flight battle, can destroy an enemy fighter, but, as a destructive weapon, should only be used as a last resort.
+
+The fast firing rate and high mass of the Flail make it great for changing the velocity vector of an enemy fighter or bomber.  It is slightly more effective than the Avenger against shields, rated at damage/second.  Its low energy consumption rate makes it useful for prolonged engagements.  Note, however, that once you have taken out an enemy's shields, switching to another weapon is advised.", 524)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 120, 120, 30
+@Laser Length: 1.0
+@Laser Head Radius: 1.0
+@Laser Tail Radius: 1.0
+$Mass: 3.0
+$Velocity: 1000.0
+$Fire Wait: 0.15
+$Damage: 3
+$Armor Factor: 0.5
+$Shield Factor: 4.0
+$Subsystem Factor: 0.2
+$Lifetime: 1.2
+$Energy Consumed: 0.10
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 166
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_flail
+$Anim: flail
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Prometheus
++Title: XSTR("GTW-5 Prometheus Cannon", 525)
++Description:
+XSTR("Prototype
+High Energy Usage
+High Hull Damage
+Moderate Shield Damage", 526)
+$end_multi_text
++Tech Title: XSTR("GTW-5 Prometheus Cannon", 525)
++Tech Anim: cb_prometheus
++Tech Description:
+XSTR("Named after the Titan who gave fire to humanity, the Prometheus is a laser-based weapon - an advanced radar and X-ray tracking system lock on the target and determine the target's material structure - argon laser focused via transparent ceramic optics - the laser is generated at the destructive frequency (full out-of-phase) for the target's material structure - emitted no more than .02 ms after targeting and activation by the pilot, the Prometheus stands as one of the GTA's most effective deterrents to enemy attack, an effective form of defense for GTA pilots, and as a durable, portable, and highly destructive offensive tool.
+
+The Prometheus works best against target hulls.  Against shields, it only achieves mediocre performance.  Its slow speed and high energy consumption work against it as well.  However, the primary advantage of the Prometheus is that it can be equipped on almost any fighter in the GTA.", 527)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Length: 10.0
+@Laser Head Radius: 1.0
+@Laser Tail Radius: 1.0
+$Mass: 0.2
+$Velocity: 450.0
+$Fire Wait: 0.3
+$Damage: 20
+$Armor Factor: 1.3
+$Shield Factor: 0.7
+$Subsystem Factor: 0.35
+$Lifetime: 2.0
+$Energy Consumed: 0.40
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 68
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_prometheus
+$Anim: prometheus
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Prometheus A - GTI upgrade of Prometheus (it's actually just the Prometheus S)
+;
+$Name: Prometheus A
++Title: XSTR("GTW-5a Prometheus Cannon Adv.", 528)
++Description:
+XSTR("Prototype
+High Energy Usage
+High Hull Damage
+Moderate Shield Damage", 526)
+$end_multi_text
++Tech Title: XSTR("GTW-5a Prometheus Advanced", 529)
++Tech Anim: cb_proma
++Tech Description:
+XSTR("Designed as a special-issue upgrade to the standard Prometheus, the Prometheus A retains the compatibility of the original while delivering a higher rate of damage at a greater projectile velocity.  These advances come at the cost of a slight increase in energy consumption, but many pilots feel that the tradeoff yields a net benefit.  This weapon's deployment is currently restricted to GTI pilots on specially authorized missions.", 530)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Color2: 20, 150, 20
+@Laser Length: 10.0
+@Laser Head Radius: 1.0
+@Laser Tail Radius: 1.0
+$Mass: 0.2
+$Velocity: 750.0
+$Fire Wait: 0.35
+$Damage: 30
+$Armor Factor: 0.9
+$Shield Factor: 1.0
+$Subsystem Factor: 0.35
+$Lifetime: 2.0
+$Energy Consumed: 1.0
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 80
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: iconPromA
+$Anim: PromA
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+; Prometheus Retrofit
+;
+$Name: Prometheus R
++Title: XSTR("GTW-5r Prometheus (retrofit) Cannon", 531)
++Description:
+XSTR("Standard Issue
+High Energy Usage
+Moderate Hull Damage
+Low Shield Damage", 532)
+$end_multi_text
++Tech Title: XSTR("GTW-5r Prometheus Retrofit", 533)
++Tech Anim:	cb_promr
++Tech Description:
+XSTR("The GTW-5a Prometheus R is a modified version of the original Prometheus weapon.  With the link to Earth severed, the GTVA had been unable to obtain sufficient quantities of argon (a required element in the Prometheus's power-generation module) to continue to manufacture the standard Prometheus.  GTVA engineers modified the original design to incorporate some of the advanced electromagnetic mechanisms of the Banshee.  The technology has not been perfected, however, and the Prometheus R suffers from a long recharge cycle and high energy requirements.", 534)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Color2: 20, 150, 20
+@Laser Length: 15.0	
+@Laser Head Radius: 1.0
+@Laser Tail Radius: 1.0
+$Mass: 0.2
+$Velocity: 450.0
+$Fire Wait: 0.45
+$Damage: 18
+$Armor Factor: 1.1
+$Shield Factor: 0.8
+$Subsystem Factor: 0.35
+$Lifetime: 2.0
+$Energy Consumed:	0.60
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 79
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: iconPromR
+$Anim: promR
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Banshee
++Title: XSTR("GTW-7 Banshee", 535)
++Description:
+XSTR("Special Issue
+EM Weapon
+Very High Energy Usage
+Extreme Shield Damage", 536)
+$end_multi_text
++Tech Title: XSTR("GTW-7 Banshee", 535)
++Tech Anim: cb_banshee
++Tech Description:
+XSTR("An electromagnetic weapon - sends rapid pulses of exceptionally strong electromagnetic energy resulting in a 1.63 x 10^5 J blast that forces its way through any known shield technology and produces a dramatic shearing effect which quickly destroys the target ship's materials - named for the fact that in an atmosphere, the pulse creates an atmospheric disturbance similar to a quasi-human scream at 180 dB - uses up a tremendous amount of available ship energy - already, it is has been used by many GTA fighter aces and test pilots as a coup de grace, although such a use for this massively powerful offensive weapon is officially viewed as poor sportsmanship by the GTA.
+
+The Banshee's impressive anti-shielding capabilities make it the weapon of choice against the Shivans.  The main limitation of this weapon is low weapons compatibility.", 537)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow06
+@Laser Glow: 2_laserglow03
+@Laser Color: 190, 150, 250
+@Laser Length: 25.0
+@Laser Head Radius: 0.75
+@Laser Tail Radius: 0.25
+$Mass: 0.5
+$Velocity: 650.0
+$Fire Wait: 0.4
+$Damage: 26
+$Armor Factor: 0.7
+$Shield Factor: 1.2
+$Subsystem Factor: 0.35
+$Lifetime: 1.5
+$Energy Consumed: 1.60
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 164
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; GTW - 65 Railgun
+;; Secret weapon 2
+;
+$Name: Railgun
++Title: XSTR("GTW-65 Railgun", 538)
++Description:
+XSTR("Prototype
+HiVel Weapon
+Long Recharge Cycle", 539)
+$end_multi_text
++Tech Title: XSTR("GTW-65 Railgun", 538)
++Tech Anim:	   cb_railgun
++Tech Description:
+XSTR("A GTI prototype cannon, the Railgun was originally developed as an attempt to penetrate the shields of the Lucifer superdestroyer.  The weapon uses a series of electromagnets firing with millisecond precision to accelerate caseless uranium slugs at extreme velocity.  While its range, accuracy, and impact force are the highest in the Terran arsenal, shield damage is low and the weapon suffers from an extended recharge cycle.  Although the Railgun is technically a ballistic weapon, the slugs are extremely small, and for tactical purposes the quantity of ammunition is practically unlimited.", 540)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow02
+@Laser Glow: 2_laserglow03
+@Laser Color: 150, 150, 250
+@Laser Length: 100.0
+@Laser Head Radius: 0.30
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 1000.0
+$Fire Wait: 2.0
+$Damage: 30
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 1.5
+$Energy Consumed: 5.0
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 169
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.3
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 2.0
+ +Bitmap: MissileTrail03
+$Icon: icon_railgun
+$Anim: railgun
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; GTW - 99 Shield Breaker
+;; Secret weapon 1
+;
+$Name: S-Breaker
++Title: XSTR("GTW-99 Shield Breaker", 541)
++Description:
+XSTR("Prototype
+Depletes shields", 542)
+$end_multi_text
++Tech Title: XSTR("GTW-99 Shield Breaker", 541)
++Tech Anim: cb_sbreaker
++Tech Description:
+XSTR("Developed as an anti-Shivan weapon, the Shield Breaker inflicts massive damage to enemy defensive systems.  This weapon causes no structural damage, but coupling it with an anti-hull cannon is very effective against larger Shivan bombers such as the Seraphim.", 543)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow06
+@Laser Glow: 2_laserglow03
+@Laser Color: 190, 150, 250
+@Laser Length: 1.0
+@Laser Head Radius: 2.0
+@Laser Tail Radius: 2.0
+$Mass: 0.2
+$Velocity: 400.0
+$Fire Wait: 0.3
+$Damage: 40
+$Armor Factor: 0.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.0
+$Lifetime: 4.0
+$Energy Consumed: 0.2
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 168
+$ImpactSnd: 85
+$Flags: ( "player allowed" )
+$Icon: icon_sbreaker
+$Anim: sbreaker
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Leech Cannon
++Title: XSTR("GTW-43 Leech Cannon", 544)
++Description:
+XSTR("Tactical Weapon
+Drains Energy
+Low Damage", 545)
+$end_multi_text
++Tech Title: XSTR("GTW-43 Leech Cannon", 544)
++Tech Anim: cb_leech
++Tech Description:
+XSTR("The Leech Cannon depletes the power supply of enemy fighters.  Use it to disable afterburners, energy weapons, and shields.  No subsystems targeting is required, just point and shoot.
+
+The Leech Cannon is an anti-fighter weapon with minimal effect against larger vessels.", 546)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 120, 120, 30
+@Laser Length: 1.0
+@Laser Head Radius: 1.0
+@Laser Tail Radius: 1.0
+$Mass: 0.2
+$Velocity: 450.0
+$Fire Wait: 0.3
+$Damage: 1
+$Armor Factor: 0.1
+$Shield Factor: 1.0
+$Subsystem Factor: 0.0
+$Lifetime: 2.0
+$Energy Consumed: 0.40
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 84
+$ImpactSnd: 85
+$Flags: ( "player allowed" "esuck" "particle spew" )
+$Icon: icon_leech
+$Anim: leech
+$Impact Explosion: none
+$Leech Weapon: 20
+$Leech Afterburner: 15
+
+; ----------------------------------------------------------------------------------
+;; Shivan player weapon
+;
+$Name: UD-1 Volz
++Title: XSTR("GTW UD-1 Volz", 547)
++Description:
+XSTR("Prototype
+Shivan weapon derivative
+Moderate Hull Damage
+Moderate Shield Damage", 548)
+$end_multi_text
++Tech Title: XSTR("UD-1 Volz", 549)
++Tech Anim: cb_volz
++Tech Description:
+XSTR("Unstable Derivative Mark One - Xaser weapon, firing an intense, highly focused beam of x-ray emissions - modified power conversion unit interfaces directly with Shivan electronics - extremely limited availability during testing phase.
+
+The UD-1 Volz is a weapon prototype retrofitted from Shivan armaments captured by the GTI.  R&D has modified an undisclosed number of fighters to mount the cannon, and preliminary tests have shown it to be effective against shields and hulls of all varieties.", 550)
+$end_multi_text
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Color2: 250, 0, 0
+@Laser Length: 9.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.60
+$Mass: 0.25
+$Velocity: 450.0
+$Fire Wait: 0.3
+$Damage: 15
+$Armor Factor: 0.9
+$Shield Factor: 0.8
+$Subsystem Factor: 0.3
+$Lifetime: 2.0
+$Energy Consumed: 0.50
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 100
+$ImpactSnd: 85
++Weapon Range: 100000
+$Flags: ( "player allowed" "stream")
+$Icon: icon_volz
+$Anim: volz
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; GTW - T Training laser
+;; low damage, only used for training purposes
+;
+$Name: Training
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 100, 200, 100
+@Laser Length: 15.0
+@Laser Head Radius: 0.5
+@Laser Tail Radius: 0.25
+$Mass: 0.2
+$Velocity: 200.0
+$Fire Wait: 0.5
+$Damage: 5
+$Armor Factor: 1.0
+$Shield Factor: 0.2
+$Subsystem Factor: 0.0
+$Lifetime: 4.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 68
+$ImpactSnd: 85
+$Flags: ()
+$Icon: iconwep
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Debug Laser
+;; Do we still need this thing?
+;; No, we do not.  Make it go away.
+;
+$Name: Debug Laser ;; fires one bolt, nice for debugging
+$Model File: t-laser.pof
+$Mass: 0.2
+$Velocity: 210.0
+$Fire Wait: 0.2
+$Damage: 11
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 3.0
+$Energy Consumed: 0.0
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 163
+$ImpactSnd: 85
+$Flags: ()
+$Icon: iconwep
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+; SHIVAN PRIMARY WEAPONS
+;----------------------------------------------------------------------------------
+
+;; Shivan weapons are all pretty much equal, just different levels of energy consumption and damage and speed.
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Light Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 7.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 450.0
+$Fire Wait: 0.3
+$Damage: 8
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 2.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 100
+$ImpactSnd: 85
+$Flags: ()
+$Icon: icon_sbreaker
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Heavy Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 200, 31, 30
+@Laser Length: 7.0
+@Laser Head Radius: 0.90
+@Laser Tail Radius: 0.30
+$Mass: 0.2
+$Velocity: 475.0
+$Fire Wait: 0.5
+$Damage: 15
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 2.0
+$Energy Consumed: 0.40
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 103
+$ImpactSnd: 85
+$Flags: ()
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Mega Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 15.0
+@Laser Head Radius: 0.50
+@Laser Tail Radius: 0.30
+$Mass: 0.3
+$Velocity: 400.0
+$Fire Wait: 0.75
+$Damage: 30
+$Armor Factor: 1.0
+$Shield Factor: 0.6
+$Subsystem Factor: 1.0
+$Lifetime: 1.5
+$Energy Consumed: 0.90
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 108
+$ImpactSnd: 85
+$Flags: ()
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Uber Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 25.0
+@Laser Head Radius: 1.20
+@Laser Tail Radius: 0.30
+$Mass: 0.5
+$Velocity: 600.0
+$Fire Wait: 1.0
+$Damage: 75
+$Armor Factor: 1.0
+$Shield Factor: 0.7
+$Subsystem Factor: 1.0
+$Lifetime: 2.0
+$Energy Consumed: 1.20
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 108
+$ImpactSnd: 85
+$Flags: ()
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 1 (for later missions)
+;; Avenger Derivative
+;
+$Name: Terran Turret
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Length: 10.0
+@Laser Head Radius: 4.20
+@Laser Tail Radius: 1.60
+$Mass: 0.4
+$Velocity: 275.0
+$Fire Wait: 1.0
+$Damage: 35
+$Armor Factor: 1.25
+$Shield Factor: 0.85
+$Subsystem Factor: 0.75
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 110
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 1 (for later missions)
+;; Avenger Derivative
+;
+$Name: Terran Huge Turret
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Length: 20.0
+@Laser Head Radius: 6.40
+@Laser Tail Radius: 2.60
+$Mass: 0.4
+$Velocity: 175.0
+$Fire Wait: 3.0
+$Damage: 100
+$Armor Factor: 1.25
+$Shield Factor: 0.5
+$Subsystem Factor: 0.75
+$Lifetime: 12.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 111
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 2 (for later missions)
+;; ML-16 Derivative
+;
+$Name: Terran Turret Weak
+$Model File: none
+@Laser Bitmap: laserglow03
+@Laser Glow: 2_laserglow03
+@Laser Color: 20, 150, 20
+@Laser Length: 10.0
+@Laser Head Radius: 4.20
+@Laser Tail Radius: 1.60
+$Mass: 0.4
+$Velocity: 275.0
+$Fire Wait: 1.0
+$Damage: 35
+$Armor Factor: 1.25
+$Shield Factor: 0.15
+$Subsystem Factor: 0.15
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 162
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Vasudan Turret Laser 1 (for later missions)
+;; Avenger Derivative
+;
+$Name: Vasudan Turret
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 140, 140, 60
+@Laser Length: 10.0
+@Laser Head Radius: 4.20
+@Laser Tail Radius: 1.60
+$Mass: 0.4
+$Velocity: 275.0
+$Fire Wait: 1.0
+$Damage: 35
+$Armor Factor: 1.25
+$Shield Factor: 0.85
+$Subsystem Factor: 0.75
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 110
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Vasudan Turret Laser 1 (for later missions)
+;; Avenger Derivative;
+;
+$Name: Vasudan Huge Turret
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 140, 140, 60
+@Laser Length: 20.0
+@Laser Head Radius: 6.40
+@Laser Tail Radius: 2.60
+$Mass: 0.4
+$Velocity: 175.0
+$Fire Wait: 3.0
+$Damage: 100
+$Armor Factor: 1.25
+$Shield Factor: 0.5
+$Subsystem Factor: 0.75
+$Lifetime: 12.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 111
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Vasudan Turret Laser 2 (for later missions)
+;; ML-16 Derivative
+;
+$Name: Vasudan Turret Weak
+$Model File: none
+@Laser Bitmap: laserglow04
+@Laser Glow: 2_laserglow03
+@Laser Color: 140, 140, 60
+@Laser Length: 10.0
+@Laser Head Radius: 4.20
+@Laser Tail Radius: 1.60
+$Mass: 0.4
+$Velocity: 275.0
+$Fire Wait: 1.0
+$Damage: 35
+$Armor Factor: 1.25
+$Shield Factor: 0.15
+$Subsystem Factor: 0.15
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 162
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: iconproms
+$Anim: disruptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Turret Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 7.0
+@Laser Head Radius: 3.30
+@Laser Tail Radius: 1.90
+$Mass: 1.5
+$Velocity: 250.0
+$Fire Wait: 1.2
+$Damage: 60
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 114
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Only used in Lucifer, as of May 21, 1998.
+;
+$Name: Shivan Weak Turret Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 7.0
+@Laser Head Radius: 3.30
+@Laser Tail Radius: 1.90
+$Mass: 1.5
+$Velocity: 350.0
+$Fire Wait: 0.7
+$Damage: 20
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 5.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 103
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Megafunk Turret
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 13.0
+@Laser Head Radius: 6.30
+@Laser Tail Radius: 2.90
+$Mass: 3.0
+$Velocity: 120.0
+$Fire Wait: 3.4
+$Damage: 130
+$Armor Factor: 1.5
+$Shield Factor: 0.25
+$Subsystem Factor: 1.0
+$Lifetime: 12.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 46
+$ImpactSnd: 85
+$Flags: ( "Big Ship" )
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Super Laser
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 0.1
+@Laser Head Radius: 0.30
+@Laser Tail Radius: 0.30
+$Mass: 100.0
+$Velocity: 1000.0
+$Fire Wait: 10.0
+$Damage: 15000
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 30.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 114
+$ImpactSnd: 85
+$Flags: ( "Big Ship" "Huge" )
+$Trail:
+ +Start Width: 40.0
+ +End Width: 20.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 5.0
+ +Bitmap: MissileTrail02
+$Icon: icon_banshee
+$Anim: banshee
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; SSLBeam - suggested range (8000)
+;
+$Name: SSLBeam
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 0.0
+@Laser Head Radius: 0.30
+@Laser Tail Radius: 0.30
+$Mass: 100.0
+$Velocity: 1000.0
+$Fire Wait: 10.0
+$Damage: 850
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 30.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 125
+$ImpactSnd: 88
++Weapon Range: 8000
+$Flags: ( "Big Ship" "Huge" "beam" )
+$Icon: iconSD4
+$Anim: SD4
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 50.0
+$BeamInfo:
+ +Type: 0
+ +Life: 3.0
+ +Warmup: 3000
+ +Warmdown: 1500
+ +Radius: 80.0
+ +PCount: 28
+ +PRadius: 1.9
+ +PAngle: 65.0
+ +PAni: particleexp01
+ +Miss Factor: 2.5 1.875 1.25 0.875 0.5
+ +BeamSound: 178
+ +WarmupSound: 184
+ +WarmdownSound: 188
+ +Muzzleglow: lucyglow
+ +Shots: 0
+ +ShrinkFactor: 0.1
+ +ShrinkPct: 1.8
+ $Section:
+  +Width: 12.0
+  +Texture: beam-white
+  +RGBA Inner: 255 255 255 255
+  +RGBA Outer: 150 150 150 10
+  +Flicker: 0.1
+  +Zadd: 4.0
+ $Section:
+  +Width: 55.0
+  +Texture: lucybeam
+  +RGBA Inner: 160 160 0 255
+  +RGBA Outer: 60 60 0 10
+  +Flicker: 0.3
+  +Zadd: 3.0
+;;FSO 3.3.0;; +Tile Factor: 5.0 0
+;;FSO 3.3.0;; +Translation: -5.0
+ $Section:
+  +Width: 65.0
+  +Texture: lucybeam
+  +RGBA Inner: 255 0 0 255
+  +RGBA Outer: 60 0 0 10
+  +Flicker: 0.1
+  +Zadd: 2.0
+;;FSO 3.3.0;; +Tile Factor: 10.0 1
+;;FSO 3.3.0;; +Translation: -3.0
+ $Section:
+  +Width: 70.0
+  +Texture: beam-orange3
+  +RGBA Inner: 255 0 0 255
+  +RGBA Outer: 60 0 0 10
+  +Flicker: 0.2
+  +Zadd: 0.0
+
+; ----------------------------------------------------------------------------------
+;; SSLBeam - full range (30000)
+;
+$Name: LRSSLBeam
+$Model File: none
+@Laser Bitmap: laserglow01
+@Laser Glow: 2_laserglow03
+@Laser Color: 250, 30, 30
+@Laser Length: 0.0
+@Laser Head Radius: 0.30
+@Laser Tail Radius: 0.30
+$Mass: 100.0
+$Velocity: 1000.0
+$Fire Wait: 10.0
+$Damage: 850
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 30.0
+$Energy Consumed: 0.30
+$Cargo Size: 0.0
+$Homing: NO
+$LaunchSnd: 125
+$ImpactSnd: 88
++Weapon Range: 30000
+$Flags: ( "Big Ship" "Huge" "beam" )
+$Icon: iconSD4
+$Anim: SD4
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 50.0
+$BeamInfo:
+ +Type: 0
+ +Life: 3.0
+ +Warmup: 3000
+ +Warmdown: 1500
+ +Radius: 80.0
+ +PCount: 28
+ +PRadius: 1.9
+ +PAngle: 65.0
+ +PAni: particleexp01
+ +Miss Factor: 2.5 1.875 1.25 0.875 0.5
+ +BeamSound: 178
+ +WarmupSound: 184
+ +WarmdownSound: 188
+ +Muzzleglow: lucyglow
+ +Shots: 0
+ +ShrinkFactor: 0.1
+ +ShrinkPct: 1.8
+ $Section:
+  +Width: 12.0
+  +Texture: beam-white
+  +RGBA Inner: 255 255 255 255
+  +RGBA Outer: 150 150 150 10
+  +Flicker: 0.1
+  +Zadd: 4.0
+ $Section:
+  +Width: 55.0
+  +Texture: lucybeam
+  +RGBA Inner: 160 160 0 255
+  +RGBA Outer: 60 60 0 10
+  +Flicker: 0.3
+  +Zadd: 3.0
+;;FSO 3.3.0;; +Tile Factor: 5.0 0
+;;FSO 3.3.0;; +Translation: -5.0
+ $Section:
+  +Width: 65.0
+  +Texture: lucybeam
+  +RGBA Inner: 255 0 0 255
+  +RGBA Outer: 60 0 0 10
+  +Flicker: 0.1
+  +Zadd: 2.0
+;;FSO 3.3.0;; +Tile Factor: 10.0 1
+;;FSO 3.3.0;; +Translation: -3.0
+ $Section:
+  +Width: 70.0
+  +Texture: beam-orange3
+  +RGBA Inner: 255 0 0 255
+  +RGBA Outer: 60 0 0 10
+  +Flicker: 0.2
+  +Zadd: 0.0
+
+$Name: Standard Flak
+$Model File: hornet.pof
+$Mass: 0.2
+$Velocity:	700.0
+$Fire Wait: 0.15	
+$Damage: 30
+$Blast Force:  45.0
+$Inner Radius: 20.0
+$Outer Radius: 30.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.2
+$Lifetime:	1.5
+$Energy Consumed:	0.0
+$Cargo Size: 1.0
+$Homing: NO
+$LaunchSnd:	116
+$ImpactSnd:	117
++Weapon Range: 4000
+$Flags: ("Big Ship" "Flak" "particle spew")
+$Icon: iconmissile06
+$Anim: LoadMissile04
+$Impact Explosion: Exp20
+$Impact Explosion Radius: 25.0
+$Muzzleflash: mflash_small
+
+#End
+
+;; =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+;; =*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+
+#Secondary Weapons
+
+; ----------------------------------------------------------------------------------
+$Name: MX-50
++Title: XSTR("GTM MX-50", 551)
++Description:
+XSTR("Standard Issue
+Fire and Forget", 552)
+$end_multi_text
++Tech Title: XSTR("GTM MX-50", 551)
++Tech Anim: cb_mx50
++Tech Description:
+XSTR("Suitable for all space battles - defensive and offensive - medium payload (16.5 Kt) - infrared tracking and semi-intelligent targeting - pilot chooses desired target, and the MX-50 tracks the chosen target based off the emission of heat from the - engine, the weapon bays, and the cockpit of the target ship - the MX-50 will always attack a target that is determined to be hostile by the onboard computer of any GTA combat vessel, thus ensuring a higher kill rate, should the pilot find himself in a heated battle situation where precise aiming might be difficult.
+
+Early experiments with energy based defenses like the deflector array at Ross 128 have shown that this weapon is exceedingly weak against anything besides steel-based targets.", 553)
+$end_multi_text
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 25
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 10.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 0.7
+ +View Cone: 70.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ( "in tech database" "player allowed" )
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail01
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Enemy MX-50
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 15
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 12.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 40.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ()
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail01
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+;; Fire off a bunch of these at close range targets and watch the sparks fly!
+;
+$Name: Fury
++Title: XSTR("GTM-3 Fury Missile", 554)
++Description:
+XSTR("Standard Issue
+Maximum Compatibility", 555)
+$end_multi_text
++Tech Title: XSTR("GTM-3 Fury Missile", 554)
++Tech Anim: cb_fury
++Tech Description:
+XSTR("Small, fast dumbfire missiles - fired in swarms - GTA fighters can carry more Fury missiles than conventional missiles, due to their small size - used for distraction and other tactical measures - very small payload (3 Kt).
+
+Use is recommended in close combat situations and against larger targets where tracking is a non-issue.", 556)
+$end_multi_text
+$Model File: Fury.pof
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.30
+$Damage: 30
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.6
+$Lifetime: 3.0
+$Energy Consumed: 0.0
+$Cargo Size: 0.5
+$Homing: NO
+$LaunchSnd: 90
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 12.0
+$Flags: ( "in tech database" "player allowed" )
+$Trail:
+ +Start Width: 0.1
+ +End Width: 0.2
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.3
+ +Bitmap: MissileTrail01
+$Icon: icon_fury
+$Anim: fury
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 3.0
+
+; ----------------------------------------------------------------------------------
+$Name: Fang
++Title: XSTR("PVM-7 Fang Missile", 557)
++Description:
+XSTR("Standard Issue
+Twin Fire
+Maximum Compatibility", 558)
+$end_multi_text
++Tech Title: XSTR("PVM-7 Fang Missile", 557)
++Tech Anim: cb_fang
++Tech Description:
+XSTR("Small, fast dumbfire missiles - fired in swarms - low accuracy offset by high speed and immunity to electronic countermeasures - very small payload (2 Kt). 
+
+A Vasudan missile design employing a 'twin fire' technique.  It is a good choice for close combat and freighter attacks, where tracking is a non-issue. The twin-fire design increases the payload per volley and damage potential for hit-and-run attacks.  The GTA is developing its own swarm missile based on the Fang.", 559)
+$end_multi_text
+$Model File: fang.pof
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.35
+$Damage: 20
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.6
+$Lifetime: 1.75
+$Energy Consumed: 0.0
+$Cargo Size: 0.25
+$Homing: NO
+$Swarm: 2
+$LaunchSnd: 90
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 10.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail02
+$Icon: icon_fang
+$Anim: fang
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 3.0
+
+; ----------------------------------------------------------------------------------
+$Name: Interceptor
++Title: XSTR("GTM-9 Interceptor", 560)
++Description:
+XSTR("Standard Issue
+Fast Target Lock", 561)
+$end_multi_text
++Tech Title: XSTR("GTM-9 Interceptor", 560)
++Tech Anim: cb_interceptor
++Tech Description:
+XSTR("All-aspect seeking - laser tracking senses energy reflected off a target from the primary weapon systems of the target, increasing single-pass kill probability - medium payload (18.5 Kt) - missile is designed to pierce reinforced hull, thus securing itself to the target, prior to detonating (15 ms delay).
+
+This is the standard issue fighter killer in the GTA.  Designed to take out fighters with minimum hassle, a simple lock is all that is needed to grab the enemy's attention.  Short lock time, good speed, and decent payload makes this the best missile to use against all but the strongest ships.  Its effectiveness against large targets, however, is less than a typical laser run, making this primarily a ship-to-ship missile.", 562)
+$end_multi_text
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 2.0
+$Damage: 150
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.7
+ +Bitmap: MissileTrail02
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 7.0
+
+; ----------------------------------------------------------------------------------
+$Name: Interceptor#Weak
++Title: XSTR("GTM-9 Interceptor", 560)
++Description:
+XSTR("Standard Issue
+Fast Target Lock", 561)
+$end_multi_text
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 3.0
+$Damage: 60
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.66
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.7
+ +Bitmap: MissileTrail02
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 7.0
+
+; ----------------------------------------------------------------------------------
+;; Our "swarm" missile, reminiscent of robotech, this missile can take out an unshielded fighter without any
+;; difficulty.  Its four missile system almost guarantees one or two hits, and its speed is quite amazing.  Twice as powerful
+;; against naked hulls.
+;
+$Name: Hornet
++Title: XSTR("GTM-4 Hornet Swarm Missile", 563)
++Description:
+XSTR("Special Issue
+Swarm Type
+Slow Target Lock", 564)
+$end_multi_text
++Tech Title: XSTR("GTM-4 Hornet Swarm Missile", 563)
++Tech Anim: cb_hornet
++Tech Description:
+XSTR("Infrared and ultraviolet tracking - designed to fire in small groups of 4 missiles per burst - light medium payload per missile (12 Kt) - semi-intelligent on-board tracking - single-pass kill probability will not exceed 60% on average - designed as an offensive version of the Fury.
+
+As a ''swarm'' based weapon, this missile can take out an unshielded fighter without any difficulty.  Its four missile system almost guarantees one or two hits, and its speed is quite amazing.  Twice as powerful against naked hulls.", 565)
+$end_multi_text
+$Model File: Hornet.pof
+$Mass: 0.1
+$Velocity: 190.0
+$Fire Wait: 2.0
+$Damage: 25.0
+$Blast Force: 0.2
+$Inner Radius: 10.0
+$Outer Radius: 20.0
+$Shockwave Speed: 0
+$Armor Factor: 2.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.3
+$Lifetime: 7.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.15
+ +Min Lock Time: 3.0
+ +Lock Pixels/Sec: 60
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$Swarm: 4
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail03
+$Icon: iconHornet
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Hornet#Weak
++Title: XSTR("GTM-4 Hornet Swarm Missile", 563)
++Description:
+XSTR("Special Issue
+Swarm Type
+Slow Target Lock", 564)
+$end_multi_text
+$Model File: Hornet.pof
+$Mass: 0.1
+$Velocity: 190.0
+$Fire Wait: 2.0
+$Damage: 15.0
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.2
+$Subsystem Factor: 0.3
+$Lifetime: 6.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.6
+ +Min Lock Time: 3.0
+ +Lock Pixels/Sec: 60
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$Swarm: 4
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail02
+$Icon: iconHornet
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Phoenix V
++Title: XSTR("GTM Phoenix V", 566)
++Description:
+XSTR("Special Issue
+Anti-Bomber Missile
+Slow Target Lock", 567)
+$end_multi_text
++Tech Title: XSTR("GTM Phoenix V", 566)
++Tech Anim: cb_phoenix
++Tech Description:
+XSTR("All-aspect seeking - same tracking system as the Interceptor - large payload (50 Kt), but slower than the Interceptor - one of the best fire-and-forget missiles ever developed - many fighter pilots within the GTA regard the Phoenix V as the weapon of choice against high value, heavily defended targets.
+
+The number one bomber killer in our arsenal, this is the single most damaging missile that can be equipped on a fighter craft.  The longer lock time and slower speed make it less of a dogfight weapon and more of an anti-bomber warhead.  Its extra damage against shields makes it especially useful against the Shivan bombers.", 568)
+$end_multi_text
+$Model File: Phoenix.pof
+$Mass: 20.0
+$Velocity: 175.0
+$Fire Wait: 5.0
+$Damage: 350
+$Blast Force: 200.0
+$Inner Radius: 10.0
+$Outer Radius: 30.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.8
+$Lifetime: 10.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 3.0
+ +Min Lock Time: 3.5
+ +Lock Pixels/Sec: 50
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 92
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.33
+$Flags: ( "player allowed" "Bomber+" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.3
+ +Bitmap: MissileTrail04
+$Icon: icon_phoenix
+$Anim: phoenix
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 9.0
+
+; ----------------------------------------------------------------------------------
+$Name: D-Missile
++Title: XSTR("GTM-31 Disruptor Missile", 569)
++Description:
+XSTR("Advanced Prototype
+Tactical Missile
+Disrupts Subsystems", 570)
+$end_multi_text
++Tech Title: XSTR("GTM-31 Disruptor Missile", 569)
++Tech Anim: cb_disruptormissile
++Tech Description:
+XSTR("Advanced signal processing - high precision interception capability - small payload (9 Kt), combining both conventional explosives and a localized blast of energy caused by the effect of impact upon the laser-propulsion system of the missile - designed to temporarily disable subsystems on hostile targets.
+
+The D-Missile is designed to temporarily stop a cruiser or destroyer from firing its laser turrets.  The effect will last about 10 seconds per missile fired, so using these to temporarily disable a cruiser should usually be for suppression until the cruiser is destroyed, or whatever was trying to evade the cruiser has gotten out of range.  Only a few ships can carry these - and they are very scarce - so proper utilization is important.", 571)
+$end_multi_text
+$Model File: Disruptor.pof
+$Mass: 0.4
+$Velocity: 80.0
+$Fire Wait: 5.0
+$Damage: 1
+$Blast Force: 1.0
+$Inner Radius: 10.0
+$Outer Radius: 400.0
+$Shockwave Speed: 0
+$Armor Factor: 0.0
+$Shield Factor: 0.0
+$Subsystem Factor: 1.0
+$Lifetime: 15.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 89
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.2
+$Flags: ( "Huge" "Bomb" "No Dumbfire" "Electronics" "player allowed" ) ;; Does special damage to electronics.
+$Icon: icon_dmissile
+$Anim: dmissile
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Havoc
++Title: XSTR("PVM-2 Havoc Missile", 572)
++Description:
+XSTR("Special Issue
+Fragmentation warhead", 573)
+$end_multi_text
++Tech Title: XSTR("PVM-2 Havoc Missile", 572)
++Tech Anim: cb_havoc
++Tech Description:
+XSTR("Havoc missiles were special issue during the 14-Year War to Vasudan aces.  It holds the title of being the first missile to use the remote detonation technique later used in the Cluster Bomb.  Chips and shards of non-explosive shrapnel surround the explosive core, stripping shields and armor from its target.  Subsystem damage is minimal due to its superficial damage.  With the development of shield technology, the Havoc is now used against unshielded cargo formations and such.", 574)
+$end_multi_text
+$Model File: havoc.pof
+$Mass: 20.0
+$Velocity: 200.0
+$Fire Wait: 1.0
+$Damage: 60
+$Blast Force: 100.0
+$Inner Radius: 5.0
+$Outer Radius: 10.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 6.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: NO
+$LaunchSnd: 90
+$ImpactSnd: 117
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "player allowed" "Spawn Shrapnel,15" "Remote Detonate" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_havoc
+$Anim: Havoc
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Synaptic
++Title: XSTR("GTM-1 Synaptic Bomb", 575)
++Description:
+XSTR("Advanced Bomb
+Wing Attack Cluster Explosion
+Area Effect", 576)
+$end_multi_text
++Tech Title: XSTR("GTM-1 Synaptic Bomb", 575)
++Tech Anim: cb_synaptic
++Tech Description:
+XSTR("Missile propulsion unit carrying several small intelligent ''bomblets'' - when distance to target is less than 100 m or when time to impact is less than 2 sec., bomblets direct missile to the most vulnerable part of the ship of those parts of the ship facing the missile - bomblets then separate from missile propulsion unit and form a sphere - inertia continues to carry bomblets in the direction of the target - the missile propulsion unit continues to advance toward the target - when the missile hits the target or 1.5 sec.  after the missile should have hit the target, the bomblets explode - the spherical shape of the formation of the bomblets helps to ensure a fairly even level of damage across a sensitive area on the target - the spherical shape also ensures that the target will not be able to effectively maneuver away from the blast, thus ''pinning'' the target to a specific area in space - can also act as dumbfire - medium payload per bomblet (15 Kt) - very small payload for missile (2 Kt).
+
+Nicknamed the ''Earthshaker'' by the bomber pilots who tested this, it is a bomber's best defense against fighters.  The Synaptic Bomb can do a lot of damage to a lot of ships at one time.", 577)
+$end_multi_text
+$Model File: Synaptic.pof
+$Mass: 20.0
+$Velocity: 90.0
+$Fire Wait: 5.0
+$Damage: 60
+$Blast Force: 1000.0
+$Inner Radius: 50.0
+$Outer Radius: 100.0
+$Shockwave Speed: 80.0
+$Armor Factor: 1.0
+$Shield Factor: 0.75
+$Subsystem Factor: 1.0
+$Lifetime: 2.5
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: NO
+$LaunchSnd: 93
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "player allowed" "Spawn Cluster Baby,15" "Bomb" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_synaptic
+$Anim: synaptic
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Cluster Bomb
++Title: XSTR("GTM-86 Cluster Bomb", 578)
++Description:
+XSTR("Standard Issue
+Tactical Missile", 579)
+$end_multi_text
++Tech Title: XSTR("GTM-86 Cluster Bomb", 578)
++Tech Anim: cb_cluster
++Tech Description:
+XSTR("A second-generation Synaptic bomb, this GTI-developed cluster warhead has been designed for attacks against entire wings of enemy ships.
+
+Upon reaching its target, the primary warhead fragments into multiple secondary warheads that explode within a split second.  The detonations produce a large field of blast field, making the cluster bomb most effective against fighter formations.", 580)
+$end_multi_text
+$Model File: ClusterBomb.pof
+$Mass: 20.0
+$Velocity: 160.0
+$Fire Wait: 5.0
+$Damage: 60
+$Blast Force: 1000.0
+$Inner Radius: 30.0
+$Outer Radius: 100.0
+;; $Shockwave Speed: 55.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.75
+$Subsystem Factor: 1.0
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 180.0
+$LaunchSnd: 93
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "player allowed" "Spawn Cluster Bomb Baby,8" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_cluster
+$Anim: cluster
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Stiletto
++Title: XSTR("GTM-43 Stiletto", 581)
++Description:
+XSTR("Standard Issue
+Tactical Missile
+Destroys Subsystems", 582)
+$end_multi_text
++Tech Title: XSTR("GTM-43 Stiletto", 581)
++Tech Anim: cb_stiletto
++Tech Description:
+XSTR("Heat seeking - laser tracking similar to the Interceptor - missile is protected by a small shield system, allowing for greater success in payload delivery during busy melee situations and intense firefights - fast, but low in-flight maneuverability compared to other missiles of comparable size - low maneuverability due to the size of the missile's payload (60 Kt) and on-board shield system.
+
+With the ability to take out most subsystems in one hit, and as simple to fire as an MX-50, the Stiletto is the best ship disabling bomb developed by the GTA.  Effective against turrets, engines and any other kind of subsystem, the Stiletto is a valuable asset to a bombers arsenal.  However, it's slow, unmanageable, and it can't do any real hull damage.", 583)
+$end_multi_text
+$Model File: Stiletto.pof
+$Mass: 10.0
+$Velocity: 150.0
+$Fire Wait: 2.0
+$Damage: 775 ;; Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Blast Force: 40.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 0.01
+$Shield Factor: 0.0
+$Subsystem Factor: 1.0
+$Lifetime: 15.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 40.0
+$LaunchSnd: 95
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.5
+;; Puncture = punches through armor to subsystem.
+$Flags: ( "Huge" "Puncture" "player allowed" "Bomb" )
+$Icon: icon_stiletto
+$Anim: stiletto
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 8.0
+
+; ----------------------------------------------------------------------------------
+$Name: EM Pulse
++Title: XSTR("GTM-11 EM Pulse", 584)
++Description:
+XSTR("Advanced Missile
+Electromagnetic Pulse weapon
+Anti-bomber weapon", 585)
+$end_multi_text
++Tech Title: XSTR("GTM-11 EM Pulse", 584)
++Tech Anim: cb_empulse
++Tech Description:
+XSTR("Upon impact, the EM Pulse temporarily disables the electronics systems of the target ship.  This renders the target ship unable to track targets, manage communications, or gain aspect missile lock.  This has numerous tactical applications.  For example, a direct hit with an EM Pulse missile will prevent bombers from launching aspect-seeking warheads for several seconds.  Once the EMP field has worn off, they must also take the time to reacquire missile lock, granting you valuable time.", 586)
+$end_multi_text
+$Model File: EMPulse.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 2.0
+$Damage: 45
+$Blast Force: 20.0
+$Inner Radius: 80.0
+$Outer Radius: 300.0
+$Shockwave Speed: 120.0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 118
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "player allowed" "EMP" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_emp
+$Anim: emp
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+$EMP Intensity: 300.0
+$EMP Time: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Barracuda
++Title: XSTR("PVM-1 Barracuda Torpedo", 587)
++Description:
+XSTR("Standard Issue
+Anti-Cruiser Bomb
+Tactical Anti-Matter Warhead
+Moderate Lock/Reload Time", 588)
+$end_multi_text
++Tech Title: XSTR("PVM-1 Barracuda Torpedo", 587)
++Tech Anim: cb_barracuda
++Tech Description:
+XSTR("The Barracuda torpedo has been in use by the PVN since the outbreak of the Terran-Vasudan War.  These antimatter weapons do much more damage than our Phoenix V missiles, but are smaller than normal space bombs.  The Barracuda is favored by the Vasudans for attacks against cruisers and stationary installations.  Osiris bombers commonly fire these weapons in pairs for knocking out turrets on capital ships.  The Barracuda's targeting system is prone to malfunctions, and a common field modification is to bypass the aspect lock system completely, permitting dumbfire launches.", 589)
+$end_multi_text
+$Model File: barracuda.pof
+$Mass: 25.0
+$Velocity: 100.0
+$Fire Wait: 10.0
+$Damage: 1000
+$Blast Force: 1000.0
+$Inner Radius: 10.0
+$Outer Radius: 100.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.1
+$Subsystem Factor: 1.0
+$Lifetime: 30.0
+$Energy Consumed: 0.0
+$Cargo Size: 10.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 0.8
+ +Min Lock Time: 4.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "Bomb" "Huge" "player allowed" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail03
+$Icon: icon_barracuda
+$Anim: Barracuda
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+$Name: Tsunami
++Title: XSTR("GTM-3 Tsunami Bomb", 590)
++Description:
+XSTR("Special Issue
+Anti-Cruiser Bomb
+Tactical Anti-Matter Warhead
+Long Lock/Reload Time", 591)
+$end_multi_text
++Tech Title: XSTR("GTM-3 Tsunami Bomb", 590)
++Tech Anim: cb_tsunami
++Tech Description:
+XSTR("Intelligent tracking similar to GTA targeting system - prior to launch, communicates with ship computer, gathering data about enemy target types and whereabouts - slow, low maneuverability - antimatter warhead (500 tonne mass-to-energy conversion) - due to instability of antimatter, no more than 10 may be carried on board a GTA bomber at any given time, unless pilot is granted a special permit by an appropriate governing body.
+
+The Tsunami has now become the standard Terran bomb used to take out large targets.  Its short life requires that you get within 1500 meters of the target before sending it off, and since it needs a lock to be fired, it takes a brave pilot to fly straight enough for long enough to let one of these fly.  A few Tsunamis will take out almost any ship, barring a destroyer.  The antimatter warhead also washes over shields a little, so as long as it isn't too close to the center of the blast, a fighter or bomber has a good chance of surviving detonation.", 592)
+$end_multi_text
+$Model File: Tsunami.pof
+$Mass: 25.0
+$Velocity: 60.0
+$Fire Wait: 20.0
+$Damage: 1500
+$Blast Force: 1000.0
+$Inner Radius: 50.0
+$Outer Radius: 150.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.02
+$Subsystem Factor: 2.0
+$Lifetime: 25.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 6.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.05
+$Flags: ( "Bomb" "Huge" "No Dumbfire" "player allowed" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_tsunami
+$Anim: tsunami
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+;; Serkr - GTI bomb inspired by mdmm-02 (it's actually just the Cyclops)
+;
+$Name: Serkr
++Title: XSTR("GTM-X1 Serkr Bomb", 593)
++Description:
+XSTR("Special Issue
+Anti-Cruiser Bomb
+Non-Conventional Warhead
+Long Lock/Reload Time", 594)
+$end_multi_text
++Tech Title: XSTR("GTM-X1 Serkr Bomb", 593)
++Tech Anim: cb_Serkr
++Tech Description:
+XSTR("Non-conventional thermonuclear warhead - estimated explosive yield not less than 3125 Mt - massive destructive capability not suited for tactical subsystem destruction - highest damage for its size of any GTA bomb - a single bomber carrying GTM-X1 ordnance has a damage potential two-thirds greater than one carrying GTM-N1 ordnance - single stage liquid fuel rocket booster - smallest turn radius and greatest linear velocity of any GTA bomb - highly efficient design for extended weapon lifetime.
+
+The Serkr is a high-yield warhead developed as part of a top-secret GTI experimental weapons program.  Sacrificing anti-subsystem capability for sheer hull-damaging power, the Serkr delivers a destructive payload 33 percent greater than the more common Tsunami.  Like the Tsunami, the Serkr can be loaded on the Medusa medium bomber for tactical deployment -- and with a top speed of 95 m/s, this bomb stands a good chance of eluding even the fastest interceptor fighters.  GTI pilots have demonstrated the effectiveness of the Serkr against capital ships of all types.", 595)
+$end_multi_text
+$Model File: serkr.pof
+$Mass: 25.0
+$Velocity: 95.0
+$Fire Wait: 20.0
+$Damage: 2000
+$Blast Force: 1000.0
+$Inner Radius: 100.0
+$Outer Radius: 200.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.02
+$Subsystem Factor: 0.5
+$Lifetime: 25.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 5.0
+ +Lock Pixels/Sec: 35
+ +Catch-up Pixels/Sec: 70
+ +Catch-up Penalty: 12
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.05
+$Flags: ( "Bomb" "Huge" "No Dumbfire" "player allowed" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_serkr
+$Anim: serkr
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+;; Serkr#short
+;; In contrast to Cyclops#short, this has a reduced lifetime, not a reduced speed
+;
+$Name: Serkr#short
++Title: XSTR("GTM-X1 Serkr Bomb", 593)
++Description:
+XSTR("Special Issue
+Anti-Cruiser Bomb
+Non-Conventional Warhead
+Long Lock/Reload Time", 594)
+$end_multi_text
+$Model File: serkr.pof
+$Mass: 25.0
+$Velocity: 95.0
+$Fire Wait: 20.0
+$Damage: 2000
+$Blast Force: 1000.0
+$Inner Radius: 100.0
+$Outer Radius: 200.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.02
+$Subsystem Factor: 0.5
+$Lifetime: 15.75
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 5.0
+ +Lock Pixels/Sec: 35
+ +Catch-up Pixels/Sec: 70
+ +Catch-up Penalty: 12
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.05
+$Flags: ( "Bomb" "Huge" "No Dumbfire" "player allowed" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_serkr
+$Anim: serkr
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+$Name: Harbinger
++Title: XSTR("GTM-N1 Harbinger Bomb", 596)
++Description:
+XSTR("Prototype
+Anti-Capital Ship Bomb
+Tactical Fusion Warhead
+Extremely Long Lock/Reload Time", 597)
+$end_multi_text
++Tech Title: XSTR("GTM-N1 Harbinger Bomb", 596)
++Tech Anim: cb_harbinger
++Tech Description:
+XSTR("Fusion bomb surrounded by 3 salted fission bombs - propulsion unit is a half-size version of a regulation GTA fighter thruster (Class II) - given the weight of the payloads, the missile is slow despite the power of the thruster - as the Harbinger is exceptionally large, GTA bombers are limited to carrying 6 of these weapons at any given time - the resultant shock wave from this weapon is potentially deadly, due to the size of the payloads (5000 Mt in total) - use near allied installations or allied ship groupings is strongly discouraged by the GTA - most effective when used in preemptive defensive strike against non-military installations.
+
+The Harbinger is our best chance of destroying the Lucifer.", 598)
+$end_multi_text
+$Model File: Harbinger.pof
+$Mass: 35.0
+$Velocity: 50.0
+$Fire Wait: 30.0
+$Damage: 3200
+$Blast Force: 2000.0
+$Inner Radius: 100.0
+$Outer Radius: 250.0
+$Shockwave Speed: 75
+$Armor Factor: 1.0
+$Shield Factor: 0.01
+$Subsystem Factor: 16.0
+$Lifetime: 30.0
+$Energy Consumed: 0.0
+$Cargo Size: 40.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.5
+ +Min Lock Time: 7.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 97
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.02
+$Flags: ( "Bomb" "Huge" "No Dumbfire" "player allowed" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 2.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 2.0
+ +Bitmap: MissileTrail02
+$Icon: icon_harbinger
+$Anim: harbinger
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+;; GTM - N1 Harbinger (endgame version)
+;
+$Name: Harbinger#End
++Title: XSTR("GTM-N1 Harbinger Bomb", 596)
++Description:
+XSTR("Prototype
+Anti-Capital Ship Bomb
+Tactical Fusion Warhead
+Extremely Long Lock/Reload Time", 597)
+$end_multi_text
+$Model File: Harbinger.pof
+$Mass: 35.0
+$Velocity: 90.0
+$Fire Wait: 10.0
+$Damage: 3200
+$Blast Force: 2000.0
+$Inner Radius: 1.0
+$Outer Radius: 20.0
+$Shockwave Speed: 75
+$Armor Factor: 0.5
+$Shield Factor: 0.01
+$Subsystem Factor: 20.0
+$Lifetime: 20.0
+$Energy Consumed: 0.0
+$Cargo Size: 40.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.5
+ +Min Lock Time: 3.0
+ +Lock Pixels/Sec: 35
+ +Catch-up Pixels/Sec: 60
+ +Catch-up Penalty: 15
+$LaunchSnd: 97
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.02
+$Flags: ( "Bomb" "Huge" "No Dumbfire" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 2.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 2.0
+ +Bitmap: MissileTrail02
+$Icon: icon_harbinger
+$Anim: harbinger
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+$Name: MX-50#Shivan
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 25
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 10.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 0.7
+ +View Cone: 70.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: newmiss1
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Enemy MX-50#Shivan
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 15
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 12.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 40.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ()
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: newmiss1
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Fury#Shivan
+$Model File: Fury.pof
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.30
+$Damage: 30
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.6
+$Lifetime: 3.0
+$Energy Consumed: 0.0
+$Cargo Size: 0.5
+$Homing: NO
+$LaunchSnd: 90
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 12.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.1
+ +End Width: 0.2
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.3
+ +Bitmap: newmiss1
+$Icon: icon_fury
+$Anim: fury
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 3.0
+
+; ----------------------------------------------------------------------------------
+$Name: Interceptor#Shivan
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 2.0
+$Damage: 150
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.7
+ +Bitmap: newmiss1
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 7.0
+
+; ----------------------------------------------------------------------------------
+$Name: Interceptor#Weak#Shivan
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 3.0
+$Damage: 60
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.66
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.7
+ +Bitmap: newmiss1
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 7.0
+
+; ----------------------------------------------------------------------------------
+$Name: Hornet#Shivan
+$Model File: Hornet.pof
+$Mass: 0.1
+$Velocity: 190.0
+$Fire Wait: 2.0
+$Damage: 25.0
+$Blast Force: 0.2
+$Inner Radius: 10.0
+$Outer Radius: 20.0
+$Shockwave Speed: 0
+$Armor Factor: 2.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.3
+$Lifetime: 7.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.15
+ +Min Lock Time: 3.0
+ +Lock Pixels/Sec: 60
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$Swarm: 4
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: newmiss1
+$Icon: iconHornet
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Hornet#Weak#Shivan
+$Model File: Hornet.pof
+$Mass: 0.1
+$Velocity: 190.0
+$Fire Wait: 2.0
+$Damage: 15.0
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.2
+$Subsystem Factor: 0.3
+$Lifetime: 6.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.6
+ +Min Lock Time: 3.0
+ +Lock Pixels/Sec: 60
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$Swarm: 4
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: newmiss1
+$Icon: iconHornet
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Phoenix V#Shivan
+$Model File: Phoenix.pof
+$Mass: 20.0
+$Velocity: 175.0
+$Fire Wait: 5.0
+$Damage: 350
+$Blast Force: 200.0
+$Inner Radius: 10.0
+$Outer Radius: 30.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.8
+$Lifetime: 10.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 3.0
+ +Min Lock Time: 3.5
+ +Lock Pixels/Sec: 50
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 92
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.33
+$Flags: ( "Bomber+" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.3
+ +Bitmap: newmiss1
+$Icon: icon_phoenix
+$Anim: phoenix
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 9.0
+
+; ----------------------------------------------------------------------------------
+$Name: D-Missile#Shivan
+$Model File: Disruptor.pof
+$Mass: 0.4
+$Velocity: 80.0
+$Fire Wait: 5.0
+$Damage: 1
+$Blast Force: 1.0
+$Inner Radius: 10.0
+$Outer Radius: 400.0
+$Shockwave Speed: 0
+$Armor Factor: 0.0
+$Shield Factor: 0.0
+$Subsystem Factor: 1.0
+$Lifetime: 15.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 89
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.2
+$Flags: ( "Huge" "Bomb" "No Dumbfire" "Electronics" )
+$Icon: icon_dmissile
+$Anim: dmissile
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Synaptic#Shivan
+$Model File: Synaptic.pof
+$Mass: 20.0
+$Velocity: 90.0
+$Fire Wait: 5.0
+$Damage: 60
+$Blast Force: 1000.0
+$Inner Radius: 50.0
+$Outer Radius: 100.0
+$Shockwave Speed: 80.0
+$Armor Factor: 1.0
+$Shield Factor: 0.75
+$Subsystem Factor: 1.0
+$Lifetime: 2.5
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: NO
+$LaunchSnd: 93
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "Spawn S_Cluster Baby,15" "Bomb" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: newmiss1
+$Icon: icon_synaptic
+$Anim: synaptic
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Cluster Bomb#Shivan
+$Model File: ClusterBomb.pof
+$Mass: 20.0
+$Velocity: 160.0
+$Fire Wait: 5.0
+$Damage: 60
+$Blast Force: 1000.0
+$Inner Radius: 30.0
+$Outer Radius: 100.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.75
+$Subsystem Factor: 1.0
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 180.0
+$LaunchSnd: 93
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "Spawn S_Cluster Bomb Baby,8" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: newmiss1
+$Icon: icon_cluster
+$Anim: cluster
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Stiletto#Shivan
+$Model File: Stiletto.pof
+$Mass: 10.0
+$Velocity: 150.0
+$Fire Wait: 2.0
+$Damage: 775
+$Blast Force: 40.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 0.01
+$Shield Factor: 0.0
+$Subsystem Factor: 1.0
+$Lifetime: 15.0
+$Energy Consumed: 0.0
+$Cargo Size: 8.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 40.0
+$LaunchSnd: 95
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.5
+$Flags: ( "Huge" "Puncture" "Bomb" )
+$Icon: icon_stiletto
+$Anim: stiletto
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 8.0
+
+; ----------------------------------------------------------------------------------
+$Name: EM Pulse#Shivan
+$Model File: EMPulse.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 2.0
+$Damage: 45
+$Blast Force: 20.0
+$Inner Radius: 80.0
+$Outer Radius: 300.0
+$Shockwave Speed: 120.0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 118
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "EMP" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: newmiss1
+$Icon: icon_emp
+$Anim: emp
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 10.0
+$EMP Intensity: 300.0
+$EMP Time: 10.0
+
+; ----------------------------------------------------------------------------------
+$Name: Tsunami#Shivan
+$Model File: Tsunami.pof
+$Mass: 25.0
+$Velocity: 60.0
+$Fire Wait: 20.0
+$Damage: 1500
+$Blast Force: 1000.0
+$Inner Radius: 50.0
+$Outer Radius: 150.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.02
+$Subsystem Factor: 2.0
+$Lifetime: 25.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 6.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.05
+$Flags: ( "Bomb" "Huge" "No Dumbfire" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: missiletrail02
+$Icon: icon_tsunami
+$Anim: tsunami
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+$Name: Harbinger#Shivan
+$Model File: Harbinger.pof
+$Mass: 35.0
+$Velocity: 50.0
+$Fire Wait: 30.0
+$Damage: 3200
+$Blast Force: 2000.0
+$Inner Radius: 100.0
+$Outer Radius: 250.0
+$Shockwave Speed: 75
+$Armor Factor: 1.0
+$Shield Factor: 0.01
+$Subsystem Factor: 16.0
+$Lifetime: 30.0
+$Energy Consumed: 0.0
+$Cargo Size: 40.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.5
+ +Min Lock Time: 7.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 97
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.02
+$Flags: ( "Bomb" "Huge" "No Dumbfire" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 2.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 2.0
+ +Bitmap: missiletrail02
+$Icon: icon_harbinger
+$Anim: harbinger
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 15.0
+
+; ----------------------------------------------------------------------------------
+;; Unknown bomb?
+;; Would be nice to know who uses this and what it is for.
+;; It's a Shivan bomb.  It's just like Tsunami, only Shivan.
+;
+$Name: Unknown Bomb
+$Model File: Tsunami.pof
+$Mass: 25.0
+$Velocity: 60.0
+$Fire Wait: 20.0
+$Damage: 1500
+$Blast Force: 1000.0
+$Inner Radius: 5.0
+$Outer Radius: 30.0
+$Shockwave Speed: 80
+$Armor Factor: 1.0
+$Shield Factor: 0.0
+$Subsystem Factor: 2.0
+$Lifetime: 25.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 6.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 96
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 0.05
+$Flags: ( "Bomb" "Huge" "No Dumbfire" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 1.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_tsunami
+$Anim: tsunami
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+;; Another Unknown Bomb?
+;; Would be nice to know who uses this and what it is for.
+;; Shivan, just like Harbinger, only it's Shivan.
+;
+$Name: Unknown Megabomb
+$Model File: Harbinger.pof
+$Mass: 35.0
+$Velocity: 50.0
+$Fire Wait: 30.0
+$Damage: 3200
+$Blast Force: 2000.0
+$Inner Radius: 100.0
+$Outer Radius: 450.0
+$Shockwave Speed: 75
+$Armor Factor: 1.0
+$Shield Factor: 0.0
+$Subsystem Factor: 1.0
+$Lifetime: 30.0
+$Energy Consumed: 0.0
+$Cargo Size: 40.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.5
+ +Min Lock Time: 12.0
+ +Lock Pixels/Sec: 25
+ +Catch-up Pixels/Sec: 50
+ +Catch-up Penalty: 15
+$LaunchSnd: 97
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.02
+$Flags: ( "Bomb" "Huge" "No Dumbfire" )
+$Trail:
+ +Start Width: 0.5
+ +End Width: 2.0
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 2.0
+ +Bitmap: MissileTrail02
+$Icon: icon_harbinger
+$Anim: harbinger
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+; Big ship weapons
+; ----------------------------------------------------------------------------------
+
+; ----------------------------------------------------------------------------------
+$Name: Fusion Mortar
+$Model File: harbinger.pof
+$Mass: 0.1
+$Velocity: 100.0
+$Fire Wait: 1.0
+$Damage: 80
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 1.0
+$Lifetime: 20.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: NO
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "Big Ship" "Huge" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail01
+$Icon: icon_harbinger
+$Anim: harbinger
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Vasudan Flux Cannon
+$Model File: Tsunami.pof
+$Mass: 10.0
+$Velocity: 80.0
+$Fire Wait: 5.0
+$Damage: 500
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.1
+$Subsystem Factor: 1.0
+$Lifetime: 15.0
+$Energy Consumed: 0.0
+$Cargo Size: 1.0
+$Homing: NO
+$LaunchSnd: 102
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 5.0
+$Flags: ( "Big Ship" "Huge" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.15
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail02
+$Icon: icon_tsunami
+$Anim: tsunami
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Shivan Cluster
+$Model File: Synaptic.pof
+$Mass: 20.0
+$Velocity: 90.0
+$Fire Wait: 20.0
+$Damage: 60
+$Blast Force: 1000.0
+$Inner Radius: 50.0
+$Outer Radius: 100.0
+$Shockwave Speed: 80.0
+$Armor Factor: 1.0
+$Shield Factor: 0.75
+$Subsystem Factor: 1.0
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 15.0
+$Homing: NO
+$LaunchSnd: 93
+$ImpactSnd: 101
+$FlyBySnd: -1
+$Rearm Rate: 0.1
+$Flags: ( "Big Ship" "Spawn S_Cluster Baby Weak,8" "Bomb" "Remote Detonate" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.5
+ +Bitmap: MissileTrail04
+$Icon: icon_synaptic
+$Anim: synaptic
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: FighterKiller
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 190.0
+$Fire Wait: 8.0
+$Damage: 100
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "Big Ship" )
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: FighterKiller#Shivan
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 190.0
+$Fire Wait: 8.0
+$Damage: 100
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "Big Ship" )
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+$Name: Swarmer
+$Model File: Hornet.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 15.0
+$Damage: 60
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "Big Ship" )
+$Icon: iconhornet
+$Anim: hornet
+$Impact Explosion: none
+
+; ----------------------------------------------------------------------------------
+; No ship weapons (these weapons can't be placed on any ships.  They are by-products)
+; ----------------------------------------------------------------------------------
+
+; ----------------------------------------------------------------------------------
+$Name: Cluster Baby
+$Model File: hornet.pof
+$Mass: 1.2
+$Velocity: 175.0
+$Fire Wait: 0.5
+$Damage: 35
+$Blast Force: 5.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 6.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.5
+ +View Cone: 180.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Bitmap: MissileTrail02
+$Icon: icon_stiletto
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Cluster Baby Weak
+$Model File: mx-50.pof
+$Mass: 1.2
+$Velocity: 175.0
+$Fire Wait: 0.5
+$Damage: 30
+$Blast Force: 5.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 8.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 180.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Bitmap: MissileTrail02
+$Icon: stiletto
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Cluster Bomb Baby
+$Model File: hornet.pof
+$Mass: 1.2
+$Velocity: 250.0
+$Fire Wait: 0.5
+$Damage: 35
+$Blast Force: 5.0
+$Inner Radius: 20.0
+$Outer Radius: 60.0
+;; $Shockwave Speed: 35
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 0.3
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 45.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Icon: stiletto
+$Anim: hornet
+$Impact Explosion: exp06
+$Impact Explosion Radius: 25.0
+
+; ----------------------------------------------------------------------------------
+$Name: Shrapnel
+$Model File: shard.pof
+$Mass: 5.0
+$Velocity: 175.0
+$Fire Wait: 0.5
+$Damage: 10
+$Blast Force: 5.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.2
+$Lifetime: 1.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: NO
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Icon: iconmissile08
+$Anim: LoadMissile06
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 0.0
+
+; ----------------------------------------------------------------------------------
+$Name: S_Cluster Baby
+$Model File: hornet.pof
+$Mass: 1.2
+$Velocity: 175.0
+$Fire Wait: 0.5
+$Damage: 35
+$Blast Force: 5.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 6.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.5
+ +View Cone: 180.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Bitmap: newmiss1
+$Icon: icon_stiletto
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: S_Cluster Baby Weak
+$Model File: mx-50.pof
+$Mass: 1.2
+$Velocity: 175.0
+$Fire Wait: 0.5
+$Damage: 30
+$Blast Force: 5.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 8.0
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 180.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.75
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Bitmap: newmiss1
+$Icon: stiletto
+$Anim: hornet
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: S_Cluster Bomb Baby
+$Model File: hornet.pof
+$Mass: 1.2
+$Velocity: 250.0
+$Fire Wait: 0.5
+$Damage: 35
+$Blast Force: 5.0
+$Inner Radius: 20.0
+$Outer Radius: 60.0
+;; $Shockwave Speed: 35
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 1.0
+$Subsystem Factor: 0.5
+$Lifetime: 0.3
+$Energy Consumed: 0.0
+$Cargo Size: 2.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 45.0
+$LaunchSnd: 94
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 1.0
+$Flags: ( "child" )
+$Icon: stiletto
+$Anim: hornet
+$Impact Explosion: exp06
+$Impact Explosion Radius: 25.0
+
+#End
+
+#Beam Weapons
+
+#End
+
+; ********** Countermeasure Section **********
+
+#Countermeasures
+
+; MK, 5/22/97, Type One countermeasure, first pass.
+; So far, no rendering information, just uses explosion bitmap.
+; Chaff (or whatever) pieces are projected backward in a hemisphere.
+; JAS, 1/29/98, added a model name for how it renders.
+$Name: Type One
+$Velocity: 30.0 ;; speed relative to ship, rear-fired until POF info added, MK, 5/22/97
+$Fire Wait: 0.5
+$Lifetime Min: 1.0
+$Lifetime Max: 2.0
+$LaunchSnd: 99
+$Model: cmeasure01.pof
+
+#End
+
+; $Player Weapon Precedence is used in weapon selection when a default specified by the mission
+; designer is not available to the player.  The next weapon on the list is used in its place
+; (assuming that weapon is allowed for the player).
+;
+; ordering: most powerful energy weapon -> least powerful energy weapon
+; most powerful missile -> least powerful missile
+;
+$Player Weapon Precedence: (
+ "UD-1 Volz"
+ "Banshee"
+ "Prometheus A"
+ "Prometheus"
+ "Prometheus R"
+ "Avenger"
+ "ML-16 Laser"
+ "VLL-9 Laser"
+ "Railgun"
+ "Flail"
+ "Disruptor"
+ "D-Advanced"
+ "Akheton SDG"
+ "Training"
+ "Harbinger"
+ "Serkr"
+ "Tsunami"
+ "Barracuda"
+ "D-Missile"
+ "Synaptic"
+ "Stiletto"
+ "Phoenix V"
+ "Hornet"
+ "Interceptor"
+ "Fury"
+ "MX-50"
+)

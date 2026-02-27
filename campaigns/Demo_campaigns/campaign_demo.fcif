@@ -1,0 +1,58 @@
+fcif_version: "1.1"
+
+campaign:
+  name: "FCIF Feature Showcase"
+  description: |
+    A demonstration campaign showcasing all features of the
+    FreeSpace Campaign Intermediate Format (FCIF 1.1).
+    This campaign is not playable — it exists only as a
+    reference for FCIF authors.
+
+starting_loadout:
+  ships:
+    - GTF Apollo
+    - GTF Ulysses
+    - GTF Hercules
+    - GTB Medusa
+  weapons:
+    - ML-16 Laser
+    - Prometheus
+    - Avenger
+    - MX-50
+    - Hornet
+    - Tsunami
+
+missions:
+  # ---- success_goal ----
+  # Advance to the next mission only if the "Complete Training" goal
+  # succeeded. If it failed, the player replays this mission.
+  - filename: demo_m01.fs2
+    success_goal: "Complete Training"
+
+  # ---- success_event ----
+  # Advance if the "Ambush triggered" event fired (succeeded).
+  # If the event did not fire, the player replays this mission.
+  - filename: demo_m02.fs2
+    success_event: "Ambush triggered"
+
+  # ---- failure_goal ----
+  # Advance if the "Convoy Destroyed" goal FAILED (i.e., the convoy
+  # survived). If the goal succeeded (convoy was destroyed), replay.
+  - filename: demo_m03.fs2
+    failure_goal: "Convoy Destroyed"
+
+  # ---- failure_event ----
+  # Advance if the "Flagship lost" event did NOT fire (i.e., the
+  # flagship survived). If the event fired, replay.
+  - filename: demo_m04.fs2
+    failure_event: "Flagship lost"
+
+  # ---- Unconditional advancement ----
+  # No condition field — the campaign always advances to the next
+  # mission regardless of the outcome.
+  - filename: demo_m05.fs2
+
+  # ---- Last mission ----
+  # The final mission in the list proceeds to end-of-campaign.
+  # It can also have an advance condition (here: unconditional).
+  - filename: demo_m06.fs2

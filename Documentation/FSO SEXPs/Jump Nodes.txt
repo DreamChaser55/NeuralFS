@@ -1,0 +1,39 @@
+  Jump Nodes
+
+*set-jumpnode-name*
+    set-jumpnode-name (deprecated in favor of set-jumpnode-
+    display-name)
+    Sets the name of a jump node. Takes 2 arguments...
+    1: Name of jump node to change name for
+    2: New name for jump node
+
+    Note: SEXPs referencing the old name will not work after the
+    name change.
+*set-jumpnode-display-name*
+    set-jumpnode-display-name
+    Sets the display name of a jump node. Takes 2 arguments...
+    1: Name of jump node to change display name for
+    2: New display name for jump node
+*set-jumpnode-color*
+    set-jumpnode-color
+    Sets the color of a jump node. Takes 5 arguments...
+    1: Jump node to change color for
+    2: Red value
+    3: Green value
+    4: Blue value
+    5: Alpha value
+*set-jumpnode-model*
+    set-jumpnode-model
+    Sets the model of a jump node. Takes 3 arguments...
+    1: Jump node to change model for
+    2: Model filename
+    3: Show as normal model. When this is true, the jumpnode
+    will be rendered like a normal model.
+*show-jumpnode*
+    show-jumpnode
+    Sets a jump node to display on the screen.
+    Any: Jump node to show
+*hide-jumpnode*
+    hide-jumpnode
+    Sets a jump node to not display on the screen.
+    Any: Jump node to hide

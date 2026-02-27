@@ -1,0 +1,55 @@
+Here are the relevant documents:
+
+Freespace Universe Bible (condensed):
+@/Freespace\ Bibles/FS_Universe_Bible_Condensed.txt 
+
+NeuralFS:
+@/README.md 
+@/Documentation/index.md 
+
+FSIF:
+@/Documentation/fsif/specification.md 
+@/Documentation/fsif/authoring-guide.md 
+
+FSO:
+@/Documentation/FSO\ and\ fs2\ format/FSO_Tokens_Reference.md 
+@/Documentation/FSO\ SEXPs/INDEX.md 
+
+FCIF:
+@/Documentation/fcif/specification.md
+
+FSIF Converter:
+@/FSIF_to_FS2_Converter/README.md 
+@/Documentation/fsif/converter/cli.md 
+
+FCIF Converter:
+@/FCIF_to_FC2_Converter/README.md 
+@/Documentation/fcif/converter/cli.md 
+
+FSIF Demo:
+@/missions/Demo_missions/general_demo.fsif 
+
+FCIF Demo:
+@/campaigns/Demo_campaigns/campaign_demo.fcif
+
+Read the @/<campaign_folder>/Campaign_Bible.txt .
+If you need to consult the detailed mission design documents, they are in "/<campaign_folder>/Detailed_Mission_Design_Documents/" folder.
+
+The '.fsif' files for the campaign are in the "/<campaign_folder>/fsif/" folder.
+The '.fcif' file for the campaign is in the "/<campaign_folder>/" folder.
+
+1. Use the FSIF to FS2 Converter (`fsif_to_fs2.py`) to convert the '.fsif' files to '.fs2', one by one. If the Converter reports any errors during the conversion process:
+    1.1. Analyze the problematic fsif file(s) to determine the cause of the errors.
+    1.2. Make a plan to fix the issues.
+    1.3. Edit the problematic fsif file(s) to fix them.
+    1.4. Try the conversion again.
+    Iterate until all '.fsif' files are successfully converted to '.fs2'.
+
+2. Use the FCIF to FC2 Converter (`fcif_to_fc2.py`) to convert the '.fcif' file to '.fc2'. If the Converter reports any errors:
+    2.1. Analyze the problematic fcif file to determine the cause of the errors.
+    2.2. Make a plan to fix the issues.
+    2.3. Edit the problematic fcif file to fix them.
+    2.4. Try the conversion again.
+    Iterate until the '.fcif' file is successfully converted to '.fc2'.
+
+IMPORTANT: Do NOT attempt to read or analyze the resulting '.fs2' or '.fc2' files. They are very large and will quickly fill your entire context window. The feedback provided by the Converter should be enough to fix any issues you encounter.

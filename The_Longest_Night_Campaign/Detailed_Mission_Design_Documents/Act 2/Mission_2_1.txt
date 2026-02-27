@@ -1,0 +1,119 @@
+MISSION DESIGN DOCUMENT
+Mission 2.1: "Sacrifice"
+
+================================================================================
+PURPOSE & EXPERIENCE
+- Mission Fantasy: Fighting a losing battle to save the war. Heroic sacrifice.
+- Tension: High. The enemy cruiser is overwhelming.
+- Plot Advance: Loss of the GTC Crecy. Realization that the Shivans are hunting them specifically.
+
+================================================================================
+FICTION VIEWER (Intro)
+"COMMAND LOG: Commander Haddock, GTC Crecy.
+Date: January 12, 2335.
+
+I've been looking at the tactical plot for an hour. There is no way out.
+The Tenebris is faster than us. It's stronger than us. And it's gaining on the Stalwart.
+Captain Vance is a good man, but he's too sentimental. He thinks he can save everyone.
+He can't.
+Someone has to stay behind. Someone has to hold the door.
+I've spoken to my crew. They know what needs to be done.
+We're not running anymore."
+
+================================================================================
+ENVIRONMENT & SETUP
+- System: Laramis.
+- Background: Nebula.
+- Objects:
+  - GTD Stalwart (Engine Repair - Immobile).
+  - GTC Crecy (Fenris Cruiser).
+  - SC Tenebris (Lilith Cruiser).
+
+================================================================================
+PARTICIPANTS
+Allied:
+- Alpha Wing (Player).
+- Beta Wing.
+- GTC Crecy.
+
+Hostile:
+- SC Tenebris.
+- Shivan Bomber Wings (Nephilim).
+- Shivan Fighter Wings (Basilisk).
+
+================================================================================
+PLAYER CRAFT
+- Ship: GTF Hercules (Heavy Fighter - First availability?). Or Valkyrie.
+- Loadout: Flail (New weapon!), Prometheus (if avail).
+
+================================================================================
+OBJECTIVES
+Primary:
+1. Disable SC Tenebris Engines (Stop it from chasing Stalwart).
+2. Destroy Tenebris Weapons Subsystem (Beam/Heavy Turrets) - *Correction*: No beams in FS1. Heavy Plasmas.
+3. Protect the Stalwart until jump.
+
+Secondary:
+- Destroy all Shivan bombers.
+
+Hidden/Story:
+- Witness the destruction of the GTC Crecy.
+- Escort Crecy's Escape Pods (Optional - Adds emotional weight).
+
+================================================================================
+BRIEFINGS
+
+Command Briefing (Act 2 Intro):
+"We are deep in the Laramis nebula now. The good news is, we have shields. We have the Flail.
+The bad news is, we are being hunted. A Lilith-class cruiser, designated SC Tenebris, has been tracking our ion trail.
+It's relentless.
+We can't outrun it. We have to fight.
+This is not going to be pretty. Prepare yourselves."
+
+Mission Briefing:
+1. "The Tenebris has found us. It's a Lilith-class cruiser. Heavy armor, heavy firepower."
+2. "The Stalwart's drives are still offline. We need 5 minutes."
+3. "The Crecy has volunteered to draw their fire. They are going to engage the Tenebris point-blank."
+4. "Alpha, your job is to strip that cruiser. Take out its engines. Take out its turrets. Give the Crecy a fighting chance."
+5. "If the Tenebris gets past the Crecy, the Stalwart is dead. And so are we."
+
+================================================================================
+IN-MISSION MESSAGES
+- Start:
+  - Crecy: "This is the Crecy. We are engaging. Alpha, cover our flanks."
+  - Tenebris: *Ominous silence/noise*.
+- Combat:
+  - Crecy: "taking heavy fire! Shields failing!"
+  - Stalwart: "Engines at 60%. Hold them back!"
+  - Objective: "Disable Tenebris Engines!"
+- The Sacrifice:
+  - Crecy: "Reactor critical. All hands, abandon ship! Alpha, get clear!"
+  - Crecy launches escape pods (Scripted).
+  - Crecy rams/explodes near Tenebris (or just explodes under fire).
+  - Stalwart: "The Crecy is gone. Damn them."
+- Climax:
+  - Stalwart: "Drives online! Jumping now!"
+  - Alpha: "We disabled the Tenebris. It's not going anywhere."
+
+================================================================================
+EVENT FLOW
+1. Tenebris jumps in. Crecy intercepts.
+2. Player attacks Tenebris engines/turrets.
+3. Shivan bombers attack Crecy.
+4. Crecy launches escape pods before exploding.
+5. Stalwart jumps.
+6. Player jumps.
+
+================================================================================
+DEBRIEFING
+Success:
+"The Crecy bought us the time we needed.
+Captain Haddock and his crew will be remembered.
+The Tenebris is disabled, but not destroyed. It will be back.
+But for now, we have some breathing room.
+We've picked up a signal. A jump node. It might be our way out."
+
+================================================================================
+QA NOTES
+- Lilith cruiser is very tough for FS1 fighters. Ensure player has enough firepower (Bombers in Beta wing?) or Tenebris is already slightly damaged.
+- Flail weapon should be effective against Tenebris turrets.

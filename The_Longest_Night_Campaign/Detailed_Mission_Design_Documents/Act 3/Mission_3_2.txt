@@ -1,0 +1,110 @@
+MISSION DESIGN DOCUMENT
+Mission 3.2: "Morning's Light"
+
+================================================================================
+PURPOSE & EXPERIENCE
+- Mission Fantasy: Last Stand.
+- Tension: Defending a crippled ship against waves of enemies. Relief when allies arrive.
+- Plot Advance: Rejoining the GTA. Handing over the intel.
+
+================================================================================
+FICTION VIEWER (Intro)
+"EPILOGUE: From the Personal Files of Admiral Wolf, GTD Galatea.
+Date: January 15, 2335.
+
+We were losing hope. The losses in Antares were staggering. The Vasudan front was collapsing.
+And then, out of the darkness... a ghost ship appeared in Beta Aquilae.
+The Stalwart.
+Burned, battered, venting atmosphere... but alive.
+They brought with them more than just their lives. They brought maps. They brought weapons tech. They brought hope.
+They say they walked through the valley of the shadow of death.
+Looking at their hull... I believe them."
+
+================================================================================
+ENVIRONMENT & SETUP
+- System: Beta Aquilae.
+- Background: Standard Starfield (Bright, hopeful).
+- Objects:
+  - GTD Stalwart (Crippled, venting plasma).
+  - Beta Aquilae Installation (Distant - destination).
+  - GTC Orff (Fenris - arrives late).
+
+================================================================================
+PARTICIPANTS
+Allied:
+- Alpha Wing (Player).
+- GTD Stalwart.
+- Reinforcements: GTD Galatea / GTC Orff (Scripted arrival).
+
+Hostile:
+- Shivan Pursuit Force (SC Tenebris - if it survived earlier, or a new Lilith).
+- Shivan Wings (All types).
+
+================================================================================
+PLAYER CRAFT
+- Ship: Any available.
+- Loadout: Any.
+
+================================================================================
+OBJECTIVES
+Primary:
+1. Defend GTD Stalwart.
+2. Destroy Shivan Pursuit Force.
+3. Survive until reinforcements arrive.
+
+Secondary:
+- Keep Stalwart Hull > 20%.
+
+================================================================================
+BRIEFINGS
+
+Mission Briefing:
+1. "We've arrived in Beta Aquilae. But the jump drive is fused. We are dead in the water."
+2. "We're hailing the Beta Aquilae Installation, but no response yet."
+3. "Sensors show the Shivans have followed us through. A massive force."
+4. "We have no main battery power. We are sitting ducks."
+5. "Alpha, you are the only thing standing between us and destruction. Hold them off until help arrives."
+6. "This is the end of the line, pilots. Make it count."
+
+================================================================================
+IN-MISSION MESSAGES
+- Start:
+  - Stalwart: "Mayday, Mayday! This is GTD Stalwart. We are under attack by Shivan forces! Is anyone out there?"
+  - Radio Static.
+  - Alpha 2: "Here they come! Fighters, 12 o'clock!"
+- Combat:
+  - Waves of Shivan fighters attack.
+  - Cruiser arrives (Tenebris?).
+  - Stalwart: "Hull critical! We can't take much more of this!"
+- The Turn:
+  - Radio: "Stalwart, this is the GTD Galatea. We read you. Hang on, we are en route."
+  - Alpha 1: "The Galatea! We're saved!"
+  - Galatea jumps in with full fighter escort.
+  - Galatea: "All batteries, target that Shivan cruiser. Fire!"
+- Victory:
+  - Shivan forces destroyed/retreat.
+  - Galatea: "Welcome back to the land of the living, Stalwart. We thought you were dead."
+  - Stalwart: "Not yet, Admiral. Not yet. We have intel... you're going to want to see this."
+
+================================================================================
+EVENT FLOW
+1. Stalwart is stationary.
+2. Shivan fighters attack in waves (3-4 mins).
+3. Shivan Cruiser jumps in.
+4. Player must disarm cruiser or distract bombers.
+5. GTD Galatea jumps in (Massive firepower).
+6. Galatea destroys Shivan cruiser.
+7. Mission End.
+
+================================================================================
+DEBRIEFING
+Success:
+"The Stalwart is safe. The data on the Laramis node and the Flail weapon has been transferred to Command.
+You've done the impossible, pilot. You brought them home.
+The war isn't over. The Lucifer is still out there.
+But for tonight... we celebrate.
+Dismissed."
+
+================================================================================
+QA NOTES
+- Ensure the arrival of the Galatea is timed perfectly for dramatic effect (when Stalwart is low on health or after a set time).

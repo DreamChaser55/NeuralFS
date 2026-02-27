@@ -1,0 +1,373 @@
+fsif_version: "2.4"
+
+fiction_viewer: "m_3_1_fiction.txt"
+
+mission_info:
+  name: "The Gauntlet"
+  author: "Roo-FS"
+  description: "Mission 7 of The Longest Night. The final run to the Beta Aquilae jump node."
+  game_type: "single"
+  flags: ["no_promotion", "no_builtin_msgs"]
+  ai_profile: "FS1 RETAIL"
+
+environment:
+  star_count: 500
+  ambient_light_level: 10
+  fog:
+    near_mult: 1.0
+    far_mult: 1.0
+  suns:
+    - texture: SunSol
+      angles: [0.0, 0.0, 0.0]
+      scale: 1.5
+  starbitmaps:
+    - texture: dneb03
+      angles: [0.0, 1.5, 0.0]
+      scale: { x: 5.0, y: 5.0 }
+  nebula:
+    enabled: false # Nebula is clearing
+  asteroid_field:
+    name: "Node Perimeter"
+    genre: "debris"
+    type: "passive"
+    density: 20
+    average_speed: 10.0
+    bounds:
+      min: [-5000.0, -1000.0, -5000.0]
+      max: [5000.0, 1000.0, 5000.0]
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Hercules"
+      count: 4
+    - class: "GTF Valkyrie"
+      count: 4
+  weapon_pool:
+    - name: "Flail"
+      count: 16
+    - name: "Prometheus"
+      count: 16
+    - name: "Avenger"
+      count: 16
+    - name: "ML-16 Laser"
+      count: 16
+    - name: "MX-50"
+      count: 400
+    - name: "Fury"
+      count: 400
+    - name: "Hornet"
+      count: 400
+    - name: "Stiletto"
+      count: 100
+    - name: "Tsunami"
+      count: 60
+
+entities:
+  ship_templates:
+    player_heavy:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Flail", "Prometheus"]
+        secondary: ["MX-50", "Fury"]
+    bomber_wing:
+      class: "GTB Medusa"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Prometheus", "Prometheus"]
+        secondary: ["Tsunami", "Tsunami"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_interceptor:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_heavy:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Colonel"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+
+  ships:
+    - name: "GTD Stalwart"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0.0, 0.0, -4000.0]
+      flags: ["guardian", "escort"]
+      arrival_cue: |
+        ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "GTD Stalwart" "Node Marker" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "Stalwart Run Path" 89 )
+
+    - name: "SC Kali"
+      class: "SC Cain"
+      team: "Hostile"
+      location: [-1000.0, 200.0, 0.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 89 )
+
+    - name: "SC Durga"
+      class: "SC Cain"
+      team: "Hostile"
+      location: [1000.0, -200.0, 0.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 89 )
+
+    - name: "GTT Argyll"
+      class: "GTT Elysium"
+      team: "Friendly"
+      location: [200.0, 100.0, -4200.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( has-departed-delay 0 "GTD Stalwart" )
+      ai_goals: |
+        ( ai-stay-near-ship "GTD Stalwart" 80 1500 )
+
+    - name: "Node Marker"
+      class: "Terran NavBuoy"
+      team: "Hostile"
+      location: [0.0, 0.0, 4000.0]
+      arrival_cue: |
+        ( true )
+
+  wings:
+    - name: "Alpha"
+      template: "player_heavy"
+      count: 4
+      position: [0.0, 0.0, -3500.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "Beta"
+      template: "bomber_wing"
+      count: 3
+      position: [500.0, 100.0, -3800.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "SC Kali" 89 )
+
+    - name: "Shivan Intercept 1"
+      template: "shivan_fighter"
+      count: 4
+      position: [-1500.0, 0.0, -1000.0]
+      arrival_cue: |
+        ( has-time-elapsed 10 )
+      ai_goals: |
+        ( ai-chase-any 60 )
+
+    - name: "Shivan Intercept 2"
+      template: "shivan_interceptor"
+      count: 4
+      position: [1500.0, 0.0, -1000.0]
+      arrival_cue: |
+        ( has-time-elapsed 30 )
+      ai_goals: |
+        ( ai-chase-any 60 )
+
+    - name: "More Fighters"
+      template: "shivan_heavy"
+      count: 4
+      position: [0.0, 500.0, 1000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( or
+          ( is-destroyed-delay 0 "SC Kali" )
+          ( is-destroyed-delay 0 "SC Durga" )
+        )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 89 )
+
+  waypoints:
+    "Stalwart Run Path":
+      - [0, 0, -2000]
+      - [0, 0, 0]
+      - [0, 0, 2000]
+      - [0, 0, 4000]
+
+  jump_nodes:
+    - name: "Beta Aquilae Jump Node"
+      position: [0.0, 0.0, 4000.0]
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "We are at the threshold. Behind us lies the nebula. Ahead, the Beta Aquilae system. And hopefully, the Alliance."
+        voice_name: "Charon"
+      - text: "But the Shivans aren't letting us leave without a fight. Sensors show a blockade force at the node. Two cruisers. Heavy fighter cover."
+        voice_name: "Charon"
+      - text: "This is it. We punch through, or we die here."
+        voice_name: "Charon"
+
+  briefing:
+    stages:
+      - text: "The Stalwart is beginning its run to the node. Speed is set to maximum."
+        voice_name: "Schedar"
+        icons:
+          - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, -4000], label: "GTD Stalwart" }
+          - { type: "Jump Node", team: "Hostile", pos: [0, 4000], label: "Beta Aquilae" }
+      - text: "Two Cain-class cruisers are blocking the vector. They will tear the Stalwart apart if they aren't neutralized."
+        voice_name: "Schedar"
+        icons:
+          - { type: "Cruiser", team: "Hostile", class: "SC Cain", pos: [-1000, 0], label: "SC Kali" }
+          - { type: "Cruiser", team: "Hostile", class: "SC Cain", pos: [1000, 0], label: "SC Durga" }
+      - text: "Alpha, Beta... clear the path. Focus fire on the cruisers. Strip their turrets, then their hulls."
+        voice_name: "Schedar"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Hercules", pos: [0, -3500], label: "Alpha" }
+          - { type: "Bomber Wing", team: "Friendly", class: "GTB Medusa", pos: [500, -3800], label: "Beta" }
+      - text: "Ignore the fighters if you can. The cruisers are the priority."
+        voice_name: "Schedar"
+      - text: "Once the Stalwart is through, follow us. Do not get left behind."
+        voice_name: "Schedar"
+
+  debriefing:
+    stages:
+      - condition: |
+          ( has-departed-delay 0 "GTD Stalwart" )
+        text: "We made it. The nebula is behind us. The stars... the stars look different here. Beta Aquilae. We are back in Terran space. But we're not safe yet. We're picking up distress signals from the local garrison. The war followed us home."
+        voice_name: "Charon"
+      - condition: |
+          ( is-destroyed-delay 0 "GTD Stalwart" )
+        text: "The Stalwart has been destroyed. We were so close... but the Shivans were stronger."
+        voice_name: "Charon"
+
+  events:
+    - name: "Start Msg"
+      formula: |
+        ( when
+          ( true )
+          ( send-message "GTD Stalwart" "High" "Final Run" )
+          ( send-message "Alpha 1" "Normal" "Beta Form Up" )
+        )
+      directive_text: "Destroy Blockade Cruisers"
+
+    - name: "Stalwart Damage Msg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Stalwart" ) 50 )
+          ( send-message "GTD Stalwart" "High" "Taking Hits" )
+        )
+
+    - name: "Kali Destroyed Msg"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Kali" )
+          ( send-message "Alpha 2" "High" "Cruiser Down" )
+        )
+
+    - name: "Durga Destroyed Msg"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Durga" )
+          ( send-message "Alpha 2" "High" "Cruiser Down" )
+        )
+
+    - name: "Reinforcements Msg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "More Fighters" )
+          ( send-message "GTD Stalwart" "High" "Keep Them Off" )
+        )
+
+    - name: "Stalwart Departure"
+      formula: |
+        ( when
+          ( < ( distance "GTD Stalwart" "Node Marker" ) 500 )
+          ( send-message "GTD Stalwart" "High" "At Node" )
+        )
+      directive_text: "Escort Stalwart to Node"
+
+    - name: "Alpha Departure"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTD Stalwart" )
+          ( send-message "Alpha 1" "High" "Stalwart Away" )
+        )
+      directive_text: "Jump out!"
+
+    - name: "Mission Success"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTD Stalwart" )
+          ( end-mission )
+        )
+
+  goals:
+    - name: "Destroy Kali Goal"
+      type: "Primary"
+      message: "Destroy SC Kali."
+      formula: |
+        ( is-destroyed-delay 0 "SC Kali" )
+
+    - name: "Destroy Durga Goal"
+      type: "Primary"
+      message: "Destroy SC Durga."
+      formula: |
+        ( is-destroyed-delay 0 "SC Durga" )
+
+    - name: "Protect Stalwart Goal"
+      type: "Primary"
+      message: "Ensure GTD Stalwart survives and jumps."
+      formula: |
+        ( has-departed-delay 0 "GTD Stalwart" )
+
+    - name: "Destroy Fighters Goal"
+      type: "Secondary"
+      message: "Destroy all Shivan Fighters."
+      formula: |
+        ( and
+          ( is-destroyed-delay 0 "Shivan Intercept 1" )
+          ( is-destroyed-delay 0 "Shivan Intercept 2" )
+          ( is-destroyed-delay 0 "More Fighters" )
+        )
+
+  messages:
+    - name: "Final Run"
+      message: "All hands to battle stations. This is the final run. Void Walkers, clear the road."
+      voice_name: "Charon"
+    - name: "Beta Form Up"
+      message: "We're on it. Beta, form up on me."
+      voice_name: "Fenrir"
+    - name: "Taking Hits"
+      message: "Taking hits! Forward shields down to 50%!"
+      voice_name: "Schedar"
+    - name: "Cruiser Down"
+      message: "That cruiser is down! One more to go!"
+      voice_name: "Enceladus"
+    - name: "Keep Them Off"
+      message: "We can't stop! Keep them off us!"
+      voice_name: "Charon"
+    - name: "At Node"
+      message: "We are at the node! Engaging jump drive... NOW!"
+      voice_name: "Charon"
+    - name: "Stalwart Away"
+      message: "Stalwart is away! Let's get out of here!"
+      voice_name: "Fenrir"
+
+audio:
+  mission_music: "FS1-8: Strike"
+  briefing_music: "FS1-BRIEF7"

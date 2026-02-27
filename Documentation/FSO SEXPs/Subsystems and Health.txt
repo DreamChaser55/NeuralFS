@@ -1,0 +1,300 @@
+  Subsystems and Health
+
+*ship-invulnerable*
+    ship-invulnerable
+    Causes the ships listed in this sexpression to be
+    invulnerable to weapons. Use with caution!!!!
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make invulnerable to weapons (ships do
+    not need to be in-mission).
+*ship-vulnerable*
+    ship-vulnerable
+    Causes the ship listed in this sexpression to be vulnerable
+    to weapons.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make vulnerable to weapons (ships do
+    not need to be in-mission).
+*ship-guardian*
+    ship-guardian
+    Causes the ships listed in this sexpression to not take any
+    damage below 1% of hull strength. As such, the ship will not
+    be killable by weapons. Use with caution!!!!
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make unkillable (ships do not need to
+    be in-mission).
+*ship-no-guardian*
+    ship-no-guardian
+    Causes the ships listed in this sexpression to be killable
+    by weapons, if not invulnerable.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make killable (ships do not need to be
+    in-mission).
+*ship-guardian-threshold*
+    ship-guardian-threshold
+    Same as ship-guardian, except the lowest possible hull value
+    (as a percentage) is specified by the sexp rather than
+    defaulting to 1.
+    Call with a threshold of 0 (or use ship-no-guardian) to
+    deactivate.
+
+    Takes 2 or more arguments...
+    1: Threshold value.
+    2+: Name of ships to make unkillable (ships must be in-mission).
+*ship-subsys-guardian-threshold*
+    ship-subsys-guardian-threshold
+    Same as ship-guardian-threshold, but works on subsystems.
+    Call with a threshold of 0 to deactivate.
+
+    Takes 3 or more arguments...
+    1: Threshold value.
+    2: Ship housing the subsystem(s) (ships must be in-mission).
+    3+: Subsystems to make unkillable.
+*self-destruct*
+    Self destruct (Action operator)
+    Causes the specified ship(s) to self destruct.
+
+    Takes 1 or more arguments...
+    All: Name of ship to self destruct (ship must be in-mission).
+*destroy-instantly*
+    destroy-instantly
+    Self-destructs the named ship without explosion, death roll,
+    or debris. That is, the ship is instantly gone from the
+    mission and the only indication of what happened is a
+    mission log entry.
+    Non-player ship only!
+    All: List of ship names to destroy.
+*destroy-instantly-with-debris*
+    destroy-instantly-with-debris
+    Like destroy-instantly, but only spawns debris. No
+    explosions, no sound, no deathroll.
+    Non-player ship only!
+    All: List of ship names to destroy.
+*destroy-subsys-instantly*
+    destroy-subsys-instantly
+    Destroys the specified subsystems without effects.Takes 2 or
+    more arguments...
+    1: Name of ship subsystem is on (ship must be in-mission).
+    Rest: Name of subsystem to destroy.
+*sabotage-subsystem*
+    Sabotage subystem (Action operator)
+    Reduces the specified subsystem integrity by the specified
+    percentage.If the percntage strength of the subsystem (after
+    completion) is less than 0%,subsystem strength is set to 0%.
+
+    Takes 3 arguments...
+    1: Name of ship subsystem is on (ship must be in-mission).
+    2: Name of subsystem to sabotage.
+    3: Percentage to reduce subsystem integrity by.
+*repair-subsystem*
+    Repair Subystem (Action operator)
+    Increases the specified subsystem integrity by the specified
+    percentage.If the percentage strength of the subsystem
+    (after completion) is greater than 100%,subsystem strength
+    is set to 100%.
+
+    Takes 3 to 5 arguments...
+    1: Name of ship subsystem is on (ship must be in-mission).
+    2: Name of subsystem to repair.
+    3: Percentage to increase subsystem integrity by.
+    4: Repair submodel if it exists. Optional argument that
+    defaults to true.
+    5: If we are repairing submodels and an ancestor submodel
+    was totally destroyed, repair that too. Optional argument
+    that defaults to true.
+*ship-copy-damage*
+    ship-copy-damage
+    Copies the damage (hull, shields, and subsystems) from the
+    first ship in the list to the rest. The initial ship must be
+    currently present in the mission, but the target ships may
+    be either in-mission or on the arrival list. Takes 2 or more
+    arguments...
+    1: The name of the ship that supplies the damage stats
+    Rest: The list of ships to be modified
+*set-subsystem-strength*
+    Set Subsystem Strength (Action operator)
+    Sets the specified subsystem to the the specified
+    percentage.If the percentage specified is < 0, strength is
+    set to 0. If the percentage is > 100 % the subsystem
+    strength is set to 100%.
+
+    Takes 3 to 5 arguments...
+    1: Name of ship subsystem is on (ship must be in-mission).
+    2: Name of subsystem to set strength.
+    3: Percentage to set subsystem integrity to.
+    4: Repair submodel if it exists. Optional argument that
+    defaults to true.
+    5: If we are repairing submodels and an ancestor submodel
+    was totally destroyed, repair that too. Optional argument
+    that defaults to true.
+*subsys-set-random*
+    subsys-set-random
+    Sets ship subsystem strength in a given range
+    1: Ship name (ship must be in-mission)
+    2: Low range
+    3: High range
+    4: List of subsys names not to be randomized
+*lock-rotating-subsystem*
+    lock-rotating-subsystem
+    Instantaneously locks a rotating subsystem so that it cannot
+    rotate unless freed by free-rotating-subsystem. Takes 2 or
+    more arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the rotating subsystem to lock
+*free-rotating-subsystem*
+    free-rotating-subsystem
+    Instantaneously frees a rotating subsystem previously locked
+    by lock-rotating-subsystem. Takes 2 or more arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the rotating subsystem to free
+*reverse-rotating-subsystem*
+    reverse-rotating-subsystem
+    Instantaneously reverses the rotation direction of a
+    rotating subsystem. Takes 2 or more arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the rotating subsystem to reverse
+*rotating-subsys-set-turn-time*
+    rotating-subsys-set-turn-time
+    Sets the turn time of a rotating subsystem. Takes 3 or 4
+    arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    2: Name of the rotating subsystem to configure
+    3: The time for one complete rotation, in milliseconds -
+    positive is counterclockwise, negative is clockwise
+    4: The acceleration (x1000, just as #3 is seconds x1000) to
+    change from the current turn rate to the desired turn rate.
+    This is actually the time to complete one rotation that
+    changes in one second, or the reciprocal of what you might
+    expect, meaning that larger numbers cause slower
+    acceleration. (FS2 defaults to 2pi/0.5, or about 12.566,
+    which would be 12566 in this sexp.) The advantage of this
+    method is so that this argument can be directly compared to
+    the previous argument using a ratio, without worrying about
+    pi. Omit this argument if you want an instantaneous change.
+*lock-translating-subsystem*
+    lock-translating-subsystem
+    Instantaneously locks a translating subsystem so that it
+    cannot translate unless freed by free-translating-subsystem.
+    Takes 2 or more arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the translating subsystem to lock
+*free-translating-subsystem*
+    free-translating-subsystem
+    Instantaneously frees a translating subsystem previously
+    locked by lock-translating-subsystem. Takes 2 or more
+    arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the translating subsystem to free
+*reverse-translating-subsystem*
+    reverse-translating-subsystem
+    Instantaneously reverses the translation direction of a
+    translating subsystem. Takes 2 or more arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    Rest: Name of the translating subsystem to reverse
+*translating-subsys-set-speed*
+    translating-subsys-set-speed
+    Sets the speed (movement rate) of a translating subsystem.
+    Takes 3 or 4 arguments...
+    1: Name of the ship housing the subsystem (ship must be in-
+    mission)
+    2: Name of the translating subsystem to configure
+    3: The movement rate, in millimeters per second (i.e. one
+    thousand times the speed in m/s) - positive is along the
+    vector of the translation axis
+    4: The acceleration (x1000, just as #3 is m/s x1000) to
+    change from the current movement rate to the desired
+    movement rate. Omit this argument if you want an
+    instantaneous change.
+*trigger-submodel-animation*
+    trigger-submodel-animation
+    Activates a submodel animation trigger for a given ship.
+    Takes 4 to 6 arguments...
+    1: The ship on which the animation should run (ship must be
+    in-mission)
+    2: The type of animation (named as one would see them in
+    ships.tbl)
+    3: The subtype of animation, which is type-dependent. For
+    docking animations this is the dock index.
+    4: The animation direction: 1 for forward, or -1 for reverse
+    5: (Optional) Whether the animation should instantly snap to
+    its final position
+    6: (Optional) A subsystem, if the animation should trigger
+    on only a specific subsystem as opposed to all applicable
+    subsystems
+*change-subsystem-name*
+    change-subsystem-name
+    Changes the name of the specified subsystem on the specified
+    ship
+    Takes 3 or more arguments
+    1: Name of the ship.
+    2: New name for the subsystem (names larger than the maximum
+    display size will be truncated
+    3: Name(s) of subsystem(s) to rename (ship must be in-mission)
+*ship-subsys-targetable*
+    ship-subsys-targetable
+    Causes the specified ship subsystem(s) to be targetable on
+    radar.
+    Takes 2 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    Rest: Name of the ship's subsystem(s)
+*ship-subsys-untargetable*
+    ship-subsys-untargetable
+    Causes the specified ship subsystem(s) to not be targetable
+    on radar.
+    Takes 2 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    Rest: Name of the ship's subsystem(s)
+*ship-subsys-no-replace*
+    ship-subsys-no-replace
+    Causes the -destroyed version of specified ship subsystem(s)
+    to not render when it's destroyed.
+    Takes 3 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    2: True = Do not render or False = render if exists
+    Rest: Name of the ship's subsystem(s) Note: If subsystem is
+    already dead it will vanish or reappear out of thin air
+*ship-subsys-no-live-debris*
+    ship-subsys-no-live-debris
+    Causes the specified ship subsystem(s) to not render live
+    debris when it's destroyed.
+    Takes 3 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    2: True = Do not render or False = render if exists
+    Rest: Name of the ship's subsystem(s)
+*ship-subsys-vanish*
+    ship-subsys-vanish
+    Causes the subsystem to vanish without a trace - no fanfare,
+    notification, or special effects. See also ship-vanish.
+    Single Player Only! Warning: This will cause subsystem
+    destruction not to be logged, so 'has-departed', etc. will
+    not work
+    Takes 3 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    2: True = vanish or False = don't vanish
+    Rest: Name of the ship's subsystem(s) Note: Useful for
+    replacing subsystems with actual docked models.
+*ship-subsys-ignore_if_dead*
+    ship-subsys-ignore-if-dead
+    Causes secondary weapons to ignore dead ship subsystem(s)and
+    home on hull instead.
+    Takes 3 or more arguments...
+    1: Name of a ship (ship must be in-mission)
+    2: True = Ignore dead or False = don't ignore
+    Rest: Name of the ship's subsystem(s)
+*awacs-set-radius*
+    awacs-set-radius
+    Sets the awacs radius for a given ship subsystem. NOTE :
+    does not work properly in multiplayer
+    1: Ship which has the awacs subsystem (ship must be in-mission)
+    2: Awacs subsystem
+    3: New radius

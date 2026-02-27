@@ -1,0 +1,82 @@
+# Mission Design Document: Protocol Omega (3.11)
+
+## Purpose and Player Experience
+- **Mission Fantasy**: A moral tragedy. The player must commit an act of mass slaughter to save billions. The "greater good" is a heavy burden.
+- **Plot Advancement**: The realization that the Shivan infection has reached the civilian refugee fleet. High Command issues "Protocol Omega"—the liquidation of all infected Terran assets.
+- **Tone**: Somber, horrific, and morally ambiguous. The sound of children's voices on comms before the killing starts.
+
+## Environment and Setup
+- **Datestamp**: 05 Dec 2335
+- **System**: Adhara (Adhara-Delta Serpentis Node)
+- **Location**: Near the massive jump node to Delta Serpentis.
+- **Backgrounds**: The node is glowing with subspace energy. A massive fleet of civilian transports (Elysiums and Chronos) is gathered.
+- **Hazards**: The node's gravitic pull (minor ship drifting). The proximity of civilian ships makes maneuvering difficult.
+
+## Participants
+- **Allied**:
+    - **GTD Erebus (Orion-class)**: Status: Damaged. Providing the command to fire.
+    - **Alpha Wing (Player)**: 4x GTF Hercules.
+    - **Beta Wing**: 4x GTB Medusa (equipped with Tsunami bombs).
+    - **Gamma Wing**: 3x GTF Valkyrie.
+- **Hostile/Neutral**:
+    - **Refugee Fleet**: 12x GTT Elysium transports (Omega 1-12). They are initially 'Friendly'.
+    - **Shivan Manticore (SF Manticore)**: 4 wings of 4 (Brahma, Krishna, Rama, Vishnu). They are 'Guarding' the transports.
+    - **SD Malphas (Demon-class)**: Distant (8km). It is "directing" the fleet.
+
+## Player Craft and Loadout
+- **Default Ship**: GTF Hercules.
+- **Allowed Ships**: GTF Hercules, GTB Ursa, GTB Athena.
+- **Default Loadout**: GTW Prometheus, GTW-15 Avenger, GTM Hornet Swarm (for multi-target takedowns).
+
+## Objectives and Directives
+- **Primary**:
+    - Destroy the 12 refugee transports (Omega 1-12).
+    - Prevent any transport from jumping to Delta Serpentis.
+    - Destroy all Shivan escort wings.
+- **Secondary**:
+    - Destroy the GTT Pandora (re-appearing from 2.6 if not captured, or a similar GTI vessel).
+- **Bonus**:
+    - Scan the hull of Omega 1 to confirm the infection.
+
+## Command Briefing
+- **Stage 1**: This is the hardest order I have ever had to give. Analysis of the refugee fleet currently gathering at the Delta Serpentis node has confirmed the worst. Every single ship in the Omega convoy has been contaminated.
+- **Stage 2**: If those ships reach Delta Serpentis—and from there, Earth—the infection will spread beyond our ability to contain it. The Shivans are using these innocents as biological vectors.
+- **Stage 3**: High Command has activated Protocol Omega. You are to destroy the refugee fleet. Every ship. Every soul. No one can be allowed to jump. May God have mercy on us all.
+
+## Mission Briefing
+- **Stage 1**: Alpha, the transports are slow. They'll try to scatter once you open fire. Beta will use Tsunamis to take out the larger Chronos-class freighters.
+- **Stage 2**: The SD Malphas is in the system, but it's not attacking the refugees. It's protecting them. The Shivans want them to reach Sol. You must break through the Shivan screen to reach the convoy.
+- **Stage 3**: If any transport enters the jump node, the mission is a failure. Delta Serpentis will be quarantined, and Earth will be left blind. Do your duty, pilot.
+
+## In-mission Communications
+- **Omega 1 (Civilian)**: "Erebus, why are you targeting us? We have children on board! We just want to go home!"
+- **Alpha 2 (Vane)**: "I can't do this, Alpha 1. They're our people. Look at them... they're just scared."
+- **Erebus Command**: "Alpha 2, that is a direct order! Look at your sensors! Those ships are carrying Shivan spores! Scan Omega 1 if you don't believe us!"
+- **Alpha 1 (Player)**: (Scans Omega 1).
+- **Computer**: "Infection... detected. Biological... signature... 89% match... Shivan... hive... matter."
+- **Alpha 3 (Kael)**: "The ship... it's not metal anymore. Look at the windows. There's no one inside. It's just... black vines. Oh god, they're already gone."
+- **Omega 4**: (Distorted, screaming voices) "THANK... YOU... FOR... THE... RELEASE."
+- **Erebus Command**: "Fire! Fire now!"
+
+## Event Flow and Timing
+- **00:00**: Alpha wing jumps in. The fleet is peaceful. Shivans are orbiting the transports but not attacking.
+- **02:00**: Player scans Omega 1. The reveal: the transports are essentially giant Shivan cocoons.
+- **03:00**: Erebus Command issues the 'Attack' order. All transports turn 'Hostile' and begin to scatter.
+- **05:00**: Brahma wing (Shivans) engages Alpha with extreme aggression.
+- **07:00**: Omega 8 and 9 reach the 2km mark from the node. High-speed interception required.
+- **10:00**: The final transport is destroyed. The "Whisper" on the comms reaches a deafening crescendo before cutting to total silence.
+
+## Event Logic Sketch
+- **Infection Reveal**: The transports are 'Friendly' and 'Invulnerable' until the player scans one of them, revealing the "Infected" status.
+- **Scattering**: Once 'Hostile', each transport picks a different vector to try and reach the node.
+
+## New Ships/Weapons
+- **Infected Elysium**: Unique textures showing Shivan vines.
+
+## Debriefing
+- **Success**: It's done. Twelve transports. Three thousand civilians. All gone by our hands. The Adhara-Delta Serpentis node is closed, and the infection has been burned away. You did what was necessary, Alpha 1. Don't look at the kill counts. Just... don't.
+- **Failure**: The infection reached Delta Serpentis. We've received word that the jump node on the other side has been collapsed by the GTA to prevent the spread to Sol. We are trapped here. And the whispers are starting again.
+
+## QA Notes
+- This mission is emotionally taxing. Ensure the gameplay is tight so the player doesn't have to repeat the tragedy too many times.
+- The transports should be easy to kill; the difficulty comes from the Shivan escorts.

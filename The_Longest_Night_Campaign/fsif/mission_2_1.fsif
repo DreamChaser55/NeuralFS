@@ -1,0 +1,284 @@
+fsif_version: "2.4"
+
+fiction_viewer: "m_2_1_fiction.txt"
+
+mission_info:
+  name: "Sacrifice"
+  author: "Roo-FS"
+  description: "Mission 5 of The Longest Night. Protect the Stalwart while the Crecy draws fire."
+  game_type: "single"
+  flags: ["no_promotion", "no_builtin_msgs"]
+  ai_profile: "FS1 RETAIL"
+
+environment:
+  star_count: 50
+  ambient_light_level: 5
+  fog:
+    near_mult: 0.1
+    far_mult: 0.4
+  suns: []
+  starbitmaps: []
+  nebula:
+    enabled: true
+    pattern: "nbackred"
+    poofs: ["PoofRed01", "PoofRed02"]
+    awacs: 1500.0
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Hercules"
+      count: 4
+    - class: "GTF Valkyrie"
+      count: 4
+  weapon_pool:
+    - name: "Flail"
+      count: 20 # New weapon!
+    - name: "Prometheus"
+      count: 20
+    - name: "ML-16 Laser"
+      count: 20
+    - name: "MX-50"
+      count: 400
+    - name: "Fury"
+      count: 400
+    - name: "Tsunami"
+      count: 100 # For beta
+
+entities:
+  ship_templates:
+    player_wing:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Flail", "Prometheus"]
+        secondary: ["MX-50", "Fury"]
+    beta_bomber:
+      class: "GTB Medusa"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Prometheus", "Prometheus"]
+        secondary: ["Tsunami", "Tsunami"]
+    shivan_fighter:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Colonel"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_bomber:
+      class: "SB Nephilim"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Tsunami#Shivan"]
+
+  ships:
+    - name: "GTD Stalwart"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0.0, 0.0, 0.0]
+      flags: ["guardian"]
+      arrival_cue: |
+        ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( is-event-true-delay "Stalwart Jump" 0 )
+      ai_goals: |
+        ( ai-stay-still "GTD Stalwart" 89 )
+
+    - name: "GTC Crecy"
+      class: "GTC Fenris"
+      team: "Friendly"
+      location: [1200.0, 200.0, 500.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "SC Tenebris" 89 )
+
+    - name: "SC Tenebris"
+      class: "SC Lilith"
+      team: "Hostile"
+      location: [3000.0, 200.0, 3000.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 89 )
+
+  wings:
+    - name: "Alpha"
+      template: "player_wing"
+      count: 4
+      position: [1400.0, 250.0, 500.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "Beta"
+      template: "beta_bomber"
+      count: 3
+      position: [1400.0, 150.0, 500.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-destroy-subsystem "SC Tenebris" "engine" 80 )
+
+    - name: "Basilisk Wing"
+      template: "shivan_fighter"
+      count: 4
+      position: [3500.0, 500.0, 3500.0]
+      arrival_cue: |
+        ( has-time-elapsed 10 )
+      ai_goals: |
+        ( ai-chase "GTC Crecy" 89 )
+
+    - name: "Nephilim Wing"
+      template: "shivan_bomber"
+      count: 3
+      position: [4000.0, -500.0, 4000.0]
+      arrival_cue: |
+        ( has-time-elapsed 30 )
+      ai_goals: |
+        ( ai-chase "GTC Crecy" 99 )
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "We are deep in the Laramis nebula now. The good news is, we have shields. We have the Flail."
+        voice_name: "Charon"
+      - text: "The bad news is, we are being hunted. A Lilith-class cruiser, designated SC Tenebris, has been tracking our ion trail."
+        voice_name: "Charon"
+      - text: "It's relentless. We can't outrun it. We have to fight. This is not going to be pretty. Prepare yourselves."
+        voice_name: "Charon"
+
+  briefing:
+    stages:
+      - text: "The Tenebris has found us. It's a Lilith-class cruiser. Heavy armor, heavy firepower."
+        voice_name: "Schedar"
+        icons:
+           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [3000, 3000], label: "SC Tenebris" }
+           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [500, 500], label: "GTC Crecy" }
+           - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "GTD Stalwart" }
+      - text: "The Stalwart's drives are still offline. We need 5 minutes. The Crecy has volunteered to draw their fire. They are going to engage the Tenebris point-blank."
+        voice_name: "Schedar"
+        icons:
+           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [500, 500], label: "GTC Crecy" }
+           - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "GTD Stalwart" }
+      - text: "Alpha, your job is to strip that cruiser. Take out its engines. Take out its turrets. Give the Crecy a fighting chance."
+        voice_name: "Schedar"
+        icons:
+           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [3000, 3000], label: "SC Tenebris" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-event-true-delay "Stalwart Jump" 0 )
+        text: "The Crecy bought us the time we needed. Captain Haddock and his crew will be remembered. The Tenebris is disabled, but not destroyed. It will be back. But for now, we have some breathing room."
+        voice_name: "Charon"
+      - condition: |
+          ( is-destroyed-delay 0 "GTD Stalwart" )
+        text: "The Stalwart is lost. The sacrifice of the Crecy was in vain."
+        voice_name: "Charon"
+
+  events:
+    - name: "Start"
+      formula: |
+        ( when
+          ( has-time-elapsed 5 )
+          ( send-message "GTC Crecy" "Normal" "Engaging" )
+        )
+      directive_text: "Support Crecy"
+
+    - name: "Tenebris Engines"
+      formula: |
+        ( when
+          ( is-subsystem-destroyed-delay "SC Tenebris" "engine" 0 )
+          ( send-message "Alpha 1" "High" "Engines disabled" )
+        )
+
+    - name: "Crecy Critical"
+      formula: |
+        ( when
+          ( < ( hits-left "GTC Crecy" ) 20 )
+          ( send-message "GTC Crecy" "High" "Shields failing" )
+        )
+
+    - name: "Stalwart 60"
+      formula: |
+        ( when
+          ( has-time-elapsed 180 )
+          ( send-message "GTD Stalwart" "Normal" "Engines 60" )
+        )
+
+    - name: "Crecy Destroyed"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTC Crecy" )
+          ( send-message "GTD Stalwart" "High" "Crecy lost" )
+        )
+
+    - name: "Stalwart Jump"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message "GTD Stalwart" "High" "Jumping" )
+        )
+      directive_text: "Stalwart Jumping"
+
+    - name: "Mission Success"
+      formula: |
+        ( when
+          ( is-event-true-delay "Stalwart Jump" 5 )
+          ( end-mission )
+        )
+      directive_text: "Mission Complete"
+
+  goals:
+    - name: "Disable Engines"
+      type: "Primary"
+      message: "Disable SC Tenebris engines."
+      formula: |
+        ( is-subsystem-destroyed-delay "SC Tenebris" "engine" 0 )
+
+    - name: "Protect Stalwart"
+      type: "Primary"
+      message: "Protect GTD Stalwart."
+      formula: |
+        ( is-event-true-delay "Stalwart Jump" 0 )
+
+    - name: "Destroy Bombers"
+      type: "Secondary"
+      message: "Destroy Shivan bombers."
+      formula: |
+        ( is-destroyed-delay 0 "Nephilim Wing" )
+
+  messages:
+    - name: "Engaging"
+      message: "This is the Crecy. We are engaging. Alpha, cover our flanks."
+      voice_name: "Fenrir"
+
+    - name: "Shields failing"
+      message: "Taking heavy fire! Shields failing!"
+      voice_name: "Fenrir"
+
+    - name: "Engines 60"
+      message: "Engines at 60%. Hold them back!"
+      voice_name: "Schedar"
+
+    - name: "Crecy lost"
+      message: "The Crecy is gone. Damn them."
+      voice_name: "Schedar"
+
+    - name: "Jumping"
+      message: "Drives online! Jumping now!"
+      voice_name: "Schedar"
+
+    - name: "Engines disabled"
+      message: "We disabled the Tenebris. It's not going anywhere."
+      voice_name: "Orus"
+
+audio:
+  mission_music: "FS1-9: Monolith"
+  briefing_music: "FS1-BRIEF5"

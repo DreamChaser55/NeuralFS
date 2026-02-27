@@ -1,0 +1,132 @@
+  AI Control
+
+*add-goal*
+    Add goal (Action operator)
+    Adds a goal to a ship or wing.
+
+    Takes 2 arguments...
+    1: Name of ship or wing to add goal to (ship/wing must be
+    in-mission).
+    2: Goal to add.
+*remove-goal*
+    Remove goal (Action operator)
+    Removes a goal from a ship or wing.
+
+    Takes 2 arguments...
+    1: Name of ship or wing to remove goal from (ship/wing must
+    be in-mission).
+    2: Goal to remove.
+*clear-goals*
+    Clear goals (Action operator)
+    Clears the goals for the specified ships and/or wings.
+
+    Takes 1 or more arguments...
+    All: Name of ship or wing (ship/wing must be in-mission).
+*good-rearm-time*
+    Good rearm time (Action operator)
+    Informs the game logic that right now is a good time for a
+    given team to attempt to rearm their ships. The time
+    parameter specifies how long the "good time" will last.
+    Can be used to prematurely end its counterpart, bad-rearm-time.
+
+    Takes 2 arguments...
+    1: Team Name
+    2: Time in seconds rearm window should last
+*bad-rearm-time*
+    Bad rearm time (Action operator)
+    Informs the game logic that right now is a bad time for a
+    given team to attempt to rearm their ships. AI ships will
+    not choose to rearm. The time parameter specifies how long
+    the "bad time" will last.
+    Can be used to prematurely end its counterpart, good-rearm-
+    time.
+
+    Takes 2 arguments...
+    1: Team Name
+    2: Time in seconds 'no rearm' window should last
+*good-primary-time*
+    Set preferred primary weapon
+    Forces the given ship/wing/team to use the specified primary
+    weapon against a certain ship/wing/team. Use the fourth
+    parameter to control overriding the normal AI weapon selection
+
+    Takes 4 arguments...
+    1: Name of ship/wing/team which will prefer firing given weapon
+    2: Weapon name
+    3: Target name
+    4: Activate/deactivate
+*good-secondary-time*
+    Set preferred secondary weapons
+    This sexpression is used to inform the AI about preferred
+    secondary weapons to fire during combat. When this
+    expression is evaluated, any AI ships of the given team
+    prefer to fire the given weapon at the given ship.
+    (Preferred over other secondary weapons)
+
+    Takes 4 arguments...
+    1: Team name which will prefer firing given weapon
+    2: Maximum number of this type of weapon above team can fire.
+    3: Weapon name (list includes only the valid weapons for
+    this expression)
+    4: Ship name at which the above named team should fire the
+    above named weapon (ship must be in-mission).
+*change-ai-class*
+    Change AI Class (Action operator)
+    Sets the specified ship or ship subsystem(s) to the
+    specified ai class.
+    Takes 2 or more arguments...
+    1: AI Class to change to ("None", "Coward", "Lieutenant", etc.)
+    2: Name of ship to change AI class of (ship must be in-mission)
+    Rest: Name of subsystem to change AI class of (optional)
+*player-use-ai*
+    player-use-ai
+    Causes the player's ship to be controlled by the FreeSpace
+    AI. Takes 0 arguments.
+*player-not-use-ai*
+    player-not-use-ai
+    Causes the player's ship to not be controlled by the
+    FreeSpace AI. Takes 0 arguments.
+*set-player-orders*
+    set-player-orders
+    Changes the orders friendly AI will accept. Takes 3 or more
+    arguments.
+    1: Ship Name (ship must be in-mission)
+    2: True/False as to whether this order is allowed or not
+    Rest: Order
+*set-order-allowed-for-target*
+    set-order-allowed-for-target
+    Changes the orders that can be issued against a ship. Takes
+    3 or more arguments.
+    1: Ship Name (ship must be in-mission)
+    2: True/False as to whether this order is allowed or not
+    Rest: Order
+*enable-general-orders*
+    enable-general-orders
+    Enables or disables general orders defined in sexps.tbl.
+    Takes 2 or more arguments.
+    Disabled orders are not visible on the comms board at all
+    1: True/False as to whether the order is enabled or not
+    Rest: The order to enable or disable
+*validate-general-orders*
+    validate-general-orders
+    Validates or invalidates general orders defined in
+    sexps.tbl. Takes 2 or more arguments.
+    Invalid orders are greyed out on the comms board and cannot
+    be selected
+    1: True/False as to whether the order is enabled or not
+    Rest: The order to validate or invalidate
+*cap-waypoint-speed*
+    cap-waypoint-speed
+    Sets the maximum speed of a ship while flying waypoints.
+    1: Ship name (ship must be in-mission)
+    2: Maximum speed while flying waypoints (must be greater
+    than 0)
+    NOTE: This will only work if the ship is already in the game
+    NOTE: Set to -1 to reset
+*set-wing-formation*
+    set-wing-formation
+    Sets the formation used by one or more wings
+    1: Formation name
+    2: Formation multiplier, as a percentage (1x = 100)
+    Rest: Wing that should fly this formation (wing does not
+    need to be in-mission)

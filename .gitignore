@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+ENV/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# API Keys and Secrets
+Gemini_API_key.txt
+Elevenlabs_API_key.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

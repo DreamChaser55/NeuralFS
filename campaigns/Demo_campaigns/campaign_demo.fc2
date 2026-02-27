@@ -1,0 +1,81 @@
+$Name: FCIF Feature Showcase
+$Type: single
++Description:
+ XSTR("A demonstration campaign showcasing all features of the
+FreeSpace Campaign Intermediate Format (FCIF 1.1).
+This campaign is not playable — it exists only as a
+reference for FCIF authors.
+", -1)
+$end_multi_text
+
++Starting Ships: ( "GTF Apollo" "GTF Ulysses" "GTF Hercules" "GTB Medusa" )
+
++Starting Weapons: ( "ML-16 Laser" "Prometheus" "Avenger" "MX-50" "Hornet" "Tsunami" )
+
+$Mission: demo_m01.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( is-previous-goal-true "demo_m01.fs2" "Complete Training" ) ( next-mission "demo_m02.fs2" ) )
+   ( ( true ) ( next-mission "demo_m01.fs2" ) )
+)
+
++Level: 0
++Position: 1
+
+$Mission: demo_m02.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( is-previous-event-true "demo_m02.fs2" "Ambush triggered" ) ( next-mission "demo_m03.fs2" ) )
+   ( ( true ) ( next-mission "demo_m02.fs2" ) )
+)
+
++Level: 1
++Position: 1
+
+$Mission: demo_m03.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( is-previous-goal-false "demo_m03.fs2" "Convoy Destroyed" ) ( next-mission "demo_m04.fs2" ) )
+   ( ( true ) ( next-mission "demo_m03.fs2" ) )
+)
+
++Level: 2
++Position: 1
+
+$Mission: demo_m04.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( is-previous-event-false "demo_m04.fs2" "Flagship lost" ) ( next-mission "demo_m05.fs2" ) )
+   ( ( true ) ( next-mission "demo_m04.fs2" ) )
+)
+
++Level: 3
++Position: 1
+
+$Mission: demo_m05.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( true ) ( next-mission "demo_m06.fs2" ) )
+   ( ( true ) ( next-mission "demo_m05.fs2" ) )
+)
+
++Level: 4
++Position: 1
+
+$Mission: demo_m06.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( true ) ( end-of-campaign ) )
+   ( ( true ) ( next-mission "demo_m06.fs2" ) )
+)
+
++Level: 5
++Position: 1
+
+#End

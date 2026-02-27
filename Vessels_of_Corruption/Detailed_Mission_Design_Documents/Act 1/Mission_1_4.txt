@@ -1,0 +1,78 @@
+# Mission Design Document: The Styx Found (1.4)
+
+## Purpose and Player Experience
+- **Mission Fantasy**: A grim "mercy killing" of a massive, corrupted entity. The player realized that some things are beyond saving.
+- **Plot Advancement**: The final destruction of the GTSC Styx. Reveals the scale of the Shivan "hive" architecture. Concludes Act 1.
+- **Tone**: Gory (in a mechanical sense), oppressive, and final.
+
+## Environment and Setup
+- **Datestamp**: 30 Oct 2335
+- **System**: Adhara (Unstable Node Area)
+- **Location**: A localized subspace rift. The background is distorted, colors are washed out.
+- **Backgrounds**: A massive, swirling vortex of purple and black.
+- **Hazards**: Subspace turbulence (randomly shunts the player 50m in any direction), debris from the "hive" structure.
+
+## Participants
+- **Allied**:
+    - **Alpha Wing (Player)**: 4x GTF Hercules (Heavy assault).
+    - **Beta Wing**: 4x GTB Medusa (equipped with Tsunami bombs).
+    - **Gamma Wing**: 3x GTF Valkyrie (Interceptor cover).
+- **Hostile/Neutral**:
+    - **GTSC Styx (Faustus-class)**: Status: Fully Corrupted. It is now a Shivan Hive. It has 4x "Bio-Spires" (equivalent to turrets) that must be destroyed.
+    - **Shivan Manticore (SF Manticore)**: 3 waves of 4 (Brahma wing).
+    - **Shivan Basilisk (SF Basilisk)**: 2 waves of 3 (Arjuna wing).
+    - **Shivan Shaitan (SB Shaitan)**: 2 waves of 2 (Durga wing).
+
+## Player Craft and Loadout
+- **Default Ship**: GTF Hercules.
+- **Allowed Ships**: GTF Hercules, GTF Apollo, GTB Medusa.
+- **Default Loadout**: GTW-15 Avenger, GTW Flail, GTM Hornet Swarm.
+
+## Objectives and Directives
+- **Primary**:
+    - Destroy the 4 Bio-Spires on the GTSC Styx.
+    - Destroy the GTSC Styx.
+- **Secondary**:
+    - Protect Beta wing's bombers.
+- **Bonus**:
+    - Scan the "Heart" of the Styx before it explodes.
+
+## Command Briefing
+- **Stage 1**: The data from the Aethelgard has led us to a localized subspace instability on the edge of the Adhara system. Sensors indicate the GTSC Styx is anchored there.
+- **Stage 2**: However, the Styx is no longer a science vessel. It has been transformed into a staging ground for Shivan incursions. Bio-scans show no human life signs remaining.
+- **Stage 3**: High Command has authorized the total destruction of the Styx. We cannot allow this "hive" to mature. Alpha and Beta will lead the assault.
+
+## Mission Briefing
+- **Stage 1**: The Styx is heavily defended by Shivan fighters. Gamma will provide interceptor cover. Alpha, you'll need to use your Hercules' heavy armor to get close to the Bio-Spires.
+- **Stage 2**: These Spires are organic turrets that can track targets through subspace interference. Destroy them to clear a path for Beta's Tsunami bombs.
+- **Stage 3**: Once the Spires are down, Beta will begin the bombing run. The Styx is anchored to the rift—once its reactor goes, the rift should collapse. Get in, do the job, and get out.
+
+## In-mission Communications
+- **Alpha 2 (Vane)**: "Look at the way it... pulses. It's like the ship is one giant lung. This isn't science, it's a nightmare."
+- **Erebus Command**: "Alpha wing, engage the Spires! Beta is 2 minutes from launch."
+- **Beta 1**: "I'm seeing... things inside the hull windows. Faces. No, don't look at them. Stay on target!"
+- **Alpha 3 (Kael)**: "The Spires are firing... it's not plasma. It's biological sludge! My canopy is covered in it!"
+- **Styx (The Whisper)**: (Low, distorted voices) "We... are... the... harvest. Join... us... in... the... dark."
+
+## Event Flow and Timing
+- **00:00**: Alpha and Gamma wings jump into the Rift. The Styx is a horrifying sight—black, jagged, and fleshy.
+- **02:00**: Brahma wing (Manticores) attacks.
+- **04:00**: Beta wing (Medusas) jumps in. The Styx begins to emit a "psychic scream" (audio distortion).
+- **06:00**: Player must destroy the 4 Spires. They are located on the 'top' and 'bottom' of the Faustus hull.
+- **08:00**: Once Spires are gone, Beta unloads Tsunamis. The Styx's hull starts to crack, revealing a glowing red "Heart."
+- **10:00**: The Styx explodes. A massive shockwave shunts the player. The rift collapses.
+
+## Event Logic Sketch
+- **Scream Mechanic**: Every 60 seconds, a "scream" occurs that disrupts the HUD for 5 seconds.
+- **Heart Scan**: The "Heart" is a subsystem that appears only when the hull is below 15%.
+
+## New Ships/Weapons
+- **GTF Hercules**: First player access.
+
+## Debriefing (Act 1 Finale)
+- **Success**: The Styx is gone. The rift has collapsed. But the data we recovered from the 'Heart' is terrifying. This wasn't just a ship; it was a blueprint. The Shivans are learning our anatomy to better dismantle it.
+- **Failure**: The Styx survived. The hive has matured, and a Shivan fleet is emerging from the rift. Adhara is lost.
+
+## QA Notes
+- The "scream" shouldn't happen during critical bombing runs to avoid frustration.
+- Ensure the Hercules feels heavy and powerful in this fight.

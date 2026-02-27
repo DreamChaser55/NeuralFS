@@ -1,0 +1,95 @@
+  Music and Sound
+
+*change-soundtrack*
+    change-soundtrack
+    Changes the mission music. Takes 1 argument...
+    1: Name of the music selection (taken from music.tbl)
+*play-sound-from-table*
+    play-sound-from-table
+    Plays a sound listed in the Game Sounds section of
+    sounds.tbl. Note that if the sound is a non-3D sound (if the
+    min and max radius are 0, or unspecified), the sound will
+    just play without being fixed at a particular position in
+    space. In this case, the origin coordinates will be ignored.
+    (A better design would have put the sound index first and
+    made the origin arguments optional, but the difference
+    between 2D and 3D sounds was not understood at the time.
+    C'est la vie.)
+
+    Takes 4 arguments...
+    1: Origin X
+    2: Origin Y
+    3: Origin Z
+    4: Sound (index into sounds.tbl or name of the sound entry)
+*play-sound-from-file*
+    play-sound-from-file
+    Plays a sound, such as a music soundtrack, from a file.
+    Multiple sounds can be played with this sexp by assigning
+    each sound to a music handle stored in a variable.
+    Takes 1 to 4 arguments...
+    1: Sound (file name)
+    2: Enter a non-zero number to loop. default is off (optional).
+    3: Enter a non-zero number to use environment effects.
+    default is off (optional).
+    4: Numeric variable in which to store the music handle
+    (optional). If no variable is specified, the 'default'
+    handle is used. Only one 'default' track can be played at a
+    time, but multiple variable-managed tracks can be played.
+*close-sound-from-file*
+    close-sound-from-file
+    Closes the currently playing sound started by play-sound-
+    from-file, if there is any. Takes 0 to 2 arguments...
+    1: Fade (optional; default is true)
+    2: Numeric variable containing a music handle (optional). If
+    no variable is specified, the 'default' handle is used.
+*pause-sound-from-file*
+    pause-sound-from-file
+    Pauses or unpauses the currently playing sound started by
+    play-sound-from-file, if there is any. Takes 1 or 2
+    arguments...
+    1: Boolean - True to pause, False to unpause
+    2: Numeric variable containing a music handle (optional). If
+    no variable is specified, the 'default' handle is used.
+*set-sound-environment*
+    set-sound-environment
+    Sets the EAX environment for all sound effects. Optionally
+    sets one or more parameters specific to the environment.
+    Takes 1 or more arguments...
+    1: Sound environment name (a value of "<none>" will disable
+    the effects)
+    2: Environment option (optional)
+    3: Environment value x 1000, e.g. 10 is 0.01 (optional)
+    Use Add-Data to specify additional environment options in
+    repeating option-value pairs, just like Send-Message-List
+    can have additional messages in source-priority-message-
+    delay groups.
+
+    IMPORTANT: each additional option in the list MUST HAVE two
+    entries; any option without the two proper fields will be
+    ignored, as will any successive options.
+*update-sound-environment*
+    update-sound-environment
+    Updates the current EAX environment with new values. Takes 2
+    or more arguments...
+    1: Environment option
+    2: Environment value x 1000, e.g. 10 is 0.01
+    Use Add-Data to specify additional environment options in
+    repeating option-value pairs, just like Send-Message-List
+    can have additional messages in source-priority-message-
+    delay groups.
+
+    IMPORTANT: Each additional option in the list MUST HAVE two
+    entries; any option without the two proper fields will be
+    ignored, as will any successive options.
+*adjust-audio-volume*
+    adjust-audio-volume
+    Adjusts the relative volume of one sound type. Takes 1 to 3
+    arguments....
+    1: Sound Type to adjust, either Music, Voice or Effects.
+    Will act as a reset for the given category, if no other
+    argument present
+    2: Percentage of the users' settings to adjust to
+    (optional), 0 will be silence, 100 means the maximum volume
+    as set by the user
+    3: Fade time (optional), time in milliseconds to adjust the
+    volume

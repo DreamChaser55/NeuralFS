@@ -1,0 +1,347 @@
+fsif_version: "2.2"
+
+fiction_viewer: "the_final_seal_story.txt"
+
+mission_info:
+  name: "The Final Seal"
+  author: "NeuralFS"
+  description: "Suicide run into the Void Core to collapse the node and save Sol."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: ["subspace", "fullneb"]
+
+environment:
+  star_count: 0
+  ambient_light_level: 40
+  nebula:
+    enabled: true
+    pattern: "nbackpurp2"
+    storm: "s_active"
+    awacs: 3000
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTB Ursa"
+      count: 4
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 8
+    - name: "Avenger"
+      count: 20
+    - name: "Flail"
+      count: 8
+    - name: "Prometheus"
+      count: 8
+    - name: "MX-50"
+      count: 160
+    - name: "Hornet"
+      count: 80
+    - name: "Harbinger"
+      count: 40
+    - name: "Synaptic"
+      count: 20
+
+entities:
+  ship_templates:
+    ursa_heavy:
+      class: "GTB Ursa"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Prometheus", "Avenger"]
+        secondary: ["Harbinger", "Synaptic"]
+    hercules_escort:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "Flail"]
+        secondary: ["Hornet"]
+    shivan_dragon:
+      class: "SF Dragon"
+      team: "Hostile"
+      ai_class: "General"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+    seraphim_bomber:
+      class: "SB Seraphim"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Harbinger#Shivan"]
+    infected_demon_core:
+      class: "SD Demon"
+      team: "Hostile"
+      ai_class: "Captain"
+      flags: ["no-arrival-warp", "scannable"]
+      subsystems:
+        status: custom
+        list:
+          - { name: "turret01-base", health: 100 } # Bio-Node 1
+          - { name: "turret02-base", health: 100 } # Bio-Node 2
+          - { name: "turret03a-base", health: 100 } # Bio-Node 3
+          - { name: "turret04-base", health: 100 } # Bio-Node 4
+          - { name: "communication", health: 100 } # Singularity Anchor
+    core_destroyer_template:
+      class: "GTD Hades"
+      team: "Hostile"
+      ai_class: "General"
+      initial_hull: 100
+      flags: ["no-arrival-warp", "hidden-from-sensors", "guardian"]
+
+  ships:
+    - name: "Alpha 1"
+      template: "ursa_heavy"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 2"
+      template: "ursa_heavy"
+      location: [50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 3"
+      template: "ursa_heavy"
+      location: [-50, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 4"
+      template: "ursa_heavy"
+      location: [0, 50, 0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTD Erebus"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0, 0, -2000]
+      arrival_cue: |
+        ( true )
+      initial_hull: 30
+      flags: ["escort"]
+      escort_priority: 100
+
+    - name: "SD Malphas"
+      template: "infected_demon_core"
+      location: [0, 0, 4000]
+      arrival_cue: |
+        ( true )
+
+    - name: "Core Destroyer"
+      template: "core_destroyer_template"
+      location: [0, 0, 8000]
+      arrival_cue: |
+        ( has-time-elapsed 480 )
+
+  wings:
+    - name: "Beta"
+      template: "ursa_heavy"
+      count: 4
+      position: [200, 0, -500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "SD Malphas" 89 )
+
+    - name: "Gamma"
+      template: "hercules_escort"
+      count: 6
+      position: [-200, 0, -500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "Alpha 1" 89 )
+
+    - name: "Arjuna"
+      template: "shivan_dragon"
+      count: 3
+      position: [1000, 1000, 3000]
+      arrival_cue: |
+        ( is-event-true-delay "Nodes 1-2 Down" 0 )
+      waves: 4
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+    - name: "Rama"
+      template: "seraphim_bomber"
+      count: 3
+      position: [-1000, 1000, 3000]
+      arrival_cue: |
+        ( is-event-true-delay "Core Fluctuation" 0 )
+      waves: 2
+      ai_goals: |
+        ( ai-chase "GTD Erebus" 89 )
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "This is the end of the line. The data from the Malphas scan has identified the 'Singularity Anchor'—the device that keeps the Void node stable. If we destroy it, the node will collapse."
+        voice_name: "Achernar"
+      - text: "The SD Malphas has moved to the core to protect the Anchor. We are taking the Erebus in. She’s falling apart, but she’ll give us the sensor lock we need."
+        voice_name: "Achernar"
+      - text: "Once the Anchor is gone, the node will begin to collapse. You will have a thirty-second window to jump out before the rift seals forever. Lead us one last time."
+        voice_name: "Achernar"
+
+  briefing:
+    stages:
+      - text: "Alpha, the Malphas is fused with the core. You'll need to destroy the four Bio-Nodes on its hull to expose the Singularity Anchor."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Supercapital Ship", team: "Hostile", class: "SD Demon", pos: [0, 400], label: "Malphas" }
+          - { type: "Player Bomber Wing", team: "Friendly", class: "GTB Ursa", pos: [0, 0], label: "Alpha" }
+      - text: "The environment is highly unstable. Your shields will fail periodically. Coordinate with Gamma wing to provide cover during these blackouts."
+        voice_name: "Achernar"
+      - text: "Once the Anchor is exposed, hit it with everything. If the Core Destroyer emerges from the white light, use your remaining Harbingers on it."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Unknown", team: "Hostile", pos: [0, 800], label: "Core Destroyer" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( and 
+            ( is-destroyed-delay 0 "SD Malphas" ) 
+            ( has-departed-delay 0 "Alpha 1" ) 
+          )
+        text: "The Adhara anomaly is gone. The Erebus, Admiral Kress, and the Malphas are all sealed within the Void forever. You are the only one who returned. The infection has been stopped."
+        voice_name: "Achernar"
+      - condition: |
+          ( and 
+            ( is-destroyed-delay 0 "SD Malphas" ) 
+            ( not ( has-departed-delay 0 "Alpha 1" ) ) 
+          )
+        text: "You chose to stay. The last thing you saw was the white light of the core closing over you. You are a hero of the Alliance, but you are a ghost now."
+        voice_name: "Achernar"
+
+  events:
+    - name: "Core Fluctuation"
+      formula: |
+        ( every-time
+          ( and
+            ( > ( mission-time ) 120 )
+            ( = ( mod ( mission-time ) 120 ) 0 )
+          )
+          ( set-shield-energy 0 "Alpha 1" "Alpha 2" "Alpha 3" "Alpha 4" "GTD Erebus" )
+        )
+
+    - name: "Nodes 1-2 Down"
+      formula: |
+        ( when
+          ( and
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret01-base" 0 )
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret02-base" 0 )
+          )
+          ( do-nothing )
+        )
+      directive_text: "Destroy Bio-Nodes 1 and 2"
+
+    - name: "All Nodes Down"
+      formula: |
+        ( when
+          ( and
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret01-base" 0 )
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret02-base" 0 )
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret03a-base" 0 )
+            ( is-subsystem-destroyed-delay "SD Malphas" "turret04-base" 0 )
+          )
+          ( do-nothing )
+        )
+      directive_text: "Destroy all 4 Bio-Nodes on the Malphas"
+
+    - name: "Anchor Exposed"
+      formula: |
+        ( when
+          ( is-event-true-delay "All Nodes Down" 0 )
+          ( change-subsystem-name "SD Malphas" "communication" "sensors" )
+          ( send-message "#Command" "High" "Anchor exposed msg" )
+        )
+      directive_text: "Destroy the Singularity Anchor"
+
+    - name: "Anchor Destroyed"
+      formula: |
+        ( when
+          ( is-subsystem-destroyed-delay "SD Malphas" "communication" 0 )
+          ( do-nothing )
+        )
+
+    - name: "Node Collapsing"
+      formula: |
+        ( when
+          ( is-event-true-delay "Anchor Destroyed" 0 )
+          ( send-message "#Command" "High" "Jump out msg" )
+        )
+      directive_text: "JUMP OUT NOW!"
+
+    - name: "MIA Ending"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "Anchor Destroyed" 30 )
+            ( not ( has-departed-delay 0 "Alpha 1" ) )
+          )
+          ( end-mission )
+        )
+
+    - name: "Msg: Bright light"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message "Alpha 2" "Normal" "Bright light msg" )
+        )
+
+    - name: "Msg: Malphas split"
+      formula: |
+        ( when
+          ( < ( hits-left "SD Malphas" ) 50 )
+          ( send-message "Alpha 3" "High" "Malphas split msg" )
+        )
+
+  goals:
+    - name: "Destroy Nodes"
+      type: "Primary"
+      message: "Destroy the 4 Bio-Nodes on the SD Malphas."
+      formula: |
+        ( is-event-true-delay "All Nodes Down" 0 )
+    - name: "Destroy Anchor"
+      type: "Primary"
+      message: "Destroy the Singularity Anchor."
+      formula: |
+        ( is-event-true-delay "Anchor Destroyed" 0 )
+    - name: "Destroy Malphas"
+      type: "Primary"
+      message: "Destroy the SD Malphas."
+      formula: |
+        ( is-destroyed-delay 0 "SD Malphas" )
+    - name: "Protect Erebus"
+      type: "Secondary"
+      message: "Protect the GTD Erebus until the Anchor is destroyed."
+      formula: |
+        ( or 
+          ( is-event-true-delay "Anchor Destroyed" 0 ) 
+          ( not ( is-destroyed-delay 0 "GTD Erebus" ) ) 
+        )
+    - name: "Destroy Core Destroyer"
+      type: "Bonus"
+      message: "Destroy the emerging Shivan 'Core Destroyer'."
+      formula: |
+        ( is-destroyed-delay 0 "Core Destroyer" )
+
+  messages:
+    - name: "Anchor exposed msg"
+      message: "Anchor exposed! All wings, unload Harbingers! Go! Go! Go!"
+      voice_name: "Achernar"
+    - name: "Jump out msg"
+      message: "Anchor destroyed! The node is collapsing! Alpha, jump! Jump now!"
+      voice_name: "Achernar"
+    - name: "Bright light msg"
+      message: "The light... it's so bright. I can't see my HUD! Alpha 1, stay on my wing!"
+      voice_name: "Erinome"
+    - name: "Malphas split msg"
+      message: "The Malphas is opening... its hull is splitting like a mouth! It's trying to swallow the Erebus!"
+      voice_name: "Despina"
+
+audio:
+  briefing_music: "FS1-BRIEF7"
+  mission_music: "FS1-10: Darkside"

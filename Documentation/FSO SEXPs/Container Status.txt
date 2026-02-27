@@ -1,0 +1,60 @@
+  Containers
+
+*is-container-empty*
+    is-container-empty (Boolean operator)
+    Returns true if the specified container has no elements in it.
+
+    Takes 1 argument...
+    1: Name of the container.
+*get-container-size*
+    get-container-size (Status operator)
+    Returns the number of elements in the specified container,
+    or 0 if empty.
+
+    Takes 1 argument...
+    1: Name of the container.
+*list-has-data*
+    list-has-data (Boolean operator)
+    Returns true if the specified list container has elements
+    which match the supplied values.
+
+    Takes 2 or more arguments...
+    1: Name of the list container.
+    Rest: Value that might be in the list container
+*list-data-index*
+    list-data-index
+    Returns the index (starting at 0) for the supplied value in
+    the list container.
+    If the supplied value is not in the container, returns -1.
+
+    Takes 2 arguments...
+    1: Name of the list container.
+    2: Value that might be in the list container
+*map-has-key*
+    map-has-key (Boolean operator)
+    Returns true if the specified map container has keys that
+    match the supplied values.
+
+    Takes 2 or more arguments...
+    1: Name of the map container.
+    Rest: Value that might be a key in the map container
+*map-has-data-item*
+    map-has-data-item (Boolean operator)
+    Returns true if the specified map container has a key whose
+    data matches the supplied value.
+    If a variable is also supplied, three cases are possible:
+    (1) If a single key has the supplied value as its data, the
+    key is stored in the variable.
+    (2) If multiple keys have the supplied value as their data,
+    one of those keys is stored in the variable. The key may not
+    be the same every time.
+    (3) If there is no key that has the supplied value as its
+    data, the variable is left unchanged.
+
+    Takes either 2 or 3 arguments...
+    1: Name of the map container.
+    2: Value that might be data associated with a key in the map
+    container.
+    3: Variable to hold a map key associated with the data, if
+    one exists (optional). The variable type must match the key
+    type.

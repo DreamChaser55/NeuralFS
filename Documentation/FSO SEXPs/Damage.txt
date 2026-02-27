@@ -1,0 +1,92 @@
+  Damage
+
+*shields-left*
+    Shields left (Status operator)
+    Returns the current level of the specified ship's shields as
+    a percentage.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission).
+*hits-left*
+    Hits left (Status operator)
+    Returns the current level of the specified ship's hull as a
+    percentage.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission).
+*hits-left-subsystem*
+    Hits left subsystem (status operator, deprecated)
+    Returns the current level of the specified ship's subsystem
+    integrity as a percentage of the damage done to *all
+    subsystems of the same type*. This operator provides the
+    same functionality as the new hits-left-subsystem-generic
+    operator, except that it gets the subsystem type in a very
+    misleading way. Common consensus among SCP programmers is
+    that this operator was intended to behave like hits-left-
+    subsystem-specific but was programmed incorrectly. As such,
+    this operator is deprecated. Mission designers are strongly
+    encouraged to use hits-left-subsystem-specific rather than
+    the optional boolean parameter.
+
+    Returns a numeric value. Takes 2 or 3 arguments...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission).
+    2: Name of subsystem on ship to check.
+    3: (Optional) True/False. When set to true only the
+    subsystem supplied will be tested; when set to false (the
+    default), all subsystems of that type will be tested.
+*hits-left-subsystem-generic*
+    hits-left-subsystem-generic (status operator)
+    Returns the current level of integrity of a generic
+    subsystem type, as a percentage. A "generic subsystem type"
+    is a subsystem *category*, (for example, Engines), that
+    includes one or more *individual* subsystems (for example,
+    engine01, engine02, and engine03) on a ship.
+
+    This is the way FreeSpace tests certain subsystem thresholds
+    internally; for example, if the integrity of all engine
+    subsystems (that is, the combined strength of all engines
+    divided by the maximum total strength of all engines) is
+    less than 30%, the player cannot warp out.
+
+    Returns a numeric value. Takes 2 arguments...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission)
+    2: Name of subsystem type to check
+*hits-left-subsystem-specific*
+    hits-left-subsystem-specific (status operator)
+    Returns the current level of integrity of a specific
+    subsystem, as a percentage.
+
+    (If you were looking for the old hits-left-subsystem
+    operator, this is almost certainly the operator you want.
+    The hits-left-subsystem operator suffers from a serious
+    design flaw that causes it to behave like hits-left-
+    subsystem-generic. As such it has been deprecated and will
+    not appear in the operator list; it can only be used if you
+    type it in manually. Old missions using hits-left-subsystem
+    will still work, but mission designers are strongly
+    encouraged to use the new operators instead.)
+
+    Returns a numeric value. Takes 2 arguments...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission)
+    2: Name of subsystem to check
+*sim-hits-left*
+    Simulated Hits left (Status operator)
+    Returns the current level of the specified ship's simulated
+    hull as a percentage.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship to check (evaluation returns NAN until ship
+    is in-mission).
+*get-damage-caused*
+    Get damage caused (Status operator)
+    Returns the amount of damage one or more ships have done to
+    a ship.
+
+    Takes 2 or more arguments...
+    1: Ship that has been damaged.
+    2: Name of ships that may have damaged it.

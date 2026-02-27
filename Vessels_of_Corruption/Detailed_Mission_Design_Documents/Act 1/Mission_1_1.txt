@@ -1,0 +1,74 @@
+# Mission Design Document: Ghost Signal (1.1)
+
+## Purpose and Player Experience
+- **Mission Fantasy**: A routine recon sweep that slowly descends into unease. The player feels like they are being watched by something they can't target.
+- **Plot Advancement**: Sets the mystery of the GTSC Styx and introduces the "pulsing" cargo.
+- **Tone**: Quiet, atmospheric horror. The "creaking" of the ship and sensor glitches.
+
+## Environment and Setup
+- **Datestamp**: 24 Oct 2335
+- **System**: Adhara (Outskirts)
+- **Location**: Deep space debris field (GTSC Styx last known position).
+- **Backgrounds**: Dark, distant starfield with a faint, sickly yellow nebula haze.
+- **Hazards**: Large asteroids and drifting hull plates from the Styx.
+
+## Participants
+- **Allied**:
+    - **GTD Erebus (Orion-class)**: Distant (10km), providing sensor relay.
+    - **Alpha Wing (Player)**: 3x GTF Loki (Recon). Fast, light, low profile.
+    - **Support Ship**: GTS Charon (Available on request).
+- **Hostile/Neutral**:
+    - **Shivan Scorpion (SF Scorpion)**: 2 waves of 2 ships (Brahma wing). They don't engage immediately; they shadow the player.
+    - **Cargo Containers**: 12x TC2 containers. 4 of them are "pulsing" (contain organic Shivan matter).
+
+## Player Craft and Loadout
+- **Default Ship**: GTF Loki.
+- **Allowed Ships**: GTF Loki only (Recon mission).
+- **Default Loadout**: ML-16 Laser, MX-50 Heat-seekers. (Primary focus is on sensors, not combat).
+
+## Objectives and Directives
+- **Primary**:
+    - Inspect the three main debris clusters of the GTSC Styx.
+    - Scan the 4 pulsing cargo containers.
+- **Secondary**:
+    - Eliminate any Shivan scouts that interfere.
+- **Bonus**:
+    - Recover the Styx's black box (hidden in a smaller debris fragment).
+
+## Command Briefing
+- **Stage 1**: The GTSC Styx, a high-level research vessel, failed to check in three days ago. Its last known position was near a localized subspace instability in the Adhara system.
+- **Stage 2**: You are being deployed as part of Alpha wing to conduct a recon sweep. We need to know if this was a Vasudan strike or something else.
+- **Stage 3**: Use the Loki's advanced sensor suite to scan any surviving cargo or debris. If you encounter hostiles, your priority is to gather data and return to the Erebus. Do not engage unless necessary.
+
+## Mission Briefing
+- **Stage 1**: Alpha 1, you'll be flying point. The Erebus will remain at a safe distance to act as a comms relay. The debris field is dense; stay sharp.
+- **Stage 2**: We've marked three primary search zones. Sweep them for any signs of the Styx's crew or research data.
+- **Stage 3**: Intelligence reports strange "echoes" on long-range scans. We're not sure if it's sensor ghosts from the nebula or something more. Be ready for anything.
+
+## In-mission Communications
+- **Alpha 1 (Player)**: (Silent)
+- **Alpha 2 (Lt. Sarah Vane)**: "It's too quiet out here, Alpha 1. Even the asteroids feel... heavy." (Trigger: Entering first debris cluster).
+- **Erebus Command**: "Alpha wing, we're picking up a secondary signature. Check your six." (Trigger: First scan of pulsing cargo).
+- **Alpha 3 (Ens. Kael)**: "Is it just me, or is that container... breathing?" (Trigger: Getting within 50m of a pulsing TC2).
+- **Brahma 1 (Shivan)**: (Static/Low-frequency hum over comms).
+
+## Event Flow and Timing
+- **00:00**: Alpha wing arrives. Quiet, slow approach to first debris cluster.
+- **02:00**: After scanning first debris, 2 SF Scorpions jump in at 4km. They do not attack; they just follow Alpha at a distance.
+- **04:00**: Player reaches the pulsing cargo. Comms start to glitch.
+- **06:00**: If Scorpions are scanned, they jump out. Another wave jumps in closer.
+- **08:00**: Upon scanning the final container, the "black box" pings nearby. Shivan scouts turn hostile and attack.
+
+## Event Logic Sketch
+- **Scan Logic**: Using the Loki's scanner on debris clusters triggers narrative beats about the Styx's destruction (jagged edges, "melted" hull).
+- **Shadowing**: The Shivan scouts (Brahma) stay at a fixed distance (1.5km to 2km) and match player velocity until the final objective is met or they are fired upon.
+
+## New Ships/Weapons
+- **GTF Loki**: First appearance.
+
+## Debriefing
+- **Success**: The data you gathered is... unsettling. The Styx wasn't just destroyed; it was dismantled with surgical precision. The pulsing in those containers suggests biological contamination.
+- **Failure**: Without that data, we're flying blind. Adhara is becoming a graveyard, and we still don't know who the gravedigger is.
+
+## QA Notes
+- Ensure the Loki's low hull doesn't make the final fight too frustrating. The Shivans should be aggressive but limited in number.

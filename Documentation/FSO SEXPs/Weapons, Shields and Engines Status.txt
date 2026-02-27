@@ -1,0 +1,180 @@
+  Weapons, Shields, and Engines
+
+*has-primary-weapon*
+    has-primary-weapon
+    Returns true if the primary weapon bank specified has any of
+    the weapons listed. Takes 3 or more arguments...
+
+    1: Ship name (evaluation returns NAN until the ship is in-
+    mission)
+    2: Weapon bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    Rest: Weapon name
+*has-secondary-weapon*
+    has-secondary-weapon
+    Returns true if the secondary weapon bank specified has any
+    of the weapons listed. Takes 3 or more arguments...
+
+    1: Ship name (evaluation returns NAN until the ship is in-
+    mission)
+    2: Weapon bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    Rest: Weapon name
+*is-primary-selected*
+    is-primary-selected
+    Returns true if the specified bank is selected
+    1: Ship name
+    2: Bank to check (This is a zero-based index. The first bank
+    is numbered 0.)
+*is-secondary-selected*
+    is-secondary-selected
+    Returns true if the specified bank is selected
+    1: Ship name
+    2: Bank to check (This is a zero-based index. The first bank
+    is numbered 0.)
+*primary-fired-since*
+    primary-fired-since
+    Returns true if the primary weapon bank specified has been
+    fired within the supplied window of time. Takes 3 arguments...
+
+    1: Ship name
+    2: Weapon bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    3: Time period to check if the weapon was fired (in
+    milliseconds)
+*turret-fired-since*
+    turret-fired-since
+    Returns true if the turret has been fired within the
+    supplied window of time. Takes 3 arguments...
+
+    1: Ship name
+    2: Turret name
+    3: Time period to check if the turret was fired (in
+    milliseconds)
+*secondary-fired-since*
+    secondary-fired-since
+    Returns true if the secondary weapon bank specified has been
+    fired within the supplied window of time. Takes 3 arguments...
+
+    1: Ship name
+    2: Weapon bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    3: Time period to check if the weapon was fired (in
+    milliseconds)
+*primary-ammo-pct*
+    primary-ammo-pct
+    Returns the percentage of ammo remaining in the specified
+    ballistic primary bank (0 to 100). Non-ballistic primary
+    banks return as 100%.
+    1: Ship name
+    2: Bank to check (from 0 to N-1, where N is the number of
+    primary banks in the ship; N or higher will return the
+    cumulative percentage for all ballistic banks)
+*secondary-ammo-pct*
+    secondary-ammo-pct
+    Returns the percentage of ammo remaining in the specified
+    bank (0 to 100)
+    1: Ship name
+    2: Bank to check (from 0 to N-1, where N is the number of
+    secondary banks in the ship; N or higher will return the
+    cumulative percentage for all banks)
+*get-primary-ammo*
+    get-primary-ammo
+    Returns the amount of ammo remaining in the specified
+    ballistic primary bank. Non-ballistic primary banks return
+    as 0.
+    1: Ship name
+    2: Bank to check (from 0 to N-1, where N is the number of
+    primary banks in the ship; N or higher will return the
+    cumulative total for all ballistic banks)
+*get-secondary-ammo*
+    get-secondary-ammo
+    Returns the amount of ammo remaining in the specified bank
+    1: Ship name
+    2: Bank to check (from 0 to N-1, where N is the number of
+    secondary banks in the ship; N or higher will return the
+    cumulative total for all banks)
+*turret-get-primary-ammo*
+    turret-get-primary-ammo
+    Gets the turret's primary bank ammo, only works with
+    ballistic weapons
+    1: Ship turret is on (evaluation returns NAN until ship is
+    in-mission)
+    2: Turret the bank is on
+    3: Bank to check ammo
+*turret-get-secondary-ammo*
+    turret-get-secondary-ammo
+    Gets the turret's secondary bank ammo
+    1: Ship turret is on (evaluation returns NAN until ship is
+    in-mission)
+    2: Turret to check ammo
+    3: Bank to check ammo
+*turret-has-primary-weapon*
+    turret-has-primary-weapon
+    Returns true if the turret specified has any of the weapons
+    listed. Takes 3 or more arguments...
+
+    1: Ship name (evaluation returns NAN until the ship is in-
+    mission)
+    2: Turret to check
+    3: Turret bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    Rest: Weapon name
+*turret-has-secondary-weapon*
+    turret-has-secondary-weapon
+    Returns true if the turret specified has any of the weapons
+    listed. Takes 3 or more arguments...
+
+    1: Ship name (evaluation returns NAN until the ship is in-
+    mission)
+    2: Turret to check
+    3: Turret bank number (This is a zero-based index. The first
+    bank is numbered 0.)
+    Rest: Weapon name
+*get-num-countermeasures*
+    get-num-countermeasures
+    Returns the amount of countermeasures remaining
+    1: Ship name
+*weapon-energy-pct*
+    Weapon energy left
+    Returns a ship's current weapon energy as a percentage.
+    1: Ship name (evaluation returns NAN until ship is in-mission)
+*afterburner-energy-pct*
+    Afterburner left
+    Returns a ship's current engine energy as a percentage.
+    1: Ship name (evaluation returns NAN until ship is in-mission)
+*shield-recharge-pct*
+    shield-recharge-pct
+    Returns a percentage from 0 to 100
+    1: Ship name
+*weapon-recharge-pct*
+    weapon-recharge-pct
+    Returns a percentage from 0 to 100
+    1: Ship name
+*engine-recharge-pct*
+    engine-recharge-pct
+    Returns a percentage from 0 to 100
+    1: Ship name
+*shield-quad-low*
+    shield-quad-low
+    Returns true if the specified ship has a shield quadrant below
+    the specified threshold percentage
+    1: Ship name
+    2: Percentage
+*get-ets-value*
+    get-ets-value
+    Gets one ETS index for a ship
+    Index values are used in a hard-coded array to lookup
+    recharge percentages
+    Each index has a valid range of 0 to 12
+    1: ETS index to get, Engine|Shield|Weapon
+    2: Ship name
+*is-in-turret-fov*
+    is-in-turret-fov
+    Checks whether the given craft is within the field of view
+    of a turret, and optionally within a specified range. Takes
+    3 to 4 arguments...
+    1: Ship being targeted (false if ship not in-mission)
+    2: Ship which carries a turret (false if ship not in-mission)
+    3: Turret to check
+    4: Range in meters (optional)

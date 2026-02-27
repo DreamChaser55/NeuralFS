@@ -1,0 +1,28 @@
+# Male voices
+Adam -- Deep
+Arnold -- Crisp
+Brian -- Deep
+Callum -- Intense
+Charlie -- Natural Australian
+Daniel -- Deep British
+George -- Warm British
+Harry -- Anxious
+James -- Calm Australian
+Josh -- Deep American
+Ryan -- Narrative American
+Sam -- Raspy
+Thomas -- Calm American
+
+# Female voices
+Bella -- Soft
+Charlotte -- Swedish English
+Dorothy -- Pleasant British
+Elli -- Emotional
+Emily -- Calm
+Freya -- American
+Lily -- Warm British
+Matilda -- Warm
+Nicole -- Whispering
+Rachel -- Calm
+Sarah -- Soft
+Serena -- Pleasant

@@ -1,0 +1,48 @@
+$Name: Campaign name
+$Type: single
++Description:
+ XSTR("Campaign description", -1)
+$end_multi_text
+$Flags: 0
+
+
++Starting Ships: ()
+
++Starting Weapons: ()
+
+
+$Mission: m1.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( true ) ( next-mission "m2.fs2" ) )
+   ( ( true ) ( next-mission "m1.fs2" ) )
+)
+
++Level: 0
++Position: 1
+
+$Mission: m2.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( true ) ( next-mission "m3.fs2" ) )
+   ( ( true ) ( next-mission "m2.fs2" ) )
+)
+
++Level: 1
++Position: 1
+
+$Mission: m3.fs2
++Flags: 0
++Main Hall: 
++Formula: ( cond
+   ( ( true ) ( end-of-campaign ) )
+   ( ( true ) ( next-mission "m3.fs2" ) )
+)
+
++Level: 2
++Position: 1
+
+#End
+

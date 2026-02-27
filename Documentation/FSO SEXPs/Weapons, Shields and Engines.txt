@@ -1,0 +1,216 @@
+  Weapons, Shields, and Engines
+
+*set-weapon-energy*
+    set-weapon-energy
+    Sets the weapon energy for the specified ship(s)
+    Takes 2 or more arguments
+    1: percentage of maximum weapon energy.
+    (rest): Name(s) of ship(s) (ship must be in-mission)
+*set-shield-energy*
+    set-shield-energy
+    Sets the shield energy for the specified ship(s)
+    Takes 2 or more arguments
+    1: percentage of maximum shield energy.
+    (rest): Name(s) of ship(s) (ship must be in-mission)
+*set-player-throttle-speed*
+    set-player-throttle-speed
+    Sets a player's throttle to a percentage of their maximum
+    speed.
+    This SEXP has no effect if used on an AI ship, however it
+    will still work on an AI-controlled player ship.
+    Takes 2 arguments...
+    1: The player ship to set the throttle of.
+    2: The percentage of the player's maximum speed to set their
+    throttle to.
+    This is capped to either 0 or 100 if outside the valid range.
+*set-afterburner-energy*
+    set-afterburner-energy
+    Sets the afterburner energy for the specified ship(s)
+    Takes 2 or more arguments
+    1: percentage of maximum afterburner energy.
+    (rest): Name(s) of ship(s) (ship must be in-mission)
+*set-subspace-drive*
+    set-subspace-drive
+    Turns on or off the subspace edrive for the given ships. A
+    ship with no subspace drive will act as though it doesn't
+    even occur to it to depart via subspace, and if ordered to
+    do so, it will look for a friendly ship with a hangar bay.
+    If the ship is the player, pressing Alt-J will not not
+    initiate a jump, nor give any indication that a jump failed.
+    Takes 2 or more arguments...
+    1: True if the ship should have a drive; false otherwise
+    Rest: List of ships (ships do not need to be in-mission)
+*set-primary-weapon*
+    set-primary-weapon
+    Sets the weapon for the specified bank
+    1: Ship name (ship must be in-mission)
+    2: Bank to check (0, 1 and 2 are legal banks)
+    3: Name of the primary weapon
+    4: Number to set ammo of this bank to (If this is larger
+    than the maximum, bank will be set to maximum)
+    5: Rearm Limit. Support ships will only supply this number
+    of weapons (If this is larger than the maximum, bank will be
+    set to maximum)
+*set-secondary-weapon*
+    set-secondary-weapon
+    Sets the weapon for the specified bank
+    1: Ship name (ship must be in-mission)
+    2: Bank to check (0, 1, 2 and 3 are legal banks)
+    3: Name of the secondary weapon
+    4: Number to set ammo of this bank to (If this is larger
+    than the maximum, bank will be set to maximum)
+    5: Rearm Limit. Support ships will only supply this number
+    of weapons (If this is larger than the maximum, bank will be
+    set to maximum)
+*set-primary-ammo*
+    set-primary-ammo
+    Sets the amount of ammo for the specified ballistic bank
+    1: Ship name (ship must be in-mission)
+    2: Bank to check (0, 1, and 2 are legal banks)
+    3: Number to set this bank to (If this is larger than the
+    maximum, bank will be set to maximum).
+    4: Rearm Limit. Support ships will only supply this number
+    of weapons (If this is larger than the maximum, bank will be
+    set to maximum)
+*set-secondary-ammo*
+    set-secondary-ammo
+    Sets the amount of ammo for the specified bank
+    1: Ship name (ship must be in-mission)
+    2: Bank to check (0, 1, 2 and 3 are legal banks)
+    3: Number to set this bank to (If this is larger than the
+    maximum, bank will be set to maximum).
+    4: Rearm Limit. Support ships will only supply this number
+    of weapons (If this is larger than the maximum, bank will be
+    set to maximum)
+*set-num-countermeasures*
+    set-num-countermeasures
+    Sets the number of countermeasures the ship has
+    Values greater than the maximum a ship can carry are set to
+    the maximum
+    1: Ship name (ship must be in-mission)
+    2: Number to set
+*lock-primary-weapon*
+    lock-primary-weapon
+    Locks the primary banks for the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*unlock-primary-weapon*
+    unlock-primary-weapon
+    Unlocks the primary banks for the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*lock-secondary-weapon*
+    lock-secondary-weapon
+    Locks the secondary banks for the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*unlock-secondary-weapon*
+    unlock-secondary-weapon
+    Unlocks the secondary banks for the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*lock-afterburner*
+    lock-afterburner
+    Locks the afterburners on the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*unlock-afterburner*
+    unlock-afterburner
+    Unlocks the afterburners on the specified ship(s)
+    Takes 1 or more arguments
+    (all): Name(s) of ship(s) to lock (ships do not need to be
+    in-mission)
+*shields-on*
+    shields-on
+    Causes the ship listed in this sexpression to have their
+    shields activated.
+    If the ship had no-shields prior to the sexp being called,
+    the ETS will be rebalanced to default.
+    Takes 1 or more arguments...
+    1+: Name of ships to activate shields on (ships do not need
+    to be in-mission).
+*shields-off*
+    shields-off
+    Causes the ships listed in this sexpression to have their
+    shields deactivated.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to deactivate shields on (ships do not
+    need to be in-mission).
+*force-glide*
+    force-glide
+    Forces a given ship into glide mode, provided it is capable
+    of gliding. Note that the player will not be able to leave
+    glide mode, and that a ship in glide mode cannot warp out or
+    enter autopilot.Takes 2 Arguments...
+    1: Ship to force (ship must be in-mission)
+    2: True to activate glide, False to deactivate
+*disable-ets*
+    disable-ets
+    Switches a ships' ETS system off
+
+    Takes at least 1 argument...
+    All: List of ships this sexp applies to (ship does not need
+    to be in-mission)
+*enable-ets*
+    enable-ets
+    Switches a ships' ETS system on
+
+    Takes at least 1 argument...
+    All: List of ships this sexp applies to (ship does not need
+    to be in-mission)
+*break-warp*
+    break-warp
+    Break the warp drive on the specified ship. A broken warp
+    drive can be repaired by a repair ship. Takes 1 or more
+    arguments...
+    All: List of ships to break the warp drive on (ships do not
+    need to be in-mission)
+*fix-warp*
+    fix-warp
+    Fixes a broken warp drive instantaneously. This option
+    applies to warp drives broken with the break-warp
+    sepxression. Takes 1 or more arguments...
+    All: List of ships whose warp drive should be fixed (ships
+    do not need to be in-mission)
+*never-warp*
+    never-warp
+    Never allows a ship to warp out. When this sexpression is
+    used, the given ships will never be able to warp out. The
+    warp drive cannot be repaired. Takes 1 or more arguments...
+    All: List of ships whose are not allowed to warp out under
+    any condition (ships do not need to be in-mission)
+*allow-warp*
+    allow-warp
+    Allows a ship which was previously not allowed to warp out
+    to do so. When this sexpression is used, the given ships
+    will be able to warp out again. Takes 1 or more arguments...
+    All: List of ships whose are allowed to warp out (ships do
+    not need to be in-mission)
+*special-warpout-name*
+    special-warpout-name
+    Sets the name of the knossos device to be used for warpout
+    1: Ship name to exit (ship must be in-mission)
+    2: Name of knossos device (knossos device must be in-mission)
+*set-ets-values*
+    set-ets-values
+    Sets ETS indexes for a ship
+    Index values are used in a hard-coded array to lookup
+    recharge percentages
+    Each index has a valid range of 0 to 12
+    Use index values retrieved with get-ets-value
+    Or if you use your own values, ensure they add up to 12
+    (e.g. 0,3,9)
+    1: Engine index
+    2: Shields index
+    3: Weapons index
+    4: Ship name
+*get-power-output*
+    get-power-output
+    Gets the power output rating of a ship
+    1: Ship name

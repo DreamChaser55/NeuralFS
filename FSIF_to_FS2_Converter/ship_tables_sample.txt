@@ -1,0 +1,577 @@
+;  file to indicate all ship types and their physical characteristics (such as physics info, etc)
+;  format is a simple form of the mission files
+;
+;  Some general comments about some of the fields
+;
+;  Velocities are specified in (freespace) units/second.  You can currently only
+;  specify velocities in the linear directions.  Rotational velocities are still
+;  currently speified with thrust (until I get this fixed).  Rotation time is the
+;  amount of time (in seconds) to complete 1 revolution in the given direction
+;  (x is pitch, y is heading, and z is bank).
+;
+;  Damp affects how quickly you will accel/decal to your target velocity.  Higher damp
+;  means slow acceleration and deceleration.  The lower this number, the faster
+;  the ship responds.  For example, specifying a value of 0.0 means there is no
+;  damping, in other words, people would say, "this has no physics, like Wing
+;  Commander".  The more damping, the harder to control, but the more smoothly
+;  it moves.
+;
+;  Accelerations:
+;    All the acceleration numbers are damp factors for how fast the thing
+;    changes speed.  0 would mean instantaneous velocity changes, and the
+;    bigger the number, the slower the acceleration.  Sort of backwards, but...
+;    forward_accel - The damp factor for when the ship is trying to go faster
+;    forward_decel - The damp factor for when the ship is trying to slow down
+;    slide_accel - The damp factor for left/right/up/down/reverse acceleration.
+;    slide_decel - The damp factor for left/right/up/down/reverse deceleration.
+;
+;      Energy Transfer System:
+;        $Power Output   => energy is produced per second by the ship's reactor
+;        $Max Oclk Speed => the max forward speed of the ship when 100% energy is directed at the engines
+;        $Max Weapon Eng => how much weapon energy can be stored (related to $Energy Consumed field in weapons.tbl)
+;
+;      Afterburners:
+;        $Afterburner    => YES if afterburner present, NO otherwise
+;
+;        The following parameters must be present if $Afterburner is YES, otherwise comment out or delete them:
+;
+;          +Aburn Max Vel:   => x,y,z velocity when afterburner engaged
+;          +Aburn For accel: => forward accel when afterburner engaged
+;          +Aburn Fuel:      => fuel capacity of afterburners
+;          +Aburn Burn Rate: => rate in fuel/second that afterburners consume fuel
+;          +Aburn Rec Rate:  => rate in fuel/second that afterburners recover fuel
+;
+;  $Subsystem: name, percent_damage, turret_turn_360_time
+;
+;  $Default PBanks: ( "weapon1" "weapon2" )
+;  $Default SBanks: ( "missile1" "missile2" )
+;  $SBank Capacity: ( 50, 100 )
+;
+;  A note regarding ship sounds:
+;  The index for ship sounds corresponds to the index in sounds.tbl.  If you don't want to assign a sound, put -1 as the index.
+;
+; *********************************************************************
+;   John Explains Physics:
+;
+;   $Density doesn't affect physics except in the case of collisions.
+;
+;   $Damp is how fast your velocity vector "clamps" onto your forward
+;   vector.  0.0 is instantaneous, the bigger, the slower.  So, for
+;   all you people that want velocity different than heading, set this
+;   number to 10.0 or something and give it a try.
+;
+;   $Rotdamp is how "loose" your turning is.  The bigger the looser.
+;   For instance, 0.0 would be what people consider "no physics".  A
+;   Mustang Cobra, for instance, would be about 0.1 and a 1965 Cadillac
+;   with flat tires would probably pull a good 1.0...  You probably won't
+;   get any satisfaction changing this.
+;
+;   $Max Velocity is obvious except there are three numbers which mean
+;   left/right slide, up/down slide, and forward speed.  Reverse speed
+;   in $Rear Velocity.
+;
+;   $Rotation time is how long it would take you to turn all the way
+;   around when turning full force and neglecting the $RotDamp
+;   accelerations.  In other words, if you hold hown, left turn and
+;   turn around three times, this would be how long the 2nd rotation
+;   took.  The only funny thing here is it goes pitch, heading, bank.
+;
+;   $Forward accel is how fast your ship can accelerate to your desired
+;   speed.  Like $Damp, it means, how fast your actual velocity "clamps"
+;   to your desired velocity.  0.0 would be instantaneous, bigger is
+;   slower.
+;
+;   $Forward decel is about the same as $Forward accel except it is how
+;   fast you can slow down.  Hoffoss- Putting 100.0 here would make it
+;   so you couldn't stop of your own VOLITION, unless you turned the
+;   opposite direction and applied thrust.  That would be an OUTRAGE! --MK
+; *********************************************************************
+;
+
+#Default Player Ship
+
+$Name: GTF Ulysses
+
+#End
+
+#Engine Wash Info
+
+$Name: Default
+$Angle: 10.0
+$Radius Mult: 1.2
+$Length: 400
+$Intensity: 1.0
+
+$Name: Default100
+$Angle: 12.0
+$Radius Mult: 1.2
+$Length: 100
+$Intensity: 1.0
+
+$Name: Default150
+$Angle: 10.0
+$Radius Mult: 1.2
+$Length: 150
+$Intensity: 1.0
+
+$Name: Default200
+$Angle: 10.0
+$Radius Mult: 1.2
+$Length: 200
+$Intensity: 1.0
+
+$Name: Default300
+$Angle: 8.0
+$Radius Mult: 1.2
+$Length: 300
+$Intensity: 1.0
+
+$Name: Default500
+$Angle: 7.0
+$Radius Mult: 1.2
+$Length: 500
+$Intensity: 1.0
+
+$Name: Default700
+$Angle: 7.0
+$Radius Mult: 1.2
+$Length: 700
+$Intensity: 1.0
+
+$Name: Default800
+$Angle: 6.0
+$Radius Mult: 1.2
+$Length: 800
+$Intensity: 1.0
+
+$Name: Default900
+$Angle: 6.0
+$Radius Mult: 1.2
+$Length: 900
+$Intensity: 1.0
+
+$Name: Default1000
+$Angle: 5.0
+$Radius Mult: 1.2
+$Length: 1000
+$Intensity: 1.0
+
+$Name: Default1100
+$Angle: 5.0
+$Radius Mult: 1.2
+$Length: 1100
+$Intensity: 1.0
+
+$Name: Default1500
+$Angle: 5.0
+$Radius Mult: 1.2
+$Length: 1500
+$Intensity: 1.0
+
+#End
+
+
+#Ship Classes
+
+; =====>> TERRANS <<=====
+
+$Name: GTF Ulysses
+$Short name: TFight
+$Species: Terran
++Type: XSTR("Advanced Space Superiority", 329)
++Maneuverability: XSTR("Excellent", 330)
++Armor: XSTR("Light", 331)
++Manufacturer: XSTR("Triton Dynamics", 332)
++Description: XSTR("Excellent all-around fighter.  Offers superior maneuverability and a high top speed.  Smaller missile payload than other GTA fighters.", 333)
+$end_multi_text
++Tech Description:
+XSTR("Developed in a joint operation by the Vasudan and Terran governments, the GTF Ulysses is an excellent all-around fighter.  It offers superior maneuverability and a high top speed.", 334)
+$end_multi_text
++Length: 16 m
++Gun Mounts: 4
++Missile Banks: 1
+$POF file: fighter01.pof
+$Detail distance: (0, 80, 300, 900)
+$Show damage: YES
+$Density: 1
+$Damp: 0.1
+$Rotdamp: 0.35
+$Max Velocity: 0.0, 0.0, 70.0
+$Rotation time: 3.0, 2.6, 5.0
+$Rear Velocity: 0.0
+$Forward accel: 2.0
+$Forward decel: 1.5
+$Slide accel: 0.0
+$Slide decel: 0.0
+$Expl inner rad: 25.0
+$Expl outer rad: 55.0
+$Expl damage: 15.0
+$Expl blast: 1000.0
+$Expl Propagates: NO
+$Shockwave Speed: 0.0
+$Allowed PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "D-Advanced" "Akheton SDG" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "Railgun" "S-Breaker" "Leech Cannon" "UD-1 Volz" )
+$Allowed Dogfight PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "D-Advanced" "Akheton SDG" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "Railgun" "S-Breaker" "Leech Cannon" "UD-1 Volz" )
+$Default PBanks: ( "Avenger" "ML-16 Laser" )
+$Allowed SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "D-Missile" "EM Pulse" )
+$Allowed Dogfight SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "D-Missile" "EM Pulse" )
+$Default SBanks: ( "MX-50" )
+$SBank Capacity: ( 40 )
+$Shields: 380
+$Shield Color: 100 100 255
+$Power Output: 2.0
+$Max Oclk Speed: 94.0
+$Max Weapon Eng: 80.0
+$Hitpoints: 180
+$Flags: ( "player_ship" "default_player_ship" "fighter" "in tech database multi" )
+$AI Class: Captain
+$Afterburner: YES
+ +Aburn Max Vel: 0.0, 0.0, 150.0
+ +Aburn For accel: 0.7
+ +Aburn Fuel: 300.0
+ +Aburn Burn Rate: 50.0
+ +Aburn Rec Rate: 25.0
+$Countermeasures: 25
+$Scan time: 2000
+$EngineSnd: 192
+$Closeup_pos: 0.0, 0.0, -22
+$Closeup_zoom: 0.5
+$Shield_icon: shield-f01
+$Ship_icon: iconfighter01
+$Ship_anim: ssfighter01
+$Ship_overhead: loadfighter01
+$Score: 12
+$Trail:
+ +Offset: -7.75 -2.8 0.75
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 60
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: 7.75 -2.8 0.75
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 60
+ +Bitmap: Contrail01
+$Subsystem: communication, 10, 0
+$Subsystem: navigation, 10, 0
+$Subsystem: weapons, 20, 0
+$Subsystem: sensors, 10, 0
+$Subsystem: engines, 35, 0
+
+$Name: GTF Apollo
+$Short name: TFight4
+$Species: Terran
++Type: XSTR("Space Superiority", 335)
++Maneuverability: XSTR("Fair", 336)
++Armor: XSTR("Medium", 337)
++Manufacturer: XSTR("Han-Ronald Corporation", 338)
++Description: XSTR("Original space superiority fighter of the GTA fleet.  Highly versatile, it often doubles as an assault fighter.  Low weapon compatibility.", 339)
+$end_multi_text
++Tech Description:
+XSTR("The Apollo is the most common GTA fighter.  It is highly versatile and can perform multiple roles, including space superiority, interception and assault.", 340)
+$end_multi_text
++Length: 21 m
++Gun Mounts: 4
++Missile Banks: 2
+$POF file: fighter04.pof
+$Detail distance: (0, 70, 300, 1000)
+$Show damage: YES
+$Density: 1
+$Damp: 0.2
+$Rotdamp: 0.35
+$Max Velocity: 0.0, 0.0, 60.0
+$Rotation time: 3.2, 3.2, 6.0
+$Rear Velocity: 0.0
+$Forward accel: 3.0
+$Forward decel: 1.5
+$Slide accel: 0.0
+$Slide decel: 0.0
+$Expl inner rad: 25.0
+$Expl outer rad: 55.0
+$Expl damage: 15.0
+$Expl blast: 900.0
+$Expl Propagates: NO
+$Shockwave Speed: 0.0
+$Allowed PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "S-Breaker" "Leech Cannon" )
+$Allowed Dogfight PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "S-Breaker" "Leech Cannon" )
+$Default PBanks: ( "Avenger" "ML-16 Laser" )
+$Allowed SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "D-Missile" "Cluster Bomb" "EM Pulse" )
+$Allowed Dogfight SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "D-Missile" "Cluster Bomb" "EM Pulse" )
+$Default SBanks: ( "MX-50" "MX-50" )
+$SBank Capacity: ( 40, 40 )
+$Shields: 350
+$Shield Color: 100 100 255
+$Power Output: 2.0
+$Max Oclk Speed: 82.0
+$Max Weapon Eng: 100.0
+$Hitpoints: 240
+$Flags: ( "player_ship" "default_player_ship" "fighter" "in tech database" )
+$AI Class: Captain
+$Afterburner: YES
+ +Aburn Max Vel: 0.0, 0.0, 140.0
+ +Aburn For accel: 0.7
+ +Aburn Fuel: 300.0
+ +Aburn Burn Rate: 50.0
+ +Aburn Rec Rate: 25.0
+$Countermeasures: 25
+$Scan time: 2000
+$EngineSnd: 192
+$Closeup_pos: 0.0, 0.0, -31
+$Closeup_zoom: 0.5
+$Shield_icon: shield-f04
+$Ship_icon: iconfighter04
+$Ship_anim: ssfighter04
+$Ship_overhead: loadfighter04
+$Score: 10
+$Trail:
+ +Offset: 7.46 -1.93 -7.58
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: -7.46 -1.93 -7.58
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: 4.57 3.61 -8.3
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: -4.57 3.61 -8.3
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Subsystem: communications, 10,0.0
+$Subsystem: engine, 35,0.0
+$Subsystem: navigation, 10,0.0
+$Subsystem: sensors, 10,0.0
+$Subsystem: weapons, 20,0.0
+
+$Name: GTF Valkyrie
+$Short name: TFight5
+$Species: Terran
++Type: XSTR("Interceptor", 341)
++Maneuverability: XSTR("Good", 342)
++Armor: XSTR("Light", 331)
++Manufacturer: XSTR("Han-Ronald Corporation", 338)
++Description: XSTR("High speed recon and bomber-intercept fighter.  Offers high weapon compatibility and payload.", 343)
+$end_multi_text
++Tech Description:
+XSTR("Using the old GTF Angel scout fighter as a template, the GTA created the Valkyrie interceptor fighter.  It has two additional engines, as well as an additional set of primary hardpoints.  This makes the Valkyrie the best bomber interceptor in the fleet.  Its speed is unmatched in the GTA, and its maneuverability is above average.  Its only drawbacks are a small secondary payload and a weak hull.", 344)
+$end_multi_text
++Length: 16 m
++Gun Mounts: 4
++Missile Banks: 1
+$POF file: fighter05.pof
+$Detail distance: (0, 130, 300, 1000)
+$Show damage: YES
+$Density: 1
+$Damp: 0.3
+$Rotdamp: 0.27
+$Max Velocity: 0.0, 0.0, 85.0
+$Rotation time: 3.5, 3.5, 3.5
+$Rear Velocity: 0.0
+$Forward accel: 1.0
+$Forward decel: 0.5
+$Slide accel: 0.0
+$Slide decel: 0.0
+$Expl inner rad: 25.0
+$Expl outer rad: 55.0
+$Expl damage: 10.0
+$Expl blast: 400.0
+$Expl Propagates: NO
+$Shockwave Speed: 0.0
+$Allowed PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Avenger" "Prometheus" "Prometheus A" "Prometheus R" "Banshee" "S-Breaker" "Leech Cannon" )
+$Allowed Dogfight PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Avenger" "Prometheus" "Prometheus A" "Prometheus R" "Banshee" "S-Breaker" "Leech Cannon" )
+$Default PBanks: ( "ML-16 Laser" "Prometheus" )
+$Allowed SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "Phoenix V" "D-Missile" "Cluster Bomb" "Havoc" "EM Pulse" )
+$Allowed Dogfight SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "Phoenix V" "D-Missile" "Cluster Bomb" "Havoc" "EM Pulse" )
+$Default SBanks: ( "MX-50" )
+$SBank Capacity: ( 60 )
+$Shields: 200
+$Shield Color: 100 100 255
+$Power Output: 2.0
+$Max Oclk Speed: 100.0
+$Max Weapon Eng: 100.0
+$Hitpoints: 200
+$Flags: ( "player_ship" "default_player_ship" "fighter" "in tech database multi" )
+$AI Class: Captain
+$Afterburner: YES
+ +Aburn Max Vel: 0.0, 0.0, 165.0
+ +Aburn For accel: 0.7
+ +Aburn Fuel: 400.0
+ +Aburn Burn Rate: 40.0
+ +Aburn Rec Rate: 25.0
+$Countermeasures: 20
+$Scan time: 2000
+$EngineSnd: 192
+$Closeup_pos: 0.0, 0.0, -24
+$Closeup_zoom: 0.5
+$Shield_icon: shield-f05
+$Ship_icon: iconfighter05
+$Ship_anim: ssfighter05
+$Ship_overhead: loadfighter05
+$Score: 10
+$Trail:
+ +Offset: 7.65 -2.66 -3.09
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: -7.65 -2.66 -3.09
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: 1.72 2.58 -3.52
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: -1.72 2.58 -3.52
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 120
+ +Bitmap: Contrail01
+$Subsystem: communication, 10,0.0
+$Subsystem: engine, 35,0.0
+$Subsystem: navigation, 10,0.0
+$Subsystem: sensors, 10,0.0
+$Subsystem: weapons, 20,0.0
+
+$Name: GTF Hercules
+$Short name: TFight6
+$Species: Terran
++Type: XSTR("Heavy Assault", 345)
++Maneuverability: XSTR("Average", 346)
++Armor: XSTR("Medium", 337)
++Manufacturer: XSTR("Han-Ronald Corporation", 338)
++Description: XSTR("Low max velocity offset by its tremendous offensive capabilities.  High weapon capacity.", 347)
+$end_multi_text
++Tech Description:
+XSTR("The Hercules is the slowest and most unmanageable fighter in the fleet.  This is offset, however, by its overpowering weaponry and shielding.  It carries six primary weapons, as well as two full secondary banks.  This heavy assault fighter is best suited for small target attacks and bomber escort.", 348)
+$end_multi_text
++Length: 20 m
++Gun Mounts: 6
++Missile Banks: 2
+$POF file: fighter06.pof
+$Detail distance: (0, 80, 300, 900)
+$Show damage: YES
+$Density: 1
+$Damp: 0.2
+$Rotdamp: 0.35
+$Max Velocity: 0.0, 0.0, 50.0
+$Rotation time: 4.0, 4.5, 4.0
+$Rear Velocity: 0.0
+$Forward accel: 3.0
+$Forward decel: 1.5
+$Slide accel: 0.0
+$Slide decel: 0.0
+$Expl inner rad: 25.0
+$Expl outer rad: 75.0
+$Expl damage: 25.0
+$Expl blast: 1000.0
+$Expl Propagates: NO
+$Shockwave Speed: 0.0
+$Allowed PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Akheton SDG" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "Banshee" "Railgun" "S-Breaker" "Leech Cannon" "UD-1 Volz" )
+$Allowed Dogfight PBanks: ( "ML-16 Laser" "VLL-9 Laser" "Disruptor" "Akheton SDG" "Avenger" "Flail" "Prometheus" "Prometheus A" "Prometheus R" "Banshee" "Railgun" "S-Breaker" "Leech Cannon" "UD-1 Volz" )
+$Default PBanks: ( "Avenger" "Disruptor" )
+$Allowed SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "Phoenix V" "D-Missile" "Cluster Bomb" "Havoc" "EM Pulse" )
+$Allowed Dogfight SBanks: ( "MX-50" "Fury" "Fang" "Interceptor" "Interceptor#Weak" "Hornet" "Hornet#Weak" "Phoenix V" "D-Missile" "Cluster Bomb" "Havoc" "EM Pulse" )
+$Default SBanks: ( "Interceptor" "Fury" )
+$SBank Capacity: ( 60, 60 )
+$Shields: 600
+$Shield Color: 100 100 255
+$Power Output: 3.0
+$Max Oclk Speed: 64.0
+$Max Weapon Eng: 150.0
+$Hitpoints: 250
+$Flags: ( "player_ship" "default_player_ship" "fighter" "in tech database multi" )
+$AI Class: Captain
+$Afterburner: YES
+ +Aburn Max Vel: 0.0, 0.0, 120.0
+ +Aburn For accel: 0.7
+ +Aburn Fuel: 300.0
+ +Aburn Burn Rate: 60.0
+ +Aburn Rec Rate: 25.0
+$Countermeasures: 25
+$Scan time: 2000
+$EngineSnd: 192
+$Closeup_pos: 0.0, 0.0, -30
+$Closeup_zoom: 0.5
+$Shield_icon: shield-f06
+$Ship_icon: iconfighter06
+$Ship_anim: ssfighter06
+$Ship_overhead: loadfighter06
+$Score: 12
+$Trail:
+ +Offset: 6.59 -4.8 -3.33
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 60
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: -6.59 -4.8 -3.33
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 60
+ +Bitmap: Contrail01
+$Trail:
+ +Offset: 0 -7.2 -3.2
+ +Start Width: 0.25
+ +End Width: 0.05
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 1.0
+ +Spew Time: 60
+ +Bitmap: Contrail01
+$Subsystem: sensors, 10,0.0
+$Subsystem: communications, 10,0.0
+$Subsystem: weapons, 10,0.0
+$Subsystem: navigation, 10,0.0
+$Subsystem: engine, 35,0.0

@@ -1,0 +1,349 @@
+fsif_version: "2.4"
+
+fiction_viewer: "m_1_3_fiction.txt"
+
+mission_info:
+  name: "Technological Terror"
+  author: "Roo-FS"
+  description: "Mission 3 of The Longest Night. Raid a Shivan depot for supplies."
+  game_type: "single"
+  flags: ["no_promotion", "no_builtin_msgs"]
+  ai_profile: "FS1 RETAIL"
+
+environment:
+  star_count: 50
+  ambient_light_level: 2
+  fog:
+    near_mult: 0.1
+    far_mult: 0.4
+  suns: []
+  starbitmaps: []
+  nebula:
+    enabled: true
+    pattern: "nbackgreen"
+    poofs: ["PoofGreen01", "PoofGreen02"]
+    awacs: 1500.0
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Apollo"
+      count: 4
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 16
+    - name: "MX-50"
+      count: 400
+
+entities:
+  ship_templates:
+    player_wing:
+      class: "GTF Apollo"
+      team: "Friendly"
+      ai_class: "Captain"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Colonel"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_interceptor:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    player_wing_shieldless:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_bomber:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+
+  ships:
+    - name: "SC Azrael"
+      class: "ST Azrael"
+      team: "Hostile"
+      location: [0.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-stay-still "Alpha 1" 89 )
+
+    - name: "Shivan Depot 1"
+      class: "SC 5"
+      team: "Hostile"
+      location: [200.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"] # Removed cargo-known
+    
+    - name: "Shivan Depot 2"
+      class: "SC 5"
+      team: "Hostile"
+      location: [300.0, 100.0, 50.0]
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"]
+
+    - name: "Shivan Depot 3"
+      class: "SC 5"
+      team: "Hostile"
+      location: [250.0, -100.0, -50.0]
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"]
+
+    - name: "Sentry Gun"
+      class: "SSG Trident"
+      team: "Hostile"
+      location: [0.0, 300.0, 0.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTT Argyll"
+      class: "GTT Elysium"
+      team: "Friendly"
+      location: [-1000.0, 0.0, -1000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( is-event-true-delay "Scan Complete" 5 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( is-event-true-delay "Argyll Departing" 0 )
+      ai_goals: |
+        ( ai-dock "Shivan Depot 2" "topside docking" "cargo dock" 89 )
+
+  wings:
+    - name: "Alpha"
+      template: "player_wing"
+      count: 4
+      position: [-1500.0, 0.0, -1500.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "Beta"
+      template: "player_wing_shieldless"
+      count: 3
+      position: [-1600.0, 100.0, -1500.0]
+      arrival_cue: |
+        ( has-arrived-delay 5 "GTT Argyll" )
+      ai_goals: |
+        ( ai-guard "GTT Argyll" 80 )
+
+    - name: "Keeper"
+      template: "shivan_interceptor"
+      count: 2
+      position: [500.0, 500.0, 500.0]
+      arrival_location: "Hyperspace" # Ambush
+      arrival_cue: |
+        ( or
+          ( is-destroyed-delay 0 "Sentry Gun" )
+          ( has-time-elapsed 60 )
+        )
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+    - name: "Wrath"
+      template: "shivan_bomber"
+      count: 2
+      position: [1000.0, 1000.0, 1000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( has-docked-delay "GTT Argyll" "Shivan Depot 2" 1 0 )
+      ai_goals: |
+        ( ai-chase "GTT Argyll" 99 )
+
+mission_flow:
+  briefing:
+    stages:
+      - text: "We're running low on everything. Food, fuel, hope. But long-range scans have picked up a stationary signal."
+        voice_name: "Charon"
+        icons:
+           - { type: "Transport", team: "Hostile", class: "ST Azrael", pos: [0, 0], label: "Shivan Depot" }
+      - text: "It's a supply depot. Shivan. If they have supplies, maybe they have something we can use. We need you to go in, blind the sentries, and scan those containers."
+        voice_name: "Charon"
+        icons:
+           - { type: "Transport", team: "Hostile", class: "ST Azrael", pos: [0, 0], label: "Shivan Depot" }
+           - { type: "Sentry Gun", team: "Hostile", class: "SSG Trident", pos: [500, 500], label: "Sentry Gun" }
+           - { type: "Cargo", team: "Hostile", pos: [200, 0], label: "Cargo" }
+      - text: "The GTT Argyll is standing by with a boarding party. If you find anything useful... we take it. This is risky, Alpha. But if we don't resupply, we die here anyway."
+        voice_name: "Charon"
+        icons:
+           - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [-1000, -1000], label: "GTT Argyll" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( has-departed-delay 0 "GTT Argyll" )
+        text: "Outstanding work, Alpha. The tech boys are going crazy over this cargo. It's shield technology. They say they can retrofit our fighters within 24 hours. It won't be perfect, but it will give us a fighting chance against those black ships. You just leveled the playing field."
+        voice_name: "Charon"
+      - condition: |
+          ( is-destroyed-delay 0 "GTT Argyll" )
+        text: "We lost the Argyll. And with it, our best chance at survival. The Stalwart is blind, deaf, and defenseless. Hope you're happy, pilot."
+        voice_name: "Charon"
+
+  events:
+    - name: "Quiet Arrival"
+      formula: |
+        ( when
+          ( has-time-elapsed 5 )
+          ( send-message "Alpha 2" "Low" "Too quiet" )
+          ( send-message "Alpha 1" "Normal" "Targets ahead" )
+        )
+      directive_text: "Destroy Sentry"
+
+    - name: "Sentry Down"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "Sentry Gun" )
+          ( send-message "#Command" "Normal" "Sentries down" )
+        )
+      directive_text: "Scan Containers"
+
+    - name: "Scan Complete"
+      formula: |
+        ( when
+          ( and
+            ( is-cargo-known-delay 0 "Shivan Depot 1" )
+            ( is-cargo-known-delay 0 "Shivan Depot 2" )
+            ( is-cargo-known-delay 0 "Shivan Depot 3" )
+          )
+          ( send-message "#Command" "High" "Shields found" )
+          ( send-message "#Command" "Normal" "Bring in Argyll" )
+        )
+
+    - name: "Argyll Docking"
+      formula: |
+        ( when
+          ( has-docked-delay "GTT Argyll" "Shivan Depot 2" 1 0 )
+          ( send-message "GTT Argyll" "Normal" "Jackpot" )
+        )
+      directive_text: "Protect Argyll"
+
+    - name: "Wrath Attack"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Wrath" )
+          ( send-message "#Command" "High" "Incoming" )
+          ( send-message "GTT Argyll" "High" "Cant disconnect" )
+        )
+
+    - name: "Argyll Undocking"
+      formula: |
+        ( when
+          ( has-undocked-delay "GTT Argyll" "Shivan Depot 2" 1 0 )
+          ( send-message "GTT Argyll" "High" "Cargo secured" )
+        )
+
+    - name: "Argyll Departing"
+      formula: |
+        ( when
+          ( and
+            ( has-undocked-delay "GTT Argyll" "Shivan Depot 2" 1 0 )
+            ( < ( distance "GTT Argyll" "Shivan Depot 2" ) 500 )
+          )
+          ( send-message "GTT Argyll" "Normal" "Departing" )
+        )
+
+    - name: "Mission Complete"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTT Argyll" )
+          ( send-message "#Command" "Normal" "Good job" )
+          ( end-mission )
+        )
+      directive_text: "Return to base"
+
+  goals:
+    - name: "Destroy Sentry"
+      type: "Primary"
+      message: "Destroy the Shivan Sentry Gun."
+      formula: |
+        ( is-destroyed-delay 0 "Sentry Gun" )
+
+    - name: "Scan Containers"
+      type: "Primary"
+      message: "Scan all cargo containers."
+      formula: |
+        ( and
+          ( is-cargo-known-delay 0 "Shivan Depot 1" )
+          ( is-cargo-known-delay 0 "Shivan Depot 2" )
+          ( is-cargo-known-delay 0 "Shivan Depot 3" )
+        )
+
+    - name: "Protect Argyll"
+      type: "Primary"
+      message: "Ensure GTT Argyll survives and departs."
+      formula: |
+        ( has-departed-delay 0 "GTT Argyll" )
+
+    - name: "Disable Azrael"
+      type: "Bonus"
+      message: "Disable the SC Azrael."
+      formula: |
+        ( is-disabled-delay 0 "SC Azrael" )
+
+  messages:
+    - name: "Too quiet"
+      message: "It's quiet. Too quiet."
+      voice_name: "Enceladus"
+
+    - name: "Targets ahead"
+      message: "Cut the chatter. Targets ahead."
+      voice_name: "Fenrir"
+
+    - name: "Sentries down"
+      message: "Good work. Now scan those containers."
+      voice_name: "Charon"
+
+    - name: "Shields found"
+      message: "Field generators? That sounds like... shields. Alpha, we need those containers."
+      voice_name: "Charon"
+
+    - name: "Bring in Argyll"
+      message: "Bring in the Argyll."
+      voice_name: "Charon"
+
+    - name: "Jackpot"
+      message: "Docking sequence initiated. Cracking the hatch... jackpot. These look like miniaturized shield emitters."
+      voice_name: "Achernar"
+
+    - name: "Incoming"
+      message: "Incoming jump signatures! They're coming for their stuff!"
+      voice_name: "Charon"
+
+    - name: "Cant disconnect"
+      message: "Loading 80%... 90%... We can't disconnect yet!"
+      voice_name: "Achernar"
+
+    - name: "Cargo secured"
+      message: "Cargo secured! Get us out of here!"
+      voice_name: "Achernar"
+
+    - name: "Departing"
+      message: "Coordinates locked. Jumping."
+      voice_name: "Achernar"
+
+    - name: "Good job"
+      message: "Argyll is away. Excellent work, Alpha. Return to base."
+      voice_name: "Charon"
+
+audio:
+  mission_music: "FS1-8: Strike"
+  briefing_music: "FS1-BRIEF3"

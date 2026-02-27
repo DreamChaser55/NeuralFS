@@ -1,0 +1,240 @@
+#Secondary Weapons
+
+; ----------------------------------------------------------------------------------
+$Name: MX-50
++Title: XSTR("GTM MX-50", 551)
++Description:
+XSTR("Standard Issue
+Fire and Forget", 552)
+$end_multi_text
++Tech Title: XSTR("GTM MX-50", 551)
++Tech Anim: cb_mx50
++Tech Description:
+XSTR("Suitable for all space battles - defensive and offensive - medium payload (16.5 Kt) - infrared tracking and semi-intelligent targeting - pilot chooses desired target, and the MX-50 tracks the chosen target based off the emission of heat from the - engine, the weapon bays, and the cockpit of the target ship - the MX-50 will always attack a target that is determined to be hostile by the onboard computer of any GTA combat vessel, thus ensuring a higher kill rate, should the pilot find himself in a heated battle situation where precise aiming might be difficult.
+
+Early experiments with energy based defenses like the deflector array at Ross 128 have shown that this weapon is exceedingly weak against anything besides steel-based targets.", 553)
+$end_multi_text
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 25
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 10.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 0.7
+ +View Cone: 70.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ( "in tech database" "player allowed" )
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail01
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+$Name: Enemy MX-50
+$Model File: MX-50.pof
+$Mass: 5.0
+$Velocity: 150.0
+$Fire Wait: 0.75
+$Damage: 15
+$Blast Force: 200.0
+$Inner Radius: 20.0
+$Outer Radius: 40.0
+$Shockwave Speed: 0.0
+$Armor Factor: 1.0
+$Shield Factor: 0.4
+$Subsystem Factor: 1.0
+$Lifetime: 12.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: HEAT
+ +Turn Time: 1.0
+ +View Cone: 40.0
+$LaunchSnd: 87
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 4.0
+$Flags: ()
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail01
+$Icon: icon_MX50
+$Anim: mx50
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 5.0
+
+; ----------------------------------------------------------------------------------
+;; Fire off a bunch of these at close range targets and watch the sparks fly!
+;
+$Name: Fury
++Title: XSTR("GTM-3 Fury Missile", 554)
++Description:
+XSTR("Standard Issue
+Maximum Compatibility", 555)
+$end_multi_text
++Tech Title: XSTR("GTM-3 Fury Missile", 554)
++Tech Anim: cb_fury
++Tech Description:
+XSTR("Small, fast dumbfire missiles - fired in swarms - GTA fighters can carry more Fury missiles than conventional missiles, due to their small size - used for distraction and other tactical measures - very small payload (3 Kt).
+
+Use is recommended in close combat situations and against larger targets where tracking is a non-issue.", 556)
+$end_multi_text
+$Model File: Fury.pof
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.30
+$Damage: 30
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.6
+$Lifetime: 3.0
+$Energy Consumed: 0.0
+$Cargo Size: 0.5
+$Homing: NO
+$LaunchSnd: 90
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 12.0
+$Flags: ( "in tech database" "player allowed" )
+$Trail:
+ +Start Width: 0.1
+ +End Width: 0.2
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.3
+ +Bitmap: MissileTrail01
+$Icon: icon_fury
+$Anim: fury
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 3.0
+
+; ----------------------------------------------------------------------------------
+$Name: Fang
++Title: XSTR("PVM-7 Fang Missile", 557)
++Description:
+XSTR("Standard Issue
+Twin Fire
+Maximum Compatibility", 558)
+$end_multi_text
++Tech Title: XSTR("PVM-7 Fang Missile", 557)
++Tech Anim: cb_fang
++Tech Description:
+XSTR("Small, fast dumbfire missiles - fired in swarms - low accuracy offset by high speed and immunity to electronic countermeasures - very small payload (2 Kt). 
+
+A Vasudan missile design employing a 'twin fire' technique.  It is a good choice for close combat and freighter attacks, where tracking is a non-issue. The twin-fire design increases the payload per volley and damage potential for hit-and-run attacks.  The GTA is developing its own swarm missile based on the Fang.", 559)
+$end_multi_text
+$Model File: fang.pof
+$Mass: 0.1
+$Velocity: 300.0
+$Fire Wait: 0.35
+$Damage: 20
+$Blast Force: 0.2
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.5
+$Subsystem Factor: 0.6
+$Lifetime: 1.75
+$Energy Consumed: 0.0
+$Cargo Size: 0.25
+$Homing: NO
+$Swarm: 2
+$LaunchSnd: 90
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 10.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.2
+ +End Width: 0.1
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.2
+ +Bitmap: MissileTrail02
+$Icon: icon_fang
+$Anim: fang
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 3.0
+
+; ----------------------------------------------------------------------------------
+$Name: Interceptor
++Title: XSTR("GTM-9 Interceptor", 560)
++Description:
+XSTR("Standard Issue
+Fast Target Lock", 561)
+$end_multi_text
++Tech Title: XSTR("GTM-9 Interceptor", 560)
++Tech Anim: cb_interceptor
++Tech Description:
+XSTR("All-aspect seeking - laser tracking senses energy reflected off a target from the primary weapon systems of the target, increasing single-pass kill probability - medium payload (18.5 Kt) - missile is designed to pierce reinforced hull, thus securing itself to the target, prior to detonating (15 ms delay).
+
+This is the standard issue fighter killer in the GTA.  Designed to take out fighters with minimum hassle, a simple lock is all that is needed to grab the enemy's attention.  Short lock time, good speed, and decent payload makes this the best missile to use against all but the strongest ships.  Its effectiveness against large targets, however, is less than a typical laser run, making this primarily a ship-to-ship missile.", 562)
+$end_multi_text
+$Model File: Interceptor.pof
+$Mass: 15.0
+$Velocity: 250.0
+$Fire Wait: 2.0
+$Damage: 150
+$Blast Force: 60.0
+$Inner Radius: 0.0
+$Outer Radius: 0.0
+$Shockwave Speed: 0
+$Armor Factor: 1.0
+$Shield Factor: 0.8
+$Subsystem Factor: 0.5
+$Lifetime: 5.0
+$Energy Consumed: 0.0
+$Cargo Size: 4.0
+$Homing: YES
+ +Type: ASPECT
+ +Turn Time: 1.0
+ +Min Lock Time: 2.0
+ +Lock Pixels/Sec: 70
+ +Catch-up Pixels/Sec: 100
+ +Catch-up Penalty: 30
+$LaunchSnd: 91
+$ImpactSnd: 88
+$FlyBySnd: -1
+$Rearm Rate: 2.0
+$Flags: ( "player allowed" )
+$Trail:
+ +Start Width: 0.25
+ +End Width: 0.5
+ +Start Alpha: 1.0
+ +End Alpha: 0.0
+ +Max Life: 0.7
+ +Bitmap: MissileTrail02
+$Icon: icon_interceptor
+$Anim: interceptor
+$Impact Explosion: ExpMissileHit1
+$Impact Explosion Radius: 7.0

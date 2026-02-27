@@ -1,0 +1,359 @@
+fsif_version: "2.4"
+
+fiction_viewer: "m_1_1_fiction.txt"
+
+mission_info:
+  name: "Burning Skies"
+  author: "Roo-FS"
+  description: "Mission 1 of The Longest Night. Ross 128 is under attack by the Lucifer."
+  game_type: "single"
+  flags: ["no_promotion", "no_builtin_msgs"]
+  ai_profile: "FS1 RETAIL"
+
+environment:
+  star_count: 500
+  ambient_light_level: 10
+  fog:
+    near_mult: 1.0
+    far_mult: 1.0
+  suns:
+    - texture: SunRed
+      angles: [0.0, 0.0, 0.0]
+      scale: 3.0
+  starbitmaps:
+    - texture: dneb03
+      angles: [0.0, 0.0, 0.0]
+      scale: { x: 5.0, y: 5.0 }
+      div: { x: 2, y: 2 }
+  nebula:
+    enabled: false
+  asteroid_field:
+    name: "Riviera Debris"
+    genre: "debris"
+    type: "passive"
+    density: 50
+    average_speed: 10.0
+    bounds:
+      min: [-2000.0, -1000.0, -2000.0]
+      max: [2000.0, 1000.0, 2000.0]
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTF Apollo"
+      count: 4
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 16
+    - name: "MX-50"
+      count: 400
+
+entities:
+  ship_templates:
+    player_wing:
+      class: "GTF Apollo"
+      team: "Friendly"
+      ai_class: "Captain"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_bomber:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"] # Reduced from swarm/heavy missiles for balance
+    shivan_interceptor:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+
+  ships:
+    - name: "GTD Stalwart"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0.0, 0.0, 0.0]
+      flags: ["no-shields", "guardian"]
+      arrival_cue: |
+        ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( is-event-true-delay "Stalwart Jump" 0 )
+
+    - name: "GTC Crecy"
+      class: "GTC Fenris"
+      team: "Friendly"
+      location: [1200.0, 300.0, -800.0]
+      flags: ["no-shields"]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTI Riviera"
+      class: "GTI Arcadia"
+      team: "Friendly"
+      location: [2000.0, -500.0, 2000.0]
+      flags: ["invulnerable"] # Debris prop essentially
+      arrival_cue: |
+        ( true )
+
+    - name: "SD Lucifer"
+      class: "SD Lucifer"
+      team: "Hostile"
+      location: [8000.0, 500.0, 8000.0]
+      flags: ["invulnerable", "no-dynamic"]
+      arrival_cue: |
+        ( has-time-elapsed 30 )
+
+    - name: "SC Tenebris"
+      class: "SC Cain"
+      team: "Hostile"
+      location: [4000.0, 200.0, 4000.0]
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 50 )
+
+    # Nav Buoys marking the blocked node
+    - name: "Nav Buoy 1"
+      class: "Terran NavBuoy"
+      team: "Hostile"
+      location: [8500.0, 500.0, 8500.0]
+      arrival_cue: |
+        ( true )
+
+  wings:
+    - name: "Alpha"
+      template: "player_wing"
+      count: 4
+      position: [-800.0, 200.0, -500.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "GTD Stalwart" 90 )
+
+    - name: "Beta"
+      template: "player_wing"
+      count: 4
+      position: [800.0, 200.0, -500.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "GTD Stalwart" 90 )
+
+    - name: "Rama"
+      template: "shivan_interceptor"
+      count: 4
+      position: [4000.0, 300.0, 4000.0]
+      arrival_location: "Near Ship"
+      arrival_anchor: "SC Tenebris"
+      arrival_distance: 300
+      arrival_delay: 0
+      arrival_cue: |
+        ( has-arrived-delay 5 "SC Tenebris" )
+      ai_goals: |
+        ( ai-chase-any 60 )
+
+    - name: "Krishna"
+      template: "shivan_fighter"
+      count: 4
+      position: [4200.0, 300.0, 4000.0]
+      arrival_location: "Near Ship"
+      arrival_anchor: "SC Tenebris"
+      arrival_distance: 400
+      arrival_delay: 5
+      arrival_cue: |
+        ( has-arrived-delay 5 "SC Tenebris" )
+      ai_goals: |
+        ( ai-chase-any 60 )
+
+    - name: "Bheema"
+      template: "shivan_bomber"
+      count: 3 # Reduced from 4 for balance
+      position: [5000.0, 1000.0, 5000.0]
+      arrival_cue: |
+        ( has-time-elapsed 120 )
+      ai_goals: |
+        ( ai-chase "GTD Stalwart" 89 )
+
+  jump_nodes:
+    - name: "Delta Serpentis Jump Node"
+      position: [8500.0, 500.0, 8500.0]
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "This is Captain Haddock of the GTC Crecy. The Stalwart is coordinating with Command, so you're stuck with me."
+        voice_name: "Fenrir"
+      - text: "We've been poking around this graveyard for 72 hours. No survivors. Whatever hit the Riviera didn't leave anything for us to save."
+        voice_name: "Fenrir"
+      - text: "Our orders are to hold position until the science teams finish their analysis. I know you're bored, pilots. But trust me... boring is good. Boring keeps you alive."
+        voice_name: "Fenrir"
+
+  briefing:
+    stages:
+      - text: "Alert! Red Alert! All hands to battle stations!"
+        voice_name: "Schedar" # Stalwart tactical/comm
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Apollo", pos: [-500, 0], label: "Alpha" }
+          - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "GTD Stalwart" }
+      - text: "We have multiple subspace signatures inbound. Massive scale."
+        voice_name: "Schedar"
+        icons:
+          - { type: "Unknown", team: "Hostile", pos: [8000, 8000], label: "Unknown Signature" }
+      - text: "It's the Lucifer! It's blocking the Delta Serpentis node!"
+        voice_name: "Schedar"
+        icons:
+          - { type: "Supercapital Ship", team: "Hostile", class: "SD Lucifer", pos: [8000, 8000], label: "SD Lucifer" }
+          - { type: "Jump Node", team: "Hostile", pos: [8500, 8500], label: "Delta Serpentis" }
+      - text: "We are cut off! All wings, launch immediately! Buy us time to spin up the FTL drives!"
+        voice_name: "Schedar"
+        icons:
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Apollo", pos: [-500, 0], label: "Alpha" }
+          - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "GTD Stalwart" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-event-true-delay "Stalwart Jump" 0 )
+        text: "We made it. We're alive. The Stalwart has successfully jumped into the anomaly. Navigation is trying to figure out where the hell we are. Sensors are clearing... looks like a nebula. We've lost contact with Command. We've lost contact with everyone. Get some rest, pilot. It's going to be a long night."
+        voice_name: "Charon" # Vance
+      - condition: |
+          ( is-destroyed-delay 0 "GTD Stalwart" )
+        text: "The Stalwart has been destroyed. You are stranded in deep space with no carrier and no way home. The Shivans are closing in..."
+        voice_name: "Charon"
+
+  events:
+    - name: "Lucifer Arrival Msg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "SD Lucifer" )
+          ( send-message "Alpha 2" "High" "Lucifer Sighted" )
+          ( send-message "GTD Stalwart" "High" "Lucifer Warning" )
+        )
+      directive_text: "Lucifer arrived"
+
+    - name: "Tenebris Arrival Msg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "SC Tenebris" )
+          ( send-message "GTD Stalwart" "High" "Incoming Hostiles" )
+        )
+
+    - name: "Bombers Arrival Msg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Bheema" )
+          ( send-message "GTD Stalwart" "High" "Bombers Inbound" )
+        )
+      directive_text: "Intercept Bombers"
+
+    - name: "Drives 40"
+      formula: |
+        ( when
+          ( has-time-elapsed 120 )
+          ( send-message "GTD Stalwart" "Normal" "Drives 40" )
+        )
+
+    - name: "Beta Panic"
+      formula: |
+        ( when
+          ( has-time-elapsed 150 )
+          ( send-message "Beta 1" "High" "Fast Hostiles" )
+        )
+
+    - name: "Drives 90"
+      formula: |
+        ( when
+          ( has-time-elapsed 240 )
+          ( send-message "GTD Stalwart" "High" "Drives 90" )
+          ( send-message "GTD Stalwart" "High" "Return to base" )
+        )
+      directive_text: "Stay near Stalwart"
+
+    - name: "Stalwart Jump"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message "GTD Stalwart" "High" "Jumping" )
+        )
+      directive_text: "Stalwart Jumping"
+
+    - name: "Mission End Success"
+      formula: |
+        ( when
+          ( is-event-true-delay "Stalwart Jump" 5 )
+          ( end-mission )
+        )
+      directive_text: "Mission Complete"
+
+  goals:
+    - name: "Protect Stalwart"
+      type: "Primary"
+      message: "Protect the GTD Stalwart until it jumps."
+      formula: |
+        ( is-event-true-delay "Stalwart Jump" 0 )
+
+    - name: "Destroy Bombers"
+      type: "Primary"
+      message: "Destroy the Shivan bomber wing (Bheema)."
+      formula: |
+        ( is-destroyed-delay 0 "Bheema" )
+
+    - name: "Disable Tenebris Comms"
+      type: "Bonus"
+      message: "Destroy the Communications subsystem on SC Tenebris."
+      formula: |
+        ( is-subsystem-destroyed-delay "SC Tenebris" "communication" 0 )
+
+  messages:
+    - name: "Lucifer Sighted"
+      message: "Look at the size of that thing! It's blocking the sun!"
+      voice_name: "Enceladus"
+
+    - name: "Lucifer Warning"
+      message: "Warning. Capital class signature detected. Class: Unknown. Threat: Extreme."
+      voice_name: "Schedar"
+
+    - name: "Incoming Hostiles"
+      message: "All wings, launch! We have incoming hostiles. Massive signature detected!"
+      voice_name: "Schedar"
+
+    - name: "Bombers Inbound"
+      message: "Bomber wing detected! Intercept them before they reach weapons range!"
+      voice_name: "Schedar"
+
+    - name: "Drives 40"
+      message: "Drives are at 40%. Keep those bombers off us!"
+      voice_name: "Schedar"
+
+    - name: "Fast Hostiles"
+      message: "They're fast! My sensors can't lock on!"
+      voice_name: "Orus"
+
+    - name: "Drives 90"
+      message: "The node to Delta Serpentis is completely cut off. We have no choice. Navigation, lock in the anomaly coordinates."
+      voice_name: "Schedar"
+
+    - name: "Return to base"
+      message: "Drives at 90%. Alpha, stay close to the Stalwart!"
+      voice_name: "Schedar"
+
+    - name: "Jumping"
+      message: "Engaging jump drive. God help us all."
+      voice_name: "Schedar"
+
+audio:
+  mission_music: "FS1-1: Fortress"
+  briefing_music: "FS1-BRIEF1"

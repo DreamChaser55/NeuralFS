@@ -1,0 +1,345 @@
+fsif_version: "2.2"
+
+mission_info:
+  name: "The Harvest Moon"
+  author: "NeuralFS"
+  description: "Intercept Shivan Seeds before they impact Adhara Prime."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+
+environment:
+  star_count: 500
+  ambient_light_level: 15
+  suns:
+    - texture: SunSol
+      angles: [0.0, 0.0, 0.0]
+      scale: 1.0
+  starbitmaps:
+    - texture: planetb # Adhara Prime
+      angles: [0.5, 0.0, 1.5]
+      scale: {x: 10.0, y: 10.0}
+
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - class: "GTB Ursa"
+      count: 4
+  weapon_pool:
+    - name: "ML-16 Laser"
+      count: 8
+    - name: "Avenger"
+      count: 8
+    - name: "Flail"
+      count: 8
+    - name: "MX-50"
+      count: 160
+    - name: "Hornet"
+      count: 80
+    - name: "Harbinger"
+      count: 20
+
+entities:
+  ship_templates:
+    ursa_heavy:
+      class: "GTB Ursa"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "Flail"]
+        secondary: ["Harbinger", "Hornet"]
+    hercules_heavy:
+      class: "GTF Hercules"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger"]
+        secondary: ["Hornet"]
+    valkyrie_interceptor:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_seed:
+      class: "ST Azrael"
+      team: "Hostile"
+      ai_class: "Coward"
+      flags: ["no-shields", "guardian"]
+      initial_hull: 100
+    seraphim_bomber:
+      class: "SB Seraphim"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Harbinger#Shivan"]
+    manticore_fighter:
+      class: "SF Manticore"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["MX-50#Shivan"]
+
+  ships:
+    - name: "Alpha 1"
+      template: "ursa_heavy"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 2"
+      template: "ursa_heavy"
+      location: [100, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 3"
+      template: "ursa_heavy"
+      location: [-100, 0, 0]
+      arrival_cue: |
+        ( true )
+    - name: "Alpha 4"
+      template: "ursa_heavy"
+      location: [0, 100, 0]
+      arrival_cue: |
+        ( true )
+
+    - name: "GTD Erebus"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0, 0, -5000]
+      arrival_cue: |
+        ( true )
+      initial_hull: 40
+
+    - name: "Adhara Orbital Hub"
+      class: "GTI Arcadia"
+      team: "Friendly"
+      location: [2000, 0, 5000]
+      arrival_cue: |
+        ( true )
+      flags: ["escort"]
+      escort_priority: 100
+
+    - name: "Seed 1"
+      template: "shivan_seed"
+      location: [0, 500, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath1" 89 )
+    - name: "Seed 2"
+      template: "shivan_seed"
+      location: [500, 500, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath2" 89 )
+    - name: "Seed 3"
+      template: "shivan_seed"
+      location: [-500, 500, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath3" 89 )
+    - name: "Seed 4"
+      template: "shivan_seed"
+      location: [1000, 500, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath4" 89 )
+    - name: "Seed 5"
+      template: "shivan_seed"
+      location: [-1000, 500, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath5" 89 )
+    - name: "Seed 6"
+      template: "shivan_seed"
+      location: [0, 1000, 4000]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "ImpactPath6" 89 )
+
+  wings:
+    - name: "Beta"
+      template: "hercules_heavy"
+      count: 4
+      position: [200, 0, -500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "Alpha 1" 89 )
+
+    - name: "Gamma"
+      template: "valkyrie_interceptor"
+      count: 3
+      position: [-200, 0, -500]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-guard "Adhara Orbital Hub" 89 )
+
+    - name: "Rama"
+      template: "seraphim_bomber"
+      count: 2
+      position: [0, 0, -2000]
+      arrival_cue: |
+        ( has-time-elapsed 120 )
+      waves: 2
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+    - name: "Krishna"
+      template: "manticore_fighter"
+      count: 4
+      position: [2000, 0, 6000]
+      arrival_cue: |
+        ( has-time-elapsed 360 )
+      waves: 3
+      ai_goals: |
+        ( ai-chase "Adhara Orbital Hub" 89 )
+
+  waypoints:
+    ImpactPath1:
+      - [0, 500, 10000] # Heading for surface
+    ImpactPath2:
+      - [500, 500, 10000]
+    ImpactPath3:
+      - [-500, 500, 10000]
+    ImpactPath4:
+      - [1000, 500, 10000]
+    ImpactPath5:
+      - [-1000, 500, 10000]
+    ImpactPath6:
+      - [0, 1000, 10000]
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "The GTD Erebus has returned to Adhara space, but we have brought the nightmare with us. The Shivan fleet has launched a full-scale assault on the colony."
+        voice_name: "Achernar"
+      - text: "They are deploying 'Seeds'—colossal organic spores—into Adhara Prime's atmosphere. These Seeds contain biological agents designed to liquefy the ecosystem."
+        voice_name: "Achernar"
+      - text: "We have heavy bombers capable of carrying the Harbinger nuclear bomb. You will use them to incinerate the Seeds before they can impact."
+        voice_name: "Achernar"
+
+  briefing:
+    stages:
+      - text: "Alpha, the Seeds are large and heavily armored. Your standard torpedoes won't work. You'll need to use the Harbingers. They take time to lock, so keep your distance."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Player Bomber Wing", team: "Friendly", class: "GTB Ursa", pos: [0, 0], label: "Alpha" }
+          - { type: "Cargo Wing", team: "Hostile", pos: [0, 500], label: "Seeds" }
+      - text: "The Shivans have deployed Seraphim bombers to protect the Seeds. Beta and Gamma will try to keep them off you."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Bomber Wing", team: "Hostile", class: "SB Seraphim", pos: [0, -200], label: "Rama" }
+      - text: "Adhara Prime has a population of four million. If even one Seed reaches the surface, the 'Harvest' begins. Do not let that happen."
+        voice_name: "Achernar"
+        icons:
+          - { type: "Planet", team: "Friendly", pos: [0, 1000], label: "Adhara Prime" }
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-event-true-delay "All Seeds Destroyed" 0 )
+        text: "The sky over Adhara is clear of the Seeds, but the cost was high. The Orbital Hub is a wreck, but we saved the colony. For now."
+        voice_name: "Achernar"
+      - condition: |
+          ( is-event-true-delay "Impact Detected" 0 )
+        text: "The Seeds have impacted. Reports from the surface are... horrific. The population is being converted. Adhara Prime is no longer a human world."
+        voice_name: "Achernar"
+
+  events:
+    - name: "All Seeds Destroyed"
+      formula: |
+        ( when
+          ( and
+            ( is-destroyed-delay 0 "Seed 1" )
+            ( is-destroyed-delay 0 "Seed 2" )
+            ( is-destroyed-delay 0 "Seed 3" )
+            ( is-destroyed-delay 0 "Seed 4" )
+            ( is-destroyed-delay 0 "Seed 5" )
+            ( is-destroyed-delay 0 "Seed 6" )
+          )
+          ( do-nothing )
+        )
+      directive_text: "Destroy all Shivan 'Seeds' before impact"
+
+    - name: "Impact Detected"
+      formula: |
+        ( when
+          ( or
+            ( > ( get-object-z "Seed 1" ) 9000 )
+            ( > ( get-object-z "Seed 2" ) 9000 )
+            ( > ( get-object-z "Seed 3" ) 9000 )
+            ( > ( get-object-z "Seed 4" ) 9000 )
+            ( > ( get-object-z "Seed 5" ) 9000 )
+            ( > ( get-object-z "Seed 6" ) 9000 )
+          )
+          ( do-nothing )
+        )
+
+    - name: "Critical Altitude"
+      formula: |
+        ( when
+          ( or
+            ( > ( get-object-z "Seed 1" ) 7000 )
+            ( > ( get-object-z "Seed 2" ) 7000 )
+            ( > ( get-object-z "Seed 3" ) 7000 )
+            ( > ( get-object-z "Seed 4" ) 7000 )
+            ( > ( get-object-z "Seed 5" ) 7000 )
+            ( > ( get-object-z "Seed 6" ) 7000 )
+          )
+          ( send-message "#Command" "High" "Altitude warning" )
+        )
+
+    - name: "Msg: Hub Help"
+      formula: |
+        ( when
+          ( < ( hits-left "Adhara Orbital Hub" ) 90 )
+          ( send-message "#Command" "High" "Hub screaming" )
+        )
+
+    - name: "The Whisper Plant"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message "#Command" "Normal" "Whisper plant" )
+        )
+
+  goals:
+    - name: "Destroy Seeds"
+      type: "Primary"
+      message: "Destroy all Shivan 'Seeds' before they enter the lower atmosphere."
+      formula: |
+        ( is-event-true-delay "All Seeds Destroyed" 0 )
+    - name: "Protect Hub"
+      type: "Primary"
+      message: "Protect the Adhara Orbital Hub."
+      formula: |
+        ( not ( is-destroyed-delay 0 "Adhara Orbital Hub" ) )
+    - name: "Destroy Seraphims"
+      type: "Secondary"
+      message: "Eliminate the Shivan Seraphim bombers."
+      formula: |
+        ( is-destroyed-delay 0 "Rama" )
+
+  messages:
+    - name: "Altitude warning"
+      message: "Alpha, Seeds are reaching critical altitude! Intercept now or we lose the planet!"
+      voice_name: "Achernar"
+    - name: "Hub screaming"
+      message: "They're raining down on us! The sky is turning purple! Erebus, help us!"
+      voice_name: "Alnilam"
+    - name: "Whisper plant"
+      message: "The... soil... is... ready. Let... us... plant."
+      voice_name: "Despina"
+
+audio:
+  briefing_music: "FS1-BRIEF3"
+  mission_music: "1: Genesis"

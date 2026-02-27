@@ -1,0 +1,31 @@
+  Mission
+
+*num-ships-in-battle*
+    num-ships-in-battle
+    Returns the number of ships in battle or the number of ships
+    in battle out of a list of teams, wings, and ships. Takes 0
+    or more arguments...
+    (all): Teams, Wings, and Ships to query (optional)
+*num-ships-in-wing*
+    num-ships-in-wing
+    Returns the number of ships in battle which belong to a
+    given wing. Takes 1 or more arguments...
+    (all): Name of wing(s) to check
+*directive-value*
+    directive-value
+    Causes a value to appear in the directive count
+    Always returns true. Takes 1 or more arguments...
+
+    1: Value
+    2: (Optional) Ignore the directive count set by any earlier
+    SEXPs in the event. If set to false it will add instead
+*get-hotkey*
+    get-hotkey
+    Returns the hotkey integer of the ship or wing. Return
+    values range from -1 to 7.
+    Return of -1 is no hotkey, return of 0 is F5, return of 1 is
+    F6, ..., return of 7 is F12.
+
+    Takes 1 argument.
+
+    1: Ship or wing to get hotkey.

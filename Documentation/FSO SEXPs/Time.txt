@@ -1,0 +1,93 @@
+Time
+
+*time-ship-destroyed*
+    Time ship destroyed (Time operator)
+    Returns the time the specified ship was destroyed (evaluation
+    returns NAN until then). Departed doesn't count as destroyed.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship we want to check.
+*time-ship-arrived*
+    Time ship arrived (Time operator)
+    Returns the time the specified ship arrived into the mission.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship we want to check.
+*time-ship-departed*
+    Time ship departed (Time operator)
+    Returns the time the specified ship departed the mission
+    (evaluation returns NAN until then). Destroyed doesn't count as
+    departed.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of ship we want to check.
+*time-wing-destroyed*
+    Time wing destroyed (Time operator)
+    Returns the time the specified wing was destroyed. This will
+    return NAN until all the ships in the wing have been destroyed.
+    If any have departed, the wing can never be considered destroyed.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of wing we want to check.
+*time-wing-arrived*
+    Time wing arrived (Time operator)
+    Returns the time the specified wing arrived into the mission.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of wing we want to check.
+*time-wing-departed*
+    Time wing departed (Time operator)
+    Returns the time the specified wing departed the mission. This
+    will return NAN until all the ships in the wing have departed.
+
+    Returns a numeric value. Takes 1 argument...
+    1: Name of wing we want to check.
+*mission-time*
+    Mission time (Time operator)
+    Returns the current time into the mission.
+
+    Returns a numeric value. Takes no arguments.
+*mission-time-msecs*
+    Mission time, in milliseconds (Time operator)
+    Returns the current time into the mission, in milliseconds.
+    Useful for more fine-grained timing than possible with normal
+    second-based sexps. (Tip: when an event occurs, assign the
+    result of mission-time-msecs to a variable. Then, in another
+    event, wait until mission-time-msecs is greater than the value
+    of that variable plus some delay amount. This second event
+    should be chained or coupled with additional conditions so that
+    it doesn't accidentally fire on an uninitialized variable!)
+
+    Returns a numeric value. Takes no arguments.
+*time-docked*
+    Time docked (Time operator)
+    Returns the time the specified ships docked.
+
+    Returns a numeric value. Takes 3 arguments...
+    1: The name of the docker ship.
+    2: The name of the dockee ship.
+    3: The number of times they must have docked to be true.
+*time-undocked*
+    Time undocked (Time operator)
+    Returns the time the specified ships undocked.
+
+    Returns a numeric value. Takes 3 arguments...
+    1: The name of the docker ship.
+    2: The name of the dockee ship.
+    3: The number of times they must have undocked to be true.
+*time-to-goal*
+    Time-to-goal (Time operator)
+    Returns the number of seconds until a ship reaches its waypoint
+
+    Returns a number value. Takes 1 argument...
+    1: Name of ship to check waypoint time (evaluation returns NAN
+    until ship is in-mission).
+*set-hud-timer-padding*
+    Set HUD Timer Padding (Action operator)
+    Sets an additional padding that is added only to the visible
+    clock on the HUD. It does not affect the actual mission time or
+    the mission log! Time is an illusion and the illusion here
+    exists only on the HUD.
+
+    Takes 1 argument...
+    1: The amount of time to add to the clock in seconds.

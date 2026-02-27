@@ -1,0 +1,140 @@
+Arithmetic
+
+*+*
+    Plus (Arithmetic operator)
+    Adds numbers and returns results.
+
+    Returns a number. Takes 2 or more numeric arguments.
+*-*
+    Minus (Arithmetic operator)
+    Subtracts numbers and returns results.
+
+    Returns a number. Takes 2 or more numeric arguments.
+***
+    Multiply (Arithmetic operator)
+    Multiplies numbers and returns results.
+
+    Returns a number. Takes 2 or more numeric arguments.
+*/*
+    Divide (Arithmetic operator)
+    Divides numbers and returns results.
+
+    Returns a number. Takes 2 or more numeric arguments.
+*mod*
+    Mod (Arithmetic operator)
+    Divides numbers and returns the remainer.
+
+    Returns a number. Takes 2 or more numeric arguments.
+*rand*
+    Rand (Arithmetic operator)
+    Gets a random number. This number will not change on successive
+    calls to this sexp.
+
+    Returns a number. Takes 2 or 3 numeric arguments...
+    1: Low range of random number.
+    2: High range of random number.
+    3: (optional) A seed to use when generating numbers. (Setting
+    this to 0 is the same as having no seed at all)
+*rand-multiple*
+    Rand-multiple (Arithmetic operator)
+    Gets a random number. This number can and will change between
+    successive calls to this sexp.
+
+    Returns a number. Takes 2 or 3 numeric arguments...
+    1: Low range of random number.
+    2: High range of random number.
+    3: (optional) A seed to use when generating numbers. (Setting
+    this to 0 is the same as having no seed at all)
+*abs*
+    Absolute value (Arithmetic operator)
+    Returns the absolute value of a number. Takes 1 numeric argument.
+*min*
+    Minimum value (Arithmetic operator)
+    Returns the minimum of a set of numbers. Takes 1 or more numeric
+    arguments.
+*max*
+    Maximum value (Arithmetic operator)
+    Returns the maximum of a set of numbers. Takes 1 or more numeric
+    arguments.
+*avg*
+    Average value (Arithmetic operator)
+    Returns the average (rounded to the nearest integer) of a set of
+    numbers. Takes 1 or more numeric arguments.
+*pow*
+    Power (Arithmetic operator)
+    Raises one number to the power of the next number. If the result
+    will be larger than INT_MAX or smaller than INT_MIN, the
+    appropriate limit will be returned. Takes 2 numeric arguments.
+*signum*
+    Signum (Arithmetic operator)
+    Returns the sign of a number: -1 if it is negative, 0 if it is
+    0, and 1 if it is positive. Takes one argument.
+*is-nan*
+    Is-NaN (Arithmetic operator)
+    Returns true if the argument is NaN (not-a-number). This can
+    happen e.g. when checking statistics for ships that have
+    departed. Takes one argument.
+*nan-to-number*
+    NaN-to-Number (Arithmetic operator)
+    Used to safely filter NaN values from arithmetic operations,
+    which would otherwise pass NaN up the sexp tree. If the argument
+    is a number, it is returned. If the argument is NaN, a zero is
+    returned. Takes one argument.
+*set-bit*
+    set-bit
+    Turns on (sets to 1) a certain bit in the provided number,
+    returning the result. This allows numbers to store up to 32
+    boolean flags, from 2^0 to 2^31. Takes 2 numeric arguments...
+    1: The number whose bit should be set
+    2: The index of the bit to set. Valid indexes are between 0 and
+    31, inclusive.
+*unset-bit*
+    unset-bit
+    Turns off (sets to 0) a certain bit in the provided number,
+    returning the result. This allows numbers to store up to 32
+    boolean flags, from 2^0 to 2^31. Takes 2 numeric arguments...
+    1: The number whose bit should be unset
+    2: The index of the bit to unset. Valid indexes are between 0
+    and 31, inclusive.
+*is-bit-set*
+    is-bit-set
+    Returns true if the specified bit is set (equal to 1) in the
+    provided number. Takes 2 numeric arguments...
+    1: The number whose bit should be tested
+    2: The index of the bit to test. Valid indexes are between 0 and
+    31, inclusive.
+*bitwise-and*
+    bitwise-and
+    Performs the bitwise AND operator on its arguments. This is the
+    same as if the logical AND operator was performed on each
+    successive bit. Takes 2 or more numeric arguments.
+*bitwise-or*
+    bitwise-or
+    Performs the bitwise OR operator on its arguments. This is the
+    same as if the logical OR operator was performed on each
+    successive bit. Takes 2 or more numeric arguments.
+*bitwise-not*
+    bitwise-not
+    Performs the bitwise NOT operator on its argument. This is the
+    same as if the logical NOT operator was performed on each
+    successive bit.
+
+    Note that the operation is performed as if on an unsigned
+    integer whose maximum value is INT_MAX. In other words, there is
+    no need to worry about the sign bit.
+
+    Takes only 1 argument.
+*bitwise-xor*
+    bitwise-xor
+    Performs the bitwise XOR operator on its arguments. This is the
+    same as if the logical XOR operator was performed on each
+    successive bit. Takes 2 or more numeric arguments.
+*angle-vectors*
+    angle-vectors
+    Calculates the angle between two vectors.Takes 6 arguments...
+    1: The x component of the first vector.
+    2: The y component of the first vector.
+    3: The z component of the first vector.
+    4: The x component of the second vector.
+    5: The y component of the second vector.
+    6: The z component of the second vector.

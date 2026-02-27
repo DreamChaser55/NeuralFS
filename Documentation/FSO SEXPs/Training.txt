@@ -1,0 +1,224 @@
+Training
+
+*key-pressed*
+    Key-pressed (Boolean training operator)
+    Becomes true when the specified default key has been pressed.
+    Default key refers to the what the key normally is when not
+    remapped. FreeSpace will automatically account for any keys that
+    have been remapped. If the optional delay is specified, becomes
+    true that many seconds after the key has been pressed.
+
+    Returns a boolean value. Takes 1 or 2 arguments...
+    1: Default key to check for.
+    2: Delay before operator registers as true (optional).
+*key-reset*
+    Key-reset (Training operator)
+    Marks the specified default key as having not been pressed, so
+    key-pressed will be false until the player presses it again. See
+    key-pressed help for more information about what a default key is.
+
+    Note that this sexp will only fire once when used in a repeating
+    event, which may not be what you want. Use key-reset-multiple if
+    a key should be reset each time the event repeats.
+
+    Returns a boolean value. Takes 1 or more arguments...
+    All: Default key to reset.
+*key-reset-multiple*
+    Key-reset-multiple (Training operator)
+    Marks the specified default key as having not been pressed, so
+    key-pressed will be false until the player presses it again. See
+    key-pressed help for more information about what a default key is.
+
+    Note that this sexp will fire every time an event repeats. If
+    you only want a key to be reset once regardless of how many
+    times the event repeats, use key-reset.
+
+    Returns a boolean value. Takes 1 or more arguments...
+    All: Default key to reset.
+*ignore-key*
+    ignore-key
+    Causes the game to ignore (or stop ignoring) a certain key.
+    Takes 2 or more arguments...
+    1: Number of times to ignore this key (-1 = forever, 0 = stop
+    ignoring).
+    Rest: Which key(s) to ignore.
+*targeted*
+    Targeted (Boolean training operator)
+    Is true as long as the player has the specified ship (or ship's
+    subsystem) targeted, or has been targeted for the specified
+    amount of time.
+
+    Returns a boolean value. Takes 1 to 3 arguments (first required,
+    rest optional):
+    1: Name of ship to check if targeted by player.
+    2: Length of time target should have been kept for (optional).
+    3: Name of subsystem on ship to check if targeted (optional).
+*node-targeted*
+    Node-Targeted (Boolean training operator)
+    Is true as long as the player has the specified jump node
+    targeted, or has been targeted for the specified amount of time.
+
+    Returns a boolean value. Takes 1 to 2 arguments (first required,
+    rest optional):
+    1: Name of Jump Node to check if targeted by player.
+    2: Length of time target should have been kept for (optional).
+*missile-locked*
+    Missile-locked (Boolean training operator)
+    Is true as long as the player has had a missile lock for the
+    specified amount of time. Optional arguments require lock to be
+    maintained on a specified ship (or ship's subsystem).
+
+    Returns a boolean value. Takes 1 to 3 arguments (first required,
+    rest optional):
+    1: Length of time missile lock should have been kept for.
+    2: Name of ship to check if locked onto by player (optional).
+    3: Name of subsystem on ship to check if locked onto (optional).
+*speed*
+    Speed (Boolean training operator)
+    Becomes true when the player has been within the specified speed
+    range set by set-training-context-speed for the specified amount
+    of time.
+
+    Returns a boolean value. Takes 1 argument...
+    1: Time in seconds.
+*facing*
+    Facing (Boolean training operator)
+    Is true as long as the specified ship is within the player's
+    specified forward cone. A forward cone is defined as any point
+    that the angle between the vector of the point and the player,
+    and the forward facing vector is within the given angle.
+
+    Returns a boolean value. Takes 2 argument...
+    1: Ship to check is within forward cone.
+    2: Angle in degrees of the forward cone.
+*facing-waypoint*
+    Facing Waypoint(Boolean training operator)
+    Is true as long as the specified first waypoint is within the
+    player's specified forward cone. A forward cone is defined as
+    any point that the angle between the vector of the point and the
+    player, and the forward facing vector is within the given angle.
+
+    Returns a boolean value. Takes 2 argument...
+    1: Name of waypoint path whose first point is within forward cone.
+    2: Angle in degrees of the forward cone.
+*order*
+    Order (Boolean training operator)
+    Deprecated - Use Query-Orders in any new mission.
+
+    Becomes true when the player had given the specified ship or
+    wing the specified order.
+
+    Returns a boolean value. Takes 2 or 3 arguments...
+    1: Name of ship or wing to check if given order to.
+    2: Name of order to check if player has given.
+    3: Name of the target of the order (optional).
+*query-orders*
+    Query-Orders (Boolean training operator)
+    Becomes true when the player had given the specified ship or
+    wing the specified order.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Name of ship or wing to check if given order to.
+    2: Name of order to check if player has given.
+    3: Maximum length of time since order was given. Use 0 for any
+    time in the mission.
+    4: Name of the target of the order (optional).
+    5: Name of player ship giving the order(optional).
+    6: Name of the subsystem for Destroy Subsystem orders.(optional)
+*reset-orders*
+    Reset-Orders (Action training operator)
+    Resets the list of orders the player has given.
+    Takes no arguments.
+*waypoint-missed*
+    Waypoint-missed (Boolean training operator)
+    Becomes true when a waypoint is flown, but the waypoint is ahead
+    of the one they are supposed to be flying. The one they are
+    supposed to be flying is the next one in sequence in the path
+    after the last one they have hit.
+
+    Returns a boolean value. Takes no arguments.
+*waypoint-twice*
+    Waypoint-twice (Boolean training operator)
+    Becomes true when a waypoint is hit that is before the last one
+    hit, which indicates they have flown a waypoint twice.
+
+    Returns a boolean value. Takes no arguments.
+*path-flown*
+    Path-flown (Boolean training operator)
+    Becomes true when all the waypoints in the path have been flown,
+    in sequence.
+
+    Returns a boolean value. Takes no arguments.
+*training-msg*
+    Training-msg (Action training operator)
+    Sends the player a training message. Uses the same messages as
+    normal messages, only they get displayed differently using this
+    operator.
+
+    Secondary messages are only used when an event has a repeat
+    count greater than 1. If a secondary message is specified, it is
+    sent on the last repeat iteration, while the primary message is
+    sent all other times.
+
+    Takes 1-4 arguments...
+    1: Name of primary message to send.
+    2: Name of secondary message to send (optional).
+    3: Delay (in seconds) to wait before sending message. (optional)
+    4: Amount of Time (in seconds) to display message (optional).
+*flash-hud-gauge*
+    Ai-flash hud gauge (Training goal)
+    Causes the specified hud gauge to flash to draw the player's
+    attention to it.
+
+    Takes 1 argument...
+    1: Name of hud gauge to flash.
+*primaries-depleted*
+    primaries-depleted
+    Returns true if ship is out of primary weapons
+    1: Ship name
+*secondaries-depleted*
+    secondaries-depleted
+    Returns true if ship is out of secondary weapons
+    1: Ship name
+*special-check*
+    Special-check
+    Mike K.'s special training sexp. Returns a boolean value. Takes
+    1 argument as follows:
+    0: Ship "Freighter 1" is aspect locked by the player
+    1: Player has fired Interceptor#Weak at Freighter 1
+    2: Ship "Freighter 1", subsystem "Weapons" is aspect locked by
+    the player
+    3: Apply 10 points of damage to player's forward shields (action
+    operator)
+    4: Player's front shields are nearly gone
+    5: Quickly recharge player's front shields (action operator)
+    6: Reduce all shield quadrants except front to 0 (action operator)
+    7: Front shield quadrant is near maximum strength
+    8: Rear shield quadrant is near maximum strength
+    9: Reduce left and right shield quadrants to 0 (action operator)
+    10: Player has fewer than 8 missiles left
+    11: Player has 8 or more missiles left
+    12: Player has fewer than 4 missiles left
+    13: Reduce front shield quadrant to 0 (action operator)
+    100: Player is out of countermeasures
+    2000: Training failed
+*set-training-context-fly-path*
+    Set-training-context-fly-path (Training context operator)
+    Tells FreeSpace that the player is expected to fly a waypoint
+    path. This must be executed before waypoint-missed, waypoint-
+    twice and path-flown operators become valid.
+
+    Takes 2 arguments...
+    1: Name of waypoint path player should fly.
+    2: Distance away a player needs to be from a waypoint for it to
+    be registered as flown.
+*set-training-context-speed*
+    Set-training-context-speed (Training context operator)
+    Tells FreeSpace that the player is expected to fly within a
+    certain speed range. Once this operator has been executed, you
+    can measure how long they have been within this speed range with
+    the speed operator.
+
+    Takes 2 arguments...
+    1: Minimum speed of range player is to fly between.
+    2: Maximum speed of range player is to fly between.

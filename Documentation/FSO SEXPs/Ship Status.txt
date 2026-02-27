@@ -1,0 +1,273 @@
+  Ship Status
+
+*protect-ship*
+    Protect ship (Action operator)
+    Protects a ship from being attacked by any enemy ship. Any
+    ship that is protected will not come under enemy fire.
+
+    Takes 1 or more arguments...
+    All: Name of ship(s) to protect (ship does not need to be
+    in-mission).
+*unprotect-ship*
+    Unprotect ship (Action operator)
+    Unprotects a ship from being attacked by any enemy ship. Any
+    ship that is not protected can come under enemy fire. This
+    function is the opposite of protect-ship.
+
+    Takes 1 or more arguments...
+    All: Name of ship(s) to unprotect (ship does not need to be
+    in-mission).
+*beam-protect-ship*
+    Beam Protect ship (Action operator)
+    Protects a ship from being attacked with beam weapon. Any
+    ship that is beam protected will not come under enemy beam
+    fire.
+
+    Takes 1 or more arguments...
+    All: Name of ship(s) to protect (ship does not need to be
+    in-mission).
+*beam-unprotect-ship*
+    Beam Unprotect ship (Action operator)
+    Unprotects a ship from being attacked with beam weapon. Any
+    ship that is not beam protected can come under enemy beam
+    fire. This function is the opposite of beam-protect-ship.
+
+    Takes 1 or more arguments...
+    All: Name of ship(s) to unprotect (ship does not need to be
+    in-mission).
+*turret-protect-ship*
+    Turret Protect ship (Action operator)
+    Protects a ship from being attacked with a turret weapon of
+    a given type. Any ship that is turret protected will not
+    come under enemy fire from that type of turret, though it
+    may come under fire by other turrets.
+
+    Takes 2 or more arguments...
+    1: Type of turret (currently supported types are "beam",
+    "flak", "laser", and "missile")
+    Rest: Name of ship(s) to protect (ship does not need to be
+    in-mission).
+*turret-unprotect-ship*
+    Turret Unprotect ship (Action operator)
+    Unprotects a ship from being attacked with a turret weapon
+    of a given type. Any ship that is not turret protected can
+    come under enemy fire from that type of turret. This
+    function is the opposite of turret-protect-ship.
+
+    Takes 2 or more arguments...
+    1: Type of turret (currently supported types are "beam",
+    "flak", "laser", and "missile")
+    Rest: Name of ship(s) to unprotect (ship does not need to be
+    in-mission).
+*ship-invisible*
+    ship-invisible
+    Causes the ships listed in this sexpression to be invisible
+    to player sensors.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make invisible to sensors (ships do not
+    need to be in-mission).
+*ship-visible*
+    ship-visible
+    Causes the ships listed in this sexpression to be visible
+    with player sensors.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make visible to sensors (ships do not
+    need to be in-mission).
+*ship-stealthy*
+    ship-stealthy
+    Causes the ships listed in this sexpression to become
+    stealth ships (i.e. invisible to radar).
+
+    Takes 1 or more arguments...
+    All: Name of ships to make stealthy (ships do not need to be
+    in-mission).
+*ship-unstealthy*
+    ship-unstealthy
+    Causes the ships listed in this sexpression to become non-
+    stealth ships (i.e. visible to radar).
+
+    Takes 1 or more arguments...
+    All: Name of ships to make non-stealthy (ships do not need
+    to be in-mission).
+*friendly-stealth-invisible*
+    friendly-stealth-invisible
+    Causes the friendly ships listed in this sexpression to be
+    invisible to radar, just like hostile stealth ships.It
+    doesn't matter if the ship is friendly at the time this sexp
+    executes: as long as it is a stealth ship, it willbe
+    invisible to radar both as hostile and as friendly.
+
+    Takes 1 or more arguments...
+    All: Name of ships (ships do not need to be in-mission)
+*friendly-stealth-visible*
+    friendly-stealth-visible
+    Causes the friendly ships listed in this sexpression to
+    resume their normal behavior of being visible to radar
+    asstealth friendlies. Does not affect their visibility as
+    stealth hostiles.
+
+    Takes 1 or more arguments...
+    All: Name of ships (ships do not need to be in-mission)
+*primitive-sensors-set-range*
+    primitive-sensors-set-range
+    Sets the range of the primitive sensors on a ship. Ships
+    outside of this range will not appear on sensors. Has no
+    effect on ships that do not have the "primitive-sensors"
+    flag2 set. Takes 2 arguments...
+    1: Ship on which to set range (ship must be in-mission)
+    2: Range, in meters
+*ship-targetable-as-bomb*
+    ship-targetable-as-bomb
+    Causes the ships listed in this sexpression to be targetable
+    with bomb targeting key.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make targetable with bomb targeting key
+    (ships do not need to be in-mission).
+*ship-untargetable-as-bomb*
+    ship-untargetable-as-bomb
+    Causes the ships listed in this sexpression to not be
+    targetable with bomb targeting key.
+
+    Takes 1 or more arguments...
+    1+: Name of ships to make nontargetable with bomb targeting
+    key (ships do not need to be in-mission).
+*kamikaze*
+    kamikaze
+    Tells ships to perform a kamikaze on its current target.
+    Takes 2 or more arguments...
+    1: Damage dealt when kamikaze is done
+    Rest: Names of ships to perform kamikaze (ships do not need
+    to be in-mission)
+*change-iff*
+    Change IFF (Action operator)
+    Sets the specified ship(s) or wing(s) or all ships of a team
+    to the specified team.
+    Takes 2 or more arguments...
+    1: Team to change to ("friendly", "hostile" or "unknown").
+    Rest: Name of ship, wing, or team to change team status of
+    (ship/wing does not need to be in-mission).
+*change-iff-color*
+    Change IFF Color (Action operator)
+    Sets the specified ship(s) or wing(s) apparent color.
+    Takes 6 or more arguments...
+    1: Name of the team from which target is observed from.
+    2: Name of the team of the observed target to receive the
+    alternate color.
+    3: Red color (value from 0 to 255).
+    4: Green color (value from 0 to 255).
+    5: Blue color (value from 0 to 255).
+    Rest: Name of ship or wing to change team status of (ship/
+    wing does not need to be in-mission).
+*add-remove-escort*
+    add-remove-escort
+    Adds or removes a ship from an escort list.
+    1: Ship to be added or removed (ship must be in-mission)
+    2: 0 to remove from the list, any positive value will be
+    used as the escort priority
+    NOTE : it _IS_ safe to add a ship which may already be on
+    the list or remove
+    a ship which is not on the list
+*ship-change-alt-name*
+    ship-change-alt-name
+    Changes the alternate ship class name displayed in the HUD
+    target window. Takes 2 or more arguments...
+    1: The ship class name to display
+    Rest: The ships to display the new class name (ships do not
+    need to be in-mission)
+*ship-change-callsign*
+    ship-change-callsign
+    Changes the callsign of a ship. Takes 2 or more arguments...
+    1: The callsign to display or empty to remove
+    Rest: The ships to display the new callsign (ships do not
+    need to be in-mission)
+*ship-tag*
+    ship-tag
+    Tags a ship. Takes 3 or 8 arguments...
+    1: The name of a ship (ship must be in-mission).
+    2: The tag level (currently 1, 2, or 3).
+    3: The tag time (in seconds).
+    4: A SSM missile (optional - used only for TAG-C).
+    5: The X origin of the SSM missile (optional - used only for
+    TAG-C).
+    6: The Y origin of the SSM missile (optional - used only for
+    TAG-C).
+    7: The Z origin of the SSM missile (optional - used only for
+    TAG-C).
+    8: The team the SSM missile belongs to (optional - used only
+    for TAG-C).
+*ship-untag*
+    ship-untag
+    Untags a ship. Takes 1 argument...
+    1: The name of a ship (ship must be in-mission).
+*set-arrival-info*
+    set-arrival-info
+    Sets arrival information for a ship or wing. Takes 2 to 8
+    arguments...
+    1: Ship or wing name
+    2: Arrival location
+    3: Arrival anchor (optional; only required for certain
+    locations)
+    4: Arrival path mask (optional; this is a bitfield where the
+    bits set to 1 correspond to the paths to use; defaults to 0
+    which is a special case that means all paths can be used)
+    5: Arrival distance (optional; defaults to 0)
+    6: Arrival delay (optional; defaults to 0)
+    7: Whether to show a jump effect if arriving from subspace
+    (optional; defaults to true)
+    8: Whether to adjust the size of the jump effect if the ship
+    is docked (optional; defaults to true)
+*set-departure-info*
+    set-departure-info
+    Sets departure information for a ship or wing. Takes 2 to 7
+    arguments...
+    1: Ship or wing name (ship/wing does not need to be in-mission)
+    2: Departure location
+    3: Departure anchor (optional; only required for certain
+    locations)
+    4: Departure path mask (optional; this is a bitfield where
+    the bits set to 1 correspond to the paths to use; defaults
+    to 0 which is a special case that means all paths can be used)
+    5: Departure delay (optional; defaults to 0)
+    6: Whether to show a jump effect if departing to subspace
+    (optional; defaults to true)
+    7: Whether to adjust the size of the jump effect if the ship
+    is docked (optional; defaults to true)
+*alter-ship-flag*
+    alter-ship-flag
+    Sets or unsets a ship's flag, object flag, parse flag, or AI
+    flag.
+
+    Takes 3 or more arguments...
+    1: Ship flag name
+    2: True if turning on, false if turning off
+    3: True/False - Apply this flag to future waves of this
+    wing. Apply to ship if not present
+    Rest: (optional) Name of ships, wings, or entire teams. If
+    not supplied, will work on all ships in the mission
+
+*alter-wing-flag*
+    alter-wing-flag
+    Sets or unsets a wing's flag.
+
+    Takes 2 or more arguments...
+    1: Wing flag name
+    2: True if turning on, false if turning off
+    Rest: (optional) Name of wings. If not supplied, will work
+    on all wings in the mission
+
+*cancel-future-waves*
+    cancel-future-waves
+    Cancel all waves of a wing which have not yet arrived. Waves
+    that have arrived already are not affected. is-destroyed-
+    delay, ship-type-destroyed, and similar operators behave as
+    though the cancelled waves do not exist.
+
+    If this operator is called on a wing which has not arrived,
+    the wing will never arrive, exactly as if its arrival cue
+    were set to false. That wing is not marked as destroyed.
+
+    Takes 1 or more arguments...
+    All: The name of a wing to cancel.

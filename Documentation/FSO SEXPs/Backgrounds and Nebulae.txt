@@ -1,0 +1,303 @@
+  Backgrounds and Nebulae
+
+*mission-set-nebula*
+    mission-set-nebula
+    Turns nebula on/off
+    Takes 1 or 2 arguments...
+    1: 0 for nebula off, 1 for nebula on
+    2: Nebula range (optional; defaults to 3000)
+*mission-set-subspace*
+    mission-set-subspace
+    Turns subspace on/off
+    Takes 1 argument...
+    1: 0 for subspace off, 1 for subspace on
+*change-background*
+    change-background
+    Sets the displayed suns and bitmaps to one of the stored
+    mission backgrounds. Takes 1 argument...
+    1: Background number (starting from 1)
+*add-background-bitmap*
+    add-background-bitmap (deprecated)
+    Adds a background bitmap to the sky. Returns an integer that
+    is stored in a variable so it can be deleted using remove-
+    background-bitmap. NOTE: This version of the SEXP uses the
+    old incorrectly-calculated angle math. Use add-background-
+    bitmap-new instead.
+
+    Takes 8 to 9 arguments...
+    1: Background bitmap name
+    2: Pitch
+    3: Bank
+    4: Heading
+    5: X scale (expressed as a percentage of the original size
+    of the bitmap)
+    6: Y scale (expressed as a percentage of the original size
+    of the bitmap)
+    7: X divisions.
+    8: Y divisions.
+    9: Numeric variable in which to store the result (optional)
+*add-background-bitmap-new*
+    add-background-bitmap-new
+    Adds a background bitmap to the sky. Returns an integer that
+    is stored in a variable so it can be deleted using remove-
+    background-bitmap. NOTE: This version of the SEXP treats the
+    angles as correctly calculated.
+
+    Takes 8 to 9 arguments...
+    1: Background bitmap name
+    2: Pitch
+    3: Bank
+    4: Heading
+    5: X scale (expressed as a percentage of the original size
+    of the bitmap)
+    6: Y scale (expressed as a percentage of the original size
+    of the bitmap)
+    7: X divisions.
+    8: Y divisions.
+    9: Numeric variable in which to store the result (optional)
+*remove-background-bitmap*
+    remove-background-bitmap
+    Removes the nth background bitmap from the mission
+
+    Takes 1 argument...
+    1: Zero based bitmap index from the 'Bitmap' box in the
+    background editor
+    You can also use the result of a previous call to add-
+    background-bitmap to remove that added bitmap
+*add-sun-bitmap*
+    add-sun-bitmap (deprecated)
+    Adds a sun bitmap to the sky. Returns an integer that is
+    stored in a variable so it can be deleted using remove-sun-
+    bitmap. NOTE: This version of the SEXP uses the old
+    incorrectly-calculated angle math. Use add-sun-bitmap-new
+    instead.
+
+    Takes 5 to 6 arguments...
+    1: Sun bitmap name
+    2: Pitch
+    3: Bank
+    4: Heading
+    5: Scale (expressed as a percentage of the original size of
+    the bitmap)
+    6: Numeric variable in which to store the result (optional)
+*add-sun-bitmap-new*
+    add-sun-bitmap-new
+    Adds a sun bitmap to the sky. Returns an integer that is
+    stored in a variable so it can be deleted using remove-sun-
+    bitmap. NOTE: This version of the SEXP treats the angles as
+    correctly calculated.
+
+    Takes 5 to 6 arguments...
+    1: Sun bitmap name
+    2: Pitch
+    3: Bank
+    4: Heading
+    5: Scale (expressed as a percentage of the original size of
+    the bitmap)
+    6: Numeric variable in which to store the result (optional)
+*remove-sun-bitmap*
+    remove-sun-bitmap
+    Removes the nth sun from the mission
+
+    Takes 1 argument...
+    1: Zero based sun index from the 'Suns' box in the
+    background editor
+    You can also use the result of a previous call to add-sun-
+    bitmap to remove that added sun
+*nebula-change-storm*
+    nebula-change-storm
+    Changes the current nebula storm
+
+    Takes 1 argument...
+    1: Nebula storm to change to
+*nebula-toggle-poof*
+    nebula-toggle-poof
+    Toggles the state of a nebula poof
+
+    Takes 2 arguments...
+    1: Name of nebula poof to toggle
+    2: A True boolean expression will toggle this poof on. A
+    false one will do the opposite.
+*nebula-fade-poof*
+    nebula-fade-poof
+    Sets a poof pattern to fade in or out over time
+    Takes 3 arguments...
+    1: Name of the nebula poof to fade
+    2: Time in milliseconds to fade
+    3: Whether or not to fade in or out. True to fade in, false
+    to fade out
+*nebula-change-pattern*
+    nebula-change-pattern
+    Changes the current nebula background pattern (as defined in
+    nebula.tbl)
+
+    Takes 1 argument...
+    1: Nebula background pattern to change to
+*nebula-change-fog-color*
+    nebula-change-fog-color
+    Changes the current nebula fog color
+
+    Takes 3 arguments...
+    1: Red (0 - 255)
+    2: Green (0 - 255)
+    3: Blue (0 - 255)
+*volumetrics-toggle*
+    volumetrics-toggle
+    Toggles whether the volumetrics for the current mission are
+    shown or not. Does nothing if no volumetrics are defined for
+    the mission
+    Takes 1 argument...
+    1: Will be shown
+*set-skybox-model*
+    set-skybox-model
+    Sets the current skybox model. Takes 1-7 arguments
+    1: Model filename (with .pof extension) to switch to
+    2: Restart animated textures, if they exist (optional,
+    defaults to true)
+    3-8: Set or unset the following skyboxes flags (optional)
+    add-lighting, no-transparency, add-zbuffer
+    add-culling, no-glowmaps, force-clamp
+
+    Note: If the model filename is set to "default" with no
+    extension then it will switch to the mission supplied
+    default skybox. If it is an empty string or "none" then it
+    will remove any current skybox.
+*set-skybox-orientation*
+    set-skybox-orientation
+    Sets the current skybox orientation. Takes 3 arguments...
+    1: Pitch
+    2: Bank
+    3: Heading
+*set-skybox-alpha*
+    set-skybox-alpha
+    Sets the current skybox transparency. Takes 1 argument...
+    1: Alpha value x1000 (so 1.0 is represented as 1000)
+*set-ambient-light*
+    set-ambient-light
+    Sets the ambient light level for the mission
+    Takes 3 arguments
+    1: Red (0 - 255).
+    2: Green (0 - 255).
+    3: Blue (0 - 255).
+*toggle-asteroid-field*
+    toggle-asteroid-field
+    Turns an existing asteroid or debris field on/off. Will do
+    nothing if no field is defined in the mission file or set
+    with sexps.
+    Note that this differs from actually removing and adding a
+    field in that it only toggles a field from being rendered or
+    calculated.
+    Takes 1 argument...
+    1: true for field on, false for field off
+*set-asteroid-field*
+    set-asteroid-field (deprecated in favor of config-asteroid-
+    field)
+    Creates or overwrites the asteroid or debris field with an
+    asteroid field.
+    Takes 1 or more arguments...
+    1: Number of asteroids in the field, or 0 to remove an
+    existing field
+    2: 0 for passive field, 1 for active field, 2 for enhanced
+    passive, 3 for enhanced active, defaults to 0
+    3: The speed of the asteroids, defaults to 0
+    4: True to enable brown asteroids, defaults to true
+    5: True to enable blue asteroids, defaults to false
+    6: True to enable orange asteroids, defaults to false
+    7: Outerbox Min X, defaults to -1000
+    8: Outerbox Max X, defaults to 1000
+    9: Outerbox Min Y, defaults to -1000
+    10: Outerbox Max Y, defaults to 1000
+    11: Outerbox Min Z, defaults to -1000
+    12: Outerbox Max Z, defaults to 1000
+    13: True to activate the inner box where no asteroids will
+    be spawned, defaults to false
+    14: Innerbox Min X, defaults to -500
+    15: Innerbox Max X, defaults to 500
+    16: Innerbox Min Y, defaults to -500
+    17: Innerbox Max Y, defaults to 500
+    18: Innerbox Min Z, defaults to -500
+    19: Innerbox Max Z, defaults to 500
+    Rest: The ships the asteroid field will target if it's an
+    active field
+*set-debris-field*
+    set-debris-field (deprecated in favor of config-debris-field)
+    Creates or overwrites the asteroid or debris field with a
+    debris field.
+    Takes 1 or more arguments...
+    1: Number of debris in the field, or 0 to remove an existing
+    field
+    2: The speed of the asteroids, defaults to 0
+    3: The type of debris, defaults to none
+    4: The type of debris, defaults to none
+    5: The type of debris, defaults to none
+    6: Outerbox Min X, defaults to -1000
+    7: Outerbox Max X, defaults to 1000
+    8: Outerbox Min Y, defaults to -1000
+    9: Outerbox Max Y, defaults to 1000
+    10: Outerbox Min Z, defaults to -1000
+    11: Outerbox Max Z, defaults to 1000
+    12: If the field uses enhanced spawning checks, defaults to
+    false
+*config-asteroid-field*
+    config-asteroid-field
+    Creates or overwrites the asteroid or debris field with an
+    asteroid field.
+    Note that setting targets for an active field must be done
+    with config-asteroid-targets.
+    Takes 1 or more arguments...
+    1: Number of asteroids in the field, or 0 to remove an
+    existing field
+    2: 0 for passive field, 1 for active field, 2 for enhanced
+    passive, 3 for enhanced active, defaults to 0
+    3: The speed of the asteroids, defaults to 0
+    4: Outerbox Min X, defaults to -1000
+    5: Outerbox Max X, defaults to 1000
+    6: Outerbox Min Y, defaults to -1000
+    7: Outerbox Max Y, defaults to 1000
+    8: Outerbox Min Z, defaults to -1000
+    9: Outerbox Max Z, defaults to 1000
+    10: True to activate the inner box where no asteroids will
+    be spawned, defaults to false
+    11: Innerbox Min X, defaults to -500
+    12: Innerbox Max X, defaults to 500
+    13: Innerbox Min Y, defaults to -500
+    14: Innerbox Max Y, defaults to 500
+    15: Innerbox Min Z, defaults to -500
+    16: Innerbox Max Z, defaults to 500
+    Rest: The asteroid types to enable
+*config-debris-field*
+    config-debris-field
+    Creates or overwrites the asteroid or debris field with a
+    debris field.
+    Takes 1 or more arguments...
+    1: Number of debris in the field, or 0 to remove an existing
+    field
+    2: The speed of the asteroids, defaults to 0
+    3: Outerbox Min X, defaults to -1000
+    4: Outerbox Max X, defaults to 1000
+    5: Outerbox Min Y, defaults to -1000
+    6: Outerbox Max Y, defaults to 1000
+    7: Outerbox Min Z, defaults to -1000
+    8: Outerbox Max Z, defaults to 1000
+    9: If the field uses enhanced spawning checks, defaults to
+    false
+    Rest: The asteroid types to enable
+*config-field-targets*
+    config-field-targets
+    Adds or removes ships from the Asteroid Field targets list.
+    Only works on Active fields.
+    You can remove all targets at once by supplying 0 ship
+    arguments.
+    Removing all targets will force the field to use default
+    behavior and target the first ship on the escort list.
+    The inverse is not true. Ship arguments must be provided to
+    add targets.
+    Takes 1 or more arguments...
+    1: True to add to the list, false to remove
+    Rest: The names of ships to add or remove
+*set-motion-debris*
+    set-motion-debris
+    Sets the bitmap used for motion debris. If set-motion-
+    debris-override is set then this will unset it.
+    Takes 1 argument...
+    1: the name of the motion debris

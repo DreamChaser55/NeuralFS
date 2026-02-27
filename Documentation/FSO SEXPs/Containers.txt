@@ -1,0 +1,88 @@
+  Containers
+
+*add-to-list*
+    add-to-list
+    Adds new entries to a list container.
+
+    Takes 3 or more arguments...
+    1: Name of the list container.
+    2: Indicates whether to add the data to the start or the end
+    of the list. True means at the end, false means at the start.
+    Rest: The data to be added.
+*remove-from-list*
+    remove-from-list
+    Removes entries from a list container.
+
+    Takes 2 or more arguments...
+    1: Name of the list container.
+    Rest: The data to be removed.
+*add-to-map*
+    add-to-map
+    Adds new entries to a map container.
+    If the map container already has data associated with the
+    provided key, the data is replaced.
+
+    Takes 3 or more arguments...
+    1: Name of the map container.
+    2: Key that will be used to retrieve the data stored in the
+    map.
+    3: Data that will be associated with the provided key.
+    Rest: Additional pairs of arguments of a key and its
+    associated data.
+*remove-from-map*
+    remove-from-map
+    Removes entries by their keys from a map container.
+    Ignores keys that are not associated with data in the map
+    container.
+
+    Takes 2 or more arguments...
+    1: Name of the map container.
+    Rest: Key whose data will be removed.
+*get-map-keys*
+    get-map-keys
+    Copies a map container's keys in no particular order into a
+    list container.
+    The list container's data type must match the map
+    container's key type.
+    By default, the list container is cleared before the keys
+    are copied.
+
+    Takes 2 or 3 arguments...
+    1: Name of the map container.
+    2: Name of the list container.
+    3: (Optional) When true, the list container's current
+    contents are deleted. When false, the keys are appended to
+    the end of the list.
+*clear-container*
+    clear-container
+    Deletes the current contents of one or more containers.
+
+    Takes 1 or more arguments...
+    All: Name of the container(s) to clear.
+*copy-container*
+    copy-container
+    Copies a container's contents to another container.
+    The two containers' types must match, except their
+    persistence rules can be different.
+    By default, the second container is cleared before copying
+    takes place.
+
+    Takes 2 or 3 arguments...
+    1: Name of the container to copy from.
+    2: Name of the container to copy to.
+    3: (Optional) When true, the second container's contents are
+    deleted before copying.
+*apply-container-filter*
+    apply-container-filter
+    Removes values from a container using a list container as a
+    filter.
+    All values in the 'filter' container will be removed from
+    the first container. The 'filter' container is left unchanged.
+    If the first container is a map container, then the filter
+    is applied to its keys and not its data.
+    The filter's data type must match the type of the values to
+    be removed from the first container.
+
+    Takes 2 arguments...
+    1: Name of the container to apply the filter to.
+    2: Name of the list container to be used as the filter.

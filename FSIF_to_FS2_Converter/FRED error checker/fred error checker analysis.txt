@@ -1,0 +1,71 @@
+Freespace Mission Editor: Error Checker Analysis
+File: Editor.cpp
+Core Function: Editor::global_error_check_impl
+1. Overview
+The global_error_check_impl function serves as the central validation engine for the Freespace mission editor (FRED). It systematically iterates through every aspect of a mission—objects, ships, wings, events, and logic—to ensure data integrity before a mission is saved or played.
+High-Level Workflow
+Initiation: The process begins in global_error_check, which calls the implementation function global_error_check_impl.
+Result:
+Success: If the function returns 0, a "No errors were detected" message is displayed.
+Failure: If errors are found, the function flags them, often displaying a dialog box to the user describing the specific issue.
+2. Core Validation Steps
+A. Object Iteration & Basic Validation
+The function iterates through the main object list (obj_used_list) to perform sanity checks:
+Type Validation: Ensures objects are valid types (Ships, Starts, Waypoints, Jump Nodes).
+Player Ships: Checks that objects marked as Player Starts (OBJ_START) use a valid ship class and possess at least one primary weapon.
+Name Duplication: Accumulates names to check for duplicates, ensuring unique identifiers across all objects.
+Wing Integrity: Verifies wing indices are correct and ensures ships are properly listed in the wing's internal arrays.
+Flag Conflicts: Checks for logical contradictions (e.g., a "destroy before mission start" flag combined with a hotkey assignment).
+B. Detailed Ship Verification
+The function iterates through the Ships array to validate game-specific logic:
+S-Expressions (SEXP): Validates syntax for "Arrival Cues" and "Departure Cues" using the helper fred_check_sexp.
+Anchors: Verifies target anchors exist if ships arrive/depart from dock bays or specific locations.
+AI Goals: Calls error_check_initial_orders to validate initial orders (e.g., "Attack", "Guard").
+Docking: Checks initial docking states, ensuring the partner ship exists and that "dock points" on the 3D models are compatible.
+Loadouts: For player wings, checks if assigned weapons are actually allowed on that specific ship class.
+C. Wing Verification
+Validates Wings (groups of ships):
+Consistency: Ensures all ships in a wing belong to the same team.
+Wave Logic: Validates wave counts, thresholds, and "special ship" indices.
+Orders: Enforces that all ships in a wing accept the same player orders to prevent command conflicts.
+D. Mission Logic & Events
+Validates abstract mission logic:
+Waypoints: Ensures paths are uniquely named and linked to actual waypoint objects.
+Reinforcements: Verifies that named reinforcements actually exist.
+Events/Goals: Validates boolean formulas for Mission Events and Goals.
+Briefings: Checks for duplicate icon IDs to prevent visual glitches.
+E. Multiplayer & Player Constraints
+Calls global_error_check_player_wings to enforce player-specific rules:
+Team vs. Team (TVT): Ensures required wings exist for multiplayer modes.
+Wave Limits: Enforces a limit of 1 wave and a maximum of 4 ships per player wing.
+Slot Assignment: Verifies player objects are assigned to the correct starting wings.
+Species Consistency: Prevents mixed species (e.g., Terran and Vasudan ships) within the same player wing.
+3. Helper Function Analysis
+A. SEXP Validation: fred_check_sexp
+This function acts as a safety layer for mission scripts (logic, arrival cues, etc.).
+Syntax Validation (check_sexp_syntax):
+Analyzes the expression tree structure.
+Ensures arguments match required types (e.g., ensures distance operators receive ship names).
+Error Handling: If syntax is invalid, it converts the SEXP tree to a string, isolates the faulty node, and generates a verbose error report including the location and specific node text.
+Potential Issue Detection (check_sexp_potential_issues):
+Runs a secondary check for logic that is syntactically valid but likely unintended (e.g., comparing numbers to strings).
+Generates warnings rather than hard errors, allowing the user to bypass them if the logic is intentional.
+B. Initial Orders Validation: error_check_initial_orders
+Validates initial AI goals assigned to ships or wings.
+Permission Check:
+Calls ai_query_goal_valid to ensure the ship type is capable of performing the specific order (e.g., ensuring fighters cannot perform capital ship docking).
+Target Classification (Flags):
+Flag 0: No target required (e.g., Warp).
+Flag 1: Waypoint target required.
+Flag 2: Ship target required (e.g., Dock, Guard).
+Flag 3: Wing target required.
+Target Validation:
+Self-Targeting: Prevents a ship from targeting itself.
+Existence: Verifies the named target (Ship, Wing, or Waypoint) exists in the mission.
+Consistency: Ensures a wing does not target a ship that is inside that same wing.
+Specific Goal Logic:
+Subsystems: Verifies named subsystems exist on the target ship.
+Docking: Checks model compatibility (size/type) and validity of named dock points.
+Team Alignment (IFF):
+Guarding: Ensures targets are on the same team (Error if guarding hostile).
+Attacking: Ensures targets are on a different team (Error if attacking friendly).

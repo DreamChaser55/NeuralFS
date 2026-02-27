@@ -1,0 +1,46 @@
+  Damaged Escorts and Support Ships
+
+*damaged-escort-priority*
+    damaged-escort-list
+    Sets the most damaged ship in <ship list> to <priority1>,
+    sets the others to <priority2>. Don't use this sexp in the
+    same mission as damaged-escort-list-all, or strange results
+    might occur.
+    1: Priority1
+    2: Priority2
+    Rest: <ship_list>
+
+*damaged-escort-priority-all*
+    damaged-escort-list-all
+    Sets the most damaged ship in the entire existing escort
+    list (even what's not shown onscreen) to <priority1>, the
+    next most damaged to <priority2>, and so on. If there are
+    more ships than priorities, the least most damaged ships are
+    all set to the last priority in the list. Don't use this
+    sexp in the same mission as damaged-escort-list, or strange
+    results might occur.
+    Takes between 1 and MAX_COMPLETE_ESCORT_LIST (currently 20)
+    arguments...
+    1: Priority 1
+    Rest: Priorities 2 through 20 (optional)
+
+*set-support-ship*
+    set-support-ship
+    Sets information for all support ships in a mission. This
+    includes not only arrival/departure information, but also
+    whether and how many times ships can rearm, and the
+    characteristics of the support ship. Takes 6 or 7 arguments...
+    1: Arrival location
+    2: Arrival anchor
+    3: Departure location
+    4: Departure anchor
+    5: Support ship class
+    6: Maximum number of support ships consecutively in this
+    mission (use 0 to disallow support; use a negative number
+    for infinity)
+    7: Maximum number of support ships concurrently in this
+    mission (optional, default 1)
+
+    Note: The support ship will emerge from or depart into
+    hyperspace if the location is set as hyperspace *or* the
+    anchor is set as <no anchor>.

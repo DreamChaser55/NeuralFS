@@ -1,0 +1,96 @@
+# FSIF to FS2 Converter (part of NeuralFS)
+
+## Overview
+This tool converts mission files from the concise FreeSpace Intermediate Format (.fsif) into the standard, engine-readable FreeSpace Open mission format (.fs2).
+FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstracts .fs2 boilerplate for rapid mission prototyping and AI-driven content creation.
+
+## Features (high level)
+- Concise YAML syntax
+- High-level abstractions (ship templates, unified wings)
+- Automatic boilerplate generation
+- S-Expression (SEXP) preservation for mission logic
+- Localization of selected player-facing strings via XSTR
+- Environment support (backgrounds, fog, star count, ambient light)
+- Full nebula (volumetric) support
+- Asteroid/debris fields
+- Jump nodes
+- Reinforcements
+- Automatic TTS voice generation during conversion
+  - **Google Gemini 2.5 TTS** (Default)
+  - **ElevenLabs TTS**
+- Basic validation of FSIF files with actionable error reports
+- Advanced SEXP Validation (semantic checks)
+
+## Versions
+FSIF and converter versions:
+- **FSIF**: 2.5 (current)
+- **FSIF version support**: converter accepts FSIF **2.5 only**. Files with other `fsif_version` values are rejected.
+
+## Requirements
+- Python 3.9+
+- PyYAML
+- pydantic>=2.0
+
+Optional (for Google TTS):
+- `google-genai` (for Gemini 2.5 TTS)
+- A configured Google Cloud project (API Key or Vertex AI)
+
+Optional (for ElevenLabs TTS):
+- `elevenlabs` (for ElevenLabs API)
+- An ElevenLabs account and API Key
+
+## Installation
+Install the required libraries:
+```bash
+# Core requirements
+pip install PyYAML pydantic
+
+# For Google TTS
+pip install google-genai
+
+# For ElevenLabs TTS
+pip install elevenlabs
+```
+
+## Documentation
+- [CLI Usage](../Documentation/fsif/converter/cli.md)
+- [Converter Implementation Details](../Documentation/fsif/converter/implementation_details.md)
+
+## Usage (GUI)
+A graphical user interface (`fsif_converter_gui.py`) is available for users who prefer not to use the command line.
+
+Run the GUI script:
+```bash
+python fsif_converter_gui.py
+```
+This tool allows you to:
+- Select a single file or a folder for batch conversion.
+- Configure output paths.
+- Toggle TTS generation and configure TTS options (overwrite, dry run, etc.).
+- View real-time conversion logs.
+
+## Data Generation
+The converter relies on valid FSO data (ship classes, weapons, SEXPs, voices, etc.) defined in `fs_data.py`. This file is generated from the official project documentation located in `Documentation/`.
+
+To update the validation data (e.g., after adding a new ship class or SEXP to the documentation):
+```bash
+python tools/generate_fs_data.py
+```
+This will re-parse the Markdown files and overwrite `fs_data.py` with the latest definitions.
+
+## Project Structure
+- `fsif_to_fs2.py` — CLI entry: reads FSIF, generates TTS, and writes FS2.
+- `fsif_converter_gui.py` — Graphical User Interface (GUI) for the converter.
+- `mission_loader.py` — Loads FSIF, applies templates, expands wings.
+- `fs2_writer.py` — Emits FS2 sections.
+- `validator.py` — Performs strict validation of logic, references, and constraints.
+- `data_models.py` — Pydantic models for in-memory mission structures and schema validation.
+- `fs_flags_constants.py` — FS2 format flag definitions and bitmask constants.
+- `fs_data.py` — Auto-generated static reference data and token lists (teams, weapons, backgrounds, etc.) for validation. Do not edit manually.
+- `tools/generate_fs_data.py` — Script to generate `fs_data.py` by parsing the project's Markdown documentation.
+- `briefing_icon_types.py` — Canonical mappings for briefing icon types.
+- `tts_provider_base.py` — Abstract base class and common orchestration logic for TTS providers.
+- `tts_google.py` — Google GenAI TTS Provider Implementation.
+- `tts_elevenlabs.py` — ElevenLabs TTS Provider Implementation.
+- `voice_manager.py` — Manages voice filename generation and normalization. It assigns unique filenames to voiced lines, handling collision resolution based on the selected TTS strategy.
+- `utils.py` — Shared utility functions.

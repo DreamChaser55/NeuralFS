@@ -1,0 +1,179 @@
+# FreeSpace Universe Bible (Condensed version)
+
+## General Overview
+
+Games: FreeSpace 1 (FS1), Freespace 1: Silent Threat, FreeSpace 2 (FS2).
+
+Setting: The 24th Century (Canon focus: 2335–2367). Humanity (Terrans) has expanded into the stars, forming the Galactic Terran Alliance (GTA).
+The Conflict: After a 14-year war with the Vasudans, a technologically superior alien race, the Shivans, emerges. This forces a Terran-Vasudan alliance to prevent total extinction.
+
+## Subspace Physics
+Faster-than-light travel is achieved via Subspace, an n-dimensional tunnel system.
+
+Intrasystem Jumps: Short-range jumps within a star system. Requires a gravitational field.
+
+Intersystem Jumps: Travel between star systems via specific Jump Nodes.
+
+Mechanics: Shields do not function in subspace. Travel takes minutes. Large ships cannot jump near nodes without recharging; small ships gained intersystem jump capability in 2335.
+
+Nodes: Most are unstable. Permanent nodes create the "roadmap" of the galaxy.
+
+## Major Species
+
+Terrans (GTA): Humans originating from Earth (Sol). Intelligent and versatile. Governed by the Galactic Terran Alliance. Military arms include Galactic Terran Intelligence (GTI) and Special Operations Command (SOC).
+
+Vasudans (PVE): Tall, skeletal, durable bipeds from the harsh desert world Vasuda Prime. Society is rigid, ceremonial, and governed by the Parliamentary Vasudan Empire (PVE). Space travel was driven by resource scarcity.
+
+Shivans: An enigmatic, xenocidal species of unknown origin. Insectoid appearance with multiple eyes and legs (possibly zero-G evolution). They utilize superior shielding and weaponry. Their motivation appears to be the destruction of advanced sentient life.
+
+The Ancients: An extinct civilization destroyed by the Shivans 8,000 years ago. Their ruins in Altair provided the key technology (subspace tracking) required to defeat the Shivans. They also built the Knossos portals (featured in FS2).
+
+## Factions
+
+Hammer of Light (HoL): A rogue Vasudan cult that worships Shivans as "cosmic redeemers." They actively fight against the GTA/PVE alliance.
+
+Galactic Terran-Vasudan Alliance (GTVA): The unified government formed during the Reconstruction Era (post-FS1).
+
+Neo-Terran Front (NTF): A xenophobic human rebel faction led by Admiral Bosch (FS2 era), opposed to the GTVA.
+
+## Timeline of Events
+
+2300–2321 (Unification Era): Terrans discover subspace, form the GTA, and colonize 12 systems.
+
+2321–2335 (The 14-Year War): First contact with Vasudans leads to a brutal, stalemated war.
+
+2335 (The Great War / FS1):
+
+Shivans appear in the Ross 128 system.
+
+Terrans and Vasudans sign a ceasefire to fight the common threat.
+
+The Shivan Superdestroyer Lucifer destroys Vasuda Prime.
+
+Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node and isolating Earth (Sol) from the rest of the galaxy.
+
+2335 (The Hades Rebellion / Silent Threat): Shortly after the Great War, a rogue GTI faction attempts a coup using Shivan-hybrid technology (the GTD Hades). The rebellion is crushed.
+
+2335–2367 (Reconstruction Era): The GTVA is formed. Technology advances significantly.
+
+2367 (The Second Great War / FS2): The NTF rebellion occurs; Shivans return via the Knossos portal. The Capella system is destroyed to seal off the Shivan fleet.
+
+## Ship Database
+Fighter & Bomber Classes
+Class Name	Faction	Type	Key Characteristics
+Apollo	Terran	Fighter	Standard GTA workhorse; versatile.
+Ulysses	Terran	Fighter	High agility, weak armor; "The Bat."
+Valkyrie	Terran	Interceptor	Fastest Terran ship; bomber interceptor.
+Hercules	Terran	Heavy Fighter	Heavy assault; massive shielding/weaponry.
+Athena	Terran	Light Bomber	"Lightning bomber"; dogfight capable.
+Medusa	Terran	Bomber	Standard anti-cruiser bomber.
+Ursa	Terran	Heavy Bomber	Anti-capital ship; carries Harbinger bombs.
+Anubis	Vasudan	Fighter	Weak, cheap; often used in swarms.
+Horus	Vasudan	Interceptor	Extremely fast; glass cannon.
+Seth	Vasudan	Fighter	"The Turtle"; heavy payload, slow.
+Thoth	Vasudan	Fighter	Dangerous HoL exclusive; high-tech.
+Amun	Vasudan	Heavy Bomber	Massive payload, heavy turrets, slow.
+Osiris	Vasudan	Bomber	Replaced the Amun; faster/more agile.
+Scorpion	Shivan	Scout/Fighter	Fast, maneuverable, weak hull.
+Basilisk	Shivan	Heavy Fighter	Durable; strong shielding.
+Manticore	Shivan	Interceptor	High speed; weak shields.
+Dragon	Shivan	Advanced Fighter	Unmatched agility; very strong shields.
+Shaitan	Shivan	Bomber	Strong shields, low payload.
+Nephilim	Shivan	Bomber	4 cannons, 2 turrets; major threat.
+Seraphim	Shivan	Heavy Bomber	Massive shielding; Class A threat.
+Capital Ships
+Class Name	Faction	Type	Key Notes
+Fenris/Leviathan	Terran	Cruiser	Strike (Fenris) and Defense (Leviathan) variants.
+Orion	Terran	Destroyer	2km length; symbol of Terran power (Galatea, Bastion).
+Hades	Terran	Superdestroyer	GTI/Shivan hybrid; rogue flagship.
+Aten	Vasudan	Cruiser	Weak armor/weapons; Class B threat.
+Typhon	Vasudan	Destroyer	Heavy armor/weaponry; rare.
+Cain/Lilith	Shivan	Cruiser	Cain is common/weak; Lilith is heavily armored.
+Demon	Shivan	Destroyer	Massive, carrier of fighters/bombers (Eva).
+Lucifer	Shivan	Superdestroyer	Invulnerable shields in normal space; destroyed Vasuda Prime.
+
+## Terran Weaponry
+
+1. Primary Weapons (Guns)
+GTW ML-16 Laser: High rate of fire, low hull damage, negligible shield penetration. Can be equipped by every fighter/bomber.
+GTW-15 Avenger: Good hull damage, decent shield suppression. Compatible with every fighter/bomber.
+GTW Flail: High velocity and rate of fire, low damage per shot, decent against shields. Has kinetic effects on target. Cannot be equipped by GFT Valkyrie and GTB Medusa.
+GTW Prometheus: The ultimate hull killer, also pretty good against shields. High power consumption. Cannot be equipped by GTB Athena.
+GTW Banshee: The ultimate shield killer. Low hull damage. High power consumption. Low compatibility: can only be equipped by GTF Valkyrie, GTF Hercules and GTF Loki.
+GTW Disruptor / GTM D-Advanced: Low hull damage, high subsystem damage. Useful for disabling engines or destroying turrets on capital ships without killing the ship. Disruptor can be equipped by every fighter/bomber except the GTB Medusa. D-Advanced is experimental and only compatible with GTF Ulysses.
+
+2. Secondary Weapons (Missiles)
+GTM MX-50: Heat-seeking. Weak damage, weak tracking.
+GTM Fury: Small, fast dumbfire missiles, low yield, high rate of fire. Use in close combat situations.
+GTM Interceptor: Aspect-seeking, high velocity, pretty high damage.
+GTM Hornet: Aspect-seeking swarm (4 missiles per volley). High hull damage, if all 4 missiles hit the target.
+GTM Phoenix V: Aspect-seeking, High yield, relatively slow velocity, low rate of fire. Anti-bomber (interception) missile.
+GTM Synaptic: Area suppression cluster weapon. Releases small heat-seeking "bomblets". Can only be equipped by bombers.
+GTM Stiletto / GTM D-missile: Zero hull damage, massive subsystem and turret damage.
+GTM Tsunami: Anti-cruiser bomb. Heavy hull damage, slow lock. Fits only on GTB Medusa and GTB Ursa.
+GTM Harbinger: Anti-capital ship bomb. Nuclear yield. Very slow lock. Massive damage and massive blast radius. Only fits on GTB Ursa.
+
+## Notable Technologies
+
+Shielding: Originally Shivan-exclusive; adapted by Terrans/Vasudans in 2335.
+Subspace Tracking: Ancient technology allowing ships to be tracked and targeted inside subspace.
+
+## FS1 Campaign Synopsis (The Great War)
+
+Act 1: The Emergence
+
+The GTA and PVE are in the 14th year of a war of attrition.
+
+First Contact: In the Ross 128 system, the GTD Galatea encounters unknown ships (Shivans) that decimate Terran forces with impenetrable shields.
+
+Escalation: The GTSC Plato is destroyed carrying prototypes. The GTA and PVE sign a desperate ceasefire.
+
+Discovery: A daring raid on a Shivan depot in Ikeya yields shield technology and sensor data, allowing Terran ships to finally target and track Shivan vessels.
+
+The Taranis: The GTA captures a Shivan cruiser (Taranis), but it is tracked by the Shivans to the Tombaugh Station, leading to the first appearance of the SD Lucifer.
+
+Act 2: The Onslaught
+
+The Shivan fleet, led by the Lucifer, pushes toward the core systems.
+
+Loss of Ribos: The Lucifer destroys Tombaugh Station with ease due to its invulnerable shielding.
+
+Counter-Ops: The GTA launches operations in Antares and Deneb. They capture a Shivan Dragon fighter, allowing scientists to reverse-engineer advanced propulsion and weaponry.
+
+Tragedy in Deneb: The Lucifer ambushes the fleet in Deneb. The GTD Galatea is destroyed while covering the evacuation. The path to Vasuda Prime is left open.
+
+Act 3: Extinction and Victory
+
+Fall of Vasuda: The Lucifer bombards Vasuda Prime for 13 hours, killing billions and rendering the planet uninhabitable.
+
+The Ancients: Refugees flee to Altair, discovering ruins of an extinct race (The Ancients). Data retrieved reveals that Shivan shields do not function in subspace and that they can be tracked there.
+
+The Final Strike: The Lucifer moves to the Sirius system to jump to Sol (Earth). The GTD Bastion intercepts the Lucifer as it enters the Delta Serpentis-Sol jump node.
+
+Sol Isolation: Inside the subspace tunnel, Terran bombers destroy the Lucifer’s reactors. The resulting explosion collapses the jump node, saving the galaxy but sealing Earth off from the rest of the universe.
+
+## Expansion: Silent Threat (The Hades Rebellion)
+
+Context: Set immediately following the Great War.
+
+The Plot: Galactic Terran Intelligence (GTI) goes rogue, believing the GTA is too weak to protect humanity. They hide the existence of the GTD Hades, a superdestroyer built with Shivan technology.
+
+Resolution: The player (originally working for GTI) defects to the GTA. The Hades is tracked and destroyed, ending the rebellion.
+
+## Star System Reference
+
+Key systems connected by Jump Nodes.
+
+System	Connections	Notes
+Sol	Delta Serpentis	Earth's system; isolated after FS1.
+Delta Serpentis	Sol, Beta Aquilae, Ross 128	Staging ground for final battle.
+Antares	Beta Aquilae, Ribos, Vasuda, Vega	Major strategic hub.
+Vasuda	Antares, Deneb, Alpha Centauri	Vasudan homeworld (destroyed).
+Deneb	Sirius, Vasuda, Vega, Altair	Site of Galatea's destruction.
+Ribos	Antares, Ikeya	Site of Tombaugh destruction.
+Beta Aquilae	Antares, Delta Serpentis, Vega	Location of key installation.
+Ross 128	Delta Serpentis, Laramis	Site of first Shivan contact.
+Altair	Aldebaran	Site of Ancient ruins.
+Capella	Vega, Gamma Draconis	Key system in FS2.
+
+Note on Inconsistencies: Mission dialogue implies the existence of unstable "jump corridors" not on official maps, such as Deneb-Altair (used for Ancient artifacts) and Sirius-Delta Serpentis (used by the Lucifer). These are considered unstable nodes used only in desperation or by Shivan advanced drives.

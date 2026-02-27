@@ -1,0 +1,116 @@
+  Nav Points
+
+*add-nav-waypoint*
+    add-nav-waypoint
+    Adds a Navpoint to a navpoint path. Takes 3 or 4 Arguments...
+    1: Name of the new navpoint.
+    2: Name of the navpoint path the new navpoint should be
+    added to.
+    3: Position where the new navpoint will be inserted. Note:
+    This is 1-indexed, so the first waypoint in a path has
+    position 1.
+    4: (Optional Argument) Controls the visibility of the new
+    navpoint. Only entities belonging to the chosen category
+    will be able to see it.
+*add-nav-ship*
+    add-nav-ship
+    Binds the named navpoint to the named ship - when the ship
+    moves, the waypoint moves with it. Takes 2 Arguments...
+    1: The NavPoint's Name
+    2: The Ship's Name (ship must be in-mission)
+*del-nav*
+    del-nav
+    Deletes a nav point. Takes 1 Argument...
+    1: NavPoint Name
+*hide-nav*
+    hide-nav
+    Hides a nav point. Takes 1 Argument...
+    1: NavPoint Name, it then 'hides' that Nav Point
+*restrict-nav*
+    restrict-nav
+    This causes the nav point to be unselectable. Takes 1
+    Argument...
+    1: The Navpoint name
+*unhide-nav*
+    unhide-nav
+    Restores a hidden navpoint. Takes 1 Argument...
+    1: The Navpoint Name
+*unrestrict-nav*
+    unrestrict-nav
+    Removes restrictions from a Navpoint. Takes 1 Argument...
+    1: The Navpoint Name
+*set-nav-visited*
+    set-nav-visited
+    Sets the status of the given Navpoint to "visited". Takes 1
+    Argument...
+    1: The Navpoint Name
+*unset-nav-visited*
+    unset-nav-visited
+    Removes the "visited" status from a Navpoint. Takes 1
+    Argument...
+    1: The Navpoint Name
+*set-nav-carry*
+    nav-set-carry
+    Sets the Nav Carry flag for all listed ships. Vessels with
+    this flag will follow the player into and out of autopilot.
+    Takes 1 or more arguments...
+    1: Ships (must be in-mission) and Wings (do not need to be
+    in-mission) that should receive the Nav Carry flag.
+*unset-nav-carry*
+    unset-nav-carry
+    Removes the Nav Carry flag from all listed ships and wings.
+    Takes 1 or more arguments...
+    1: Ships (must be in-mission) and Wings (do not need to be
+    in-mission) to remove the Nav Carry flag from
+*set-nav-needslink*
+    set-nav-needslink
+    Marks all listed ships as needing to link up before entering
+    autopilot.
+    Takes 1 or more arguments...
+    1: Ships to mark (ships must be in-mission)
+*unset-nav-needslink*
+    unset-nav-needslink
+    Removes the requirement for the listed ships to link up
+    before entering autopilot.
+    Takes 1 or more arguments...
+    1: Ships to mark (ships must be in-mission)
+*use-nav-cinematics*
+    use-nav-cinematics
+    Controls the use of the cinematic autopilot camera. Takes 1
+    Argument... 1: Set to true to enable automatic cinematics,
+    set to false to disable automatic cinematics.
+*use-autopilot*
+    use-autopilot
+    Takes 1 boolean argument.
+    1: Set to true to enable autopilot, set to false to disable
+    autopilot.
+*select-nav*
+    nav-select (Action operator)
+    Selects a nav point.
+
+    Takes 1 argument...
+    1: Name of the nav point.
+*unselect-nav*
+    nav-deselect (Action operator)
+    Deselects any navpoint selected.
+
+    Takes no arguments...
+*set-nav-color*
+    nav-set-color (Action operator)
+    Sets the color used by this navpoint on the HUD.
+
+    Takes 4 or more arguments...
+    1: Red value
+    2: Green value
+    3: Blue value
+    Rest: Navpoints that should use this color
+*set-nav-visited-color*
+    nav-set-visited-color (Action operator)
+    Sets the color used by this navpoint on the HUD after it has
+    been visited.
+
+    Takes 4 or more arguments...
+    1: Red value
+    2: Green value
+    3: Blue value
+    Rest: Navpoints that should use this color

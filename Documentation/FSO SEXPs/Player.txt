@@ -1,0 +1,100 @@
+  Player
+
+*was-promotion-granted*
+    Was promotion granted (Boolean operator)
+    Returns true if a promotion was granted via the 'Grant
+    promotion' operator in the mission.
+
+    Returns a boolean value. Takes no arguments.
+*was-medal-granted*
+    Was medal granted (Boolean operator)
+    Returns true if a medal was granted via via the 'Grant
+    medal' operator in the mission. If you provide the optional
+    argument to this operator, then true is only returned if the
+    specified medal was granted.
+
+    Returns a boolean value. Takes 0 or 1 arguments...
+    1: Name of medal to specifically check for (optional).
+*skill-level-at-least*
+    Skill level at least (Boolean operator)
+    Returns true if the player has selected the given skill
+    level or higher.
+
+    Returns a boolean value. Takes 1 argument...
+    1: Name of the skill level to check.
+*num_kills*
+    num-kills
+    Returns the # of kills a player has. The ship specified in
+    the first field should be the ship the player is in.
+    So, for single player, this would be Alpha 1. For
+    multiplayer, it can be any ship with a player in it. If, at any
+    time there is no player in a given ship, this sexpression
+    will return 0
+*num_assists*
+    num-assists
+    Returns the # of assists a player has. The ship specified in
+    the first field should be the ship the player is in.
+    So, for single player, this would be Alpha 1. For
+    multiplayer, it can be any ship with a player in it. If, at any
+    time there is no player in a given ship, this sexpression
+    will return 0
+*num_type_kills*
+    num-type-kills
+    Returns the # of kills a player has on a given ship type
+    (fighter, bomber, cruiser, etc).
+    The ship specified in the first field should be the ship the
+    player is in.
+    So, for single player, this would be Alpha 1. For
+    multiplayer, it can be any ship with a player in it. If, at any
+    time there is no player in a given ship, this sexpression
+    will return 0
+*num_class_kills*
+    num-class-kills
+    Returns the # of kills a player has on a specific ship class
+    (Ulysses, Hercules, etc).
+    The ship specified in the first field should be the ship the
+    player is in.
+    So, for single player, this would be Alpha 1. For
+    multiplayer, it can be any ship with a player in it. If, at any
+    time there is no player in a given ship, this sexpression
+    will return 0
+*ship_score*
+    ship-score
+    Returns the score a player has. The ship specified in the
+    first field should be the ship the player is in.
+    So, for single player, this would be Alpha 1. For
+    multiplayer, it can be any ship with a player in it. If, at any
+    time there is no player in a given ship, this sexpression
+    will return 0
+*time-elapsed-last-order*
+    Last order time (Status operator)
+    Returns true if <count> seconds have elapsed since one or
+    more ships have received a meaningful order from the player.
+    A meaningful order is currently any order that is not the
+    warp out order.
+
+    Returns a boolean value. Takes 2 or more arguments...
+    1: Time in seconds that must elapse.
+    Rest: Name of ship (must be in-mission) or wing (does not
+    need to be in-mission) to check for having received orders.
+*player-is-cheating*
+    player-is-cheating
+    Returns true if the player is or has been cheating in this
+    mission.
+*is-language*
+    is-language
+    Returns whether the game is running in the specified
+    language. Takes 1 argument...
+    1: A language. This can be any string; the SEXP will return
+    true if and only if the string matches the current language.
+    Builtin languages are English, German, French, and Polish,
+    and others can be defined in strings.tbl.
+*used-cheat*
+    used-cheat
+    Returns true if the given cheat has been used during this
+    mission and there has not been another cheat used since.
+    Takes 1 argument.
+    1: A cheat string. This can be any string; the SEXP will
+    return true if and only if the string matches the last cheat
+    used. All original FS2 cheats are supported, and more can be
+    defined in the cheats.tbl file.
