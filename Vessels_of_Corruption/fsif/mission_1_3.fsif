@@ -1,4 +1,4 @@
-fsif_version: "2.2"
+fsif_version: "2.5"
 
 mission_info:
   name: "Outbreak"
@@ -28,17 +28,6 @@ player_setup:
       count: 2
     - class: "GTB Athena"
       count: 4
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 12
-    - name: "Avenger"
-      count: 12
-    - name: "Disruptor"
-      count: 8
-    - name: "MX-50"
-      count: 160
-    - name: "Stiletto"
-      count: 40
 
 entities:
   ship_templates:

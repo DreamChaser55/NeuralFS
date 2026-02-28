@@ -1,4 +1,4 @@
-fsif_version: "2.4"
+fsif_version: "2.5"
 
 mission_info:
   name: "Triage"
@@ -26,13 +26,6 @@ player_setup:
       count: 4
     - class: "GTF Valkyrie"
       count: 2
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 12
-    - name: "Avenger"
-      count: 12
-    - name: "MX-50"
-      count: 160
 
 entities:
   ship_templates:

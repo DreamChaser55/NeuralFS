@@ -1,4 +1,4 @@
-fsif_version: "2.4"
+fsif_version: "2.5"
 
 fiction_viewer: "m_2_2_fiction.txt"
 
@@ -40,17 +40,6 @@ player_setup:
       count: 4
     - class: "GTF Valkyrie"
       count: 4
-  weapon_pool:
-    - name: "Flail"
-      count: 20
-    - name: "Prometheus"
-      count: 20
-    - name: "ML-16 Laser"
-      count: 20
-    - name: "MX-50"
-      count: 400
-    - name: "Fury"
-      count: 400
 
 entities:
   ship_templates:

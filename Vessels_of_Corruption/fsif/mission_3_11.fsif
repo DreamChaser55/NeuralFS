@@ -1,4 +1,4 @@
-fsif_version: "2.2"
+fsif_version: "2.5"
 
 mission_info:
   name: "Protocol Omega"
@@ -28,19 +28,6 @@ player_setup:
       count: 2
     - class: "GTB Ursa"
       count: 2
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 12
-    - name: "Avenger"
-      count: 12
-    - name: "Prometheus"
-      count: 8
-    - name: "MX-50"
-      count: 160
-    - name: "Hornet"
-      count: 80
-    - name: "Tsunami"
-      count: 20
 
 entities:
   ship_templates:
@@ -236,7 +223,7 @@ mission_flow:
       - text: "If any transport enters the jump node, the mission is a failure. Delta Serpentis will be quarantined, and Earth will be left blind. Do your duty, pilot."
         voice_name: "Achernar"
         icons:
-          - { type: "Jump Node", team: "Neutral", pos: [0, 800], label: "Delta Serpentis" }
+          - { type: "Jump Node", team: "Friendly", pos: [0, 800], label: "Delta Serpentis" }
 
   debriefing:
     stages:

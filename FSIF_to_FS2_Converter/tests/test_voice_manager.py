@@ -17,7 +17,7 @@ class TestVoiceManager(unittest.TestCase):
         # Create a minimal valid mission
         self.mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(ship_choices=[], weapon_pool=[]),
+            player_setup=PlayerSetup(ship_choices=[]),
             environment=Environment()
         )
         self.fsif_path = Path("dummy.fsif")
@@ -92,21 +92,6 @@ class TestVoiceManager(unittest.TestCase):
         
         for fn in fnames:
             self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
-            
-        # 1. "this_is_a_very_long_name_.wav" (25 stem)
-        # 2. "this_is_a_very_long_nam_1.wav" (23 stem + "_1" = 25 stem equiv) -> wait, logic check
-        # Logic: 
-        #   MAX_STEM = 25.
-        #   Try "stem". If len > 25 -> truncate to 25. Check avail.
-        #   If collision, append "_1".
-        #   New check: if len(stem + suffix) > 25, truncate stem further!
-        #   
-        #   Stem: "this_is_a_very_long_name_" (25)
-        #   Suffix: "_1" (2)
-        #   Total Stem needed: 27 > 25.
-        #   Truncate stem to (25 - 2) = 23 chars.
-        #   Stem: "this_is_a_very_long_nam" (23)
-        #   Result: "this_is_a_very_long_nam_1.wav" (23+2+4 = 29)
         
         self.assertEqual(fnames[0], "this_is_a_very_long_name_.wav")
         self.assertEqual(fnames[1], "this_is_a_very_long_nam_1.wav")

@@ -1,4 +1,4 @@
-fsif_version: "2.2"
+fsif_version: "2.5"
 
 mission_info:
   name: "The Harvest Moon"
@@ -24,19 +24,6 @@ player_setup:
   ship_choices:
     - class: "GTB Ursa"
       count: 4
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 8
-    - name: "Avenger"
-      count: 8
-    - name: "Flail"
-      count: 8
-    - name: "MX-50"
-      count: 160
-    - name: "Hornet"
-      count: 80
-    - name: "Harbinger"
-      count: 20
 
 entities:
   ship_templates:

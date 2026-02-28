@@ -1,4 +1,4 @@
-fsif_version: "2.2"
+fsif_version: "2.5"
 
 fiction_viewer: "the_styx_found_story.txt"
 
@@ -32,19 +32,6 @@ player_setup:
       count: 2
     - class: "GTB Medusa"
       count: 4
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 12
-    - name: "Avenger"
-      count: 12
-    - name: "Flail"
-      count: 12
-    - name: "MX-50"
-      count: 160
-    - name: "Hornet"
-      count: 80
-    - name: "Tsunami"
-      count: 20
 
 entities:
   ship_templates:

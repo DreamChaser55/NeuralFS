@@ -1,4 +1,4 @@
-fsif_version: "2.4"
+fsif_version: "2.5"
 
 fiction_viewer: "m_1_4_fiction.txt"
 
@@ -39,13 +39,6 @@ player_setup:
   ship_choices:
     - class: "GTF Valkyrie"
       count: 4
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 16
-    - name: "MX-50"
-      count: 400
-    - name: "Hornet"
-      count: 120
 
 entities:
   ship_templates:

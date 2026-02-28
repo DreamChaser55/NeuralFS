@@ -1,4 +1,4 @@
-fsif_version: "2.2"
+fsif_version: "2.5"
 
 mission_info:
   name: "Necromancer's Hand"
@@ -24,21 +24,6 @@ player_setup:
       count: 4
     - class: "GTF Loki"
       count: 2
-  weapon_pool:
-    - name: "ML-16 Laser"
-      count: 12
-    - name: "Avenger"
-      count: 12
-    - name: "Flail"
-      count: 12
-    - name: "MX-50"
-      count: 160
-    - name: "Interceptor"
-      count: 40
-    - name: "Disruptor"
-      count: 8
-    - name: "Stiletto"
-      count: 40
 
 entities:
   ship_templates:
