@@ -36,7 +36,10 @@ class RedirectText:
             elif "info" in lower:
                 tag_to_use = 'info'
 
-        self.text_widget.insert(tk.END, string, tag_to_use)
+        if tag_to_use:
+            self.text_widget.insert(tk.END, string, tag_to_use)
+        else:
+            self.text_widget.insert(tk.END, string)
         self.text_widget.see(tk.END)
         self.text_widget.config(state='disabled')
 
@@ -45,7 +48,7 @@ class ConverterGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("FSIF to FS2 Converter")
-        self.root.geometry("600x700")
+        self.root.geometry("1000x700")
         try:
             self.root.state('zoomed')
         except:
@@ -79,8 +82,17 @@ class ConverterGUI:
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.pack(fill="both", expand=True)
 
+        paned_window = ttk.PanedWindow(main_frame, orient=tk.HORIZONTAL)
+        paned_window.pack(fill="both", expand=True)
+
+        left_frame = ttk.Frame(paned_window)
+        right_frame = ttk.Frame(paned_window)
+
+        paned_window.add(left_frame, weight=1)
+        paned_window.add(right_frame, weight=1)
+
         # Mode Selection
-        mode_frame = ttk.LabelFrame(main_frame, text="Conversion Mode", padding="5")
+        mode_frame = ttk.LabelFrame(left_frame, text="Conversion Mode", padding="5")
         mode_frame.pack(fill="x", pady=(0, 10))
 
         ttk.Radiobutton(mode_frame, text="Single File", variable=self.mode_var,
@@ -89,7 +101,7 @@ class ConverterGUI:
                         value="folder", command=self.update_input_mode).pack(side="left", padx=5)
 
         # Input Selection
-        input_frame = ttk.LabelFrame(main_frame, text="Input Selection", padding="5")
+        input_frame = ttk.LabelFrame(left_frame, text="Input Selection", padding="5")
         input_frame.pack(fill="x", pady=(0, 10))
 
         self.input_label = ttk.Label(input_frame, text="Select .fsif file:")
@@ -116,7 +128,7 @@ class ConverterGUI:
         ttk.Button(output_inner, text="Save As...", command=self.browse_output).pack(side="left")
 
         # TTS Options
-        tts_frame = ttk.LabelFrame(main_frame, text="TTS Options", padding="5")
+        tts_frame = ttk.LabelFrame(left_frame, text="TTS Options", padding="5")
         tts_frame.pack(fill="x", pady=(0, 10))
 
         ttk.Checkbutton(tts_frame, text="Enable Automatic TTS Generation",
@@ -176,11 +188,11 @@ class ConverterGUI:
         tts_paths_frame.columnconfigure(1, weight=1)
 
         # Convert Action
-        self.convert_btn = ttk.Button(main_frame, text="Convert", command=self.start_conversion)
+        self.convert_btn = ttk.Button(left_frame, text="Convert", command=self.start_conversion)
         self.convert_btn.pack(pady=10)
 
         # Log Area
-        log_frame = ttk.LabelFrame(main_frame, text="Log Output", padding="5")
+        log_frame = ttk.LabelFrame(right_frame, text="Log Output", padding="5")
         log_frame.pack(fill="both", expand=True)
 
         self.log_text = scrolledtext.ScrolledText(log_frame, height=10, state='disabled')
@@ -289,7 +301,10 @@ class ConverterGUI:
         elif "info" in lower:
             tag = 'info'
 
-        self.log_text.insert(tk.END, message + "\n", tag)
+        if tag:
+            self.log_text.insert(tk.END, message + "\n", tag)
+        else:
+            self.log_text.insert(tk.END, message + "\n")
         self.log_text.see(tk.END)
         self.log_text.config(state='disabled')
 
