@@ -1,5 +1,9 @@
 # NeuralFS
 
+<p align="center">
+  <img src="neuralfslogo.png" alt="NeuralFS Logo" />
+</p>
+
 NeuralFS is an AI (LLM) agent framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three Roo Code/Kilo Code editor agents (LLM modes with a custom system prompt) and two specialized Python conversion scripts.
 
 ## FreeSpace Creative Writing Agent
