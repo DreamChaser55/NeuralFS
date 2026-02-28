@@ -4,6 +4,7 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
+import time
 from typing import Dict, Any, List, Optional
 from utils import slugify_filename, ensure_wav_extension
 
@@ -17,6 +18,7 @@ class TTSConfig:
     default_voice: Optional[str] = None  # Fallback voice for lines without voice_name
     api_key: Optional[str] = None  # Provider-specific API Key
     model_id: Optional[str] = None # Provider-specific model ID (e.g. for ElevenLabs)
+    rate_limit_delay: float = 0.0  # Delay in seconds between consecutive API calls
 
 
 class BaseTTSProvider(ABC):
@@ -176,9 +178,13 @@ class BaseTTSProvider(ABC):
 
         # Generate each item
         generated_count = 0
-        for item in items:
+        for i, item in enumerate(items):
             if self._generate_one(item):
                 generated_count += 1
+                
+                # Apply rate limit delay if configured and it's not the last item
+                if getattr(self.config, 'rate_limit_delay', 0.0) > 0 and i < len(items) - 1:
+                    time.sleep(self.config.rate_limit_delay)
 
         return generated_count
 

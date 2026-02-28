@@ -66,6 +66,7 @@ class ConverterGUI:
         self.tts_out_root_var = tk.StringVar()
         self.tts_default_voice_var = tk.StringVar()
         self.api_key_var = tk.StringVar()
+        self.tts_rate_limit_var = tk.DoubleVar(value=0.0)
 
         # Check for file-based API keys
         self.google_key_file = Path("Gemini_API_key.txt")
@@ -172,15 +173,19 @@ class ConverterGUI:
         ttk.Entry(tts_paths_frame, textvariable=self.tts_default_voice_var).grid(row=1, column=1, sticky="ew", padx=5,
                                                                                  pady=5)
 
+        # Rate Limit row
+        ttk.Label(tts_paths_frame, text="Rate Limit Delay (seconds):").grid(row=2, column=0, sticky="w", pady=5)
+        ttk.Entry(tts_paths_frame, textvariable=self.tts_rate_limit_var).grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+
         # API Key row - Dynamic based on provider
         self.api_key_label = ttk.Label(tts_paths_frame, text="API Key (Optional):")
-        self.api_key_label.grid(row=2, column=0, sticky="w", pady=5)
+        self.api_key_label.grid(row=3, column=0, sticky="w", pady=5)
         
         self.api_key_entry = ttk.Entry(tts_paths_frame, textvariable=self.api_key_var, show="*")
-        self.api_key_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+        self.api_key_entry.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
         
         self.api_key_info = ttk.Label(tts_paths_frame, text="", foreground="green")
-        self.api_key_info.grid(row=2, column=0, columnspan=3, sticky="w", pady=5)
+        self.api_key_info.grid(row=3, column=0, columnspan=3, sticky="w", pady=5)
         
         # Initial UI state update
         self.update_api_key_visibility()
@@ -351,7 +356,8 @@ class ConverterGUI:
             'mode': self.tts_mode_var.get(),
             'dry_run': self.tts_dry_run_var.get(),
             'default_voice': self.tts_default_voice_var.get().strip() or None,
-            'api_key': api_key
+            'api_key': api_key,
+            'rate_limit_delay': self.tts_rate_limit_var.get()
         }
 
         mode = self.mode_var.get()

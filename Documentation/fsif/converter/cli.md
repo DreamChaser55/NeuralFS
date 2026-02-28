@@ -49,6 +49,7 @@ The converter supports automatic voice generation using Google GenAI and ElevenL
 - `--google-api-key <key>`: Provide Google API key directly (overrides environment variables).
 - `--elevenlabs-api-key <key>`: Provide ElevenLabs API key directly (overrides environment variables).
 - `--elevenlabs-model <id>`: ElevenLabs model ID (default: `eleven_multilingual_v2`).
+- `--tts-rate-limit-delay <seconds>`: Delay in seconds between consecutive TTS API calls (default: `0.0`).
 
 ### API Key Resolution Priority
 

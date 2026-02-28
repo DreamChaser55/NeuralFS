@@ -84,7 +84,8 @@ def process_mission(input_file, output_file=None, tts_settings=None, log_func=pr
         'dry_run': False,
         'default_voice': None,
         'api_key': None,
-        'model_id': None
+        'model_id': None,
+        'rate_limit_delay': 0.0
     }
     
     # Backward compatibility for 'overwrite' boolean in tts_settings
@@ -182,7 +183,8 @@ def process_mission(input_file, output_file=None, tts_settings=None, log_func=pr
                 dry_run=tts_opts['dry_run'],
                 default_voice=tts_opts['default_voice'],
                 api_key=tts_opts.get('api_key'),
-                model_id=tts_opts.get('model_id')
+                model_id=tts_opts.get('model_id'),
+                rate_limit_delay=tts_opts.get('rate_limit_delay', 0.0)
             )
             
             try:
@@ -280,6 +282,9 @@ def main():
     parser.add_argument("--elevenlabs-model", dest="elevenlabs_model",
                         help="ElevenLabs model ID (default: eleven_multilingual_v2)")
     
+    parser.add_argument("--tts-rate-limit-delay", dest="tts_rate_limit_delay", type=float, default=0.0,
+                        help="Delay in seconds between consecutive TTS API calls (default: 0.0)")
+    
     args = parser.parse_args()
 
     # Determine mode priority: explicit mode > overwrite flag > skip flag > default
@@ -305,7 +310,8 @@ def main():
         'dry_run': args.tts_dry_run,
         'default_voice': args.tts_default_voice,
         'api_key': api_key,
-        'model_id': args.elevenlabs_model
+        'model_id': args.elevenlabs_model,
+        'rate_limit_delay': args.tts_rate_limit_delay
     }
 
     print(f"Input file: {args.input_file}")
