@@ -4,7 +4,7 @@
   <img src="neuralfslogo.png" alt="NeuralFS Logo" />
 </p>
 
-NeuralFS is an AI (LLM) agent framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three Roo Code/Kilo Code editor agents (LLM modes with a custom system prompt) and two specialized Python conversion scripts.
+NeuralFS is an AI agent framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three Roo Code/Kilo Code editor agents (LLM modes with a custom system prompt) and two specialized Python conversion scripts.
 
 ## FreeSpace Creative Writing Agent
 
@@ -71,7 +71,7 @@ Note: Using AI for this phase is optional, of course. If you don't want to outso
 5. Move these files to your FSO data folder to play the campaign.
 
 ## Example missions
-- `missions/` — Demo and test missions (FSIF inputs and generated `.fs2`).
+- `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
 
 ## Example campaigns
-- `campaigns/Demo_campaigns/` — Demo campaign (FCIF feature showcase and generated `.fc2`).
+- `campaigns/Demo_campaigns/` — Demo campaign (FCIF feature showcase).
