@@ -58,7 +58,7 @@ This agent automates the final step of the pipeline: generating the game-ready `
 Note: Using AI for this phase is optional, of course. If you don't want to outsource your creativity to the AI, you can write your own Campaign Bible and mission design documents, then proceed to the next phase.
 
 ### Phase 2: FSIF and FCIF Writing
-1. Start a new task. Switch the interation mode to "FSIF+FCIF Writing Agent".
+1. Start a new task in Roo Code/Kilo Code. Switch the interation mode to "FSIF+FCIF Writing Agent".
 2. Copy the initial prompt from `fsif+fcif writing agent prompt.txt`.
 3. Replace the "<campaign_folder>" string in the prompt with the name of the campaign folder created by the creative writing agent.
 4. Send the prompt and wait until the Agent completes its work. Afterwards, there should be:
@@ -66,13 +66,17 @@ Note: Using AI for this phase is optional, of course. If you don't want to outso
    - A `.fcif` campaign definition file inside your campaign folder.
 
 ### Phase 3: Converting FSIF to FS2 and FCIF to FC2
-1. Start a new task. Switch the interation mode to "FSIF+FCIF Converting Agent".
+1. Start a new task in Roo Code/Kilo Code. Switch the interation mode to "FSIF+FCIF Converting Agent".
 2. Copy the initial prompt from `fsif+fcif converting agent prompt.txt`.
 3. Replace the "<campaign_folder>" string in the prompt with the name of the campaign folder created by the creative writing agent.
 4. Send the prompt and wait until the Agent completes its work. Afterwards, your campaign folder should contain:
    - `.fs2` mission files (converted from `.fsif`).
    - A `.fc2` campaign file (converted from `.fcif`).
 5. Move these files to your FSO data folder to play the campaign.
+
+Note: You can also use the GUI Converter for this phase, but then you have to copy the validator output log manually for the AI agent to fix any mistakes.
+
+Recommended workflow: First, let the AI agent autonomously try to convert and fix the fsif files using the CLI converter (without voice generation). After all mistakes are fixed and the conversion proceeds smoothly, you can do a final conversion pass with the GUI converter and voice generation enabled.
 
 ## Example missions
 - `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
