@@ -47,6 +47,8 @@ This agent automates the final step of the pipeline: generating the game-ready `
 5. Add your campaign concept into the prompt. If you don't want the agent to work fully autonomously, delete the "Work autonomously." line (the agent will then ask for your approval after completing each significant phase of the work).
 6. Send the prompt and wait until the FreeSpace Creative Writing Agent completes its work. Afterwards, there should be a new folder named after your campaign with the Campaign Bible and another folder inside containing detailed mission design documents in natural language.
 
+Note: Using AI for this phase is optional, of course. If you don't want to outsource your creativity to the AI, you can write your own Campaign Bible and mission design documents, then proceed to the next phase.
+
 ### Phase 2: FSIF and FCIF Writing
 1. Start a new task. Switch the interation mode to "FSIF+FCIF Writing Agent".
 2. Copy the initial prompt from `fsif+fcif writing agent prompt.txt`.
