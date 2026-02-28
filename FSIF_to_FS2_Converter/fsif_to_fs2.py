@@ -119,53 +119,53 @@ def process_mission(input_file, output_file=None, tts_settings=None, log_func=pr
 
     ip = Path(sanitize_path(input_file))
     if not ip.exists() or not ip.is_file():
-        log_func(f"Error: Input file not found at '{ip}'")
+        log_func(f"[ERROR] Input file not found at '{ip}'")
         return False
 
     if ip.suffix.lower() != '.fsif':
-        log_func("Error: Input file must have a .fsif extension.")
+        log_func("[ERROR] Input file must have a .fsif extension.")
         return False
 
-    log_func(f"Loading and processing '{ip}'...")
+    log_func(f"[INFO] Loading and processing '{ip}'...")
     try:
         # Load mission (without voice generation)
         mission = load_mission_from_fsif(str(ip))
     except ValueError as e:
-        log_func(f"Error: Validation failed during loading: {e}")
+        log_func(f"[ERROR] Validation failed during loading: {e}")
         return False
 
     # Extended Validation
-    log_func(f"TTS Provider: {provider}")
-    log_func(f"Validating mission structure...")
+    log_func(f"[INFO] TTS Provider: {provider}")
+    log_func(f"[INFO] Validating mission structure...")
     # Determine root directory (where script/Documentation are)
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
     root_dir = Path(__file__).parent.parent.resolve()
     validator = Validator(mission, root_dir, ip, tts_provider=provider)
     if not validator.validate():
-        log_func("Error: Validation failed.")
+        log_func("[ERROR] Validation failed.")
         return False
 
     # Advanced SEXP Validation (Core Feature)
-    log_func("Running Advanced SEXP Validation...")
+    log_func("[INFO] Running Advanced SEXP Validation...")
     if advanced_sexp_validator:
         try:
             if not advanced_sexp_validator.validate_mission(mission, log_func):
-                log_func("Error: Advanced SEXP Validation failed.")
+                log_func("[ERROR] Advanced SEXP Validation failed.")
                 return False
         except Exception as e:
-            log_func(f"Error: Advanced SEXP validation crashed: {e}")
+            log_func(f"[ERROR] Advanced SEXP validation crashed: {e}")
             traceback.print_exc()
             return False
     else:
-         log_func("[Warning] Advanced SEXP Validator module not available. Validation skipped.")
+         log_func("[WARNING] Advanced SEXP Validator module not available. Validation skipped.")
 
     # Voice Filename Normalization (if TTS enabled)
     if tts_opts['enabled']:
-        log_func(f"Normalizing voice filenames (Mode: {mode})...")
+        log_func(f"[INFO] Normalizing voice filenames (Mode: {mode})...")
         vm = VoiceManager(mission, ip, tts_opts)
         vm.process()
     else:
-        log_func("TTS disabled: Skipping voice filename generation (voice lines will be silent in FS2).")
+        log_func("[INFO] TTS disabled: Skipping voice filename generation (voice lines will be silent in FS2).")
 
     # Generate TTS voice files (if enabled and library available)
     if tts_opts['enabled']:
@@ -194,24 +194,24 @@ def process_mission(input_file, output_file=None, tts_settings=None, log_func=pr
 
             if generator:
                 if generator.is_available():
-                    log_func(f"Generating voice files (Provider: {provider}, Mode: {mode})...")
+                    log_func(f"[INFO] Generating voice files (Provider: {provider}, Mode: {mode})...")
                     items = generator.collect_items_from_mission(mission, ip.parent)
                     
                     if items:
                         generated_count = generator.generate_all(items)
                         if tts_opts['dry_run']:
-                            log_func(f"[DRY RUN] Would generate {len(items)} voice file(s)")
+                            log_func(f"[INFO] [DRY RUN] Would generate {len(items)} voice file(s)")
                         else:
                             skipped = len(items) - generated_count
                             if generated_count > 0:
-                                msg = f"Generated {generated_count} voice file(s)"
+                                msg = f"[INFO] Generated {generated_count} voice file(s)"
                                 if skipped > 0:
                                     msg += f" (skipped {skipped} existing)"
                                 log_func(msg)
                             elif skipped > 0:
-                                log_func(f"All {skipped} voice file(s) already exist (skipped)")
+                                log_func(f"[INFO] All {skipped} voice file(s) already exist (skipped)")
                     else:
-                        log_func("No voiced lines found - skipping TTS")
+                        log_func("[INFO] No voiced lines found - skipping TTS")
                 else:
                     log_func(f"[INFO] TTS provider '{provider}' libraries not available - skipping TTS generation")
                     log_func("       Install 'google-genai' for Google TTS or 'elevenlabs' for ElevenLabs TTS.")
@@ -225,16 +225,16 @@ def process_mission(input_file, output_file=None, tts_settings=None, log_func=pr
     else:
         op = ip.with_suffix('.fs2')
 
-    log_func(f"Writing to '{op}'...")
+    log_func(f"[INFO] Writing to '{op}'...")
     
     # Allow logic errors to propagate with stack trace
     try:
         writer = FS2Writer(mission, str(op), log_func=log_func)
         writer.write_mission()
-        log_func("Conversion successful.")
+        log_func("[SUCCESS] Conversion successful.")
         return True
     except OSError as e:
-        log_func(f"Error: IO failure while writing FS2 file: {e}")
+        log_func(f"[ERROR] IO failure while writing FS2 file: {e}")
         return False
 
 

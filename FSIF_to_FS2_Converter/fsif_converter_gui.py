@@ -27,13 +27,13 @@ class RedirectText:
         tag_to_use = self.tag
         if not tag_to_use:
             lower = string.lower()
-            if "error" in lower or "failed" in lower:
+            if "[error]" in lower or "[failed]" in lower:
                 tag_to_use = 'error'
-            elif "warning" in lower:
+            elif "[warning]" in lower:
                 tag_to_use = 'warning'
-            elif "success" in lower or "passed" in lower:
+            elif "[success]" in lower or "[passed]" in lower:
                 tag_to_use = 'success'
-            elif "info" in lower:
+            elif "[info]" in lower:
                 tag_to_use = 'info'
 
         if tag_to_use:
@@ -292,13 +292,13 @@ class ConverterGUI:
 
         tag = None
         lower = message.lower()
-        if "error" in lower or "failed" in lower:
+        if "[error]" in lower or "[failed]" in lower:
             tag = 'error'
-        elif "warning" in lower:
+        elif "[warning]" in lower:
             tag = 'warning'
-        elif "success" in lower or "passed" in lower:
+        elif "[success]" in lower or "[passed]" in lower:
             tag = 'success'
-        elif "info" in lower:
+        elif "[info]" in lower:
             tag = 'info'
 
         if tag:

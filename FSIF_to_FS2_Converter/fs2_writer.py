@@ -132,7 +132,7 @@ class FS2Writer:
              mask |= int(info.flags_mask)
 
         if unknown:
-            self.log_func(f'[FSIF->FS2] Warning: Unknown mission flags ignored: {", ".join(unknown)}')
+            self.log_func(f'[WARNING] [FSIF->FS2] Unknown mission flags ignored: {", ".join(unknown)}')
 
         self._write(f'+Flags: {mask}')
         
@@ -435,7 +435,7 @@ class FS2Writer:
                 elif bucket == "flags2":
                     out_flags2.append(str(tok))
                 else:
-                    self.log_func(f'[FSIF->FS2] Warning: Unknown ship flag "{tok}" on {ship.name}; emitting in +Flags.')
+                    self.log_func(f'[WARNING] [FSIF->FS2] Unknown ship flag "{tok}" on {ship.name}; emitting in +Flags.')
                     out_flags.append(str(tok))
 
             for t in ship.flags:

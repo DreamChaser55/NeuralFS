@@ -1041,8 +1041,8 @@ def validate_mission(mission, log_func=print) -> bool:
     :param log_func: Function to log output
     :return: True if passed, False if errors found
     """
-    log_func("[Advanced SEXP Validator] Starting strict validation...")
-    
+    log_func("[INFO] [Advanced SEXP Validator] Starting strict validation...")
+
     # 1. Build Context
     ctx = MissionContext.from_mission(mission)
     
@@ -1113,17 +1113,17 @@ def validate_mission(mission, log_func=print) -> bool:
             for root in roots:
                 errors = validator.validate(root, expected_type=expected_type)
                 if errors:
-                    log_func(f"[FAIL] {desc}:")
+                    log_func(f"[ERROR] [FAIL] {desc}:")
                     for e in errors:
                         log_func(f"  - {e}")
                     total_errors += len(errors)
         except Exception as e:
-            log_func(f"[CRASH] {desc}: Parser exception: {e}")
+            log_func(f"[ERROR] [CRASH] {desc}: Parser exception: {e}")
             total_errors += 1
 
     if total_errors > 0:
-        log_func(f"[Advanced SEXP Validator] Validation FAILED with {total_errors} errors.")
+        log_func(f"[FAILED] [Advanced SEXP Validator] Validation FAILED with {total_errors} errors.")
         return False
     else:
-        log_func("[Advanced SEXP Validator] Validation PASSED.")
+        log_func("[SUCCESS] [Advanced SEXP Validator] Validation PASSED.")
         return True

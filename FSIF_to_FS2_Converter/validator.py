@@ -109,7 +109,7 @@ class Validator:
         return False
 
     def validate(self) -> bool:
-        print("[Validator] Starting validation...")
+        print("[INFO] [Validator] Starting validation...")
         
         self.validate_global_names()
         self.validate_mission_info()
@@ -138,18 +138,18 @@ class Validator:
         
         # Report results
         if self.warnings:
-            print(f"\n[Validator] Warnings ({len(self.warnings)}):")
+            print(f"\n[WARNING] [Validator] Warnings ({len(self.warnings)}):")
             for w in self.warnings:
                 print(f"  - {w}")
                 
         if self.errors:
-            print(f"\n[Validator] Errors ({len(self.errors)}):")
+            print(f"\n[ERROR] [Validator] Errors ({len(self.errors)}):")
             for e in self.errors:
                 print(f"  - {e}")
-            print("\n[Validator] Validation FAILED.")
+            print("\n[FAILED] [Validator] Validation FAILED.")
             return False
             
-        print("[Validator] Validation PASSED.")
+        print("[SUCCESS] [Validator] Validation PASSED.")
         return True
 
     def validate_global_names(self):
