@@ -12,7 +12,8 @@ This agent brainstorms and iteratively writes the campaign description in natura
 
 ## FSIF+FCIF Writing Agent
 
-This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: FreeSpace Intermediate File (FSIF). It also writes the campaign definition file (FCIF). This format is much more concise than '.fs2' (the mission file format expected by FSO). FS2 files tend to be large, with a lot of redundant fields and boilerplate. An AI agent directly creating the '.fs2' file would waste a lot of tokens and could quickly fill up the context window. YAML is also much more common in the LLM training data than '.fs2' files. This is why we need a more concise and compact intermediate format.
+This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: FreeSpace Intermediate File (FSIF). This format is much more concise than '.fs2' (the mission file format expected by FSO). FS2 files tend to be large, with a lot of redundant fields and boilerplate. An AI agent directly creating the '.fs2' file would waste a lot of tokens and could quickly fill up the context window. YAML is also much more common in the LLM training data than '.fs2' files. This is why we need a more concise and compact intermediate format.
+The agent also writes the campaign definition file in a custom FreeSpace Campaign Intermediate Format (FCIF). Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and branching logic.
 
 ## FSIF to FS2 Converter
 
@@ -23,7 +24,7 @@ For details, see `\FSIF_to_FS2_Converter\README.md`.
 
 ## FCIF to FC2 Converter
 
-A separate Python script converts campaign definition files from the FreeSpace Campaign Intermediate Format (FCIF) into the `.fc2` campaign format expected by FSO. FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and branching logic.
+A separate Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
 The converter validates the FCIF input using Pydantic, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
 For details, see `\FCIF_to_FC2_Converter\README.md`.
 
