@@ -40,7 +40,7 @@ This agent automates the final step of the pipeline: generating the game-ready `
 ## Usage
 
 ### Phase 1: Creative Writing
-1. Open the NeuralFS folder with Visual Studio Code. Roo Code or Kilo Code extension should automatically load the two AI agent definitions (defined in `.roomodes` and `.kilocodemodes` files).
+1. Open the NeuralFS folder with Visual Studio Code. Roo Code or Kilo Code extension should automatically load the three AI agent definitions (defined in `.roomodes` and `.kilocodemodes` files).
 2. Open the Roo Code or Kilo Code extension.
 3. Select the "Freespace Creative Writing Agent" as the interaction mode.
 4. Copy the initial prompt from `freespace creative writing agent prompt.txt`.
