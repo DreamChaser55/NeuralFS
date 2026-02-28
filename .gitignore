@@ -27,3 +27,5 @@ Elevenlabs_API_key.txt
 .DS_Store
 Thumbs.db
 desktop.ini
+
+*.fs2
