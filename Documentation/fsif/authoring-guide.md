@@ -329,7 +329,7 @@ Text in command and mission briefings, debriefings and in the fiction viewer can
 - Atmospheric/flavor notes: `$e{ text $}` (Gray)
 
 **Single-word vs. span syntax:**
-- For a single word: `$h Zeta $|` — colors "Zeta" in hostile red; `$|` stops the color before the following punctuation or character.
+- For a single word: `$h Rama $|` — colors "Rama" in hostile red; `$|` stops the color before the following punctuation or character.
 - For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span; requires FSO build 8786+.
 
 **Example:**
@@ -337,7 +337,7 @@ Text in command and mission briefings, debriefings and in the fiction viewer can
 mission_flow:
   briefing:
     stages:
-      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan $| the marked container. $h Zeta $| will intercept — protect the $f{ GTC Fenris $}."
+      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan $| the marked container. $h Rama $| will intercept — protect the $f{ GTC Fenris $}."
         voice_name: "Gacrux"
         icons: []
 
