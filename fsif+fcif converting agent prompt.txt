@@ -14,6 +14,7 @@ FSIF:
 FSO:
 @/Documentation/FSO\ and\ fs2\ format/FSO_Tokens_Reference.md 
 @/Documentation/FSO\ SEXPs/INDEX.md 
+@/Documentation/FSO\ and\ fs2\ format/briefing_text_styling.txt 
 
 FCIF:
 @/Documentation/fcif/specification.md
