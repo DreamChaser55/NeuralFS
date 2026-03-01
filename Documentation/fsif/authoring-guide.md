@@ -26,7 +26,7 @@ mission_info:
 
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - class: "GTF Ulysses"
       count: 1
 
@@ -69,7 +69,7 @@ environment:
 
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - class: "GTF Ulysses"
       count: 1
 
@@ -381,7 +381,7 @@ If you want to provide the player with alternative weapons in the loadout screen
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - { class: "GTF Ulysses", count: 4 }
   extra_weapons:
     - "Avenger"

@@ -21,7 +21,7 @@ environment:
 
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - class: "GTB Ursa"
       count: 4
 

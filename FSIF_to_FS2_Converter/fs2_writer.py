@@ -282,7 +282,7 @@ class FS2Writer:
         setup = self.mission.player_setup
         self._write(f'$Starting Shipname: {setup.start_ship}')
         
-        choices = '\n\t'.join([f'"{c.ship_class}"\t{c.count}' for c in setup.ship_choices])
+        choices = '\n\t'.join([f'"{c.ship_class}"\t{c.count}' for c in setup.extra_ships])
         self._write(f'$Ship Choices: (\n\t{choices}\n)')
         
         # Calculate Weapon Pool automatically

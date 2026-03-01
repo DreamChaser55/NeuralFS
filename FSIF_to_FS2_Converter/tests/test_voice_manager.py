@@ -17,7 +17,7 @@ class TestVoiceManager(unittest.TestCase):
         # Create a minimal valid mission
         self.mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(ship_choices=[]),
+            player_setup=PlayerSetup(extra_ships=[]),
             environment=Environment()
         )
         self.fsif_path = Path("dummy.fsif")

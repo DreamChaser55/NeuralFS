@@ -36,7 +36,7 @@ environment:
 
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 2 }
     - { class: "GTB Ursa", count: 2 }

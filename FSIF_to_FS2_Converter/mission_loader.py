@@ -189,8 +189,8 @@ class MissionLoader:
 
     def _load_player_setup(self) -> PlayerSetup:
         ps_data = self.data.get('player_setup', {})
-        if not ps_data.get('ship_choices'):
-            raise ValueError("player_setup.ship_choices is required.")
+        if not ps_data.get('extra_ships'):
+            raise ValueError("player_setup.extra_ships is required.")
         return PlayerSetup(**ps_data)
 
     def _load_entities(self, player_setup: PlayerSetup):

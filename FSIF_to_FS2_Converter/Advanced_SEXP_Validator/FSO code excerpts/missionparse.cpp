@@ -1150,7 +1150,7 @@ void parse_player_info2(mission *pm)
 
 			num_choices++;
 		}
-		ptr->num_ship_choices = num_choices;
+		ptr->num_extra_ships = num_choices;
 
 		ptr->default_ship = -1;
 		if (optional_string("+Default_ship:")) {
@@ -4055,7 +4055,7 @@ void parse_common_object_data(p_object *p_objp)
 int get_reassigned_index(team_data *current_team, int ship_class) 
 {
 	// Search through the available ships to see if there is a matching ship class in the loadout
-	for (int i=0; i < current_team->num_ship_choices; i++)
+	for (int i=0; i < current_team->num_extra_ships; i++)
 	{
 		if (ship_class == current_team->ship_list[i])
 		{
@@ -4179,7 +4179,7 @@ void process_loadout_objects()
 		else
 		{
 			// Go through the loadout until we find an unassigned ship
-			for (int j=0; j < current_team->num_ship_choices; j++)
+			for (int j=0; j < current_team->num_extra_ships; j++)
 			{
 				if (current_team->ship_count[j] > 0)
 				{

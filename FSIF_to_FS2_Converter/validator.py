@@ -595,9 +595,9 @@ class Validator:
             if w_name not in self.allowed_weapons:
                 self.log_error(f"Player setup 'extra_weapons' references unknown weapon '{w_name}'")
                 
-        for choice in setup.ship_choices:
+        for choice in setup.extra_ships:
             if choice.ship_class not in self.ship_classes:
-                self.log_error(f"Player setup 'ship_choices' references unknown ship class '{choice.ship_class}'")
+                self.log_error(f"Player setup 'extra_ships' references unknown ship class '{choice.ship_class}'")
 
     def validate_start_ship(self):
         """

@@ -21,7 +21,7 @@ Before (2.4)
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - { class: "GTF Ulysses", count: 4 }
   weapon_pool:
     - { name: "Prometheus", count: 8 }
@@ -32,7 +32,7 @@ After (2.5)
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
-  ship_choices:
+  extra_ships:
     - { class: "GTF Ulysses", count: 4 }
 ```
 
