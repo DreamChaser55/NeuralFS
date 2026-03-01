@@ -391,6 +391,7 @@ player_setup:
 ## Automatic Weaponry Pool Generation
 FSIF converter calculates the required weapon pool automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). It adds a 25% safety margin and emits the pool data directly into the FS2 file. This prevents crashes and undersupply issues in-game.
 
+## Providing the player with extra weapons
 If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `extra_weapons` field under `player_setup`:
 ```yaml
 player_setup:
