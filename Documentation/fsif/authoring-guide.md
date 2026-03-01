@@ -305,10 +305,6 @@ Example SEXP referring to a subsystem:
 ## Reinforcements
 Author reinforcements in `entities`. Omit `arrival_cue` on the referenced units so they remain callable (defaults to true). The referenced ships/wings must exist in entities.ships/entities.wings.
 
-The reinforcement type (Attack/Protect vs Repair/Rearm) is automatic:
-- Support ships (class starts with "GTS " or "PVS ") → "Repair/Rearm"
-- Other ships and wings → "Attack/Protect"
-
 ```yaml
 entities:
   reinforcement_wings:
