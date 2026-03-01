@@ -112,20 +112,20 @@ entities:
 mission_flow:
   command_briefing:
     stages:
-      - text: "We have received a distress signal from the nebula sector. Investigate immediately."
+      - text: "We have received a $y{ distress signal $} from the $e{ nebula sector $}. $R Investigate $| immediately."
         voice_name: "Alnilam"
         voice_style_instructions: "Authoritative, urgent command"
         ani: "fafdemo_CB1"
 
   briefing:
     stages:
-      - text: "Command has detected anomalous readings in the nebula. Alpha, proceed to the Nav Buoy."
+      - text: "Command has detected $e{ anomalous readings $} in the nebula. $f Alpha $|, proceed to the $y{ Nav Buoy $}."
         voice_name: "Achernar"
         voice_style_instructions: "Military briefing, directive"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
           - { type: "Waypoint", team: "Hostile", pos: [500, 2000], label: "Nav Buoy" }
-      - text: "Visibility is low. Keep your eyes open for ambushes."
+      - text: "$R{ Visibility is low. $} Keep your eyes open for $R ambushes $|."
         voice_name: "Achernar"
         voice_style_instructions: "Cautionary, serious"
         icons:
@@ -135,12 +135,12 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "SC Dakini" )
-        text: "Excellent work. The Shivan cruiser has been neutralized."
+        text: "$W{ Excellent work, $rank $callsign. $} The $h{ Shivan cruiser $} has been $G neutralized $|."
         voice_name: "Achernar"
         voice_style_instructions: "Commendatory, relieved"
       - condition: |
           ( not ( is-destroyed-delay 0 "SC Dakini" ) )
-        text: "The Shivan cruiser escaped. We will have to deal with it later."
+        text: "The $h{ Shivan cruiser $} $R escaped $|. $e{ We will have to deal with it later. $}"
         voice_name: "Achernar"
         voice_style_instructions: "Disappointed, serious"
 

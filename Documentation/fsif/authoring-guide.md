@@ -316,8 +316,42 @@ entities:
       num_times: 1
 ```
 
-## Briefing text styling
+## Briefing, debriefing and fiction viewer text styling
 Text in command and mission briefings, debriefings and in the fiction viewer can be styled by special tags. See `\Documentation\FSO and fs2 format\briefing_text_styling.txt` for a guide.
+
+**Recommended color conventions:**
+- Friendly ships/wings: `$f{ Name $}` (IFF Friendly color — green by default)
+- Hostile ships/wings: `$h{ Name $}` (IFF Hostile color — red by default)
+- Locations, nav points, destinations: `$y{ Name $}` (Yellow)
+- Key action verbs, commendations: `$W{ text $}` (Bright White)
+- Warnings, failures, urgent directives: `$R{ text $}` (Bright Red)
+- Positive outcomes: `$G word $|` (Bright Green)
+- Atmospheric/flavor notes: `$e{ text $}` (Gray)
+
+**Single-word vs. span syntax:**
+- For a single word: `$h Zeta $|` — colors "Zeta" in hostile red; `$|` stops the color before the following punctuation or character.
+- For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span; requires FSO build 8786+.
+
+**Example:**
+```yaml
+mission_flow:
+  briefing:
+    stages:
+      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan $| the marked container. $h Zeta $| will intercept — protect the $f{ GTC Fenris $}."
+        voice_name: "Gacrux"
+        icons: []
+
+  debriefing:
+    stages:
+      - condition: |
+          ( is-destroyed-delay 0 "GTC Fenris 1" )
+        text: "The $f{ GTC Fenris $} was $R destroyed $|. $R{ We failed the escort. $}"
+        voice_name: "Gacrux"
+      - condition: |
+          ( true )
+        text: "$W{ Excellent work, $rank $callsign. $} The convoy withdrew $G successfully $|."
+        voice_name: "Gacrux"
+```
 
 ## Briefing Room Grid View
 
