@@ -24,6 +24,11 @@ player_setup:
   extra_ships:
     - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 4 }
+  extra_weapons:
+    - "ML-16 Laser"
+    - "Flail"
+    - "Interceptor"
+    - "Fury"
 
 entities:
   ship_templates:

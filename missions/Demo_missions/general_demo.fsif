@@ -40,6 +40,13 @@ player_setup:
     - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 2 }
     - { class: "GTB Ursa", count: 2 }
+  extra_weapons:
+    - "ML-16 Laser"
+    - "Flail"
+    - "Banshee"
+    - "Interceptor"
+    - "Phoenix V"
+    - "Stiletto"
 
 entities:
   ship_templates:
