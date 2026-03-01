@@ -26,9 +26,6 @@ mission_info:
 
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
-    - class: "GTF Ulysses"
-      count: 1
 
 entities:
   ships:
@@ -38,6 +35,9 @@ entities:
       location: [0, 0, 0]
       arrival_cue: |
         ( true )
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
 
 mission_flow: {}
 ```
@@ -82,6 +82,9 @@ entities:
       location: [0.0, 0.0, 0.0]
       arrival_cue: |
         ( true )
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
   wings: []
   waypoints: {}
   reinforcement_wings: []

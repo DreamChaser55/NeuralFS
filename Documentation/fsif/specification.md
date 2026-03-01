@@ -57,7 +57,7 @@
     - `targets` (List[String], optional, default: `[]`). Active fields only.
 - `player_setup` (Mapping, required):
   - `start_ship` (String, required)
-  - `extra_ships` (List[Mapping], required). Items: `{class: String, count: Integer}`.
+  - `extra_ships` (List[Mapping], optional, default: `[]`). Items: `{class: String, count: Integer}`.
   - `extra_weapons` (List[String], optional, default: `[]`). Additional weapons to include in the Weaponry Pool.
 - `entities` (Mapping, required):
   - `ship_templates` (Mapping, optional). Keys are template names, values are ship properties mappings.
