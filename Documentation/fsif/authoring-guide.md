@@ -377,6 +377,17 @@ If the mission is part of a campaign, then by default, all ships and weapons are
 ## Fighter and bomber weapon hardpoints
 All available primary and secondary weapon banks (hardpoints) in fighters and bombers must have assigned weapons. The number of entries in the `weapons.primary` and `weapons.secondary` lists for a given ship must be equal to the number of hardpoints specified in `\Documentation\FSO and fs2 format\fighter_bomber_hardpoints.md`.
 
+## Providing alternative player ships
+By default, the player and their wingmen will be restricted to the exact ship classes defined in the mission file for their starting wings. If you want to provide the player with strategic choices before the mission starts, you can use the `extra_ships` field under `player_setup` to provide a pool of alternative ships. The player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon) using the loadout screen.
+
+```yaml
+player_setup:
+  start_ship: "Alpha 1"
+  extra_ships:
+    - { class: "GTF Hercules", count: 4 }
+    - { class: "GTB Ursa", count: 2 }
+```
+
 ## Automatic Weaponry Pool Generation
 FSIF converter calculates the required weapon pool automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). It adds a 25% safety margin and emits the pool data directly into the FS2 file. This prevents crashes and undersupply issues in-game.
 
