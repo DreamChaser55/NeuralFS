@@ -171,7 +171,7 @@ entities:
       ai_goals: |
           ( ai-chase-any 70 )
 
-    - name: "Zeta"
+    - name: "Rama"
       template: "enemy_fighter"
       count: 4
       position: [0.0, 0.0, 1800.0]
@@ -246,12 +246,12 @@ mission_flow:
           - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [150, 50], label: "Elysium" }
           - { type: "Cargo", team: "Hostile", pos: [800, 1000], label: "Cargo" }
           - { type: "Waypoint", team: "Friendly", pos: [500, 500], label: "Nav Buoy" }
-      - text: "$h Zeta $| will attack from the front; expect follow-up $h bombers $| targeting the $f{ GTC Fenris $}."
+      - text: "$h Rama $| will attack from the front; expect follow-up $h bombers $| targeting the $f{ GTC Fenris $}."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
-          - { type: "Fighter Wing", team: "Hostile", class: "SF Basilisk", pos: [200, 1200], label: "Zeta" }
+          - { type: "Fighter Wing", team: "Hostile", class: "SF Basilisk", pos: [200, 1200], label: "Rama" }
           - { type: "Bomber Wing", team: "Hostile", class: "SB Nephilim", pos: [600, 1500], label: "Chi" }
           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
       - text: "The operation occurs near the $y{ jump node $}. $R{ Keep the area clear. $}"
