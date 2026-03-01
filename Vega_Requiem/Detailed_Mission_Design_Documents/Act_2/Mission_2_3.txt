@@ -1,0 +1,395 @@
+================================================================================
+MISSION DESIGN DOCUMENT
+Mission 2-3: "Vega Requiem"
+================================================================================
+
+PURPOSE AND PLAYER EXPERIENCE
+- Mission fantasy: The last survivors of the Vega garrison must break through a Shivan blocking
+  force at the Antares node and jump out. This is a sprint, not a battle. The player is not here
+  to win; they are here to survive and bring as many people as possible through the door before
+  it closes behind them.
+- Core tension: SC Malgor sits at the node. SF Dragons at the blocking screen. The convoy
+  contains GTC Stentor, four freighters, two Vasudan transports, and the escape pods from
+  Mission 2-2 (now aboard the Stentor). The transit through the node is not safe — ships will
+  take fire as they jump. Some may not make it. The player fights to minimize those losses.
+- Plot advance: The system falls. The jump node goes dark behind the last survivors. The
+  campaign ends not with triumph but with the sound of a closing door.
+- Emotional register: Grief, exhaustion, and the survivor's particular kind of determination.
+  The fiction viewer has already told the player what this system meant. The debrief is what
+  happens after the door closes — not a victory speech, but a final accounting.
+- Design note: This is the hardest logistical challenge and the most emotionally restrained mission.
+  The player has seen enough. The game knows it. Let the mission be efficient and the debrief
+  carry the weight.
+
+FICTION VIEWER NARRATIVE
+- Displayed before this mission.
+- File: Mission_2_3_story.txt
+- Summary: An omniscient meditation on the Vega system — its name, its history, the colony that
+  was there, the nodes that connected it, and what happens to a system when no one comes back to
+  it. The tone is elegiac, not dramatic. It ends with the pilots who flew the last run knowing
+  that they knew.
+- Purpose: This fiction viewer does not depict the mission — it depicts what comes after,
+  retrospectively. It tells the player, before they fly the mission, that the mission succeeds
+  (the survivors get out) but Vega is lost permanently. The player knows the ending. The
+  emotional work of the mission is therefore not "will they make it" but "how much do we take
+  with us." This reframes the objectives as meaningful rather than merely tactical.
+
+ENVIRONMENT AND SETUP
+- Datestamp: January 24, 2335
+- System: Vega — Antares node approach, outer system
+- Location: 12,000m from the Vega-Antares jump node
+- Background: The same corridor from Mission 1-3 but in the opposite direction. Vega's star is
+  now a receding point astern, visually smaller than in earlier missions — the convoy is in the
+  outer system. The Antares node shimmers directly ahead at medium range. It looks close.
+  It is not close enough.
+- Scene objects at mission start:
+  - SC Malgor (SC Cain-class): Stationary at the node, 5,000m from node mouth. Blocking.
+    Her turrets fire on anything that approaches. She is the cork in the bottle.
+  - GTC Stentor: In scene, leading the convoy column. Hull: variable (carries over from Mission
+    2-1 narrative — stated in CB not as a mechanic but as a dramatic note). Approximately 55%
+    hull at mission start. She is damaged but mobile. She will attempt to transit to Antares.
+    Stentor is the convoy's spine. If she falls, the convoy loses its escort capability.
+  - Krishna wing: SF Scorpion x4 — already in scene, 4 km to port of the node. Fighter screen.
+    Initial orders: Attack approaching convoy ships.
+  - Indra wing: SF Basilisk x3 — in scene, 6 km ahead of convoy at node approach. Intercept.
+    Initial orders: Attack GTC Stentor.
+  - Arjuna wing: SF Dragon x2 — in scene at long range (10 km, toward node), patrolling.
+    Initial orders: Intercept anything that approaches the node within 2 km. Elite blocking.
+  - GTFr Aldrin 1, 2, 3 (if they survived Mission 2-1): In convoy column, behind Stentor.
+    (Mission 2-1 survivability carries over narratively — noted in CB 2.2, not as a variable
+    mechanic. For mission design purposes: 3 Chronos freighters present. If mission 2-1 partial
+    result, acknowledgment in CB but full convoy deployed regardless for playability.)
+  - GTT Rescue (if survived): Present in convoy.
+  - PVT Theta 3 (if survived): Present in convoy — the last Vasudan transport, at rear.
+  - Theta 1 and 2 are NOT present — they jumped to Antares independently in Mission 1-3 and
+    are waiting safely at the Antares side.
+  - GTS Casca: In convoy, positioned near Stentor.
+  - Nav Alpha: Midpoint between convoy start and node (6,000m from node). Waypoint for convoy.
+  - The GTEP Hermes pods from Mission 2-2 are now aboard the Stentor — they are not separate
+    objects in this mission, but their presence is explicitly referenced in the briefing.
+
+PARTICIPANTS
+
+Allied:
+- Alpha wing: GTF Valkyrie x4 (Alpha 1 = player, Alpha 2–4 = AI)
+  - Loadout: GTW-15 Avenger (bank 1), GTW ML-16 (bank 2); GTM MX-50 (24), GTM Fury (16)
+  - Initial orders: Escort GTC Stentor to the Antares node; intercept hostile fighters;
+    destroy SC Malgor if possible to clear node approach
+  - Note: Player is encouraged to try to destroy SC Malgor (or at least knock out key
+    subsystems) before Stentor reaches the node. This is the secondary objective.
+
+- GTC Stentor (GTC Fenris-class): Leading the convoy. Damaged but fighting.
+  - Commander Okafor persona: she has been in this system for the entire campaign, she is tired,
+    she knows the score, and she is going to get her ship and its passengers through that node.
+  - Stentor will attempt to reach the node and transit, regardless of whether SC Malgor is
+    destroyed. She takes fire while transiting. If her hull drops to 0% before she can transit,
+    mission fails. (Stentor hull must survive to get to the node and initiate jump.)
+  - Stentor's own turrets engage Krishna and Indra wings if they come within range.
+  - Note: Stentor carries the survivors from the Amadeus escape pods. Stated explicitly in
+    briefing. Commander Okafor: "The people from the Amadeus pods are aboard. They're going
+    through that node."
+
+- GTFr Aldrin 1, 2, 3 (GTFr Chronos-class): Following Stentor in column.
+  - Each can jump to Antares independently once within 2,000m of the node — they don't need
+    Stentor to already be through. They jump one by one.
+  - Under attack from Krishna wing if player doesn't intercept.
+
+- GTT Rescue (GTT Elysium-class): Following freighters in column.
+  - Unarmed. Slowest in column. Last to reach node. Most vulnerable to delayed attacks.
+
+- PVT Theta 3 (PVT Isis-class): At rear of convoy.
+  - Has 3 turrets — fires at fighters within range. She's not helpless.
+  - Slowest ship in the convoy. Arjuna (Dragons) may reach her first.
+
+- GTS Casca: In convoy. Available for rearming.
+
+Hostile:
+- Krishna wing: SF Scorpion x4
+  - In scene at mission start. 4 km to port. Targeting convoy ships (secondary priority:
+    freighters and transports).
+  - Initial orders: Attack GTFr Aldrin wing, Attack GTT Rescue
+  - These are the harassment fighters. They try to slow the convoy by attacking the soft targets.
+
+- Indra wing: SF Basilisk x3
+  - In scene at mission start. 6 km ahead. Targeting Stentor.
+  - Initial orders: Attack GTC Stentor
+  - The Basilisks want to kill the convoy's spine. Intercepting them is a primary priority.
+
+- SC Malgor (SC Cain-class): At the node. Blocking.
+  - Turrets fire on any ship approaching within 6,000m of the node.
+  - Malgor's cluster bomb fires if anything closes within 400m.
+  - The Malgor is a mission objective — destroying her is the secondary objective. Player can
+    engage Malgor's turrets (to reduce incoming fire on Stentor during transit) and then
+    attack her hull. Without bombs, this takes sustained fire but IS possible with fighters if
+    the player is methodical.
+  - Key vulnerability: Malgor's weapons subsystem can be degraded by sustained Avenger fire on
+    her turrets. Destroying the weapons subsystem reduces her incoming fire on the Stentor
+    dramatically — a meaningful reward for targeting the right subsystem.
+  - Malgor does NOT need to be destroyed for mission success. She needs to be suppressed enough
+    that Stentor survives the node transit.
+
+- Arjuna wing: SF Dragon x2
+  - In scene at long range (10 km). Patrolling near the node.
+  - Initial orders: When any ship comes within 2,000m of the node, attack it.
+  - The Dragons activate when the convoy gets close. At that point the player is likely also
+    engaging Malgor. Two converging threats at the moment of maximum vulnerability is the
+    final test.
+  - Only 2 Dragons (not 3 like Bheema wing in 2-2) — the campaign ends here, the challenge
+    is real but the situation is not hopeless.
+
+PLAYER CRAFT AND LOADOUT
+- Ship: GTF Valkyrie (recommended; need speed for Dragon intercept near node)
+- Primary: GTW-15 Avenger (bank 1), GTW ML-16 (bank 2)
+- Secondary: GTM MX-50 (24), GTM Fury (16)
+- Support: GTS Casca (always available)
+- No reinforcements. No allied capital ships except Stentor.
+- Design note: The player should use Casca to rearm before committing to the SC Malgor attack.
+  Fighting Malgor + Arjuna wing simultaneously on depleted secondaries is the intended
+  high-difficulty challenge.
+
+OBJECTIVES AND DIRECTIVES
+
+Primary:
+  - GTC Stentor transits the Antares jump node.
+
+Secondary:
+  - SC Malgor destroyed (clears the node and removes the transit threat entirely).
+  - At least 3 of the remaining convoy ships (excluding Stentor) transit the Antares node.
+
+Bonus:
+  - All surviving convoy ships transit the Antares node. (No one left behind.)
+  - PVT Theta 3 specifically transits. (The last Vasudan transport — symbolic final beat for
+    the Terran-Vasudan battlefield cooperation arc of Act 1.)
+
+Failure conditions:
+  - GTC Stentor destroyed before she can transit.
+  - (Alpha 1 destroyed = standard.)
+
+BRIEFINGS (TEXT-READY)
+
+[ No Command Briefing before this mission. The CB 2.1 preceded Mission 2-1; no additional
+  command briefing is delivered — the operational situation is understood. Commander Okafor
+  delivers the mission briefing, since she is now the senior officer in the convoy with
+  Admiral Wei gone. This is her first briefing in the campaign. It should feel earned. ]
+
+MISSION BRIEFING
+[ Delivered by Commander Yael Okafor / GTC Stentor — for the first time this campaign ]
+
+Stage 1:
+This is Commander Okafor. Admiral Wei is gone, so I'm running this brief.
+The Antares node is twelve thousand meters ahead. SC Malgor is sitting on it. She's been there
+for four days. She has a fighter screen — Scorpions and Basilisks at the approach, and our
+long-range sensors are showing Dragon-class contacts near the node itself.
+We are going through that node. I need to be absolutely clear about that. There is no
+alternative. The Amadeus is destroyed. The system is lost. We go through the node.
+
+Stage 2:
+The people from the Amadeus evacuation pods are aboard the Stentor. Nine pods, most of them
+intact. They are in the cargo bays right now. I will not tell you what it means to me personally
+to have them aboard. I will tell you that they are going through that node if I have to take
+the Stentor through the Malgor on a collision course.
+Alpha wing, your job is to suppress the Malgor and clear the fighter screen. Get her turrets
+down if you can. If you can take out her weapons subsystem, do it — that's what matters. Destroy
+her if you have time.
+We move on my mark. Do not hesitate when the node is clear enough. Transit and don't look back.
+
+Stage 3:
+One more thing. There's a Vasudan transport at the back of the convoy. PVT Theta Three.
+She was here when no one asked her to be. She goes through that node. That is not optional.
+Okafor out.
+
+[ Briefing icon notes: SC Malgor at Antares node marked as primary capital target. Krishna wing
+  (port, 4 km) and Indra wing (ahead, 6 km) marked as intercept threats. Arjuna wing at node
+  marked as "Dragon intercept — activates on convoy approach." Nav Alpha midpoint marked.
+  GTS Casca marked in convoy. Convoy formation displayed in briefing stage 1. ]
+
+IN-MISSION COMMUNICATIONS
+
+Message 1 — Alpha 2, persona: veteran wingman, trigger: mission start
+"Malgor's right there. She's been waiting. Everyone want to go over the plan one more time?"
+[Beat]
+"Yeah, me neither. Let's go."
+
+Message 2 — Commander Okafor / GTC Stentor, trigger: mission start (convoy begins moving)
+"Convoy, mark. All ships advance. Alpha wing, clear us a path."
+
+Message 3 — Alpha 3, trigger: Indra wing (Basilisks) targets Stentor
+"Basilisks going for the Stentor — they're targeting the drive section."
+
+Message 4 — Commander Okafor, trigger: Stentor hull below 70%
+"We're taking hits. Keep moving — don't stop for us. Clear the approach."
+
+Message 5 — Alpha 2, trigger: player/Alpha wing within 6,000m of SC Malgor (entering turret range)
+"Malgor's opening up. Watch the turrets — target her weapons subsystem if you can get angle."
+
+Message 6 — Krishna wing harassment, trigger: GTFr Aldrin 1 takes hull damage from Krishna
+"Aldrin One, taking fire — report your status."
+Aldrin 1: "Aldrin One, shields down, taking hull hits. Please assist."
+[This creates a second pull on the player — the freighters vs. Malgor suppression.]
+
+Message 7 — Theta 3 pilot (Vasudan, steady), trigger: Arjuna wing (Dragons) activates near node
+"Alpha wing. This is Theta Three. There are... large contacts near the node. Shall I proceed?"
+[No order issued. The player must protect her or she makes her own call and advances.]
+[If player issues "protect" order to Alpha wing: "Understood. Maintaining position."]
+[If no order issued after 20 seconds: "Theta Three is proceeding to the node. Cover requested."]
+
+Message 8 — Commander Okafor, trigger: SC Malgor weapons subsystem destroyed
+"Malgor's lost her guns. Get the convoy moving — this is our window."
+
+Message 9 — Commander Okafor, trigger: SC Malgor destroyed
+"Malgor is gone. Node is clear. All convoy ships, advance and transit. Now. Don't wait."
+
+Message 10 — Commander Okafor, trigger: Stentor within 2,000m of node (beginning transit)
+"Stentor is at the node. We're going through." [pause] "Alpha Lead — make sure everyone
+behind us gets through before you follow. That includes Theta Three."
+
+Message 11 — Stentor / Okafor (after transit — from the Antares side), trigger: Stentor
+has jumped, 30 seconds elapsed
+"Stentor is through. Antares side confirmed. Alpha Lead — how many are behind you?"
+
+Message 12 — Command, trigger: GTT Rescue makes transit
+"Rescue is through. Meridian's crew is in Antares."
+
+Message 13 — Theta 3 pilot, trigger: Theta 3 begins transit
+"This is Theta Three. We are... at the node." [pause, very quiet] "The Terran pilot — Alpha
+wing — thank you. I will tell the others that a Terran pilot held the door."
+
+Message 14 — Alpha 2, trigger: last convoy ship transits (before Alpha wing jumps)
+"That's everyone. Alpha Lead — your turn. Go."
+
+Message 15 — Alpha 2, trigger: Alpha 1 within 1,000m of node / jumping
+[Nothing. Silence. Let the player jump.]
+
+EVENT FLOW AND TIMING
+- T+00:00: Mission starts. Convoy stationary, 12 km from node. SC Malgor at node. Krishna
+  wing (4 Scorpions) at port, 4 km. Indra wing (3 Basilisks) ahead, 6 km. Arjuna (2 Dragons)
+  near node, 10 km, in patrol mode.
+- T+00:00 onward: Convoy begins advancing toward node. Krishna and Indra engage convoy/Stentor.
+  Player must intercept to protect convoy while convoy advances.
+- T+00:00–T+05:00: Player clears Krishna and Indra wings while convoy approaches. SC Malgor
+  begins firing on anything within 6 km once convoy reaches that range.
+- T+03:00–T+05:00 (convoy reaches 6 km from node): SC Malgor opens fire on Stentor.
+  Player must engage Malgor's turrets / weapons subsystem.
+- T+05:00–T+08:00: Convoy reaches Nav Alpha (6 km from node). Arjuna (Dragons) activates —
+  begins intercepting ships approaching within 2 km of node.
+- T+06:00 onward: Stentor reaches transit range (2 km from node) and begins transit sequence.
+  Malgor fires if weapons subsystem not yet destroyed. Arjuna intercepts.
+  Player must simultaneously fight Dragons, suppress Malgor if active, protect trailing ships.
+- T+06:00–T+12:00: Ships transit in sequence: Stentor first, then freighters, then Rescue,
+  then Theta 3. Each ship that reaches within 2 km of node begins an 8-second transit sequence.
+  Ships in transit sequence can still be killed (hull goes to 0% before transit completes =
+  dead). This is the maximum tension window.
+- When all ships that will transit have done so: Alpha wing is the last to go. Mission ends
+  when Alpha 1 transits the node.
+
+EVENT LOGIC SKETCH
+- "Krishna wing engage convoy" and "Indra wing engage Stentor": set at mission start, active
+  immediately. Both wings advance toward convoy from their positions.
+- "SC Malgor fire on approaching ships": Malgor AI turret range set to 6,000m. When Stentor
+  enters this range, Malgor's turrets engage. Cannot be disabled except by weapons subsystem
+  destruction or Malgor's destruction.
+- "Malgor weapons subsystem degraded": when weapons subsystem hull < 20%, all turret fire from
+  Malgor is suppressed.
+- "Arjuna wing activates": when any convoy ship (or Alpha 1) comes within 2,000m of the node.
+  Arjuna changes AI goal from patrol to "attack all approaching ships." One-time trigger.
+- "Ship transit sequence": any ship within 2,000m of the node that is not under active fire
+  (or is willing to transit under fire) initiates an 8-second jump count. If hull reaches 0%
+  during this count, the ship is destroyed (fails to transit). Otherwise: transit complete.
+  Stentor initiates this. Freighters follow when Stentor's transit is confirmed. Rescue follows
+  freighters. Theta 3 follows Rescue (she's slowest, arrives last).
+- "Mission success" condition: GTC Stentor has "transit complete" flag set AND Alpha 1 has
+  "transit complete" flag set (player jumps through node).
+- "Mission failure" condition: GTC Stentor hull = 0% at any point before transit complete flag.
+- Secondary objective tracked: SC Malgor "destroyed" flag. Convoy "transit complete" count >= 3.
+- Bonus objective: All convoy ships transit (count = all present ships). Theta 3 transit flag.
+- GTS Casca: if Alpha 1 is near Casca and requests rearm, Casca executes rearm. Casca transits
+  the node immediately after Stentor (she's a small ship — she goes second).
+
+NEWLY INTRODUCED SHIPS AND WEAPONS
+- No new ship classes. This mission is a test of everything the player has learned.
+- The presence of SF Dragons (Arjuna wing) at the node is thematically important: the Shivans
+  are deploying their best fighters to hold their most important position. The Vega system's
+  final node is guarded by Dragons. It is a correct and terrifying choice.
+- SC Malgor callback: she was first introduced in Mission 1-2 as a threat the player could not
+  engage. Now, with Avengers and full situational understanding, the player can fight her. This
+  is the arc of the entire campaign compressed into one target.
+
+DEBRIEFINGS
+
+Full success (Stentor through, Malgor destroyed, all convoy ships through, Theta 3 through):
+All ships are through the node. Every person who was alive in the Vega system when we started
+this transit is alive now in Antares.
+The SC Malgor is destroyed.
+Commander Okafor has submitted her after-action report. I will summarize it here: "The convoy
+executed the transit under sustained Shivan fire. The conduct of all crews, and of Alpha wing
+in particular, was exemplary. I commend Alpha wing to the attention of Terran Command for
+recognition."
+Admiral Wei would have said something better than I can. I'm going to leave space here for
+what he would have said and let you fill it in yourself.
+Welcome to Antares. The war isn't over. But everyone who should have made it did.
+
+Primary success (Stentor through, 3+ convoy ships through):
+The convoy is through. The Stentor is safe. The people from the Amadeus pods are in Antares.
+We lost [count] ships on the transit. Those were ships with crews and cargo — things that
+can be mourned and then accounted for, which is the GTA's way of handling loss.
+[If Theta 3 through]: The Vasudan transport Theta Three made the transit. Her pilot asked me
+to pass along a message. I'll put it in the report.
+[If Theta 3 lost]: We lost PVT Theta Three on the transit. She made it this far. That counts
+for something.
+The Vega system is behind us now. It isn't coming back.
+
+Partial success (Stentor through, fewer than 3 convoy ships through):
+The Stentor is through. That's what matters. The people from the Amadeus pods are alive.
+We lost most of the convoy on the transit. The Malgor, the Dragons at the node — they were
+too much, and we were too few, and the math didn't work out.
+Commander Okafor says this: "The node is closed behind us. We grieve what we left and we carry
+what we saved."
+I don't have a better summary of this operation than that.
+
+Failure (Stentor destroyed before transit):
+The Stentor did not make it through the node.
+The people from the Amadeus pods — the crew that Admiral Wei stayed behind to protect — are
+gone. The SC Malgor, or the Dragons, or the accumulated damage that the Stentor carried from
+two weeks of fighting — one of those things ended it.
+Commander Okafor's last recorded transmission: "Convoy, scatter. Every ship independent.
+Make for the node on your own. Don't wait for us."
+Some did. Some didn't. The accounting will take time.
+The Vega system is closed.
+
+QA NOTES
+- This mission is the campaign finale. The ending dialogue and debrief text need to land
+  cleanly. Ensure no in-mission messages overlap with Theta 3's final transmission (Message 13)
+  — this is the Terran-Vasudan arc's payoff and must play without interruption.
+- GTC Stentor must survive to transit. Her hull carrying over from Mission 2-1 is a narrative
+  note, not a mechanical difficulty modifier — her in-mission starting hull should be fixed at
+  ~55% regardless of Mission 2-1 outcome, to keep the finale playable.
+- SC Malgor's turret-range threat at 6,000m creates a natural pacing gate: the convoy can
+  advance freely until 6 km from the node, then the final engagement begins. This ensures
+  the Krishna/Indra fight has resolved (mostly) before the Malgor engagement starts.
+- Arjuna (Dragon) activation within 2,000m of node: this is the last threat and must feel
+  like a final gate rather than a trivial speed bump. Two Dragons near the node while the
+  player is also managing Malgor fire is the intended difficulty spike.
+- "Player jumps last" design: the mission should not end until Alpha 1 transits the node.
+  After all convoy ships have jumped, a grace period of 30 seconds allows the player to
+  finish any Dragon/Malgor engagement before jumping. After 30 seconds, Command requests
+  the player transit ("Alpha Lead, the node is clear — jump when ready").
+- If the player is still fighting Arjuna wing when all convoy ships have transited, they can
+  choose to kill the Dragons before jumping or simply jump and let them be. Either is valid.
+  The campaign does not require a kill count; it requires getting people out.
+- Casca transit: Casca goes through the node after Stentor, ahead of the freighters. She
+  does not need player escort — her small hull and high speed get her through quickly. She
+  should not require the player's attention.
+
+ASSET LIST AND PERFORMANCE BUDGET
+Ship classes: GTF Valkyrie x4, GTC Fenris x1 (Stentor), GTFr Chronos x3 (Aldrin), GTT Elysium
+  x1 (Rescue), PVT Isis x1 (Theta 3), GTS Centaur x1 (Casca), SC Cain x1 (Malgor),
+  SF Scorpion x4 (Krishna), SF Basilisk x3 (Indra), SF Dragon x2 (Arjuna)
+Max concurrent ships: 4 + 1 + 3 + 1 + 1 + 1 + 1 + 4 + 3 + 2 = 21
+  (Reduces rapidly as convoy ships transit and fighters are killed.)
+  This is the lowest peak budget of any Act 2 mission — appropriate for a final mission that
+  should feel manageable, not overwhelming.
+Wave totals: Krishna (initial, 4), Indra (initial, 3), SC Malgor (1 — not a wave), Arjuna
+  (late trigger, 2). 3 enemy elements plus 1 capital ship. Clean and manageable.
+Message personas: Commander Okafor/Stentor (female, naval officer — first time as briefing voice),
+  Alpha 2 (veteran wingman), Alpha 3 (young pilot), Theta 3 pilot (Vasudan, calm-dignified),
+  GTFr Aldrin 1 pilot (freight crew, stressed), Command/Amadeus CAG (female — now secondary role)

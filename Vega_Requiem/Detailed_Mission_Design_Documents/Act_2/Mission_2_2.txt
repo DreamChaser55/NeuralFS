@@ -1,0 +1,378 @@
+================================================================================
+MISSION DESIGN DOCUMENT
+Mission 2-2: "The Last Full Measure"
+================================================================================
+
+PURPOSE AND PLAYER EXPERIENCE
+- Mission fantasy: The player is the only thing standing between nine escape pods and everything
+  that wants to destroy them. The Amadeus is burning behind them. The Admiral is still aboard.
+  The player cannot save the ship. They can only save the people.
+- Core tension: Nine pods. Three waves of enemies. A Lilith-class cruiser that is now closing
+  to finish the Amadeus. Bheema wing — SF Dragon fighters, the most dangerous Shivan craft the
+  player has encountered — arrives at the worst possible moment. The player has to keep moving,
+  keep fighting, keep the pods alive while watching the Amadeus die.
+- Plot advance: GTD Amadeus destroyed. Admiral Wei dead. The campaign's central command
+  structure collapses. What remains is the GTC Stentor, four freighters, two Vasudan transports,
+  and Alpha wing — and they need to get to the Antares node.
+- Emotional register: This is the campaign's funeral. It should feel weightless and terrible.
+  The Admiral's calm voice in the first minutes. The silence when he goes. The long run to Nav
+  Bravo with the pods drifting and the fires behind you.
+- Design note: The player cannot save the Amadeus. They cannot save Admiral Wei. This must be
+  designed so that no amount of skill or preparation allows a different outcome for the ship.
+  The drama is in the pods — variable, dependent on the player, meaningful.
+
+FICTION VIEWER NARRATIVE
+- Displayed before this mission.
+- File: Mission_2_2_story.txt
+- Summary: Admiral Chen Wei's personal log the night before. He explains, clearly and without
+  self-pity, why he is staying aboard. He is not performing sacrifice — he is doing his job
+  with the tools he has available, and he is at peace with it.
+- Purpose: The player knows what is coming. They read the Admiral's words and then they fly
+  the mission knowing those words were the last thing he wrote. The fiction viewer converts
+  the mission's scripted tragedy into something personal and earned.
+
+ENVIRONMENT AND SETUP
+- Datestamp: January 22, 2335
+- System: Vega — deep space, Nav Charlie holding position (approximately 30,000m from the
+  Antares node approach corridor, 25,000m from Nav Bravo)
+- Location: GTD Amadeus is stationary. She cannot move. Her aft section shows significant
+  structural damage (visible hull deformation, secondary explosions, fires burning in the
+  vacuum where internal atmosphere vents through breaches). She is holding position on the
+  Antares approach axis, facing the incoming threat direction.
+- Background: The scene should feel like the inside of a catastrophe. The Amadeus is large and
+  damaged and beautiful and dying. Nav Charlie is a point in space with no other features.
+  Deep space, Vega star far astern, the Antares node shimmer barely visible at extreme range.
+- Objects in scene at mission start:
+  - GTD Amadeus: Stationary. Hull at 40%. Her turrets are operational — she fires at Shivans
+    within range until she can no longer. Her fighterbay is open: a visible cavity in her flank
+    from which the escape pods emerge in sequence.
+  - Nine GTEP Hermes escape pods: Emerging from the Amadeus fighterbay at mission start, in
+    groups of three. They navigate autonomously toward Nav Bravo (25,000m distant).
+    Numbering convention: Pod 1 through Pod 9. Pod 1 is designated "Admiral's Pod" — Wei's
+    escape pod, the one he theoretically would have boarded. (He didn't. It launched with only
+    bridge crew.) Pod 1 carries the most senior surviving officers.
+  - Nav Charlie: The Amadeus's holding position. No navbuoy — just the designation.
+  - Nav Bravo: 25,000m from Amadeus position. The pods' destination.
+  - SC Ahriman (SC Lilith-class): 8 km from Amadeus, closing slowly. She begins firing on the
+    Amadeus at T+01:00. She's the ship's executioner. Her weapons do capital-level damage. The
+    Amadeus's turrets fire back but cannot stop her.
+  - GTS Casca: Present, following Pod 1 group. Available for rearming. Casca's presence
+    near the pods makes her somewhat protected by proximity — the enemy is targeting pods, not
+    a support ship, so Casca survives unless the player is extremely unlucky.
+  - No Beta wing. No Stentor. They are ahead, already at Nav Bravo, waiting. Alone.
+  - No installations, no buoys, no cover. Just the Amadeus and nine pods and the dark.
+
+PARTICIPANTS
+
+Allied:
+- Alpha wing: GTF Valkyrie x4 (Alpha 1 = player, Alpha 2–4 = AI)
+  - Loadout: GTW-15 Avenger (bank 1), GTW ML-16 (bank 2); GTM MX-50 (24), GTM Fury (16)
+  - Initial orders: Protect escape pods (priority ordered: Pod 1 highest, Pod 9 lowest,
+    but the player can and should protect whichever is most threatened)
+
+- Pod 1 through Pod 9 (GTEP Hermes x9): Mission's primary protected assets
+  - All nine pods present at mission start, emerging from Amadeus in three groups over
+    the first 2 minutes (Group A: Pods 1–3 emerge at T+00:00; Group B: Pods 4–6 emerge at
+    T+00:45; Group C: Pods 7–9 emerge at T+01:30)
+  - All navigate toward Nav Bravo at slow pod speed. No weapons. Minimal hull.
+  - Pod 1 is explicitly labeled "ADMIRAL'S POD" in the targeting system. (Wei's voice notes
+    this at one point — "Pod One carries the bridge officers. Keep it clear." He does not
+    say he's not on it. He doesn't need to. The player can see the fighterbay is still closed
+    on the Admiral's section.)
+  - Pods reaching Nav Bravo are considered "safe" and no longer counted as vulnerable.
+
+- GTD Amadeus (GTD Orion-class): Stationary, dying
+  - Hull: 40% at start. Ahriman is closing in. She will be destroyed before mission end —
+    this is scripted. Wei's voice continues until his last transmission ("All pods are away.
+    Casca, report to Nav Bravo. Alpha wing — you have your orders."). Then silence.
+  - Amadeus turrets fire at nearby Shivans until the ship's weapons subsystem fails (or
+    hull reaches 0%). The turrets buying time for the pods is a tangible mechanical benefit.
+  - The Amadeus's explosion when she dies is the largest in the campaign — a capital ship
+    detonation visible for kilometers. The blast has a shockwave radius that will damage
+    fighters within 1,000m. Warning issued. Player must clear the area before final destruction.
+
+- GTS Casca (GTS Centaur-class): Present, following pod group A
+  - Available for rearming throughout the mission.
+  - Casca has enhanced narrative importance here: she is the only allied capital-class object
+    that can survive this mission.
+
+- Admiral Wei (radio persona only, aboard Amadeus): Present as a voice for the first portion
+  of the mission. His last transmission fires when the Amadeus hull drops below 5%.
+  After that: silence.
+
+Hostile:
+- Asura wing: SF Scorpion x3
+  - Present at mission start, 6 km from pod group A. Already attacking.
+  - Initial orders: Attack escape pods (explicit — they are targeting the pods, not Alpha wing)
+  - This is the first time in the campaign that enemy fighters explicitly prioritize pods over
+    the player's wing. It is immediately apparent that these enemies must be intercepted, not
+    chased.
+
+- Brahma wing: SB Shaitan x3 (Amadeus killers)
+  - Arrives at T+01:30 from the direction of the Capella approach (14 km)
+  - Initial orders: Attack GTD Amadeus (primary, to complete her destruction)
+  - The Shaitans target the Amadeus, not the pods. This creates a agonizing choice: intercept
+    the Shaitans and maybe reduce damage to the doomed ship (buying time, slightly), or focus
+    on Asura wing which is actively destroying pods. The correct answer changes second by second.
+  - Note: Regardless of player action, the Amadeus will be destroyed. Brahma wing's attack
+    accelerates it but doesn't cause it — Ahriman is doing that anyway. Intercepting Brahma
+    is genuinely optional from a mission success standpoint.
+
+- Vishnu wing: SF Scorpion x4
+  - Arrives at T+03:00 from the aft direction (12 km)
+  - Initial orders: Attack escape pods (pod group B and C specifically — groups that are
+    emerging or have just emerged from the Amadeus fighterbay)
+  - Second pod-hunting wave. More Scorpions means faster kills. Player must have dealt with
+    Asura significantly before this arrives.
+
+- Bheema wing: SF Dragon x3
+  - Arrives at T+06:00 or when 5 pods have reached Nav Bravo (whichever comes first)
+  - Initial orders: Attack escape pods; Attack Alpha wing
+  - The Dragon is the most maneuverable, most dangerous Shivan fighter in the catalog. Three of
+    them targeting the remaining pods at this point is the mission's final and hardest test.
+  - Dragons have strong shields and exceptional maneuverability. They are not helpless against
+    Avenger fire, but they take more sustained fire than Scorpions.
+  - The player who has been fighting effectively for 6 minutes may be running low on secondaries.
+    Casca rearming before this wave is strongly advisable.
+
+- SC Ahriman (SC Lilith-class): Closes from 8 km to point-blank on the Amadeus
+  - Not targetable by Alpha wing as a mission objective. She does not fire on pods or fighters
+    unless a fighter comes within 400m (cluster bomb).
+  - Ahriman's job: kill the Amadeus. She does it systematically and without haste.
+  - When the Amadeus hull drops below 5%, the final Admiral transmission fires.
+  - Ahriman withdraws after Amadeus is destroyed (she has completed her mission).
+
+PLAYER CRAFT AND LOADOUT
+- Ship: GTF Valkyrie (only recommendation — Dragon intercept requires speed)
+- Primary: GTW-15 Avenger (bank 1), GTW ML-16 (bank 2)
+- Secondary: GTM MX-50 (24), GTM Fury (16)
+- Support: GTS Casca (always available — critical to rearm before Bheema)
+- Reinforcements: None. Alpha is alone.
+- Design note: This is the hardest mission in the campaign. No reinforcements, no allied capital
+  ships in the immediate scene, nine fragile pods, three waves of enemies, and Dragons at the end.
+  The player is expected to use Casca for rearm, to prioritize effectively, and to accept that
+  some pods may be lost while others are saved.
+
+OBJECTIVES AND DIRECTIVES
+
+Primary:
+  - At least 6 of 9 escape pods reach Nav Bravo.
+
+Secondary:
+  - At least 8 of 9 pods reach Nav Bravo. (Near-complete evacuation.)
+
+Bonus:
+  - All 9 pods reach Nav Bravo. (Perfect evacuation — extremely difficult; requires killing
+    Asura wing before any pod takes a fatal hit AND managing the Dragon wave tightly.)
+  - Pod 1 (Admiral's Pod / bridge officers) specifically reaches Nav Bravo. (Separate flag.)
+
+Failure conditions:
+  - Fewer than 6 pods reach Nav Bravo.
+  - (Alpha 1 destroyed = standard.)
+
+BRIEFINGS (TEXT-READY)
+
+[ No Command Briefing before this mission — the situation has been communicated directly by
+  Admiral Wei. The player proceeds from Mission 2-1 debrief directly to the fiction viewer
+  (Admiral's log) and then into the mission. ]
+
+MISSION BRIEFING
+[ Delivered by Admiral Wei himself — a unique briefing voice. Calm. Final. ]
+
+Stage 1:
+This is Admiral Chen Wei. I'll be brief because the situation is simple.
+The Amadeus cannot transit to Antares. Her subspace drive is non-functional. We've run the
+numbers. We're holding here at Nav Charlie.
+The crew is being evacuated in nine Hermes pods. They'll move to Nav Bravo and continue to the
+Antares node under Stentor's escort. All non-essential personnel are clearing the ship now.
+
+Stage 2:
+Alpha wing, your assignment is the pods. Nine of them, three groups. They come out in sequence
+over the next two minutes. You get them to Nav Bravo.
+The Ahriman is closing. We'll use the Amadeus's position and turrets to cover the pod corridor
+for as long as we can.
+I would appreciate it if you did not waste time trying to protect this ship. The Amadeus has
+served her purpose. The people in those pods have not.
+
+Stage 3:
+One final item. I am aware that some of you know what this briefing implies about where I will
+be during this operation. I want it noted for the log that I consider this the correct decision
+and that I made it freely. Command will review the documentation.
+Good luck. Amadeus out.
+
+[ Briefing icon notes: Amadeus position at Nav Charlie marked. Nine pod positions marked with
+  alpha-numeric labels. Nav Bravo marked as destination. SC Ahriman position marked on approach
+  vector — explicitly labeled "NOT A TARGET." Asura wing entry position marked at 6 km. Brahma,
+  Vishnu, Bheema entry vectors marked as estimated threat sectors with time estimates. GTS Casca
+  marked near Pod Group A. ]
+
+IN-MISSION COMMUNICATIONS
+
+Message 1 — Admiral Wei / Amadeus, trigger: mission start
+"Alpha wing, pods are away. Group A has cleared the bay. Watch your left — we're showing
+contacts at six kilometers."
+
+Message 2 — Alpha 2, persona: veteran wingman, trigger: Asura wing first fires on a pod
+"They're going for the pods directly. Forget the Amadeus — these things are targeting the pods."
+
+Message 3 — Admiral Wei, trigger: Pod 1 (Group A lead) clears 5,000m from Amadeus
+"Pod One is clear. Bridge officers are aboard. Get them to Nav Bravo."
+
+Message 4 — Alpha 3, trigger: Brahma wing (Shaitans) arrival (T+01:30)
+"Bombers inbound — they're going for the Amadeus. Do we— Command?"
+
+Message 5 — Command / Amadeus CAG (different from Wei's channel), trigger: Brahma wing arrival
+"Alpha wing, the Amadeus is not your objective. Let the Amadeus handle the Shaitans. Pods.
+Focus on the pods."
+
+Message 6 — Admiral Wei, trigger: Amadeus hull below 60% (from Ahriman fire)
+"Some damage to frame forty. Manageable. Turrets holding. Alpha Lead, how are the pods?"
+
+Message 7 — Alpha 2, trigger: Vishnu wing arrival (T+03:00)
+"Another fighter wave — Scorpions, coming out of the aft sector. Four of them."
+
+Message 8 — Alpha 2, trigger: 5 pods have reached Nav Bravo
+"Five pods at Nav Bravo. Halfway there. Keep pushing."
+
+Message 9 — Admiral Wei, trigger: Amadeus hull below 20%
+"Significant structural compromise, frames twenty through sixty. Casca — you'll want to move
+away from the ship." [pause] "Alpha Lead. Don't mourn on my clock. Not yet."
+
+Message 10 — Alpha 3 or Alpha 4 (whichever still alive), trigger: Bheema wing (Dragons) arrival
+"Dragons. Three of them. They're fast — they're going for the pods."
+
+Message 11 — Admiral Wei (FINAL TRANSMISSION), trigger: Amadeus hull below 5%
+"All pods are away. All pods are clear." [A pause. The sound of secondary explosions in the
+background.] "Alpha wing — you have your orders. Amadeus out."
+[Then: static. His channel goes silent. He does not transmit again.]
+
+Message 12 — Alpha 2 (after a 15-second silence following Wei's last message), trigger:
+fired 15 seconds after message 11
+"...Copy, Admiral."
+[Nothing else.]
+
+Message 13 — Commander Okafor / GTC Stentor (from Nav Bravo), trigger: Amadeus destruction
+"Alpha Lead, this is Stentor at Nav Bravo. The Amadeus — we're reading... confirmed destroyed.
+Get those pods to us. Bring everyone you can."
+
+Message 14 — Command, trigger: 7+ pods reach Nav Bravo
+"Seven pods at Nav Bravo. Alpha Lead, disengage and return when the area is clear."
+
+Message 15 — Command, trigger: all remaining pods at Nav Bravo / mission end condition met
+"Pods are safe. Alpha wing, withdraw to Nav Bravo. We're done here."
+
+EVENT FLOW AND TIMING
+- T+00:00: Mission starts. Alpha wing at mid-position between Amadeus and Nav Bravo.
+  Pod Group A (Pods 1–3) emerging from fighterbay, navigating to Nav Bravo.
+  Asura wing (3 Scorpions) already at 6 km, converging on pods.
+  SC Ahriman at 8 km, closing on Amadeus.
+- T+00:00–T+01:00: Asura wing engages pod group A. Player must intercept. Ahriman begins
+  firing on Amadeus at T+01:00.
+- T+00:45: Pod Group B (Pods 4–6) emerges from fighterbay.
+- T+01:30: Pod Group C (Pods 7–9) emerges from fighterbay.
+  Brahma wing (3 Shaitans) arrives from Capella direction, 14 km. Targets Amadeus.
+- T+03:00: Vishnu wing (4 Scorpions) arrives from aft, 12 km. Targets pods (Group B and C).
+- T+03:00–T+06:00: Sustained engagement. Asura, Vishnu, possibly remnants of Brahma. Player
+  should rearm from Casca in this window.
+- T+06:00 (or when 5 pods are at Nav Bravo, whichever first): Bheema wing (3 Dragons) arrives.
+  Targets pods. Dragon fight is the final and hardest wave.
+- Amadeus hull track: Declining through Ahriman fire + Brahma attack. Reaches 5% at approximately
+  T+08:00–T+10:00 (adjusted for how much damage Brahma deals — Dragon intercept may slow them).
+- T+08:00–T+10:00: Admiral Wei's final transmission fires at 5% hull. Amadeus destroyed shortly
+  after (2–3 seconds). Large explosion. Shockwave at 1,000m radius.
+  Player WARNING message fires 30 seconds before Amadeus hull reaches 5%: "Amadeus structural
+  failure imminent — clear the ship's immediate area."
+- T+08:00–T+14:00: Remaining pods reach Nav Bravo. Bheema wing remaining ships continue
+  pursuit. Mission ends when 6+ pods are at Nav Bravo AND no remaining enemy ships are targeting
+  unprotected pods in transit (or when all surviving pods have reached Nav Bravo).
+
+EVENT LOGIC SKETCH
+- "Pod Group A emerges" at mission start (T+00:00). Group B at T+00:45. Group C at T+01:30.
+- "Brahma wing arrival" fires at T+01:30 unconditionally.
+- "Vishnu wing arrival" fires at T+03:00 unconditionally.
+- "Bheema wing arrival" fires at T+06:00 OR when 5 pods have their "at Nav Bravo" flag set,
+  whichever comes first.
+- "Amadeus hull at 5%" event: fires Admiral's final transmission, then begins 10-second count
+  to Amadeus destruction. Shockwave applied to ships within 1,000m.
+- "Mission success" condition: Pod "at Nav Bravo" count >= 6.
+- "Mission failure" condition: Pod destroyed count > 3 (fewer than 6 surviving pods) AND all
+  surviving pods are at Nav Bravo (i.e., no recovery possible). 
+  Actually simplified: mission fails if destroyed pod count reaches 4 at any point, since
+  maximum possible safe pods then drops below 6.
+- "Pod 1 bonus" condition: Pod 1 "at Nav Bravo" flag set.
+- Casca: follows Pod Group A, available for rearming on demand throughout.
+- Ahriman: AI goal "attack GTD Amadeus" throughout. Does not fire on fighters unless they
+  come within 400m (cluster bomb trigger). Withdraws after Amadeus destroyed.
+- Asura, Vishnu, Bheema: AI goal "attack escape pods" (target by name). They will pursue
+  pods rather than engaging Alpha wing unless Alpha wing fires on them. This creates the
+  interception dynamic — player must go to them, not wait for them to come to Alpha.
+
+NEWLY INTRODUCED SHIPS AND WEAPONS
+- SF Dragon (Bheema wing): First concentrated Dragon engagement in the campaign. The Dragon
+  has been referenced in earlier briefings as the Shivans' most capable fighter. Meeting three
+  of them while protecting fragile pods is the difficulty peak of the entire campaign.
+  Their maneuverability must be communicated in the debrief: players who struggled should know
+  what they were up against.
+- GTEP Hermes in large numbers (9 pods): The player has seen pods before (Mission 1-1). Now
+  there are nine, and the Admiral is nominally on one. The emotional weight of protecting them
+  is entirely built on the preceding fiction viewer.
+
+DEBRIEFINGS
+
+Full bonus success (all 9 pods survived, Pod 1 survived):
+All nine escape pods reached Nav Bravo. The entire crew of the Amadeus is accounted for.
+Admiral Chen Wei is listed as killed in action. He remained aboard as a decision he made
+openly and documented. His service record will reflect that.
+Every person in those pods owes their life to Alpha wing. I don't know another way to say that.
+The Amadeus is gone. She served for eleven years and she died doing what a ship is supposed to
+do — buying time for people who needed it.
+Brace yourself. We still have to get through the Antares node. And the SC Malgor is sitting
+on it.
+
+Primary success (6–8 pods survived):
+[Number] of nine escape pods reached Nav Bravo. We lost [number] in the evacuation.
+Admiral Wei is listed as killed in action. His log and his decisions have been forwarded to
+Terran Command.
+You held the line against three fighter waves and a Dragon flight. Whatever we lost out there,
+it could have been worse. Today's standard is survival, not perfection.
+The Malgor is still at the Antares node. We move as soon as the Stentor can reposition.
+
+Failure (fewer than 6 pods survived):
+The evacuation failed. Of the nine pods that departed the Amadeus, only [number] made it.
+Admiral Wei is listed as killed in action alongside the crew of the pods that were destroyed.
+I don't have words for this that are useful right now. We proceed because we have to.
+Whatever is at the Antares node, we have to go through it. All of us who are left.
+
+QA NOTES
+- The Admiral's final transmission is the most important single piece of audio in this campaign.
+  It must be protected from overlap with any other message for ±15 seconds. The 15-second
+  silence before Alpha 2's "...Copy, Admiral" is mandatory. Do not cut this.
+- The explosion of the Amadeus must not instantly kill the player. The 30-second warning
+  message and the "clear the area" instruction give the player time to move. The 1,000m
+  shockwave radius is punishing but not lethal to a Valkyrie at 1,100m distance. Player
+  who ignores the warning and stays close WILL take hull damage.
+- Bheema wing (Dragons) must arrive when the player is already tired and potentially low on
+  missiles, not at a point when they're fresh. The T+06:00 / 5-pods-safe trigger ensures this.
+- Pods must move slowly enough that the player can intercept fighters before they complete
+  an attack run on a pod, but not so slowly that the mission extends beyond ~15 minutes total.
+  Calibrate pod speed relative to fighter attack run time carefully.
+- SC Ahriman must NOT be attackable as a mission objective, but the player will be tempted.
+  The cluster bomb at 400m and Command's redirect message handle this. Ahriman's withdrawal
+  after Amadeus destruction prevents her from becoming a post-mission threat to pods.
+- "Pod 1 is Admiral's pod" labeling should be visible in the targeting system and noted in
+  the briefing. Players who protect it specifically should be rewarded in the debrief.
+- Mission must not softlock if Bheema wing arrives and all remaining pods are at Nav Bravo
+  simultaneously — in that case, Bheema should be marked as "objectives no longer reachable"
+  and the mission end condition fires normally.
+
+ASSET LIST AND PERFORMANCE BUDGET
+Ship classes: GTF Valkyrie x4, GTEP Hermes x9, GTS Centaur x1, GTD Orion x1 (Amadeus, dying),
+              SC Lilith x1 (Ahriman, closing on Amadeus), SF Scorpion x3 (Asura),
+              SB Shaitan x3 (Brahma), SF Scorpion x4 (Vishnu), SF Dragon x3 (Bheema)
+Max concurrent ships: Peak at T+03:00 (4 + 9 pods + 1 Casca + 1 Amadeus + 1 Ahriman +
+  3 Asura remnants + 3 Brahma + 4 Vishnu = ~26, reducing as pods reach Nav Bravo and enemies die)
+  Peak then drops to ~16 before Bheema arrives.
+Wave totals: Asura (initial), Brahma (T+01:30), Vishnu (T+03:00), Bheema (T+06:00). 4 waves.
+Message personas: Admiral Wei (Rear Admiral, calm authority, male — unique final-mission presence),
+  Alpha 2 (veteran wingman), Alpha 3 (young pilot, emotional), Commander Okafor/Stentor (female,
+  naval officer), Command/Amadeus CAG (female, operational)

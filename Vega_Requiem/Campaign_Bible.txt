@@ -1,0 +1,393 @@
+VEGA REQUIEM
+A FreeSpace 1 Campaign
+Campaign Bible — Final Reference Document
+
+TITLE: VEGA REQUIEM
+TAGLINE: "They named the system for a dying star. It was an omen no one chose to read."
+MISSION COUNT: 6 missions, 2 acts
+TONE: Survival horror, military tragedy, desperate last stand, dark elegiac close
+POV: GTA Terran pilot, Alpha 1, 79th "Iron Wolves" Squadron, GTD Amadeus (GTD Orion-class)
+CANON STANCE: Canon-compliant side-story. Depicts the destruction of the GTD Amadeus in the Vega
+system, an event implied by FS1 Command Briefing 1.5 (January 25, 2335).
+
+===============================================================================
+TIMELINE PLACEMENT
+===============================================================================
+
+January 15–24, 2335 — the ten days immediately before the GTA's formal declaration of war against
+the Shivans (FS1 Command Briefing 1.5, January 25, 2335).
+
+Key canon anchors:
+
+  FS1 CB 1.5 (1/25/2335):
+  "After the 3rd Fleet lost the GTD Amadeus in the Vega system, the GTA and the Parliament of
+  Vasuda have both declared open states of war against the Shivans."
+  → This campaign depicts that loss in full.
+
+  FS1 CB 1.3 (1/18/2335):
+  "The Shivans have inflicted heavy casualties to both Terran and Vasudan forces in the Beta Cygni
+  and Vega systems."
+  → This directly references the events of this campaign's first act.
+
+  FS1 CB 2.2 (2/15/2335):
+  "The Hammer of Light has decimated the Vasudan fleet at Vega."
+  → This references a subsequent, larger Vasudan counterattack—after Terran forces have already
+  evacuated. Our Mission 1-3 depicts an earlier Vasudan fleet element meeting the same fate.
+
+===============================================================================
+SYSTEMS AND NODE ROUTES
+===============================================================================
+
+Primary Theater: Vega system
+  - Confirmed node connections (per official map): Vega → Antares, Beta Aquilae, Capella, Deneb
+  - Retreat route used in campaign: Vega → Antares (final escape vector)
+  - Shivan entry vectors: Vega → Capella node (primary) and Vega → Deneb node (secondary)
+  - No unstable or uncharted nodes used. All connections are from the official node map.
+
+Vega is strategically critical: it is a four-node hub connecting Terran core space (via Antares and
+Beta Aquilae) to outer systems (Capella, Deneb). Its loss isolates those approaches entirely.
+
+===============================================================================
+FACTIONS AND ORDER OF BATTLE
+===============================================================================
+
+--- GTA (ALLIED) ---
+
+GTD Amadeus (GTD Orion-class)
+  Commanding Officer: Rear Admiral Chen Wei
+  Squadrons: 79th "Iron Wolves" (Alpha wing — player), 14th "Hardpoints" (Beta wing — AI)
+  Status: Destroyed during this campaign (Mission 2-2, January 22, 2335)
+
+GTC Stentor (GTC Fenris-class)
+  Commanding Officer: Commander Yael Okafor
+  Role: Escort cruiser attached to the Amadeus
+  Status: Survives damaged to Mission 2-3; jumps to Antares at campaign end
+
+GTI Vega Prime (GTI Arcadia-class)
+  Role: Primary GTA installation in the system — administrative, logistical, and communications hub
+  Status: Destroyed (Mission 1-2, January 17, 2335)
+
+GTS Casca (GTS Centaur-class)
+  Role: Support ship, deployed from Amadeus
+  Available in: Missions 1-2, 2-1, 2-2
+
+--- PVN (NEUTRAL / AD-HOC ALLY) ---
+
+PVD Vigil (PVD Typhon-class)
+  Role: Lead warship of the Vasudan 9th Fleet advance element entering Vega
+  Status: Destroyed in Mission 1-3 ambush
+  Commander: Sub-Imperator Hethor (mentioned in fiction viewer only)
+
+Theta wing (PVT Isis x3)
+  Role: Vasudan refugee transports, scattered in Vega when the fleet is ambushed
+  Appear in: Missions 1-3 and 2-3
+
+--- SHIVAN (HOSTILE) ---
+
+SC Malgor (SC Cain-class)
+  Role: Forward cruiser in Vega; provides the mid-mission capital ship threat
+  Appears in: Missions 1-2 (bombardment of Vega Prime) and 2-3 (blocking Antares node)
+
+SC Ahriman (SC Lilith-class)
+  Role: Heavier cruiser, the relentless pursuer of the Amadeus convoy
+  Appears in: Missions 2-1 and 2-2 (primary capital threat in Act 2)
+
+Fighter/bomber wings (in order of appearance):
+  Brahma wing — SF Scorpion x4         — Mission 1-1 (wave 1)
+  Vishnu wing — SF Basilisk x3         — Mission 1-1 (wave 2)
+  Durga wing  — SF Scorpion x4         — Mission 1-2 (transport hunter)
+  Arjuna wing — SF Basilisk x3         — Mission 1-2 (station assault)
+  Krishna wing — SF Scorpion x3        — Mission 1-2 (wave 3)
+  Brahma wing  — SF Scorpion x4        — Mission 1-3 (node ambush)
+  Rama wing    — SF Basilisk x3        — Mission 1-3 (late arrival)
+  Indra wing   — SF Scorpion x4        — Mission 2-1 (interceptors)
+  Kali wing    — SB Shaitan x3         — Mission 2-1 (bomber wave 1)
+  Deva wing    — SF Basilisk x3        — Mission 2-1 (bomber escort)
+  Genma wing   — SB Shaitan x3         — Mission 2-1 (bomber wave 2)
+  Asura wing   — SF Scorpion x3        — Mission 2-2 (pod hunters)
+  Brahma wing  — SB Shaitan x3         — Mission 2-2 (Amadeus bombers)
+  Vishnu wing  — SF Scorpion x4        — Mission 2-2 (pod hunters wave 2)
+  Bheema wing  — SF Dragon x3          — Mission 2-2 (elite strike force)
+  Krishna wing — SF Scorpion x4        — Mission 2-3 (node screen)
+  Indra wing   — SF Basilisk x3        — Mission 2-3 (node screen)
+  Arjuna wing  — SF Dragon x2          — Mission 2-3 (elite intercept)
+
+--- HAMMER OF LIGHT (HOSTILE) ---
+
+Aquarius wing — PVF Horus x4          — Mission 1-3 (transport hunters)
+Pisces wing   — PVF Seth x3           — Mission 1-3 (node blockers)
+Motive: Sold the Vasudan 9th Fleet's approach vector to the Shivans; seek to prevent any Vasudan
+        escape that might preserve military assets.
+
+===============================================================================
+ERA MECHANICS AND CONSTRAINTS
+===============================================================================
+
+Available weapons by mission:
+
+  Missions 1-1 and 1-2 (Jan 15–17):
+    Primaries: GTW ML-16 Laser only
+    Secondaries: GTM MX-50, GTM Fury
+    Note: Avenger cannon exists as a prototype but is not mass-deployed. GTA pilots are equipped
+    with the same 14-Year-War loadout that proved inadequate against Shivan shields. This is the
+    core horror of Act 1: familiar weapons are almost useless.
+
+  Mission 1-3 (Jan 20):
+    Primaries: GTW ML-16, GTW-15 Avenger (field-test units — player lead only in this mission)
+    Secondaries: GTM MX-50, GTM Fury
+    Note: The Amadeus received a small allocation of field-modified Avenger cannons. The player
+    gets one; wingmen still carry ML-16. First time Shivan shields feel real resistance.
+
+  Missions 2-1, 2-2, 2-3 (Jan 21–24):
+    Primaries: GTW ML-16, GTW-15 Avenger (now standard for whole wing)
+    Secondaries: GTM MX-50, GTM Fury
+    Note: Full Avenger deployment reached the Amadeus just before Jan 21. GTA fighter shields are
+    NOT yet available (CB 1.5, Jan 25 — one day after our campaign ends).
+
+What is NOT available in this campaign (comes later in the main FS1 timeline):
+  - GTW Flail (CB 2.1, Feb 11)
+  - GTM Interceptor (CB 2.1, Feb 11)
+  - GTM Phoenix V (CB 2.2, Feb 15)
+  - GTM Hornet (CB 3.1, Mar 1)
+  - GTM Stiletto / Tsunami / Harbinger (CB 1.6 and later)
+  - GTB Athena (CB 1.6, Jan 31 — just after campaign ends)
+  - GTB Medusa (CB 2.2), GTB Ursa (CB 3.2) — much later
+  - Shivan fighter shields for GTA pilots (CB 1.5, Jan 25 — one day after campaign ends)
+  - Intersystem jump drives for fighters (CB 3.2, Mar 1)
+  - GTW Banshee (CB 3.1, Mar 1)
+  - GTW Prometheus — available per era but not distributed to the Amadeus; not included
+  - GTW Disruptor — available but not relevant (no capture objectives in this campaign)
+
+Available ships:
+  All missions: GTF Apollo
+  Missions 1-2 onward: GTF Valkyrie (Amadeus received a complement on Jan 17, matching
+                        the fleet-wide distribution referenced in FS1 CB 1.2)
+  No bombers available throughout this campaign.
+
+Capital ship rules:
+  - No beam cannons (FS2 era tech)
+  - No corvettes (FS2 era class)
+  - No impervious capital ship shields (only the SD Lucifer possesses those; no Lucifer in Vega)
+  - Shivan fighter/bomber shields are strong but not impervious; sustained ML-16 fire can kill,
+    but Avenger significantly improves kill speed
+
+===============================================================================
+THEMES, PROTAGONIST ARC, ANTAGONIST MOTIVATIONS
+===============================================================================
+
+Themes:
+  1. THE WAGES OF UNPREPAREDNESS — The GTA spent fourteen years perfecting how to kill Vasudans
+     and built no doctrine for anything else. Vega burns because no one was ready for something new.
+  2. SALVAGE OVER VICTORY — Every mission objective is about saving lives, not seizing ground.
+     This campaign cannot be "won." It can only be survived, and how well you survive is measured
+     in people, not positions.
+  3. THE COST OF LOYALTY — The Admiral stays with his ship. Pilots die covering transports. The
+     Vasudan commander sails knowingly into an ambush because retreat is not an option her orders
+     allow. Loyalty in extremis is both the most noble and most ruinous thing people do.
+  4. RELUCTANT KINSHIP — The Terran-Vasudan ceasefire isn't signed yet, but in the field,
+     soldiers recognize their common enemy faster than their governments do. The cooperation in
+     Mission 1-3 prefigures the alliance; it begins not with diplomacy but with shared terror.
+
+Protagonist arc (Alpha 1, the player):
+  Act 1, Missions 1-1 and 1-2: Combat veteran rendered helpless. Weapons bounce off the enemy.
+  Standard formations dissolve. Friends die. There is no briefing that covers this scenario.
+  Act 1, Mission 1-3: First adaptation. New weapon. New ally (the enemy, provisionally). The
+  player has stopped reacting and started improvising.
+  Act 2, Missions 2-1 and 2-2: Professionalism under grief. The ship is dying. The admiral
+  won't leave. The pilot does the only thing available: keep the bombers off the hull as long as
+  possible. Then protect the pods.
+  Act 2, Mission 2-3: A survivor's mission. No glory. Just the jump node and whoever can be
+  dragged through it.
+
+Admiral Chen Wei arc:
+  Introduced in CB 1.1 as a calm, methodical commander. Keeps the briefings steady even as the
+  situation deteriorates. In Mission 2-2 his final order is to "hold position" — a euphemism that
+  fools no one. Dies with the Amadeus. His personal log (fiction viewer, Mission 2-2) shows the
+  human being under the rank.
+
+Antagonist motivations:
+  SHIVANS — Unknown and unknowable. They are not conquering territory or gathering resources.
+  They attack without communication, without pattern any Terran mind can parse. They are a natural
+  catastrophe with engines. The horror is not malice; it is indifference.
+  HAMMER OF LIGHT — Fanatics operating from faith, not hatred. They believe the Shivans are cosmic
+  preservers fulfilling prophecy. Betraying the Vasudan fleet is, to them, a holy act. They are
+  terrifying not despite this belief but because of it.
+
+===============================================================================
+PLOTLINE SUMMARY
+===============================================================================
+
+January 15, 2335. The Vega system is a four-node hub and a symbol of GTA reach. The 3rd Fleet,
+built around the GTD Amadeus, has garrisoned it through the final grinding months of the
+Terran-Vasudan War.
+
+The first attack comes without warning. GTT Meridian, a patrol transport, goes silent near the
+Vega-Capella node. When Alpha wing investigates (Mission 1-1), they find wreckage and something
+new: black fighter craft that barely register on sensors, shrug off laser fire, and kill with
+inhuman precision. Three of Alpha's four ships make it back. Their sensor logs are the first
+detailed Shivan combat record from the Vega system.
+
+Two days later (Mission 1-2), the Shivans mass against GTI Vega Prime. Alpha wing holds the
+fighter screen while Epsilon transports evacuate civilian and technical personnel. The station falls,
+but most people escape. The GTC Stentor, intercepting the Shivan cruiser SC Malgor with suicidal
+commitment, buys the transports the minutes they need.
+
+By January 18, field-modified Avenger cannons begin reaching the Amadeus. The weapons finally
+bite. But the Shivans don't stop coming. The Vasudan 9th Fleet advance element—PVD Vigil and her
+escorts—enters Vega to fight the common enemy (Mission 1-3). Hammer of Light agents have already
+sold their approach vector. The Vigil dies in seconds at the Capella node. Vasudan refugee
+transports scatter toward Antares. Alpha wing helps them—no order required, no alliance yet
+signed, just the choice of one pilot at one moment. The Vasudan wing commander sends a brief
+transmission of thanks before going silent.
+
+January 21. The retreat begins (Mission 2-1). The Amadeus, damaged in three days of constant
+strikes, begins escorting surviving personnel ships toward Antares. Shivan bomber wings harry
+the convoy. The SC Ahriman—a Lilith-class cruiser—begins its pursuit. The convoy holds together,
+barely.
+
+January 22. The Amadeus can no longer move effectively (Mission 2-2). Admiral Wei makes the
+decision: the ship holds position at Nav Charlie and draws fire while her crew evacuates in escape
+pods. He remains on the bridge. The player fights the most desperate battle of the campaign—
+protecting nine escape pods from Dragon-class fighters and the Ahriman's guns while the Amadeus
+burns. The ship dies. The Admiral goes with her.
+
+January 24. Vega's last defenders converge on the Antares node (Mission 2-3). The SC Malgor
+sits at the node with a fighter screen. GTC Stentor, four freighters, two Vasudan transports.
+There are SF Dragons at the node. Stentor takes a direct hit and Commander Okafor orders emergency
+transit. Several freighters don't make it. Enough do.
+
+The Vega-Antares node goes dark behind them.
+
+The Vega system, GTA designation VL-001, fell to the Shivans on January 24, 2335.
+
+===============================================================================
+ACT STRUCTURE
+===============================================================================
+
+ACT 1: THE SHIVAN TIDE (3 missions, January 15–20, 2335)
+  Beat arc: Denial → shock → grim recognition
+  Opening state: Routine garrison assignment, Terran-Vasudan War winding down
+  Closing state: Station lost, Vasudan fleet ambushed, retreat now inevitable
+  Emotional register: Horror, disbelief, improvisation
+
+  CB 1.1 (before Mission 1-1): Routine briefing. No mention of Shivans (not yet confirmed).
+  Mission 1-1 "Strange Fires": First contact. Weapons don't work. Barely survive.
+  Mission 1-2 "Breakwater": Station defense. Evacuate civilians. Watch Vega Prime die.
+    Fiction Viewer: Station technician's last minutes aboard GTI Vega Prime
+  CB 1.2 (before Mission 1-3): Shivans confirmed. Avengers arriving. Vasudan fleet incoming.
+  Mission 1-3 "No Truce With the Tide": Vasudan fleet ambushed. Player helps them escape.
+    Fiction Viewer: PVD Vigil's tactical officer—final approach and ambush
+
+ACT 2: NO WAY HOME (3 missions, January 21–24, 2335)
+  Beat arc: Hope → loss → hard-won survival
+  Opening state: Ordered withdrawal underway, Amadeus damaged but moving
+  Closing state: Amadeus destroyed, Admiral dead, survivors through the Antares node
+  Emotional register: Grief, professionalism, sacrifice
+
+  CB 2.1 (before Mission 2-1): Ordered withdrawal. Shivans control 3 of 4 Vega nodes.
+  Mission 2-1 "Dead Reckoning": Convoy escort. Bomber intercept. SC Ahriman appears.
+  Mission 2-2 "The Last Full Measure": Amadeus holds position. Protect escape pods.
+    Fiction Viewer: Admiral Chen Wei's personal log—the night before
+  Mission 2-3 "Vega Requiem": Final breakthrough at the Antares node.
+    Fiction Viewer: Omniscient reflection—a system going dark
+
+===============================================================================
+MISSION LIST (SUMMARY)
+===============================================================================
+
+ACT 1
+
+  CB 1.1: GTD Amadeus / Vega / 1/15/2335 — Routine briefing, Vega status, investigation order
+  
+  Mission 1-1: "Strange Fires"
+  Date: 1/15/2335 | Location: Vega deep space, Capella approach corridor
+  Type: Recon / First Contact / Escape
+  Primary objectives: Investigate distress beacon; return to jump point alive
+  Secondary: Save GTT Meridian crew escape pods (escort to jump point)
+  Narrative beat: First Shivan encounter. ML-16 useless. Wingmen die. Barely escape.
+  Ships: GTT Meridian (destroyed), Brahma wing (SF Scorpion x4), Vishnu wing (SF Basilisk x3)
+  New tech: None (first mission; baseline loadout)
+
+  Mission 1-2: "Breakwater"
+  Date: 1/17/2335 | Location: GTI Vega Prime vicinity
+  Type: Installation defense / Evacuation cover
+  Primary: Escort Epsilon wing (GTT Elysium x4) to subspace jump point
+  Secondary: Preserve GTC Stentor above 50% hull
+  Narrative beat: Station falls but most civilians escape. Watch Vega Prime die.
+  Ships: GTI Vega Prime (destroyed), GTC Stentor, SC Malgor (Cain-class)
+  New tech: GTF Valkyrie (first available)
+  Fiction Viewer: "Vega Prime, Deck Seven" — before this mission
+
+  CB 1.2: GTD Amadeus / Vega / 1/18/2335 — Shivans confirmed; Avengers arriving; Vasudan
+  fleet inbound; Hammer of Light warning issued.
+
+  Mission 1-3: "No Truce With the Tide"
+  Date: 1/20/2335 | Location: Vega system, Capella node area
+  Type: Rescue / Multi-faction engagement
+  Primary: Escort Theta wing (PVT Isis x3) to the Antares node
+  Secondary: Destroy HoL blocking force (Pisces wing) at the node approach
+  Narrative beat: Vasudan fleet ambushed. Player helps enemy transports escape. Reluctant alliance.
+  Ships: PVD Vigil (Typhon-class, destroyed), Theta wing, Aquarius wing (HoL Horus x4)
+  New tech: GTW-15 Avenger (field-test unit, player only)
+  Fiction Viewer: "The Approach Vector" — before this mission
+
+ACT 2
+
+  CB 2.1: GTD Amadeus / Vega / 1/21/2335 — Ordered withdrawal. Shivans control Capella and Deneb
+  nodes. Antares node is the only exit. Amadeus leading convoy.
+
+  Mission 2-1: "Dead Reckoning"
+  Date: 1/21/2335 | Location: Vega system, en route to Antares node
+  Type: Convoy escort / Fighting withdrawal
+  Primary: GTD Amadeus survives to Nav Bravo (waypoint 50,000 km from Antares node)
+  Secondary: At least 3 of 5 convoy freighters/transports survive
+  Narrative beat: Shivan bombers hammer the convoy at every step. The SC Ahriman begins pursuit.
+  Ships: GTD Amadeus (80% hull), GTC Stentor, GTFr Aldrin 1-3 (Chronos), SC Ahriman (Lilith)
+  New tech: GTW-15 Avenger now standard for all Alpha wing ships
+
+  Mission 2-2: "The Last Full Measure"
+  Date: 1/22/2335 | Location: Vega system, Nav Charlie
+  Type: Escape pod defense / Capital ship last stand
+  Primary: At least 6 of 9 GTEP Hermes escape pods reach Nav Bravo
+  Secondary: All 9 pods survive
+  Bonus: Pod 1 (Admiral Wei's) specifically survives
+  Narrative beat: Amadeus holds position. Wei stays. Alpha fights to the last. The ship dies.
+  Ships: GTD Amadeus (dying), 9x GTEP Hermes, SC Ahriman, Bheema wing (SF Dragon x3)
+  New tech: SF Dragon (first combat encounter in this campaign)
+  Fiction Viewer: "Admiral Chen Wei — Personal Log — January 21, 2335" — before this mission
+
+  Mission 2-3: "Vega Requiem"
+  Date: 1/24/2335 | Location: Vega system, Antares jump node
+  Type: Node breakthrough / Final evacuation
+  Primary: GTC Stentor + at least 3 freighters/transports escape through the Antares node
+  Secondary: SC Malgor destroyed
+  Bonus: Both Vasudan Theta transports escape
+  Narrative beat: Final sprint through the Shivan screen. Some don't make it. Enough do.
+  Ships: GTC Stentor, SC Malgor (Cain-class), Arjuna wing (SF Dragon x2), Theta remnants
+  Fiction Viewer: "Vega, Designate VL-001" — before this mission
+
+===============================================================================
+CONTINUITY NOTES
+===============================================================================
+
+  - GTD Amadeus destruction is canonical per FS1 CB 1.5. This campaign depicts that event directly.
+  - CB 1.3 reference to "heavy casualties... in the Vega system" encompasses this campaign's events.
+  - The HoL decimation of the Vasudan fleet at Vega (CB 2.2) refers to a later, larger Vasudan
+    counterattack after Terran forces have evacuated. Our Mission 1-3 depicts an earlier, smaller
+    fleet element meeting the same fate. No contradiction.
+  - The Terran-Vasudan ceasefire is NOT in effect during this campaign (signed CB 1.5, Jan 25).
+    All Terran-Vasudan cooperation here is ad-hoc and battlefield-driven.
+  - GTA fighter shields become available January 25 (CB 1.5). Our campaign ends January 24.
+    No GTA fighter shields in any mission.
+  - Avenger cannon mass deployment: CB 1.5, Jan 25. Our depiction of limited field units reaching
+    the Amadeus by Jan 20 is a plausible pre-deployment to frontline units. Narratively established
+    in CB 1.2.
+  - All Vega node connections used are confirmed on the official node map.
+  - Admiral Chen Wei, Commander Yael Okafor, GTC Stentor, GTI Vega Prime, SC Malgor, and SC Ahriman
+    are all original creations. No canon-named officers are assigned to the GTD Amadeus.
+  - "SC Malgor" and "SC Ahriman" follow the convention that Shivan ship names are GTA designations,
+    not names the Shivans use themselves.
+  - No SD Demon, SD Lucifer, or superdestroyer class appears in this campaign. The drama is
+    sustained by cruisers and fighter wings, maintaining scale appropriate to a 6-mission campaign.
+  - The GTF Valkyrie availability from Mission 1-2 onward is consistent with CB 1.2's fleet-wide
+    distribution announcement on January 15.

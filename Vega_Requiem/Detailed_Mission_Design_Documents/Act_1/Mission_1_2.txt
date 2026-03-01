@@ -1,0 +1,320 @@
+================================================================================
+MISSION DESIGN DOCUMENT
+Mission 1-2: "Breakwater"
+================================================================================
+
+PURPOSE AND PLAYER EXPERIENCE
+- Mission fantasy: The player is the last wall between civilians and something that cannot be
+  reasoned with. Every second of delay bought against the Shivan advance is a life saved.
+- Core tension: Split priority. Epsilon transports must reach the jump node. GTC Stentor must survive.
+  The SC Malgor's arrival mid-mission reframes the threat from fighter swarm to capital assault.
+- Plot advance: GTI Vega Prime falls, confirming no static defense can hold. The evacuation
+  succeeds well enough to matter — this is a salvage of life from a strategic defeat.
+- Emotional register: Controlled desperation. The station is going to die; the question is
+  whether anyone has to die with it. Introduce GTF Valkyrie as the tool that makes a difference.
+- This mission should feel like a desperate rearguard action where every kill buys time, and the
+  player comes away bruised but not broken. A partial victory that stings less than a defeat.
+
+FICTION VIEWER NARRATIVE
+- Displayed before this mission.
+- File: Mission_1_2_story.txt
+- Summary: A station technician stranded on GTI Vega Prime's lower decks during the evacuation.
+  Follows her route to the last remaining escape pod. Tone: quiet horror, human detail, survival.
+- Purpose: Puts a face on the "civilians" the player is protecting. When the transports escape
+  in-mission, the player knows someone real might be on them.
+
+ENVIRONMENT AND SETUP
+- Datestamp: January 17, 2335
+- System: Vega — GTI Vega Prime installation vicinity
+- Location: 5,000m from GTI Vega Prime (GTI Arcadia-class); Vega star system inner zone
+- Background: Warm amber-orange starfield; Vega's main sequence star large and dominant in the
+  upper quadrant; Vega Prime's superstructure visible and increasingly battered across mission
+- Objects in scene at mission start:
+  - GTI Vega Prime (GTI Arcadia-class): Present and operational at mission start; heavily damaged
+    by midpoint; destroyed before mission ends. Center of the scene. Multiple docking arms active.
+  - GTC Stentor (GTC Fenris-class): Positioned 3,000m from Vega Prime on the approach side,
+    firing at incoming Shivan fighters and serving as picket line.
+  - Nav Alpha: 2,000m from Vega Prime — the rally point for Epsilon transports before their jump.
+  - Nav Bravo: The Vega-Antares subspace jump node approach, 40,000m from station.
+  - Epsilon wing (GTT Elysium x4): Docked at Vega Prime at mission start. Undock staggered across
+    first 3 minutes, then form up at Nav Alpha before proceeding to Nav Bravo.
+  - Three TAC-1 cargo containers at docking arm 3 (civilian equipment — irrelevant to objectives
+    but scannable as bonus; confirms civilian nature of station).
+  - Four Terran NavBuoys marking the approach corridor to the Antares node.
+  - Several GTSG Watchdog sentry guns around the station (3–4); they will be destroyed quickly by
+    the Shivans, but their presence establishes that someone tried to defend this place properly.
+
+PARTICIPANTS
+
+Allied:
+- Alpha wing: GTF Valkyrie x4 (Alpha 1 = player, Alpha 2–4 = AI)
+  - Loadout: GTW ML-16 Laser x2; GTM MX-50 (24), GTM Fury (16)
+  - Note: Valkyrie is available for the first time this mission. Its speed advantage is
+    immediately relevant for intercept runs against the bomber Arjuna wave.
+  - Initial orders: Protect Epsilon wing; Protect GTC Stentor
+
+- GTC Stentor (GTC Fenris-class): Present at mission start, engaging Durga wing
+  - Commanding officer: Commander Yael Okafor (persona: naval professional, pragmatic)
+  - Hull at start: 100%. Must finish above 50% for secondary objective.
+  - Stentor's guns engage Durga wing throughout early mission. When SC Malgor arrives, Stentor
+    turns to engage it at close range — suicidal, but necessary to give the transports time.
+  - Orders: Protect GTI Vega Prime, then Protect Epsilon wing (shifts when station destroyed)
+
+- Epsilon 1–4 (GTT Elysium-class transports): Undock staggered from Vega Prime
+- Epsilon 1 departs at T+01:30; Epsilon 2 at T+02:00; Epsilon 3 at T+02:45; Epsilon 4 at T+03:30
+- All four navigate to Nav Alpha, then proceed to Nav Bravo (Antares node)
+- Speed: Slow. Nav Alpha is 30 seconds at transport speed. Nav Bravo is approximately 4 minutes.
+- Epsilon 3 and Epsilon 4 are the most vulnerable — they depart later when Shivan pressure is highest.
+
+- GTS Casca (GTS Centaur-class support ship): Arrives from Amadeus direction at T+04:00
+  - Player may call Casca for rearming once per mission.
+  - Casca departs after rearm cycle or when all Epsilon transports are at Nav Bravo, whichever
+    comes first. Casca is fragile — player should not let Shivans focus on it.
+
+- GTI Vega Prime (GTI Arcadia-class): Installation, not pilotable
+  - Hull: 100% at start. Reduced to ~30% by T+06:00 by Arjuna bomber wave.
+  - Destroyed (explodes with spectacular effect) at approximately T+08:00–T+10:00 depending on
+    player protection. Player cannot prevent this. The station's destruction is scripted — what
+    varies is the exact timing, which affects whether Epsilon 3 and 4 are still in danger.
+
+Hostile:
+- Durga wing: SF Scorpion x4
+  - Present at mission start, already attacking GTI Vega Prime and GTC Stentor
+  - Initial orders: Attack GTI Vega Prime; Attack GTC Stentor
+  - These are the first contacts. Player must deal with them quickly before the bomber wave.
+
+- Arjuna wing: SF Basilisk x3 (first wave)
+  - Arrives at T+02:30 from Capella node direction (12 km)
+  - Initial orders: Attack GTI Vega Prime (concentrate fire on docking arms)
+  - These are the station killers. Player can intercept them but cannot prevent the station's fall.
+
+- Arjuna wing second wave (SF Basilisk x3):
+  - Arrives when Arjuna first wave falls to 1 ship OR at T+05:30, whichever comes first
+  - Initial orders: Attack Epsilon wing (transitions from station to transports once station is dying)
+  - This wave is the primary threat to mission success — it targets the transports directly.
+
+- Krishna wing: SF Scorpion x3
+  - Arrives at T+04:30 from Capella direction (10 km)
+  - Initial orders: Attack Alpha wing
+  - Pure fighter harassment — intended to pull Alpha away from bomber intercept duty.
+
+- SC Malgor (SC Cain-class cruiser): Arrives at T+06:30 from Capella node (18 km)
+  - Initial orders: Attack GTI Vega Prime
+  - The arrival of a capital ship reframes the mission — the station was doomed before, now
+    it's final. The Malgor turns toward the Antares node approach corridor at T+08:00 to
+    harass Epsilon wing from range. It cannot prevent the transports from jumping but creates
+    pressure and provides a target for a secondary objective (destroy it) in Mission 2-3.
+  - Malgor has standard Cain-class turrets: multiple light plasma batteries, cluster bomb
+    defensive mechanism. The cluster bomb is only triggered if a player ship closes within 400m.
+  - Note: The Malgor is NOT a mission-end target here. Destroying it is not required and is
+    extremely difficult without bomber support. Players who try to engage it directly with fighters
+    will fail secondary objectives. The design lesson: know what you can and can't fight.
+
+PLAYER CRAFT AND LOADOUT
+- Ship: GTF Valkyrie (first appearance; highly recommended for its intercept speed)
+- Primary: GTW ML-16 Laser x2
+- Secondary: GTM MX-50 (24), GTM Fury (16)
+- Support: GTS Casca (one rearm available, arrives T+04:00)
+- No reinforcements available by callout. This is what you have.
+- Valkyrie note for briefing: "She's fast. Use that."
+
+OBJECTIVES AND DIRECTIVES
+
+Primary:
+  - At least 3 of 4 Epsilon transports reach Nav Bravo (Antares jump node) and jump out.
+
+Secondary:
+  - GTC Stentor hull remains above 50% when all Epsilon transports have departed.
+
+Bonus:
+  - All 4 Epsilon transports survive to jump out. (Full evacuation success.)
+  - Scan bonus cargo containers at Vega Prime docking arm 3 (reveals civilian equipment,
+    acknowledged in debrief with commendation for thoroughness).
+
+Failure conditions:
+  - Fewer than 3 Epsilon transports reach Nav Bravo.
+  - (Alpha 1 destroyed = standard pilot death failure.)
+
+BRIEFINGS (TEXT-READY)
+
+MISSION BRIEFING
+
+Stage 1:
+Alpha wing, listen up. The situation has changed overnight. What Alpha Lead brought back from
+the Capella corridor wasn't Vasudan, wasn't anything Command could identify — and this morning
+at 0530, those same contact profiles showed up in force at the GTI Vega Prime perimeter.
+We have four Epsilon transports at Vega Prime right now — civilian contractors, administrative
+personnel, maintenance crews. They need to get out. The transports are undocking now.
+GTC Stentor is already in the fight. Your job is to keep the fighters off those transports long
+enough for all four of them to clear the system at the Antares node.
+
+Stage 2:
+You'll be flying Valkyries today. They just came in from the Amadeus complement — fast
+interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and
+the transports. The station is already taking damage and we don't expect to hold it. That's not
+your mission. The people on those transports are your mission.
+Nav Alpha is the rendezvous point between the station and the node corridor. The transports will
+stage there before making their run to Nav Bravo. Get them through.
+
+Stage 3:
+One more thing. We're sending the Casca out behind you for rearming support. She's fragile —
+don't let her become a target. Call her in when you need her, not before.
+The Stentor will hold as long as she can. Commander Okafor knows her job.
+Good luck. GTA Amadeus CAG out.
+
+[ Briefing icon notes: Nav Alpha marked near station. Nav Bravo marked at Antares node approach.
+  GTI Vega Prime, GTC Stentor, Epsilon wing positions marked. SC Malgor NOT shown on briefing map
+  — its arrival is a mid-mission surprise. Enemy wing arrival vectors marked at Capella node. ]
+
+IN-MISSION COMMUNICATIONS
+
+Message 1 — Commander Okafor / GTC Stentor, persona: professional naval officer, trigger:
+mission start
+"Alpha Lead, Stentor. We have four Scorpions on us already. Get in here."
+
+Message 2 — Epsilon 1 pilot, persona: civilian transport pilot, anxious, trigger: Epsilon 1 undock
+(T+01:30)
+"GTD Amadeus control, this is Epsilon One. We are... we're undocking. Please advise on our route."
+[Command responds] "Epsilon One, proceed to Nav Alpha and hold for the others. Alpha wing is
+covering you."
+
+Message 3 — Alpha 2, trigger: Arjuna wave 1 arrival (T+02:30)
+"Bombers. Capella vector. They're going for the station directly — cut them off."
+
+Message 4 — Vega Prime Control, persona: station controller (calm professional performing
+last duty), trigger: Arjuna wave 1 within 2,000m of station
+"All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two,
+Three, Four — accelerate undocking sequence. Repeat, accelerate."
+
+Message 5 — Epsilon 3 pilot, trigger: Arjuna second wave targeting Epsilon 3
+"Alpha wing — something's on me! On me — please—"
+
+Message 6 — Command, trigger: SC Malgor arrival (T+06:30)
+"Alpha Lead, Command. We're reading a cruiser-class contact inbound from the Capella node.
+Class designation — Cain. Do not engage. I repeat, do not engage the cruiser. Get those
+transports out."
+
+Message 7 — Commander Okafor / GTC Stentor, trigger: SC Malgor begins moving toward Antares
+corridor (T+08:00)
+"Alpha Lead, Stentor is engaging the Malgor. We'll keep her busy as long as we can. You
+cover those transports. That's an order."
+
+Message 8 — Vega Prime Control, trigger: GTI Vega Prime hull below 10%
+"This is Vega Prime Control. Station integrity is failing. All personnel have evacuated or are...
+[static] ...recommend all ships clear the station perimeter. Clear the station perimeter now."
+[Long pause]
+"It's been an honor serving in Vega system. God— [transmission cuts]"
+
+Message 9 — Alpha 2, trigger: GTI Vega Prime destroyed
+"She's gone. Just... keep moving. Keep them moving."
+
+Message 10 — Command, trigger: Epsilon 3 OR Epsilon 4 destroyed (plays once)
+"We've lost one of the transports. Push the others through. Don't stop."
+
+Message 11 — Command, trigger: all surviving Epsilon ships at Nav Bravo and jumping
+"Remaining Epsilon transports are through. Alpha wing, disengage and return to base. Good work.
+Come home."
+
+EVENT FLOW AND TIMING
+- T+00:00: Mission begins. GTI Vega Prime under attack. Durga wing (Scorpion x4) engaging
+  station and Stentor. Alpha wing at jump-in point 6 km from station.
+- T+01:30: Epsilon 1 undocks from Vega Prime. Begins navigation to Nav Alpha.
+- T+02:00: Epsilon 2 undocks. Begins navigation to Nav Alpha.
+- T+02:30: Arjuna wave 1 (Basilisk x3) arrives from Capella, 12 km. Targets Vega Prime.
+- T+02:45: Epsilon 3 undocks.
+- T+03:30: Epsilon 4 undocks.
+- T+04:00: GTS Casca arrives in scene (available for rearm requests from this point).
+- T+04:30: Krishna wing (Scorpion x3) arrives from Capella, 10 km. Targets Alpha wing.
+  Epsilon 1 and 2 reach Nav Alpha and begin proceeding to Nav Bravo.
+- T+05:30 (or when Arjuna wave 1 drops to 1 ship): Arjuna wave 2 (Basilisk x3) arrives.
+  NOW targets Epsilon wing instead of station. Critical intercept window.
+- T+06:30: SC Malgor (Cain-class) arrives from Capella, 18 km. Targets station.
+  Vega Prime is at ~30% hull or lower by now.
+- T+08:00: SC Malgor changes target priority to Antares corridor / Epsilon transports.
+  Stentor engages Malgor at close range.
+- T+08:00–T+10:00: GTI Vega Prime is destroyed (exact timing varies slightly).
+- T+08:00–T+12:00: Surviving Epsilon transports reach Nav Bravo and jump to Antares.
+  Mission ends when all surviving Epsilon ships have jumped.
+
+EVENT LOGIC SKETCH
+- "Epsilon 1 undock" event fires at T+01:30. Subsequent transports fire at fixed intervals.
+- "Arjuna wave 2 arrival" event fires when Arjuna wave 1 ships-alive count is 1 OR when
+  T+05:30 is reached. First trigger wins.
+- "Krishna wing arrival" fires at T+04:30 unconditionally.
+- "SC Malgor arrival" fires at T+06:30 unconditionally.
+- "SC Malgor changes target" fires at T+08:00 unconditionally. AI goal reassignment.
+- "Vega Prime destruction" is scripted — Vega Prime has a hull integrity track. With Durga,
+  Arjuna wave 1, and SC Malgor all targeting it, it will be destroyed between T+08:00 and
+  T+10:00 regardless of player action. Player cannot protect the station.
+- "Mission complete" condition fires when all Epsilon ships with status "survived" have their
+  "has jumped out" flag set, and count of survived Epsilon ships >= 3.
+- "Mission failure" fires if Epsilon survived count drops below 3 (i.e., 2 or fewer survive).
+  This requires 3 or more of the 4 transports to be destroyed, which is very unlikely unless
+  the player actively ignores Arjuna wave 2.
+
+NEWLY INTRODUCED SHIPS AND WEAPONS
+- GTF Valkyrie: First available in campaign. Introduced in briefing stage 2.
+  Default recommendation. Speed is the mechanical hook for this mission.
+- SC Malgor (SC Cain-class): First capital ship threat of the campaign.
+  NOT engageable by player in this mission — establishes that capital ships require bombers.
+- GTC Stentor: Player's allied cruiser, first real appearance (was mentioned in CB 1.1).
+  Commander Okafor established as a named persona for subsequent missions.
+- GTI Vega Prime (GTI Arcadia-class): The installation the player is "defending" — its
+  destruction mid-mission is a deliberately designed moment of loss.
+
+DEBRIEFINGS
+
+Full success (all 4 Epsilon transports survived, Stentor above 50%):
+All four Epsilon transports are safely through the Antares node. The station is gone — but the
+people are not. That matters.
+Commander Okafor sends her thanks. The Stentor took some damage, but she held together, and
+her crew held together with her. She says you covered her exactly when she needed it.
+Vega Prime is lost. We knew it was coming, but knowing doesn't make it easier. I want you to
+understand that everything you defended out there had a name and a family. You did right by
+them today.
+The Malgor is still in the system. We're keeping track of her.
+
+Partial success (3 of 4 transports survived, or Stentor below 50%):
+Three transports made it. That's people alive who would otherwise be dead, and I'm not going
+to diminish that. But we lost [one/the Stentor took heavy damage], and I want you to think
+about what you could have done differently.
+Arjuna wave — that second bomber group — came in fast. The Valkyrie was the right choice, but
+the intercept timing was tight. Study the sensor recording. It'll matter next time.
+Vega Prime is gone. The Malgor is still in the system. The situation is deteriorating.
+
+Failure (fewer than 3 transports survived):
+This is hard to report. Of the four Epsilon transports, only [count] made it. The others were
+destroyed before they could reach the jump node. Those were civilian evacuation ships.
+I have to be direct with you: the Arjuna bombers were the mission-critical threat, and they
+were not intercepted quickly enough. I understand what you were facing — those shields, that
+SC Malgor arriving — but our job was the transports.
+We will not have another chance in Vega. What we do from here is damage limitation. Regroup.
+
+QA NOTES
+- The mission is designed so the player CANNOT prevent Vega Prime's destruction. This must be
+  communicated clearly — either in the briefing or via early in-mission dialogue. Players who
+  attempt to protect the station at the expense of the transports will fail the primary objective.
+  The message from Vega Prime Control should make clear the station is accepting its fate.
+- Arjuna wave 2 transition from "attack station" to "attack Epsilon transports" is the critical
+  design beat. The timing of its arrival relative to when Epsilon 1 and 2 leave Nav Alpha must be
+  calibrated so that the player faces a genuine decision — the fighters threatening their wing
+  (Krishna) versus the bombers threatening the transports (Arjuna wave 2).
+- SC Malgor must not be targetable as a mission objective. Its turrets should not be lethal to
+  fighters at range (Cain-class has plasma batteries, not precision anti-fighter weapons at
+  distance). Players who close to within 400m trigger the cluster bomb — this should be
+  educational rather than immediately fatal.
+- GTS Casca is vulnerable and should be positioned near Vega Prime (not on the Capella side).
+  If Shivans acquire it as a target, it will die quickly. The player can draw them away.
+- Epsilon 3 and 4 are the emotionally weighted transports — they depart last, are most exposed,
+  and Epsilon 3 has a panicked pilot voice line. Player attachment is intentional.
+
+ASSET LIST AND PERFORMANCE BUDGET
+Ship classes: GTF Valkyrie x4, GTC Fenris x1, GTT Elysium x4, GTS Centaur x1,
+              GTI Arcadia x1 (station), SF Scorpion x7 (2 waves: 4+3), SF Basilisk x6 (2 waves),
+              SC Cain x1
+Max concurrent ships: ~18 (after station destruction reduced to ~15)
+Wave totals: Durga (4 Scorpions, initial), Arjuna wave 1 (3 Basilisks), Krishna (3 Scorpions),
+             Arjuna wave 2 (3 Basilisks), SC Malgor (1 cruiser). 5 hostile elements total.
+Message personas: Alpha 2 (veteran wingman), Commander Okafor/Stentor (naval officer, female),
+                  Vega Prime Control (station controller, male), Epsilon 3 pilot (civilian, anxious),
+                  Command/Amadeus CAG (female, professional)

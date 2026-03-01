@@ -1,0 +1,379 @@
+================================================================================
+COMMAND BRIEFING 2.1
+"Ordered Withdrawal"
+================================================================================
+
+Delivered aboard: GTD Amadeus
+Location: Vega System — deep space, inner zone
+Date: January 21, 2335
+
+--- STAGE 1: SYSTEM STATUS ---
+This is Rear Admiral Chen Wei. Listen carefully. I'm not going to spend time softening this.
+
+Vega is lost.
+
+I want to be precise about what that means. We have not been defeated in open battle. We have
+been systematically dismantled by an enemy whose capabilities exceed ours in every measurable
+category, and whose intentions we still do not fully understand. GTI Vega Prime is gone. The
+Shivans control the Capella and Deneb node approaches with capital ship elements. The Beta
+Aquilae approach has not yet been probed, but I expect that within forty-eight hours.
+
+That leaves the Antares node. That is our exit.
+
+I am ordering an organized withdrawal of all GTA assets from Vega system, effective immediately.
+I want to be equally precise about what "organized" means: we leave together, we leave in order,
+and we do not leave anyone behind who can be brought out.
+
+--- STAGE 2: WITHDRAWAL DISPOSITION ---
+The GTD Amadeus will lead the withdrawal convoy, with GTC Stentor on the flank. We are
+escorting five ships: GTFr Aldrin One, Two, and Three — military freighters carrying sensor
+equipment and ground station salvage from Vega Prime — GTT Meridian's Rescue (a transport
+carrying Meridian's surviving crew, recovered from the escape pods you brought back), and the
+Vasudan transport Theta Three. Theta One and Two made good their jump from Vega in Mission
+Twelve. Theta Three had a drive fault that delayed her transit. She's been holding here under
+our observation for two days. She comes out with us.
+
+I expect objections. I do not have time for objections. The ceasefire is being formalized as we
+speak. Theta Three is under my protection as commanding officer of this convoy and I am not going
+to abandon a transport full of Vasudan civilians to whatever is waiting at the Capella and Deneb
+nodes. That is final.
+
+--- STAGE 3: THREAT ASSESSMENT ---
+Shivan pressure has increased since yesterday. We're tracking fighter wings in the inner system.
+More concerning: we have a Lilith-class cruiser on our sensors, designated SC Ahriman, which has
+been shadowing the Amadeus at long range since early this morning. The Ahriman has not committed
+to a direct engagement. I believe she's waiting for us to begin our transit — more exposed, less
+maneuverable, the freighters slowing us down.
+
+I believe correctly. Expect the Ahriman to become an active problem as soon as we move.
+
+Alpha wing's assignment is to run fighter intercept ahead of the convoy. The bombers are our
+greatest vulnerability. Keep Shivan bomber wings off the Amadeus and the transports. The Stentor
+will engage the Ahriman if she closes; that is not your problem. Your problem is everything with
+wings.
+
+--- STAGE 4: CONTINGENCY ---
+If the convoy sustains losses that prevent safe transit before we reach the node, I will hold at
+Nav Bravo and reassess. This is not something I anticipate. I also do not anticipate many things
+that have happened in the last six days.
+
+Report to your wing stations immediately. We move in fifteen minutes.
+
+================================================================================
+MISSION DESIGN DOCUMENT
+Mission 2-1: "Dead Reckoning"
+================================================================================
+
+PURPOSE AND PLAYER EXPERIENCE
+- Mission fantasy: The player is the rearguard of a convoy in retreat. Every fighter kill is a
+  ship that doesn't get to the convoy. Every bomber that slips through is damage the Amadeus
+  can't sustain. The convoy grinds forward and the player grinds alongside it.
+- Core tension: The SC Ahriman's presence is constant and threatening but the player cannot
+  engage it — the Stentor is handling it. The player must resist the urge to deal with the
+  "real" threat and focus on the bomber waves that are actually within their reach. This tests
+  fire discipline and mission focus.
+- Plot advance: The retreat is underway. The Amadeus is damaged. The Ahriman begins a pursuit
+  that will culminate in Mission 2-2. The convoy loses some assets but survives as a unit.
+  The player learns what they're fighting to protect.
+- Emotional register: Professional and grim. This is not a defense — it's a withdrawal. There
+  is no glory here, only competence against relentless pressure.
+- This mission feels like escorting a wounded animal out of hunting grounds while the predator
+  circles. Everything is slower. Everything is harder. And the destination is still far away.
+
+ENVIRONMENT AND SETUP
+- Datestamp: January 21, 2335
+- System: Vega — inner system, en route from center-system position to Antares node
+- Location: Moving convoy. The scene progresses along a corridor, with Nav Bravo as the goal.
+- Background: Standard deep space; Vega star visible but no longer dominant — the convoy is
+  moving outward from the inner system. Emptier than Act 1 missions. Darker in color register.
+- Scene layout:
+  - GTD Amadeus: Present and moving. Damaged (hull at approximately 60%). Escort formation.
+    Moving at reduced speed (engine damage). Turrets operational.
+  - GTC Stentor: On the starboard flank of the Amadeus, between the convoy and the Ahriman.
+    Hull: ~70% (running repairs since Mission 1-2). Stentor AI is handling Ahriman at long range.
+  - GTFr Aldrin 1, 2, 3 (GTFr Chronos-class): Freighters in loose formation, ahead of the Amadeus.
+    Each carries salvaged sensor equipment and Vega Prime administrative data. All unarmed.
+    Speed: Slow. They set the convoy's pace.
+  - GTT Rescue (GTT Elysium-class): Transport carrying Meridian survivors. Positioned centrally.
+  - PVT Theta 3 (PVT Isis-class): The Vasudan transport with the drive fault. Positioned at rear
+    of convoy. Slightly faster than the freighters but slower than the Amadeus would normally be.
+  - Nav Bravo: 55,000m from convoy start position, directly ahead along established corridor.
+  - Nav Alpha: Midpoint waypoint, 25,000m from start. Convoy must pass through.
+  - SC Ahriman (SC Lilith-class): In scene at mission start, 18 km to the flank-aft. Moving in
+    loose parallel. Firing on the Stentor at range. The Ahriman's weapons fire is visible but she
+    is maintaining tactical distance — targeting Stentor, not the convoy directly.
+  - GTS Casca: Present, moving with the convoy. Available for rearming. Positioned near Amadeus.
+    Casca is fragile. If Shivan fighters acquire it, it will die quickly.
+
+PARTICIPANTS
+
+Allied:
+- Alpha wing: GTF Valkyrie x4 (Alpha 1 = player, Alpha 2–4 = AI)
+  - Loadout: GTW-15 Avenger (bank 1), GTW ML-16 Laser (bank 2); GTM MX-50 (24), GTM Fury (16)
+  - Full Avenger deployment — whole wing has Avengers now. This is the "new normal."
+  - Initial orders: Escort GTD Amadeus; intercept hostile bombers; protect GTFr Aldrin wing
+
+- Beta wing: GTF Apollo x4 (AI-controlled — 14th Hardpoints squadron)
+  - Loadout: GTW-15 Avenger x2; GTM MX-50 (24)
+  - Initial orders: Escort GTT Rescue; cover convoy rear
+  - Beta serves as a backup defensive screen. They're competent but not available to the player
+    as directed reinforcements — they're tasked separately.
+
+- GTD Amadeus (GTD Orion-class): Present, moving, engaged by SC Ahriman at long range
+  - Hull: 60% at start. Must survive to reach Nav Bravo.
+  - The Amadeus's own turrets engage any Shivan fighter or bomber that comes within 3 km.
+  - The Amadeus's maneuverability is severely limited by engine damage.
+
+- GTC Stentor (GTC Fenris-class): On starboard flank, engaging SC Ahriman
+  - Hull: 70%. Fighting the Ahriman at range. She's holding her own but taking damage.
+  - Commander Okafor manages this fight independently. She does not request Alpha's help.
+    Okafor has been told: keep Ahriman busy. She intends to do exactly that.
+  - Stentor hull will decrease through the mission. If she falls below 30%, she begins a
+    fighting withdrawal rather than closing. This is her survival instinct — she needs to
+    survive too, for Mission 2-3. Design note: Stentor hull at end of this mission carries over
+    to Mission 2-3 as narrative consequence (no mechanic — stated in CB 2.2).
+
+- GTFr Aldrin 1, 2, 3 (GTFr Chronos-class): Convoy freighters. Primary non-combat assets.
+  - Chronos class has some hull strength and no weapons.
+  - Speed: Slow but not impossibly so. They move at Amadeus-reduced-speed pace.
+  - Each carries irreplaceable data — losing them is a tactical cost noted in debrief.
+
+- GTT Rescue (GTT Elysium-class): Transport. Unarmed. Must survive.
+
+- PVT Theta 3 (PVT Isis-class): Vasudan transport. Has 3 turrets (fires at Shivans in range).
+  - Her presence is Admiral Wei's choice. She is an emotional anchor: the player knows her from
+    Mission 1-3. "She's still here" is its own kind of relief.
+
+- GTS Casca (GTS Centaur-class): Moving with convoy. Available for rearming.
+
+Hostile:
+- Indra wing: SF Scorpion x4
+  - Arrives from ahead (toward Antares — Shivans are in front too) at T+01:30, 10 km
+  - Initial orders: Attack Alpha wing (fighter intercept role — keep player busy)
+  - These fighters want to draw Alpha away from the convoy so the bombers have an open run.
+
+- Kali wing: SB Shaitan x3 (bomber wave 1)
+  - Arrives from the Capella/aft direction at T+02:30, 12 km
+  - Initial orders: Attack GTD Amadeus (primary), Attack convoy freighters (secondary)
+  - Three Shaitans targeting the Amadeus is the mission's central crisis. Player must choose:
+    deal with Indra (who's fighting the wing) or break off to intercept Kali (who targets command).
+
+- Deva wing: SF Basilisk x3 (bomber escort)
+  - Arrives with Kali wing at T+02:30, 12 km
+  - Initial orders: Escort Kali wing; attack Alpha wing if attacked
+  - The escort complicates the bomber intercept. Player can't just dive on Kali — Deva will
+    hit them while they do.
+
+- Genma wing: SB Shaitan x3 (bomber wave 2)
+  - Arrives from the aft at T+06:00 or when Kali wing is destroyed (whichever comes SECOND —
+    this is the escalation rule; the second wave doesn't come until the first is handled)
+  - Initial orders: Attack GTT Rescue (primary), Attack GTFr Aldrin (secondary)
+  - The second wave shifts from the Amadeus to the softer convoy targets. Targeting the transport
+    carrying survivors adds emotional weight to the intercept decision.
+
+- SC Ahriman (SC Lilith-class): Present throughout, engaging GTC Stentor at range
+  - The Ahriman is NOT a player target in this mission. She is a contextual threat — visible,
+    dangerous to the Stentor, drawing fire — but outside Alpha wing's assignment.
+  - Ahriman is substantially more dangerous than the Malgor (Cain-class) — Lilith is the heavy
+    cruiser variant with stronger weapons. The player can observe this difference in the Stentor
+    battle.
+  - If the player attempts to attack the Ahriman, Command issues a recall order ("Not your target,
+    Alpha Lead. Leave the Ahriman to the Stentor"). The Ahriman's cluster bomb will trigger if a
+    fighter closes within 400m, which is very dangerous.
+
+PLAYER CRAFT AND LOADOUT
+- Ship: GTF Valkyrie (recommended for intercept role) or GTF Apollo
+- Primary: GTW-15 Avenger (bank 1), GTW ML-16 (bank 2) — fully standard now
+- Secondary: GTM MX-50 (24), GTM Fury (16)
+- Support: GTS Casca (always available — moving with convoy)
+- Reinforcements: None callable. Beta wing is on separate tasking.
+
+OBJECTIVES AND DIRECTIVES
+
+Primary:
+  - GTD Amadeus reaches Nav Bravo (convoy endpoint).
+
+Secondary:
+  - At least 3 of 5 convoy ships (Aldrin 1/2/3, Rescue, Theta 3) survive to Nav Bravo.
+
+Bonus:
+  - All 5 convoy ships survive. (Requires both bomber waves intercepted cleanly.)
+  - SC Ahriman hull reduced below 50% by end of mission. (Bonus only — achieved by Stentor in
+    most cases, but player can contribute briefly if situation allows.)
+
+Failure conditions:
+  - GTD Amadeus destroyed.
+  - (Alpha 1 destroyed = standard.)
+
+BRIEFINGS (TEXT-READY)
+
+[ Command Briefing 2.1 appears before this mission — see CB 2.1 text above ]
+
+MISSION BRIEFING
+
+Stage 1:
+Alpha wing, we are under way. Convoy disposition: the Amadeus is at the center, Stentor on the
+starboard flank. Three Chronos freighters — Aldrin One, Two, Three — are leading the column.
+GTT Rescue is behind them. PVT Theta Three is at the rear.
+Nav Alpha is the midpoint check. Nav Bravo is where we hold for the node transit. That's the
+destination.
+The Ahriman is on our flank. The Stentor has her. Your job is everything else.
+
+Stage 2:
+Intelligence expects bomber contact. Shaitans — they've been the primary capital ship threat in
+this system and I don't see why they'd change tactics now. Your engagement priority is bombers
+before fighters. If you have to let a Scorpion wing get past you to intercept a Shaitan wing,
+that's the correct choice. The Amadeus's turrets can handle close fighters. They cannot shoot
+down bombs fast enough to compensate for a full Shaitan attack run.
+Casca is with the convoy. Rearm when you need to — don't wait until you're empty.
+Go. We need to move.
+
+[ Briefing icon notes: Convoy position marked with Amadeus at center, Stentor at flank. Nav Alpha
+  and Nav Bravo marked along convoy route. Ahriman position marked on flank — NOT a target icon.
+  Entry vectors for Indra (ahead) and Kali/Deva (aft) marked as "probable threat sectors."
+  GTS Casca marked near Amadeus. Clear priority hierarchy in icon layout: Amadeus > transports
+  > freighters. ]
+
+IN-MISSION COMMUNICATIONS
+
+Message 1 — Commander Okafor / GTC Stentor, trigger: mission start
+"Alpha Lead, Stentor. Ahriman's on our flank — we're engaging at range. She hasn't committed
+yet. Watch for the bombers. They'll come from aft."
+
+Message 2 — Amadeus CAG / Command, trigger: Indra wing arrival (T+01:30)
+"Alpha Lead, fighters inbound from the Antares vector — they're seeding ahead of us. Four
+Scorpions. Keep your wing focused."
+
+Message 3 — Alpha 2, trigger: Kali wing arrival (T+02:30)
+"Bombers. Aft sector — three Shaitans. That's what we were waiting for."
+
+Message 4 — Command, trigger: any Shaitan within 4,000m of Amadeus
+"Alpha Lead, bombers are close. The turrets can't catch them all. Get on those Shaitans."
+
+Message 5 — Admiral Wei / Amadeus, persona: calm authority under pressure, trigger: Amadeus
+takes hull damage from Kali wing (first hit)
+"This is the Admiral. Damage control, report to frame seventeen. Alpha wing — noted. Carry on."
+[The Admiral's calm is the behavioral model for the player in this mission.]
+
+Message 6 — Commander Okafor, trigger: Stentor hull below 50%
+"Alpha Lead — Stentor taking heavy fire from the Ahriman. We are maintaining engagement. Do not
+divert from the convoy. Repeat: do not divert."
+
+Message 7 — Alpha 3, trigger: Genma wing arrival (T+06:00 or after Kali destroyed)
+"Second wave — Shaitans again, coming from aft. But they're targeting Rescue, not the Amadeus."
+
+Message 8 — Rescue transport pilot, persona: military transport crew, controlled fear, trigger:
+Genma wing within 2,000m of GTT Rescue
+"Alpha Lead — Rescue here. We've got bombers on us. Please advise."
+
+Message 9 — Command, trigger: any convoy freighter destroyed (plays once)
+"We've lost Aldrin [number]. Continue. The data loss is acceptable. The people are not."
+
+Message 10 — Command, trigger: convoy approaching Nav Bravo (Amadeus within 5,000m)
+"Convoy is approaching Nav Bravo. Alpha wing, begin transition to close escort formation.
+We hold here and reassess before the node run."
+
+Message 11 — Admiral Wei, trigger: Amadeus reaches Nav Bravo
+"All convoy units: hold at Nav Bravo. We assess before we run the node. Good work, everyone.
+Alpha wing — stand down to ready alert. Casca will rearm you."
+
+EVENT FLOW AND TIMING
+- T+00:00: Mission starts. Convoy in motion. Ahriman on flank engaging Stentor. All convoy
+  ships present and intact. Alpha wing at forward position of convoy column.
+- T+01:30: Indra wing (4 Scorpions) arrives ahead of convoy, 10 km. Engages Alpha wing.
+- T+02:30: Kali wing (3 Shaitans) and Deva wing (3 Basilisks) arrive from aft, 12 km.
+  Kali targets Amadeus. Deva targets Alpha wing. This is the mission's first crisis point.
+- T+02:30–T+06:00: Alpha wing manages Indra + Kali + Deva simultaneously. Casca available.
+  Amadeus takes some damage from bombs that get through. Stentor takes damage from Ahriman.
+- T+06:00 (or when Kali wing is destroyed): Genma wing (3 Shaitans) arrives from aft, 12 km.
+  Targets GTT Rescue and GTFr Aldrin ships. Second crisis point.
+- T+06:00–T+12:00: Alpha wing intercepts Genma. Convoy continues moving. Indra wing may still
+  have survivors; they harass the wing throughout.
+- T+10:00–T+14:00: Amadeus reaches Nav Bravo. Convoy holds. Mission ends.
+  (Exact timing depends on convoy speed vs. engagement delays.)
+
+EVENT LOGIC SKETCH
+- "Indra wing arrival" fires at T+01:30 unconditionally.
+- "Kali and Deva arrival" fires at T+02:30 unconditionally.
+- "Genma arrival" fires when both: Kali wing ships-alive = 0 AND T+06:00 is passed. If Kali
+  is still alive after T+06:00, Genma waits until Kali is destroyed. This prevents the player
+  from being overwhelmed simultaneously by both bomber waves.
+- "Ahriman engages Stentor": AI goal set at mission start. Stentor returns fire. Neither Stentor
+  nor Ahriman will close to melee range — this is a standoff exchange at 6–8 km.
+- "Command warns about Ahriman distraction": fires if player's Alpha 1 ship is within 3 km of
+  SC Ahriman. One-time trigger.
+- "Mission success" condition: GTD Amadeus arrives within 2,000m of Nav Bravo.
+- "Mission failure" condition: GTD Amadeus hull drops to 0%.
+- Secondary "convoy survivors" count: tracked, reported in debrief. At least 3 of 5 needed.
+- Casca AI: follows Amadeus, available for rearming on request at any time.
+
+NEWLY INTRODUCED SHIPS AND WEAPONS
+- SC Ahriman (SC Lilith-class): First Lilith in campaign. Noticeably more dangerous than the
+  Cain-class SC Malgor encountered in Act 1. Her presence as an unkillable, persistent threat
+  is a design escalation from the Malgor (which was also unkillable but less visually menacing).
+- GTFr Chronos (GTFr Aldrin wing): Named convoy freighters, emotionally grounded through
+  dialogue and the stated contents (irreplaceable data, survivors from Meridian).
+- GTT Rescue: Direct emotional callback to Mission 1-1 (the Meridian survivors). Players who
+  remember the pods they saved now have a reason to protect this particular transport.
+- SB Shaitan x2 waves: Most sustained Shaitan engagement of the campaign so far. Tests player
+  bomber-intercept competence.
+
+DEBRIEFINGS
+
+Full success (Amadeus reached Nav Bravo, all 5 convoy ships survived):
+The convoy is at Nav Bravo. All five ships made it.
+I want to note what that means in terms of what was at stake: Aldrin One and Two are carrying
+the complete sensor database from Vega Prime. We didn't lose a sensor record. GTT Rescue has
+every surviving crew member from the Meridian. Theta Three is intact.
+The Stentor is damaged, but she held the Ahriman at range. Commander Okafor did her job
+exactly as planned.
+We know the Ahriman is still shadowing us. We'll deal with that when it becomes unavoidable.
+Good flying, Alpha. Tomorrow will be harder.
+
+Partial success (Amadeus reached Nav Bravo, 3–4 convoy ships survived):
+Convoy reached Nav Bravo. We lost [1 or 2 ships] on the transit.
+[If Aldrin ship lost]: The sensor data from that Chronos is gone. We couldn't help that, but the
+loss is real. [If Rescue lost]: The Meridian survivors — the people from those pods in Mission
+One — are gone. I don't have words for that. We proceed.
+The Ahriman is still with us. She'll be a problem at the node. Rest while you can.
+
+Failure (Amadeus destroyed):
+The Amadeus did not survive the transit. Without the Amadeus, there is no convoy, no organized
+withdrawal. Whatever makes it to Antares will scatter.
+This is the worst outcome of this operation. The Ahriman's pressure, the bomber waves — one
+of them found the limit.
+
+QA NOTES
+- Convoy speed must be balanced carefully: fast enough that the mission doesn't stall waiting
+  for the Amadeus to reach Nav Bravo, slow enough that bomber threats feel relevant for more
+  than a brief window.
+- "Genma fires AFTER Kali is destroyed" rule is critical for balance. If both waves are active
+  simultaneously the player faces 6 Shaitans at once, which is unmanageable.
+- The Ahriman must remain at standoff distance from the convoy. She should not close to within
+  2 km of the Amadeus — that would either cause instant mission failure or require the player to
+  engage a Lilith-class cruiser alone, which is not the intent. Ahriman's AI goal: maintain range
+  of 6–10 km from GTC Stentor while engaging her.
+- GTS Casca is the mission's safety valve. Players who get overrun by fighters and bombers should
+  be able to call Casca and recover. Casca's positioning near the Amadeus means it's always
+  somewhat protected.
+- The Admiral's calm radio message is a tonal design note: he's a composed commander, not a
+  panicking one. He has one calm line when his ship takes damage. This models the right emotional
+  register for the mission — grim and professional, not hysterical.
+- Beta wing on independent tasking: they should be visible and active (protecting GTT Rescue from
+  stray fighters) but not overlapping the player's objectives. They reduce the player's load
+  slightly without trivializing the challenge.
+
+ASSET LIST AND PERFORMANCE BUDGET
+Ship classes: GTF Valkyrie x4 (Alpha), GTF Apollo x4 (Beta), GTC Fenris x1 (Stentor),
+              GTFr Chronos x3 (Aldrin), GTT Elysium x1 (Rescue), PVT Isis x1 (Theta 3),
+              GTS Centaur x1 (Casca), GTD Orion x1 (Amadeus — moving background),
+              SC Lilith x1 (Ahriman — persistent), SF Scorpion x4 (Indra), SF Basilisk x3
+              (Deva), SB Shaitan x3 (Kali), SB Shaitan x3 (Genma)
+Max concurrent ships: ~28 at peak (T+02:30 — all waves up simultaneously). Amadeus and Ahriman
+  as large objects are present throughout but are not in melee range. Acceptable.
+  After T+06:00 (with Indra, Kali, Deva largely resolved): reduces to ~18.
+Wave totals: 4 hostile elements (Indra, Kali+Deva combined wave, Genma). 2 capital ships in
+  background engagement. GTS Casca 1.
+Message personas: Admiral Wei (calm, authority), Commander Okafor/Stentor (naval officer, female,
+  professional), Alpha 2 (veteran wingman), Alpha 3 (young pilot), GTT Rescue pilot (military
+  transport, controlled fear), Command/Amadeus CAG (female, operational)

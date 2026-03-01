@@ -1,0 +1,281 @@
+================================================================================
+COMMAND BRIEFING 1.1
+"Steady Hands"
+================================================================================
+
+Delivered aboard: GTD Amadeus
+Location: Vega System
+Date: January 15, 2335
+
+--- STAGE 1: GARRISON STATUS ---
+Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the Amadeus
+and the 3rd Fleet detachment in the Vega system.
+
+We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are
+ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system
+integrity, and protect GTA assets. The GTI Vega Prime installation remains operational and is
+currently handling the last civilian evacuation shuttles from the Vega colony platforms — routine
+administrative work that I want completed without incident.
+
+The war is not formally over. Until it is, standard rules of engagement remain in effect.
+Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a
+recognized ceasefire transponder.
+
+--- STAGE 2: PATROL ASSIGNMENT ---
+We lost contact with the patrol transport GTT Meridian at 0340 this morning. She was running a
+standard pass along the Capella approach corridor, approximately 60,000 kilometers from the
+Capella jump node. Her last beacon ping was normal. Then nothing.
+
+This is most likely a systems failure. Meridian's drive was flagged for maintenance two weeks ago.
+However, standing orders require that all unexplained beacon silences be investigated within six
+hours.
+
+Alpha wing — that's you, Pilot — you're going out to investigate. Four ships, standard loadout.
+Check on Meridian, confirm her status, and return. If she's adrift, note the position and we'll
+send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate
+unless fired upon first.
+
+--- STAGE 3: NOTES FOR NEW PILOTS ---
+If this is your first duty rotation on the Amadeus, welcome. This is not a glamorous posting.
+Vega is a four-node intersection that hasn't seen a major fleet engagement in seven months.
+Most of your work here will be exactly what Alpha wing is doing today: investigating silences,
+protecting convoys, holding the line.
+
+Do it well. The Amadeus has a reputation, and I intend to keep it.
+
+Dismissed. Report to your wing station at 0820.
+
+================================================================================
+MISSION DESIGN DOCUMENT
+Mission 1-1: "Strange Fires"
+================================================================================
+
+PURPOSE AND PLAYER EXPERIENCE
+- Mission fantasy: A routine investigation that goes catastrophically wrong. The player has the
+  full confidence of an experienced combat pilot — and the Shivans shred it in seconds.
+- Core tension: The weapons don't work. Everything the player knows about space combat is
+  insufficient. Survival is the only achievable goal.
+- Plot advance: Establishes the Shivans as an existential threat. Creates the emotional baseline
+  of helplessness and confusion that all subsequent escalation is measured against.
+- This mission should feel like the scene in a horror film where the monster is first revealed —
+  and it's worse than anything the audience imagined.
+
+FICTION VIEWER NARRATIVE
+- None for this mission. The command briefing delivers all necessary setup.
+- The horror should arrive unannounced in-mission, with no fiction viewer preparing the player.
+
+ENVIRONMENT AND SETUP
+- Datestamp: January 15, 2335
+- System: Vega — deep space, Capella approach corridor
+- Location: 60,000 km from the Vega-Capella jump node, far from any installation
+- Background: Deep blue-black starfield; Vega's star a bright point astern; the faint shimmer
+  of the Capella node visible at long range as a navigational reference point
+- No installations, no buoys, no mines in this area
+- Hazard notes: None (open space). The emptiness is deliberate — no cover, nowhere to hide.
+- GTT Meridian: Already destroyed before mission begins. Her wreckage (scored hull plating,
+  scattered cargo) occupies a 500m debris field at Nav Alpha. Two GTEP Hermes escape pods
+  drift near the wreckage, broadcasting distress beacons.
+
+PARTICIPANTS
+
+Allied:
+- Alpha wing: GTF Apollo x4 (Alpha 1 = player, Alpha 2-4 = AI)
+  - Loadout: GTW ML-16 Laser x2; GTM MX-50 (16), GTM Fury (16)
+  - Initial orders: Fly to Nav Alpha; investigate GTT Meridian
+
+- Escape Pod 1 (GTEP Hermes): Drifting at Nav Alpha, 200m from Meridian wreckage
+- Escape Pod 2 (GTEP Hermes): Drifting at Nav Alpha, 350m from Meridian wreckage
+  - Both pods navigate autonomously toward the jump-out waypoint once mission begins
+  - Speed: Very slow. Without player protection they are vulnerable.
+
+- No support ship available. This is a patrol sortie.
+
+Hostile:
+- Brahma wing: SF Scorpion x4
+  - Arrives at Nav Alpha from the direction of the Capella node at 8 km distance
+  - Trigger: Alpha wing within 3,000m of Meridian wreckage
+  - Initial orders: Attack Alpha wing, Attack escape pods (secondary target)
+  - Scorpion shields require prolonged ML-16 fire — approximately 3–4 seconds of direct hits per
+    shield quad. This is noticeably worse than any Vasudan fighter the player has fought.
+
+- Vishnu wing: SF Basilisk x3
+  - Arrives from Capella direction at 10 km, 90 seconds after Brahma wing arrives OR when Brahma
+    wing falls below 2 surviving ships (whichever comes first)
+  - Initial orders: Attack Alpha wing, Attack escape pods
+  - Basilisks are heavier and hit harder than Scorpions. Their arrival is the trigger for retreat.
+
+PLAYER CRAFT AND LOADOUT
+- Ship: GTF Apollo
+- Primary weapons: GTW ML-16 Laser (bank 1 + bank 2)
+- Secondary weapons: GTM MX-50 (16), GTM Fury (16)
+- No support ship
+- No reinforcements available
+- No Avenger cannon this mission — its absence is the design point.
+- Note: MX-50 is heat-seeking but weak. Fury is dumbfire close-range. Neither is reliable
+  against Shivan shields at the distances these fights will be fought.
+
+OBJECTIVES AND DIRECTIVES
+Primary:
+  - SURVIVE: Alpha 1 reaches the jump-out waypoint alive.
+  - Required for mission completion.
+
+Secondary:
+  - Both Escape Pod 1 and Escape Pod 2 reach the jump-out waypoint.
+  - Pods navigate slowly toward the waypoint on their own. Player must protect them from
+    Brahma/Vishnu fire while also surviving.
+  - Partial credit: One pod saved = partial success noted in debrief.
+
+Failure conditions:
+  - Alpha 1 destroyed.
+
+BRIEFINGS (TEXT-READY)
+
+[ Command Briefing appears before this mission — see CB 1.1 text above ]
+
+MISSION BRIEFING
+
+Stage 1:
+GTD Amadeus Operations, this is your mission package. GTT Meridian's beacon last pinged at these
+coordinates in the Capella corridor. You'll jump in approximately ten kilometers from her last
+known position.
+We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull
+her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard
+rules of engagement.
+Expected duration: forty minutes. Come home clean.
+
+Stage 2:
+Alpha wing, you're cleared to the Capella corridor. Nav Alpha marks the Meridian's last position.
+Proceed there, assess the situation, and return when complete. Don't get ambitious out there.
+
+[ Briefing icon notes: Nav Alpha marked at Meridian's position. Jump-out waypoint marked at
+  mission origin. No other waypoints. Simple there-and-back layout. ]
+
+IN-MISSION COMMUNICATIONS
+
+Message 1 — Alpha 2, persona: veteran wingman (calm, steady), trigger: Alpha wing within 1,000m
+of Meridian wreckage
+"Alpha Lead, I'm reading — that's wreckage. Hull plating, looks like Meridian. She's gone."
+
+Message 2 — Alpha 1 (player persona, triggered by engine): Automatic target designation message
+[System] — 2 escape pods detected. Distress transponders active. Pods are alive.
+
+Message 3 — Alpha 3, persona: younger pilot (nervous edge), trigger: Brahma wing arrival
+"Contact! Multiple bogeys from Capella bearing. They're — they're not Vasudan."
+
+Message 4 — Alpha 2, trigger: 10 seconds after Brahma wing arrival
+"Firing Avenger— no, wait, I've got ML-16s loaded. These shields are eating it. Push through."
+
+Message 5 — Alpha 2, trigger: 30 seconds after Brahma engagement, if any enemy ship survives
+"These things don't die fast enough. Stay tight, Lead. Don't let them get behind you."
+
+Message 6 — Command (Amadeus CAG, persona: professional, controlled alarm), trigger: Vishnu
+wing arrival (or 90 seconds after Brahma)
+"Alpha Lead, Command. We're reading a second wave at your position. Disengage. Break off and
+return immediately. Do NOT pursue. Repeat — do not pursue."
+
+Message 7 — Alpha 4, persona: frightened but professional, trigger: Vishnu wing arrival if
+Alpha 3 or 4 is already destroyed
+"[Name of lost pilot], report! — Command, we're down to [number] ships. Request—"
+Command: "Alpha Lead, get your people home NOW."
+
+Message 8 — Alpha 2, trigger: if both escape pods are alive when Alpha wing turns for jump-out
+"Pods are still moving. They might make it if we buy them thirty seconds."
+
+Message 9 — Command, trigger: player within 2,000m of jump-out waypoint
+"Alpha Lead, jump when ready. We'll send salvage for the pods if they don't make it. Get home."
+
+Message 10 — Alpha 2, trigger: mission end (player jumping out)
+"Amadeus, Alpha Lead is inbound. We need to talk about what we just saw."
+
+EVENT FLOW AND TIMING
+- T+00:00: Mission starts. Alpha wing at jump-in point, 10 km from Nav Alpha. No enemies visible.
+- T+00:00 to T+02:00: Alpha wing flies to Meridian wreckage (Nav Alpha). Quiet. The wreckage
+  is visually dramatic — scored metal, scattered cargo. Escape pods drifting.
+- T+02:00 (approx): Alpha wing within 3,000m of wreckage. Triggers Brahma wing arrival from
+  Capella node direction (8 km out). Message 3 fires.
+- T+02:00 to T+05:00: Combat with Brahma wing (4x Scorpion). Player fires ML-16. It's slow.
+  Each Scorpion takes 3–4 seconds of sustained fire to drop a shield quad. AI wingmen struggle.
+  Alpha 3 and/or 4 may be destroyed in this window depending on difficulty.
+- T+05:00 (or when Brahma drops to 2 ships): Vishnu wing arrives (3x Basilisk, 10 km).
+  Message 6 fires: Command orders retreat.
+- T+05:00 onward: Escape pods are navigating toward jump-out waypoint. Player can either
+  cover them or immediately run. Fighting Vishnu + reduced Brahma simultaneously is very
+  dangerous with ML-16s.
+- T+07:00 to T+10:00 (approx): Surviving Alpha ships reach jump-out waypoint and exit.
+  If escape pods reach the waypoint by this time, secondary objective achieved.
+
+EVENT LOGIC SKETCH
+- "Brahma wing arrives" event: fires when Alpha 1 is within 3,000m of GTT Meridian wreckage.
+  One-time trigger.
+- "Vishnu wing arrives" event: fires when mission time since Brahma arrival exceeds 90 seconds,
+  OR when Brahma wing's living ship count drops to 2 or fewer. First condition met triggers.
+- "Escape pod 1 safe" event: fires when Escape Pod 1 is within 500m of jump-out waypoint.
+- "Escape pod 2 safe" event: fires when Escape Pod 2 is within 500m of jump-out waypoint.
+- "Secondary objective complete" event: fires when both pod-safe events have fired.
+- "Mission success" condition: Alpha 1 reaches jump-out waypoint (arrives within 500m and
+  initiates jump). No time limit for the mission overall.
+- All enemy wings on "attack" orders targeting Alpha wing, with escape pods as secondary
+  target priority. Pods have no weapons and will not maneuver to evade — they drift slowly.
+
+NEWLY INTRODUCED SHIPS AND WEAPONS
+- SF Scorpion: First player encounter in this campaign.
+- SF Basilisk: First player encounter in this campaign (Vishnu wave).
+- GTT Meridian: Appears as wreckage only. Never seen alive.
+- GTEP Hermes: First appearance in campaign. Establishes that escape pods are a recurring
+  element that players will care about in later missions.
+- GTW ML-16 Laser: Player is already familiar. This mission teaches via trauma that it is
+  inadequate against Shivan shields.
+- Note: NO new tech is introduced in this mission. Absence is the lesson.
+
+DEBRIEFINGS
+
+Success (Alpha 1 survived, both pods saved):
+You made it back. The sensor data from your engagement has been transmitted to Terran Command.
+We have never encountered ships matching these profiles in any GTA database. They are not
+Vasudan, and they are not anything we've seen before.
+Commander's evaluation: your ML-16 rounds were largely ineffective against their shields. You
+know this. We know this. R&D is being alerted.
+Meridian's survivors are being treated aboard the Amadeus. Their account matches your sensor
+data: these ships came from the direction of the Capella node. We do not know what is through
+that node.
+Well done for getting the pods home. We will have more answers by morning. I wish I could
+promise better news when we do.
+
+Partial success (Alpha 1 survived, one pod saved):
+Alpha Lead, welcome back. You got one of the Meridian's pods out. The other is presumed lost.
+I want you to understand that those were not typical combat conditions. Our weapons were not
+designed for whatever we just encountered, and this was not a failure of tactics. You were
+handed the wrong tools for the job and you still brought people home.
+We're sending all your sensor recordings to Command immediately. Whatever those ships are,
+we need answers fast.
+
+Failure (Alpha 1 survived but no pods saved):
+Alpha Lead, glad you're back. The pods are lost. The crew of the Meridian will be listed as
+killed in action. That is a hard outcome, but given what you faced out there, I'm not
+prepared to call this your fault. Those shields absorbed everything you had.
+The data you brought back is the only thing we came away with. It had better count for
+something.
+
+QA NOTES
+- Ensure Brahma wing spawns from a direction that makes sense (toward Capella node) and not
+  behind the player's entry point.
+- Escape pod movement speed must be calibrated to allow player to cover them while also
+  fighting Brahma wing — if pods are too slow they are impossible to save while also surviving
+  the Vishnu wave.
+- Alpha AI wingmen need "protect Alpha 1" as primary order, not "attack enemy" — this keeps them
+  near the player rather than charging Scorpions and dying immediately, which would be
+  frustrating rather than horrifying.
+- On Insane difficulty: Scorpions have near-player accuracy. Player cannot tank hits. Flight-or-
+  fight decisions become critical. With only ML-16s, every second of engagement matters.
+  The escape pod secondary should be achievable but requires commitment — player cannot both
+  immediately flee AND save both pods. This is a design tension, not an oversight.
+- Do not spawn Vishnu wing inside 5 km — the player needs a moment to see them on approach.
+
+ASSET LIST AND PERFORMANCE BUDGET
+Ship classes used: GTF Apollo x4, SF Scorpion x4, SF Basilisk x3, GTEP Hermes x2 (wreckage
+of GTT Meridian in scene as static object)
+Weapons used: GTW ML-16, GTM MX-50, GTM Fury
+Message personas: Alpha 2 (veteran wingman), Alpha 3 (young pilot), Alpha 4 (young pilot),
+Command (Amadeus CAG, female voice)
+Max concurrent ships: 4 + 4 + 3 + 2 pods = 13 (well within budget)
+Total wave count: 2 enemy waves. No waves for pods (they're initial placement).
