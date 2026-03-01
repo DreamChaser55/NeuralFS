@@ -377,6 +377,18 @@ All available primary and secondary weapon banks (hardpoints) in fighters and bo
 ## Automatic Weaponry Pool Generation
 FSIF converter calculates the required weapon pool automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). It adds a 25% safety margin and emits the pool data directly into the FS2 file. This prevents crashes and undersupply issues in-game.
 
+If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `extra_weapons` field under `player_setup`:
+```yaml
+player_setup:
+  start_ship: "Alpha 1"
+  ship_choices:
+    - { class: "GTF Ulysses", count: 4 }
+  extra_weapons:
+    - "Avenger"
+    - "Harbinger"
+```
+The converter will automatically calculate the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons, add the 25% safety margin, and include them in the mission Weaponry Pool.
+
 ## Directional arrivals quick reference
 - Directional arrival_location requires both arrival_anchor and arrival_distance.
 - Docking Bay typically uses arrival_distance 0.

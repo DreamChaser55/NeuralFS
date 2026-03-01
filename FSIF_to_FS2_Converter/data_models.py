@@ -160,6 +160,7 @@ class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')
     start_ship: Optional[str] = None
     ship_choices: List[ShipChoice] = Field(default_factory=list)
+    extra_weapons: List[str] = Field(default_factory=list)
 
 class Event(BaseModel):
     model_config = ConfigDict(extra='forbid')

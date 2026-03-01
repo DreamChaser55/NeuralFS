@@ -58,6 +58,7 @@
 - `player_setup` (Mapping, required):
   - `start_ship` (String, required)
   - `ship_choices` (List[Mapping], required). Items: `{class: String, count: Integer}`.
+  - `extra_weapons` (List[String], optional, default: `[]`). Additional weapons to include in the Weaponry Pool.
 - `entities` (Mapping, required):
   - `ship_templates` (Mapping, optional). Keys are template names, values are ship properties mappings.
   - `ships` (List[Mapping], optional). See Ship Properties below.

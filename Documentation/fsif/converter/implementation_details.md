@@ -154,6 +154,7 @@ The validator checks the following areas:
 
 #### **Weapon Supply and Demand**:
 *   The converter automatically calculates and generates the required primary and secondary weapon pool for all **Friendly** player starting wings, ensuring adequate supply: it reads secondary weapon bank capacities of all fighters and bombers and secondary weapon sizes, goes over the player wings and determines the weapon supplies needed to fill the banks with specified weapons. Before writing the values into .fs2, they are increased by a 25% safety margin.
+*   If the FSIF author specifies `extra_weapons` under `player_setup`, the converter calculates the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons. For primary extra weapons, the demand is based on the total number of primary banks across all ships in the player wings. For secondary extra weapons, the demand is based on the sum of capacities of all secondary banks across all ships in the player wings. This demand is merged with the existing demand (using the maximum value to avoid unnecessary double-counting) and also receives the 25% safety margin before emission.
 
 #### **Detection of Empty Hardpoints**:
 *   Checks all fighters and bombers for primary/secondary hardpoints with unassigned weapons: checks if the number of specified primary/secondary weapons is different than the number of hardpoints on the ship. Empty hardpoints can cause errors in FSO.

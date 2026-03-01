@@ -118,6 +118,7 @@ class Validator:
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
         self.validate_start_ship()
+        self.validate_player_setup()
         self.validate_docking()
         self.validate_reinforcements()
         self.validate_anchors()
@@ -580,6 +581,18 @@ class Validator:
         for t in af.targets:
             if t not in valid_ships:
                 self.log_error(f"Asteroid field target '{t}' does not exist.")
+
+    def validate_player_setup(self):
+        """
+        Validate player setup configuration.
+        
+        Checks:
+        - Validity of extra weapons provided.
+        """
+        setup = self.mission.player_setup
+        for w_name in setup.extra_weapons:
+            if w_name not in self.allowed_weapons:
+                self.log_error(f"Player setup 'extra_weapons' references unknown weapon '{w_name}'")
 
     def validate_start_ship(self):
         """

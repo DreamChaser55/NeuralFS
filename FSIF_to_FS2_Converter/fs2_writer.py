@@ -275,6 +275,8 @@ class FS2Writer:
         
         Defines the starting ship, allowed ship choices, and automatically calculates
         and emits the weapon pool based on the demands of Friendly player starting wings.
+        Also calculates quantities for explicitly authored extra weapons based on maximum
+        possible demands across all player wings.
         """
         self._write('\n#Players\t\t;! 1 total\n')
         setup = self.mission.player_setup
@@ -289,6 +291,10 @@ class FS2Writer:
         # Track raw calculated demands
         weapon_demand = {}
         
+        # Track max possible capacities to satisfy 'extra_weapons'
+        total_primary_banks_demand = 0
+        total_secondary_capacity_demand = 0
+        
         for w in self.mission.wings:
             if w.name not in friendly_starting_wings:
                 continue
@@ -301,22 +307,30 @@ class FS2Writer:
             ship = w.ships[0]
             
             # Primary Banks (count banks)
+            total_primary_banks_demand += count * len(ship.weapons.primary)
             for p in ship.weapons.primary:
                 if not p: continue
                 weapon_demand[p] = weapon_demand.get(p, 0) + count
                 
             # Secondary Banks (count capacity)
             for i, sec in enumerate(ship.weapons.secondary):
-                if not sec: continue
-                
                 # Default capacity if ship not in tables or bank index out of bounds
                 capacity = 50
                 if ship.ship_class in fs_data.SHIP_SBANK_CAPACITIES:
                     caps = fs_data.SHIP_SBANK_CAPACITIES[ship.ship_class]
                     if i < len(caps):
                         capacity = caps[i]
-                        
+                
+                total_secondary_capacity_demand += count * capacity
+                if not sec: continue
                 weapon_demand[sec] = weapon_demand.get(sec, 0) + (count * capacity)
+                
+        # Process extra weapons
+        for ew in setup.extra_weapons:
+            if ew in fs_data.ALLOWED_PRIMARY_WEAPONS:
+                weapon_demand[ew] = max(weapon_demand.get(ew, 0), total_primary_banks_demand)
+            elif ew in fs_data.ALLOWED_SECONDARY_WEAPONS:
+                weapon_demand[ew] = max(weapon_demand.get(ew, 0), total_secondary_capacity_demand)
                 
         # Apply 25% safety factor and cast to int
         pool_lines = []
