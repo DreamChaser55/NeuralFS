@@ -70,6 +70,12 @@ def generate():
         # Map Category
         return_type = CATEGORY_MAP.get(category, 17) # Default to AMBIGUOUS if unknown
         
+        # Specific overrides for FSO operators that behave differently than their basic category
+        if text in ["functional-if-then-else", "functional-when", "functional-switch"]:
+            return_type = 17  # AMBIGUOUS (or FLEXIBLE_ARGUMENT) to allow in any context
+        elif text == "num-valid-arguments":
+            return_type = 4   # NUMBER
+
         definitions[text] = {
             "id": op_id,
             "min_args": min_args,
