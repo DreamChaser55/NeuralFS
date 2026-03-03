@@ -73,7 +73,7 @@ def generate():
         # Specific overrides for FSO operators that behave differently than their basic category
         if text in ["functional-if-then-else", "functional-when", "functional-switch"]:
             return_type = 17  # AMBIGUOUS (or FLEXIBLE_ARGUMENT) to allow in any context
-        elif text == "num-valid-arguments":
+        elif text in ["num-valid-arguments", "get-ets-value", "get-power-output", "get-collision-group"]:
             return_type = 4   # NUMBER
 
         definitions[text] = {
