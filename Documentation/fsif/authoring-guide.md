@@ -12,8 +12,8 @@ Critical rules
 
 Authoring checklist
 - Use FSIF version: "2.5"
-- player_setup.start_ship must exist in entities (could be part of a wing, but the referenced player ship name must exist after the wing is spawned).
-- Unlike Ships, Wings must use a template.
+- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
+- Unlike Ships, Wings **must** use a template.
 
 ## Minimal FSIF skeleton
 - These are the minimum fields required for a valid FSIF file.
@@ -25,11 +25,11 @@ mission_info:
   name: "Minimal Mission"
 
 player_setup:
-  start_ship: "Alpha 1"
+  start_ship: "Player Ship"
 
 entities:
   ships:
-    - name: "Alpha 1"
+    - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
       location: [0, 0, 0]
@@ -68,7 +68,7 @@ environment:
     enabled: false
 
 player_setup:
-  start_ship: "Alpha 1"
+  start_ship: "Player Ship"
   extra_ships:
     - class: "GTF Ulysses"
       count: 1
@@ -76,7 +76,7 @@ player_setup:
 entities:
   ship_templates: {}
   ships:
-    - name: "Alpha 1"
+    - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
       location: [0.0, 0.0, 0.0]
@@ -101,8 +101,6 @@ mission_flow:
   goals: []
   messages: []
 ```
-
-Note: a valid FSIF mission must contain at least one ship (the player ship).
 
 ## Fiction Viewer
 The Fiction Viewer allows you to display a text file before the mission starts. This is useful for lengthy narrative text or logs. If your mission design document contains cutscene descriptions but the cutscenes were not created, you can write their narrative content here.
