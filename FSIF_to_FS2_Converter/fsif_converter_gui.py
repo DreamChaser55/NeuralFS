@@ -76,6 +76,7 @@ class ConverterGUI:
         self.has_elevenlabs_key_file = self.elevenlabs_key_file.exists()
 
         self.is_converting = False
+        self.copy_feedback_after_id = None
 
         self.create_widgets()
 
@@ -192,9 +193,18 @@ class ConverterGUI:
 
         tts_paths_frame.columnconfigure(1, weight=1)
 
-        # Convert Action
-        self.convert_btn = ttk.Button(left_frame, text="Convert", command=self.start_conversion)
-        self.convert_btn.pack(pady=10)
+        # Converter Actions
+        actions_frame = ttk.Frame(left_frame)
+        actions_frame.pack(fill="x", pady=10)
+
+        self.convert_btn = ttk.Button(actions_frame, text="Convert", command=self.start_conversion)
+        self.convert_btn.pack(side="left")
+
+        self.copy_log_btn = ttk.Button(actions_frame, text="Copy log", command=self.copy_log_to_clipboard)
+        self.copy_log_btn.pack(side="left", padx=(8, 0))
+
+        self.copy_feedback_label = tk.Label(actions_frame, text="", fg="green")
+        self.copy_feedback_label.pack(side="left", padx=(8, 0))
 
         # Log Area
         log_frame = ttk.LabelFrame(right_frame, text="Log Output", padding="5")
@@ -288,6 +298,33 @@ class ConverterGUI:
         self.log_text.config(state='normal')
         self.log_text.delete('1.0', tk.END)
         self.log_text.config(state='disabled')
+
+    def copy_log_to_clipboard(self):
+        log_content = self.log_text.get('1.0', tk.END).strip()
+
+        if not log_content:
+            messagebox.showinfo("Copy log", "Log is empty, nothing to copy.")
+            return
+
+        try:
+            self.root.clipboard_clear()
+            self.root.clipboard_append(log_content)
+            self.root.update()
+            self._show_copy_feedback()
+        except tk.TclError as e:
+            messagebox.showerror("Copy log", f"Failed to copy log to clipboard.\n{e}")
+
+    def _show_copy_feedback(self):
+        if self.copy_feedback_after_id is not None:
+            self.root.after_cancel(self.copy_feedback_after_id)
+            self.copy_feedback_after_id = None
+
+        self.copy_feedback_label.config(text="Copied!")
+        self.copy_feedback_after_id = self.root.after(1000, self._hide_copy_feedback)
+
+    def _hide_copy_feedback(self):
+        self.copy_feedback_label.config(text="")
+        self.copy_feedback_after_id = None
 
     def log(self, message):
         self.root.after(0, self._append_log, message)
