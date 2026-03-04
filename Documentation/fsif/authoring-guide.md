@@ -43,7 +43,10 @@ mission_flow: {}
 ```
 
 ## Standard FSIF skeleton
-- Use this skeleton to bootstrap a typical mission. It includes optional but commonly used sections like `environment` and empty lists for easy expansion.
+- Use this skeleton to bootstrap a typical mission. It includes:
+  - optional but commonly used sections like `environment` and empty lists for easy expansion.
+  - Alpha wing and its ship template, with player being Alpha 1.
+  - an example non-wing ship (a cruiser).
 
 ```yaml
 fsif_version: "2.5"
@@ -68,24 +71,35 @@ environment:
     enabled: false
 
 player_setup:
-  start_ship: "Player Ship"
+  start_ship: "Alpha 1"
   extra_ships:
     - class: "GTF Ulysses"
-      count: 1
+      count: 4
+  extra_weapons:
+    - "Interceptor"
 
 entities:
-  ship_templates: {}
-  ships:
-    - name: "Player Ship"
+  ship_templates:
+    alpha_fighter:
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0.0, 0.0, 0.0]
-      arrival_cue: |
-        ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
         secondary: ["MX-50"]
-  wings: []
+  ships:
+    - name: "GTC Fenris 1"
+      class: "GTC Fenris"
+      team: "Friendly"
+      location: [200.0, 0.0, 800.0]
+      arrival_cue: |
+        ( true )
+  wings:
+    - name: "Alpha"
+      template: "alpha_fighter"
+      count: 4
+      position: [0.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
   waypoints: {}
   reinforcement_wings: []
   reinforcement_ships: []
