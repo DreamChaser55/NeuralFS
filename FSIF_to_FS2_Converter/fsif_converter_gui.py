@@ -337,28 +337,7 @@ class ConverterGUI:
         thread.start()
 
     def run_conversion_task(self, input_path):
-        # Determine API key based on provider and file existence
-        provider = self.tts_provider_var.get()
-        api_key = self.api_key_var.get().strip() or None
-        
-        # If file exists for current provider, we pass None to let the backend read it
-        # (This avoids reading it in GUI thread and passing potentially stale or empty data if file changed)
-        # However, the backend expects 'api_key' in settings to override file.
-        # Logic: If manual entry is empty, pass None. Backend will check file.
-        # If manual entry has value, it overrides.
-        
-        # For legacy compatibility, fsif_to_fs2 checks files if key is None.
-        
-        tts_settings = {
-            'enabled': self.tts_enabled_var.get(),
-            'provider': provider,
-            'out_root': self.tts_out_root_var.get().strip() or None,
-            'mode': self.tts_mode_var.get(),
-            'dry_run': self.tts_dry_run_var.get(),
-            'default_voice': self.tts_default_voice_var.get().strip() or None,
-            'api_key': api_key,
-            'rate_limit_delay': self.tts_rate_limit_var.get()
-        }
+        tts_settings = self._build_tts_settings()
 
         mode = self.mode_var.get()
         output_path = self.output_path_var.get().strip() or None
@@ -405,6 +384,22 @@ class ConverterGUI:
     def reset_ui(self):
         self.is_converting = False
         self.convert_btn.config(state='normal')
+
+    def _build_tts_settings(self):
+        """Build normalized TTS settings dict from current GUI state."""
+        provider = self.tts_provider_var.get()
+        api_key = self.api_key_var.get().strip() or None
+
+        return {
+            'enabled': self.tts_enabled_var.get(),
+            'provider': provider,
+            'out_root': self.tts_out_root_var.get().strip() or None,
+            'mode': self.tts_mode_var.get(),
+            'dry_run': self.tts_dry_run_var.get(),
+            'default_voice': self.tts_default_voice_var.get().strip() or None,
+            'api_key': api_key,
+            'rate_limit_delay': self.tts_rate_limit_var.get()
+        }
 
 
 if __name__ == "__main__":
