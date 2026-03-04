@@ -484,52 +484,50 @@ For example (GTSC Faustus): port docking, starboard docking.
 For canonical ship dockpoint names, see: ./ship-dockpoint-names.md.
 
 ### Briefing icon types
-- Authors must use a canonical icon string in icons[*].type. The converter maps these strings to FS2 numeric `$type` codes.
+- Authors must use a canonical icon string in icons[*].type.
 
 **Icon Fields:**
-- **Type**: Must be a canonical string from the list below (e.g., "Fighter", "Jump Node"). Controls the icon's visual silhouette.
+- **Type**: Must be a canonical string from the allowed list below (e.g., "Fighter", "Jump Node"). Controls the icon's visual silhouette.
 - **Class**: Optional (defaults to "Terran NavBuoy"). The displayed ship class text and picture when the icon is clicked in-game.
   - **Validation:** If specified, must be a valid ship class from `spacecraft-classes.md` (strictly enforced)
   - **Recommendation:** Omit for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default
 - **Team**: Must be "Friendly", "Hostile" or "Unknown"
 
-Mapping (FSIF canonical icon string → FS2 numeric code):
-- Fighter: 0
-- Fighter Wing: 1
-- Cargo: 2
-- Cargo Wing: 3
-- Science Cruiser: 4 (alias: 30)
-- Science Cruiser Wing: 5
-- Capital Ship: 6
-- Planet: 7
-- Asteroid Field: 8
-- Waypoint: 9
-- Support Ship: 10
-- Freighter (no cargo): 11
-- Freighter (has cargo): 12
-- Freighter Wing (no cargo): 13
-- Freighter Wing (has cargo): 14
-- Installation: 15
-- Bomber: 16
-- Bomber Wing: 17
-- Cruiser: 18 (alias: 28)
-- Cruiser Wing: 19
-- Unknown: 20
-- Unknown Wing: 21
-- Player Fighter: 22
-- Player Fighter Wing: 23
-- Player Bomber: 24
-- Player Bomber Wing: 25
-- Small Planet: 26
-- Transport Wing: 27
-- Transport: 29 (alias: 34)
-- Supercapital Ship: 31
-- Sentry Gun: 32
-- Jump Node: 33
+Allowed canonical icon type strings:
+- Fighter
+- Fighter Wing
+- Cargo
+- Cargo Wing
+- Science Cruiser
+- Science Cruiser Wing
+- Capital Ship
+- Planet
+- Asteroid Field
+- Waypoint
+- Support Ship
+- Freighter (no cargo)
+- Freighter (has cargo)
+- Freighter Wing (no cargo)
+- Freighter Wing (has cargo)
+- Installation
+- Bomber
+- Bomber Wing
+- Cruiser
+- Cruiser Wing
+- Unknown
+- Unknown Wing
+- Player Fighter
+- Player Fighter Wing
+- Player Bomber
+- Player Bomber Wing
+- Small Planet
+- Transport Wing
+- Transport
+- Supercapital Ship
+- Sentry Gun
+- Jump Node
 
-Notes
-- Teams must be authored as Friendly or Hostile (canonical spellings).
-- If icons[*].pos is omitted, the converter emits 0.0, 0.0, 0.0.
+Note: If icons[*].pos is omitted, the converter emits 0.0, 0.0, 0.0.
 
 ### Volumetric (full) nebula parameters
 Pattern: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange

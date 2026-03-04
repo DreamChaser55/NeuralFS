@@ -218,12 +218,17 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 
 - Briefing camera calculation: The converter computes the tightest axis-aligned bounding box for the icons in the XZ plane, expands it if necessary to meet the 2.5 aspect ratio requirement, and positions the camera at XZ equal to the bounding box center and Y equal to the bounding box width with a 10% safety factor (clamped to a minimum of 1000m), looking directly down.
 
-Icon type normalization
+**Icon type normalization:**
 - Authoring: icons[*].type is a canonical string; mission_loader normalizes it to the FS2 numeric `$type` using briefing_icon_types.py.
 - Writer: emits `$type` from the normalized type_id and does not apply heuristic class/type coercions.
 - Waypoint is 9; Jump Node is 33. The converter warns if older nav-buoy heuristics are detected.
 
-Class emission
+**FS2 `$type` numeric mapping:**
+- Canonical source of truth: `FSIF_to_FS2_Converter/briefing_icon_types.py`.
+- The converter resolves `icons[*].type` strings to numeric IDs using that module and emits the resulting numeric `$type`.
+- FSIF authors should provide canonical string names only; they do not author numeric codes directly.
+
+**Class emission:**
 - icons[*].class is emitted as `$class` (defaults to "Terran NavBuoy" when omitted). **If specified, it must be a valid ship class from `spacecraft-classes.md` (strict validation enforced to prevent FSO crashes).** The class value does not affect the icon silhouette; the silhouette is controlled solely by `icons[*].type`.
 - **Important:** Authors should omit the `class` field for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Specifying an arbitrary string will cause validation failure.
 
