@@ -505,10 +505,10 @@ Mapping (FSIF canonical icon string → FS2 numeric code):
 - Asteroid Field: 8
 - Waypoint: 9
 - Support Ship: 10
-- Freighter (no cargo): 11
-- Freighter (has cargo): 12
-- Freighter Wing (no cargo): 13
-- Freighter Wing (has cargo): 14
+- Freighter(no cargo): 11
+- Freighter(has cargo): 12
+- Freighter Wing(no cargo): 13
+- Freighter Wing(has cargo): 14
 - Installation: 15
 - Bomber: 16
 - Bomber Wing: 17
