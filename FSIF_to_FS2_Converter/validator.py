@@ -1,4 +1,5 @@
 import re
+import math
 from pathlib import Path
 from typing import Set, Dict, List, Optional
 import fs_flags_constants
@@ -526,6 +527,36 @@ class Validator:
         warn_if_has_tags("mission_info.description", mi.description)
         warn_if_has_tags("mission_info.notes", mi.notes)
 
+    def _calculate_briefing_camera_width(self, icons) -> float:
+        """
+        Replicate the briefing camera width calculation from MissionLoader.
+
+        Returns the camera Y-height (== camera width) that the converter would
+        automatically assign to a stage containing the given icons.  This is the
+        same value used as the reference distance for the icon proximity check.
+
+        Formula (mirrors _calculate_briefing_camera in mission_loader.py):
+          final_width = max(delta_x, 2.5 * delta_z)
+          cam_width   = max(final_width * 1.15, 1000.0)
+
+        Args:
+            icons: Iterable of BriefingIcon objects (must have .pos as [x, 0, z]).
+
+        Returns:
+            float: The computed camera width (minimum 1000.0).
+        """
+        x_values = [ic.pos[0] for ic in icons]
+        z_values = [ic.pos[2] for ic in icons]
+
+        delta_x = max(x_values) - min(x_values)
+        delta_z = max(z_values) - min(z_values)
+
+        final_width = max(delta_x, 2.5 * delta_z)
+        cam_width = final_width * 1.15
+        if cam_width < 1000.0:
+            cam_width = 1000.0
+        return cam_width
+
     def validate_briefing(self):
         """
         Validate briefing stages and icons.
@@ -533,6 +564,8 @@ class Validator:
         Checks:
         - Voice name validity.
         - Icon absence, types, teams, and classes.
+        - Icon proximity (warns if any two icons are closer than 5% of the
+          automatically calculated camera width, which would cause visual overlap).
         """
 
         for i, stage in enumerate(self.mission.briefing.stages):
@@ -563,6 +596,35 @@ class Validator:
                         # Default is "Terran NavBuoy". If it's anything else, it's an error.
                         if icon.class_ != "Terran NavBuoy":
                             self.log_error(f"Briefing icon of type '{icon.type}' uses class '{icon.class_}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
+
+            # Icon proximity check: warn if any two icons are closer than 5% of the camera width.
+            # Camera width calcutated here mirrors the calculation in MissionLoader._calculate_briefing_camera.
+            if stage.icons and len(stage.icons) >= 2:
+                cam_width = self._calculate_briefing_camera_width(stage.icons)
+                threshold = 0.05 * cam_width
+
+                def _icon_label(ic) -> str:
+                    """Return a human-readable identifier for an icon."""
+                    if ic.label:
+                        return f"'{ic.label}' ({ic.type})"
+                    return f"(type '{ic.type}')"
+
+                icons_list = stage.icons
+                for a_idx in range(len(icons_list)):
+                    for b_idx in range(a_idx + 1, len(icons_list)):
+                        ic_a = icons_list[a_idx]
+                        ic_b = icons_list[b_idx]
+                        dx = ic_a.pos[0] - ic_b.pos[0]
+                        dz = ic_a.pos[2] - ic_b.pos[2]
+                        dist = math.sqrt(dx * dx + dz * dz)
+                        if dist < threshold:
+                            self.log_warning(
+                                f"Briefing stage {i+1}: icons {_icon_label(ic_a)} and "
+                                f"{_icon_label(ic_b)} are too close together "
+                                f"(distance {dist:.1f}, minimum {threshold:.1f} = 5% of "
+                                f"camera width {cam_width:.1f}). "
+                                f"Consider spreading them further apart to prevent visual overlap."
+                            )
 
     def validate_debriefing(self):
         for i, stage in enumerate(self.mission.debriefing.stages):
