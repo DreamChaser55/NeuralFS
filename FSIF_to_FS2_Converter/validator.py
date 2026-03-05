@@ -14,6 +14,17 @@ except ImportError:
 
 
 class Validator:
+    _BRIEFING_STYLE_TAG_RE = re.compile(
+        r"""
+        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn]\{ |      # span color open, e.g. $y{
+        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn](?=(?:\s|$)) | # single-word color, e.g. $R text
+        \$\| |                                   # color break
+        \$\} |                                   # span color close
+        \$(?:quote|semicolon|callsign|rank)\b    # special placeholders
+        """,
+        re.VERBOSE,
+    )
+
     def __init__(self, mission: Mission, root_dir: Path, fsif_path: Optional[Path] = None, tts_provider: str = 'google'):
         self.mission = mission
         self.root_dir = root_dir
@@ -127,6 +138,7 @@ class Validator:
         self.validate_briefing()
         self.validate_debriefing()
         self.validate_command_briefing()
+        self.validate_briefing_text_styling_scope()
         self.validate_sexps()
         self.validate_audio()
 
@@ -462,6 +474,57 @@ class Validator:
             # Voice Name
             if msg.voice_name and msg.voice_name not in self.voices:
                 self.log_error(f"Message '{msg.name}' uses unknown voice_name '{msg.voice_name}'")
+
+    def _extract_briefing_style_tags(self, text: Optional[str]) -> List[str]:
+        if not text:
+            return []
+        matches = {m.group(0) for m in self._BRIEFING_STYLE_TAG_RE.finditer(text)}
+        return sorted(matches)
+
+    def validate_briefing_text_styling_scope(self):
+        """
+        Warn if briefing/debriefing text styling tags are used outside supported contexts.
+
+        Styling tags are intended only for fiction viewer, command briefing,
+        mission briefing and debriefing text blocks.
+        """
+        guidance = (
+            "Briefing text styling tags belong only to fiction viewer, "
+            "command briefing, mission briefing and debriefing text."
+        )
+
+        def warn_if_has_tags(context: str, text: Optional[str]):
+            tags = self._extract_briefing_style_tags(text)
+            if tags:
+                tags_joined = ", ".join(tags)
+                self.log_warning(f"{context} contains briefing styling tags ({tags_joined}). {guidance}")
+
+        # In-mission text channels where styling tags do not belong.
+        for idx, msg in enumerate(self.mission.messages, start=1):
+            warn_if_has_tags(
+                f"mission_flow.messages[{idx}] ('{msg.name}') message",
+                msg.message,
+            )
+
+        for idx, goal in enumerate(self.mission.goals, start=1):
+            warn_if_has_tags(
+                f"mission_flow.goals[{idx}] ('{goal.name}') message",
+                goal.message,
+            )
+
+        for idx, event in enumerate(self.mission.events, start=1):
+            if event.directive_text:
+                event_name = event.name if event.name else f"Event {idx}"
+                warn_if_has_tags(
+                    f"mission_flow.events[{idx}] ('{event_name}') directive_text",
+                    event.directive_text,
+                )
+
+        # Other authored text fields outside supported briefing/debriefing contexts.
+        mi = self.mission.mission_info
+        warn_if_has_tags("mission_info.name", mi.name)
+        warn_if_has_tags("mission_info.description", mi.description)
+        warn_if_has_tags("mission_info.notes", mi.notes)
 
     def validate_briefing(self):
         """
