@@ -53,7 +53,7 @@ This agent automates the final step of the pipeline: generating the game-ready `
 3. Select the "Freespace Creative Writing Agent" as the interaction mode.
 4. Copy the initial prompt from `freespace creative writing agent prompt.txt`.
 5. Add your campaign concept into the prompt. If you don't want the agent to work fully autonomously, delete the "Work autonomously." line (the agent will then ask for your approval after completing each significant phase of the work).
-6. Send the prompt and wait until the FreeSpace Creative Writing Agent completes its work. Afterwards, there should be a new folder named after your campaign with the Campaign Bible and another folder inside containing detailed mission design documents in natural language.
+6. Send the prompt and wait until the FreeSpace Creative Writing Agent completes its work. Afterwards, there should be a new folder named after your campaign with the Campaign Bible and another folder inside containing detailed mission design documents in natural language. If there is any fiction viewer content, it should be in separate text files in the same folder, named according to this schema: 'missionname_story.txt'.
 
 Note: Using AI for this phase is optional, of course. If you don't want to outsource your creativity to the AI, you can write your own Campaign Bible and mission design documents, then proceed to the next phase.
 
@@ -72,7 +72,9 @@ Note: Using AI for this phase is optional, of course. If you don't want to outso
 4. Send the prompt and wait until the Agent completes its work. Afterwards, your campaign folder should contain:
    - `.fs2` mission files (converted from `.fsif`).
    - A `.fc2` campaign file (converted from `.fcif`).
-5. Move these files to your FSO data folder to play the campaign.
+5. Move the `.fs2` and `.fc2` files into your `/FSO/fsport-mediavps/data/missions/` folder.
+6. If there are any fiction viewer files created by the first agent (located alongside the mission design documents, named as 'missionname_story.txt'), move them into your `/FSO/fsport-mediavps/data/fiction/` folder.
+7. Play the campaign.
 
 Note: You can also use the GUI Converter for this phase, but then you have to copy the validator output log manually for the AI agent to fix any mistakes.
 
