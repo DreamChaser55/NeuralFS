@@ -172,7 +172,7 @@ mission_flow:
         voice_style_instructions: "Amadeus CAG. Professional, delivering the specific mission assignment."
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Apollo", pos: [0, 0], label: "Alpha", highlighted: true }
-          - { type: "Waypoint", team: "Friendly", pos: [0, 10000], label: "Nav Alpha" }
+          - { type: "Waypoint", team: "Friendly", pos: [200, 10000], label: "Nav Alpha" }
           - { type: "Transport", team: "Unknown", class: "GTT Elysium", pos: [0, 10000], label: "Meridian" }
       - text: |
           $f{ Alpha wing $}, you're cleared to the $y{ Capella corridor $}. $y{ Nav Alpha $} marks the $h{ Meridian's $} last position. Proceed there, assess the situation, and return when complete. Don't get ambitious out there.
@@ -331,25 +331,25 @@ mission_flow:
 
   messages:
     - name: "Alpha 2 Wreckage"
-      message: "Alpha Lead, I'm reading — that's wreckage. Hull plating, looks like $h{ Meridian $}. She's gone."
+      message: "Alpha Lead, I'm reading — that's wreckage. Hull plating, looks like Meridian. She's gone."
       voice_name: "Achird"
       voice_style_instructions: "Veteran wingman. Calm, steady observation of tragedy."
     - name: "Pods detected"
       message: "[System] — 2 escape pods detected. Distress transponders active. Pods are alive."
       voice_name: "Charon" # Informative system voice
     - name: "Alpha 3 Brahma"
-      message: "$R{ Contact! $} Multiple bogeys from $y{ Capella $} bearing. They're — they're not $h Vasudan $|."
+      message: "Contact! Multiple bogeys from Capella bearing. They're — they're not Vasudan."
       voice_name: "Leda"
       voice_style_instructions: "Young pilot. Nervous edge, shocked discovery."
     - name: "Alpha 2 Shields"
-      message: "Firing Avenger— no, wait, I've got $y{ ML-16s $} loaded. These $h shields $| are eating it. Push through."
+      message: "Firing Avenger— no, wait, I've got ML-16s loaded. These shields are eating it. Push through."
       voice_name: "Achird"
       voice_style_instructions: "Veteran wingman. Professional but frustrated by ineffective weaponry."
     - name: "Alpha 2 Tight"
-      message: "These things don't die fast enough. $W{ Stay tight, Lead. $} Don't let them get behind you."
+      message: "These things don't die fast enough. Stay tight, Lead. Don't let them get behind you."
       voice_name: "Achird"
     - name: "Command Retreat"
-      message: "$f{ Alpha Lead $}, Command. We're reading a $R second wave $| at your position. $W{ Disengage. $} Break off and return immediately. $R{ Do NOT pursue. $} Repeat — do not pursue."
+      message: "Alpha Lead, Command. We're reading a second wave at your position. Disengage. Break off and return immediately. Do NOT pursue. Repeat — do not pursue."
       voice_name: "Gacrux"
       voice_style_instructions: "Command CAG. Professional, controlled alarm."
     - name: "Alpha 4 Report"
@@ -357,16 +357,16 @@ mission_flow:
       voice_name: "Erinome"
       voice_style_instructions: "Frightened but professional pilot."
     - name: "Command Now"
-      message: "$f{ Alpha Lead $}, get your people home $W{ NOW. $}"
+      message: "Alpha Lead, get your people home NOW."
       voice_name: "Gacrux"
     - name: "Alpha 2 Pods"
-      message: "$f{ Pods $} are still moving. They might make it if we buy them thirty seconds."
+      message: "Pods are still moving. They might make it if we buy them thirty seconds."
       voice_name: "Achird"
     - name: "Command Jump"
-      message: "$f{ Alpha Lead $}, jump when ready. We'll send salvage for the $f{ pods $} if they don't make it. $W{ Get home. $}"
+      message: "Alpha Lead, jump when ready. We'll send salvage for the pods if they don't make it. Get home."
       voice_name: "Gacrux"
     - name: "Alpha 2 Inbound"
-      message: "$f{ Amadeus $}, $f{ Alpha Lead $} is inbound. $W{ We need to talk about what we just saw. $}"
+      message: "Amadeus, Alpha Lead is inbound. We need to talk about what we just saw."
       voice_name: "Achird"
 
 audio:

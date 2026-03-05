@@ -279,16 +279,16 @@ mission_flow:
         voice_style_instructions: "Command CAG. Professional, urgent mission overview."
         icons:
           - { type: "Installation", team: "Friendly", class: "GTI Arcadia", pos: [0, 6000], label: "Vega Prime" }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [0, 3000], label: "Stentor" }
-          - { type: "Transport Wing", team: "Friendly", class: "GTT Elysium", pos: [0, 6000], label: "Epsilon" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [-6000, 3000], label: "Stentor" }
+          - { type: "Transport Wing", team: "Friendly", class: "GTT Elysium", pos: [6000, 6000], label: "Epsilon" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -34000], label: "Antares Node" }
       - text: |
           You'll be flying $f{ Valkyries $} today. They just came in from the $f{ Amadeus $} complement — fast interceptors, good for exactly this kind of work. $W{ Use the speed. $} Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. $W{ The people on those transports are your mission. $}
           
-          $y{ Nav Alpha $} is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to $y{ Nav Bravo $}. Get them through.
+          $y{ Nav Alpha $} is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to $y{ Nav Bravo $} . Get them through.
         voice_name: "Gacrux"
         icons:
-          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 0], label: "Alpha", highlighted: true }
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, -6000], label: "Alpha", highlighted: true }
           - { type: "Waypoint", team: "Friendly", pos: [0, 4000], label: "Nav Alpha" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -34000], label: "Nav Bravo" }
       - text: |
@@ -467,43 +467,43 @@ mission_flow:
 
   messages:
     - name: "Stentor Initial"
-      message: "$f{ Alpha Lead $}, $f{ Stentor $}. We have four $h Scorpions $| on us already. $W{ Get in here. $}"
+      message: "Alpha Lead, Stentor. We have four Scorpions on us already. Get in here."
       voice_name: "Kore"
     - name: "Epsilon 1 Undock"
-      message: "$f{ GTD Amadeus $} control, this is $f{ Epsilon One $}. We are... we're undocking. Please advise on our route."
+      message: "GTD Amadeus control, this is Epsilon One. We are... we're undocking. Please advise on our route."
       voice_name: "Sadachbia"
       voice_style_instructions: "Civilian transport pilot. Anxious tone."
     - name: "Command Epsilon"
-      message: "$f{ Epsilon One $}, proceed to $y{ Nav Alpha $} and hold for the others. $f{ Alpha wing $} is covering you."
+      message: "Epsilon One, proceed to Nav Alpha and hold for the others. Alpha wing is covering you."
       voice_name: "Gacrux"
     - name: "Alpha 2 Bombers"
-      message: "$R{ Bombers. $} $y{ Capella $} vector. They're going for the station directly — $W{ cut them off. $}"
+      message: "Bombers. Capella vector. They're going for the station directly — cut them off."
       voice_name: "Achird"
     - name: "Vega Prime Hits"
-      message: "All ships, $f{ Vega Prime $} is taking structural hits. $R{ Docking arm two is compromised. $} $f{ Epsilon $} Two, Three, Four — accelerate undocking sequence. $W{ Repeat, accelerate. $}"
+      message: "All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two, Three, Four — accelerate undocking sequence. Repeat, accelerate."
       voice_name: "Iapetus"
       voice_style_instructions: "Station controller. Calm professional performing last duty."
     - name: "Epsilon 3 Panic"
-      message: "$f{ Alpha wing $} — something's on me! $R{ On me — please— $}"
+      message: "Alpha wing — something's on me! On me — please—"
       voice_name: "Aoede"
       voice_style_instructions: "Civilian pilot. Panicked."
     - name: "Command Malgor"
-      message: "$f{ Alpha Lead $}, Command. We're reading a $R cruiser-class contact $| inbound from the $y{ Capella node $}. Class designation — $h Cain $|. $R{ Do not engage. $} I repeat, do not engage the cruiser. Get those transports out."
+      message: "Alpha Lead, Command. We're reading a cruiser-class contact inbound from the Capella node. Class designation — Cain. Do not engage. I repeat, do not engage the cruiser. Get those transports out."
       voice_name: "Gacrux"
     - name: "Stentor Engage Malgor"
-      message: "$f{ Alpha Lead $}, $f{ Stentor $} is engaging the $h{ Malgor $}. We'll keep her busy as long as we can. $W{ You cover those transports. $} That's an order."
+      message: "Alpha Lead, Stentor is engaging the Malgor. We'll keep her busy as long as we can. You cover those transports. That's an order."
       voice_name: "Kore"
     - name: "Vega Prime Final"
-      message: "This is $f{ Vega Prime $} Control. Station integrity is failing. All personnel have evacuated or are... $e{ [static] $} ...recommend all ships clear the station perimeter. $W{ Clear the station perimeter now. $}"
+      message: "This is Vega Prime Control. Station integrity is failing. All personnel have evacuated or are... [static] ...recommend all ships clear the station perimeter. Clear the station perimeter now."
       voice_name: "Iapetus"
     - name: "Alpha 2 Station Gone"
-      message: "She's gone. Just... $W{ keep moving. $} Keep them moving."
+      message: "She's gone. Just... keep moving. Keep them moving."
       voice_name: "Achird"
     - name: "Command Epsilon Lost"
-      message: "We've lost one of the $R transports $|. Push the others through. $W{ Don't stop. $}"
+      message: "We've lost one of the transports. Push the others through. Don't stop."
       voice_name: "Gacrux"
     - name: "Command Evac Done"
-      message: "Remaining $f{ Epsilon transports $} are through. $f{ Alpha wing $}, disengage and return to base. $G{ Good work. $} Come home."
+      message: "Remaining Epsilon transports are through. Alpha wing, disengage and return to base. Good work. Come home."
       voice_name: "Gacrux"
 
 audio:

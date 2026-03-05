@@ -205,8 +205,8 @@ mission_flow:
         voice_name: "Gacrux"
         icons:
           - { type: "Jump Node", team: "Friendly", pos: [0, 8000], label: "Capella Node" }
-          - { type: "Capital Ship", team: "Friendly", class: "PVD Typhon", pos: [0, 8000], label: "Vigil" }
-          - { type: "Transport Wing", team: "Friendly", class: "PVT Isis", pos: [0, 8000], label: "Theta" }
+          - { type: "Capital Ship", team: "Friendly", class: "PVD Typhon", pos: [-6000, 8000], label: "Vigil" }
+          - { type: "Transport Wing", team: "Friendly", class: "PVT Isis", pos: [6000, 8000], label: "Theta" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -45000], label: "Nav Alpha" }
       - text: |
           Alpha 1, you're carrying the only $y{ field Avenger $} in the wing today. The briefing notes will tell you what to expect performance-wise, but the short version is this: it $W{ works $| against their shields in a way the ML-16 doesn't. $W{ Use it aggressively. $} We need data as much as we need kills.
@@ -352,36 +352,36 @@ mission_flow:
 
   messages:
     - name: "Vigil Arrival"
-      message: "This is $f{ Sub-Imperator Hethor $| of the Vasudan Navy destroyer $f{ Vigil $}. $f{ Theta wing $| — execute dispersal to $y{ Antares $} bearing. Do not deviate. To any $f{ Terran $} ships in system: the transports carry civilians. They are your responsibility now."
+      message: "This is Sub-Imperator Hethor of the Vasudan Navy destroyer Vigil. Theta wing — execute dispersal to Antares bearing. Do not deviate. To any Terran ships in system: the transports carry civilians. They are your responsibility now."
       voice_name: "Vindemiatrix"
       voice_style_instructions: "Vasudan commander. Stoic, unflinching."
     - name: "Alpha 2 HoL"
-      message: "$h{ HoL $| contacts — $y yellow diamonds $|, Vasudan hulls. Those are the $h Hammer $|. Engaging."
+      message: "HoL contacts — yellow diamonds, Vasudan hulls. Those are the Hammer. Engaging."
       voice_name: "Achird"
     - name: "Alpha 2 Avenger Success"
-      message: "$f{ Alpha Lead $| — whatever you're shooting, it's working. $G{ Clean kills. $}"
+      message: "Alpha Lead — whatever you're shooting, it's working. Clean kills."
       voice_name: "Achird"
     - name: "Theta 1 Help"
-      message: "$f{ Terran Alpha wing $|. This is $f{ Theta One $}. We are under attack. Request... $R{ assistance. $}"
+      message: "Terran Alpha wing. This is Theta One. We are under attack. Request... assistance."
       voice_name: "Rasalgethi"
       voice_style_instructions: "Vasudan pilot. Calm but strained."
     - name: "Command Vigil Critical"
-      message: "$f{ Alpha Lead $}, Command. $f{ Vigil $| is going critical. $W{ Don't look back. $} Keep $f{ Theta $| moving."
+      message: "Alpha Lead, Command. Vigil is going critical. Don't look back. Keep Theta moving."
       voice_name: "Gacrux"
     - name: "Command Vigil Gone"
-      message: "The $f{ Vigil $| is gone. Four billion Vasudans lost their homeworld and this ship came anyway. $W{ Mark her. $} Move on."
+      message: "The Vigil is gone. Four billion Vasudans lost their homeworld and this ship came anyway. Mark her. Move on."
       voice_name: "Gacrux"
     - name: "Alpha 3 Pisces"
-      message: "Contacts at $y{ Nav Alpha $} bearing. More $h{ HoL $| — they've seeded the approach."
+      message: "Contacts at Nav Alpha bearing. More HoL — they've seeded the approach."
       voice_name: "Leda"
     - name: "Alpha 2 Rama"
-      message: "Another wave from $y{ Capella $}. $h Basilisks $|. Keep them off $f{ Theta Three $| — she's the slowest."
+      message: "Another wave from Capella. Basilisks. Keep them off Theta Three — she's the slowest."
       voice_name: "Achird"
     - name: "Theta 1 Success"
-      message: "$f{ Alpha wing $|. We are at $y{ Nav Alpha $}. Initiating jump to $y{ Antares $}. The $f{ Vigil $| fought well. Her crew chose this. You... you did not have to choose. Sub-Imperator $f{ Hethor $| asked me to relay her compliments, if any $f{ Terran $| was present. I have done so."
+      message: "Alpha wing. We are at Nav Alpha. Initiating jump to Antares. The Vigil fought well. Her crew chose this. You... you did not have to choose. Sub-Imperator Hethor asked me to relay her compliments, if any Terran was present. I have done so."
       voice_name: "Rasalgethi"
     - name: "Command Theta Done"
-      message: "$f{ Theta wing $| is through. Return to base, Alpha. And — $G{ well done. $}"
+      message: "Theta wing is through. Return to base, Alpha. And — well done."
       voice_name: "Gacrux"
 
 audio:

@@ -269,8 +269,8 @@ mission_flow:
         icons:
           - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, -2000], label: "Amadeus" }
           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [2000, -2000], label: "Stentor" }
-          - { type: "Freighter Wing (no cargo)", team: "Friendly", class: "GTFr Chronos", pos: [0, 500], label: "Aldrin" }
-          - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [0, -500], label: "Rescue" }
+          - { type: "Freighter Wing (no cargo)", team: "Friendly", class: "GTFr Chronos", pos: [0, 1000], label: "Aldrin" }
+          - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [0, -1000], label: "Rescue" }
           - { type: "Transport", team: "Friendly", class: "PVT Isis", pos: [0, -4000], label: "Theta 3" }
           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [12000, -8000], label: "Ahriman" }
       - text: |
@@ -279,8 +279,8 @@ mission_flow:
           $f{ Casca $} is with the convoy. $W{ Rearm when you need to $} — don't wait until you're empty. Go. We need to move.
         voice_name: "Gacrux"
         icons:
-          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 1000], label: "Alpha", highlighted: true }
-          - { type: "Support Ship", team: "Friendly", class: "GTS Centaur", pos: [0, -2000], label: "Casca" }
+          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 3000], label: "Alpha", highlighted: true }
+          - { type: "Support Ship", team: "Friendly", class: "GTS Centaur", pos: [0, -3000], label: "Casca" }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [0, 15000], label: "Indra" }
           - { type: "Bomber Wing", team: "Hostile", class: "SB Shaitan", pos: [0, -15000], label: "Kali" }
 
@@ -445,41 +445,41 @@ mission_flow:
 
   messages:
     - name: "Stentor Update"
-      message: "$f{ Alpha Lead $}, $f{ Stentor $}. $h{ Ahriman's $| on our flank — we're engaging at range. She hasn't committed yet. Watch for the $h bombers $|. They'll come from aft."
+      message: "Alpha Lead, Stentor. Ahriman's on our flank — we're engaging at range. She hasn't committed yet. Watch for the bombers. They'll come from aft."
       voice_name: "Kore"
     - name: "Command Indra"
-      message: "$f{ Alpha Lead $}, fighters inbound from the $y{ Antares vector $} — they're seeding ahead of us. Four $h Scorpions $|. Keep your wing focused."
+      message: "Alpha Lead, fighters inbound from the Antares vector — they're seeding ahead of us. Four Scorpions. Keep your wing focused."
       voice_name: "Gacrux"
     - name: "Alpha 2 Kali"
-      message: "$R{ Bombers. $} Aft sector — three $h Shaitans $|. That's what we were waiting for."
+      message: "Bombers. Aft sector — three Shaitans. That's what we were waiting for."
       voice_name: "Achird"
     - name: "Command Bombers Close"
-      message: "$f{ Alpha Lead $}, $h bombers $| are close. The turrets can't catch them all. $W{ Get on those Shaitans. $}"
+      message: "Alpha Lead, bombers are close. The turrets can't catch them all. Get on those Shaitans."
       voice_name: "Gacrux"
     - name: "Wei Hit"
-      message: "This is the $f{ Admiral $}. Damage control, report to frame seventeen. $f{ Alpha wing $} — noted. $W{ Carry on. $}"
+      message: "This is the Admiral. Damage control, report to frame seventeen. Alpha wing — noted. Carry on."
       voice_name: "Alnilam"
     - name: "Stentor Heavy fire"
-      message: "$f{ Alpha Lead $} — $f{ Stentor $| taking heavy fire from the $h{ Ahriman $}. We are maintaining engagement. $R{ Do not divert from the convoy. $} Repeat: do not divert."
+      message: "Alpha Lead — Stentor taking heavy fire from the Ahriman. We are maintaining engagement. Do not divert from the convoy. Repeat: do not divert."
       voice_name: "Kore"
     - name: "Alpha 3 Genma"
-      message: "$R{ Second wave $} — $h Shaitans $| again, coming from aft. But they're targeting $f{ Rescue $|, not the $f{ Amadeus $}."
+      message: "Second wave — Shaitans again, coming from aft. But they're targeting Rescue, not the Amadeus."
       voice_name: "Leda"
     - name: "Rescue Help"
-      message: "$f{ Alpha Lead $} — $f{ Rescue $| here. We've got $h bombers $| on us. Please assist."
+      message: "Alpha Lead — Rescue here. We've got bombers on us. Please assist."
       voice_name: "Umbriel"
       voice_style_instructions: "Military transport pilot. Controlled fear."
     - name: "Command Aldrin Lost"
-      message: "We've lost $h{ Aldrin $|. Continue. The $R data loss $| is acceptable. $W{ The people are not. $}"
+      message: "We've lost Aldrin. Continue. The data loss is acceptable. The people are not."
       voice_name: "Gacrux"
     - name: "Command Approaching Bravo"
-      message: "Convoy is approaching $y{ Nav Bravo $}. $f{ Alpha wing $}, begin transition to $W{ close escort formation $|. We hold here and reassess before the node run."
+      message: "Convoy is approaching Nav Bravo. Alpha wing, begin transition to close escort formation. We hold here and reassess before the node run."
       voice_name: "Gacrux"
     - name: "Wei Reached Bravo"
-      message: "All convoy units: $W{ hold at Nav Bravo. $} We assess before we run the node. Good work, everyone. $f{ Alpha wing $} — stand down to ready alert. $f{ Casca $| will rearm you."
+      message: "All convoy units: hold at Nav Bravo. We assess before we run the node. Good work, everyone. Alpha wing — stand down to ready alert. Casca will rearm you."
       voice_name: "Alnilam"
     - name: "Command Ahriman Recall"
-      message: "$R{ Not your target $}, $f{ Alpha Lead $}. Leave the $h{ Ahriman $| to the $f{ Stentor $}."
+      message: "Not your target, Alpha Lead. Leave the Ahriman to the Stentor."
       voice_name: "Gacrux"
 
 audio:
