@@ -430,8 +430,8 @@ class MissionLoader:
              # The FSO briefing camera uses a 45-degree field of view (FOV).
              # With a 45-degree FOV, setting the camera height (Y distance) equal to the 
              # target horizontal width ensures the entire width fits in the view.
-             # We use the horizontal size (width) and add a 10% safety factor.
-             cam_h = final_width * 1.1
+             # We use the horizontal size (width) and add a 15% safety factor.
+             cam_h = final_width * 1.15
              
              # Maintain safety clamp to avoid singular views or extreme close-ups
              if cam_h < 1000.0:

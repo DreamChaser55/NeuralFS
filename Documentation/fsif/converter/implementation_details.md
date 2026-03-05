@@ -219,7 +219,7 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 
 ## Briefing emission and normalization
 
-- Briefing camera calculation: The converter computes the tightest axis-aligned bounding box for the icons in the XZ plane, expands it if necessary to meet the 2.5 aspect ratio requirement, and positions the camera at XZ equal to the bounding box center and Y equal to the bounding box width with a 10% safety factor (clamped to a minimum of 1000m), looking directly down.
+- Briefing camera calculation: The converter computes the tightest axis-aligned bounding box for the icons in the XZ plane, expands it if necessary to meet the 2.5 aspect ratio requirement, and positions the camera at XZ equal to the bounding box center and Y equal to the bounding box width with a 15% safety factor (clamped to a minimum of 1000m), looking directly down.
 
 **Icon type normalization:**
 - Authoring: icons[*].type is a canonical string; mission_loader normalizes it to the FS2 numeric `$type` using briefing_icon_types.py.
