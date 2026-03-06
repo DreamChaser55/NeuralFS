@@ -269,6 +269,7 @@ mission_flow:
       formula: |
         ( when 
           ( and 
+             ( is-event-true-delay "Vishnu message" 0 )
              ( < ( distance "Alpha 1" "JumpOut:1" ) 2000 ) 
              ( and ( is-in-mission "Escape Pod 1" ) ( is-in-mission "Escape Pod 2" ) ) 
           )
@@ -278,7 +279,10 @@ mission_flow:
     - name: "Command jump message"
       formula: |
         ( when 
-          ( < ( distance "Alpha 1" "JumpOut:1" ) 2000 )
+          ( and 
+             ( is-event-true-delay "Vishnu message" 0 )
+             ( < ( distance "Alpha 1" "JumpOut:1" ) 2000 )
+          )
           ( send-message "#Command" "Normal" "Command Jump" )
         )
 
@@ -306,7 +310,11 @@ mission_flow:
     - name: "Mission complete"
       formula: |
         ( when 
-          ( and ( < ( distance "Alpha 1" "JumpOut:1" ) 500 ) ( is-player ( true ) "Alpha 1" ) )
+          ( and 
+             ( is-event-true-delay "Vishnu message" 0 )
+             ( < ( distance "Alpha 1" "JumpOut:1" ) 500 ) 
+             ( is-player ( true ) "Alpha 1" ) 
+          )
           ( allow-ship "GTF Valkyrie" )
           ( end-mission )
         )
