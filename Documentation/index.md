@@ -52,7 +52,7 @@ References
   - shivan-ships-subsystem-names.md
 - Ship dockpoint names: ./FSO and fs2 format/ship-dockpoint-names.md
 - Fighter and bomber primary/secondary hardpoint configuration: ./FSO and fs2 format/fighter_bomber_hardpoints.md
-- Text styling guide (for command and mission briefings, debriefings and fiction viewer): .\FSO and fs2 format\briefing_text_styling.txt
+- Text styling guide (for command and mission briefings, debriefings and fiction viewer): .\FSO and fs2 format\text_styling_guide.txt
 
 Voice names:
 - Google voices:

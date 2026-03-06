@@ -329,7 +329,7 @@ entities:
 ```
 
 ## Briefing, debriefing and fiction viewer text styling
-Text in command and mission briefings, debriefings and in the fiction viewer can be styled by special tags. See `\Documentation\FSO and fs2 format\briefing_text_styling.txt` for a guide.
+Text in command and mission briefings, debriefings and in the fiction viewer can be styled by special tags. See `\Documentation\FSO and fs2 format\text_styling_guide.txt` for a guide.
 Note: use the styling tags **only** in the contexts mentioned above. They **do not** work in other places (such as in in-mission messages, directives or goal messages).
 
 **Recommended color conventions:**

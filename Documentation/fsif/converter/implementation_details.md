@@ -171,8 +171,8 @@ The validator checks the following areas:
 *   Validates background bitmaps and nebula patterns.
 *   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
 
-#### **Styling tags outside supported contexts**:
-*   Warns if briefing/debriefing text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
+#### **Text styling tags outside supported contexts**:
+*   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
 
 #### **Global Name Integrity**:
 *   Ensures names are unique within their respective namespaces: **Objects** (Ships, Wings, Waypoints, Jump Nodes), **Events**, **Goals**, and **Messages**.
