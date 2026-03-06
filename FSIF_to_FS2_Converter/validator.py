@@ -15,6 +15,7 @@ except ImportError:
 
 
 class Validator:
+    _BRIEFING_SPAN_OPEN_TAG_RE = re.compile(r'^\$([WwKkBbGgYyEeVvRrPpOoFfHhNn])\{$')
     _BRIEFING_STYLE_TAG_RE = re.compile(
         r"""
         \$[WwKkBbGgYyEeVvRrPpOoFfHhNn]\{ |      # span color open, e.g. $y{
@@ -139,6 +140,7 @@ class Validator:
         self.validate_briefing()
         self.validate_debriefing()
         self.validate_command_briefing()
+        self.validate_briefing_span_tags()
         self.validate_briefing_text_styling_scope()
         self.validate_sexps()
         self.validate_audio()
@@ -481,6 +483,63 @@ class Validator:
             return []
         matches = {m.group(0) for m in self._BRIEFING_STYLE_TAG_RE.finditer(text)}
         return sorted(matches)
+
+    def _validate_span_style_tags(self, context: str, text: Optional[str]):
+        """
+        Validate span-style color tags ($c{ ... $}) in briefing/debriefing text.
+
+        Rule enforced:
+        - Every span opening tag must be closed with '$}' before either:
+          1) another, different style tag, or
+          2) end-of-text.
+        """
+        if not text:
+            return
+
+        tokens = list(self._BRIEFING_STYLE_TAG_RE.finditer(text))
+
+        for idx, tok in enumerate(tokens):
+            opening_tag = tok.group(0)
+            if not self._BRIEFING_SPAN_OPEN_TAG_RE.match(opening_tag):
+                continue
+
+            closed = False
+            warned = False
+
+            for next_tok in tokens[idx + 1:]:
+                next_tag = next_tok.group(0)
+
+                if next_tag == '$}':
+                    closed = True
+                    break
+
+                if next_tag != opening_tag:
+                    self.log_warning(
+                        f"{context}: span-style color tag '{opening_tag}' is unclosed before "
+                        f"'{next_tag}'. Add '$}}' before '{next_tag}' (or remove '{opening_tag}')."
+                    )
+                    warned = True
+                    break
+
+            if not closed and not warned:
+                self.log_warning(
+                    f"{context}: span-style color tag '{opening_tag}' is unclosed before end of text. "
+                    f"Add '$}}' to close the span."
+                )
+
+    def validate_briefing_span_tags(self):
+        """
+        Validate span-style color-tag balancing in supported styling contexts:
+        command briefing, mission briefing and debriefing text.
+        """
+        for i, stage in enumerate(self.mission.command_briefing.stages, start=1):
+            self._validate_span_style_tags(f"Command briefing stage {i} text", stage.text)
+
+        for i, stage in enumerate(self.mission.briefing.stages, start=1):
+            self._validate_span_style_tags(f"Briefing stage {i} text", stage.text)
+
+        for i, stage in enumerate(self.mission.debriefing.stages, start=1):
+            self._validate_span_style_tags(f"Debriefing stage {i} text", stage.text)
 
     def validate_briefing_text_styling_scope(self):
         """
