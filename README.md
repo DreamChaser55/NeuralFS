@@ -80,6 +80,9 @@ Note: You can also use the GUI Converter for this phase, but then you have to co
 
 Recommended workflow: First, let the AI agent autonomously try to convert and fix the fsif files using the CLI converter (without voice generation). After all mistakes are fixed and the conversion proceeds smoothly, you can do a final conversion pass with the GUI converter and voice generation enabled.
 
+## Limitations
+Currently, only FreeSpace Port (FS1 mod for FSO) is supported.
+
 ## Example missions
 - `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
 
