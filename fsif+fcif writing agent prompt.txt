@@ -33,5 +33,6 @@ FCIF Demo:
 
 Read the @/<campaign_folder>/Campaign_Bible.txt . Read the mission design docs in @/<campaign_folder>/Detailed_Mission_Design_Documents folder.
 
-1. Write fsif missions based on the provided campaign Bible and mission design docs. Place them into the '/<campaign_folder>/fsif/' folder.
-2. After all fsif missions are written, write a FCIF campaign definition file based on the campaign Bible, mission design docs and mission progression in the written fsif files. Place it into the '/<campaign_folder>/' folder (alongside Campaign_Bible.txt).
+1. Inspect the fiction viewer text files in the Detailed_Mission_Design_Documents folder (the files named according to the schema "missionname_story.txt"). Add text styling tags to these fiction viewer text files (where appropriate), if they don't already contain them.
+2. Write fsif missions based on the provided campaign Bible and mission design docs. Place them into the '/<campaign_folder>/fsif/' folder.
+3. After all fsif missions are written, write a FCIF campaign definition file based on the campaign Bible, mission design docs and mission progression in the written fsif files. Place it into the '/<campaign_folder>/' folder (alongside Campaign_Bible.txt).
