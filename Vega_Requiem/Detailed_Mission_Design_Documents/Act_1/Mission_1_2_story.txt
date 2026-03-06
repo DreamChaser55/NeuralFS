@@ -10,9 +10,9 @@ visor up, and listened to the station die.
 It wasn't a dramatic sound. She had expected something like a battle — klaxons, structural
 groans, the percussion of impacts she could feel through the deck plating. There was some of
 that. But mostly there was the sound of a very large machine working very hard to stay together
-while something outside worked equally hard to take it apart. The atmospheric processors hummed
+while something outside worked equally hard to take it apart. $e{ The atmospheric processors hummed
 louder when the outer hull flexed. The lighting stuttered in four-second intervals, recovering
-each time from whatever the turrets were drawing.
+each time from whatever the turrets were drawing. $}
 
 Her earpiece gave her fragments of what was happening outside. Pilot callsigns she didn't
 recognize, call-and-response in the clipped shorthand of people who had practiced staying calm
@@ -25,7 +25,7 @@ Every time the guns fired, she could feel it through her shoulder blades — a l
 thud-thud-thud that she started counting instead of the alarm. She got to forty-one before the
 guns stopped firing.
 
-The guns stopped firing.
+$R{ The guns stopped firing. $}
 
 In the sudden quiet, Sera heard the station's hull make a sound she had no word for. It was
 structural — a long, low register that traveled through metal in a way that vibrated her back
@@ -35,14 +35,14 @@ said: creak.
 The corridor seal popped open.
 
 She didn't think. She moved. Down the corridor, the seal at the far end already disengaging,
-the emergency lighting now steady red instead of cycling, which meant the primary had failed.
-The lift was waiting, which was unusual and lucky and she wasn't going to examine why. She went
+the emergency lighting now $R{ steady red $} instead of cycling, which meant the primary had $R failed $|.
+The lift was waiting, which was unusual and $G lucky $| and she wasn't going to examine why. She went
 up three decks and into the docking bay where the evacuation shuttles were — should have been —
 
 The bay was empty. Not damaged, not destroyed. Simply empty. Every berth, every clamp, released.
 
 She stood in the open bay and looked at the stars through the bay doors, which someone had not
-closed, and which were now cycling shut on automatic, and she thought: they've already gone. All
+closed, and which were now cycling shut on automatic, and she thought: $R{ they've already gone. $} All
 of them. I was the last one they didn't know about.
 
 She was wrong. There was one more.

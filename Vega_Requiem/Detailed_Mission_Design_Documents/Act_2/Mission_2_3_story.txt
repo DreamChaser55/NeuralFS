@@ -1,16 +1,16 @@
 VEGA, DESIGNATE VL-001
 A fiction viewer narrative — displayed before Mission 2-3: "Vega Requiem"
 
-The Vega system was named for its star: an A-type main sequence, 25 light-years from Earth,
+The $y{ Vega system $} was named for its star: an A-type main sequence, 25 light-years from Earth,
 burning white-blue at a surface temperature of 9,600 Kelvin. The name comes from Arabic —
 al-Nasr al-Waqi', the Falling Eagle. Astronomers had applied it to the star for centuries before
 anyone knew that faster-than-light travel was possible, before anyone thought they would ever go
 there and stand in its light and name the planets around it. When the GTA arrived, they kept the
 name. It seemed, at the time, like a good one.
 
-Vega. The Falling Eagle.
+$y{ Vega $}. The Falling Eagle.
 
-The colony on Vega III had been established in 2307. Fourteen thousand people, at peak, living
+The colony on $y{ Vega III $} had been established in 2307. Fourteen thousand people, at peak, living
 in pressurized habitats on a world that was technically habitable in the sense that it would not
 kill you immediately but had clearly never read the GTA's definition of "pleasant." The colony
 was primarily a resource extraction operation, secondarily an administrative waypoint for the
@@ -21,41 +21,41 @@ networks would get the broadcast priority slot on Fridays.
 The school was evacuated first, in the third week of January 2335. The colonists went second.
 The administrative staff went third. The military garrison went last, or were supposed to.
 
-Jump node VL-001-A (Antares) was the route they all took out. The children went first in
+Jump node VL-001-A ($y{ Antares $}) was the route they all took out. The children went first in
 transport shuttles. Then the families. Then the freight manifests that represented years of
 accumulated survey data and geological records and the small irreplaceable bureaucratic record
 of a colony that had existed, that had been real, that had contained fourteen thousand people
 who ate breakfast and argued and fell in love and voted on water rationing.
 
-The four jump nodes of the Vega system had been, for twenty-eight years, the busiest routing
+The four jump nodes of the $y{ Vega system $} had been, for twenty-eight years, the busiest routing
 junctions in the outer expansion zone. Freighters had passed through them twice a week on
-average. The Vega system had connected Antares to Capella to Deneb to Beta Aquilae in a
+average. The $y{ Vega system $} had connected $y{ Antares $} to $y{ Capella $} to $y{ Deneb $} to $y{ Beta Aquilae $} in a
 continuous network that made the outer colonies economically viable.
 
-After the first week of February 2335, traffic through the Vega system stopped entirely.
+$e{ After the first week of February 2335, traffic through the Vega system stopped entirely. $}
 
 The four jump nodes remained open, technically. Subspace corridors do not close because the
 ships stop coming. The nodes persisted as they had persisted for centuries, indifferent to
 human schedules, indifferent to the cargo manifests and the patrol routes and the GTA's
-administrative designations. The Antares node continued to shimmer with barely-constrained
-subspace energy at its fixed point in space. The Capella node remained navigable, in theory,
+administrative designations. The $y{ Antares $} node continued to shimmer with barely-constrained
+subspace energy at its fixed point in space. The $y{ Capella $} node remained navigable, in theory,
 for anyone with a subspace drive and insufficient survival instinct.
 
-But no GTA ship entered Vega from any of those four nodes for a long time after January 2335.
+But no GTA ship entered $y{ Vega $} from any of those four nodes for a long time after January 2335.
 
-There is a record of the last transmission received from a GTA installation in the Vega system.
-It was logged by the GTD Bastion's communications officer on February 14th, 2335, at 0312
-station standard. It was a standard beacon ping from a GTSG Cerberus sentry gun that had been
-installed near the Vega-Beta Aquilae node during a patrol operation that no one had managed to
+There is a record of the last transmission received from a GTA installation in the $y{ Vega system $}.
+It was logged by the $f{ GTD Bastion $}'s communications officer on February 14th, 2335, at 0312
+station standard. It was a standard beacon ping from a $f{ GTSG Cerberus $} sentry gun that had been
+installed near the $y{ Vega $}-$y{ Beta Aquilae $} node during a patrol operation that no one had managed to
 decommission before the withdrawal. The gun was still operational. It was still doing what it
 had been built to do: identifying contacts, reporting status, performing its job in a system
 where there was no longer anyone to report to.
 
-The ping was logged. No one responded. The Bastion was occupied with other matters.
+The ping was logged. No one responded. The $f{ Bastion $} was occupied with other matters.
 
 Whether the sentry gun was eventually destroyed or simply ran out of power and went silent on
 its own, no one knew. It was listed as "status unknown" on the GTA's inventory records for
-several years, under a column header that read: Vega system assets — audit pending.
+several years, under a column header that read: $y{ Vega system assets $} — audit pending.
 
 The Falling Eagle.
 
@@ -63,15 +63,15 @@ The people who had lived there — who had voted on water rationing and sent the
 school with forty-three students — were scattered across the refugee systems by then, living
 in GTA temporary housing and waiting to hear when they could go back. The answer they eventually
 received was not the one they had been waiting for. It was a different answer, longer and more
-complicated, and it began: given the current strategic situation in the Vega system.
+complicated, and it began: given the current strategic situation in the $y{ Vega system $}.
 
-No one ever went back.
+$e{ No one ever went back. $}
 
 The star still burns, as it has burned for four hundred million years, as it will burn for
 another eight hundred million before it exhausts its hydrogen and expands and dims. It does not
 know what was taken from it. It is a star. It does not know anything.
 
-But the colonists knew. And the pilots who flew that last run through the Antares node, watching
-Vega's light diminish behind them as they accelerated away — they knew too.
+But the colonists knew. And the pilots who flew that last run through the $y{ Antares $} node, watching
+$y{ Vega $}'s light diminish behind them as they accelerated away — they knew too.
 
 They didn't talk about it much, afterward. There wasn't anything useful to say.

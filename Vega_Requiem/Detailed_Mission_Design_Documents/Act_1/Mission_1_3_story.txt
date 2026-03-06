@@ -1,28 +1,28 @@
 THE APPROACH VECTOR
 A fiction viewer narrative — displayed before Mission 1-3: "No Truce With the Tide"
 
-Sub-Legate Khoresh had been watching the jump point for eleven hours when the PVD Vigil made her
-transit into the Vega system.
+Sub-Legate Khoresh had been watching the jump point for eleven hours when the $f{ PVD Vigil $} made her
+transit into the $y{ Vega system $}.
 
-The Vigil came through at 0412 standard, trailing the three Isis transports that Sub-Imperator
-Hethor had designated Theta wing — the refugee carriers, evacuating PVN administrative staff
+The $f{ Vigil $} came through at 0412 standard, trailing the three Isis transports that Sub-Imperator
+Hethor had designated $f{ Theta $} wing — the refugee carriers, evacuating PVN administrative staff
 from a forward outpost that no longer had anything to administer. Khoresh logged their arrival
-with the care that characterized everything he did, noting the exact time and the Vigil's hull
-percentage and the configuration of Theta wing's docking manifests. He had been Third Navigation
+with the care that characterized everything he did, noting the exact time and the $f{ Vigil $}'s hull
+percentage and the configuration of $f{ Theta $} wing's docking manifests. He had been Third Navigation
 Officer for six years and had the kind of mind that catalogued details because the alternative
 was to stop cataloguing and start thinking about other things.
 
-The other things, in this case: Vasuda Prime had been bombarded. The home system was falling.
-Four billion dead, the last communication had said, and then the communications had stopped.
+The other things, in this case: $y{ Vasuda Prime $} had been bombarded. The home system was falling.
+$R{ Four billion dead $}, the last communication had said, and then the communications had stopped.
 
 He kept cataloguing.
 
 "Any Terran traffic in system?" Sub-Imperator Hethor asked from the command tier, not looking
 up from the tactical display.
 
-"Negative, Sub-Imperator. GTA transponders are showing the Amadeus group somewhere near the
-inner system, but we're reading no fighters on Vega Prime's patrol vectors." Khoresh paused.
-"Vega Prime's defense net is not responding to our IFF requests."
+"Negative, Sub-Imperator. GTA transponders are showing the $f{ Amadeus $} group somewhere near the
+inner system, but we're reading no fighters on $y{ Vega Prime $}'s patrol vectors." Khoresh paused.
+"$y{ Vega Prime $}'s defense net is not responding to our IFF requests."
 
 "It may be destroyed."
 
@@ -33,7 +33,7 @@ calculating something rather than feeling nothing. Hethor had been in command fo
 and had fought the Terrans for two of them. She was forty-three and had the kind of face that
 had been young once and stopped being young with deliberate intent.
 
-"Plot an intercept to the Capella node," she said. "If the enemy has entered through there,
+"Plot an intercept to the $y{ Capella node $}," she said. "If the enemy has entered through there,
 that is where we will find them."
 
 "Sub-Imperator." This was Legate Sovan, tactical officer, at the station to Khoresh's left.
@@ -41,9 +41,9 @@ that is where we will find them."
 
 "Yes," said Hethor. "And?"
 
-Sovan was quiet for a moment. "The Hammer of Light has assets in this system. They monitor
+Sovan was quiet for a moment. "The $h{ Hammer of Light $} has assets in this system. They monitor
 Command traffic on open channels when they can obtain the cipher keys." Another pause. "The
-cipher keys for the 9th Fleet were compromised at Vasuda three weeks ago. We filed a flag
+cipher keys for the 9th Fleet were compromised at $y{ Vasuda $} three weeks ago. We filed a flag
 but replacements have not been issued."
 
 The bridge was very quiet for a moment.
@@ -55,26 +55,26 @@ us in at fifteen degrees off the standard corridor. Reduce speed to point-six st
 
 "Yes." She looked at him with something that might, in a different face, have been called
 uncertainty. "It will also give us forty minutes of data before we commit to the node approach.
-If there is something waiting at the Capella node for us—" She stopped.
+If there is something waiting at the $y{ Capella node $} for us—" She stopped.
 
 "We will have forty minutes of warning," Khoresh finished.
 
 "Better than none," Hethor said, and turned back to her display.
 
 It was not enough. Twenty minutes into the adjusted approach, the signatures began to appear
-on long-range passive sensors — positioned at the Capella node as if they had been waiting
+on long-range passive sensors — positioned at the $y{ Capella node $} as if they had been waiting
 there for some time, arranged in an intercept pattern that assumed the standard approach vector.
 
 That was when Khoresh understood that the forty minutes had been purchased not because it would
-save the Vigil, but because it might save Theta wing.
+save the $f{ Vigil $}, but because it might save $f{ Theta $} wing.
 
 "All ships," Sub-Imperator Hethor said, with the voice she used for orders she did not expect
-to hear countermanded, "break formation on my mark. Theta wing: make for the Antares node.
+to hear countermanded, "break formation on my mark. $f{ Theta $} wing: make for the $y{ Antares node $}.
 Do not wait for us. Do not look back."
 
 Khoresh entered the navigation change into his console. His hands were steady. He had catalogued
-the shape of the trap, and it was a good trap, and there was no way out of it for the Vigil.
+the shape of the trap, and it was a good trap, and there was no way out of it for the $f{ Vigil $}.
 
-But Theta wing was already turning toward Antares.
+But $f{ Theta $} wing was already turning toward $y{ Antares $}.
 
 He went back to his log and wrote the time.
