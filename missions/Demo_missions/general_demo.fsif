@@ -226,7 +226,7 @@ entities:
 mission_flow:
   command_briefing:
     stages:
-      - text: "Our convoy will rendezvous at the $y{ Nav Buoy $} and transfer $y cargo $|."
+      - text: "Our convoy will rendezvous at the $y{ Nav Buoy $} and transfer $y cargo."
         ani: "brief-01.ani"
         voice_style_instructions: "officer speaking, authoritative"
         voice_name: "Gacrux"
@@ -237,7 +237,7 @@ mission_flow:
 
   briefing:
     stages:
-      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan $| the marked container."
+      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan the marked container."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
         icons:
@@ -246,7 +246,7 @@ mission_flow:
           - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [150, 50], label: "Elysium" }
           - { type: "Cargo", team: "Hostile", pos: [800, 1000], label: "Cargo" }
           - { type: "Waypoint", team: "Friendly", pos: [500, 500], label: "Nav Buoy" }
-      - text: "$h Rama $| will attack from the front; expect follow-up $h bombers $| targeting the $f{ GTC Fenris $}."
+      - text: "$h Rama will attack from the front; expect follow-up $h bombers targeting the $f{ GTC Fenris $}."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
         icons:
@@ -268,15 +268,15 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "GTC Fenris 1" )
-        text: "The $f{ GTC Fenris $} was $R destroyed $|. $R{ We failed the escort. $}"
+        text: "The $f{ GTC Fenris $} was $R destroyed. $R{ We failed the escort. $}"
         voice_name: "Gacrux"
       - condition: |
           ( not ( is-cargo-known-delay 0 "TAC 1 Cargo" ) )
-        text: "You failed to $W scan $| the marked $y cargo $|. $e{ Intelligence lost valuable data. $}"
+        text: "You failed to $W scan the marked $y cargo. $e{ Intelligence lost valuable data. $}"
         voice_name: "Gacrux"
       - condition: |
           ( true )
-        text: "$W{ Excellent work, $rank $callsign. $} The convoy transferred cargo and withdrew $G successfully $|."
+        text: "$W{ Excellent work, $rank $callsign. $} The convoy transferred cargo and withdrew $G successfully."
         voice_name: "Gacrux"
 
   events:

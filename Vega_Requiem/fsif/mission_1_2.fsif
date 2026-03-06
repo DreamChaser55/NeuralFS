@@ -272,7 +272,7 @@ mission_flow:
   briefing:
     stages:
       - text: |
-          $f{ Alpha wing $}, listen up. The situation has changed overnight. What $f{ Alpha Lead $} brought back from the $y{ Capella corridor $} wasn't $h Vasudan $|, wasn't anything Command could identify — and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter.
+          $f{ Alpha wing $}, listen up. The situation has changed overnight. What $f{ Alpha Lead $} brought back from the $y{ Capella corridor $} wasn't $h Vasudan, wasn't anything Command could identify — and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter.
           
           We have four $f{ Epsilon transports $} at $f{ Vega Prime $} right now — civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now. $f{ GTC Stentor $} is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the $y{ Antares node $}.
         voice_name: "Gacrux"
@@ -330,7 +330,7 @@ mission_flow:
         text: |
           $R{ This is hard to report. $} Of the four $f{ Epsilon transports $}, only [count] made it. The others were destroyed before they could reach the jump node. Those were $R{ civilian evacuation ships $}.
           
-          I have to be direct with you: the $h{ Arjuna bombers $} were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing — those $h shields $|, that $h{ SC Malgor $} arriving — but our job was the transports.
+          I have to be direct with you: the $h{ Arjuna bombers $} were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing — those $h shields, that $h{ SC Malgor $} arriving — but our job was the transports.
           
           We will not have another chance in $y{ Vega $}. What we do from here is damage limitation. Regroup.
         voice_name: "Gacrux"

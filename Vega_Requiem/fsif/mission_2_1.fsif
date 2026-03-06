@@ -248,10 +248,10 @@ mission_flow:
         voice_name: "Alnilam"
         voice_style_instructions: "Rear Admiral Chen Wei. Direct and serious."
       - text: |
-          The $f{ GTD Amadeus $} will lead the withdrawal convoy, with $f{ GTC Stentor $} on the flank. We are escorting five ships: $f{ Aldrin $} One, Two, and Three — military freighters carrying sensor equipment and ground station salvage — $f{ Meridian's Rescue $} (a transport carrying Meridian's surviving crew), and the Vasudan transport $f{ Theta Three $}. $f{ Theta Three $} is under my protection and I am not going to abandon her to the $h Shivans $|. That is final.
+          The $f{ GTD Amadeus $} will lead the withdrawal convoy, with $f{ GTC Stentor $} on the flank. We are escorting five ships: $f{ Aldrin $} One, Two, and Three — military freighters carrying sensor equipment and ground station salvage — $f{ Meridian's Rescue $} (a transport carrying Meridian's surviving crew), and the Vasudan transport $f{ Theta Three $}. $f{ Theta Three $} is under my protection and I am not going to abandon her to the $h Shivans. That is final.
         voice_name: "Alnilam"
       - text: |
-          $h{ SC Ahriman $}, a $h Lilith-class $| cruiser, has been shadowing us since early this morning. I believe she's waiting for us to begin our transit. $f{ Alpha wing's $} assignment is to run fighter intercept ahead of the convoy. $W{ Keep Shivan bomber wings off the Amadeus and the transports. $} The $f{ Stentor $} will engage the $h{ Ahriman $} if she closes; that is not your problem.
+          $h{ SC Ahriman $}, a $h Lilith-class cruiser, has been shadowing us since early this morning. I believe she's waiting for us to begin our transit. $f{ Alpha wing's $} assignment is to run fighter intercept ahead of the convoy. $W{ Keep Shivan bomber wings off the Amadeus and the transports. $} The $f{ Stentor $} will engage the $h{ Ahriman $} if she closes; that is not your problem.
         voice_name: "Alnilam"
       - text: |
           If the convoy sustains losses that prevent safe transit before we reach the node, I will hold at $y{ Nav Bravo $} and reassess.
@@ -274,7 +274,7 @@ mission_flow:
           - { type: "Transport", team: "Friendly", class: "PVT Isis", pos: [0, -4000], label: "Theta 3" }
           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [12000, -8000], label: "Ahriman" }
       - text: |
-          Intelligence expects bomber contact. $h{ Shaitans $} — they've been the primary capital ship threat. $W{ Your engagement priority is bombers before fighters. $} If you have to let a $h Scorpion $| wing get past you to intercept a $h Shaitan $| wing, that's the correct choice. The $f{ Amadeus's $} turrets can handle close fighters. They cannot shoot down bombs fast enough.
+          Intelligence expects bomber contact. $h{ Shaitans $} — they've been the primary capital ship threat. $W{ Your engagement priority is bombers before fighters. $} If you have to let a $h Scorpion wing get past you to intercept a $h Shaitan wing, that's the correct choice. The $f{ Amadeus's $} turrets can handle close fighters. They cannot shoot down bombs fast enough.
           
           $f{ Casca $} is with the convoy. $W{ Rearm when you need to $} — don't wait until you're empty. Go. We need to move.
         voice_name: "Gacrux"
@@ -303,16 +303,16 @@ mission_flow:
         text: |
           Convoy reached $y{ Nav Bravo $}. We lost ships on the transit.
           
-          The sensor data from that $f{ Chronos $| is gone. The $y{ Meridian survivors $| — the people from those pods in $y{ Mission One $} — are gone. I don't have words for that. We proceed.
+          The sensor data from that $f{ Chronos is gone. The $y{ Meridian survivors — the people from those pods in $y{ Mission One $} — are gone. I don't have words for that. We proceed.
           
           The $h{ Ahriman $} is still with us. She'll be a problem at the node. Rest while you can.
         voice_name: "Gacrux"
       - condition: |
           ( true )
         text: |
-          The $f{ Amadeus $| did not survive the transit. Without the $f{ Amadeus $|, there is no convoy, no organized withdrawal. Whatever makes it to $y{ Antares $| will scatter.
+          The $f{ Amadeus did not survive the transit. Without the $f{ Amadeus, there is no convoy, no organized withdrawal. Whatever makes it to $y{ Antares will scatter.
           
-          $R{ This is the worst outcome of this operation. $} The $h{ Ahriman's $| pressure, the $h bomber waves $| — one of them found the limit.
+          $R{ This is the worst outcome of this operation. $} The $h{ Ahriman's pressure, the $h bomber waves — one of them found the limit.
         voice_name: "Gacrux"
 
   events:

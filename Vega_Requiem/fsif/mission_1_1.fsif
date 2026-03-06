@@ -140,7 +140,7 @@ mission_flow:
           
           We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect $f{ GTA $} assets. The $f{ GTI Vega Prime $} installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms — routine administrative work that I want completed without incident.
           
-          The war is not formally over. Until it is, standard rules of engagement remain in effect. $h Vasudan $| contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder.
+          The war is not formally over. Until it is, standard rules of engagement remain in effect. $h Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder.
         voice_name: "Alnilam"
         voice_style_instructions: "Rear Admiral Chen Wei, delivering a formal military briefing. Authoritative and firm."
       - text: |

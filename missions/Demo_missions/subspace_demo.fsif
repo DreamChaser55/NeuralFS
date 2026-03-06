@@ -84,13 +84,13 @@ entities:
 mission_flow:
   briefing:
     stages:
-      - text: "We are transiting through $e subspace $| to the $y{ Deneb system $}."
+      - text: "We are transiting through $e subspace to the $y{ Deneb system $}."
         voice_name: "Umbriel"
         voice_style_instructions: "Calm, narrative"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 100], label: "Orpheus" }
-      - text: "$h{ Shivan interceptors $} have been detected in the corridor. $W Eliminate $| them."
+      - text: "$h{ Shivan interceptors $} have been detected in the corridor. $W Eliminate them."
         voice_name: "Umbriel"
         voice_style_instructions: "Directive, slightly urgent"
         icons:
@@ -103,7 +103,7 @@ mission_flow:
             ( percent-ships-destroyed 100 "Krishna" ) 
             ( not ( is-destroyed-delay 0 "GTC Orpheus" ) ) 
           )
-        text: "The corridor is $G clear $| and the $f{ GTC Orpheus $} is safe. $W{ Good work, $rank $callsign. $}"
+        text: "The corridor is $G clear and the $f{ GTC Orpheus $} is safe. $W{ Good work, $rank $callsign. $}"
         voice_name: "Umbriel"
         voice_style_instructions: "Relieved, commendatory"
       - condition: |
@@ -116,7 +116,7 @@ mission_flow:
             ( not ( percent-ships-destroyed 100 "Krishna" ) ) 
             ( not ( is-destroyed-delay 0 "GTC Orpheus" ) ) 
           )
-        text: "The $h Shivans $| are still tracking us. $e{ This is not over. $}"
+        text: "The $h Shivans are still tracking us. $e{ This is not over. $}"
         voice_name: "Umbriel"
         voice_style_instructions: "Foreboding, tense"
 

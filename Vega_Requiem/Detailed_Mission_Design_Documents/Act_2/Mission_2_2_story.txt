@@ -17,7 +17,7 @@ engineering assessment and then stood very still while I read it. The drive coup
 are not repairable in the field. The structural damage to the aft sections has compromised the
 subspace alignment lattice. We could, theoretically, attempt the jump. Pak estimates a
 forty-three percent chance the ship survives transit to $y{ Antares $}. Fifty-seven percent chance the
-jump $R fails $| catastrophically mid-transit, which means no ship, no crew, no data, nothing.
+jump $R fails catastrophically mid-transit, which means no ship, no crew, no data, nothing.
 
 I will not take those odds with nine hundred and twelve people aboard.
 

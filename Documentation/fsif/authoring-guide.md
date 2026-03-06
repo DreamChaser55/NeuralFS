@@ -338,19 +338,19 @@ Note: use the styling tags **only** in the contexts mentioned above. They **do n
 - Locations, nav points, destinations: `$y{ Name $}` (Yellow)
 - Key action verbs, commendations: `$W{ text $}` (Bright White)
 - Warnings, failures, urgent directives: `$R{ text $}` (Bright Red)
-- Positive outcomes: `$G word $|` (Bright Green)
+- Positive outcomes: `$G word` (Bright Green)
 - Atmospheric/flavor notes: `$e{ text $}` (Gray)
 
 **Single-word vs. span syntax:**
-- For a single word: `$h Rama $|` — colors "Rama" in hostile red; `$|` stops the color before the following punctuation or character.
-- For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span; requires FSO build 8786+.
+- For a single word: `$h Rama` — colors "Rama" in hostile red.
+- For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span.
 
 **Example:**
 ```yaml
 mission_flow:
   briefing:
     stages:
-      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan $| the marked container. $h Rama $| will intercept — protect the $f{ GTC Fenris $}."
+      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan the marked container. $h Rama will intercept — protect the $f{ GTC Fenris $}."
         voice_name: "Gacrux"
         icons: []
 
@@ -358,11 +358,11 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "GTC Fenris 1" )
-        text: "The $f{ GTC Fenris $} was $R destroyed $|. $R{ We failed the escort. $}"
+        text: "The $f{ GTC Fenris $} was $R destroyed. $R{ We failed the escort. $}"
         voice_name: "Gacrux"
       - condition: |
           ( true )
-        text: "$W{ Excellent work, $rank $callsign. $} The convoy withdrew $G successfully $|."
+        text: "$W{ Excellent work, $rank $callsign. $} The convoy withdrew $G successfully."
         voice_name: "Gacrux"
 ```
 

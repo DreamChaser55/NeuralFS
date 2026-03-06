@@ -173,25 +173,25 @@ mission_flow:
   command_briefing:
     stages:
       - text: |
-          Terran Command has now officially confirmed what $f{ Alpha wing $} brought back from the $y{ Capella corridor $} three days ago. The unidentified contacts are not $h Vasudan $|. They are not any species or faction in the $f{ GTA $} database. Command has designated them $h{ Shivans $}, pending further data. That designation comes from their apparent intent, which is the destruction of everything that encounters them.
+          Terran Command has now officially confirmed what $f{ Alpha wing $} brought back from the $y{ Capella corridor $} three days ago. The unidentified contacts are not $h Vasudan. They are not any species or faction in the $f{ GTA $} database. Command has designated them $h{ Shivans $}, pending further data. That designation comes from their apparent intent, which is the destruction of everything that encounters them.
           
           The $f{ GTI Vega Prime $} installation was destroyed this morning. We hold this system by the barest margins. The $f{ GTC Stentor $} is conducting running repairs. We lost four pilots in the last forty-eight hours. Their names are on the board in the corridor outside the briefing room. $W{ I expect you to read them. $}
         voice_name: "Alnilam"
         voice_style_instructions: "Rear Admiral Chen Wei. Grave and official tone."
       - text: |
-          The $y{ GTW-15 Avenger $} cannon prototypes began arriving on the $f{ Amadeus $} this morning. R&D has modified the Avenger specifically based on your sensor data — the weapon is calibrated to $W{ suppress Shivan shield harmonics $|. It is not a miracle. But it is a significant improvement over the $y{ ML-16 $} against their shields.
+          The $y{ GTW-15 Avenger $} cannon prototypes began arriving on the $f{ Amadeus $} this morning. R&D has modified the Avenger specifically based on your sensor data — the weapon is calibrated to $W{ suppress Shivan shield harmonics. It is not a miracle. But it is a significant improvement over the $y{ ML-16 $} against their shields.
           
-          We have enough units for $W{ one field-test assignment $| right now. Additional units are expected within three days. The pilot who draws the Avenger assignment today will be leading $f{ Alpha wing $}, and I expect a full sensor report on its combat effectiveness.
+          We have enough units for $W{ one field-test assignment right now. Additional units are expected within three days. The pilot who draws the Avenger assignment today will be leading $f{ Alpha wing $}, and I expect a full sensor report on its combat effectiveness.
         voice_name: "Alnilam"
       - text: |
-          We have received a priority signal from a $f{ Vasudan warship $| — the $f{ PVD Vigil $}, commanding a 9th Fleet advance element — indicating they are transiting into $y{ Vega system $} from the $y{ Capella node $}. Their stated mission: engage the $h Shivan $| presence in Vega. They report three refugee transports under escort — $f{ Vasudan civilians $| from an outpost that was overrun.
+          We have received a priority signal from a $f{ Vasudan warship — the $f{ PVD Vigil $}, commanding a 9th Fleet advance element — indicating they are transiting into $y{ Vega system $} from the $y{ Capella node $}. Their stated mission: engage the $h Shivan presence in Vega. They report three refugee transports under escort — $f{ Vasudan civilians from an outpost that was overrun.
           
           The ceasefire negotiations are still ongoing. We are $R{ NOT at peace $} with the Vasudans. What we are, today, in this system, is outgunned by something that is killing both of us with equal commitment.
           
           I am operating on my own initiative. The $y{ Vega-Antares jump node $} is open. If those refugee transports need to use it, I see no reason to prevent them.
         voice_name: "Alnilam"
       - text: |
-          One more element. Intelligence has flagged activity in Vega from a faction calling themselves the $h{ Hammer of Light $} — a Vasudan splinter group that appears to be actively aiding the $h Shivans $|. They have been reported attacking Vasudan assets. If you encounter ships broadcasting $h HoL $| transponders, $R{ treat them as hostile $|.
+          One more element. Intelligence has flagged activity in Vega from a faction calling themselves the $h{ Hammer of Light $} — a Vasudan splinter group that appears to be actively aiding the $h Shivans. They have been reported attacking Vasudan assets. If you encounter ships broadcasting $h HoL transponders, $R{ treat them as hostile.
           
           Report to your wing stations in twenty minutes.
         voice_name: "Alnilam"
@@ -199,7 +199,7 @@ mission_flow:
   briefing:
     stages:
       - text: |
-          $f{ Alpha wing $}, stand by for priority orders. The Vasudan destroyer $f{ Vigil $} is entering $y{ Vega $} through the $y{ Capella node $} right now, along with three refugee transports — $f{ Theta wing $}. They're running straight into the $h Shivans $|. Sub-Imperator $f{ Hethor $} is ordering her transports toward the $y{ Antares node $}. I've cleared that route.
+          $f{ Alpha wing $}, stand by for priority orders. The Vasudan destroyer $f{ Vigil $} is entering $y{ Vega $} through the $y{ Capella node $} right now, along with three refugee transports — $f{ Theta wing $}. They're running straight into the $h Shivans. Sub-Imperator $f{ Hethor $} is ordering her transports toward the $y{ Antares node $}. I've cleared that route.
           
           Your assignment is $f{ Theta wing $}. Get them to $y{ Nav Alpha $}. From there, they can jump on their own. You're not here to save the $f{ Vigil $} — she knows what she's doing. Get between those transports and everything that wants to kill them.
         voice_name: "Gacrux"
@@ -209,9 +209,9 @@ mission_flow:
           - { type: "Transport Wing", team: "Friendly", class: "PVT Isis", pos: [6000, 8000], label: "Theta" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -45000], label: "Nav Alpha" }
       - text: |
-          Alpha 1, you're carrying the only $y{ field Avenger $} in the wing today. The briefing notes will tell you what to expect performance-wise, but the short version is this: it $W{ works $| against their shields in a way the ML-16 doesn't. $W{ Use it aggressively. $} We need data as much as we need kills.
+          Alpha 1, you're carrying the only $y{ field Avenger $} in the wing today. The briefing notes will tell you what to expect performance-wise, but the short version is this: it $W{ works against their shields in a way the ML-16 doesn't. $W{ Use it aggressively. $} We need data as much as we need kills.
           
-          Watch the left flank. $h{ Hammer of Light $} is operating in this area. HoL transponders are $y yellow diamond $| — $R{ fire on sight $| if they're between you and $f{ Theta wing $}.
+          Watch the left flank. $h{ Hammer of Light $} is operating in this area. HoL transponders are $y yellow diamond — $R{ fire on sight if they're between you and $f{ Theta wing $}.
         voice_name: "Gacrux"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 0], label: "Alpha", highlighted: true }

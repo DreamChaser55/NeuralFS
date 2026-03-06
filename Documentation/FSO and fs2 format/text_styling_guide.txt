@@ -5,7 +5,7 @@ Special tags can be used to manipulate text strings in command and mission brief
 
 ## Colors
 
-The color tag will work on all font until a space is encountered. There needs to be a space after the tag, before the text to be colorized. There is a method to color spans of text, which is discussed in the Misc section below.
+The color tag will work on all font until a space is encountered (that is, on a single word only). There needs to be a space after the tag, before the text to be colorized. There is a method to color spans of text (multiple words), which is discussed in the Misc section below.
 
 **Example**: '$b This is $b blue $b text' will show everything except the "is" as blue.
 
@@ -31,10 +31,6 @@ Orange: $o
 
 ## Notes and examples
 
-The breaking tag $| can be used to stop a color before a character.
-    $g Standard Green = Standard Green.
-    $g Stand$|ard Green = "Stand" will be green, "ard Green" will be default colored.
-        If the above causes wordwrapping oddness, you may want to write $g Stand$| ard Green (output is identical).
 $quote will create double quotes.
     Goober is $quotesilly$quote = Goober is "silly".
 $semicolon will create a semicolon.
