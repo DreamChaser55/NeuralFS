@@ -14,6 +14,7 @@ Critical rules
 FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
 
 This rule applies to:
+- campaign name and description
 - mission metadata and fiction viewer filename
 - ship, wing, waypoint, jump node, event, goal, and message names
 - briefing, command briefing, debriefing, directive, and message text
