@@ -1,10 +1,5 @@
-ADMIRAL CHEN WEI — PERSONAL LOG
-January 21, 2335 — 2247 Station Standard
-
-A fiction viewer narrative — displayed before Mission 2-2: "The Last Full Measure"
-
 I have been writing these logs since I took command of the $f{ Amadeus $}. Seventeen months. Most of
-them are logistical. Maintenance schedules, personnel reviews, fuel consumption notes — the
+them are logistical. Maintenance schedules, personnel reviews, fuel consumption notes - the
 administrative debris of commanding a ship. I read back through them sometimes, when sleep won't
 come, and I am struck by how little of what I remember is in them.
 
@@ -24,7 +19,7 @@ I will not take those odds with nine hundred and twelve people aboard.
 I spent two hours after that looking at alternatives. I am experienced enough to recognize when
 I am doing this not because I expect to find something, but because I need to have looked.
 There is nothing. The $h{ Ahriman $} is cutting off the $y{ Deneb $} and $y{ Beta Aquilae $} approaches. The $y{ Capella $}
-node has had $h{ Shivan $} capital assets for five days. We can't be towed — no tow asset with
+node has had $h{ Shivan $} capital assets for five days. We can't be towed - no tow asset with
 sufficient capacity is anywhere near this system.
 
 The $f{ Amadeus $} holds position. The crew evacuates. The ship absorbs whatever the $h{ Ahriman $} directs
@@ -32,7 +27,7 @@ at her while the pods get clear.
 
 I will remain on the bridge.
 
-I want to explain why, because I think there is a version of this that looks like theater — the
+I want to explain why, because I think there is a version of this that looks like theater - the
 Admiral going down with his ship because it is expected of him, because someone wrote it in a
 regulation somewhere, because he lacks the imagination to conceive of a different choice. That
 is not what this is.
@@ -45,8 +40,8 @@ individual in terms of what the withdrawal operation needs to succeed.
 
 I want to be clear-eyed about this. My life is worth the cover it provides.
 
-What I will tell you — what I am writing down because these logs are transmitted to Command and
-I believe someone will read them eventually — is that I am not afraid. I have spent forty-one
+What I will tell you - what I am writing down because these logs are transmitted to Command and
+I believe someone will read them eventually - is that I am not afraid. I have spent forty-one
 years in uniform. I have been at war for most of them, first the Vasudans, now this. I have made
 decisions in that time that I cannot revise and would not if I could, and decisions I regret
 acutely, and most decisions that were simply the best available choice in circumstances that
@@ -54,7 +49,7 @@ offered no good choices.
 
 The $f{ Amadeus $} is a fine ship. She has a fine crew. Those pods will reach $y{ Antares $}.
 
-One more thing. $f{ Alpha $} wing is out there. Whoever is flying $f{ Alpha 1 $} — I don't know which of the
+One more thing. $f{ Alpha $} wing is out there. Whoever is flying $f{ Alpha 1 $} - I don't know which of the
 new pilots drew the senior slot, but they've been doing this for six days and they haven't died
 yet, which at this point I consider a meaningful credential. I need them focused on the pods and
 not on the $f{ Amadeus $}. The $f{ Amadeus $} is not the objective. People are the objective.

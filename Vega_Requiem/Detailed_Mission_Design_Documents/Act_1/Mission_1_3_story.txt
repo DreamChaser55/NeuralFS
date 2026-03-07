@@ -1,11 +1,8 @@
-THE APPROACH VECTOR
-A fiction viewer narrative — displayed before Mission 1-3: "No Truce With the Tide"
-
 Sub-Legate Khoresh had been watching the jump point for eleven hours when the $f{ PVD Vigil $} made her
 transit into the $y{ Vega system $}.
 
 The $f{ Vigil $} came through at 0412 standard, trailing the three Isis transports that Sub-Imperator
-Hethor had designated $f{ Theta $} wing — the refugee carriers, evacuating PVN administrative staff
+Hethor had designated $f{ Theta $} wing - the refugee carriers, evacuating PVN administrative staff
 from a forward outpost that no longer had anything to administer. Khoresh logged their arrival
 with the care that characterized everything he did, noting the exact time and the $f{ Vigil $}'s hull
 percentage and the configuration of $f{ Theta $} wing's docking manifests. He had been Third Navigation
@@ -55,14 +52,14 @@ us in at fifteen degrees off the standard corridor. Reduce speed to point-six st
 
 "Yes." She looked at him with something that might, in a different face, have been called
 uncertainty. "It will also give us forty minutes of data before we commit to the node approach.
-If there is something waiting at the $y{ Capella node $} for us—" She stopped.
+If there is something waiting at the $y{ Capella node $} for us-" She stopped.
 
 "We will have forty minutes of warning," Khoresh finished.
 
 "Better than none," Hethor said, and turned back to her display.
 
 It was not enough. Twenty minutes into the adjusted approach, the signatures began to appear
-on long-range passive sensors — positioned at the $y{ Capella node $} as if they had been waiting
+on long-range passive sensors - positioned at the $y{ Capella node $} as if they had been waiting
 there for some time, arranged in an intercept pattern that assumed the standard approach vector.
 
 That was when Khoresh understood that the forty minutes had been purchased not because it would

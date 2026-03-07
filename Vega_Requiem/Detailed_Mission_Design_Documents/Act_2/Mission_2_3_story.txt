@@ -1,8 +1,5 @@
-VEGA, DESIGNATE VL-001
-A fiction viewer narrative — displayed before Mission 2-3: "Vega Requiem"
-
 The $y{ Vega system $} was named for its star: an A-type main sequence, 25 light-years from Earth,
-burning white-blue at a surface temperature of 9,600 Kelvin. The name comes from Arabic —
+burning white-blue at a surface temperature of 9,600 Kelvin. The name comes from Arabic -
 al-Nasr al-Waqi', the Falling Eagle. Astronomers had applied it to the star for centuries before
 anyone knew that faster-than-light travel was possible, before anyone thought they would ever go
 there and stand in its light and name the planets around it. When the GTA arrived, they kept the
@@ -55,12 +52,12 @@ The ping was logged. No one responded. The $f{ Bastion $} was occupied with othe
 
 Whether the sentry gun was eventually destroyed or simply ran out of power and went silent on
 its own, no one knew. It was listed as "status unknown" on the GTA's inventory records for
-several years, under a column header that read: $y{ Vega system assets $} — audit pending.
+several years, under a column header that read: $y{ Vega system assets $} - audit pending.
 
 The Falling Eagle.
 
-The people who had lived there — who had voted on water rationing and sent their children to a
-school with forty-three students — were scattered across the refugee systems by then, living
+The people who had lived there - who had voted on water rationing and sent their children to a
+school with forty-three students - were scattered across the refugee systems by then, living
 in GTA temporary housing and waiting to hear when they could go back. The answer they eventually
 received was not the one they had been waiting for. It was a different answer, longer and more
 complicated, and it began: given the current strategic situation in the $y{ Vega system $}.
@@ -72,6 +69,6 @@ another eight hundred million before it exhausts its hydrogen and expands and di
 know what was taken from it. It is a star. It does not know anything.
 
 But the colonists knew. And the pilots who flew that last run through the $y{ Antares $} node, watching
-$y{ Vega $}'s light diminish behind them as they accelerated away — they knew too.
+$y{ Vega $}'s light diminish behind them as they accelerated away - they knew too.
 
 They didn't talk about it much, afterward. There wasn't anything useful to say.
