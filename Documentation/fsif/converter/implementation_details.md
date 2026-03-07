@@ -174,6 +174,11 @@ The validator checks the following areas:
 #### **Text styling tags outside supported contexts**:
 *   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
 
+#### **Span-style tag validation**:
+*   Validates span-style color tags (e.g., `$c{ ... $}`) in supported text contexts (command briefing, mission briefing, and debriefing).
+*   Warns if an opened span tag is left unclosed at the end of the text.
+*   Warns if another style tag or a different color span opening tag is encountered before the current span is explicitly closed with `$}`.
+
 #### **Global Name Integrity**:
 *   Ensures names are unique within their respective namespaces: **Objects** (Ships, Wings, Waypoints, Jump Nodes), **Events**, **Goals**, and **Messages**.
 *   Enforces a strict length limit of **< 30 characters** for all names to prevent engine truncation issues.
