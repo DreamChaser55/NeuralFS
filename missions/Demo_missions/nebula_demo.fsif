@@ -135,7 +135,7 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "SC Dakini" )
-        text: "$W{ Excellent work, $rank $callsign. $} The $h{ Shivan cruiser $} has been $G neutralized."
+        text: "$W{ Excellent work, $}$rank $callsign. The $h{ Shivan cruiser $} has been $G neutralized."
         voice_name: "Achernar"
         voice_style_instructions: "Commendatory, relieved"
       - condition: |

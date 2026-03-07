@@ -103,7 +103,7 @@ mission_flow:
             ( percent-ships-destroyed 100 "Krishna" ) 
             ( not ( is-destroyed-delay 0 "GTC Orpheus" ) ) 
           )
-        text: "The corridor is $G clear and the $f{ GTC Orpheus $} is safe. $W{ Good work, $rank $callsign. $}"
+        text: "The corridor is $G clear and the $f{ GTC Orpheus $} is safe. $W{ Good work, $}$rank $callsign."
         voice_name: "Umbriel"
         voice_style_instructions: "Relieved, commendatory"
       - condition: |

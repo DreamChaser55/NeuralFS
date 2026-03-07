@@ -242,8 +242,8 @@ mission_flow:
         voice_name: "Gacrux"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha", highlighted: true }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
-          - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [150, 50], label: "Elysium" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [300, 0], label: "Fenris" }
+          - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [300, 150], label: "Elysium" }
           - { type: "Cargo", team: "Hostile", pos: [800, 1000], label: "Cargo" }
           - { type: "Waypoint", team: "Friendly", pos: [500, 500], label: "Nav Buoy" }
       - text: "$h Rama will attack from the front; expect follow-up $h bombers targeting the $f{ GTC Fenris $}."
@@ -253,13 +253,13 @@ mission_flow:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Basilisk", pos: [200, 1200], label: "Rama" }
           - { type: "Bomber Wing", team: "Hostile", class: "SB Nephilim", pos: [600, 1500], label: "Chi" }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [300, 0], label: "Fenris" }
       - text: "The operation occurs near the $y{ jump node $}. $R{ Keep the area clear. $}"
         voice_style_instructions: "directive, summarizing"
         voice_name: "Gacrux"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 0], label: "Fenris" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [500, 0], label: "Fenris" }
           - { type: "Jump Node", team: "Hostile", pos: [1000, 0], label: "Delta Serpentis Jump Node" }
           - { type: "Planet", team: "Hostile", pos: [2000, 3000], label: "Planet" }
           - { type: "Asteroid Field", team: "Hostile", pos: [0, 1000], label: "Field" }
@@ -276,7 +276,7 @@ mission_flow:
         voice_name: "Gacrux"
       - condition: |
           ( true )
-        text: "$W{ Excellent work, $rank $callsign. $} The convoy transferred cargo and withdrew $G successfully."
+        text: "$W{ Excellent work, $}$rank $callsign. The convoy transferred cargo and withdrew $G successfully."
         voice_name: "Gacrux"
 
   events:
