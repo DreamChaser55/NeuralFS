@@ -147,6 +147,11 @@ The file `missionname_story.txt` must exist in your mod's data/fiction folder.
 Notes:
 - The referenced Fiction Viewer content is shown to the player as the **very first** thing in the course of the mission (before the Command Briefing).
 - The entire referenced file is shown to the player as is; Ensure that any internal or development notes are removed before release.
+- Use the **Fiction Viewer Validator** to check the file before release:
+  ```
+  python Fiction_Viewer_Validator/fiction_viewer_validator.py <path_to_story_txt>
+  ```
+  It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
 ## Environment backgrounds and nebulae
 Author background suns and starbitmaps; full nebula is a separate feature and suppresses background bitmaps unless allowed.
