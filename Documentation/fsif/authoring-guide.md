@@ -10,6 +10,25 @@ Critical rules
 - **Token length limit**: All names (ships, wings, events, messages, etc.) must be < 30 characters.
 - **SEXP fidelity**: FSIF embeds SEXP verbatim. The converter does not "fix" invalid SEXP.
 
+## ASCII-only requirement for FSO-facing strings
+FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
+
+This rule applies to:
+- mission metadata and fiction viewer filename
+- ship, wing, waypoint, jump node, event, goal, and message names
+- briefing, command briefing, debriefing, directive, and message text
+- token strings such as ship classes, weapons, flags, music names, dockpoints, subsystem names, and other FSO-facing literals
+- all string literals inside SEXPs
+
+This rule does **not** apply to `voice_style_instructions`, because that field is used only for TTS generation and is not written into `.fs2`.
+
+Use ASCII replacements when needed:
+- use `"` or `'` instead of curly quotes
+- use `-` instead of em dash or en dash
+- use `...` instead of the single-character ellipsis
+
+If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
+
 Authoring checklist
 - Use FSIF version: "2.5"
 - player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
@@ -353,7 +372,7 @@ Note: Do not forget the color span closing tag (`$}`). Missing closing tag will 
 mission_flow:
   briefing:
     stages:
-      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan the marked container. $h Rama will intercept — protect the $f{ GTC Fenris $}."
+      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan the marked container. $h Rama will intercept - protect the $f{ GTC Fenris $}."
         voice_name: "Gacrux"
         icons: []
 

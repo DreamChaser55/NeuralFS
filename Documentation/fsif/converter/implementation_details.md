@@ -171,6 +171,13 @@ The validator checks the following areas:
 *   Validates background bitmaps and nebula patterns.
 *   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
 
+#### **ASCII Enforcement for FSO-facing Strings**:
+*   FreeSpace Open only supports ASCII reliably for mission-facing content written into `.fs2`.
+*   The validator rejects non-ASCII characters in FSO-facing FSIF strings before writing the output file.
+*   This applies to authored strings that are emitted into `.fs2` or otherwise consumed by FSO mission parsing, including mission metadata, fiction viewer filename, ship/wing/object names, waypoint and jump node names, event/goal/message names and text, briefing/debriefing/command briefing text, briefing icon strings, audio tokens, docking/subsystem/weapon/token references, and all SEXP strings.
+*   This does **not** apply to TTS-only fields such as `voice_name` and `voice_style_instructions`, because they are not written into `.fs2`.
+*   On failure, the validator emits an error containing the field path and the offending character(s) with Unicode code points (for example `U+2014`) and aborts conversion.
+
 #### **Text styling tags outside supported contexts**:
 *   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
 
@@ -198,7 +205,7 @@ The validator checks the following areas:
 *   **Typo Detection**: If you make a typo in a field name (e.g., `arrival_dealy` instead of `arrival_delay`), the converter will abort with an "Extra inputs are not permitted" error. This ensures that no authored data is silently ignored.
 
 ### Error Reporting
-*   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic) will print an error message and **fail the validation**, aborting the conversion.
+*   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic, non-ASCII characters in FSO-facing fields) will print an error message and **fail the validation**, aborting the conversion.
 *   **Warnings**: Minor issues (e.g., unknown mission flags, potential logic oddities) are logged but do not stop conversion.
 
 ## Advanced SEXP Validation
