@@ -330,6 +330,7 @@ entities:
 
 ## Briefing, debriefing and fiction viewer text styling
 Text in command and mission briefings, debriefings and in the fiction viewer can be styled by special tags. See `\Documentation\FSO and fs2 format\text_styling_guide.txt` for a guide.
+
 Note: use the styling tags **only** in the contexts mentioned above. They **do not** work in other places (such as in in-mission messages, directives or goal messages).
 
 **Recommended color conventions:**
@@ -344,6 +345,8 @@ Note: use the styling tags **only** in the contexts mentioned above. They **do n
 **Single-word vs. span syntax:**
 - For a single word: `$h Rama` — colors "Rama" in hostile red.
 - For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span.
+
+Note: Do not forget the color span closing tag (`$}`). Missing closing tag will result in errors.
 
 **Example:**
 ```yaml
