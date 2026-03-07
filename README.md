@@ -16,6 +16,8 @@ This agent takes the detailed mission plans written by the previous agent and co
 
 The agent also writes the campaign definition file in a custom FreeSpace Campaign Intermediate Format (FCIF). Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and branching logic.
 
+This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script.
+
 ## FSIF to FS2 Converter
 
 A Python script then takes the intermediate FSIF representation of a mission and converts it into the FS2 format expected by FSO. During the conversion, the FSIF representation is extensively validated; if any errors are found, actionable error messages are printed to the console, so the AI agent can fix them and try again.

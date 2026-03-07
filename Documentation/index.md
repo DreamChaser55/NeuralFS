@@ -12,6 +12,8 @@ Where to begin
 7) Read the FCIF specification for campaign file authoring
 8) Learn to use the FCIF Converter CLI
 
+Main README file: ../README.md
+
 FSIF core docs
 - FSIF Specification (normative): ./fsif/specification.md
   - Canonical schema: fields, required/optional, defaults, constraints
@@ -22,6 +24,7 @@ FSIF core docs
   - FSIF 1.0 → ... → 1.9: breaking changes and notable additions with before/after snippets
 
 FSIF Converter docs
+- README.md: ../FSIF_to_FS2_Converter/README.md
 - Converter Implementation Details: ./fsif/converter/implementation_details.md
   - FS2 emission mapping, normalization, warnings, FSO engine limits
   - Validation messages catalog
@@ -33,10 +36,14 @@ FCIF core docs
   - Campaign file schema: fields, required/optional, constraints, advance conditions
 
 FCIF Converter docs
+- README.md: ../FCIF_to_FC2_Converter/README.md
 - Converter Implementation Details: ./fcif/converter/implementation_details.md
   - FC2 emission mapping, SEXP logic generation, version handling
 - Converter CLI: ./fcif/converter/cli.md
   - Installation, invocation, I/O behavior and examples
+
+Fiction Viewer Validator docs
+- README.md: ../Fiction_Viewer_Validator/README.md
 
 References
 - FSO Tokens Reference: ./FSO and fs2 format/FSO_Tokens_Reference.md
