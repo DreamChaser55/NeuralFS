@@ -79,6 +79,76 @@ class FCIF(BaseModel):
             )
         return self
 
+# --- ASCII Validation ---
+
+def _check_ascii(path: str, text: Optional[str], errors: list) -> None:
+    """
+    Check that *text* contains only ASCII characters (code points 0–127).
+
+    ASCII control characters (newline, tab, etc.) are within the 7-bit range
+    and are therefore allowed.  Any character with ord > 127 is flagged.
+
+    On failure, appends a descriptive error string to *errors* that includes
+    the field path and the offending character(s) with their Unicode code points.
+    """
+    if text is None:
+        return
+    value = str(text)
+    if value.isascii():
+        return
+
+    offenders = []
+    for index, ch in enumerate(value):
+        if ord(ch) > 127:
+            offenders.append(f"{repr(ch)} (U+{ord(ch):04X}, index {index})")
+
+    if not offenders:
+        return
+
+    details = ", ".join(offenders[:5])
+    if len(offenders) > 5:
+        details += f", ... (+{len(offenders) - 5} more)"
+
+    errors.append(f"ASCII error: {path} contains non-ASCII character(s): {details}")
+
+
+def _check_ascii_list(path: str, values: Optional[List[str]], errors: list) -> None:
+    """Apply _check_ascii to every element of a list of strings."""
+    if not values:
+        return
+    for i, value in enumerate(values):
+        _check_ascii(f"{path}[{i}]", value, errors)
+
+
+def validate_ascii_fields(fcif: FCIF) -> List[str]:
+    """
+    Validate that all FSO-facing FCIF string fields contain only ASCII characters.
+
+    Returns a list of error strings (empty if all fields are valid).
+    Every string field that ends up written into the .fc2 file is checked here.
+    """
+    errors: List[str] = []
+
+    # Campaign section
+    _check_ascii("campaign.name", fcif.campaign.name, errors)
+    _check_ascii("campaign.description", fcif.campaign.description, errors)
+
+    # Starting loadout
+    _check_ascii_list("starting_loadout.ships", fcif.starting_loadout.ships, errors)
+    _check_ascii_list("starting_loadout.weapons", fcif.starting_loadout.weapons, errors)
+
+    # Missions
+    for i, mission in enumerate(fcif.missions):
+        prefix = f"missions[{i}]"
+        _check_ascii(f"{prefix}.filename", mission.filename, errors)
+        _check_ascii(f"{prefix}.success_goal", mission.success_goal, errors)
+        _check_ascii(f"{prefix}.success_event", mission.success_event, errors)
+        _check_ascii(f"{prefix}.failure_goal", mission.failure_goal, errors)
+        _check_ascii(f"{prefix}.failure_event", mission.failure_event, errors)
+
+    return errors
+
+
 # --- Logic ---
 
 def load_fcif(path: Path) -> FCIF:
@@ -237,6 +307,14 @@ def main():
     print(f"Loading FCIF: {args.input}")
     fcif_data = load_fcif(args.input)
     
+    # Validate ASCII-only requirement for all FSO-facing fields
+    ascii_errors = validate_ascii_fields(fcif_data)
+    if ascii_errors:
+        for err in ascii_errors:
+            print(err, file=sys.stderr)
+        print(f"\n[FAILED] ASCII validation failed with {len(ascii_errors)} error(s). Aborting.", file=sys.stderr)
+        sys.exit(1)
+
     print(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
     try:

@@ -7,6 +7,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 ## Features (high level)
 - Concise YAML syntax for campaign definition
 - Pydantic-based schema validation with strict field checking
+- Checks if all text fields only use ASCII characters
 - Automatic S-Expression (SEXP) logic generation for mission progression (conditional and unconditional branching)
 - Localization of campaign description via XSTR
 - Linear campaign progression with optional per-mission advance conditions
