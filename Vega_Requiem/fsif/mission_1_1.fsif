@@ -138,7 +138,7 @@ mission_flow:
       - text: |
           Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral $y{ Chen Wei $}, commanding the $f{ Amadeus $} and the 3rd Fleet detachment in the Vega system.
           
-          We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect $f{ GTA $} assets. The $f{ GTI Vega Prime $} installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms — routine administrative work that I want completed without incident.
+          We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect $f{ GTA $} assets. The $f{ GTI Vega Prime $} installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms - routine administrative work that I want completed without incident.
           
           The war is not formally over. Until it is, standard rules of engagement remain in effect. $h Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder.
         voice_name: "Alnilam"
@@ -148,7 +148,7 @@ mission_flow:
           
           This is most likely a systems failure. Meridian's drive was flagged for maintenance two weeks ago. However, standing orders require that all unexplained beacon silences be investigated within six hours.
           
-          $f{ Alpha wing $} — that's you, Pilot — you're going out to investigate. Four ships, standard loadout. Check on Meridian, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first.
+          $f{ Alpha wing $} - that's you, Pilot - you're going out to investigate. Four ships, standard loadout. Check on Meridian, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first.
         voice_name: "Alnilam"
         voice_style_instructions: "Rear Admiral Chen Wei. Serious tone, explaining a potential problem."
       - text: |
@@ -172,7 +172,7 @@ mission_flow:
         voice_style_instructions: "Amadeus CAG. Professional, delivering the specific mission assignment."
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Apollo", pos: [0, 0], label: "Alpha", highlighted: true }
-          - { type: "Waypoint", team: "Friendly", pos: [200, 10000], label: "Nav Alpha" }
+          - { type: "Waypoint", team: "Friendly", pos: [2000, 10000], label: "Nav Alpha" }
           - { type: "Transport", team: "Unknown", class: "GTT Elysium", pos: [0, 10000], label: "Meridian" }
       - text: |
           $f{ Alpha wing $}, you're cleared to the $y{ Capella corridor $}. $y{ Nav Alpha $} marks the $h{ Meridian's $} last position. Proceed there, assess the situation, and return when complete. Don't get ambitious out there.
@@ -339,29 +339,29 @@ mission_flow:
 
   messages:
     - name: "Alpha 2 Wreckage"
-      message: "Alpha Lead, I'm reading — that's wreckage. Hull plating, looks like Meridian. She's gone."
+      message: "Alpha Lead, I'm reading - that's wreckage. Hull plating, looks like Meridian. She's gone."
       voice_name: "Achird"
       voice_style_instructions: "Veteran wingman. Calm, steady observation of tragedy."
     - name: "Pods detected"
-      message: "[System] — 2 escape pods detected. Distress transponders active. Pods are alive."
+      message: "[System] - 2 escape pods detected. Distress transponders active. Pods are alive."
       voice_name: "Charon" # Informative system voice
     - name: "Alpha 3 Brahma"
-      message: "Contact! Multiple bogeys from Capella bearing. They're — they're not Vasudan."
+      message: "Contact! Multiple bogeys from Capella bearing. They're - they're not Vasudan."
       voice_name: "Leda"
       voice_style_instructions: "Young pilot. Nervous edge, shocked discovery."
     - name: "Alpha 2 Shields"
-      message: "Firing Avenger— no, wait, I've got ML-16s loaded. These shields are eating it. Push through."
+      message: "Firing Avenger- no, wait, I've got ML-16s loaded. These shields are eating it. Push through."
       voice_name: "Achird"
       voice_style_instructions: "Veteran wingman. Professional but frustrated by ineffective weaponry."
     - name: "Alpha 2 Tight"
       message: "These things don't die fast enough. Stay tight, Lead. Don't let them get behind you."
       voice_name: "Achird"
     - name: "Command Retreat"
-      message: "Alpha Lead, Command. We're reading a second wave at your position. Disengage. Break off and return immediately. Do NOT pursue. Repeat — do not pursue."
+      message: "Alpha Lead, Command. We're reading a second wave at your position. Disengage. Break off and return immediately. Do NOT pursue. Repeat - do not pursue."
       voice_name: "Gacrux"
       voice_style_instructions: "Command CAG. Professional, controlled alarm."
     - name: "Alpha 4 Report"
-      message: "Wingman down! Command, we're taking heavy casualties. Request—"
+      message: "Wingman down! Command, we're taking heavy casualties. Request-"
       voice_name: "Erinome"
       voice_style_instructions: "Frightened but professional pilot."
     - name: "Command Now"

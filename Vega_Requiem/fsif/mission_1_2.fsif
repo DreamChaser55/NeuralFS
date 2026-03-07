@@ -272,9 +272,9 @@ mission_flow:
   briefing:
     stages:
       - text: |
-          $f{ Alpha wing $}, listen up. The situation has changed overnight. What $f{ Alpha Lead $} brought back from the $y{ Capella corridor $} wasn't $h Vasudan, wasn't anything Command could identify — and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter.
+          $f{ Alpha wing $}, listen up. The situation has changed overnight. What $f{ Alpha Lead $} brought back from the $y{ Capella corridor $} wasn't $h Vasudan, wasn't anything Command could identify - and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter.
           
-          We have four $f{ Epsilon transports $} at $f{ Vega Prime $} right now — civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now. $f{ GTC Stentor $} is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the $y{ Antares node $}.
+          We have four $f{ Epsilon transports $} at $f{ Vega Prime $} right now - civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now. $f{ GTC Stentor $} is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the $y{ Antares node $}.
         voice_name: "Gacrux"
         voice_style_instructions: "Command CAG. Professional, urgent mission overview."
         icons:
@@ -283,7 +283,7 @@ mission_flow:
           - { type: "Transport Wing", team: "Friendly", class: "GTT Elysium", pos: [6000, 6000], label: "Epsilon" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -34000], label: "Antares Node" }
       - text: |
-          You'll be flying $f{ Valkyries $} today. They just came in from the $f{ Amadeus $} complement — fast interceptors, good for exactly this kind of work. $W{ Use the speed. $} Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. $W{ The people on those transports are your mission. $}
+          You'll be flying $f{ Valkyries $} today. They just came in from the $f{ Amadeus $} complement - fast interceptors, good for exactly this kind of work. $W{ Use the speed. $} Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. $W{ The people on those transports are your mission. $}
           
           $y{ Nav Alpha $} is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to $y{ Nav Bravo $} . Get them through.
         voice_name: "Gacrux"
@@ -292,7 +292,7 @@ mission_flow:
           - { type: "Waypoint", team: "Friendly", pos: [0, 4000], label: "Nav Alpha" }
           - { type: "Waypoint", team: "Friendly", pos: [0, -34000], label: "Nav Bravo" }
       - text: |
-          One more thing. We're sending the $f{ Casca $} out behind you for rearming support. She's fragile — don't let her become a target. Call her in when you need her, not before.
+          One more thing. We're sending the $f{ Casca $} out behind you for rearming support. She's fragile - don't let her become a target. Call her in when you need her, not before.
           
           The $f{ Stentor $} will hold as long as she can. $f{ Commander Okafor $} knows her job.
           
@@ -308,7 +308,7 @@ mission_flow:
       - condition: |
           ( and ( is-goal-true-delay "Evacuate Epsilon" 0 ) ( > ( hits-left "GTC Stentor" ) 50 ) )
         text: |
-          All four $f{ Epsilon transports $} are safely through the $y{ Antares node $}. The station is gone — but the people are not. $G{ That matters. $}
+          All four $f{ Epsilon transports $} are safely through the $y{ Antares node $}. The station is gone - but the people are not. $G{ That matters. $}
           
           $f{ Commander Okafor $} sends her thanks. The $f{ Stentor $} took some damage, but she held together, and her crew held together with her. She says you covered her exactly when she needed it.
           
@@ -321,7 +321,7 @@ mission_flow:
         text: |
           $W{ Three transports made it. $} That's people alive who would otherwise be dead, and I'm not going to diminish that. But we lost one, and I want you to think about what you could have done differently.
           
-          $h{ Arjuna wing $} — that second bomber group — came in fast. The $f{ Valkyrie $} was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time.
+          $h{ Arjuna wing $} - that second bomber group - came in fast. The $f{ Valkyrie $} was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time.
           
           $y{ Vega Prime $} is gone. The $h{ Malgor $} is still in the system. The situation is deteriorating.
         voice_name: "Gacrux"
@@ -330,7 +330,7 @@ mission_flow:
         text: |
           $R{ This is hard to report. $} Of the four $f{ Epsilon transports $}, only [count] made it. The others were destroyed before they could reach the jump node. Those were $R{ civilian evacuation ships $}.
           
-          I have to be direct with you: the $h{ Arjuna bombers $} were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing — those $h shields, that $h{ SC Malgor $} arriving — but our job was the transports.
+          I have to be direct with you: the $h{ Arjuna bombers $} were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing - those $h shields, that $h{ SC Malgor $} arriving - but our job was the transports.
           
           We will not have another chance in $y{ Vega $}. What we do from here is damage limitation. Regroup.
         voice_name: "Gacrux"
@@ -477,18 +477,18 @@ mission_flow:
       message: "Epsilon One, proceed to Nav Alpha and hold for the others. Alpha wing is covering you."
       voice_name: "Gacrux"
     - name: "Alpha 2 Bombers"
-      message: "Bombers. Capella vector. They're going for the station directly — cut them off."
+      message: "Bombers. Capella vector. They're going for the station directly - cut them off."
       voice_name: "Achird"
     - name: "Vega Prime Hits"
-      message: "All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two, Three, Four — accelerate undocking sequence. Repeat, accelerate."
+      message: "All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two, Three, Four - accelerate undocking sequence. Repeat, accelerate."
       voice_name: "Iapetus"
       voice_style_instructions: "Station controller. Calm professional performing last duty."
     - name: "Epsilon 3 Panic"
-      message: "Alpha wing — something's on me! On me — please—"
+      message: "Alpha wing - something's on me! On me - please-"
       voice_name: "Aoede"
       voice_style_instructions: "Civilian pilot. Panicked."
     - name: "Command Malgor"
-      message: "Alpha Lead, Command. We're reading a cruiser-class contact inbound from the Capella node. Class designation — Cain. Do not engage. I repeat, do not engage the cruiser. Get those transports out."
+      message: "Alpha Lead, Command. We're reading a cruiser-class contact inbound from the Capella node. Class designation - Cain. Do not engage. I repeat, do not engage the cruiser. Get those transports out."
       voice_name: "Gacrux"
     - name: "Stentor Engage Malgor"
       message: "Alpha Lead, Stentor is engaging the Malgor. We'll keep her busy as long as we can. You cover those transports. That's an order."

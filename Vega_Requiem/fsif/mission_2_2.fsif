@@ -275,9 +275,9 @@ mission_flow:
       - text: |
           This is $y{ Admiral Chen Wei $}. I'll be brief because the situation is simple.
           
-          The $f{ Amadeus cannot transit to $y{ Antares $}. Her subspace drive is non-functional. We've run the numbers. We're holding here at $y{ Nav Charlie $}.
+          The $f{ Amadeus $} cannot transit to $y{ Antares $}. Her subspace drive is non-functional. We've run the numbers. We're holding here at $y{ Nav Charlie $}.
           
-          The crew is being evacuated in $f{ nine Hermes pods $}. They'll move to $y{ Nav Bravo and continue to the $y{ Antares node under $f{ Stentor's escort. All non-essential personnel are clearing the ship now.
+          The crew is being evacuated in $f{ nine Hermes pods $}. They'll move to $y{ Nav Bravo $} and continue to the $y{ Antares node $} under $f{ Stentor's $} escort. All non-essential personnel are clearing the ship now.
         voice_name: "Alnilam"
         voice_style_instructions: "Rear Admiral Chen Wei. Calm, final, and authoritative."
         icons:
@@ -287,16 +287,16 @@ mission_flow:
       - text: |
           $f{ Alpha wing $}, your assignment is the $f{ pods $}. Nine of them, three groups. They come out in sequence over the next two minutes. $W{ You get them to Nav Bravo. $}
           
-          The $h{ Ahriman is closing. We'll use the $f{ Amadeus's position and turrets to cover the pod corridor for as long as we can. I would appreciate it if you did $R{ not waste time $} trying to protect this ship. The $f{ Amadeus has served her purpose. $W{ The people in those pods have not. $}
+          The $h{ Ahriman $} is closing. We'll use the $f{ Amadeus's $} position and turrets to cover the pod corridor for as long as we can. I would appreciate it if you did $R{ not waste time $} trying to protect this ship. The $f{ Amadeus $} has served her purpose. $W{ The people in those pods have not. $}
         voice_name: "Alnilam"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 2000], label: "Alpha", highlighted: true }
           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [0, 13000], label: "Ahriman" }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [2000, 8000], label: "Asura" }
       - text: |
-          One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the $W{ correct decision and that I made it freely.
+          One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the $W{ correct decision and that I made it freely. $}
           
-          $G{ Good luck. $} $f{ Amadeus out.
+          $G{ Good luck. $} $f{ Amadeus out. $}
         voice_name: "Alnilam"
         icons:
           - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 5000], label: "Amadeus" }
@@ -311,13 +311,13 @@ mission_flow:
              ( is-event-true-delay "Pod 1 safe" 0 ) 
           )
         text: |
-          $W{ All nine escape pods reached Nav Bravo. $} The entire crew of the $f{ Amadeus is accounted for.
+          $W{ All nine escape pods reached Nav Bravo. $} The entire crew of the $f{ Amadeus $} is accounted for.
           
           $y{ Admiral Chen Wei $} is listed as killed in action. He remained aboard as a decision he made openly and documented. His service record will reflect that. Every person in those pods owes their life to $f{ Alpha wing $}. I don't know another way to say that.
           
-          The $f{ Amadeus is gone. She served for eleven years and she died doing what a ship is supposed to do — $G{ buying time for people who needed it. $}
+          The $f{ Amadeus $} is gone. She served for eleven years and she died doing what a ship is supposed to do - $G{ buying time for people who needed it. $}
           
-          Brace yourself. We still have to get through the $y{ Antares node $}. And the $h{ SC Malgor is sitting on it.
+          Brace yourself. We still have to get through the $y{ Antares node $}. And the $h{ SC Malgor $} is sitting on it.
         voice_name: "Gacrux"
       - condition: |
           ( >= 
@@ -327,14 +327,14 @@ mission_flow:
         text: |
           [count] of nine escape pods reached $y{ Nav Bravo $}. We lost ships in the evacuation.
           
-          $y{ Admiral Wei $} is listed as killed in action. His log and his decisions have been forwarded to $f{ Terran Command $}. You held the line against three fighter waves and a $h Dragon flight. Whatever we lost out there, it could have been worse. $W{ Today's standard is survival, not perfection. $}
+          $y{ Admiral Wei $} is listed as killed in action. His log and his decisions have been forwarded to $f{ Terran Command $}. You held the line against three fighter waves and a $h{ Dragon $} flight. Whatever we lost out there, it could have been worse. $W{ Today's standard is survival, not perfection. $}
           
-          The $h{ Malgor is still at the $y{ Antares node $}. We move as soon as the $f{ Stentor can reposition.
+          The $h{ Malgor $} is still at the $y{ Antares node $}. We move as soon as the $f{ Stentor $} can reposition.
         voice_name: "Gacrux"
       - condition: |
           ( true )
         text: |
-          $R{ The evacuation failed. $} Of the nine pods that departed the $f{ Amadeus, only [count] made it.
+          $R{ The evacuation failed. $} Of the nine pods that departed the $f{ Amadeus $}, only [count] made it.
           
           $y{ Admiral Wei $} is listed as killed in action alongside the crew of the pods that were destroyed. I don't have words for this that are useful right now. We proceed because we have to.
           
@@ -535,16 +535,16 @@ mission_flow:
 
   messages:
     - name: "Wei Pods Away"
-      message: "Alpha wing, pods are away. Group A has cleared the bay. Watch your left — we're showing contacts at six kilometers."
+      message: "Alpha wing, pods are away. Group A has cleared the bay. Watch your left - we're showing contacts at six kilometers."
       voice_name: "Alnilam"
     - name: "Alpha 2 Targeting Pods"
-      message: "They're going for the pods directly. Forget the Amadeus — these things are targeting the pods."
+      message: "They're going for the pods directly. Forget the Amadeus - these things are targeting the pods."
       voice_name: "Achird"
     - name: "Wei Pod 1 Clear"
       message: "Pod One is clear. Bridge officers are aboard. Get them to Nav Bravo."
       voice_name: "Alnilam"
     - name: "Alpha 3 Bombers"
-      message: "Bombers inbound — they're going for the Amadeus. Do we— Command?"
+      message: "Bombers inbound - they're going for the Amadeus. Do we- Command?"
       voice_name: "Leda"
     - name: "Command Focus Pods"
       message: "Alpha wing, the Amadeus is not your objective. Let the Amadeus handle the Shaitans. Pods. Focus on the pods."
@@ -553,27 +553,26 @@ mission_flow:
       message: "Some damage to frame forty. Manageable. Turrets holding. Alpha Lead, how are the pods?"
       voice_name: "Alnilam"
     - name: "Alpha 2 Vishnu"
-      message: "Another fighter wave — Scorpions, coming out of the aft sector. Four of them."
+      message: "Another fighter wave - Scorpions, coming out of the aft sector. Four of them."
       voice_name: "Achird"
     - name: "Alpha 2 Halfway"
       message: "Five pods at Nav Bravo. Halfway there. Keep pushing."
       voice_name: "Achird"
     - name: "Wei Hull 20"
-      message: "Significant structural compromise, frames twenty through sixty. Casca — you'll want to move away from the ship. Alpha Lead... Don't mourn on my clock. Not yet."
+      message: "Significant structural compromise, frames twenty through sixty. Casca - you'll want to move away from the ship. Alpha Lead... Don't mourn on my clock. Not yet."
       voice_name: "Alnilam"
     - name: "Alpha 3 Dragons"
-      message: "Dragons! Three of them. They're fast — they're going for the pods."
+      message: "Dragons! Three of them. They're fast - they're going for the pods."
       voice_name: "Leda"
     - name: "Wei Final"
-      message: "All pods are away. All pods are clear. Alpha wing — Alpha Lead... you have your orders. Amadeus out."
-      voice_name: "Alnilam"
+      message: "All pods are away. All pods are clear. Alpha wing - Alpha Lead... you have your orders. Amadeus out."
       voice_name: "Alnilam"
       voice_style_instructions: "Admiral Wei's final transmission. Calm, finality, sound of secondary explosions in background."
     - name: "Alpha 2 Copy Admiral"
       message: "...Copy, Admiral."
       voice_name: "Achird"
     - name: "Stentor Amadeus Destroyed"
-      message: "Alpha Lead, this is Stentor at Nav Bravo. The Amadeus — we're reading... confirmed destroyed. Get those pods to us. Bring everyone you can."
+      message: "Alpha Lead, this is Stentor at Nav Bravo. The Amadeus - we're reading... confirmed destroyed. Get those pods to us. Bring everyone you can."
       voice_name: "Kore"
     - name: "Command 7 Safe"
       message: "Seven pods at Nav Bravo. Alpha Lead, disengage and return when the area is clear."
@@ -582,7 +581,7 @@ mission_flow:
       message: "Pods are safe. Alpha wing, withdraw to Nav Bravo. We're done here."
       voice_name: "Gacrux"
     - name: "Command Imminent"
-      message: "Amadeus structural failure imminent — clear the ship's immediate area."
+      message: "Amadeus structural failure imminent - clear the ship's immediate area."
       voice_name: "Gacrux"
 
 audio:
