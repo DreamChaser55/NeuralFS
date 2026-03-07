@@ -140,11 +140,13 @@ mission_flow:
 The Fiction Viewer allows you to display a text file before the mission starts. This is useful for lengthy narrative text or logs. If your mission design document contains cutscene descriptions but the cutscenes were not created, you can write their narrative content here.
 ```yaml
 # Top-level field
-fiction_viewer: "story.txt"
+fiction_viewer: "missionname_story.txt"
 ```
-The file `story.txt` must exist in your mod's data/fiction folder.
+The file `missionname_story.txt` must exist in your mod's data/fiction folder.
 
-Note: The referenced Fiction Viewer content is shown to the player as the **very first** thing in the course of the mission (before the Command Briefing).
+Notes:
+- The referenced Fiction Viewer content is shown to the player as the **very first** thing in the course of the mission (before the Command Briefing).
+- The entire referenced file is shown to the player as is; Ensure that any internal or development notes are removed before release.
 
 ## Environment backgrounds and nebulae
 Author background suns and starbitmaps; full nebula is a separate feature and suppresses background bitmaps unless allowed.
