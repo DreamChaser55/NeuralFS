@@ -46,7 +46,7 @@ class ConverterGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("FCIF to FC2 Converter")
-        self.root.geometry("800x600")
+        self.root.geometry("1000x700")
 
         # Variables
         self.input_path_var = tk.StringVar()
