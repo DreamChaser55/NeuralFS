@@ -37,8 +37,21 @@ pip install PyYAML pydantic
 ## Usage (CLI)
 See [CLI Usage](../Documentation/fcif/converter/cli.md).
 
+## Usage (GUI)
+A graphical user interface (`fcif_converter_gui.py`) is available for users who prefer not to use the command line.
+
+Run the GUI script:
+```bash
+python fcif_converter_gui.py
+```
+This tool allows you to:
+- Select a single `.fcif` file.
+- Configure output path.
+- View real-time conversion logs.
+
 ## Project Structure
 - `fcif_to_fc2.py` — CLI entry: loads FCIF, validates, generates SEXP logic, and writes FC2. Contains data models, logic generation, and the CLI in a single file.
+- `fcif_converter_gui.py` — Graphical User Interface (GUI) for the converter.
 - `fc2 file examples/` — Reference `.fc2` campaign files for understanding the output format.
 
 ## Notes

@@ -22,15 +22,19 @@ This agent also adds FSO text coloring tags into the fiction viewer files writte
 
 A Python script then takes the intermediate FSIF representation of a mission and converts it into the FS2 format expected by FSO. During the conversion, the FSIF representation is extensively validated; if any errors are found, actionable error messages are printed to the console, so the AI agent can fix them and try again.
 
-The Converter script has both command line interface suitable for use by AI agents, and GUI interface for use by humans.
+The Converter script has both command line interface suitable for use by AI agents, and GUI for use by humans.
 
 If provided with Google Gemini or ElevenLabs API key, the Converter script can optionally generate voice files for briefings/messages/debriefings, using Gemini or ElevenLabs TTS API.
+
 For details, see `\FSIF_to_FS2_Converter\README.md`.
 
 ## FCIF to FC2 Converter
 
 A separate Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
 The converter validates the FCIF input using Pydantic, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
+
+This converter script also has both interfaces: CLI suitable for use by AI agents and GUI for use by humans.
+
 For details, see `\FCIF_to_FC2_Converter\README.md`.
 
 ## FSIF+FCIF Converting Agent
