@@ -151,21 +151,21 @@ def validate_ascii_fields(fcif: FCIF) -> List[str]:
 
 # --- Logic ---
 
-def load_fcif(path: Path) -> FCIF:
+def load_fcif(path: Path, log_func=print) -> Optional[FCIF]:
     """Loads and validates the FCIF YAML file."""
     try:
         with open(path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
         return FCIF(**data)
     except yaml.YAMLError as e:
-        print(f"Error parsing YAML: {e}", file=sys.stderr)
-        sys.exit(1)
+        log_func(f"[ERROR] Error parsing YAML: {e}")
+        return None
     except ValidationError as e:
-        print(f"Validation Error:\n{e}", file=sys.stderr)
-        sys.exit(1)
+        log_func(f"[ERROR] Validation Error:\n{e}")
+        return None
     except Exception as e:
-        print(f"Error loading file: {e}", file=sys.stderr)
-        sys.exit(1)
+        log_func(f"[ERROR] Error loading file: {e}")
+        return None
 
 def format_sexp_string(s: str) -> str:
     """Formats a string for SEXP (quoted)."""
@@ -289,39 +289,71 @@ def write_fc2(fcif: FCIF, output_path: Path):
             
         f.write("#End\n")
 
-def main():
-    parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate File) to FC2 format.")
-    parser.add_argument("input", type=Path, help="Input .fcif file")
-    parser.add_argument("-o", "--output", type=Path, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
+def process_campaign(input_file: str, output_file: Optional[str] = None, log_func=print) -> bool:
+    """
+    Core conversion logic for the campaign.
     
-    args = parser.parse_args()
+    :param input_file: Path to the .fcif file.
+    :param output_file: Optional path for the output .fc2 file.
+    :param log_func: Function to use for logging output (default: print).
+    :return: True if successful, False otherwise.
+    """
+    input_path = Path(input_file)
+    
+    if output_file is None:
+        output_path = input_path.with_suffix('.fc2')
+    else:
+        output_path = Path(output_file)
 
-    # Determine output path if not provided
-    if args.output is None:
-        args.output = args.input.with_suffix('.fc2')
+    if not input_path.exists() or not input_path.is_file():
+        log_func(f"[ERROR] Input file not found at '{input_path}'")
+        return False
+
+    if input_path.suffix.lower() != '.fcif':
+        log_func("[ERROR] Input file must have a .fcif extension.")
+        return False
+
+    log_func(f"[INFO] Loading FCIF: {input_path}")
+    fcif_data = load_fcif(input_path, log_func)
     
-    if not args.input.exists():
-        print(f"Error: Input file '{args.input}' not found.", file=sys.stderr)
-        sys.exit(1)
-        
-    print(f"Loading FCIF: {args.input}")
-    fcif_data = load_fcif(args.input)
+    if not fcif_data:
+        return False
     
     # Validate ASCII-only requirement for all FSO-facing fields
     ascii_errors = validate_ascii_fields(fcif_data)
     if ascii_errors:
         for err in ascii_errors:
-            print(err, file=sys.stderr)
-        print(f"\n[FAILED] ASCII validation failed with {len(ascii_errors)} error(s). Aborting.", file=sys.stderr)
-        sys.exit(1)
+            log_func(f"[ERROR] {err}")
+        log_func(f"[FAILED] ASCII validation failed with {len(ascii_errors)} error(s). Aborting.")
+        return False
 
-    print(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
+    log_func(f"[INFO] Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
     try:
-        write_fc2(fcif_data, args.output)
-        print(f"Successfully wrote: {args.output}")
+        write_fc2(fcif_data, output_path)
+        log_func(f"[SUCCESS] Successfully wrote: {output_path}")
+        return True
     except Exception as e:
-        print(f"Error writing output: {e}", file=sys.stderr)
+        log_func(f"[ERROR] Error writing output: {e}")
+        return False
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate File) to FC2 format.")
+    parser.add_argument("input", type=str, help="Input .fcif file")
+    parser.add_argument("-o", "--output", type=str, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
+    
+    args = parser.parse_args()
+
+    # Create a custom log_func for CLI that directs ERROR and FAILED to stderr
+    def cli_log(msg: str):
+        if msg.startswith("[ERROR]") or msg.startswith("[FAILED]"):
+            print(msg, file=sys.stderr)
+        else:
+            print(msg)
+
+    success = process_campaign(args.input, args.output, log_func=cli_log)
+    if not success:
         sys.exit(1)
 
 if __name__ == "__main__":
