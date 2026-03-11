@@ -10,35 +10,6 @@ Critical rules
 - **Token length limit**: All names (ships, wings, events, messages, etc.) must be < 30 characters.
 - **SEXP fidelity**: FSIF embeds SEXP verbatim. The converter does not "fix" invalid SEXP.
 
-## ASCII-only requirement for FSO-facing strings
-FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
-
-This rule applies to:
-- campaign name and description
-- mission metadata and fiction viewer filename
-- ship, wing, waypoint, jump node, event, goal, and message names
-- briefing, command briefing, debriefing, directive, and message text
-- token strings such as ship classes, weapons, flags, music names, dockpoints, subsystem names, and other FSO-facing literals
-- all string literals inside SEXPs
-
-This rule does **not** apply to `voice_style_instructions`, because that field is used only for TTS generation and is not written into `.fs2`.
-
-Use ASCII replacements when needed:
-- use `'` instead of curly quotes
-- use `-` instead of em dash or en dash
-- use `...` instead of the single-character ellipsis
-
-If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
-
-Authoring checklist
-- Use FSIF version: "2.5"
-- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
-- Unlike Ships, Wings **must** use a template.
-
-## No double quotes allowed in FSO-facing strings
-Double quotes `"` are not allowed in FSO-facing text fields, as they break the FSO parser. Use single quotes `'` instead.
-Note: This rule does not apply to SEXP fields. Some SEXP tokens need to be wrapped in double quotes.
-
 ## Minimal FSIF skeleton
 - These are the minimum fields required for a valid FSIF file.
 
@@ -485,6 +456,35 @@ The converter will automatically calculate the maximum possible quantities neede
 - Directional arrival_location requires both arrival_anchor and arrival_distance.
 - Docking Bay typically uses arrival_distance 0.
 - For wildcard anchors, use exact literals like "<any friendly player>".
+
+## ASCII-only requirement for FSO-facing strings
+FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
+
+This rule applies to:
+- campaign name and description
+- mission metadata and fiction viewer filename
+- ship, wing, waypoint, jump node, event, goal, and message names
+- briefing, command briefing, debriefing, directive, and message text
+- token strings such as ship classes, weapons, flags, music names, dockpoints, subsystem names, and other FSO-facing literals
+- all string literals inside SEXPs
+
+This rule does **not** apply to `voice_style_instructions`, because that field is used only for TTS generation and is not written into `.fs2`.
+
+Use ASCII replacements when needed:
+- use `'` instead of curly quotes
+- use `-` instead of em dash or en dash
+- use `...` instead of the single-character ellipsis
+
+If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
+
+Authoring checklist
+- Use FSIF version: "2.5"
+- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
+- Unlike Ships, Wings **must** use a template.
+
+## No double quotes allowed in FSO-facing strings
+Double quotes `"` are not allowed in FSO-facing text fields, as they break the FSO parser. Use single quotes `'` instead.
+Note: This rule does not apply to SEXP fields. Some SEXP tokens need to be wrapped in double quotes.
 
 ## SEXP Authoring Guidelines
 
