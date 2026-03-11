@@ -583,6 +583,10 @@ The converter also checks all SEXPs with the Advanced SEXP Validator, which pars
 ## Pitfalls and how to avoid them
 - Player start not spawning:
   - If the start_ship is standalone (not in a wing), its arrival_cue must be "( true )".
+- Putting arrival/departure fields into ship templates:
+  - Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, or `departure_cue` into `entities.ship_templates`.
+  - These values do not work correctly for ships that are part of wings, so FSIF entirely forbids putting them in templates.
+  - For standalone ships, author them directly on the ship. For wing members, author them on the wing.
 - Ships spawning inside other ships:
   - Ensure sufficient separation between ships. Clearance should be kept in mind particularly around large ships. Cruisers are ~300 m long, destroyers are ~2000 m long.
 - Mistakenly including YAML "#" inside SEXP blocks:

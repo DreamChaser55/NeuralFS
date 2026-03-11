@@ -25,6 +25,16 @@ class MissionLoader:
         self.templates: Dict[str, Any] = {}
         self.all_ships: List[Ship] = []
         self.all_wings: List[Wing] = []
+
+    _FORBIDDEN_TEMPLATE_FIELDS = (
+        'arrival_location',
+        'arrival_anchor',
+        'arrival_distance',
+        'arrival_cue',
+        'departure_location',
+        'departure_anchor',
+        'departure_cue',
+    )
         
     def load(self) -> Mission:
         """Main execution method."""
@@ -207,6 +217,7 @@ class MissionLoader:
         
         # Validate templates
         for name, template in self.templates.items():
+            self._validate_ship_template_authoring_rules(name, template)
             self._validate_no_player_start(template.get('flags'), f"template '{name}'")
 
         # Expand Wings
@@ -216,6 +227,32 @@ class MissionLoader:
         # Expand Standalone Ships
         for ship_data in entities.get('ships', []):
             self._process_ship(ship_data)
+
+    def _validate_ship_template_authoring_rules(self, template_name: str, template_data: Dict[str, Any]):
+        """
+        Reject ship-template fields that must be authored on the concrete ship/wing.
+
+        Arrival/departure locations, anchors, distances and cues do not work when
+        inherited by ships that are part of a wing, so FSIF forbids authoring these
+        fields in ship_templates entirely. Standalone ships must author them directly
+        on the ship, while wing members must author them on the wing.
+        """
+        if not isinstance(template_data, dict):
+            raise ValueError(f"Ship template '{template_name}' must be a mapping.")
+
+        forbidden_fields = [field for field in self._FORBIDDEN_TEMPLATE_FIELDS if field in template_data]
+        if not forbidden_fields:
+            return
+
+        if len(forbidden_fields) == 1:
+            fields_phrase = f"field '{forbidden_fields[0]}'"
+        else:
+            fields_phrase = "fields " + ", ".join(f"'{field}'" for field in forbidden_fields)
+
+        raise ValueError(
+            f"Validation error in ship template '{template_name}': {fields_phrase} must not be authored in ship_templates. "
+            f"Author these values directly on a standalone ship, or on the corresponding wing if the ship is part of a wing."
+        )
 
     def _process_wing(self, wing_data: Dict[str, Any], player_setup: PlayerSetup):
         """

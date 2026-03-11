@@ -75,6 +75,9 @@
     - `arrival_anchor` (String, optional)
     - `arrival_distance` (Integer, optional)
     - `arrival_cue` (String, optional). SEXP.
+    - `departure_location` (String, optional, default: `"Hyperspace"`)
+    - `departure_anchor` (String, optional)
+    - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
     - `ai_goals` (String, optional).
     - `flags` (List[String], optional, default: `[]`).
   - `waypoints` (Mapping, optional). Keys are path names, values are Lists of `[x,y,z]`.
@@ -124,7 +127,7 @@
   - `name` (String, required)
   - `position` (List[Float], required). Format: `[x, y, z]`.
 
-**Ship Properties (valid in `ships` and `ship_templates`):**
+**Ship Properties:**
 - `name` (String, required for `ships`)
 - `class` (String, required)
 - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`.
@@ -142,6 +145,7 @@
 - `arrival_cue` (String, optional, default: `"( false )"`). SEXP.
 - `arrival_delay` (Integer, optional, default: `0`)
 - `departure_location` (String, optional, default: `"Hyperspace"`)
+- `departure_anchor` (String, optional)
 - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
 - `determination` (Integer, optional, default: `10`)
 - `flags` (List[String], optional, default: `["cargo-known"]`)
@@ -151,6 +155,8 @@
 - `weapons` (Mapping, optional). Keys: `primary` (List), `secondary` (List).
 - `dock` (Mapping, optional). Keys: `with`, `docker_point`, `dockee_point`.
 - `ai_goals` (String, optional).
+
+- **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`.
 
 ## Minimal FSIF skeleton
 - A minimal and a standard FSIF skeletons are provided in the Authoring Guide.
@@ -166,7 +172,7 @@
 3. player_setup
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".
 4. entities
-  - ship_templates: Any property present in a template can be overridden on ships referencing it. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
+  - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions). Arrival/departure fields (`arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`) are not allowed in templates; author them directly on standalone ships or on the wing.
   - ships: Flags are a single list; converter auto-buckets into +Flags and +Flags2.
   - subsystems: Names must match the per-ship canonical lists.
   - docking: Author only on the docker under dock.with, dock.docker_point, dock.dockee_point; pairs only; player ships cannot be pre-spawn docked.

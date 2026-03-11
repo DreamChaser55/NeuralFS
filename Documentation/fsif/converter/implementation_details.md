@@ -210,6 +210,14 @@ The validator checks the following areas:
 *   **Extra Fields Forbidden**: The converter now strictly rejects *any* unknown fields in the FSIF YAML.
 *   **Typo Detection**: If you make a typo in a field name (e.g., `arrival_dealy` instead of `arrival_delay`), the converter will abort with an "Extra inputs are not permitted" error. This ensures that no authored data is silently ignored.
 
+#### **Ship Template Authoring Rules**:
+*   `entities.ship_templates` may only contain reusable shared ship properties.
+*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, and `departure_cue`.
+*   This is a hard error because those fields do not work correctly in emitted `.fs2` files when inherited by ships that are part of a wing.
+*   Correct authoring locations:
+    *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
+    *   Wing member: author the fields on the corresponding `entities.wings[*]` entry.
+
 ### Error Reporting
 *   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic, non-ASCII characters in FSO-facing fields) will print an error message and **fail the validation**, aborting the conversion.
 *   **Warnings**: Minor issues (e.g., unknown mission flags, potential logic oddities) are logged but do not stop conversion.
