@@ -139,6 +139,24 @@ class Validator:
 
         self.log_error(f"{path} contains non-ASCII character(s): {details}")
 
+    def _validate_xstr_text(self, path: str, text: Optional[str]):
+        """
+        Validates text that will be wrapped in XSTR("...", -1) in the emitted .fs2 file.
+        Rejects non-ASCII characters and double quotes (").
+        Double quotes break the FSO stuff_string parser when embedded inside an XSTR macro.
+        """
+        if text is None:
+            return
+            
+        self._validate_ascii_text(path, text)
+        
+        if '"' in text:
+            self.log_error(
+                f"{path} contains double quote (\") characters. "
+                f"These are not allowed in text fields displayed to the player, as they break "
+                f"the FSO engine parser when wrapped in XSTR. Please use single quotes (') instead."
+            )
+
     def _validate_ascii_text_list(self, path: str, values: Optional[List[str]]):
         if not values:
             return
@@ -158,10 +176,10 @@ class Validator:
         self._validate_ascii_text('fiction_viewer', self.mission.fiction_viewer)
 
         info = self.mission.mission_info
-        self._validate_ascii_text('mission_info.name', info.name)
+        self._validate_xstr_text('mission_info.name', info.name)
         self._validate_ascii_text('mission_info.author', info.author)
         self._validate_ascii_text('mission_info.notes', info.notes)
-        self._validate_ascii_text('mission_info.description', info.description)
+        self._validate_xstr_text('mission_info.description', info.description)
         self._validate_ascii_text('mission_info.game_type', info.game_type)
         self._validate_ascii_text('mission_info.ai_profile', info.ai_profile)
         self._validate_ascii_text_list('mission_info.flags', info.flags)
@@ -194,7 +212,7 @@ class Validator:
             self._validate_ascii_text(f'{prefix}.class', ship.ship_class)
             self._validate_ascii_text(f'{prefix}.team', ship.team)
             self._validate_ascii_text(f'{prefix}.ai_class', ship.ai_class)
-            self._validate_ascii_text(f'{prefix}.cargo_1', ship.cargo_1)
+            self._validate_xstr_text(f'{prefix}.cargo_1', ship.cargo_1)
             self._validate_ascii_text(f'{prefix}.arrival_location', ship.arrival_location)
             self._validate_ascii_text(f'{prefix}.arrival_anchor', ship.arrival_anchor)
             self._validate_ascii_text(f'{prefix}.arrival_cue', ship.arrival_cue)
@@ -232,44 +250,44 @@ class Validator:
             prefix = f'events[{i}]'
             self._validate_ascii_text(f'{prefix}.name', event.name)
             self._validate_ascii_text(f'{prefix}.formula', event.formula)
-            self._validate_ascii_text(f'{prefix}.directive_text', event.directive_text)
+            self._validate_xstr_text(f'{prefix}.directive_text', event.directive_text)
 
         for i, goal in enumerate(self.mission.goals):
             prefix = f'goals[{i}]'
             self._validate_ascii_text(f'{prefix}.name', goal.name)
             self._validate_ascii_text(f'{prefix}.type', goal.type)
-            self._validate_ascii_text(f'{prefix}.message', goal.message)
+            self._validate_xstr_text(f'{prefix}.message', goal.message)
             self._validate_ascii_text(f'{prefix}.formula', goal.formula)
 
         for i, message in enumerate(self.mission.messages):
             prefix = f'messages[{i}]'
             self._validate_ascii_text(f'{prefix}.name', message.name)
-            self._validate_ascii_text(f'{prefix}.message', message.message)
+            self._validate_xstr_text(f'{prefix}.message', message.message)
             self._validate_ascii_text(f'{prefix}.voice_filename', message.voice_filename)
 
         for i, stage in enumerate(self.mission.command_briefing.stages):
             prefix = f'command_briefing.stages[{i}]'
-            self._validate_ascii_text(f'{prefix}.text', stage.text)
+            self._validate_xstr_text(f'{prefix}.text', stage.text)
             self._validate_ascii_text(f'{prefix}.ani', stage.ani)
             self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
 
         for i, stage in enumerate(self.mission.briefing.stages):
             prefix = f'briefing.stages[{i}]'
-            self._validate_ascii_text(f'{prefix}.text', stage.text)
+            self._validate_xstr_text(f'{prefix}.text', stage.text)
             self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
             for j, icon in enumerate(stage.icons):
                 icon_prefix = f'{prefix}.icons[{j}]'
                 self._validate_ascii_text(f'{icon_prefix}.type', icon.type)
                 self._validate_ascii_text(f'{icon_prefix}.team', icon.team)
                 self._validate_ascii_text(f'{icon_prefix}.class', icon.class_)
-                self._validate_ascii_text(f'{icon_prefix}.label', icon.label)
+                self._validate_xstr_text(f'{icon_prefix}.label', icon.label)
 
         for i, stage in enumerate(self.mission.debriefing.stages):
             prefix = f'debriefing.stages[{i}]'
-            self._validate_ascii_text(f'{prefix}.text', stage.text)
+            self._validate_xstr_text(f'{prefix}.text', stage.text)
             self._validate_ascii_text(f'{prefix}.condition', stage.condition)
             self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
-            self._validate_ascii_text(f'{prefix}.recommendation', stage.recommendation)
+            self._validate_xstr_text(f'{prefix}.recommendation', stage.recommendation)
 
         for i, reinforcement in enumerate(self.mission.reinforcements):
             prefix = f'reinforcements[{i}]'

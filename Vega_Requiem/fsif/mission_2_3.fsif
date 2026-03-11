@@ -245,7 +245,7 @@ mission_flow:
           
           The $h{ SC Malgor $} is destroyed.
           
-          $f{ Commander Okafor $} has submitted her after-action report: "$rank $callsign... $G{ the conduct of Alpha wing was exemplary. $} I commend them to the attention of Terran Command for recognition."
+          $f{ Commander Okafor $} has submitted her after-action report: '$rank $callsign... $G{ the conduct of Alpha wing was exemplary. $} I commend them to the attention of Terran Command for recognition.'
           
           $y{ Admiral Wei $} would have said something better than I can. I'm going to leave space here for what he would have said and let you fill it in yourself.
           
@@ -284,7 +284,7 @@ mission_flow:
           
           We lost most of the convoy on the transit. The $h{ Malgor $}, the $h Dragons at the node - they were too much, and we were too few, and the math didn't work out.
           
-          $f{ Commander Okafor $} says this: "The node is closed behind us. $R{ We grieve what we left and we carry what we saved. $}"
+          $f{ Commander Okafor $} says this: 'The node is closed behind us. $R{ We grieve what we left and we carry what we saved. $}'
         voice_name: "Gacrux"
       - condition: |
           ( true )

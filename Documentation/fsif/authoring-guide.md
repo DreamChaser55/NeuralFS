@@ -24,7 +24,7 @@ This rule applies to:
 This rule does **not** apply to `voice_style_instructions`, because that field is used only for TTS generation and is not written into `.fs2`.
 
 Use ASCII replacements when needed:
-- use `"` or `'` instead of curly quotes
+- use `'` instead of curly quotes
 - use `-` instead of em dash or en dash
 - use `...` instead of the single-character ellipsis
 
@@ -34,6 +34,10 @@ Authoring checklist
 - Use FSIF version: "2.5"
 - player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
 - Unlike Ships, Wings **must** use a template.
+
+## No double quotes allowed in FSO-facing strings
+Double quotes `"` are not allowed in FSO-facing text fields, as they break the FSO parser. Use single quotes `'` instead.
+Note: This rule does not apply to SEXP fields. Some SEXP tokens need to be wrapped in double quotes.
 
 ## Minimal FSIF skeleton
 - These are the minimum fields required for a valid FSIF file.

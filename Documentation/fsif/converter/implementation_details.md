@@ -178,6 +178,12 @@ The validator checks the following areas:
 *   This does **not** apply to TTS-only fields such as `voice_name` and `voice_style_instructions`, because they are not written into `.fs2`.
 *   On failure, the validator emits an error containing the field path and the offending character(s) with Unicode code points (for example `U+2014`) and aborts conversion.
 
+#### **Double Quote Prohibition in XSTR Text**:
+*   The validator strictly forbids double quotes (`"`) in any text field that is emitted into the `.fs2` file wrapped in an `XSTR("...", -1)` macro (such as `mission_info.name`, `mission_info.description`, event/goal/message text, and briefing/debriefing text).
+*   This is because the FSO engine string parser does not properly handle escaped double quotes (`\"`) inside `XSTR` blocks, leading to "malformed string" debug errors.
+*   Authors must use single quotes (`'`) instead of double quotes for quoting text or dialogue.
+*   Note: Double quotes are still allowed (and required) inside S-expression strings (e.g., `arrival_cue`, `formula`).
+
 #### **Text styling tags outside supported contexts**:
 *   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
 
