@@ -15,6 +15,7 @@ except ImportError:
 
 
 class Validator:
+    _MISSION_SCALE_RECOMMENDATION_METERS = 20_000.0
     _BRIEFING_SPAN_OPEN_TAG_RE = re.compile(r'^\$([WwKkBbGgYyEeVvRrPpOoFfHhNn])\{$')
     _BRIEFING_STYLE_TAG_RE = re.compile(
         r"""
@@ -319,6 +320,7 @@ class Validator:
         self.validate_ascii_text_fields()
         self.validate_mission_info()
         self.validate_environment()
+        self.validate_mission_scale_recommendations()
         self.validate_ships()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
@@ -452,6 +454,65 @@ class Validator:
             # Targets are only valid for Active (0) Asteroid (0) fields
             if not (af.field_type == 0 and af.debris_genre == 0):
                 self.log_warning(f"Asteroid field '{af.name}' defines targets but they will be ignored (type={af.field_type}, genre={af.debris_genre}). Targets are only supported for Active Asteroid fields.")
+
+    def validate_mission_scale_recommendations(self):
+        """
+        Warn when authored mission geometry exceeds the recommended 20 km scale.
+
+        This is an advisory mission-design check only. It does not fail validation.
+        It covers:
+        - distances between positioned mission objects (ships, jump nodes, waypoint points)
+        - authored arrival_distance values on ships and wings that reference an arrival_anchor
+        """
+        limit_m = self._MISSION_SCALE_RECOMMENDATION_METERS
+        limit_km = limit_m / 1000.0
+
+        positioned_objects = []
+
+        for ship in self.mission.ships:
+            positioned_objects.append(("Ship", ship.name, ship.location))
+
+        for jump_node in self.mission.jump_nodes:
+            positioned_objects.append(("Jump Node", jump_node.name, jump_node.position))
+
+        for path_name, points in self.mission.waypoints.items():
+            for index, point in enumerate(points, start=1):
+                positioned_objects.append(("Waypoint", f"{path_name}:{index}", point))
+
+        for i in range(len(positioned_objects)):
+            kind_a, name_a, pos_a = positioned_objects[i]
+            for j in range(i + 1, len(positioned_objects)):
+                kind_b, name_b, pos_b = positioned_objects[j]
+
+                dx = float(pos_a[0]) - float(pos_b[0])
+                dy = float(pos_a[1]) - float(pos_b[1])
+                dz = float(pos_a[2]) - float(pos_b[2])
+                distance_m = math.sqrt(dx * dx + dy * dy + dz * dz)
+
+                if distance_m > limit_m:
+                    self.log_warning(
+                        f"Mission scale recommendation: distance between {kind_a} '{name_a}' and "
+                        f"{kind_b} '{name_b}' is {distance_m:.1f} m ({distance_m / 1000.0:.1f} km), "
+                        f"which exceeds the recommended maximum of {limit_km:.1f} km. "
+                        f"Keep points of interest within 20 km to avoid long travel times."
+                    )
+
+        def check_arrival_distance(context: str, arrival_anchor: Optional[str], arrival_distance: Optional[int]):
+            if not arrival_anchor or arrival_distance is None:
+                return
+
+            if arrival_distance > limit_m:
+                self.log_warning(
+                    f"Mission scale recommendation: {context} arrival_distance {arrival_distance} m "
+                    f"from arrival_anchor '{arrival_anchor}' exceeds the recommended maximum of "
+                    f"{limit_km:.1f} km. Keep anchor-based arrivals within 20 km to avoid long travel times."
+                )
+
+        for ship in self.mission.ships:
+            check_arrival_distance(f"Ship '{ship.name}'", ship.arrival_anchor, ship.arrival_distance)
+
+        for wing in self.mission.wings:
+            check_arrival_distance(f"Wing '{wing.name}'", wing.arrival_anchor, wing.arrival_distance)
 
     def validate_ships(self):
         """

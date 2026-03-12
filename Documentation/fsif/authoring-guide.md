@@ -457,6 +457,11 @@ The converter will automatically calculate the maximum possible quantities neede
 - Docking Bay typically uses arrival_distance 0.
 - For wildcard anchors, use exact literals like "<any friendly player>".
 
+## Maximum mission scale recommendation
+- Keep distances between all points of interest (ships, wings, waypoints, jump nodes) **below 20 km** whenever possible.
+- Avoid `arrival_distance` values above **20,000** when using `arrival_anchor` on ships or wings.
+- The converter warns if distances between any two objects or anchor-based arrival distances exceed this recommendation, because large mission spaces can lead to long, uneventful travel times and thus boring missions.
+
 ## ASCII-only requirement for FSO-facing strings
 FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
 

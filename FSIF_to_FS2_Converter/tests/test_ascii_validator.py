@@ -19,6 +19,8 @@ from data_models import (
     Weapons,
     Briefing,
     BriefingStage,
+    JumpNode,
+    Wing,
 )
 from validator import Validator
 
@@ -87,6 +89,106 @@ class TestValidatorAscii(unittest.TestCase):
         validator = self.make_validator(mission)
 
         self.assertTrue(validator.validate(), validator.errors)
+
+    def test_distance_over_20km_between_objects_warns(self):
+        mission = self.make_valid_mission()
+        mission.jump_nodes = [
+            JumpNode(name="Far Node", position=[25000.0, 0.0, 0.0])
+        ]
+
+        validator = self.make_validator(mission)
+
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Mission scale recommendation: distance between Ship 'Player Ship' and Jump Node 'Far Node'" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_arrival_distance_over_20km_warns_for_ship_and_wing(self):
+        mission = self.make_valid_mission()
+        mission.ships.append(
+            Ship(
+                name="Escort 1",
+                ship_class="GTC Fenris",
+                team="Friendly",
+                location=[500.0, 0.0, 0.0],
+                arrival_location="In front of ship",
+                arrival_anchor="Player Ship",
+                arrival_distance=25001,
+                arrival_cue="( true )",
+            )
+        )
+        mission.wings = [
+            Wing(
+                name="Beta",
+                count=1,
+                ships=[
+                    Ship(
+                        name="Beta 1",
+                        ship_class="GTF Ulysses",
+                        team="Friendly",
+                        location=[1000.0, 0.0, 0.0],
+                        arrival_cue="( true )",
+                        weapons=Weapons(
+                            primary=["Avenger", "Avenger"],
+                            secondary=["MX-50"],
+                        ),
+                    )
+                ],
+                position=[1000.0, 0.0, 0.0],
+                arrival_location="In front of ship",
+                arrival_anchor="Player Ship",
+                arrival_distance=22000,
+                arrival_cue="( true )",
+            )
+        ]
+
+        validator = self.make_validator(mission)
+
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Mission scale recommendation: Ship 'Escort 1' arrival_distance 25001 m" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+        self.assertTrue(
+            any(
+                "Mission scale recommendation: Wing 'Beta' arrival_distance 22000 m" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_distance_and_arrival_distance_at_20km_do_not_warn(self):
+        mission = self.make_valid_mission()
+        mission.jump_nodes = [
+            JumpNode(name="Limit Node", position=[20000.0, 0.0, 0.0])
+        ]
+        mission.ships.append(
+            Ship(
+                name="Escort 1",
+                ship_class="GTC Fenris",
+                team="Friendly",
+                location=[500.0, 0.0, 0.0],
+                arrival_location="In front of ship",
+                arrival_anchor="Player Ship",
+                arrival_distance=20000,
+                arrival_cue="( true )",
+            )
+        )
+
+        validator = self.make_validator(mission)
+
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any("Mission scale recommendation:" in warning for warning in validator.warnings),
+            validator.warnings,
+        )
 
 
 if __name__ == '__main__':
