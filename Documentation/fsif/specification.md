@@ -25,9 +25,6 @@
   - `ai_profile` (String, optional, default: `"FS1 RETAIL"`)
 - `environment` (Mapping, optional):
   - `ambient_light_level` (Integer, optional, default: `0`)
-  - `fog` (Mapping, optional):
-    - `near_mult` (Float, optional, default: `1.0`)
-    - `far_mult` (Float, optional, default: `1.0`)
   - `suns` (List[Mapping], optional, default: `[]`):
     - `texture` (String, required)
     - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
@@ -44,7 +41,6 @@
     - `storm` (String, optional, default: `"s_standard"`)
     - `poofs` (List[String], optional, default: `[]`)
     - `show_backgrounds` (Boolean, optional, default: `false`)
-    - `fog` (Mapping, optional). Overrides top-level `fog`.
   - `asteroid_field` (Mapping, optional):
     - `name` (String, optional, default: `"Field_1"`)
     - `genre` (String, optional, default: `"asteroid"`). Enum: `"asteroid"`, `"debris"`.
@@ -166,7 +162,6 @@
   - Subspace missions: use the "subspace" flag.
 2. environment
   - Angles order is [pitch, bank, heading] in radians.
-  - Nebula precedence: when nebula.enabled is true and nebula.fog is present, it overrides top-level fog for emission.
   - Engine limit: one asteroid/debris field (FRED retail compatibility).
 3. player_setup
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".

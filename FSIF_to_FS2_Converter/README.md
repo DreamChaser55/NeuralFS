@@ -10,7 +10,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Automatic boilerplate generation
 - S-Expression (SEXP) preservation for mission logic
 - Localization of selected player-facing strings via XSTR
-- Environment support (backgrounds, fog, star count, ambient light)
+- Environment support (backgrounds, ambient light)
 - Full nebula (volumetric) support
 - Asteroid/debris fields
 - Jump nodes

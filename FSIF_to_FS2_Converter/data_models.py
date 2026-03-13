@@ -113,7 +113,6 @@ class Nebula(BaseModel):
     pattern: Optional[str] = None
     poofs: List[str] = Field(default_factory=list)
     show_backgrounds: bool = False
-    fog: Optional[Dict[str, float]] = None
 
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -135,7 +134,6 @@ class AsteroidField(BaseModel):
 class Environment(BaseModel):
     model_config = ConfigDict(extra='forbid')
     ambient_light_level: int = 0
-    fog: Dict[str, float] = Field(default_factory=lambda: {'near_mult': 1.0, 'far_mult': 1.0})
     suns: List[Sun] = Field(default_factory=list)
     starbitmaps: List[StarBitmap] = Field(default_factory=list)
     nebula: Nebula = Field(default_factory=Nebula)

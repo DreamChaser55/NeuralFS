@@ -146,23 +146,18 @@ class FS2Writer:
             self._write(f'+NebAwacs: {neb.awacs:.6f}')
             self._write(f'+Storm: {neb.storm}')
 
-        # Fog multipliers
-        fog_near = env.fog.get('near_mult', 1.0)
-        fog_far = env.fog.get('far_mult', 1.0)
-        
-        if neb.enabled and neb.fog:
-             fog_near = neb.fog.get('near_mult', fog_near)
-             fog_far = neb.fog.get('far_mult', fog_far)
-             
-        self._write(f'+Fog Near Mult: {fog_near:.6f}')
-        self._write(f'+Fog Far Mult: {fog_far:.6f}')
+        self._write('+Fog Near Mult: 1.000000')
+        self._write('+Fog Far Mult: 1.000000')
  
         disallow_sup = 1 if info.disallow_support else 0
         self._write(f'+Disallow Support: {disallow_sup}')
+
         self._write('+Hull Repair Ceiling: 0.000000')
         self._write('+Subsystem Repair Ceiling: 100.000000')
+
         self._write('+Viewer pos: 0.000000, 150.000000, -200.000000')
         self._write(f'+Viewer orient:\n{self._format_matrix(DEFAULT_ORIENTATION)}')
+        
         self._write(f'\n$AI Profile: {info.ai_profile}')
 
     def write_fiction_viewer(self):

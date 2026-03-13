@@ -129,8 +129,7 @@ class MissionLoader:
         """
         Parse and validate the 'environment' section.
         
-        Handles normalization of deprecated fields and injection of
-        implied mission flags (e.g. for nebula).
+        Handles injection of implied mission flags (e.g. for nebula).
         
         Args:
             mission_info: MissionInfo object to update with implied flags.
@@ -139,12 +138,11 @@ class MissionLoader:
             Environment: Populated environment object.
         """
         env_data = self.data.get('environment', {})
-        if 'background_bitmaps' in env_data:
-            raise ValueError("environment.background_bitmaps has been removed in FSIF 1.1. Use environment.suns and environment.starbitmaps.")
         
         # Nebula Normalization
         neb_src = env_data.get('nebula')
         if neb_src and isinstance(neb_src, dict):
+
             if neb_src.get('enabled'):
                  if not neb_src.get('pattern'):
                      raise ValueError("environment.nebula.pattern is required when environment.nebula.enabled is true.")
@@ -163,9 +161,6 @@ class MissionLoader:
             env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
-        if 'asteroid_fields' in env_data:
-             raise ValueError("environment.asteroid_fields (plural) has been removed in FSIF 2.0. Use environment.asteroid_field (singular mapping).")
-        
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
             # Logic: genre vs type constraints
