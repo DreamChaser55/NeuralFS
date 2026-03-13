@@ -134,7 +134,6 @@ class AsteroidField(BaseModel):
 
 class Environment(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    star_count: int = 500
     ambient_light_level: int = 0
     fog: Dict[str, float] = Field(default_factory=lambda: {'near_mult': 1.0, 'far_mult': 1.0})
     suns: List[Sun] = Field(default_factory=list)

@@ -17,6 +17,8 @@ class FS2Writer:
         self._brief_icon_id = 1
 
     def _write(self, text: str):
+        if self.file is None:
+            raise RuntimeError("FS2 output file is not open for writing.")
         self.file.write(text + '\n')
 
     def _sanitize_xstr_text(self, text: str) -> str:
@@ -659,7 +661,7 @@ class FS2Writer:
         
         self._write(f'#Background bitmaps\t\t;! {total} total')
         self._write(f'')
-        self._write(f'$Num stars: {env.star_count}')
+        self._write(f'$Num stars: 2000')
         self._write(f'$Ambient light level: {env.ambient_light_level}')
 
         if neb.enabled and neb.pattern:

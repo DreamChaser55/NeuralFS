@@ -24,7 +24,6 @@
   - `disallow_support` (Boolean, optional, default: `false`)
   - `ai_profile` (String, optional, default: `"FS1 RETAIL"`)
 - `environment` (Mapping, optional):
-  - `star_count` (Integer, optional, default: `500`)
   - `ambient_light_level` (Integer, optional, default: `0`)
   - `fog` (Mapping, optional):
     - `near_mult` (Float, optional, default: `1.0`)
