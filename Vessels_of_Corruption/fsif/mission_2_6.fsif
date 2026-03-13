@@ -9,7 +9,6 @@ mission_info:
   flags: ["subspace", "fullneb"]
 
 environment:
-  star_count: 0
   ambient_light_level: 15
   nebula:
     enabled: true

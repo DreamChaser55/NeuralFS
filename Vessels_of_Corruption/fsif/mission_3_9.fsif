@@ -8,7 +8,6 @@ mission_info:
   ai_profile: "FS1 RETAIL"
 
 environment:
-  star_count: 500
   ambient_light_level: 15
   suns:
     - texture: SunSol

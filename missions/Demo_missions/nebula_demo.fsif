@@ -9,7 +9,6 @@ mission_info:
   flags: []
 
 environment:
-  star_count: 200
   ambient_light_level: [5, 5, 5]
   suns: []
   starbitmaps: []

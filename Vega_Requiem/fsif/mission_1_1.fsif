@@ -9,7 +9,6 @@ mission_info:
   flags: []
 
 environment:
-  star_count: 500
   ambient_light_level: 0
   suns:
     - texture: SunWhite
