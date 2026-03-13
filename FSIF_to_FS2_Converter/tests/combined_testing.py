@@ -30,7 +30,7 @@ from mission_loader import load_mission_from_fsif
 from validator import Validator
 
 
-class TestValidatorAscii(unittest.TestCase):
+class CombinedTesting(unittest.TestCase):
     def make_valid_mission(self) -> Mission:
         return Mission(
             mission_info=MissionInfo(name="Test Mission"),
