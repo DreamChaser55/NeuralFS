@@ -13,9 +13,6 @@ mission_info:
 environment:
   star_count: 50
   ambient_light_level: 5
-  fog:
-    near_mult: 0.1
-    far_mult: 0.4
   suns: []
   starbitmaps: []
   nebula:

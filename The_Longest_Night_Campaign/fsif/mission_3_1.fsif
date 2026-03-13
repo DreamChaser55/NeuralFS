@@ -13,9 +13,6 @@ mission_info:
 environment:
   star_count: 500
   ambient_light_level: 10
-  fog:
-    near_mult: 1.0
-    far_mult: 1.0
   suns:
     - texture: SunSol
       angles: [0.0, 0.0, 0.0]

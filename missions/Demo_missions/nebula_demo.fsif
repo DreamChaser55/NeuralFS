@@ -11,9 +11,6 @@ mission_info:
 environment:
   star_count: 200
   ambient_light_level: [5, 5, 5]
-  fog:
-    near_mult: 1.0
-    far_mult: 1.0
   suns: []
   starbitmaps: []
   nebula:
@@ -22,9 +19,6 @@ environment:
     poofs: ["PoofPurp01", "PoofPurp02"]
     storm: "s_medium"
     awacs: 2000.0
-    fog:
-      near_mult: 0.5
-      far_mult: 0.8
     show_backgrounds: false
 
 player_setup:
