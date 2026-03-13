@@ -4,7 +4,6 @@
 import argparse
 import os
 import sys
-import shlex
 import traceback
 from pathlib import Path
 from mission_loader import load_mission_from_fsif
@@ -37,21 +36,17 @@ except (ImportError, ValueError):
 def sanitize_path(arg: str) -> str:
     """
     Conservative path normalization:
-    - Remove one symmetric quote layer if present.
+    - Remove one symmetric outer quote layer if present.
     - Expand ~ and environment variables.
-    - Preserve spaces and valid characters.
+    - Preserve embedded spaces and valid characters.
     - Return a normalized path string appropriate for the current OS.
     """
     if not arg:
         return ""
-    
-    # Use shlex for robust quote handling (non-posix on Windows to preserve backslashes)
-    try:
-        parts = shlex.split(arg, posix=(os.name != 'nt'))
-        p = parts[0] if parts else ""
-    except ValueError:
-        # Fallback if shlex fails (e.g. unclosed quote)
-        p = arg.strip().strip('"').strip("'")
+
+    p = str(arg).strip()
+    if len(p) >= 2 and ((p[0] == '"' and p[-1] == '"') or (p[0] == "'" and p[-1] == "'")):
+        p = p[1:-1]
 
     p = os.path.expandvars(os.path.expanduser(p))
     return str(Path(p))

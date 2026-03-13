@@ -25,6 +25,7 @@ from data_models import (
     pack_ambient_light_rgb,
 )
 from fs2_writer import FS2Writer
+from fsif_to_fs2 import sanitize_path
 from mission_loader import load_mission_from_fsif
 from validator import Validator
 
@@ -320,6 +321,14 @@ environment:
             Environment.model_validate({"ambient_light_level": 657930})
 
         self.assertIn("ambient_light_level must be authored as [red, green, blue]", str(ctx.exception))
+
+    def test_sanitize_path_preserves_spaces(self):
+        raw = 'missions\\ambient light testing\\white.fsif'
+        self.assertEqual(sanitize_path(raw), raw)
+
+    def test_sanitize_path_strips_only_outer_quotes(self):
+        raw = '"missions\\ambient light testing\\white.fsif"'
+        self.assertEqual(sanitize_path(raw), 'missions\\ambient light testing\\white.fsif')
 
 
 if __name__ == '__main__':
