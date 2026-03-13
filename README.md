@@ -6,11 +6,13 @@
 
 NeuralFS is an AI agent framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three Roo Code/Kilo Code editor agents (LLM modes with a custom system prompt) and two specialized Python conversion scripts.
 
-## FreeSpace Creative Writing Agent
+## Main Components
+
+### FreeSpace Creative Writing Agent
 
 This agent brainstorms and iteratively writes the campaign description in natural language, beginning with a basic idea, then writing a comprehensive reference document, plot outline and ending with detailed mission plans (scenarios).
 
-## FSIF+FCIF Writing Agent
+### FSIF+FCIF Writing Agent
 
 This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: FreeSpace Intermediate File (FSIF). This format is much more concise than '.fs2' (the mission file format expected by FSO). FS2 files tend to be large, with a lot of redundant fields and boilerplate. An AI agent directly creating the '.fs2' file would waste a lot of tokens and could quickly fill up the context window. YAML is also much more common in the LLM training data than '.fs2' files. This is why we need a more concise and compact intermediate format.
 
@@ -18,7 +20,7 @@ The agent also writes the campaign definition file in a custom FreeSpace Campaig
 
 This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script.
 
-## FSIF to FS2 Converter
+### FSIF to FS2 Converter
 
 A Python script then takes the intermediate FSIF representation of a mission and converts it into the FS2 format expected by FSO. During the conversion, the FSIF representation is extensively validated; if any errors are found, actionable error messages are printed to the console, so the AI agent can fix them and try again.
 
@@ -28,7 +30,7 @@ If provided with Google Gemini or ElevenLabs API key, the Converter script can o
 
 For details, see `\FSIF_to_FS2_Converter\README.md`.
 
-## FCIF to FC2 Converter
+### FCIF to FC2 Converter
 
 A separate Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
 The converter validates the FCIF input using Pydantic, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
@@ -37,7 +39,7 @@ This converter script also has both interfaces: CLI suitable for use by AI agent
 
 For details, see `\FCIF_to_FC2_Converter\README.md`.
 
-## FSIF+FCIF Converting Agent
+### FSIF+FCIF Converting Agent
 
 This agent automates the final step of the pipeline: generating the game-ready `.fs2` and `.fc2` files. It iteratively runs the FSIF to FS2 Converter on all `.fsif` mission files and the FCIF to FC2 Converter on the `.fcif` campaign file. If the converters report any errors, this agent autonomously analyzes the source files, applies the necessary fixes, and retries the conversion until all files are valid and successfully converted.
 
