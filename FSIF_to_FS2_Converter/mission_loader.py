@@ -20,6 +20,7 @@ class MissionLoader:
     def __init__(self, fsif_path: str):
         self.fsif_path = Path(fsif_path)
         self.data: Dict[str, Any] = {}
+        self.fsif_version: Optional[str] = None
         
         # Intermediate state
         self.templates: Dict[str, Any] = {}
@@ -84,17 +85,21 @@ class MissionLoader:
         """
         Validate the 'fsif_version' field.
         
-        Currently accepted FSIF version: '2.5' only.
+        Currently accepted FSIF version: '2.6'.
         
         Raises:
             ValueError: If 'fsif_version' is missing, malformed, or unsupported.
         """
         version_str = self.data.get('fsif_version')
         if not isinstance(version_str, str) or not version_str.strip():
-            raise ValueError("fsif_version is required and must be the exact string '2.5'.")
+            raise ValueError("fsif_version is required and must be the exact string '2.6'.")
         version_str = version_str.strip()
-        if version_str != '2.5':
-            raise ValueError(f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.5' only. Please update your mission file (see Migration Guide).")
+        if version_str != '2.6':
+            raise ValueError(
+                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.6' only. "
+                f"Please update your mission file (see Migration Guide)."
+            )
+        self.fsif_version = version_str
 
     def _check_required_sections(self):
         required = ['mission_info', 'player_setup', 'entities', 'mission_flow']
@@ -138,6 +143,13 @@ class MissionLoader:
             Environment: Populated environment object.
         """
         env_data = self.data.get('environment', {})
+
+        ambient_light_level = env_data.get('ambient_light_level')
+        if isinstance(ambient_light_level, int) and not isinstance(ambient_light_level, bool):
+            raise ValueError(
+                "FSIF 2.6 requires environment.ambient_light_level to be authored as [red, green, blue], "
+                "not as a packed integer."
+            )
         
         # Nebula Normalization
         neb_src = env_data.get('nebula')

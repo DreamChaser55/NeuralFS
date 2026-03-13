@@ -2,7 +2,7 @@
 # Writes the hydrated Mission object to a valid.fs2 file.
 
 import textwrap
-from data_models import Mission, DEFAULT_ORIENTATION, DEFAULT_KAMIKAZE_DAMAGE
+from data_models import Mission, DEFAULT_ORIENTATION, DEFAULT_KAMIKAZE_DAMAGE, pack_ambient_light_rgb
 import fs_flags_constants
 import fs_data
 import math
@@ -657,7 +657,8 @@ class FS2Writer:
         self._write(f'#Background bitmaps\t\t;! {total} total')
         self._write(f'')
         self._write(f'$Num stars: 2000')
-        self._write(f'$Ambient light level: {env.ambient_light_level}')
+        packed_ambient_light = pack_ambient_light_rgb(env.ambient_light_level)
+        self._write(f'$Ambient light level: {packed_ambient_light}')
 
         if neb.enabled and neb.pattern:
             self._write('')

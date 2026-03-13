@@ -22,6 +22,7 @@ from data_models import (
     BriefingStage,
     JumpNode,
     Wing,
+    pack_ambient_light_rgb,
 )
 from fs2_writer import FS2Writer
 from mission_loader import load_mission_from_fsif
@@ -201,85 +202,6 @@ class TestValidatorAscii(unittest.TestCase):
             validator.warnings,
         )
 
-    def test_loader_rejects_removed_environment_fog(self):
-        fsif_text = """fsif_version: \"2.5\"
-
-mission_info:
-  name: "Fog Legacy"
-
-environment:
-  fog:
-    near_mult: 0.5
-    far_mult: 0.8
-
-player_setup:
-  start_ship: "Player Ship"
-
-entities:
-  ships:
-    - name: "Player Ship"
-      class: "GTF Ulysses"
-      team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: |
-        ( true )
-      weapons:
-        primary: ["Avenger", "Avenger"]
-        secondary: ["MX-50"]
-
-mission_flow: {}
-"""
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fsif_path = Path(tmpdir) / "legacy_env_fog.fsif"
-            fsif_path.write_text(fsif_text, encoding="utf-8")
-
-            with self.assertRaises(ValueError) as ctx:
-                load_mission_from_fsif(str(fsif_path))
-
-        self.assertIn("environment.fog has been removed from FSIF", str(ctx.exception))
-
-    def test_loader_rejects_removed_nebula_fog(self):
-        fsif_text = """fsif_version: \"2.5\"
-
-mission_info:
-  name: "Nebula Fog Legacy"
-
-environment:
-  nebula:
-    enabled: true
-    pattern: "nbackblue1"
-    fog:
-      near_mult: 0.5
-      far_mult: 0.8
-
-player_setup:
-  start_ship: "Player Ship"
-
-entities:
-  ships:
-    - name: "Player Ship"
-      class: "GTF Ulysses"
-      team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: |
-        ( true )
-      weapons:
-        primary: ["Avenger", "Avenger"]
-        secondary: ["MX-50"]
-
-mission_flow: {}
-"""
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fsif_path = Path(tmpdir) / "legacy_nebula_fog.fsif"
-            fsif_path.write_text(fsif_text, encoding="utf-8")
-
-            with self.assertRaises(ValueError) as ctx:
-                load_mission_from_fsif(str(fsif_path))
-
-        self.assertIn("environment.nebula.fog has been removed from FSIF", str(ctx.exception))
-
     def test_writer_always_emits_fixed_fog_multipliers(self):
         mission = self.make_valid_mission()
 
@@ -291,6 +213,113 @@ mission_flow: {}
 
         self.assertIn("+Fog Near Mult: 1.000000", content)
         self.assertIn("+Fog Far Mult: 1.000000", content)
+
+    def test_pack_ambient_light_rgb_helper(self):
+        self.assertEqual(pack_ambient_light_rgb([0, 0, 0]), 0)
+        self.assertEqual(pack_ambient_light_rgb([10, 10, 10]), 657930)
+        self.assertEqual(pack_ambient_light_rgb([255, 255, 255]), 16777215)
+
+    def test_writer_packs_rgb_ambient_light_into_fs2_integer(self):
+        mission = self.make_valid_mission()
+        mission.environment = Environment(ambient_light_level=[10, 10, 10])
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "mission.fs2"
+            writer = FS2Writer(mission, str(output_path))
+            writer.write_mission()
+            content = output_path.read_text(encoding="utf-8")
+
+        self.assertIn("$Ambient light level: 657930", content)
+
+    def test_loader_rejects_fsif_25(self):
+        fsif_text = """fsif_version: \"2.5\"
+
+mission_info:
+  name: "Legacy Mission"
+
+player_setup:
+  start_ship: "Player Ship"
+
+entities:
+  ships:
+    - name: "Player Ship"
+      class: "GTF Ulysses"
+      team: "Friendly"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
+
+mission_flow: {}
+
+environment:
+  ambient_light_level: 657930
+"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fsif_path = Path(tmpdir) / "legacy_version.fsif"
+            fsif_path.write_text(fsif_text, encoding="utf-8")
+
+            with self.assertRaises(ValueError) as ctx:
+                load_mission_from_fsif(str(fsif_path))
+
+        self.assertIn("accepts FSIF version '2.6' only", str(ctx.exception))
+
+    def test_loader_rejects_packed_ambient_light_in_fsif_26(self):
+        fsif_text = """fsif_version: \"2.6\"
+
+mission_info:
+  name: "Invalid Ambient"
+
+player_setup:
+  start_ship: "Player Ship"
+
+entities:
+  ships:
+    - name: "Player Ship"
+      class: "GTF Ulysses"
+      team: "Friendly"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
+
+mission_flow: {}
+
+environment:
+  ambient_light_level: 10
+"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fsif_path = Path(tmpdir) / "invalid_ambient_26.fsif"
+            fsif_path.write_text(fsif_text, encoding="utf-8")
+
+            with self.assertRaises(ValueError) as ctx:
+                load_mission_from_fsif(str(fsif_path))
+
+        self.assertIn("FSIF 2.6 requires environment.ambient_light_level to be authored as [red, green, blue]", str(ctx.exception))
+
+    def test_environment_rejects_invalid_rgb_channel_range(self):
+        with self.assertRaises(ValueError) as ctx:
+            Environment(ambient_light_level=[256, 0, 0])
+
+        self.assertIn("out of range 0..255", str(ctx.exception))
+
+    def test_environment_rejects_invalid_rgb_shape(self):
+        with self.assertRaises(ValueError) as ctx:
+            Environment(ambient_light_level=[10, 10])
+
+        self.assertIn("3-item RGB list", str(ctx.exception))
+
+    def test_environment_rejects_packed_integer_input(self):
+        with self.assertRaises(ValueError) as ctx:
+            Environment.model_validate({"ambient_light_level": 657930})
+
+        self.assertIn("ambient_light_level must be authored as [red, green, blue]", str(ctx.exception))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 2.5 (current)
+- FSIF version: 2.6 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,7 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"2.5"`.
+- `fsif_version` (String, required): Must be `"2.6"`.
 - `fiction_viewer` (String, optional): Filename of the text file to display (e.g., `"story.txt"`).
 - `mission_info` (Mapping, required):
   - `name` (String, required)
@@ -24,7 +24,7 @@
   - `disallow_support` (Boolean, optional, default: `false`)
   - `ai_profile` (String, optional, default: `"FS1 RETAIL"`)
 - `environment` (Mapping, optional):
-  - `ambient_light_level` (Integer, optional, default: `0`)
+  - `ambient_light_level` (List[Integer], optional, default: `[0, 0, 0]`). Format: `[red, green, blue]`, each channel `0..255`.
   - `suns` (List[Mapping], optional, default: `[]`):
     - `texture` (String, required)
     - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
@@ -161,6 +161,7 @@
   - Flags are authored as names; converter maps to numeric +Flags. Unknown flags ignored (warning). Use flags_mask to OR a raw bitmask.
   - Subspace missions: use the "subspace" flag.
 2. environment
+  - ambient_light_level is authored as `[red, green, blue]` with integer channels in range `0..255`.
   - Angles order is [pitch, bank, heading] in radians.
   - Engine limit: one asteroid/debris field (FRED retail compatibility).
 3. player_setup

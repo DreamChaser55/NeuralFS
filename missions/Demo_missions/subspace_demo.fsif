@@ -1,4 +1,4 @@
-fsif_version: "2.5"
+fsif_version: "2.6"
 
 mission_info:
   name: "Subspace Dash"
@@ -10,7 +10,7 @@ mission_info:
 
 environment:
   star_count: 0
-  ambient_light_level: 20
+  ambient_light_level: [20, 20, 20]
   fog:
     near_mult: 1.0
     far_mult: 1.0

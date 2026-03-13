@@ -9,7 +9,7 @@ Purpose
 
 ## Current behavior
 
-Environment: backgrounds and full nebula are emitted to .fs2. FSIF 1.1 uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. The star_count, ambient_light_level, and asteroid_field are also written. FSIF 1.2 adds environment.nebula authoring; when environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background bitmaps (0 total) unless `fullneb_background_bitmaps` is set in mission_info.flags or nebula.show_backgrounds is true.
+Environment: backgrounds and full nebula are emitted to .fs2. FSIF 1.1 uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored in FSIF 2.6 as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. FSIF 1.2 adds environment.nebula authoring; when environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background bitmaps (0 total) unless `fullneb_background_bitmaps` is set in mission_info.flags or nebula.show_backgrounds is true.
 
 Fiction Viewer: if the top-level `fiction_viewer` field is present, the converter emits `#Fiction Viewer` with `$File: <filename>`.
 
@@ -59,7 +59,8 @@ Subspace missions: Author "subspace" in mission_info.flags to mark a mission as 
 
 Versioning:
 - The converter currently emits `$Version: 23.1` in `#Mission Info`. This is the FSO version NeuralFS was developed against.
-- **FSIF input support:** the converter accepts FSIF version `"2.5"` only. Files authored against earlier FSIF versions must be updated to FSIF 2.5 before conversion; see the FSIF Migration Guide.
+- **FSIF input support:** the converter accepts FSIF version `"2.6"` only.
+  - Files authored against older FSIF versions must be updated before conversion; see the FSIF Migration Guide.
 
 ---
 
@@ -240,6 +241,7 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 ## Environment emission notes (summary)
 
 - Fog: always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`; FSIF no longer exposes fog authoring fields.
+- Ambient light: internally normalized to `[red, green, blue]` and emitted into `$Ambient light level` as the packed FS2 integer.
 - Backgrounds: all `$Sun` entries first, then `$Starbitmap` entries; `+Flags` includes "corrected angles".
 - Nebula: when enabled, `+NebAwacs`, `+Storm`, `+Neb2`, optionally `+Neb2 Poofs List`.
 - Full nebula results in background suppression unless explicitly allowed via mission flag `fullneb_background_bitmaps` or `nebula.show_backgrounds: true`.

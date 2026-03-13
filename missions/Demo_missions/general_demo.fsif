@@ -1,4 +1,4 @@
-fsif_version: "2.5"
+fsif_version: "2.6"
 
 fiction_viewer: "story.txt"
 
@@ -13,7 +13,7 @@ mission_info:
 
 environment:
   star_count: 700
-  ambient_light_level: 10
+  ambient_light_level: [10, 10, 10]
   fog: { near_mult: 1.0, far_mult: 1.0 }
   suns:
     - { texture: SunWhite, angles: [0.000000, 0.000000, 0.523599], scale: 1.5 }

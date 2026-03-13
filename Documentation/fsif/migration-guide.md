@@ -1,11 +1,40 @@
-# FSIF Migration Guide (1.0 → ... → 2.5)
+# FSIF Migration Guide (1.0 → ... → 2.6)
 
 Purpose
 - Practical, snippet-led instructions to update existing FSIF files to the latest spec and converter expectations.
 - Covers breaking changes and notable behavior shifts.
 
 Status
-- Current FSIF version: 2.5. The converter accepts FSIF 2.5 only at runtime; use this guide to update older FSIF files (1.0–2.4) to the 2.5 schema before converting.
+- Current FSIF version: 2.6. The converter accepts FSIF 2.6 only; use this guide to update older FSIF files to the 2.6 schema before converting.
+
+FSIF 2.6: ambient_light_level changed from packed integer to RGB list (breaking)
+
+Change
+- The `environment.ambient_light_level` field is now authored as a standard RGB triplet instead of a packed integer.
+- New syntax: `[red, green, blue]`, with each channel in range `0..255`.
+- This makes the field match how ambient light is exposed in FRED and how authors naturally think about color.
+
+Migration guidance
+- Replace any integer `ambient_light_level` values with a 3-item list.
+- If the old integer was intended as a neutral brightness value, migrate it to equal RGB channels. For example:
+  - `10` → `[10, 10, 10]`
+  - `5` → `[5, 5, 5]`
+  - `20` → `[20, 20, 20]`
+- Bump `fsif_version` to `"2.6"`.
+
+Before (2.5)
+```yaml
+environment:
+  ambient_light_level: 10
+```
+
+After (2.6)
+```yaml
+environment:
+  ambient_light_level: [10, 10, 10]
+```
+
+---
 
 FSIF 2.5: weapon_pool removed, automatically calculated (breaking)
 

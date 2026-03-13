@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "2.5"
+fsif_version: "2.6"
 
 mission_info:
   name: "Minimal Mission"
@@ -44,7 +44,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "2.5"
+fsif_version: "2.6"
 
 mission_info:
   name: "Mission name string"
@@ -55,7 +55,7 @@ mission_info:
   ai_profile: "FS1 RETAIL"
 
 environment:
-  ambient_light_level: 0
+  ambient_light_level: [0, 0, 0]
   suns: []
   starbitmaps: []
   nebula:
@@ -128,7 +128,7 @@ Notes:
 Author background suns and starbitmaps; full nebula is a separate feature and suppresses background bitmaps unless allowed.
 ```yaml
 environment:
-  ambient_light_level: 0
+  ambient_light_level: [0, 0, 0]
   suns:
     - texture: SunWhite
       angles: [0.000000, 0.000000, 0.000000]
@@ -147,8 +147,8 @@ environment:
       div: { x: 1, y: 1 }
 ```
 Notes
+- `ambient_light_level` is authored as `[red, green, blue]`, with each channel in range `0..255`.
 - angles are [pitch, bank, heading] in radians.
-- Fog is no longer authored in FSIF. The converter always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in the generated `.fs2` file.
 - **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view. The converter validator will emit a warning if `[0, 0, 0]` sun angles are detected.
 - For full (volumetric) nebula authoring fields, see spec; emission details are in Converter Implementation Details.
 
@@ -476,7 +476,7 @@ Use ASCII replacements when needed:
 If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
 
 Authoring checklist
-- Use FSIF version: "2.5"
+- Use FSIF version: "2.6"
 - player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
 - Unlike Ships, Wings **must** use a template.
 

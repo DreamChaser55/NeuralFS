@@ -36,6 +36,7 @@ def _normalize_orientation(v: Any) -> List[float]:
             0.0, 1.0, 0.0,
             0.0, 0.0, 1.0
         ]
+
     # Handle nested lists if necessary, though typical input is flat or nested
     flat = []
     try:
@@ -44,7 +45,7 @@ def _normalize_orientation(v: Any) -> List[float]:
                  flat.extend(row)
         else:
              flat = list(v)
-        
+
         if len(flat) < 9:
              return [
                 1.0, 0.0, 0.0,
@@ -58,6 +59,39 @@ def _normalize_orientation(v: Any) -> List[float]:
             0.0, 1.0, 0.0,
             0.0, 0.0, 1.0
         ]
+
+
+def _normalize_ambient_light_rgb(v: Any) -> List[int]:
+    """Ensure ambient light is a 3-element RGB list with 0-255 integer channels."""
+    if v is None:
+        return [0, 0, 0]
+
+    if isinstance(v, (list, tuple)):
+        if len(v) != 3:
+            raise ValueError("ambient_light_level must be a 3-item RGB list: [red, green, blue].")
+
+        rgb = []
+        channel_names = ('red', 'green', 'blue')
+        for idx, item in enumerate(v):
+            if isinstance(item, bool) or not isinstance(item, int):
+                raise ValueError(
+                    f"ambient_light_level {channel_names[idx]} channel must be an integer in range 0..255."
+                )
+            if not 0 <= item <= 255:
+                raise ValueError(
+                    f"ambient_light_level {channel_names[idx]} channel {item} is out of range 0..255."
+                )
+            rgb.append(int(item))
+
+        return rgb
+
+    raise ValueError("ambient_light_level must be authored as [red, green, blue].")
+
+
+def pack_ambient_light_rgb(rgb: Any) -> int:
+    """Convert [red, green, blue] into the packed FS2 ambient-light integer."""
+    red, green, blue = _normalize_ambient_light_rgb(rgb)
+    return red | (green << 8) | (blue << 16)
 
 # --- Sub-Component Models ---
 
@@ -133,11 +167,16 @@ class AsteroidField(BaseModel):
 
 class Environment(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    ambient_light_level: int = 0
+    ambient_light_level: List[int] = Field(default_factory=lambda: [0, 0, 0])
     suns: List[Sun] = Field(default_factory=list)
     starbitmaps: List[StarBitmap] = Field(default_factory=list)
     nebula: Nebula = Field(default_factory=Nebula)
     asteroid_field: Optional[AsteroidField] = None
+
+    @field_validator('ambient_light_level', mode='before')
+    @classmethod
+    def validate_ambient_light_level(cls, v):
+        return _normalize_ambient_light_rgb(v)
 
 class MissionInfo(BaseModel):
     model_config = ConfigDict(extra='forbid')
