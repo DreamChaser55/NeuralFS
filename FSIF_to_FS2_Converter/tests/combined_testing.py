@@ -13,6 +13,7 @@ if str(_parent_dir) not in sys.path:
 
 from data_models import (
     Mission,
+    Message,
     MissionInfo,
     PlayerSetup,
     Environment,
@@ -28,6 +29,7 @@ from fs2_writer import FS2Writer
 from fsif_to_fs2 import sanitize_path
 from mission_loader import load_mission_from_fsif
 from validator import Validator
+from voice_manager import VoiceManager
 
 
 class CombinedTesting(unittest.TestCase):
@@ -329,6 +331,110 @@ environment:
     def test_sanitize_path_strips_only_outer_quotes(self):
         raw = '"missions\\ambient light testing\\white.fsif"'
         self.assertEqual(sanitize_path(raw), 'missions\\ambient light testing\\white.fsif')
+
+
+class VoiceManagerTesting(unittest.TestCase):
+    def setUp(self):
+        self.mission = Mission(
+            mission_info=MissionInfo(name="Test Mission"),
+            player_setup=PlayerSetup(extra_ships=[]),
+            environment=Environment(),
+        )
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.fsif_path = Path(self.temp_dir.name) / "dummy.fsif"
+        self.tts_settings = {"mode": "unique"}
+
+    def tearDown(self):
+        self.temp_dir.cleanup()
+
+    def test_determinism(self):
+        """Test that re-running with same input produces same filenames (determinism)."""
+        self.mission.messages = [
+            Message(name="Alpha", message="Msg 1", voice_name="Voice1"),
+            Message(name="Alpha", message="Msg 2", voice_name="Voice1"),
+            Message(name="Alpha", message="Msg 3", voice_name="Voice1"),
+        ]
+
+        vm1 = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm1.process()
+        filenames1 = [m.voice_filename for m in self.mission.messages]
+
+        for m in self.mission.messages:
+            m.voice_filename = None
+
+        vm2 = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm2.process()
+        filenames2 = [m.voice_filename for m in self.mission.messages]
+
+        self.assertEqual(filenames1, filenames2, "Filenames should be deterministic across runs")
+        self.assertEqual(filenames1, ["alpha.wav", "alpha_1.wav", "alpha_2.wav"])
+
+    def test_length_limit_simple(self):
+        """Test strict truncation to 25 chars for stem."""
+        long_name = "this_is_a_very_long_name_that_exceeds_limit"
+        self.mission.messages = [
+            Message(name=long_name, message="Msg", voice_name="Voice1")
+        ]
+
+        vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm.process()
+
+        fname = self.mission.messages[0].voice_filename
+        self.assertTrue(len(fname) <= 29, f"Filename '{fname}' exceeds 29 chars")
+        self.assertTrue(fname.endswith(".wav"))
+        self.assertEqual(fname, "this_is_a_very_long_name_.wav")
+
+    def test_length_limit_collision(self):
+        """Test truncation when suffix is added."""
+        long_name = "this_is_a_very_long_name_that_exceeds_limit"
+        self.mission.messages = [
+            Message(name=long_name, message="Msg 1", voice_name="Voice1"),
+            Message(name=long_name, message="Msg 2", voice_name="Voice1"),
+            Message(name=long_name, message="Msg 3", voice_name="Voice1"),
+        ]
+
+        vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm.process()
+
+        fnames = [m.voice_filename for m in self.mission.messages]
+
+        for fn in fnames:
+            self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
+
+        self.assertEqual(fnames[0], "this_is_a_very_long_name_.wav")
+        self.assertEqual(fnames[1], "this_is_a_very_long_nam_1.wav")
+        self.assertEqual(fnames[2], "this_is_a_very_long_nam_2.wav")
+
+    def test_extreme_suffix(self):
+        """Test logic with longer suffixes (e.g. _10)."""
+        long_name = "test_limit"
+        msgs = [
+            Message(name=long_name, message=f"Msg {i}", voice_name="Voice1")
+            for i in range(12)
+        ]
+
+        self.mission.messages = msgs
+        vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm.process()
+
+        self.assertEqual(msgs[11].voice_filename, "test_limit_11.wav")
+
+        vlong = "aaaaaaaaaaaaaaaaaaaaaaaaa"
+        msgs = [
+            Message(name=vlong, message=f"Msg {i}", voice_name="Voice1")
+            for i in range(12)
+        ]
+
+        self.mission.messages = msgs
+        vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
+        vm.process()
+
+        self.assertEqual(msgs[0].voice_filename, "a" * 25 + ".wav")
+        self.assertEqual(msgs[1].voice_filename, "a" * 23 + "_1.wav")
+        self.assertEqual(msgs[10].voice_filename, "a" * 22 + "_10.wav")
+
+        for fn in [m.voice_filename for m in msgs]:
+            self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
 
 
 if __name__ == '__main__':
