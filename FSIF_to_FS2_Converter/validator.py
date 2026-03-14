@@ -468,6 +468,7 @@ class Validator:
         limit_km = limit_m / 1000.0
 
         positioned_objects = []
+        distance_violations = []
 
         wing_member_names: Set[str] = set()
         for wing in self.mission.wings:
@@ -506,12 +507,21 @@ class Validator:
                 distance_m = math.sqrt(dx * dx + dy * dy + dz * dz)
 
                 if distance_m > limit_m:
-                    self.log_warning(
-                        f"Mission scale recommendation: distance between {kind_a} '{name_a}' and "
-                        f"{kind_b} '{name_b}' is {distance_m:.1f} m ({distance_m / 1000.0:.1f} km), "
-                        f"which exceeds the recommended maximum of {limit_km:.1f} km. "
-                        f"Keep points of interest within 20 km to avoid long travel times."
-                    )
+                    distance_violations.append((kind_a, name_a, kind_b, name_b, distance_m))
+
+        if distance_violations:
+            distance_violations.sort(key=lambda item: (item[0], item[1], item[2], item[3]))
+            violation_lines = [
+                f"    - {kind_a} '{name_a}' <-> {kind_b} '{name_b}': "
+                f"{distance_m / 1000.0:.1f} km"
+                for kind_a, name_a, kind_b, name_b, distance_m in distance_violations
+            ]
+            self.log_warning(
+                f"Mission scale recommendation: {len(distance_violations)} object pair(s) exceed the "
+                f"recommended maximum distance of {limit_km:.1f} km. Keep points of interest within 20 km "
+                f"to avoid long travel times.\n"
+                + "\n".join(violation_lines)
+            )
 
         def check_arrival_distance(context: str, arrival_anchor: Optional[str], arrival_distance: Optional[int]):
             if not arrival_anchor or arrival_distance is None:
