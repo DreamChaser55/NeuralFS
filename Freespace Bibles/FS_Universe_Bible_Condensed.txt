@@ -177,3 +177,6 @@ Altair	Aldebaran	Site of Ancient ruins.
 Capella	Vega, Gamma Draconis	Key system in FS2.
 
 Note on Inconsistencies: Mission dialogue implies the existence of unstable "jump corridors" not on official maps, such as Deneb-Altair (used for Ancient artifacts) and Sirius-Delta Serpentis (used by the Lucifer). These are considered unstable nodes used only in desperation or by Shivan advanced drives.
+
+## Mission scale:
+Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.

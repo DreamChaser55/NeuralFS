@@ -218,6 +218,9 @@ Enemy Shivan wing names: Brahma, Vishnu, Durga, Rama, Krishna, Indra, Arjuna, De
 
 In most missions, the Player is the leader of Alpha wing (Alpha 1), but there are exceptions.
 
+Mission scale:
+Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
+
 Terran spacecraft classes
 
 	Fighters (prefix GTF)
