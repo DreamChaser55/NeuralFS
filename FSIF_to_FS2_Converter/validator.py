@@ -439,6 +439,22 @@ class Validator:
             if s.texture not in self.allowed_backgrounds:
                  self.log_error(f"Invalid starbitmap texture '{s.texture}' in environment.starbitmaps[{i}]")
 
+        # Sparse normal-space background advisory
+        mission_flags_lower = {str(flag).strip().lower() for flag in self.mission.mission_info.flags}
+        is_subspace_mission = 'subspace' in mission_flags_lower
+        is_full_nebula_mission = bool(env.nebula and env.nebula.enabled)
+
+        if not is_subspace_mission and not is_full_nebula_mission:
+            background_nebula_count = sum(
+                1 for bitmap in env.starbitmaps if bitmap.texture in self.allowed_nebulae_bitmaps
+            )
+            if background_nebula_count < 3:
+                self.log_warning(
+                    f"This mission has only {background_nebula_count} background nebula "
+                    f"starbitmap(s). Good-looking missions usually include at least 3. "
+                    f"Consider adding more background nebulae so the sky does not look too empty."
+                )
+
         # Nebula
         if env.nebula.enabled:
             if env.nebula.pattern and env.nebula.pattern not in self.allowed_nebula_patterns:
