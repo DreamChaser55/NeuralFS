@@ -461,7 +461,7 @@ class Validator:
 
         This is an advisory mission-design check only. It does not fail validation.
         It covers:
-        - distances between positioned mission objects (ships, jump nodes, waypoint points)
+        - distances between positioned mission objects (standalone ships, wing centroids, jump nodes, waypoint points)
         - authored arrival_distance values on ships and wings that reference an arrival_anchor
         """
         limit_m = self._MISSION_SCALE_RECOMMENDATION_METERS
@@ -469,8 +469,24 @@ class Validator:
 
         positioned_objects = []
 
+        wing_member_names: Set[str] = set()
+        for wing in self.mission.wings:
+            for ship in wing.ships:
+                wing_member_names.add(ship.name)
+
         for ship in self.mission.ships:
+            if ship.name in wing_member_names:
+                continue
             positioned_objects.append(("Ship", ship.name, ship.location))
+
+        for wing in self.mission.wings:
+            wing_position = wing.position
+            if wing_position is None and wing.ships:
+                # Defensive fallback: use the leader position if the authored wing centroid is unexpectedly unavailable.
+                wing_position = wing.ships[0].location
+
+            if wing_position is not None:
+                positioned_objects.append(("Wing", wing.name, wing_position))
 
         for jump_node in self.mission.jump_nodes:
             positioned_objects.append(("Jump Node", jump_node.name, jump_node.position))
