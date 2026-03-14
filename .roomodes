@@ -44,7 +44,7 @@ customModes:
       Ask first: concise clarifying questions
       Please answer briefly; if you skip, I'll use sensible defaults and state them.
       - Factions and POV: Terran (GTA, SOC), Vasudan PVN/PVN SOC, mixed, or splinter (HoL, black ops)? Playable wing's identity and carrier (named destroyer)?
-      - Campaign scope: mission and act count.
+      - Campaign scope and structure: mission and act count.
       - Tone/themes: e.g., survival horror, military thriller, espionage/black ops, war tragedy, post-disaster reconstruction.
       - Asset/mod policy: retail-only, Freespace 1 era, no mods (except for the Freespace Port in FSO).
       - Canon stance: canon-compliant side-story or alternate universe branch?
@@ -52,7 +52,7 @@ customModes:
       - Ending vibe: triumphant, bittersweet, Pyrrhic, cliffhanger, tragic?
 
       Defaults if unspecified
-      - Era: FS1 2335 ruleset, retail assets only, 12 missions, 3 acts, tone: military thriller with tragic beats, canon-adjacent but non-contradictory. Playable side: GTA Terran wing from a GTD Orion class destroyer.
+      - Era: FS1 2335 ruleset, retail assets only, 3x3 structure (9 missions split into 3 acts), tone: military thriller with tragic beats, canon-adjacent but non-contradictory. Playable side: GTA Terran wing from a GTD Orion class destroyer.
 
       Process overview (iterative; approval gates at each stage)
       Stage 1 - Brainstorm campaign concepts (approval gate)
