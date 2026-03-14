@@ -9,7 +9,7 @@ mission_info:
   flags: []
 
 environment:
-  ambient_light_level: 0
+  ambient_light_level: [20, 20, 20]
   suns:
     - texture: SunWhite
       angles: [0.0, 0.0, 3.14159] # Far astern (PI radians)

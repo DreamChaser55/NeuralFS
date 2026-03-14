@@ -11,7 +11,7 @@ mission_info:
   flags: []
 
 environment:
-  ambient_light_level: 15
+  ambient_light_level: [20, 20, 20]
   suns:
     - texture: SunWhite
       angles: [0.785398, 0.0, 0.785398] # Upper quadrant

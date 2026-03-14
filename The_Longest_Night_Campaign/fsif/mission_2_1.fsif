@@ -11,7 +11,7 @@ mission_info:
   ai_profile: "FS1 RETAIL"
 
 environment:
-  ambient_light_level: 5
+  ambient_light_level: [20, 20, 20]
   suns: []
   starbitmaps: []
   nebula:

@@ -9,7 +9,7 @@ mission_info:
   flags: ["subspace", "fullneb"]
 
 environment:
-  ambient_light_level: 15
+  ambient_light_level: [20, 20, 20]
   nebula:
     enabled: true
     pattern: "nbackred"

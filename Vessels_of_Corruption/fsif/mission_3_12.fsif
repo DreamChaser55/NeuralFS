@@ -11,7 +11,7 @@ mission_info:
   flags: ["subspace", "fullneb"]
 
 environment:
-  ambient_light_level: 40
+  ambient_light_level: [20, 20, 20]
   nebula:
     enabled: true
     pattern: "nbackpurp2"
