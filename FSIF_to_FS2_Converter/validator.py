@@ -338,6 +338,7 @@ class Validator:
         self.validate_briefing_text_styling_scope()
         self.validate_sexps()
         self.validate_audio()
+        self.validate_goals_and_directives()
 
         # Validate SEXP scalar styles (YAML block format check)
         if self.fsif_path:
@@ -1203,3 +1204,20 @@ class Validator:
             if not t: continue
             if len(t) >= 30:
                 self.log_error(f"SEXP error: {context}: Token '{t[:15]}...' length {len(t)} exceeds limit (<30).")
+
+    def validate_goals_and_directives(self):
+        """
+        Warn if the number of events with directive_text is less than the number of goals.
+        """
+        num_goals = len(self.mission.goals)
+        if num_goals == 0:
+            return
+
+        num_directives = sum(1 for event in self.mission.events if event.directive_text)
+
+        if num_directives < num_goals:
+            self.log_warning(
+                f"Mission has {num_goals} goal(s) but only {num_directives} event(s) with a directive_text. "
+                f"It is highly recommended that every important mission goal has a corresponding "
+                f"event with a directive_text so that the objective is visible on the player's HUD."
+            )
