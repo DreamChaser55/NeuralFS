@@ -576,9 +576,18 @@ The converter initially performs basic structural checks on all SEXP formulas (E
 ## Advanced SEXP Validation
 The converter also checks all SEXPs with the Advanced SEXP Validator, which parses them and checks them against a set of FSO engine rules, returning actionable warning/error messages if any errors are found.
 
+## Using the escort flag (monitoring list)
+The `escort` ship flag adds the ship to the player's HUD monitoring list, displaying its hull integrity at all times. Despite the name, this feature should be used for **any ship of interest that needs to be monitored**, not just friendly escorted ships.
+
+You should use the `escort` flag for:
+- Friendly ships that the player needs to protect.
+- Important enemy ships whose status the player needs to track (e.g., a fleeing enemy transport or a capital ship that must be destroyed).
+- Any key mission-critical object where constant visibility of its health is beneficial to the player.
+
+*Note: Maintain escort list hygiene. Flag only the most important ships to prevent cluttering the HUD. If you have multiple escorted ships, you can use the `escort_priority` property to control their display order.*
+
 ## Best practices
 - Use templates for repeated ships and wings; avoid repeating class/team/weapon configs.
-- Escort list hygiene: only flag important ships with "escort"; set priorities to keep the HUD useful.
 - Message priorities: use canonical "Low", "Normal", "High". Do not vary case.
 - Reinforcements: keep arrival_cue at default (implicitly true) for callable units; avoid blocking conditions.
 - Waypoints: name paths clearly; reference points with "PathName:N" (1-based).
