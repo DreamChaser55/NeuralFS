@@ -482,11 +482,6 @@ Use ASCII replacements when needed:
 
 If you use a non-ASCII character in any FSO-facing field, it will cause an error.
 
-Authoring checklist
-- Use FSIF version: "2.7"
-- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
-- Unlike Ships, Wings **must** use a template.
-
 ## No double quotes allowed in FSO-facing strings
 Double quotes `"` are not allowed in FSO-facing text fields, as they break the FSO parser. Use single quotes `'` instead.
 Note: This rule does not apply to SEXP fields. Some SEXP tokens need to be wrapped in double quotes.
@@ -576,6 +571,8 @@ You should use the `escort` flag for:
 - Waypoints: name paths clearly; reference points with "PathName:N" (1-based).
 - If your mission design calls for a navigation buoy, use the 'Terran NavBuoy' spacecraft class
 - Use double quotes (`"`) for all entity names inside SEXPs.
+- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
+- Unlike Ships, Wings **must** use a template.
 
 ## Pitfalls and how to avoid them
 - Player start not spawning:
