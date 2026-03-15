@@ -621,7 +621,3 @@ Important: after you first complete a mission file, always do at least one final
 - Reinforcement cannot be called → explicit arrival_cue set to a blocking condition; omit it
 - Docked pair fails or separates on arrival → player ship involved; missing/incorrect dock.* fields; conflicting arrival leadership
 - Errors about "redundant ship" → Do not author a standalone ship with the same name as a ship that would result from an existing wing expansion. For example: if there is a wing named "Alpha", which will create a ship named "Alpha 1" when spawned, you must not author a separate "Alpha 1" ship.
-
-## Note on "Neutral" IFF
-- The FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second Hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team.
-- Use "Friendly", "Hostile" or "Unknown" for all ships, objects or briefing icons.

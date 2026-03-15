@@ -26,6 +26,10 @@
 - Hostile
 - Unknown
 
+**Note on "Neutral" IFF team:**
+FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second Hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team. Use "Friendly", "Hostile" or "Unknown" for all ships, objects or briefing icons.
+
+
 Context: `$Team`, `$IFF`.
 
 ### Arrival/Departure Locations
