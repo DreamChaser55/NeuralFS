@@ -229,7 +229,7 @@ Mission-level (#Mission Info):
 
 Converter behavior (current tooling):
 - Version: The converter emits `$Version: 23.1` in the `#Mission Info` section.
-- Mission flags mapping: Named flags are resolved using the FSO Mission::Mission_Flags order (with alias support like "scramble_mission" → Scramble) into a numeric +Flags bitmask. An optional mission_info.flags_mask integer is OR-ed into the result. Unknown flags are ignored with a warning.
+- Mission flags mapping: Named flags are resolved using the FSO Mission::Mission_Flags order (with alias support like "scramble_mission" → Scramble) into a numeric +Flags bitmask. Unknown flags are ignored with a warning.
 - Ship flags mapping: entities.ships[*].flags tokens are routed automatically to +Flags and +Flags2 (case-insensitive; separators like spaces/hyphens/underscores normalized). Examples:
   - +Flags: cargo-known, ignore-count, protect-ship, reinforcement, no-shields, escort, no-arrival-music, invulnerable, hidden-from-sensors, scannable, kamikaze, no-dynamic, red-alert-carry, guardian, special-warp, stealth, friendly-stealth-invisible, player-start
   - +Flags2: primitive-sensors, no-subspace-drive, toggle-subsystem-scanning, hide-ship-name, cloaked, scramble-messages, no_collide, primaries-locked, secondaries-locked, weapons-locked, ship-locked, afterburners-locked, lock-all-turrets

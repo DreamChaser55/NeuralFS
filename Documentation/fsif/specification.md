@@ -157,7 +157,7 @@
 
 ## Section details
 1. mission_info
-  - Flags are authored as names; unknown flags are ignored. Use flags_mask to OR a raw bitmask.
+  - Flags are authored as names; unknown flags are ignored.
   - Subspace missions: use the "subspace" flag.
 2. environment
   - ambient_light_level is authored as `[red, green, blue]` with integer channels in range `0..255`.

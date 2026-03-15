@@ -28,7 +28,7 @@ Wings waves: supported. Emits `$Waves`, `$Wave Threshold`, and optional `+Wave D
 
 Localization: XSTR wrapping is applied to mission name/description, goals $MessageNew, and messages $MessageNew; other fields are not wrapped.
 
-Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Optional mission_info.flags_mask (integer) can be OR'ed into the result. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
+Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
 
 Validation: If the player's starting ship is standalone (not part of any wing), its arrival_cue must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print a warning if this constraint is violated.
 

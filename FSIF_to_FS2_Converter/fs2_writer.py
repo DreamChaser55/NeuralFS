@@ -130,9 +130,6 @@ class FS2Writer:
             else:
                 unknown.append(str(f))
 
-        if info.flags_mask is not None:
-             mask |= int(info.flags_mask)
-
         if unknown:
             self.log_func(f'[WARNING] [FSIF->FS2] Unknown mission flags ignored: {", ".join(unknown)}')
 

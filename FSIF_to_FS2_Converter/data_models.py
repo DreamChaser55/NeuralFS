@@ -189,7 +189,6 @@ class MissionInfo(BaseModel):
     ai_profile: str = 'FS1 RETAIL'
     created: Optional[str] = None
     modified: Optional[str] = None
-    flags_mask: Optional[int] = None
 
 class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')
