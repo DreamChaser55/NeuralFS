@@ -442,11 +442,14 @@ class Validator:
         if env.nebula and env.nebula.enabled and env.starbitmaps:
             self.log_error(f"environment.starbitmaps must be empty when full nebula is enabled (environment.nebula.enabled: true)")
 
-        # Sparse normal-space background advisory
         mission_flags_lower = {str(flag).strip().lower() for flag in self.mission.mission_info.flags}
         is_subspace_mission = 'subspace' in mission_flags_lower
         is_full_nebula_mission = bool(env.nebula and env.nebula.enabled)
 
+        if is_subspace_mission and env.starbitmaps:
+            self.log_error(f"environment.starbitmaps must be empty in subspace missions (they are not visible in subspace)")
+
+        # Sparse normal-space background advisory
         if not is_subspace_mission and not is_full_nebula_mission:
             background_nebula_count = sum(
                 1 for bitmap in env.starbitmaps if bitmap.texture in self.allowed_nebulae_bitmaps
