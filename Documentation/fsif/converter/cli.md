@@ -82,13 +82,6 @@ The first source that provides a valid key is used. To use a key file, create a 
 - FSIF version requirements: see `../specification.md`
 - Converter emission details: see `implementation_details.md`
 
-## Common warnings (authoring issues)
-- Unknown tokens (flags/enums) ignored
-- Standalone player start ship missing arrival_cue "( true )"
-- Multiple asteroid/debris fields (only one supported for retail FRED)
-- Docking pairs involving the player start ship are discarded
-- Reinforcements specified both at entities.* and mission_flow.* (legacy) — mission_flow.* is unsupported in FSIF 1.3
-
 ## Exit status and logs
 - Non-zero exit on fatal errors (e.g., invalid YAML, missing required fields that prevent writing)
 - Warnings are printed to stdout/stderr; they should be treated as actionable authoring feedback even when the run succeeds
