@@ -222,7 +222,9 @@ mission_flow:
       voice_name: "Fenrir"
 ```
 
-Note: A mission goal (objective) turns completed when the SEXP formula for it becomes true. Until then, it is marked with TO-DO directive on the HUD. It turns failed when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
+Notes:
+- A mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
+- The same rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
 
 ## Authoring dialogue (TTS voicing)
 
