@@ -204,9 +204,6 @@ ALLOWED_SEXP_OPERATORS = {'!=', '*', '+', '-', '/', '<', '<=', '=', '>', '>=', '
 ALLOWED_VOICES_GOOGLE = {'Achernar', 'Achird', 'Algenib', 'Algieba', 'Alnilam', 'Aoede', 'Autonoe', 'Callirrhoe', 'Charon', 'Despina', 'Enceladus', 'Erinome', 'Fenrir', 'Gacrux', 'Iapetus', 'Kore', 'Laomedeia', 'Leda', 'Orus', 'Puck', 'Pulcherrima', 'Rasalgethi', 'Sadachbia', 'Sadaltager', 'Schedar', 'Sulafat', 'Umbriel', 'Vindemiatrix', 'Zephyr', 'Zubenelgenubi'}
 ALLOWED_VOICES_ELEVENLABS = {'Adam', 'Arnold', 'Bella', 'Brian', 'Callum', 'Charlie', 'Charlotte', 'Daniel', 'Dorothy', 'Elli', 'Emily', 'Freya', 'George', 'Harry', 'James', 'Josh', 'Lily', 'Matilda', 'Nicole', 'Rachel', 'Ryan', 'Sam', 'Sarah', 'Serena', 'Thomas'}
 
-# Legacy alias (defaults to Google)
-ALLOWED_VOICES = ALLOWED_VOICES_GOOGLE
-
 # --- 6. Hardpoints ---
 # Mapping Class -> {'primary': N, 'secondary': M}
 NUM_OF_HARDPOINTS = {

@@ -391,10 +391,6 @@ def generate_file():
         f.write(f"ALLOWED_VOICES_GOOGLE = {fmt_set(voices_google)}\n")
         f.write(f"ALLOWED_VOICES_ELEVENLABS = {fmt_set(voices_elevenlabs)}\n\n")
         
-        # Legacy alias for backward compatibility (defaults to Google voices only)
-        f.write("# Legacy alias (defaults to Google)\n")
-        f.write("ALLOWED_VOICES = ALLOWED_VOICES_GOOGLE\n\n")
-
         # Hardpoints
         f.write("# --- 6. Hardpoints ---\n")
         f.write("# Mapping Class -> {'primary': N, 'secondary': M}\n")
