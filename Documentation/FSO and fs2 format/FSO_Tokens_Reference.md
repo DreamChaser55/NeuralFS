@@ -4,13 +4,13 @@
 - Single source of truth for valid FSO tokens: flags, enumerations, literals, and canonical spellings.
 
 ## Guidance on token usage
-- Exact token spelling is required when authoring FSIF missions. All tokens (enums, flags, AI class names, goal types, SEXP operator names, wildcard literals like "<any friendly player>", music file names, background/sun/planet textures...) must be authored exactly as shown. Unknown/misspelled tokens are not recognized by FSO and will cause errors.
-- Engine tolerance is not a contract. Retail files sometimes vary case (e.g., "High" vs "high"), and parsers may be tolerant. For authoring and tooling, always use canonical tokens as listed here and in the FSIF spec.
+- Exact token spelling is required when authoring FSIF missions. All tokens (enums, flags, AI class names, goal types, SEXP operator names, wildcard literals like "<any friendly player>", music file names, background/sun/planet textures...) must be authored exactly as shown. Unknown/misspelled tokens will cause errors.
+- Always use canonical tokens as listed here and in the FSIF spec. Do not vary case.
 - Do / Don’t (examples):
   - Do: "<any friendly player>"   Don’t: "<any player>", "<any Friendly Player>"
   - Do: "High"                    Don’t: "high"
   - Do: "ai-guard-wing"           Don’t: "ai_guard_wing"
-- Token length limit: Custom tokens used inside SEXPs (like ship, message or event names) must be shorter than 30 characters to avoid parser issues.
+- Token length limit: Custom tokens used inside SEXPs (like ship, message or event names) must be shorter than 30 characters to avoid errors.
 - Strings/literals: Treat special selectors like "<any wingman>" and "<any friendly player>" as ordinary quoted strings in SEXPs; do not escape the angle brackets specially.
 
 ## Related reference files
@@ -103,11 +103,10 @@ Examples:
 
 ## Flags catalog
 
-This section lists a subset of canonical flags supported by the FSIF converter which is generally useful for mission authors. A complete catalog of flags, including the less useful, debug or special ones is available in the converter documentation.
-The converter automatically maps these tokens to the appropriate engine fields (e.g., +Flags, +Flags2, or bitmasks).
+This section lists a subset of canonical flags which is generally useful for mission authors. A complete catalog of flags, including the less useful, debug or special ones is available in the converter documentation.
 
 ### Mission flags (`mission_info.flags`)
-These tokens map to the FSO `Mission::Mission_Flags` bitmask.
+These tokens specify various mission properties and behaviors.
 
 *   `subspace` — Mission takes place in subspace
 *   `no_promotion` — Cannot get promoted or badges in this mission
@@ -128,9 +127,8 @@ These tokens map to the FSO `Mission::Mission_Flags` bitmask.
 *   `preload_subspace` — Preload the subspace tunnel for both the sexp and specs checkbox (for scripts)
 
 ### Ship flags (`entities.ships[*].flags`)
-The converter automatically splits these tokens into the `+Flags` and `+Flags2` buckets required by the engine.
+These tokens specify various ship properties and behaviors.
 
-#### Primary Flags (`+Flags`)
 *   `cargo-known` — Ship's cargo is revealed to all friendly ships
 *   `ignore-count` — Ignore this ship when counting ship types for goals
 *   `protect-ship` — No AI-controlled ship will attack this ship
@@ -177,8 +175,6 @@ The converter automatically splits these tokens into the `+Flags` and `+Flags2` 
 *   `aspect-immune` — Ship cannot be locked onto by aspect seeking weapons (secondaries like Interceptor, Hornet)
 *   `cannot-perform-scan` — Ship cannot scan other ships
 *   `no-targeting-limits` — Ship is always targetable regardless of AWACS or targeting range limits
-
-#### Secondary Flags (`+Flags2`)
 *   `primitive-sensors` — Primitive sensor display
 *   `no-subspace-drive` — This ship has no subspace drive
 *   `toggle-subsystem-scanning` — Switch whether subsystems are scanned
@@ -231,9 +227,6 @@ Ancillary per-ship fields frequently seen with flags:
 *   `departure-ordered` — Departure of this wing was ordered by player
 *   `no-first-wave-message` — Don't play arrival message for the first wave
 *   `waypoints-no-formation` — Wing will not try to form up when running a waypoint together
-
-Notes:
-- Flags are represented as token lists in FSIF; the converter handles the numeric bitmasks and list formatting for FS2.
 
 ## Contextual parameters (FSIF fields)
 
@@ -526,7 +519,7 @@ Allowed canonical icon type strings:
 - Sentry Gun
 - Jump Node
 
-Note: If icons[*].pos is omitted, the converter emits 0.0, 0.0, 0.0.
+Note: If icons[*].pos is omitted, it defaults to 0.0, 0.0, 0.0.
 
 ### Volumetric (full) nebula parameters
 Pattern: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange

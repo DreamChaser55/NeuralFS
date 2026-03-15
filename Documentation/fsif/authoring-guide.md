@@ -150,8 +150,8 @@ Notes
 - `ambient_light_level` is authored as `[red, green, blue]`, with each channel in range `0..255`.
 - angles are [pitch, bank, heading] in radians.
 - **Background richness advisory:** In normal-space missions, try to include at least **3** `starbitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
-- **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view. The converter validator will emit a warning if `[0, 0, 0]` sun angles are detected.
-- For full (volumetric) nebula authoring fields, see spec; emission details are in Converter Implementation Details.
+- **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view.
+- For full (volumetric) nebula authoring fields, see spec.
 - **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, starbitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
   - Distant nebulae will likely look the same and be in the same positions in the sky.
   - Positions of suns or planet bitmaps could change.
@@ -190,14 +190,14 @@ entities:
         ( ai-chase-any 50 )
 ```
 
-Wings must define `position: [x, y, z]`, which is interpreted as the centroid of all ships in the wing. In the example above, a 4‑ship wing with `position: [0.0, 0.0, 0.0]` will be emitted as four objects along the X axis at:
+Wings must define `position: [x, y, z]`, which is interpreted as the centroid of all ships in the wing. In the example above, a 4‑ship wing with `position: [0.0, 0.0, 0.0]` will be placed as four objects along the X axis at:
 
 - Alpha 1: `[-75.0, 0.0, 0.0]`
 - Alpha 2: `[-25.0, 0.0, 0.0]`
 - Alpha 3: `[25.0, 0.0, 0.0]`
 - Alpha 4: `[75.0, 0.0, 0.0]`
 
-The converter spaces wing members 50 m apart by default and centers the line on the specified centroid.
+Wing members are spaced 50 m apart by default and the line is centered on the specified centroid.
 
 ## Events, goals and messages
 ```yaml
@@ -290,11 +290,11 @@ entities:
         docker_point: "topside docking"
         dockee_point: "Docking bay 1"
 ```
-Strict Rules (Enforced by Validator):
-- **Arrival Cues**: The Dockee (Leader) must have `( true )`. The Docker (Follower) must have `( false )`. The converter will abort if this is violated.
+Strict Rules:
+- **Arrival Cues**: The Dockee (Leader) must have `( true )`. The Docker (Follower) must have `( false )`.
 - **Pairs Only**: Multi-ship docking trees are not supported.
 - **No Player Ships**: Player start ships cannot be pre-docked.
-- **Reference Checks**: You must use only the names for ship dockpoints specified in `../FSO and fs2 format/ship-dockpoint-names.md`. Using unknown or malformed dockpoint names will cause validation errors.
+- **Reference Checks**: You must use only the names for ship dockpoints specified in `../FSO and fs2 format/ship-dockpoint-names.md`. Using unknown or malformed dockpoint names will cause errors.
 
 Note: If one of the ships in a docked pair warps out of the mission (departs), it takes the other ship with it.
 
@@ -379,16 +379,15 @@ Unless the mision is very short and trivial, you should always author a briefing
 ### Layout
 The briefing room uses a grid on the **XZ plane**.
 - **Intended Usage**: Place your icons on this XZ plane using 2D coordinates `[x, z]` (e.g. `pos: [500, 1000]`).
-- **Automatic Camera**: The converter automatically positions the briefing camera to ensure that all your icons are in view.
+- **Automatic Camera**: The briefing camera is automatically positioned to ensure that all your icons are in view.
 
 ### Icons
-Author briefing icons using the string field `type`. The converter maps it to the FS2 numeric `$type`.
+Author briefing icons using the string field `type`.
 - **Type**: Must be a canonical string (e.g., "Fighter", "Jump Node", "Waypoint").
 - **Class**: Optional. The displayed ship class text and picture (e.g. "GTF Ulysses") when clicked when the icon is selected in-game.
   - **If omitted:** Defaults to `"Terran NavBuoy"` (safe default).
-  - **If specified:** Must be a valid ship class from `spacecraft-classes.md` (strictly validated).
+  - **If specified:** Must be a valid ship class from `spacecraft-classes.md`.
   - **Best practice:** Omit for non-ship icon types (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Non-ship types must only use the `"Terran NavBuoy"` class, to prevent in-game errors.
-  - **Invalid values will cause conversion to fail** (prevents FSO crashes).
 - **Team**: Must be "Friendly" (shown as green), "Hostile" (red) or "Unknown" (purple).
 - **Pos**: List `[x, z]`.
 
@@ -438,7 +437,7 @@ player_setup:
 ```
 
 ## Automatic Weaponry Pool Generation
-FSIF converter calculates the required weapon pool automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). It adds a 25% safety margin and emits the pool data directly into the FS2 file. This prevents crashes and undersupply issues in-game.
+The required weapon pool is calculated automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). A 25% safety margin is added to the result.
 
 ## Providing the player with extra weapons
 If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `extra_weapons` field under `player_setup`:
@@ -451,7 +450,7 @@ player_setup:
     - "Avenger"
     - "Harbinger"
 ```
-The converter will automatically calculate the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons, add the 25% safety margin, and include them in the mission Weaponry Pool.
+The maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons are automatically calculated and included in the mission Weaponry Pool with an added 25% safety margin.
 
 ## Directional arrivals quick reference
 - Directional arrival_location requires both arrival_anchor and arrival_distance.
@@ -461,10 +460,10 @@ The converter will automatically calculate the maximum possible quantities neede
 ## Maximum mission scale recommendation
 - Keep distances between all points of interest (ships, wings, waypoints, jump nodes) **below 20 km** whenever possible.
 - Avoid `arrival_distance` values above **20,000** when using `arrival_anchor` on ships or wings.
-- The converter warns if distances between any two objects or anchor-based arrival distances exceed this recommendation, because large mission spaces can lead to long, uneventful travel times and thus boring missions.
+- Avoid distances between any two objects or anchor-based arrival distances exceeding this recommendation, because large mission spaces can lead to long, uneventful travel times and thus boring missions.
 
 ## ASCII-only requirement for FSO-facing strings
-FSO only supports ASCII characters reliably. Because of that, the validator rejects non-ASCII characters in FSO-facing FSIF strings with an error.
+FSO only supports ASCII characters reliably.
 
 This rule applies to:
 - campaign name and description
@@ -481,7 +480,7 @@ Use ASCII replacements when needed:
 - use `-` instead of em dash or en dash
 - use `...` instead of the single-character ellipsis
 
-If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
+If you use a non-ASCII character in any FSO-facing field, it will cause an error.
 
 Authoring checklist
 - Use FSIF version: "2.7"
@@ -560,22 +559,6 @@ ships:
       ( ai-warp-out 50 )
 ```
 
-## Basic SEXP Validation
-The converter initially performs basic structural checks on all SEXP formulas (Events, Goals, AI Goals, Arrival/Departure Cues). While it does not fully compile the SEXP code, it catches common syntax errors that would crash the game engine.
-
-### Checks Performed:
-1.  **Parenthesis Balancing**: Ensures every opening `(` has a matching closing `)`.
-    *   *Error*: `Mismatched parentheses (Open: 5, Close: 4)`
-2.  **YAML Comment Leakage**: Detects if a YAML comment (`# `) was accidentally included in a multiline SEXP block.
-    *   *Error*: `Likely YAML comment leakage ('# ' found).`
-    *   *Fix*: Move YAML comments outside the block scalar.
-3.  **Token Length**: Scans for tokens longer than 30 characters.
-    *   *Error*: `Token 'VeryLongName...' length 35 exceeds limit (<30).`
-    *   *Note*: Quoted strings (like messages) are ignored by this check.
-
-## Advanced SEXP Validation
-The converter also checks all SEXPs with the Advanced SEXP Validator, which parses them and checks them against a set of FSO engine rules, returning actionable warning/error messages if any errors are found.
-
 ## Using the escort flag (monitoring list)
 The `escort` ship flag adds the ship to the player's HUD monitoring list, displaying its hull integrity at all times. Despite the name, this feature should be used for **any ship of interest that needs to be monitored**, not just friendly escorted ships.
 
@@ -605,13 +588,13 @@ You should use the `escort` flag for:
 - Ships spawning inside other ships:
   - Ensure sufficient separation between ships. Clearance should be kept in mind particularly around large ships. Cruisers are ~300 m long, destroyers are ~2000 m long.
 - Mistakenly including YAML "#" inside SEXP blocks:
-  - Never place YAML-style comments inside block scalars; add comments on lines outside the block. The validator will flag this as an error.
+  - Never place YAML-style comments inside block scalars; add comments on lines outside the block.
 - Avoid long tokens in SEXPs:
-  - Names used in SEXPs must fit engine token limits; keep them short (less than 30 chars). The validator enforces this limit strictly.
+  - Names used in SEXPs must fit engine token limits; keep them short (less than 30 chars).
 - Name collisions:
-  - Do not use the same name for different types of objects (e.g., a Ship and a Wing with the same name). The validator ensures names are unique within their namespace (Objects, Events, Goals, Messages).
+  - Do not use the same name for different types of objects (e.g., a Ship and a Wing with the same name).
 - Multiple asteroid/debris fields are not allowed:
-  - Engine constraint: FSO supports only one asteroid/debris field. The converter enforces this.
+  - Engine constraint: FSO supports only one asteroid/debris field.
   - Requirement: Use a single mapping for `environment.asteroid_field` (singular).
 - Docking leadership conflicts:
   - Exactly one ship in the pair should have arrival_cue true; prefer the dockee (leader).

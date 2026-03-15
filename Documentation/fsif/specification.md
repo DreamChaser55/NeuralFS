@@ -157,22 +157,22 @@
 
 ## Section details
 1. mission_info
-  - Flags are authored as names; converter maps to numeric +Flags. Unknown flags ignored (warning). Use flags_mask to OR a raw bitmask.
+  - Flags are authored as names; unknown flags are ignored. Use flags_mask to OR a raw bitmask.
   - Subspace missions: use the "subspace" flag.
 2. environment
   - ambient_light_level is authored as `[red, green, blue]` with integer channels in range `0..255`.
   - Angles order is [pitch, bank, heading] in radians.
-  - Engine limit: one asteroid/debris field (FRED retail compatibility).
+  - Only one asteroid/debris field is allowed.
 3. player_setup
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".
 4. entities
   - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions). Arrival/departure fields (`arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`) are not allowed in templates; author them directly on standalone ships or on the wing.
-  - ships: Flags are a single list; converter auto-buckets into +Flags and +Flags2.
+  - ships: Flags are a single list.
   - subsystems: Names must match the per-ship canonical lists.
   - docking: Author only on the docker under dock.with, dock.docker_point, dock.dockee_point; pairs only; player ships cannot be pre-spawn docked.
   - wings:
     - Reinforcement wings should omit arrival_cue (defaults to true) to remain callable.
-    - wings must define position ([x,y,z]) as the centroid of the wing. The converter computes individual ship locations as a straight line along the X axis centered on position, spaced 50 m apart by default.
+    - wings must define position ([x,y,z]) as the centroid of the wing. Individual ship locations are computed as a straight line along the X axis centered on position, spaced 50 m apart by default.
 5. mission_flow
   - SEXPs are embedded verbatim.
   - events[*].directive_text maps to an in-HUD directive.
@@ -181,7 +181,7 @@
 - Player start spawning: standalone start_ship requires arrival_cue "( true )"
 - Docking: pairs only; not allowed for player start; author on docker only; ensure arrival leadership is coherent
 - Author only canonical per-ship subsystem and dockpoint names (see references)
-- Reinforcements: author in entities.reinforcement_wings / entities.reinforcement_ships. The converter emits $Type (internal FS2 field) automatically (support ships with classes starting "GTS "/"PVS " → "Repair/Rearm"; all other ships and wings → "Attack/Protect").
+- Reinforcements: author in entities.reinforcement_wings / entities.reinforcement_ships. The reinforcement type is determined automatically (support ships with classes starting "GTS "/"PVS " → "Repair/Rearm"; all other ships and wings → "Attack/Protect").
 - Message priorities: "Low", "Normal", "High" (canonical spellings)
 - Names used inside SEXPs must remain under engine token length limits (less than 30 chars)
 - avoid YAML "#" inside SEXP blocks

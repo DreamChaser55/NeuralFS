@@ -171,6 +171,7 @@ The validator checks the following areas:
 *   Checks for valid team names, message priorities, and mission flags.
 *   Validates background bitmaps and nebula patterns.
 *   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
+*   Warns if distances between any two objects or anchor-based arrival distances exceed 20,000 meters, as large mission spaces can lead to long travel times.
 
 #### **ASCII Enforcement for FSO-facing Strings**:
 *   FreeSpace Open only supports ASCII reliably for mission-facing content written into `.fs2`.
