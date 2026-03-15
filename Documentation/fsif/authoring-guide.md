@@ -223,8 +223,9 @@ mission_flow:
 ```
 
 Notes:
-- A mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
-- The same rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
+- Available mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
+- The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
+- Try to include enough comms chatter (messages) to in your missions to make them lively and prevent player boredom.
 
 ## Authoring dialogue (TTS voicing)
 
