@@ -575,7 +575,6 @@ You should use the `escort` flag for:
 - Reinforcements: keep arrival_cue at default (implicitly true) for callable units; avoid blocking conditions.
 - Waypoints: name paths clearly; reference points with "PathName:N" (1-based).
 - If your mission design calls for a navigation buoy, use the 'Terran NavBuoy' spacecraft class
-- When writing SEXPs, always use YAML block scalars (`|`) instead of flow scalar (quoted) strings, even for single-line SEXPs. Block scalars preserve content literally and eliminate the need for escape characters. See the "SEXP String Formatting: Use Block Scalars" section for details.
 - Use double quotes (`"`) for all entity names inside SEXPs.
 
 ## Pitfalls and how to avoid them
