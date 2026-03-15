@@ -152,6 +152,10 @@ Notes
 - **Background richness advisory:** In normal-space missions, try to include at least **3** `starbitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
 - **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view. The converter validator will emit a warning if `[0, 0, 0]` sun angles are detected.
 - For full (volumetric) nebula authoring fields, see spec; emission details are in Converter Implementation Details.
+- **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, starbitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
+  - Distant nebulae will likely look the same and be in the same positions in the sky.
+  - Positions of suns or planet bitmaps could change.
+  - Ambient light color will be the same, but intensity will change with distance from the sun.
 
 ## Templates, ships and wings
 ```yaml
