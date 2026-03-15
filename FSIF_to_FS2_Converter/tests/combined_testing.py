@@ -307,6 +307,44 @@ environment:
 
         self.assertIn("FSIF 2.6 requires environment.ambient_light_level to be authored as [red, green, blue]", str(ctx.exception))
 
+    def test_loader_rejects_arrival_delay_in_ship_template(self):
+        fsif_text = """fsif_version: "2.7"
+
+mission_info:
+  name: "Invalid Template Arrival Delay"
+
+player_setup:
+  start_ship: "Player Ship"
+
+entities:
+  ship_templates:
+    fighter_template:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      arrival_delay: 5
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
+  ships:
+    - name: "Player Ship"
+      template: "fighter_template"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+
+mission_flow: {}
+"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fsif_path = Path(tmpdir) / "invalid_template_arrival_delay.fsif"
+            fsif_path.write_text(fsif_text, encoding="utf-8")
+
+            with self.assertRaises(ValueError) as ctx:
+                load_mission_from_fsif(str(fsif_path))
+
+        self.assertIn("arrival_delay", str(ctx.exception))
+        self.assertIn("must not be authored in ship_templates", str(ctx.exception))
+
     def test_environment_rejects_invalid_rgb_channel_range(self):
         with self.assertRaises(ValueError) as ctx:
             Environment(ambient_light_level=[256, 0, 0])

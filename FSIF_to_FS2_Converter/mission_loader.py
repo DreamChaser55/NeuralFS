@@ -31,6 +31,7 @@ class MissionLoader:
         'arrival_location',
         'arrival_anchor',
         'arrival_distance',
+        'arrival_delay',
         'arrival_cue',
         'departure_location',
         'departure_anchor',

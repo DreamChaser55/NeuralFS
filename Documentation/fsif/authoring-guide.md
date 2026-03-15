@@ -582,7 +582,7 @@ You should use the `escort` flag for:
 - Player start not spawning:
   - If the start_ship is standalone (not in a wing), its arrival_cue must be "( true )".
 - Putting arrival/departure fields into ship templates:
-  - Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_cue`, `departure_location`, `departure_anchor`, or `departure_cue` into `entities.ship_templates`.
+  - Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, or `departure_cue` into `entities.ship_templates`.
   - These values do not work correctly for ships that are part of wings, so FSIF entirely forbids putting them in templates.
   - For standalone ships, author them directly on the ship. For wing members, author them on the wing.
 - Ships spawning inside other ships:
