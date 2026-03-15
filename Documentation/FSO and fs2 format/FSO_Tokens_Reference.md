@@ -125,7 +125,6 @@ These tokens map to the FSO `Mission::Mission_Flags` bitmask.
 *   `all_attack` — All teams at war
 *   `toggle_showing_goals` — Show mission goals for training missions, hide otherwise
 *   `end_to_mainhall` — Return to the mainhall after debriefing
-*   `fullneb_background_bitmaps` — Show background bitmaps despite fullneb
 *   `preload_subspace` — Preload the subspace tunnel for both the sexp and specs checkbox (for scripts)
 
 ### Ship flags (`entities.ships[*].flags`)

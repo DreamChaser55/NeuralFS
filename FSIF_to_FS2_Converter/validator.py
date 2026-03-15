@@ -439,6 +439,9 @@ class Validator:
             if s.texture not in self.allowed_backgrounds:
                  self.log_error(f"Invalid starbitmap texture '{s.texture}' in environment.starbitmaps[{i}]")
 
+        if env.nebula and env.nebula.enabled and env.starbitmaps:
+            self.log_error(f"environment.starbitmaps must be empty when full nebula is enabled (environment.nebula.enabled: true)")
+
         # Sparse normal-space background advisory
         mission_flags_lower = {str(flag).strip().lower() for flag in self.mission.mission_info.flags}
         is_subspace_mission = 'subspace' in mission_flags_lower

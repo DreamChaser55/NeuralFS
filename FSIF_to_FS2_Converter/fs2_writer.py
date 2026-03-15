@@ -648,11 +648,9 @@ class FS2Writer:
         # Nebula Background Logic
         neb = env.nebula
         suppress = False
-        if neb.enabled and not neb.show_backgrounds:
-            # Check flags
-            if 'fullneb_background_bitmaps' not in self.mission.mission_info.flags:
-                suppress = True
-                total = 0
+        if neb.enabled:
+            suppress = True
+            total = len(env.suns)  # Only suns are emitted for fullneb, starbitmaps are suppressed
         
         self._write(f'#Background bitmaps\t\t;! {total} total')
         self._write(f'')

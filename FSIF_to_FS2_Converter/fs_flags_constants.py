@@ -32,7 +32,7 @@ MISSION_FLAGS_ORDER = [
     "override_hashcommand",
     "toggle_start_chase_view",
     "neb2_fog_color_override",
-    "fullneb_background_bitmaps",
+    "unused_6",
     "preload_subspace",
 ]
 

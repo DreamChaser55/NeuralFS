@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 2.6 (current)
+- FSIF version: 2.7 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,7 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"2.6"`.
+- `fsif_version` (String, required): Must be `"2.7"`.
 - `fiction_viewer` (String, optional): Filename of the text file to display (e.g., `"story.txt"`).
 - `mission_info` (Mapping, required):
   - `name` (String, required)
@@ -40,7 +40,6 @@
     - `awacs` (Float, optional, default: `3000.0`)
     - `storm` (String, optional, default: `"s_standard"`)
     - `poofs` (List[String], optional, default: `[]`)
-    - `show_backgrounds` (Boolean, optional, default: `false`)
   - `asteroid_field` (Mapping, optional):
     - `name` (String, optional, default: `"Field_1"`)
     - `genre` (String, optional, default: `"asteroid"`). Enum: `"asteroid"`, `"debris"`.

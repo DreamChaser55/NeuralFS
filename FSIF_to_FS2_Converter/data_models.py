@@ -146,7 +146,6 @@ class Nebula(BaseModel):
     storm: str = 's_standard'
     pattern: Optional[str] = None
     poofs: List[str] = Field(default_factory=list)
-    show_backgrounds: bool = False
 
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')

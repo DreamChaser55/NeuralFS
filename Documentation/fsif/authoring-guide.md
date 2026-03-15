@@ -125,7 +125,7 @@ Notes:
   It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
 ## Environment backgrounds and nebulae
-Author background suns and starbitmaps; full nebula is a separate feature and suppresses background bitmaps unless allowed.
+Author background suns and starbitmaps; full nebula is a separate feature and unconditionally suppresses background starbitmaps.
 ```yaml
 environment:
   ambient_light_level: [0, 0, 0]

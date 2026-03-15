@@ -110,7 +110,8 @@ class CombinedTesting(unittest.TestCase):
         self.assertTrue(validator.validate(), validator.errors)
         self.assertTrue(
             any(
-                "Mission scale recommendation: distance between Ship 'Player Ship' and Jump Node 'Far Node'" in warning
+                "Mission scale recommendation: 1 object pair(s) exceed" in warning
+                and "Ship 'Player Ship' <-> Jump Node 'Far Node'" in warning
                 for warning in validator.warnings
             ),
             validator.warnings,
@@ -234,8 +235,8 @@ class CombinedTesting(unittest.TestCase):
 
         self.assertIn("$Ambient light level: 657930", content)
 
-    def test_loader_rejects_fsif_25(self):
-        fsif_text = """fsif_version: \"2.5\"
+    def test_loader_rejects_fsif_26(self):
+        fsif_text = """fsif_version: \"2.6\"
 
 mission_info:
   name: "Legacy Mission"
@@ -268,10 +269,10 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("accepts FSIF version '2.6' only", str(ctx.exception))
+        self.assertIn("accepts FSIF version '2.7' only", str(ctx.exception))
 
-    def test_loader_rejects_packed_ambient_light_in_fsif_26(self):
-        fsif_text = """fsif_version: \"2.6\"
+    def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
+        fsif_text = """fsif_version: \"2.7\"
 
 mission_info:
   name: "Invalid Ambient"
@@ -380,6 +381,8 @@ class VoiceManagerTesting(unittest.TestCase):
         vm.process()
 
         fname = self.mission.messages[0].voice_filename
+        self.assertIsNotNone(fname)
+        assert fname is not None
         self.assertTrue(len(fname) <= 29, f"Filename '{fname}' exceeds 29 chars")
         self.assertTrue(fname.endswith(".wav"))
         self.assertEqual(fname, "this_is_a_very_long_name_.wav")
@@ -399,6 +402,8 @@ class VoiceManagerTesting(unittest.TestCase):
         fnames = [m.voice_filename for m in self.mission.messages]
 
         for fn in fnames:
+            self.assertIsNotNone(fn)
+            assert fn is not None
             self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
 
         self.assertEqual(fnames[0], "this_is_a_very_long_name_.wav")
@@ -434,6 +439,8 @@ class VoiceManagerTesting(unittest.TestCase):
         self.assertEqual(msgs[10].voice_filename, "a" * 22 + "_10.wav")
 
         for fn in [m.voice_filename for m in msgs]:
+            self.assertIsNotNone(fn)
+            assert fn is not None
             self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
 
 

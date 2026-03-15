@@ -1,11 +1,50 @@
-# FSIF Migration Guide (1.0 → ... → 2.6)
+# FSIF Migration Guide (1.0 → ... → 2.7)
 
 Purpose
 - Practical, snippet-led instructions to update existing FSIF files to the latest spec and converter expectations.
 - Covers breaking changes and notable behavior shifts.
 
 Status
-- Current FSIF version: 2.6. The converter accepts FSIF 2.6 only; use this guide to update older FSIF files to the 2.6 schema before converting.
+- Current FSIF version: 2.7. The converter accepts FSIF 2.7 only; use this guide to update older FSIF files to the 2.7 schema before converting.
+
+FSIF 2.7: Removal of full nebula background bitmaps (breaking)
+
+Change
+- The `show_backgrounds` property under `environment.nebula` has been removed.
+- The `fullneb_background_bitmaps` mission flag is no longer supported.
+- When full nebula is enabled (`environment.nebula.enabled: true`), starbitmaps are unconditionally suppressed and the validator will emit an error if any are authored. Background suns are still permitted and emitted.
+
+Migration guidance
+- Remove `show_backgrounds` from the `nebula` section.
+- Remove `fullneb_background_bitmaps` from `mission_info.flags`.
+- If your mission has full nebula enabled, remove all `starbitmaps` from the `environment` section.
+- Bump `fsif_version` to `"2.7"`.
+
+Before (2.6)
+```yaml
+mission_info:
+  flags: ["fullneb_background_bitmaps"]
+environment:
+  starbitmaps:
+    - { texture: dneb03, angles: [0, 0, 0] }
+  nebula:
+    enabled: true
+    pattern: "nbackblue1"
+    show_backgrounds: true
+```
+
+After (2.7)
+```yaml
+mission_info:
+  flags: []
+environment:
+  starbitmaps: []
+  nebula:
+    enabled: true
+    pattern: "nbackblue1"
+```
+
+---
 
 FSIF 2.6: ambient_light_level changed from packed integer to RGB list (breaking)
 

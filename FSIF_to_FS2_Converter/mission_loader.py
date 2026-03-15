@@ -85,18 +85,18 @@ class MissionLoader:
         """
         Validate the 'fsif_version' field.
         
-        Currently accepted FSIF version: '2.6'.
+        Currently accepted FSIF version: '2.7'.
         
         Raises:
             ValueError: If 'fsif_version' is missing, malformed, or unsupported.
         """
         version_str = self.data.get('fsif_version')
         if not isinstance(version_str, str) or not version_str.strip():
-            raise ValueError("fsif_version is required and must be the exact string '2.6'.")
+            raise ValueError("fsif_version is required and must be the exact string '2.7'.")
         version_str = version_str.strip()
-        if version_str != '2.6':
+        if version_str != '2.7':
             raise ValueError(
-                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.6' only. "
+                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.7' only. "
                 f"Please update your mission file (see Migration Guide)."
             )
         self.fsif_version = version_str
@@ -163,10 +163,6 @@ class MissionLoader:
                  flags = mission_info.flags
                  if not any(str(x).strip().lower() == 'fullneb' for x in flags):
                      flags.append('fullneb')
-                 
-                 if neb_src.get('show_backgrounds'):
-                     if not any(str(x).strip().lower() == 'fullneb_background_bitmaps' for x in flags):
-                         flags.append('fullneb_background_bitmaps')
                  
                  mission_info.flags = flags # Update model
             
