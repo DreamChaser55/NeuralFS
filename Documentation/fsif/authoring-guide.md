@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "2.6"
+fsif_version: "2.7"
 
 mission_info:
   name: "Minimal Mission"
@@ -44,7 +44,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "2.6"
+fsif_version: "2.7"
 
 mission_info:
   name: "Mission name string"
@@ -477,7 +477,7 @@ Use ASCII replacements when needed:
 If you use a non-ASCII character in any FSO-facing field, the validator will raise an error and abort conversion.
 
 Authoring checklist
-- Use FSIF version: "2.6"
+- Use FSIF version: "2.7"
 - player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
 - Unlike Ships, Wings **must** use a template.
 

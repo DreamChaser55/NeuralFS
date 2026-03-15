@@ -18,7 +18,6 @@ environment:
     poofs: ["PoofPurp01", "PoofPurp02"]
     storm: "s_medium"
     awacs: 2000.0
-    show_backgrounds: false
 
 player_setup:
   start_ship: "Alpha 1"
