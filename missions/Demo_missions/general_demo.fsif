@@ -19,6 +19,7 @@ environment:
   starbitmaps:
     - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 }, div: { x: 2, y: 2 } }
     - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 }, div: { x: 1, y: 1 } }
+    - { texture: neb01,  angles: [1.000000, 1.000000, 1.000000], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
     - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 }, div: { x: 1, y: 1 } }
   nebula: { enabled: false }
   asteroid_field:
@@ -326,6 +327,14 @@ mission_flow:
           ( do-nothing )
         )
       directive_text: "Call Delta wing if needed"
+
+    - name: "Protect Fenris directive"
+      formula: |
+        ( when
+          ( is-event-true-delay "Fenris depart" 0 )
+          ( do-nothing )
+        )
+      directive_text: "Protect the Fenris"
 
   goals:
     - name: "Protect the Fenris"
