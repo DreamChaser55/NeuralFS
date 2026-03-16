@@ -130,14 +130,17 @@ entities:
       arrival_cue: |
         ( true )
 
-    - name: "TAC 1 Cargo"
-      class: "TAC 1"
+    - name: "TSC 2 Cargo"
+      class: "TSC 2"
       team: "Hostile"
       location: [1160.0, 0.0, 240.0]
       flags: ["scannable"]
-      arrival_delay: 10
       arrival_cue: |
-        ( true )
+        ( false )
+      dock:
+        with: "GTFr Poseidon 1"
+        docker_point: "cargo dock"
+        dockee_point: "cargo dock"
 
     - name: "GTS Centaur 1"
       class: "GTS Centaur"
@@ -166,7 +169,7 @@ entities:
       arrival_distance: 1500
       arrival_delay: 8
       arrival_cue: |
-        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
       ai_goals: |
         ( ai-chase-any 70 )
 
@@ -183,7 +186,7 @@ entities:
       arrival_distance: 1800
       arrival_delay: 4
       arrival_cue: |
-        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
       ai_goals: |
         ( ai-chase-any 60 )
 
@@ -276,11 +279,14 @@ mission_flow:
         text: "The $f{ GTC Fenris $} was $R destroyed during the withdrawal. $R{ We lost the cruiser and the operation collapsed. $}"
         voice_name: "Gacrux"
       - condition: |
-          ( not ( is-cargo-known-delay 0 "TAC 1 Cargo" ) )
+          ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
         text: "You never completed the inspection of the marked cargo pod. $e{ Without that scan, Command could not confirm the intelligence package. $}"
         voice_name: "Gacrux"
       - condition: |
-          ( true )
+          ( and
+            ( is-event-true-delay "Fenris clear" 0 )
+            ( is-cargo-known-delay 0 "TSC 2 Cargo" )
+          )
         text: "$W{ Excellent work, $}$rank $callsign. You identified the cargo, held off the ambush, and escorted the $f{ Fenris $} to a safe jump."
         voice_name: "Gacrux"
 
@@ -295,7 +301,7 @@ mission_flow:
     - name: "Inspect cargo dir"
       formula: |
         ( when
-          ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+          ( is-cargo-known-delay 0 "TSC 2 Cargo" )
           ( do-nothing )
         )
       directive_text: "Rendezvous at Nav Buoy and scan the marked cargo"
@@ -328,7 +334,7 @@ mission_flow:
         ( when
           ( and
             ( has-time-elapsed 45 )
-            ( not ( is-cargo-known-delay 0 "TAC 1 Cargo" ) )
+            ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
           )
           ( send-message "#Command" "High" "Inspect reminder" )
         )
@@ -336,7 +342,7 @@ mission_flow:
     - name: "Scan complete"
       formula: |
         ( when
-          ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+          ( is-cargo-known-delay 0 "TSC 2 Cargo" )
           ( send-message "#Command" "High" "Scan complete" )
         )
 
@@ -426,7 +432,7 @@ mission_flow:
       type: "Secondary"
       message: "Scan the marked cargo pod carried in by the Poseidon."
       formula: |
-        ( is-cargo-known-delay 0 "TAC 1 Cargo" )
+        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
     - name: "Eliminate bomber ace"
       type: "Bonus"
       message: "Destroy at least one of the Chi bombers."

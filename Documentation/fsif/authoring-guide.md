@@ -367,10 +367,13 @@ mission_flow:
         text: "The $f{ GTC Fenris $} was $R destroyed. $R{ We failed the escort. $}"
         voice_name: "Gacrux"
       - condition: |
-          ( true )
+          ( has-departed-delay 0 "GTC Fenris 1" )
         text: "$W{ Excellent work, $rank $callsign. $} The convoy withdrew $G successfully."
         voice_name: "Gacrux"
 ```
+
+**Debriefing stage condition authoring note:**
+Contrary to briefing stages, debriefing stages are **not** simply displayed chronologically as defined. Instead, each debriefing stage will be displayed if its condition SEXP is met. Author should be careful to make the conditions for every stage sufficiently restrictive, so that incorrect text is not displayed when it shouldn't — for example, a stage describing a successful mission outcome should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )` to precisely target the outcome you intend to describe.
 
 ## Briefing Room Grid View
 
