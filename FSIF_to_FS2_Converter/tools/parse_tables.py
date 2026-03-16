@@ -1,3 +1,33 @@
+"""
+parse_tables.py — FSO Ship/Weapon Table Parser
+
+Parses raw FreeSpace Open table files to extract data needed by the
+FSIF-to-FS2 converter's weapon supply validation logic.
+
+Functions:
+  parse_ship_tables(input_file, output_file)
+      Reads ship_tables.txt and extracts the secondary-bank capacity
+      (SBank Capacity) for every ship flagged as 'fighter' or 'bomber'.
+      Writes results to secondary_bank_capacities.md.
+
+  parse_weapon_tables(input_file, output_file)
+      Reads weapon_tables.txt and extracts the cargo size (Cargo Size)
+      for every weapon in the '#Secondary Weapons' section.
+      Writes results to secondary_weapon_sizes.md.
+
+Inputs  (expected in FSIF_to_FS2_Converter/):
+  ship_tables.txt   — FSO ship tables file
+  weapon_tables.txt — FSO weapon tables file
+
+Outputs (written to FSIF_to_FS2_Converter/):
+  secondary_bank_capacities.md
+  secondary_weapon_sizes.md
+
+Usage:
+  python tools/parse_tables.py
+  (Run from the FSIF_to_FS2_Converter/ directory or its parent.)
+"""
+
 import os
 import re
 
