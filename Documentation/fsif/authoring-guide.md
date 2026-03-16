@@ -564,60 +564,46 @@ You should use the `escort` flag for:
 
 *Note: Maintain escort list hygiene. Flag only the most important ships to prevent cluttering the HUD. If you have multiple escorted ships, you can use the `escort_priority` property to control their display order.*
 
-## Best practices
-- Use templates for repeated ships and wings; avoid repeating class/team/weapon configs.
-- Message priorities: use canonical "Low", "Normal", "High". Do not vary case.
-- Reinforcements: keep arrival_cue at default (implicitly true) for callable units; avoid blocking conditions.
-- Waypoints: name paths clearly; reference points with "PathName:N" (1-based).
-- If your mission design calls for a navigation buoy, use the 'Terran NavBuoy' spacecraft class
-- Use double quotes (`"`) for all entity names inside SEXPs.
-- player_setup.start_ship **must** exist in entities. It could either be defined as a standalone ship in entities.ships, or it could be part of a wing (defined in entities.wings): most commonly "Alpha 1". In the latter case, the referenced player ship name must exist after the wing is spawned.
-- Unlike Ships, Wings **must** use a template.
+## Pitfalls, best practices and recommendations
+Use this section as a practical sanity guide: each item describes the preferred authoring pattern and the common mistake or failure it prevents.
 
-## Pitfalls and how to avoid them
-- Player start not spawning:
-  - If the start_ship is standalone (not in a wing), its arrival_cue must be "( true )".
-- Putting arrival/departure fields into ship templates:
-  - Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, or `departure_cue` into `entities.ship_templates`.
-  - These values do not work correctly for ships that are part of wings, so FSIF entirely forbids putting them in templates.
-  - For standalone ships, author them directly on the ship. For wing members, author them on the wing.
-- Ships spawning inside other ships:
-  - Ensure sufficient separation between ships. Clearance should be kept in mind particularly around large ships. Cruisers are ~300 m long, destroyers are ~2000 m long.
-- Mistakenly including YAML "#" inside SEXP blocks:
-  - Never place YAML-style comments inside block scalars; add comments on lines outside the block.
-- Avoid long tokens in SEXPs:
-  - Names used in SEXPs must fit engine token limits; keep them short (less than 30 chars).
-- Name collisions:
-  - Do not use the same name for different types of objects (e.g., a Ship and a Wing with the same name).
-- Multiple asteroid/debris fields are not allowed:
-  - Engine constraint: FSO supports only one asteroid/debris field.
-  - Requirement: Use a single mapping for `environment.asteroid_field` (singular).
-- Docking leadership conflicts:
-  - Exactly one ship in the pair should have arrival_cue true; prefer the dockee (leader).
-- Mistakenly using `ship-create` to spawn a defined ship/wing:
-  - `ship-create` is for creating brand new dynamic objects. To delay the arrival of a ship you authored in YAML, simply use its `arrival_cue`.
-  - In general, you should only use SEXPs if the thing you are trying to do cannot be accomplished by other means.
-- Using Wing names in Ship-only SEXPs:
-  - Many SEXPs (like `change-iff`, `percent-ships-scanned`, `distance`) require **Ship** names and will fail if given a **Wing** name. Check the SEXP documentation carefully. If needed, target a specific ship in the wing (e.g. "Alpha 1") or use a wing-compatible alternative.
-- Using Jump Nodes in SEXPs:
-  - Jump Nodes are special objects and cannot be targeted by most SEXPs that accept Ships or Wings (e.g., `distance`). If you need to measure distance to a jump node, place a Waypoint or NavBuoy at the same coordinates and target that instead.
-- Correct weapon name token strings:
-  - In Freespace lore, weapon names are sometimes mentioned with the "GTW" prefix. This prefix should **not** be used in FSO weapon token strings (e.g., use `ML-16 Laser` instead of `GTW ML-16 Laser`). Consult any used token strings with the exact spellings in `FSO_Tokens_Reference.md`.
-- mission_flow.goals that immediately become true at the start of the mission:
-  - A common mistake. Always verify that the SEXP formula for the goal is not immediately true at the start of the mission.
+### Spawning, arrivals and authored entities
+- `player_setup.start_ship` must exist in `entities`. It can be a standalone ship in `entities.ships` or a ship created by a starting wing such as `Alpha 1`.
+- If the start ship is standalone, give it `arrival_cue: ( true )`; otherwise the player ship will not spawn at mission start.
+- Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, or `departure_cue` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
+- Use `arrival_cue` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
+- Leave enough physical clearance between spawned objects, especially around large ships. Tight placement can cause ships to spawn inside each other; cruisers are roughly 300 m long and destroyers roughly 2000 m long.
 
-## Final checks
-- Ensure that all used tokens are valid FSO tokens rerefenced in the documentation files.
-- Make sure that all referenced ship class names, subsystem names, dockpoint names, weapons, background bitmaps etc. are valid and documented FSO token strings. Referencing a non-existent or malformed token string will cause crashes!
-- Verify that all used SEXP operators are valid and documented SEXP operators. Double-check all their arguments for any omissions or type mismatches.
-- Ensure that all your custom tokens are shorter than 30 characters. This applies to names of mission files, ships, wings, events, messages, goals, mission_info.name and description etc.. When in doubt, always prefer shorter names/designations to avoid the risk of exceeding the token string length limit.
-- Ensure that all ship/wing names referenced in entities.reinforcement_ships/entities.reinforcement_wings are actually defined in entities.ships/entities.wings.
-- Ensure that all message names referenced in events are actually defined in mission_flow.messages.
+### Templates, names and references
+- Use templates for repeated ship configurations to avoid repeating class/team/weapon data. Wings must use a template.
+- Name waypoint paths clearly and reference individual points as `PathName:N` (1-based).
+- Keep custom names short: ship, wing, waypoint, jump node, event, goal, message, and mission names should stay under 30 characters to avoid engine token-limit problems.
+- Avoid name collisions across authored objects. Do not reuse the same name for different entities, and do not author a standalone ship whose name would already be created by a wing expansion such as `Alpha 1`.
+- If your mission design calls for a navigation buoy, use the `Terran NavBuoy` ship class.
+- Reinforcement entries must reference ships and wings that are actually defined in `entities.ships` and `entities.wings`.
+- Message names referenced from events must exist in `mission_flow.messages`.
 
-Important: after you first complete a mission file, always do at least one final review/checking pass (using the above checklist) to uncover and fix any possible mistakes.
+### SEXP and token hygiene
+- Use only canonical FSO tokens from the specification and reference docs. This applies to ship classes, weapons, subsystem names, dockpoint names, background textures, message priorities, and wildcard literals.
+- Message priorities must be spelled exactly `"Low"`, `"Normal"`, and `"High"`.
+- Use double quotes (`"`) for entity names inside SEXPs.
+- Never place YAML-style `#` comments inside SEXP block scalars; put comments on surrounding YAML lines instead.
+- Check every SEXP operator against the SEXP documentation: verify the operator name, argument order, argument count, and whether it expects ship names, wing names, or both.
+- Many SEXPs are ship-only. If a SEXP does not accept a wing name, target a specific ship in the wing or choose a wing-compatible alternative.
+- Jump nodes are not interchangeable with ships/wings/waypoints in SEXPs like `distance`. If you need a targetable reference at a jump node's position, place a waypoint or NavBuoy there instead.
+- Use exact FSO weapon token strings as defined in the Tokens reference. Make sure to omit the lore prefixes. For example, write `ML-16 Laser`, not `GTW ML-16 Laser`.
+- Check that goal formulas are not already true at mission start unless that is explicitly intended.
 
-## Troubleshooting (symptoms → likely cause)
-- Start ship doesn’t appear at mission start → standalone start_ship missing arrival_cue "( true )"
-- Reinforcement cannot be called → explicit arrival_cue set to a blocking condition; omit it
-- Docked pair fails or separates on arrival → player ship involved; missing/incorrect dock.* fields; conflicting arrival leadership
-- Errors about "redundant ship" → Do not author a standalone ship with the same name as a ship that would result from an existing wing expansion. For example: if there is a wing named "Alpha", which will create a ship named "Alpha 1" when spawned, you must not author a separate "Alpha 1" ship.
+### Docking and reinforcements
+- Pre-spawn docking is for pairs only. Author docking only on the docker ship, as described in the dedicated Docking section above.
+- Do not involve the player start ship in pre-spawn docking.
+- Keep docking leadership coherent: the dockee should be the arrival leader with `( true )`, and the docker should use `( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
+- Keep reinforcements callable by not giving them a blocking `arrival_cue`. Reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `( true )`.
+
+### Final review before conversion
+After completing a mission file, do one deliberate review pass and confirm that:
+- all referenced tokens are canonical and documented
+- all custom names are unique and under 30 characters
+- all reinforcement, event, and message cross-references resolve to defined objects
+- all SEXPs use valid operators with compatible argument types and correct argument order
+- standalone player starts, docking setups, and reinforcements are correctly defined
