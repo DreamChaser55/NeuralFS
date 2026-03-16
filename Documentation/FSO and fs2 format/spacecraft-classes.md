@@ -57,6 +57,7 @@ This is a list of all valid spacecraft class names in Freespace, separated by fa
 	
 ## Cargo Containers (no prefix)
 - TC 2
+- TSC 2
 - TAC 1
 - TTC 1
 
