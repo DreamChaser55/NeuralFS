@@ -304,6 +304,8 @@ Terran spacecraft classes
 	Cargo Containers (no prefix)
 		TC 2
 			The TC2 is the standard issue cargo container in the GTA for deep space cargo transport. It has all the electronics and systems needed to preserve any cargo within it at whatever conditions are necessary. TC2s are cheap to manufacture, and heavily used throughout the Alliance.
+		TSC 2
+			The TSC 2 was developed when Terran Command decided it needed a stronger and more secure cargo container for use in military operations.  It improves on the established TC 2 design by sacrificing a small amount of internal space for a significantly stronger hull.  Although it is still not as strong as the TAC 1, the TSC 2 is usually the GTA's container of choice for cargo with military value.
 		TAC 1
 			The TAC 1 is a heavily armored container, usually for carrying volatile or dangerous substances. It is also the preferred supply container for use in front line operations.
 		TTC 1
