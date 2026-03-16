@@ -992,7 +992,20 @@ class Validator:
             # Validate SEXP condition
             if stage.condition:
                 self._check_sexp_string(f"Debriefing stage {i+1} condition", stage.condition)
-            
+
+                # Warn if condition is a bare '( true )' — always-true conditions are
+                # insufficiently restrictive and may cause incorrect text to be shown
+                normalized_cue = "".join(stage.condition.split()).lower()
+                if normalized_cue == '(true)':
+                    self.log_warning(
+                        f"Debriefing stage {i+1} uses '( true )' as its condition. "
+                        f"This condition is always true and will cause the stage to display "
+                        f"regardless of the mission outcome (e.g., a success message will also "
+                        f"appear after a failure). "
+                        f"Use a specific SEXP (e.g., '( is-event-true-delay \"...\" 0 )') to "
+                        f"precisely target the intended outcome."
+                    )
+
             # Validate Voice
             if stage.voice_name and stage.voice_name not in self.voices:
                 self.log_error(f"Debriefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")

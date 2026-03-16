@@ -204,6 +204,9 @@ The validator checks the following areas:
 *   **Token Length**: Scans SEXP strings for individual tokens exceeding the 30-character limit.
 *   **Note**: Voice filename length validation has been removed from the validator as it is strictly enforced by the generator logic.
 
+#### **Debriefing Integrity**:
+*   **Trivial `( true )` condition**: Warns if any debriefing stage uses `( true )` as its condition. An always-true condition causes the stage to display regardless of the mission outcome.
+
 #### **Briefing Integrity**:
 *   **Teams**: Validates `icon.team` against allowed factions (Friendly, Hostile, Unknown).
 *   **Classes**: Warns if `icon.class` appears to be a ship class (e.g. starts with "GT", "PV") but is not a known class.
