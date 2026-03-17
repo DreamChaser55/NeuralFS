@@ -36,6 +36,7 @@ class MissionLoader:
         'departure_location',
         'departure_anchor',
         'departure_cue',
+        'ai_goals',
     )
         
     def load(self) -> Mission:

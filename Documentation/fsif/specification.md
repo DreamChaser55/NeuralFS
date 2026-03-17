@@ -165,7 +165,7 @@
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".
 4. entities
   - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
-    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`.
+    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`.
   - ships:
     - subsystems: Names must match the per-ship canonical lists.
     - docking: Author only on the docker under dock.with, dock.docker_point, dock.dockee_point; pairs only; player ships cannot be pre-spawn docked.

@@ -19,7 +19,7 @@ Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single 
 
 Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when "escort"), +Kamikaze Damage (kamikaze_damage or defaults to 1000 when "kamikaze" set), +Destroy At (destroy_at > 0), +Orders Accepted (orders_accepted_mask), and +Orders Accepted List (orders_accepted).
 
-AI goals: wing-level and per-ship ai_goals are emitted.
+AI goals: wing-level and per-ship ai_goals are emitted. `entities.ship_templates` must not author `ai_goals`; initial orders belong to the concrete standalone ship or wing that inherits the template.
 
 Wings placement:
 - Wings carry a single centroid position (entities.wings[*].position). The converter computes individual ship locations during loading by arranging wing members in a straight line along the X axis, centered on the centroid, spaced 50 m apart by default (optionally overridden by a per-wing spacing value).
@@ -217,8 +217,8 @@ The validator checks the following areas:
 
 #### **Ship Template Authoring Rules**:
 *   `entities.ship_templates` may only contain reusable shared ship properties.
-*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, and `departure_cue`.
-*   This is a hard error because those fields do not work correctly in emitted `.fs2` files when inherited by ships that are part of a wing.
+*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, and `ai_goals`.
+*   This is a hard error because those fields do not work correctly or are not semantically appropriate when inherited by ships that are part of a wing.
 *   Correct authoring locations:
     *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
     *   Wing member: author the fields on the corresponding `entities.wings[*]` entry.
