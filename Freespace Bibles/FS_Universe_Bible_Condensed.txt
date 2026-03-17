@@ -59,38 +59,138 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 2367 (The Second Great War / FS2): The NTF rebellion occurs; Shivans return via the Knossos portal. The Capella system is destroyed to seal off the Shivan fleet.
 
 ## Ship Database
-Fighter & Bomber Classes
-Class Name	Faction	Type	Key Characteristics
-Apollo	Terran	Fighter	Standard GTA workhorse; versatile.
-Ulysses	Terran	Fighter	High agility, weak armor; "The Bat."
-Valkyrie	Terran	Interceptor	Fastest Terran ship; bomber interceptor.
-Hercules	Terran	Heavy Fighter	Heavy assault; massive shielding/weaponry.
-Athena	Terran	Light Bomber	"Lightning bomber"; dogfight capable.
-Medusa	Terran	Bomber	Standard anti-cruiser bomber.
-Ursa	Terran	Heavy Bomber	Anti-capital ship; carries Harbinger bombs.
-Anubis	Vasudan	Fighter	Weak, cheap; often used in swarms.
-Horus	Vasudan	Interceptor	Extremely fast; glass cannon.
-Seth	Vasudan	Fighter	"The Turtle"; heavy payload, slow.
-Thoth	Vasudan	Fighter	Dangerous HoL exclusive; high-tech.
-Amun	Vasudan	Heavy Bomber	Massive payload, heavy turrets, slow.
-Osiris	Vasudan	Bomber	Replaced the Amun; faster/more agile.
-Scorpion	Shivan	Scout/Fighter	Fast, maneuverable, weak hull.
-Basilisk	Shivan	Heavy Fighter	Durable; strong shielding.
-Manticore	Shivan	Interceptor	High speed; weak shields.
-Dragon	Shivan	Advanced Fighter	Unmatched agility; very strong shields.
-Shaitan	Shivan	Bomber	Strong shields, low payload.
-Nephilim	Shivan	Bomber	4 cannons, 2 turrets; major threat.
-Seraphim	Shivan	Heavy Bomber	Massive shielding; Class A threat.
-Capital Ships
-Class Name	Faction	Type	Key Notes
-Fenris/Leviathan	Terran	Cruiser	Strike (Fenris) and Defense (Leviathan) variants.
-Orion	Terran	Destroyer	2km length; symbol of Terran power (Galatea, Bastion).
-Hades	Terran	Superdestroyer	GTI/Shivan hybrid; rogue flagship.
-Aten	Vasudan	Cruiser	Weak armor/weapons; Class B threat.
-Typhon	Vasudan	Destroyer	Heavy armor/weaponry; rare.
-Cain/Lilith	Shivan	Cruiser	Cain is common/weak; Lilith is heavily armored.
-Demon	Shivan	Destroyer	Massive, carrier of fighters/bombers (Eva).
-Lucifer	Shivan	Superdestroyer	Invulnerable shields in normal space; destroyed Vasuda Prime.
+
+### Fighters & Bombers
+
+#### Terran
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Apollo | Fighter | Standard GTA workhorse; versatile multirole craft. |
+| Ulysses | Fighter | High agility, weak armor; nicknamed 'The Bat.' |
+| Valkyrie | Interceptor | Fastest Terran fighter; excellent bomber interceptor. |
+| Hercules | Heavy Fighter | Heavy assault fighter with massive shielding and weaponry. |
+| Loki | Recon Fighter | GTI-designed stealthy scout with high speed but light armament. |
+| Athena | Light Bomber | 'Lightning bomber'; small, sturdy, and dogfight-capable. |
+| Medusa | Bomber | Standard anti-cruiser bomber and early Tsunami carrier. |
+| Ursa | Heavy Bomber | Anti-capital bomber with huge payload; carries Harbingers. |
+| Zeus | Bomber | Advanced strike bomber; faster, more flexible Athena successor. |
+
+#### Vasudan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Anubis | Fighter | Weak, cheap fighter often used in swarms. |
+| Horus | Interceptor | Extremely fast, dangerous interceptor with strong loadout. |
+| Seth | Fighter | 'The Turtle'; slow but heavily shielded and well-armed. |
+| Thoth | Fighter | High-tech, dangerous fighter largely associated with the HoL. |
+| Amun | Heavy Bomber | Massive payload, turreted, slow heavy bomber. |
+| Osiris | Bomber | Standard Vasudan bomber; faster, more agile Amun replacement. |
+
+#### Shivan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Scorpion | Scout/Fighter | Fast, maneuverable scout-fighter with weak hull. |
+| Basilisk | Heavy Fighter | Durable heavy fighter with strong shields and striking power. |
+| Manticore | Interceptor | Very high speed interceptor with relatively weak shields. |
+| Dragon | Advanced Fighter | Exceptionally agile fighter with powerful shields and speed. |
+| Shaitan | Bomber | Strong-shielded bomber with modest payload. |
+| Nephilim | Bomber | Heavy bomber with four cannons, two turrets, and huge payload. |
+| Seraphim | Heavy Bomber | Massive heavy bomber; Class A threat to major warships. |
+
+### Transports, Freighters & Support Craft
+
+#### Terran
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Elysium | Transport | Standard personnel transport used in civilian and military service. |
+| Chronos | Freighter | Civilian-designed freighter widely pressed into wartime logistics. |
+| Poseidon | Armed Freighter | Standard military freighter with defensive turrets. |
+| Centaur | Support Ship | Fast, maneuverable rearm and repair craft. |
+
+#### Vasudan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Isis | Transport | Fast transport/tug with notable defensive turrets. |
+| Bast | Freighter | Unarmed civilian freighter; low threat but common logistics vessel. |
+| Ma'at | Freighter | Armed freighter with three turrets. |
+| Satis | Heavy Freighter | Strong-hulled five-turret freighter dangerous to careless attackers. |
+| Scarab | Support Ship | Unmanned Vasudan rearm and repair vessel. |
+
+#### Shivan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Azrael | Transport | Common Shivan transport and frequent capture target. |
+| Mephisto | Freighter | Dangerous Shivan freighter with limited available intelligence. |
+| Asmodeus | Heavy Freighter | Strong-hulled Shivan freighter with four turrets and scarce intel. |
+
+### Warships & Installations
+
+#### Terran
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Fenris | Cruiser | Fast Terran strike cruiser and fleet mainstay. |
+| Leviathan | Cruiser | Heavier, slower defensive cruiser derived from the Fenris. |
+| Orion | Destroyer | 2 km capital ship; symbol of Terran power. |
+| Hades | Superdestroyer | GTI/Shivan hybrid rogue flagship. |
+| Arcadia | Installation | Major GTA/GTI station serving as trade, comms, and fighter hub. |
+| Faustus | Science Vessel | Vulnerable research craft often pressed into military science roles. |
+
+#### Vasudan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Aten | Cruiser | Underarmed cruiser with a notably weak weapons subsystem. |
+| Typhon | Destroyer | Heavy Vasudan capital ship with major armor and firepower. |
+| Karnak | Installation | Massive fleet yard and heavily armed station. |
+
+#### Shivan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Cain | Cruiser | Common Shivan strike cruiser with many turrets and cluster defenses. |
+| Lilith | Cruiser | Heavily armored, high-threat cruiser and bomber priority target. |
+| Demon | Destroyer | Major Shivan warship and carrier platform. |
+| Lucifer | Superdestroyer | Shielded flagship that destroyed Vasuda Prime. |
+
+### Utility Craft, Defenses & Cargo
+
+#### Terran
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Hermes | Escape Pod | Standard lifeboat for Terran destroyers and installations. |
+| Amazon | Training Drone | Basic unmanned combat training drone. |
+| Amazon Advanced | Training Drone | Larger drone for subsystem and large-target training. |
+| Terran NavBuoy | Navigation Buoy | Unmanned navigation marker. |
+| Watchdog | Sentry Gun | Standard unmanned Terran defensive turret. |
+| Cerberus | Sentry Gun | Heavier Watchdog variant with stronger weapons and durability. |
+| TC 2 | Cargo Container | Standard deep-space cargo container. |
+| TSC 2 | Cargo Container | Hardened military cargo container. |
+| TAC 1 | Cargo Container | Heavily armored container for volatile or dangerous cargo. |
+| TTC 1 | Tech Container | Research container used for technical and Zero-G cargo. |
+
+#### Vasudan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Ra | Escape Pod | Standard Vasudan lifeboat. |
+| Ankh | Sentry Gun | Standard Vasudan supply-depot defense turret. |
+| VC 3 | Cargo Container | Standard Vasudan atmospheric and deep-space cargo container. |
+| VAC 4 | Cargo Container | Armored Vasudan cargo container. |
+
+#### Shivan
+
+| Class Name | Type | Key Characteristics |
+|---|---|---|
+| Trident | Sentry Gun | Shivan repair and supply depot defense turret. |
+| SC 5 | Cargo Container | Standard Shivan storage container. |
+| SAC 2 | Cargo Container | Heavier armored Shivan supply container. |
 
 ## Terran Weaponry
 
