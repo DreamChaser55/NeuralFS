@@ -220,37 +220,15 @@ Subspace Tracking: Ancient technology allowing ships to be tracked and targeted 
 
 ## FS1 Campaign Synopsis (The Great War)
 
-Act 1: The Emergence
+Context: Set in 2335 during the final days of the Terran-Vasudan War.
 
-The GTA and PVE are in the 14th year of a war of attrition.
+The Plot:
 
-First Contact: In the Ross 128 system, the GTD Galatea encounters unknown ships (Shivans) that decimate Terran forces with impenetrable shields.
+The player serves as a GTA pilot aboard the GTD Galatea. The campaign begins with routine anti-Vasudan patrols and raids in the closing phase of the 14-Year War, including fighting Terran defectors and contesting systems such as Antares and Beta Cygni. This abruptly changes when the enigmatic Shivans appear, posessing ships with sensor-cloaking technology and powerful shielding. They start annihilating both Terran and Vasudan forces, forcing the two powers into an uneasy ceasefire. The new war is complicated by the Hammer of Light, a rogue Vasudan cult that rejects peace and actively aids the Shivan invasion.
 
-Escalation: The GTSC Plato is destroyed carrying prototypes. The GTA and PVE sign a desperate ceasefire.
+As the conflict escalates, the alliance learns how to track Shivans or radar, develops new weapons that punch through their shields, then recovers and adapts Shivan shielding technology. In a daring raid, pilots from the Galatea attempt to capture a Shivan cruiser Taranis. The capture of the cruiser proves disastrous when the Shivans track it through subspace and the Lucifer superdestroyer (protected by new, invulnerable shields) destroys Tombaugh Station in Ribos to erase the prize. The Shivans continue a rapid jump-node offensive rather than a conventional occupation campaign, breaking allied defenses across Ribos, Antares, Beta Aquilae, and Deneb. After GTD Galatea is destroyed by the Lucifer, the player transfers to GTD Bastion. The Lucifer bypasses blockades through unstable or uncharted routes, and Vasuda Prime is bombarded into ruin. Late in the war, the alliance also fields major emergency advances including improved anti-Shivan weapons, Tsunami and Harbinger bombs, Ursa bombers, and a limited number of fighter-borne intersystem jump drives.
 
-Discovery: A daring raid on a Shivan depot in Ikeya yields shield technology and sensor data, allowing Terran ships to finally target and track Shivan vessels.
-
-The Taranis: The GTA captures a Shivan cruiser (Taranis), but it is tracked by the Shivans to the Tombaugh Station, leading to the first appearance of the SD Lucifer.
-
-Act 2: The Onslaught
-
-The Shivan fleet, led by the Lucifer, pushes toward the core systems.
-
-Loss of Ribos: The Lucifer destroys Tombaugh Station with ease due to its invulnerable shielding.
-
-Counter-Ops: The GTA launches operations in Antares and Deneb. They capture a Shivan Dragon fighter, allowing scientists to reverse-engineer advanced propulsion and weaponry.
-
-Tragedy in Deneb: The Lucifer ambushes the fleet in Deneb. The GTD Galatea is destroyed while covering the evacuation. The path to Vasuda Prime is left open.
-
-Act 3: Extinction and Victory
-
-Fall of Vasuda: The Lucifer bombards Vasuda Prime for 13 hours, killing billions and rendering the planet uninhabitable.
-
-The Ancients: Refugees flee to Altair, discovering ruins of an extinct race (The Ancients). Data retrieved reveals that Shivan shields do not function in subspace and that they can be tracked there.
-
-The Final Strike: The Lucifer moves to the Sirius system to jump to Sol (Earth). The GTD Bastion intercepts the Lucifer as it enters the Delta Serpentis-Sol jump node.
-
-Sol Isolation: Inside the subspace tunnel, Terran bombers destroy the Lucifer’s reactors. The resulting explosion collapses the jump node, saving the galaxy but sealing Earth off from the rest of the universe.
+Vasudan scientists on Altair uncover Ancient records proving that the Shivans destroyed a prior interstellar civilization and revealing two decisive facts: capital ships can be tracked in subspace, and the Lucifer's shields will not function there. After covering evacuations, escorting the retrieval of the Altair records, and fighting rearguard actions around Alpha Centauri, Sirius, and Delta Serpentis, the Bastion's strike force follows the Lucifer into the Delta Serpentis-Sol jump corridor. Terran bombers destroy its reactors in subspace causing a hull breach, saving Earth. The resulting explosion leads to collapse of the Delta Serpentis-Sol node, isolating Sol from the rest of known space, and ending the Great War while setting up the unstable postwar era of Silent Threat and Reconstruction.
 
 ## Expansion: Silent Threat (The Hades Rebellion)
 
@@ -258,7 +236,7 @@ Context: Set immediately following the Great War.
 
 The Plot: Galactic Terran Intelligence (GTI) goes rogue, believing the GTA is too weak to protect humanity. They hide the existence of the GTD Hades, a superdestroyer built with Shivan technology.
 
-Resolution: The player (originally working for GTI) defects to the GTA. The Hades is tracked and destroyed, ending the rebellion.
+Resolution: The Hades is tracked and destroyed, ending the rebellion.
 
 ## Star System Reference
 
