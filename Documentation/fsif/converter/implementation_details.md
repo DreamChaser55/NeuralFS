@@ -207,6 +207,9 @@ The validator checks the following areas:
 #### **Debriefing Integrity**:
 *   **Trivial `( true )` condition**: Warns if any debriefing stage uses `( true )` as its condition. An always-true condition causes the stage to display regardless of the mission outcome.
 
+#### **Directive Text SEXP Compatibility**:
+*   **Event/goal-referencing SEXPs in directive formulas**: Warns if an event with a `directive_text` uses `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in its formula.
+
 #### **Briefing Integrity**:
 *   **Teams**: Validates `icon.team` against allowed factions (Friendly, Hostile, Unknown).
 *   **Classes**: Warns if `icon.class` appears to be a ship class (e.g. starts with "GT", "PV") but is not a known class.

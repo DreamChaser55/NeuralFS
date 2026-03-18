@@ -225,6 +225,7 @@ mission_flow:
 Notes:
 - Available mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
 - The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
+- **Directive text limitation — avoid event/goal references in the formula:** Events intended to display a directive text must use simple, directly-evaluable conditions. If the formula references another event or goal using `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay`, the directive will silently fail: the engine cannot determine at mission start whether such an event could ever become true or false, so the grey "pending" directive is never displayed on the HUD. Use direct object-state SEXPs (e.g., `is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events that have a `directive_text`.
 - Try to include enough comms chatter (messages) to in your missions to make them lively and prevent player boredom.
 
 ## Authoring dialogue (TTS voicing)
@@ -596,6 +597,7 @@ Use this section as a practical sanity guide: each item describes the preferred 
 - Jump nodes are not interchangeable with ships/wings/waypoints in SEXPs like `distance`. If you need a targetable reference at a jump node's position, place a waypoint or NavBuoy there instead.
 - Use exact FSO weapon token strings as defined in the Tokens reference. Make sure to omit the lore prefixes. For example, write `ML-16 Laser`, not `GTW ML-16 Laser`.
 - Check that goal formulas are not already true at mission start unless that is explicitly intended.
+- Events with `directive_text` must use simple, directly-evaluable conditions. Do **not** use `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in the formula of an event that has a `directive_text`. The engine cannot initially evaluate whether such an event could ever become true, so the grey "pending" directive is never shown on the HUD. Use direct object-state checks (e.g., `is-destroyed-delay`, `has-arrived-delay`) instead.
 
 ### Docking and reinforcements
 - Pre-spawn docking is for pairs only. Author docking only on the docker ship, as described in the dedicated Docking section above.

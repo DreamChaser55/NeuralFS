@@ -339,6 +339,7 @@ class Validator:
         self.validate_sexps()
         self.validate_audio()
         self.validate_goals_and_directives()
+        self.validate_directive_text_sexp_compatibility()
 
         # Validate SEXP scalar styles (YAML block format check)
         if self.fsif_path:
@@ -1234,3 +1235,47 @@ class Validator:
                 f"It is highly recommended that every important mission goal has a corresponding "
                 f"event with a directive_text so that the objective is visible on the player's HUD."
             )
+
+    def validate_directive_text_sexp_compatibility(self):
+        """
+        Warn if events with directive_text use is-event-true-delay, is-event-false-delay,
+        or similar event/goal-referencing SEXPs in their formula.
+
+        The FSO engine cannot initially evaluate the possibility of an event becoming
+        true/false when its formula references other events or goals via these operators.
+        As a result, the grey 'pending' directive is never displayed on the HUD.
+
+        Events with directive_text should use simple, directly-evaluable conditions
+        (e.g., is-destroyed-delay, has-arrived-delay, percent-ships-destroyed).
+        """
+        DIRECTIVE_INCOMPATIBLE_SEXPS = [
+            "is-event-true-delay",
+            "is-event-false-delay",
+            "is-event-true-msecs-delay",
+            "is-event-false-msecs-delay",
+            "is-goal-true-delay",
+            "is-goal-false-delay",
+        ]
+
+        for i, event in enumerate(self.mission.events):
+            if not event.directive_text or not event.formula:
+                continue
+
+            # Strip quoted string literals to avoid false positives from event/goal
+            # name arguments that happen to contain an operator name as a substring.
+            formula_clean = re.sub(r'"(\\.|[^"\\])*"', '""', event.formula)
+
+            found_ops = [op for op in DIRECTIVE_INCOMPATIBLE_SEXPS if op in formula_clean]
+
+            if found_ops:
+                event_name = event.name if event.name else f"(unnamed, index {i})"
+                ops_str = ", ".join(f"'{op}'" for op in found_ops)
+                self.log_warning(
+                    f"Event '{event_name}' has a directive_text but its formula uses "
+                    f"{ops_str}. Directive text does not work correctly when the formula "
+                    f"references other events or goals via these SEXPs: the engine cannot "
+                    f"initially determine whether the event could become true or false, so "
+                    f"the grey directive will never be displayed on the HUD. "
+                    f"Use simpler, directly-evaluable conditions (e.g., is-destroyed-delay, "
+                    f"has-arrived-delay, percent-ships-destroyed) in events with directive_text."
+                )
