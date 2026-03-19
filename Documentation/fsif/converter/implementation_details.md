@@ -19,7 +19,7 @@ Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single 
 
 Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when "escort"), +Kamikaze Damage (kamikaze_damage or defaults to 1000 when "kamikaze" set), +Destroy At (destroy_at > 0), +Orders Accepted (orders_accepted_mask), and +Orders Accepted List (orders_accepted).
 
-AI goals: wing-level and per-ship ai_goals are emitted. `entities.ship_templates` must not author `ai_goals`; initial orders belong to the concrete standalone ship or wing that inherits the template.
+AI goals: wing-level and per-ship ai_goals are emitted.
 
 Wings placement:
 - Wings carry a single centroid position (entities.wings[*].position). The converter computes individual ship locations during loading by arranging wing members in a straight line along the X axis, centered on the centroid, spaced 50 m apart by default (optionally overridden by a per-wing spacing value).
@@ -245,14 +245,6 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 
 ---
 
-## Environment emission notes (summary)
-
-- Fog: always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`; FSIF no longer exposes fog authoring fields.
-- Ambient light: internally normalized to `[red, green, blue]` and emitted into `$Ambient light level` as the packed FS2 integer.
-- Backgrounds: all `$Sun` entries first, then `$Starbitmap` entries; `+Flags` includes "corrected angles".
-- Nebula: when enabled, `+NebAwacs`, `+Storm`, `+Neb2`, optionally `+Neb2 Poofs List`.
-- Full nebula results in background starbitmap suppression.
-
 ## Briefing emission and normalization
 
 - Briefing camera calculation: The converter computes the tightest axis-aligned bounding box for the icons in the XZ plane, expands it if necessary to meet the 2.5 aspect ratio requirement, and positions the camera at XZ equal to the bounding box center and Y equal to the bounding box width with a 15% safety factor (clamped to a minimum of 1000m), looking directly down.
@@ -302,7 +294,6 @@ Wings (#Wings)
 Constraints and guidance
 - Directional $Arrival Location values require both +Arrival Distance and $Arrival Anchor.
 - Docking Bay commonly uses +Arrival Distance: 0.
-- Player start spawning rule (recap): if the starting ship is standalone (not in a wing), its $Arrival Cue must be `( true )`.
 
 ## Asteroid/Debris Fields mapping
 
