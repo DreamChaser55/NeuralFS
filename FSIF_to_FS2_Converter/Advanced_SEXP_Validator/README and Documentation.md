@@ -62,6 +62,8 @@ This tool mirrors the specific architecture of the Freespace Open C++ source cod
 
 There is also the 'FSO SEXP validation logic.md', containing the analysis of the FSO SEXP parsing and validation logic.
 
+Note for AI agents: `missionparse.cpp` and `sexpdotcpp_excerpts.txt` are large files that could fill a large fraction of your context window if you read them. Only read them if you really need it to accomplish your tasks.
+
 ### **Project File Structure**
 
 - `advanced_sexp_validator.py`: Main validator with parser, knowledge base, and recursive validation logic.
