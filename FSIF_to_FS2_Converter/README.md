@@ -107,7 +107,7 @@ python tools/generate_fs_data.py
 This will re-parse the Markdown files and overwrite `fs_data.py` with the latest definitions.
 
 ## Project Structure
-- `fsif_to_fs2.py` — CLI entry: reads FSIF, generates TTS, and writes FS2.
+- `fsif_to_fs2.py` — CLI entry: imports the other components and orchestrates the conversion process.
 - `fsif_converter_gui.py` — Graphical User Interface (GUI) for the converter.
 - `mission_loader.py` — Loads FSIF, applies templates, expands wings.
 - `fs2_writer.py` — Emits FS2 sections.
