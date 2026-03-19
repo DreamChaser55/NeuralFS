@@ -1,7 +1,5 @@
 # **Freespace Open Advanced SEXP Parser & Validator (Python Port)**
 
-**Current version: 0.6**
-
 This project is a Python implementation of the **Symbolic Expression (SEXP)** parser and validator used in the Freespace Open (FSO) engine. It is designed to parse mission SEXP strings (e.g., events, arrival cues) and validate them against a strict set of rules, exactly mimicking the behavior of the FSO C++ engine.
 
 The validator includes auto-generated argument type logic for all 678+ SEXP operators, transpiled directly from the FSO C++ source code. It implements full recursive type checking using `map_opf_to_opr` logic to bridge Argument Types (OPF) and Return Types (OPR). Recent updates have refactored Return Types into a formal `SexpReturnType` Enum for improved type safety and maintainability.
@@ -92,7 +90,7 @@ Located in the `/generated_code/` subfolder. **Do not edit manually.** Edit the 
 
 ### **2. The Knowledge Base (OperatorDef)**
 
-* **Concept:** The parser is data-driven. It doesn't "know" what when means in code; it looks up when in a database to find its rules.  
+* **Concept:** The parser is data-driven. It doesn't "know" what `when` means in code; it looks up `when` in a database to find its rules.  
 * **Structure:**  
   * min_args / max_args: Limits on argument counts.  
   * return_type: What this operator resolves to (Boolean, Number, Action, etc.).  
@@ -116,22 +114,9 @@ Located in the `/generated_code/` subfolder. **Do not edit manually.** Edit the 
     *   **Atoms:** Checked to ensure their content matches the specific constraints of the `OPF` type (e.g., `OPF_SHIP` must be a valid ship name, `OPF_BOOL` must be "true"/"false" or a number).
 * **FSO Equivalent:** Mirrors check_sexp_syntax, query_operator_argument_type, and sexp_query_type_match.
 
-## **Status Update**
-
-| Task | Status |
-|------|--------|
-| Auto-Generate Operator Database | ✅ Complete (v0.2) |
-| Port Argument Logic | ✅ Complete (v0.3) |
-| Fix Type Matching | ✅ Complete (v0.4) |
-| Integrate with Converter | ✅ Complete (v0.5) |
-| Implement Atom Validators | ✅ Complete (v0.6) |
-
-**Next Steps:**
-- Support more complex variable types.
-
 ## **Integration with FSIF Converter**
 
-As of v0.7, this validator is integrated with the main `FSIF_to_FS2_Converter` as a core validation step.
+This validator is integrated with the main `FSIF_to_FS2_Converter` as a core validation step.
 
 ### **Entry Point**
 The function `validate_mission(mission, log_func)` in `advanced_sexp_validator.py` serves as the bridge. It:
