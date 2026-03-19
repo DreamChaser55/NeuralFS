@@ -74,9 +74,9 @@ Located in the `/generation_tools/` subfolder.
 - `generate_argument_logic.py`: C++ to Python transpiler for argument type logic (generates `sexp_argument_logic.py`).
 
 #### **Generated Files**
-Located in the `/generated_code/` subfolder. Do not edit manually. Edit the generating scripts (in the `/generation_tools/` folder) instead.
+Located in the `/generated_code/` subfolder. **Do not edit manually.** Edit the generating scripts (in the `/generation_tools/` folder) instead.
 - `sexp_definitions.py`: Auto-generated operator definitions (678+ operators).
-- `opf_definitions.py`: Auto-generated OPF type constants. Do not edit manually.
+- `opf_definitions.py`: Auto-generated OPF type constants.
 - `sexp_argument_logic.py`: Auto-generated argument type logic (transpiled from C++).
 
 ### **1. Data Structures (SexpNode)**
