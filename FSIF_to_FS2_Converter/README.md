@@ -122,4 +122,4 @@ This will re-parse the Markdown files and overwrite `fs_data.py` with the latest
 - `voice_manager.py` — Manages voice filename generation and normalization. It assigns unique filenames to voiced lines, handling collision resolution based on the selected TTS strategy.
 - `utils.py` — Shared utility functions.
 - `tools/` — This folder is documented above, in the "Data Generation Tools" section.
-- `Advanced SEXP Validator/` — A Python implementation of the SEXP parser and validator used in the FSO engine.
+- `Advanced_SEXP_Validator/` — A Python implementation of the SEXP parser and validator used in the FSO engine.
