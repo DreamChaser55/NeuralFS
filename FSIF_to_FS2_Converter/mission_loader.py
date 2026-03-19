@@ -147,10 +147,9 @@ class MissionLoader:
         env_data = self.data.get('environment', {})
 
         ambient_light_level = env_data.get('ambient_light_level')
-        if isinstance(ambient_light_level, int) and not isinstance(ambient_light_level, bool):
+        if not isinstance(ambient_light_level, list):
             raise ValueError(
-                "FSIF 2.6 requires environment.ambient_light_level to be authored as [red, green, blue], "
-                "not as a packed integer."
+                "FSIF requires environment.ambient_light_level to be authored as [red, green, blue]."
             )
         
         # Nebula Normalization
