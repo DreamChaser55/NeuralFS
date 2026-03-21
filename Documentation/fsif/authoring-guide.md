@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "2.7"
+fsif_version: "2.8"
 
 mission_info:
   name: "Minimal Mission"
@@ -44,7 +44,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "2.7"
+fsif_version: "2.8"
 
 mission_info:
   name: "Mission name string"
@@ -110,8 +110,8 @@ mission_flow:
 ## Fiction Viewer
 The Fiction Viewer allows you to display a text file before the mission starts. This is useful for lengthy narrative text or logs. If your mission design document contains cutscene descriptions but the cutscenes were not created, you can write their narrative content here.
 ```yaml
-# Top-level field
-fiction_viewer: "missionname_story.txt"
+mission_flow:
+  fiction_viewer: "missionname_story.txt"
 ```
 The file `missionname_story.txt` must exist in your mod's data/fiction folder.
 

@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 2.7 (current)
+- FSIF version: 2.8 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,8 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"2.7"`.
-- `fiction_viewer` (String, optional): Filename of the text file to display (e.g., `"story.txt"`).
+- `fsif_version` (String, required): Must be `"2.8"`.
 - `mission_info` (Mapping, required):
   - `name` (String, required)
   - `author` (String, optional, default: `"FSIF Converter"`)
@@ -83,6 +82,7 @@
     - `yes_messages` (List[String], optional)
   - `reinforcement_ships` (List[Mapping], optional). Same structure as `reinforcement_wings`.
 - `mission_flow` (Mapping, required):
+  - `fiction_viewer` (String, optional): Filename of the text file to display.
   - `events` (List[Mapping], optional):
     - `name` (String, optional)
     - `formula` (String, required). SEXP.

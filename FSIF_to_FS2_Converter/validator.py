@@ -174,7 +174,7 @@ class Validator:
         - internal converter-only helper fields such as wing template names
         - authored-but-not-emitted helper fields such as asteroid_field.name
         """
-        self._validate_ascii_text('fiction_viewer', self.mission.fiction_viewer)
+        self._validate_ascii_text('mission_flow.fiction_viewer', self.mission.fiction_viewer)
 
         info = self.mission.mission_info
         self._validate_xstr_text('mission_info.name', info.name)

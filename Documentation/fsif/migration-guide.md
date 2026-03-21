@@ -1,11 +1,54 @@
-# FSIF Migration Guide (1.0 → ... → 2.7)
+# FSIF Migration Guide (1.0 → ... → 2.8)
 
 Purpose
 - Practical, snippet-led instructions to update existing FSIF files to the latest spec and converter expectations.
 - Covers breaking changes and notable behavior shifts.
 
 Status
-- Current FSIF version: 2.7. The converter accepts FSIF 2.7 only; use this guide to update older FSIF files to the 2.7 schema before converting.
+- Current FSIF version: 2.8. The converter accepts FSIF 2.8 only; use this guide to update older FSIF files to the 2.8 schema before converting.
+
+FSIF 2.8: `fiction_viewer` moved under `mission_flow` (breaking)
+
+Change
+- The `fiction_viewer` field has moved from the top level of the FSIF document into the `mission_flow` section.
+- This reflects chronological ordering: the fiction viewer is shown to the player **before** the Command Briefing, so it belongs in `mission_flow` alongside the other mission-flow content.
+
+Migration guidance
+- Find any top-level `fiction_viewer` key in your `.fsif` files and move it to be a sub-key of `mission_flow`.
+- Bump `fsif_version` to `"2.8"`.
+
+Before (2.7)
+```yaml
+fsif_version: "2.7"
+
+fiction_viewer: "story.txt"
+
+mission_info:
+  name: "My Mission"
+  # ...
+
+mission_flow:
+  command_briefing:
+    stages: []
+  # ...
+```
+
+After (2.8)
+```yaml
+fsif_version: "2.8"
+
+mission_info:
+  name: "My Mission"
+  # ...
+
+mission_flow:
+  fiction_viewer: "story.txt"
+  command_briefing:
+    stages: []
+  # ...
+```
+
+---
 
 FSIF 2.7: Removal of full nebula background bitmaps (breaking)
 

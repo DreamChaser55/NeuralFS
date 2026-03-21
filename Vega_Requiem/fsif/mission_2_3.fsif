@@ -1,6 +1,4 @@
-fsif_version: "2.7"
-
-fiction_viewer: "Mission_2_3_story.txt"
+fsif_version: "2.8"
 
 mission_info:
   name: "Vega Requiem"
@@ -197,6 +195,7 @@ entities:
       - [0, 0, 6000]
 
 mission_flow:
+  fiction_viewer: "Mission_2_3_story.txt"
   briefing:
     stages:
       - text: |

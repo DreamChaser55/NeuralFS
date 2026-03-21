@@ -1,6 +1,4 @@
-fsif_version: "2.7"
-
-fiction_viewer: "Mission_2_2_story.txt"
+fsif_version: "2.8"
 
 mission_info:
   name: "The Last Full Measure"
@@ -266,6 +264,7 @@ entities:
       - [0, 0, -20000]
 
 mission_flow:
+  fiction_viewer: "Mission_2_2_story.txt"
   briefing:
     stages:
       - text: |

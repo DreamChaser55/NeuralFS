@@ -1,6 +1,4 @@
-fsif_version: "2.7"
-
-fiction_viewer: "story.txt"
+fsif_version: "2.8"
 
 mission_info:
   name: "FSIF All Features Showcase"
@@ -227,6 +225,7 @@ entities:
       num_times: 1
 
 mission_flow:
+  fiction_viewer: "story.txt"
   command_briefing:
     stages:
       - text: "The $f{ GTC Fenris $} and docked $f{ GTT Elysium $} are holding at the $y{ Nav Buoy $}, one short burn from the Delta Serpentis jump node."

@@ -73,7 +73,7 @@ class MissionLoader:
             briefing=flow_data['briefing'],
             debriefing=flow_data['debriefing'],
             command_briefing=flow_data['command_briefing'],
-            fiction_viewer=self.data.get('fiction_viewer'),
+            fiction_viewer=flow_data['fiction_viewer'],
             reinforcements=reinforcements,
             jump_nodes=jump_nodes,
             audio=audio
@@ -87,18 +87,18 @@ class MissionLoader:
         """
         Validate the 'fsif_version' field.
         
-        Currently accepted FSIF version: '2.7'.
+        Currently accepted FSIF version: '2.8'.
         
         Raises:
             ValueError: If 'fsif_version' is missing, malformed, or unsupported.
         """
         version_str = self.data.get('fsif_version')
         if not isinstance(version_str, str) or not version_str.strip():
-            raise ValueError("fsif_version is required and must be the exact string '2.7'.")
+            raise ValueError("fsif_version is required and must be the exact string '2.8'.")
         version_str = version_str.strip()
-        if version_str != '2.7':
+        if version_str != '2.8':
             raise ValueError(
-                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.7' only. "
+                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '2.8' only. "
                 f"Please update your mission file (see Migration Guide)."
             )
         self.fsif_version = version_str
@@ -384,15 +384,20 @@ class MissionLoader:
 
     def _load_mission_flow(self) -> Dict[str, Any]:
         """
-        Load mission flow components (events, goals, messages, briefings).
-        
+        Load mission flow components (fiction_viewer, events, goals, messages, briefings).
+
+        Also extracts the optional fiction_viewer filename from mission_flow.
+
         Calculates briefing cameras for each stage.
         
         Returns:
-            Dict containing parsed lists of events, goals, messages, and briefing objects.
+            Dict containing parsed lists of events, goals, messages, briefing objects,
+            and the optional fiction_viewer filename.
         """
         flow = self.data.get('mission_flow', {})
-        
+
+        fiction_viewer = flow.get('fiction_viewer')
+
         events = [Event(**e) for e in flow.get('events', [])]
         
         goals = []
@@ -424,6 +429,7 @@ class MissionLoader:
         command_briefing = CommandBriefing(**flow.get('command_briefing', {}))
         
         return {
+            'fiction_viewer': fiction_viewer,
             'events': events,
             'goals': goals,
             'messages': messages,
