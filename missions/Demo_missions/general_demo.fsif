@@ -468,7 +468,7 @@ mission_flow:
       voice_name: "Alnilam"
       voice_style_instructions: "Cruiser captain under pressure"
     - name: "Beta arrived"
-      message: "Beta wing on station. We're moving to cover the Fenris."
+      message: "Beta wing on station. We're moving to engage the hostiles threatening the Fenris."
       voice_name: "Alnilam"
       voice_style_instructions: "Confident fighter pilot"
     - name: "Rama inbound"
