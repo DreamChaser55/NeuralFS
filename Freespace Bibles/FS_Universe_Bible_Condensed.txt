@@ -86,6 +86,7 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 | Thoth | Fighter | High-tech, dangerous fighter largely associated with the HoL. |
 | Amun | Heavy Bomber | Massive payload, turreted, slow heavy bomber. |
 | Osiris | Bomber | Standard Vasudan bomber; faster, more agile Amun replacement. |
+| PVB Sekhmet | Heavy Bomber | Hammer of Light bomber developed by utilizing Shivan technologies obtained by unknown means. Massive payload. |
 
 #### Shivan
 
@@ -95,9 +96,11 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 | Basilisk | Heavy Fighter | Durable heavy fighter with strong shields and striking power. |
 | Manticore | Interceptor | Very high speed interceptor with relatively weak shields. |
 | Dragon | Advanced Fighter | Exceptionally agile fighter with powerful shields and speed. |
+| Gorgon | Advanced Fighter | Unusual design with powerful shields and very good maneuverability |
 | Shaitan | Bomber | Strong-shielded bomber with modest payload. |
 | Nephilim | Bomber | Heavy bomber with four cannons, two turrets, and huge payload. |
 | Seraphim | Heavy Bomber | Massive heavy bomber; Class A threat to major warships. |
+| Nahema | Heavy Bomber | Large heavy bomber; Probably the base for HoL PVB Sekhmet |
 
 ### Transports, Freighters & Support Craft
 
@@ -106,9 +109,11 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 | Class Name | Type | Key Characteristics |
 |---|---|---|
 | Elysium | Transport | Standard personnel transport used in civilian and military service. |
+| Hunter | Transport | Military transport for surgical strikes requiring small squads of marines |
 | Chronos | Freighter | Civilian-designed freighter widely pressed into wartime logistics. |
 | Poseidon | Armed Freighter | Standard military freighter with defensive turrets. |
 | Centaur | Support Ship | Fast, maneuverable rearm and repair craft. |
+| Terran Probe | Unmanned Probe | Small all-purpose survey and exploration instrument |
 
 #### Vasudan
 
@@ -119,6 +124,7 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 | Ma'at | Freighter | Armed freighter with three turrets. |
 | Satis | Heavy Freighter | Strong-hulled five-turret freighter dangerous to careless attackers. |
 | Scarab | Support Ship | Unmanned Vasudan rearm and repair vessel. |
+| Vasudan Probe | Unmanned Probe | All-purpose research pod |
 
 #### Shivan
 
@@ -139,6 +145,7 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 | Orion | Destroyer | 2 km capital ship; symbol of Terran power. |
 | Hades | Superdestroyer | GTI/Shivan hybrid rogue flagship. |
 | Arcadia | Installation | Major GTA/GTI station serving as trade, comms, and fighter hub. |
+| Terran Asteroid Base | Installation | Habitable base built into an asteroid. |
 | Faustus | Science Vessel | Vulnerable research craft often pressed into military science roles. |
 
 #### Vasudan
@@ -147,7 +154,9 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 |---|---|---|
 | Aten | Cruiser | Underarmed cruiser with a notably weak weapons subsystem. |
 | Typhon | Destroyer | Heavy Vasudan capital ship with major armor and firepower. |
+| Imhotep | Science Vessel | Standard Vasudan research vessel |
 | Karnak | Installation | Massive fleet yard and heavily armed station. |
+| Vasudan Asteroid Base | Installation | Habitable base built into an asteroid. |
 
 #### Shivan
 
@@ -181,6 +190,8 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 |---|---|---|
 | Ra | Escape Pod | Standard Vasudan lifeboat. |
 | Ankh | Sentry Gun | Standard Vasudan supply-depot defense turret. |
+| Jackal | Training Drone | A simple training and reconnaissance drone |
+| Vasudan NavBuoy | Navigation Buoy | Unmanned navigation marker. |
 | VC 3 | Cargo Container | Standard Vasudan atmospheric and deep-space cargo container. |
 | VAC 4 | Cargo Container | Armored Vasudan cargo container. |
 

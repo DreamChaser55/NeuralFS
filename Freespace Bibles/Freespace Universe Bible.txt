@@ -248,6 +248,8 @@ Terran spacecraft classes
 	Transports (prefix GTT)
 		GTT Elysium
 			Since the start of space colonization, this standard transport has been used by everyone, both civilian and military. While it has undergone minor changes time and again, it remains a simple design: A vehicle meant to transport personnel from one place to another.
+		GTT Hunter
+			The GTT Hunter was designed by GTI for surgical strike purposes requiring small squads of highly-trained marines.  Faster, smaller, and more heavily armed than the Elysium, it is capable of performing limited offensive roles in addition to carrying soldiers and cargo.  The GTI primarily uses these ships to deposit small teams of special forces units to soften up the enemy in preparation for larger assaults by conventional boarding parties.
 	
 	Freighters (prefix GTFr)
 		GTFr Chronos
@@ -271,11 +273,15 @@ Terran spacecraft classes
 	
 	Installations (prefix GTI)
 		GTI Arcadia
-			Early Terran space stations were constructed much smaller, and were mostly used for Zero-G research purposes. Later on, with advancements in space construction technologies, stations grew bigger and bigger. When the first Arcadia-class station was commissioned, GTA decided to rename it to an Installation rather than a Space Station. Used for a variety of purposes, almost all major systems are home to at least one Installation, which is often used as the center of trade and communications. Home to scores of small ship, including repair vessels, fighters, and transports, an Arcadia class Installation is always a safe haven for a convoy of freighters or ships returning from battle. Where the Orion is the symbol of Terran power, the Arcadia is the shining beacon of stability. 
+			Early Terran space stations were constructed much smaller, and were mostly used for Zero-G research purposes. Later on, with advancements in space construction technologies, stations grew bigger and bigger. When the first Arcadia-class station was commissioned, GTA decided to rename it to an Installation rather than a Space Station. Used for a variety of purposes, almost all major systems are home to at least one Installation, which is often used as the center of trade and communications. Home to scores of small ship, including repair vessels, fighters, and transports, an Arcadia class Installation is always a safe haven for a convoy of freighters or ships returning from battle. Where the Orion is the symbol of Terran power, the Arcadia is the shining beacon of stability.
+		Terran Asteroid Base
+			Asteroid bases such as these are used by both civilian and military contractors to mine resources and conduct experiments.
 	
 	Science Vessels (prefix GTSC)
 		GTSC Faustus
 			The Faustus Science vessel was, and still is, a civilian craft. However, in the 14 years since the Terran-Vasudan war began, more and more of these were commissioned by the GTA in order to pursue military research. However, its obvious value, poor fighting capabilities, and lack of speed make it a prime target for enemy ships; hence, you will rarely find many of these anywhere near the front lines of battle.
+		Terran Probe
+			The standard Terran Probe is an all-purpose instrument that can be used in a variety of situations.  They are found in missions ranging from unmanned exploration of new systems, to scientific observation of interesting areas of space, to surveying of patrol routes or suspected enemy positions.  In a pinch, they can be deployed as communications buoys or as couriers for important messages or scientific data.  Their great speed and small size make them useful in battle situations where the enemy will most probably give them a low target priority.
 	
 	Escape Pods (prefix GTEP)
 		GTEP Hermes
@@ -328,6 +334,8 @@ Vasudan spacecraft classes
 			The Amun is the Vasudans' heaviest bomber class ship. It carries a massive payload and has been responsible for the destruction of 3 Orion-class destroyers in the past 2 years. Fortunately, it is slow and has low maneuverability, making it an easy target for our fighters. Fighter pilots should be wary of the two turrets on this ship: they are not to be ignored.
 		PVB Osiris
 			The Osiris has now become the standard bomber for use in PVN operations. It has replaced the Amun, correcting many of the faults of its predecessor. It is not quite as sturdy, but it has nearly the same weapons capacity, and is faster and more maneuverable.
+		PVB Sekhmet
+			The PVB Sekhmet is a Hammer of Light ship that appears to be a fusion of Vasudan and Shivan technology.  The Hammer of Light claims that its design was adapted from a new class of Shivan bomber heretofore unencountered by either the GTA or the PVN. Sporting four primary weapon hardpoints and three missile bays, the Sekhmet packs a massive punch.  Treat it as a class A threat to all allied capital ships.
 	
 	Transports (prefix PVT)
 		PVT Isis
@@ -352,6 +360,14 @@ Vasudan spacecraft classes
 	Installations (prefix PVI)
 		PVI Karnak
 			The gargantuan Karnak installation is the Vasudans' answer to the GTI Arcadia. This monstrous facility bristles with dozens of turrets and can house up to two full squadrons of fighters. Its primary purpose is to serve as a construction and maintenance yard for the Vasudan fleets. Because of its enormous logistical and strategic value, the Karnak is considered a class A threat.
+		Vasudan Asteroid Base
+			Asteroid bases such as these are used by both civilian and military contractors to mine resources and conduct experiments.
+	
+	Science Vessels (prefix PVSC)
+		PVSC Imhotep
+			The PVSC Imhotep is the standard Vasudan research vessel.  Like our GTSC Faustus, the Imhotep can fill a variety of scientific roles, including performing on-board research and conducting sensor surveys.  One major difference between the two classes is that the Imhotep carries a small podbay housing four remote research pods.  These pods are frequently launched to augment the Imhotep's on-board systems.
+		Vasudan Probe
+			This large probe is more of a fully-fledged research pod than a simple drone.  Designed to work in collaboration with an Imhotep science cruiser or as part of team of probes, it is capable of numerous roles including observation, experimentation, and scientific analysis.  It is often possible for a wing of probes to conduct minor missions independent of outside supervision, allowing Vasudan Command to reserve their Imhoteps for deployment where the personal presence of scientists is most needed.
 	
 	Escape Pods (prefix PVEP)
 		PVEP Ra
@@ -360,6 +376,14 @@ Vasudan spacecraft classes
 	Support Ships (prefix PVS)
 		PVS Scarab
 			The Scarab is very similar to our Centaur. It is used for in flight rearming of fighters and bombers. In longer engagements, these ships can mean the difference between victory and defeat. The major difference between this ship and the Centaur is that the Scarab is unmanned.
+	
+	Training Drones (prefix PVDr)
+		PVDr Jackal
+			The Jackal is a simple training and reconnaissance drone used by the PVN.  As the Jackal could be mass-produced quickly and cheaply, it was not long before the Vasudans used it as a template for the PVF Anubis, a piloted variant well suited for use as a swarm fighter. The Jackal has never been used offensively against the GTA and is classified as a non-threat.
+	
+	Navigation Buoys (no prefix)
+		Vasudan NavBuoy
+			The Vasudan NavBuoy is widely used in both civilian and military fields.  It stores precalculated jump coordinates and other navigational data for use by Vasudan convoys, and it is also capable of acting as a communications relay.
 	
 	Sentry Guns (prefix PVSG)
 		PVSG Ankh
@@ -382,6 +406,8 @@ Shivan spacecraft classes
 			We believe that the Manticore is a Shivan interceptor. It has a very high top speed, and its maneuverability is quite good. However, its shield system isn't strong enough to withstand constant fighting for long, which leads us to believe the Manticore's primary purpose is to destroy enemy bombers.
 		SF Dragon
 			The Shivan Dragon is easily the most impressive fightercraft we have yet seen. Its maneuverability is unmatched, and it has quite a few other advantages, including a good top speed, powerful afterburners, and strong shields. It is the only Shivan fighter we have been able to study up close, and we have learned a great deal about Shivan engineering from it. It seems that the Shivan shield systems are extremely strong, but their hulls are weaker than our own. They also rely on primary weapons far more then secondaries, as evidenced by the Dragon's small missile capacity.
+		SF Gorgon
+			The first encounter with the SF Gorgon was made by the GTD Saratoga in the Ikeya system.  We are uncertain if this is a new Shivan design or if the Shivans have simply held this particular class of ship back for the majority of the war.  The ship's unusual design not only provides it with exceptional maneuverability, but also allows it to generate an extremely powerful shield.  So far these ships have only been sighted leading wings of lesser fighters, but there have been reports of entire wings of Gorgons in larger forces. Little else is known about the Gorgon.  It should be considered a class B threat when acting as a wing leader, but a full wing of Gorgons is to be treated as a class A threat to all allied vessels.
 	
 	Bombers (prefix SB)
 		SB Shaitan
@@ -390,6 +416,8 @@ Shivan spacecraft classes
 			The Nephilim class bomber is the most alien of the Shivan ships. We are still unsure as to why the Shivans chose this odd shape for arguably their most powerful attack craft. However, with four primary cannons and two turrets, as well as a massive payload, the Nephilim is undoubtedly a serious threat to the GTA. We have already lost two Orion class destroyers to a wing of Nephilims. Unless we learn a weakness soon, we will most likely lose more. The Nephilim has been designated a Class A threat to GTA destroyers and cruisers.
 		SB Seraphim
 			The newly encountered Seraphim class bomber is the Shivans' latest threat. It is three times larger than a Nephilim and carries a massive payload at least 150% the size of the Nephilim. With strong hulls and almost impenetrable shield system, the Seraphim is easily the most dangerous bomber we have yet encountered. The Seraphim has been designated a Class A threat to all GTA destroyers and cruisers.
+		SB Nahema
+			The SB Nahema has never actually been encountered by either GTA or PVN forces, as far as we can determine.  What little intelligence we have on this bomber comes from our interrogations of HOL prisoners and is strictly classified by GTI.  We do know that the Nahema was the base from which the HOL constructed the PVB Sekhmet, their Vasudan-Shivan hybrid prototype bomber.  How the HOL managed to acquire scans of the Nahema in the first place is unknown.
 	
 	Transports (prefix ST)
 		ST Azrael
