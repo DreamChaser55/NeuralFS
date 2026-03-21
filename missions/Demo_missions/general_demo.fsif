@@ -410,15 +410,15 @@ mission_flow:
     - name: "Mission complete"
       formula: |
         ( when
-          ( is-event-true-delay "Fenris clear" 3 )
-          ( end-mission )
+          ( is-event-true-delay "Fenris clear" 5 )
+          ( send-message "#Command" "High" "Jump out order" )
         )
 
     - name: "Mission failed"
       formula: |
         ( when
           ( is-event-true-delay "Fenris lost" 5 )
-          ( end-mission )
+          ( send-message "#Command" "High" "Jump out order" )
         )
 
   goals:
@@ -491,6 +491,10 @@ mission_flow:
       message: "The Fenris is gone. Break off and return to base."
       voice_name: "Alnilam"
       voice_style_instructions: "Somber command order"
+    - name: "Jump out order"
+      message: "All pilots, jump out now."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Authoritative command order"
 
 audio:
   mission_music: "1: Genesis"
