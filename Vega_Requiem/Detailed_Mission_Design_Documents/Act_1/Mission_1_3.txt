@@ -93,7 +93,7 @@ FICTION VIEWER NARRATIVE
 ENVIRONMENT AND SETUP
 - Datestamp: January 20, 2335
 - System: Vega — Capella node approach corridor, outer system
-- Location: 8,000m from the Vega-Capella jump node
+- Location: 5,000m from the Vega-Capella jump node
 - Background: Deep space; Vega star small and bright astern; the Capella node visible as a
   stable subspace shimmer at close range. The system feels emptier than it should — no station
   now, just the void.
@@ -106,7 +106,7 @@ ENVIRONMENT AND SETUP
     they've been waiting here.
   - Aquarius wing (PVF Horus x4, HoL): In scene on the far side of the node, moving to intercept
     Theta transports. Their HoL markings are visible and distinct from PVN standard.
-  - Nav Alpha: The Vega-Antares node approach point, 45,000m from current position. The goal.
+  - Nav Alpha: The Vega-Antares node approach point, 10,000m from current position. The goal.
   - Two Terran NavBuoys marking the standard corridor to Nav Alpha.
   - No GTA capital ships in this area — the Amadeus is holding deeper in the system.
   - No sentry guns, no installations. Open space.
@@ -160,9 +160,10 @@ Hostile:
   - First HoL encounter in campaign. Briefing warned about them. Now the player acts on it.
 
 - Pisces wing (HoL): PVF Seth x3
-  - Arrives at Nav Alpha approach (35,000m from current position, 8 km from Nav Alpha) at T+04:00
+  - Pre-positioned at Nav Alpha blocking position (10 km from player start position). They are
+    already in place at mission start — they arrived earlier to seal off the Antares approach.
   - Initial orders: Guard Nav Alpha approach, Attack any Theta ships approaching
-  - The Seths are slower but this is a blocking position. They bought it early and are dug in.
+  - The Seths are slower but this is a blocking position. They're dug in and waiting.
   - Player must clear them from Nav Alpha before Theta can reach it safely — or lead Theta through
     while simultaneously engaging. Design tension: go ahead and clear vs. stay with transports.
 
@@ -218,7 +219,7 @@ Watch the left flank. Hammer of Light is operating in this area. HoL transponder
 diamond — fire on sight if they're between you and Theta wing.
 Nav Alpha is your objective. Get them there. GTD Amadeus out.
 
-[ Briefing icon notes: Capella node marked as entry point. Nav Alpha marked 45,000m distant.
+[ Briefing icon notes: Capella node marked as entry point. Nav Alpha marked 10,000m distant.
   Brahma wing entry vector marked at Capella flank. Aquarius wing (HoL) marked on far intercept.
   Pisces wing marked at Nav Alpha approach. Rama wing entry at T+05:00 noted as "probable wave."
   PVD Vigil and Theta wing marked entering at Capella node. No Nav Bravo shown — players only
@@ -269,7 +270,7 @@ Message 10 — Command, trigger: all surviving Theta ships at Nav Alpha
 "Theta wing is through. Return to base, Alpha. And — well done."
 
 EVENT FLOW AND TIMING
-- T+00:00: Mission begins. Alpha wing at jump-in point, 8 km from Capella node. Brahma wing (4
+- T+00:00: Mission begins. Alpha wing at jump-in point, 5 km from Capella node. Brahma wing (4
   Scorpions) already in scene converging on node from flank, 3 km from node. Aquarius HoL (4
   Horus) in scene far side of node, 7 km from Theta's projected route.
 - T+00:20: PVD Vigil and Theta 1, 2, 3 emerge from Capella node. Message 1 fires.
@@ -279,12 +280,13 @@ EVENT FLOW AND TIMING
   entry. 2–3 minutes against Brahma before she falls.) After Vigil destruction, Brahma redirects
   to Theta. Message 6 fires.
 - T+02:00 onward: Aquarius wing reaches intercept range of Theta. Player must engage them.
-- T+04:00: Pisces wing (Seth x3, HoL) active at Nav Alpha blocking position, 35,000m from
-  current scene. They're already there — they were seeded earlier. Message 7 fires when detected.
+- T+03:30: Pisces wing (Seth x3, HoL) detected — already pre-positioned at Nav Alpha blocking
+  position, 10 km from player start. Message 7 fires when any Alpha ship is within 5 km of Nav
+  Alpha, or at T+03:30, whichever comes first.
 - T+05:00 (or after Vigil destruction): Rama wing (Basilisk x3) arrives from Capella, 10 km.
   Targets Theta wing.
 - T+06:00: GTS Casca available for rearm.
-- T+06:00–T+12:00: Theta transports reach Nav Alpha progressively. Each jumps out individually.
+- T+05:30–T+10:00: Theta transports reach Nav Alpha progressively. Each jumps out individually.
   Theta 3 (slowest) arrives last, most at risk from Rama wing.
 - Mission ends when all surviving Theta ships have jumped from Nav Alpha, or when fewer than 2
   have survived (failure).
@@ -295,8 +297,8 @@ EVENT LOGIC SKETCH
   After this event, Brahma's target priority shifts from Vigil to Theta wing.
 - "Aquarius wing engage Theta" event: fires when Aquarius ships are within 2,000m of any
   Theta ship. Message 2 fires shortly after.
-- "Pisces wing detected" event: fires when any Alpha ship is within 15,000m of Nav Alpha,
-  or at T+04:00, whichever comes first. One-time trigger.
+- "Pisces wing detected" event: fires when any Alpha ship is within 5,000m of Nav Alpha,
+  or at T+03:30, whichever comes first. One-time trigger.
 - "Rama wing arrival" event: fires at T+05:00 OR when PVD Vigil is destroyed, first wins.
 - "GTS Casca available" event fires at T+06:00.
 - "Mission success" condition: 2 or more Theta ships have "jumped from Nav Alpha" flag set.

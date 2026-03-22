@@ -33,12 +33,14 @@ FICTION VIEWER NARRATIVE
 
 ENVIRONMENT AND SETUP
 - Datestamp: January 22, 2335
-- System: Vega — deep space, Nav Charlie holding position (approximately 30,000m from the
-  Antares node approach corridor, 25,000m from Nav Bravo)
-- Location: GTD Amadeus is stationary. She cannot move. Her aft section shows significant
-  structural damage (visible hull deformation, secondary explosions, fires burning in the
-  vacuum where internal atmosphere vents through breaches). She is holding position on the
-  Antares approach axis, facing the incoming threat direction.
+- System: Vega — deep space, Nav Charlie holding position (approximately 12,000m from the
+  Antares node approach corridor, 7,000m from Nav Bravo)
+- Location: GTD Amadeus is stationary. She cannot move — she stopped short of Nav Bravo when
+  her drive failed en route from Mission 2-1. Her aft section shows significant structural
+  damage (visible hull deformation, secondary explosions, fires burning in the vacuum where
+  internal atmosphere vents through breaches). She is holding position on the Antares approach
+  axis, 7,000m from Nav Bravo and approximately 12,000m from the Antares node approach corridor,
+  facing the incoming threat direction.
 - Background: The scene should feel like the inside of a catastrophe. The Amadeus is large and
   damaged and beautiful and dying. Nav Charlie is a point in space with no other features.
   Deep space, Vega star far astern, the Antares node shimmer barely visible at extreme range.
@@ -47,12 +49,12 @@ ENVIRONMENT AND SETUP
     within range until she can no longer. Her fighterbay is open: a visible cavity in her flank
     from which the escape pods emerge in sequence.
   - Nine GTEP Hermes escape pods: Emerging from the Amadeus fighterbay at mission start, in
-    groups of three. They navigate autonomously toward Nav Bravo (25,000m distant).
+    groups of three. They navigate autonomously toward Nav Bravo (7,000m distant).
     Numbering convention: Pod 1 through Pod 9. Pod 1 is designated "Admiral's Pod" — Wei's
     escape pod, the one he theoretically would have boarded. (He didn't. It launched with only
     bridge crew.) Pod 1 carries the most senior surviving officers.
   - Nav Charlie: The Amadeus's holding position. No navbuoy — just the designation.
-  - Nav Bravo: 25,000m from Amadeus position. The pods' destination.
+  - Nav Bravo: 7,000m from Amadeus position. The pods' destination.
   - SC Ahriman (SC Lilith-class): 8 km from Amadeus, closing slowly. She begins firing on the
     Amadeus at T+01:00. She's the ship's executioner. Her weapons do capital-level damage. The
     Amadeus's turrets fire back but cannot stop her.
@@ -109,7 +111,7 @@ Hostile:
     chased.
 
 - Brahma wing: SB Shaitan x3 (Amadeus killers)
-  - Arrives at T+01:30 from the direction of the Capella approach (14 km)
+  - Arrives at T+01:30 from the direction of the Capella approach (9 km)
   - Initial orders: Attack GTD Amadeus (primary, to complete her destruction)
   - The Shaitans target the Amadeus, not the pods. This creates a agonizing choice: intercept
     the Shaitans and maybe reduce damage to the doomed ship (buying time, slightly), or focus
@@ -263,26 +265,28 @@ Message 15 — Command, trigger: all remaining pods at Nav Bravo / mission end c
 
 EVENT FLOW AND TIMING
 - T+00:00: Mission starts. Alpha wing at mid-position between Amadeus and Nav Bravo.
-  Pod Group A (Pods 1–3) emerging from fighterbay, navigating to Nav Bravo.
+  Pod Group A (Pods 1–3) emerging from fighterbay, navigating to Nav Bravo (7 km away).
   Asura wing (3 Scorpions) already at 6 km, converging on pods.
   SC Ahriman at 8 km, closing on Amadeus.
 - T+00:00–T+01:00: Asura wing engages pod group A. Player must intercept. Ahriman begins
   firing on Amadeus at T+01:00.
 - T+00:45: Pod Group B (Pods 4–6) emerges from fighterbay.
 - T+01:30: Pod Group C (Pods 7–9) emerges from fighterbay.
-  Brahma wing (3 Shaitans) arrives from Capella direction, 14 km. Targets Amadeus.
-- T+03:00: Vishnu wing (4 Scorpions) arrives from aft, 12 km. Targets pods (Group B and C).
+  Brahma wing (3 Shaitans) arrives from Capella direction, 9 km. Targets Amadeus.
+- T+03:00: Vishnu wing (4 Scorpions) arrives from aft, 10 km. Targets pods (Group B and C).
 - T+03:00–T+06:00: Sustained engagement. Asura, Vishnu, possibly remnants of Brahma. Player
   should rearm from Casca in this window.
 - T+06:00 (or when 5 pods are at Nav Bravo, whichever first): Bheema wing (3 Dragons) arrives.
   Targets pods. Dragon fight is the final and hardest wave.
+  Note: Pod Group A (7 km at ~20 m/s) begins reaching Nav Bravo around T+05:50, so the
+  5-pod trigger is likely to fire around T+06:00 — both conditions resolve near-simultaneously.
 - Amadeus hull track: Declining through Ahriman fire + Brahma attack. Reaches 5% at approximately
-  T+08:00–T+10:00 (adjusted for how much damage Brahma deals — Dragon intercept may slow them).
-- T+08:00–T+10:00: Admiral Wei's final transmission fires at 5% hull. Amadeus destroyed shortly
+  T+07:00–T+09:00 (adjusted for how much damage Brahma deals — Dragon intercept may slow them).
+- T+07:00–T+09:00: Admiral Wei's final transmission fires at 5% hull. Amadeus destroyed shortly
   after (2–3 seconds). Large explosion. Shockwave at 1,000m radius.
   Player WARNING message fires 30 seconds before Amadeus hull reaches 5%: "Amadeus structural
   failure imminent — clear the ship's immediate area."
-- T+08:00–T+14:00: Remaining pods reach Nav Bravo. Bheema wing remaining ships continue
+- T+06:00–T+10:00: Remaining pods reach Nav Bravo. Bheema wing remaining ships continue
   pursuit. Mission ends when 6+ pods are at Nav Bravo AND no remaining enemy ships are targeting
   unprotected pods in transit (or when all surviving pods have reached Nav Bravo).
 

@@ -35,7 +35,7 @@ ENVIRONMENT AND SETUP
   - GTC Stentor (GTC Fenris-class): Positioned 3,000m from Vega Prime on the approach side,
     firing at incoming Shivan fighters and serving as picket line.
   - Nav Alpha: 2,000m from Vega Prime — the rally point for Epsilon transports before their jump.
-  - Nav Bravo: The Vega-Antares subspace jump node approach, 40,000m from station.
+  - Nav Bravo: The Vega-Antares subspace jump node approach, 9,000m from station.
   - Epsilon wing (GTT Elysium x4): Docked at Vega Prime at mission start. Undock staggered across
     first 3 minutes, then form up at Nav Alpha before proceeding to Nav Bravo.
   - Three TAC-1 cargo containers at docking arm 3 (civilian equipment — irrelevant to objectives
@@ -98,7 +98,7 @@ Hostile:
   - Initial orders: Attack Alpha wing
   - Pure fighter harassment — intended to pull Alpha away from bomber intercept duty.
 
-- SC Malgor (SC Cain-class cruiser): Arrives at T+06:30 from Capella node (18 km)
+- SC Malgor (SC Cain-class cruiser): Arrives at T+06:30 from Capella node (12 km)
   - Initial orders: Attack GTI Vega Prime
   - The arrival of a capital ship reframes the mission — the station was doomed before, now
     it's final. The Malgor turns toward the Antares node approach corridor at T+08:00 to
@@ -222,18 +222,19 @@ EVENT FLOW AND TIMING
 - T+02:00: Epsilon 2 undocks. Begins navigation to Nav Alpha.
 - T+02:30: Arjuna wave 1 (Basilisk x3) arrives from Capella, 12 km. Targets Vega Prime.
 - T+02:45: Epsilon 3 undocks.
+- T+03:00: Epsilon 1 and 2 reach Nav Alpha and begin proceeding to Nav Bravo (7 km at
+  transport speed — approximately 3.5 minutes of travel).
 - T+03:30: Epsilon 4 undocks.
 - T+04:00: GTS Casca arrives in scene (available for rearm requests from this point).
 - T+04:30: Krishna wing (Scorpion x3) arrives from Capella, 10 km. Targets Alpha wing.
-  Epsilon 1 and 2 reach Nav Alpha and begin proceeding to Nav Bravo.
 - T+05:30 (or when Arjuna wave 1 drops to 1 ship): Arjuna wave 2 (Basilisk x3) arrives.
   NOW targets Epsilon wing instead of station. Critical intercept window.
-- T+06:30: SC Malgor (Cain-class) arrives from Capella, 18 km. Targets station.
+- T+06:30: SC Malgor (Cain-class) arrives from Capella, 12 km. Targets station.
   Vega Prime is at ~30% hull or lower by now.
-- T+08:00: SC Malgor changes target priority to Antares corridor / Epsilon transports.
-  Stentor engages Malgor at close range.
-- T+08:00–T+10:00: GTI Vega Prime is destroyed (exact timing varies slightly).
-- T+08:00–T+12:00: Surviving Epsilon transports reach Nav Bravo and jump to Antares.
+- T+07:00: SC Malgor changes target priority to Antares corridor / Epsilon transports
+  once it closes to within 6 km of the station. Stentor engages Malgor at close range.
+- T+07:00–T+09:00: GTI Vega Prime is destroyed (exact timing varies slightly).
+- T+06:30–T+09:00: Surviving Epsilon transports reach Nav Bravo and jump to Antares.
   Mission ends when all surviving Epsilon ships have jumped.
 
 EVENT LOGIC SKETCH

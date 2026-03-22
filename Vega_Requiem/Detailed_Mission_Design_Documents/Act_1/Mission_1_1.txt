@@ -23,7 +23,7 @@ recognized ceasefire transponder.
 
 --- STAGE 2: PATROL ASSIGNMENT ---
 We lost contact with the patrol transport GTT Meridian at 0340 this morning. She was running a
-standard pass along the Capella approach corridor, approximately 60,000 kilometers from the
+standard pass along the Capella approach corridor, approximately 15,000 meters from the
 Capella jump node. Her last beacon ping was normal. Then nothing.
 
 This is most likely a systems failure. Meridian's drive was flagged for maintenance two weeks ago.
@@ -67,7 +67,7 @@ FICTION VIEWER NARRATIVE
 ENVIRONMENT AND SETUP
 - Datestamp: January 15, 2335
 - System: Vega — deep space, Capella approach corridor
-- Location: 60,000 km from the Vega-Capella jump node, far from any installation
+- Location: 15,000 m from the Vega-Capella jump node, far from any installation
 - Background: Deep blue-black starfield; Vega's star a bright point astern; the faint shimmer
   of the Capella node visible at long range as a navigational reference point
 - No installations, no buoys, no mines in this area
@@ -136,16 +136,17 @@ MISSION BRIEFING
 
 Stage 1:
 GTD Amadeus Operations, this is your mission package. GTT Meridian's beacon last pinged at these
-coordinates in the Capella corridor. You'll jump in approximately ten kilometers from her last
+coordinates in the Capella corridor. You'll jump in approximately six kilometers from her last
 known position.
 We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull
 her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard
 rules of engagement.
-Expected duration: forty minutes. Come home clean.
+Expected duration: thirty minutes. Come home clean.
 
 Stage 2:
 Alpha wing, you're cleared to the Capella corridor. Nav Alpha marks the Meridian's last position.
-Proceed there, assess the situation, and return when complete. Don't get ambitious out there.
+You'll jump in approximately six kilometers from her last known position. Proceed there, assess
+the situation, and return when complete. Don't get ambitious out there.
 
 [ Briefing icon notes: Nav Alpha marked at Meridian's position. Jump-out waypoint marked at
   mission origin. No other waypoints. Simple there-and-back layout. ]
@@ -188,20 +189,20 @@ Message 10 — Alpha 2, trigger: mission end (player jumping out)
 "Amadeus, Alpha Lead is inbound. We need to talk about what we just saw."
 
 EVENT FLOW AND TIMING
-- T+00:00: Mission starts. Alpha wing at jump-in point, 10 km from Nav Alpha. No enemies visible.
-- T+00:00 to T+02:00: Alpha wing flies to Meridian wreckage (Nav Alpha). Quiet. The wreckage
+- T+00:00: Mission starts. Alpha wing at jump-in point, 6 km from Nav Alpha. No enemies visible.
+- T+00:00 to T+01:15: Alpha wing flies to Meridian wreckage (Nav Alpha). Quiet. The wreckage
   is visually dramatic — scored metal, scattered cargo. Escape pods drifting.
-- T+02:00 (approx): Alpha wing within 3,000m of wreckage. Triggers Brahma wing arrival from
+- T+01:15 (approx): Alpha wing within 3,000m of wreckage. Triggers Brahma wing arrival from
   Capella node direction (8 km out). Message 3 fires.
-- T+02:00 to T+05:00: Combat with Brahma wing (4x Scorpion). Player fires ML-16. It's slow.
+- T+01:15 to T+04:15: Combat with Brahma wing (4x Scorpion). Player fires ML-16. It's slow.
   Each Scorpion takes 3–4 seconds of sustained fire to drop a shield quad. AI wingmen struggle.
   Alpha 3 and/or 4 may be destroyed in this window depending on difficulty.
-- T+05:00 (or when Brahma drops to 2 ships): Vishnu wing arrives (3x Basilisk, 10 km).
+- T+04:15 (or when Brahma drops to 2 ships): Vishnu wing arrives (3x Basilisk, 10 km).
   Message 6 fires: Command orders retreat.
-- T+05:00 onward: Escape pods are navigating toward jump-out waypoint. Player can either
+- T+04:15 onward: Escape pods are navigating toward jump-out waypoint. Player can either
   cover them or immediately run. Fighting Vishnu + reduced Brahma simultaneously is very
   dangerous with ML-16s.
-- T+07:00 to T+10:00 (approx): Surviving Alpha ships reach jump-out waypoint and exit.
+- T+06:00 to T+09:00 (approx): Surviving Alpha ships reach jump-out waypoint and exit.
   If escape pods reach the waypoint by this time, secondary objective achieved.
 
 EVENT LOGIC SKETCH

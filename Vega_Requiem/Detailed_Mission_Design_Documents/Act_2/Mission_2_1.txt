@@ -97,9 +97,9 @@ ENVIRONMENT AND SETUP
   - GTT Rescue (GTT Elysium-class): Transport carrying Meridian survivors. Positioned centrally.
   - PVT Theta 3 (PVT Isis-class): The Vasudan transport with the drive fault. Positioned at rear
     of convoy. Slightly faster than the freighters but slower than the Amadeus would normally be.
-  - Nav Bravo: 55,000m from convoy start position, directly ahead along established corridor.
-  - Nav Alpha: Midpoint waypoint, 25,000m from start. Convoy must pass through.
-  - SC Ahriman (SC Lilith-class): In scene at mission start, 18 km to the flank-aft. Moving in
+  - Nav Bravo: 10,000m from convoy start position, directly ahead along established corridor.
+  - Nav Alpha: Midpoint waypoint, 5,000m from start. Convoy must pass through.
+  - SC Ahriman (SC Lilith-class): In scene at mission start, 12 km to the flank-aft. Moving in
     loose parallel. Firing on the Stentor at range. The Ahriman's weapons fire is visible but she
     is maintaining tactical distance — targeting Stentor, not the convoy directly.
   - GTS Casca: Present, moving with the convoy. Available for rearming. Positioned near Amadeus.
@@ -287,9 +287,9 @@ EVENT FLOW AND TIMING
   Amadeus takes some damage from bombs that get through. Stentor takes damage from Ahriman.
 - T+06:00 (or when Kali wing is destroyed): Genma wing (3 Shaitans) arrives from aft, 12 km.
   Targets GTT Rescue and GTFr Aldrin ships. Second crisis point.
-- T+06:00–T+12:00: Alpha wing intercepts Genma. Convoy continues moving. Indra wing may still
+- T+06:00–T+09:00: Alpha wing intercepts Genma. Convoy continues moving. Indra wing may still
   have survivors; they harass the wing throughout.
-- T+10:00–T+14:00: Amadeus reaches Nav Bravo. Convoy holds. Mission ends.
+- T+07:00–T+10:00: Amadeus reaches Nav Bravo. Convoy holds. Mission ends.
   (Exact timing depends on convoy speed vs. engagement delays.)
 
 EVENT LOGIC SKETCH

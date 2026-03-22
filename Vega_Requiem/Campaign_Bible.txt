@@ -339,7 +339,7 @@ ACT 2
   Mission 2-1: "Dead Reckoning"
   Date: 1/21/2335 | Location: Vega system, en route to Antares node
   Type: Convoy escort / Fighting withdrawal
-  Primary: GTD Amadeus survives to Nav Bravo (waypoint 50,000 km from Antares node)
+  Primary: GTD Amadeus survives to Nav Bravo (waypoint 12,000 m from Antares node)
   Secondary: At least 3 of 5 convoy freighters/transports survive
   Narrative beat: Shivan bombers hammer the convoy at every step. The SC Ahriman begins pursuit.
   Ships: GTD Amadeus (80% hull), GTC Stentor, GTFr Aldrin 1-3 (Chronos), SC Ahriman (Lilith)
