@@ -21,7 +21,7 @@ FSIF core docs
   - Minimal skeletons, common patterns, Do/Don't, pitfalls
   - Curated examples
 - Migration Guide: ./fsif/migration-guide.md
-  - FSIF 1.0 → ... → 1.9: breaking changes and notable additions with before/after snippets
+  - Breaking changes and notable additions with before/after snippets
 
 FSIF Converter docs
 - README.md: ../FSIF_to_FS2_Converter/README.md
@@ -61,6 +61,10 @@ References
 - Fighter and bomber primary/secondary hardpoint configuration: ./FSO and fs2 format/fighter_bomber_hardpoints.md
 - Text styling guide (for command and mission briefings, debriefings and fiction viewer): .\FSO and fs2 format\text_styling_guide.txt
 
+User manuals (for humans)
+- ./User manuals/Using NeuralFS with VS Code.md
+- ./User manuals/Using NeuralFS with OpenCode.md
+
 Voice names:
 - Google voices:
   - .\Google TTS\male_voices.txt
@@ -74,6 +78,3 @@ Demo missions (FSIF feature showcases): in ../missions/Demo_missions/ folder
 
 Demo campaign (FCIF feature showcase): in ../campaigns/Demo_campaigns/ folder
 - campaign_demo.fcif
-
-Changelog
-- Project-wide changelog: ./CHANGELOG.md
