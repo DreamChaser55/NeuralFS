@@ -4,7 +4,9 @@
   <img src="neuralfslogo.png" alt="NeuralFS Logo" />
 </p>
 
-NeuralFS is an AI agent framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three Roo Code/Kilo Code editor agents (LLM modes with a custom system prompt) and two specialized Python conversion scripts.
+NeuralFS is an agentic AI framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
+- Visual Studio Code (by using the Roo Code or Kilo Code extension)
+- OpenCode
 
 ## Main Components
 
@@ -44,8 +46,9 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 This agent automates the final step of the pipeline: generating the game-ready `.fs2` and `.fc2` files. It iteratively runs the FSIF to FS2 Converter on all `.fsif` mission files and the FCIF to FC2 Converter on the `.fcif` campaign file. If the converters report any errors, this agent autonomously analyzes the source files, applies the necessary fixes, and retries the conversion until all files are valid and successfully converted.
 
 ## Requirements
-- Visual Studio Code
-- Roo Code or Kilo Code extension
+- One of these agentic AI engines:
+  - Visual Studio Code with Roo Code or Kilo Code extension
+  - Opencode
 - Requirements of the FSIF to FS2 Converter: see `\FSIF_to_FS2_Converter\README.md`
 - Requirements of the FCIF to FC2 Converter: see `\FCIF_to_FC2_Converter\README.md`
 
@@ -53,47 +56,18 @@ This agent automates the final step of the pipeline: generating the game-ready `
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.
 - `Freespace Bibles/` — Freespace universe Bibles (full and condensed version)
 
-## Usage
+## User manuals
 
-### Phase 1: Creative Writing
-1. Open the NeuralFS folder with Visual Studio Code. Roo Code or Kilo Code extension should automatically load the three AI agent definitions (defined in `.roomodes` and `.kilocodemodes` files).
-2. Open the Roo Code or Kilo Code extension.
-3. Select the "Freespace Creative Writing Agent" as the interaction mode.
-4. Copy the initial prompt from `freespace creative writing agent prompt.txt`.
-5. Add your campaign concept into the prompt. If you don't want the agent to work fully autonomously, delete the "Work autonomously." line (the agent will then ask for your approval after completing each significant phase of the work).
-6. Send the prompt and wait until the FreeSpace Creative Writing Agent completes its work. Afterwards, there should be a new folder named after your campaign with the Campaign Bible and another folder inside containing detailed mission design documents in natural language. If there is any fiction viewer content, it should be in separate text files in the same folder, named according to this schema: 'missionname_story.txt'.
-
-Note: Using AI for this phase is optional, of course. If you don't want to outsource your creativity to the AI, you can write your own Campaign Bible and mission design documents, then proceed to the next phase.
-
-### Phase 2: FSIF and FCIF Writing
-1. Start a new task in Roo Code/Kilo Code. Switch the interation mode to "FSIF+FCIF Writing Agent".
-2. Copy the initial prompt from `fsif+fcif writing agent prompt.txt`.
-3. Replace the "<campaign_folder>" string in the prompt with the name of the campaign folder created by the creative writing agent.
-4. Send the prompt and wait until the Agent completes its work. Afterwards, there should be:
-   - A new `/fsif/` folder inside your campaign folder, containing the `.fsif` files for all the missions.
-   - A `.fcif` campaign definition file inside your campaign folder.
-
-### Phase 3: Converting FSIF to FS2 and FCIF to FC2
-1. Start a new task in Roo Code/Kilo Code. Switch the interation mode to "FSIF+FCIF Converting Agent".
-2. Copy the initial prompt from `fsif+fcif converting agent prompt.txt`.
-3. Replace the "<campaign_folder>" string in the prompt with the name of the campaign folder created by the creative writing agent.
-4. Send the prompt and wait until the Agent completes its work. Afterwards, your campaign folder should contain:
-   - `.fs2` mission files in the `/fsif/` subfolder (converted from the `.fsif` files).
-   - A `.fc2` campaign file (converted from the `.fcif` file).
-   - Optional: if you enabled voice generation, a `voice` folder will be created alongside the mission files.
-
-Note: You can also use the GUI Converter for this phase, but then you have to copy the validator output log manually for the AI agent to fix any mistakes.
-
-Recommended workflow: First, let the AI agent autonomously try to convert and fix the fsif files using the CLI converter (without voice generation). After all mistakes are fixed and the conversion proceeds smoothly, you can do a final conversion pass with the GUI converter and voice generation enabled.
-
-### Phase 4: Final steps
-1. Move the `.fs2` and `.fc2` files into your `/FSO/fsport-mediavps/data/missions/` folder.
-2. If there are any fiction viewer files created by the first agent (located alongside the mission design documents, named as 'missionname_story.txt'), move them into your `/FSO/fsport-mediavps/data/fiction/` folder.
-3. If you enabled voice generation, move the created `voice` folder to `/FSO/fsport-mediavps/data/`.
-4. You can now play the campaign.
+Read the manual based on your chosen agentic AI engine:
+- `Documentation/User manuals/Using NeuralFS with VS Code.md`.
+- `Documentation/User manuals/Using NeuralFS with OpenCode.md`.
 
 ## Limitations
-Currently, only FreeSpace Port (FS1 mod for FSO) is supported.
+- Currently, only FreeSpace Port (FS1 mod for FSO) is supported.
+- Some FS mission features are simplified or abstracted away:
+  - Wings are defined using a single position argument, wing formation is fixed.
+  - Turret weapons cannot be changed.
+  - Briefing icon placement is simplified and uses top-down 2D grid.
 
 ## Example missions
 - `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
