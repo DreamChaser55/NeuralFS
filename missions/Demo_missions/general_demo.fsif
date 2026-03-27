@@ -228,7 +228,7 @@ mission_flow:
   fiction_viewer: "story.txt"
   command_briefing:
     stages:
-      - text: "The $f{ GTC Fenris $} and docked $f{ GTT Elysium $} are holding at the $y{ Nav Buoy $}, one short burn from the Delta Serpentis jump node."
+      - text: "The $f{ GTC Fenris $} and docked $f{ GTT Elysium $} are holding at the Nav Buoy, one short burn from the $y{ Delta Serpentis jump node $}."
         ani: "brief-01.ani"
         voice_style_instructions: "officer speaking, authoritative"
         voice_name: "Gacrux"
@@ -242,7 +242,7 @@ mission_flow:
 
   briefing:
     stages:
-      - text: "Rendezvous with the inspection group at the $y{ Nav Buoy $}. The $f{ GTFr Poseidon $} will bring the marked cargo pod in close; scan it as soon as it arrives."
+      - text: "Rendezvous with the inspection group at the Nav Buoy. The $f{ GTFr Poseidon $} will bring the marked cargo pod in close; scan it as soon as it arrives."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
         icons:
@@ -252,7 +252,7 @@ mission_flow:
           - { type: "Waypoint", team: "Unknown", pos: [700, 0], label: "Nav Buoy" }
           - { type: "Freighter (has cargo)", team: "Friendly", class: "GTFr Poseidon", pos: [860, 240], label: "Poseidon" }
           - { type: "Cargo", team: "Hostile", pos: [940, 320], label: "Cargo Pod" }
-      - text: "Once the scan is complete, the $f{ Elysium $} will break away and the $f{ Fenris $} will run for the $y{ jump node $}. $f{ Beta Wing $} will reinforce the inspection force after the scan."
+      - text: "Once the scan is complete, the $f{ Elysium $} will break away and the $f{ Fenris $} will run for the jump node. $f{ Beta Wing $} will reinforce the inspection force after the scan."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
         icons:
@@ -261,7 +261,7 @@ mission_flow:
           - { type: "Fighter Wing", team: "Hostile", class: "SF Basilisk", pos: [220, 1200], label: "Rama" }
           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [350, 0], label: "Fenris" }
           - { type: "Jump Node", team: "Unknown", pos: [1300, 0], label: "Delta Serpentis Jump Node" }
-      - text: "$h Rama $ fighters will hit first, followed by $h Chi $ bombers dropping in above the $f{ Fenris $}. If the escort starts to fail, call $f{ Delta Wing $} or the $f{ GTS Centaur $} for support."
+      - text: "$h Rama fighters will hit first, followed by $h Chi bombers dropping in above the $f{ Fenris $}. If the escort starts to fail, call $f{ Delta Wing $} or the $f{ GTS Centaur $} for support."
         voice_style_instructions: "directive, summarizing"
         voice_name: "Gacrux"
         icons:
@@ -275,18 +275,18 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "GTC Fenris 1" )
-        text: "The $f{ GTC Fenris $} was $R destroyed during the withdrawal. $R{ We lost the cruiser and the operation collapsed. $}"
+        text: "The $f{ GTC Fenris $} was destroyed during the withdrawal. We lost the cruiser and the operation collapsed."
         voice_name: "Gacrux"
       - condition: |
           ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
-        text: "You never completed the inspection of the marked cargo pod. $e{ Without that scan, Command could not confirm the intelligence package. $}"
+        text: "You never completed the inspection of the marked cargo pod. Without that scan, Command could not confirm the intelligence package."
         voice_name: "Gacrux"
       - condition: |
           ( and
             ( is-event-true-delay "Fenris clear" 0 )
             ( is-cargo-known-delay 0 "TSC 2 Cargo" )
           )
-        text: "$W{ Excellent work, $}$rank $callsign. You identified the cargo, held off the ambush, and escorted the $f{ Fenris $} to a safe jump."
+        text: "Excellent work, $rank $callsign. You identified the cargo, held off the ambush, and escorted the $f{ Fenris $} to a safe jump."
         voice_name: "Gacrux"
 
   events:

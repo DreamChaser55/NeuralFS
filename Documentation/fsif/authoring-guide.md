@@ -340,11 +340,9 @@ Note: use the styling tags **only** in the contexts mentioned above. They **do n
 **Recommended color conventions:**
 - Friendly ships/wings: `$f{ Name $}` (IFF Friendly color — green by default)
 - Hostile ships/wings: `$h{ Name $}` (IFF Hostile color — red by default)
-- Locations, nav points, destinations: `$y{ Name $}` (Yellow)
-- Key action verbs, commendations: `$W{ text $}` (Bright White)
-- Warnings, failures, urgent directives: `$R{ text $}` (Bright Red)
-- Positive outcomes: `$G word` (Bright Green)
-- Atmospheric/flavor notes: `$e{ text $}` (Gray)
+- Unknown ships/wings: `$V{ Name $}` (Violet)
+
+Apply these to every named friendly, hostile or unknown ship/wing whenever it appears in the relevant context. Other color tags (such as `$y` for locations/nav points/destinations, `$W` for emphasis, `$R` for warnings) are available — see the styling guide — but should be used very sparingly, if at all. Less is more. When in doubt, leave the text plain.
 
 **Single-word vs. span syntax:**
 - For a single word: `$h Rama` — colors "Rama" in hostile red.
@@ -357,7 +355,7 @@ Note: Do not forget the color span closing tag (`$}`). Missing closing tag will 
 mission_flow:
   briefing:
     stages:
-      - text: "Rendezvous at $y{ Nav Buoy $} and $W scan the marked container. $h Rama will intercept - protect the $f{ GTC Fenris $}."
+      - text: "Rendezvous at Nav Buoy and scan the marked container. $h Rama will intercept - protect the $f{ GTC Fenris $}."
         voice_name: "Gacrux"
         icons: []
 
@@ -365,11 +363,11 @@ mission_flow:
     stages:
       - condition: |
           ( is-destroyed-delay 0 "GTC Fenris 1" )
-        text: "The $f{ GTC Fenris $} was $R destroyed. $R{ We failed the escort. $}"
+        text: "The $f{ GTC Fenris $} was destroyed. We failed the escort."
         voice_name: "Gacrux"
       - condition: |
           ( has-departed-delay 0 "GTC Fenris 1" )
-        text: "$W{ Excellent work, $rank $callsign. $} The convoy withdrew $G successfully."
+        text: "Excellent work, $rank $callsign. The convoy withdrew successfully and the $f{ GTC Fenris $} is safe."
         voice_name: "Gacrux"
 ```
 
