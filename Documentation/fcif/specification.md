@@ -47,6 +47,8 @@ The campaign type is always `single` (hardcoded by the converter).
 
 Important: any ship or weapon used in the campaign must be either listed here, or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign, otherwise it will not appear in the game even if defined in the mission files! By default, all ships and weapons are unavailable at the start.
 
+**First mission constraint**: For the very first mission there is no prior mission in which `allow-ship`/`allow-weapon` SEXPs could have executed. Therefore, *every* ship class and weapon used in the first mission must be present in `starting_loadout`. The FCIF converter can verify this automatically: pass the first mission's `.fsif` file via `--first-mission <path>` (CLI) or the "First Mission Loadout Check" field in the GUI, and the converter will warn about any ship class or weapon that is used in the first mission but missing from `starting_loadout`.
+
 ### Missions Section
 An ordered list of missions. The order in the list determines the campaign progression.
 

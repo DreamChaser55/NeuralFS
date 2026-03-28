@@ -12,6 +12,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Localization of campaign description via XSTR
 - Linear campaign progression with optional per-mission advance conditions
 - Four advance condition types: goal true/false, event true/false (`is-previous-goal-true`, `is-previous-event-true`, `is-previous-goal-false`, `is-previous-event-false`)
+- **First-mission loadout check**: pass the first mission's `.fsif` file via `--first-mission` to verify that all ship classes and weapons used in that mission are present in `starting_loadout`
 
 ## Versions
 FCIF and converter versions:
@@ -58,4 +59,5 @@ This tool allows you to:
 - Ship and weapon names in `starting_loadout` must match canonical FSO tokens exactly. Do not invent synonyms or casing/spacing variants.
 - The order of missions in the `missions` list determines campaign progression. The first mission is the starting mission; the last mission targets `end-of-campaign`.
 - Any ship or weapon used in the campaign must be either listed in `starting_loadout`, or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign, otherwise it will not appear in the game even if defined in the mission files.
+- For the very first mission there is no prior mission in which `allow-ship`/`allow-weapon` SEXPs could have run. Every ship class and weapon used in the first mission must be in `starting_loadout`. Use `--first-mission <path>` to have the converter verify this automatically.
 - The converter uses pydantic with `extra='forbid'`, so any unrecognized fields in the FCIF file will cause a validation error. Only fields documented in the [FCIF Specification](../Documentation/fcif/specification.md) are accepted.

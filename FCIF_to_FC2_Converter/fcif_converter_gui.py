@@ -51,7 +51,8 @@ class ConverterGUI:
         # Variables
         self.input_path_var = tk.StringVar()
         self.output_path_var = tk.StringVar()
-        
+        self.first_mission_path_var = tk.StringVar()
+
         self.is_converting = False
         self.copy_feedback_after_id = None
 
@@ -94,6 +95,25 @@ class ConverterGUI:
         ttk.Entry(output_inner, textvariable=self.output_path_var).pack(side="left", fill="x", expand=True, padx=(0, 5))
         ttk.Button(output_inner, text="Save As...", command=self.browse_output).pack(side="left")
 
+        # First Mission FSIF (Optional)
+        first_mission_frame = ttk.LabelFrame(left_frame, text="First Mission Loadout Check (Optional)", padding="5")
+        first_mission_frame.pack(fill="x", pady=(0, 10))
+
+        ttk.Label(
+            first_mission_frame,
+            text="First mission .fsif file — checks that all ships and weapons used\n"
+                 "in the first mission are present in starting_loadout:",
+            justify="left",
+        ).pack(anchor="w")
+
+        first_mission_row = ttk.Frame(first_mission_frame)
+        first_mission_row.pack(fill="x", pady=(4, 0))
+
+        ttk.Entry(first_mission_row, textvariable=self.first_mission_path_var).pack(
+            side="left", fill="x", expand=True, padx=(0, 5)
+        )
+        ttk.Button(first_mission_row, text="Browse...", command=self.browse_first_mission).pack(side="left")
+
         # Converter Actions
         actions_frame = ttk.Frame(left_frame)
         actions_frame.pack(fill="x", pady=10)
@@ -123,6 +143,11 @@ class ConverterGUI:
         path = filedialog.askopenfilename(filetypes=[("FCIF files", "*.fcif"), ("All files", "*.*")])
         if path:
             self.input_path_var.set(str(Path(path)))
+
+    def browse_first_mission(self):
+        path = filedialog.askopenfilename(filetypes=[("FSIF files", "*.fsif"), ("All files", "*.*")])
+        if path:
+            self.first_mission_path_var.set(str(Path(path)))
 
     def browse_output(self):
         path = filedialog.asksaveasfilename(
@@ -225,8 +250,9 @@ class ConverterGUI:
         sys.stderr = stderr_redirector
 
         try:
+            first_mission = self.first_mission_path_var.get().strip() or None
             self.log(f"Processing single file: {input_path}")
-            process_campaign(input_path, output_file=output_path, log_func=self.log)
+            process_campaign(input_path, output_file=output_path, first_mission=first_mission, log_func=self.log)
             self.log("\nTask completed.")
         except Exception as e:
             self.log(f"Critical Error: {e}")

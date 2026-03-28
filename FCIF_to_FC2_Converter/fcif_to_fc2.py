@@ -289,12 +289,173 @@ def write_fc2(fcif: FCIF, output_path: Path):
             
         f.write("#End\n")
 
-def process_campaign(input_file: str, output_file: Optional[str] = None, log_func=print) -> bool:
+# --- First Mission Loadout Check ---
+
+def _collect_fsif_ships_and_weapons(fsif_path: Path, log_func) -> Optional[tuple]:
+    """
+    Parse an FSIF YAML file and collect all ship classes and weapons referenced.
+
+    Returns a tuple (ship_classes: set, primary_weapons: set, secondary_weapons: set),
+    or None if the file could not be loaded.
+
+    Covers:
+    - entities.ships[*].class  (standalone ships)
+    - entities.ship_templates[name].class  (templates used by wings)
+    - entities.wings[*].template -> resolved class from templates
+    - weapons from standalone ships (entities.ships[*].weapons.primary/secondary)
+    - weapons from templates (for wings and for standalone ships using a template)
+    """
+    try:
+        with open(fsif_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+    except Exception as e:
+        log_func(f"[WARNING] First mission check: could not load '{fsif_path}': {e}")
+        return None
+
+    if not isinstance(data, dict):
+        log_func(f"[WARNING] First mission check: '{fsif_path}' did not parse as a YAML mapping.")
+        return None
+
+    entities = data.get('entities', {}) or {}
+    templates_raw = entities.get('ship_templates', {}) or {}
+    ships_raw = entities.get('ships', []) or []
+    wings_raw = entities.get('wings', []) or []
+
+    ship_classes: set = set()
+    primary_weapons: set = set()
+    secondary_weapons: set = set()
+
+    def _add_weapons_from_mapping(weapons_mapping):
+        """Extract primary/secondary weapons from a weapons dict."""
+        if not isinstance(weapons_mapping, dict):
+            return
+        for w in (weapons_mapping.get('primary') or []):
+            if w:
+                primary_weapons.add(str(w))
+        for w in (weapons_mapping.get('secondary') or []):
+            if w:
+                secondary_weapons.add(str(w))
+
+    # --- Process templates ---
+    templates: dict = {}  # name -> properties dict
+    if isinstance(templates_raw, dict):
+        for tname, tprops in templates_raw.items():
+            if isinstance(tprops, dict):
+                templates[tname] = tprops
+
+    # --- Process standalone ships ---
+    if isinstance(ships_raw, list):
+        for ship in ships_raw:
+            if not isinstance(ship, dict):
+                continue
+            # If the ship references a template, merge: template provides class/weapons,
+            # ship-level class overrides template class if present.
+            tname = ship.get('template')
+            tprops = templates.get(tname, {}) if tname else {}
+
+            cls = ship.get('class') or tprops.get('class')
+            if cls:
+                ship_classes.add(str(cls))
+
+            # Weapons: ship-level overrides template weapons
+            ship_weapons = ship.get('weapons') or tprops.get('weapons')
+            _add_weapons_from_mapping(ship_weapons)
+
+    # --- Process wings (resolved via templates) ---
+    if isinstance(wings_raw, list):
+        for wing in wings_raw:
+            if not isinstance(wing, dict):
+                continue
+            tname = wing.get('template')
+            tprops = templates.get(tname, {}) if tname else {}
+
+            cls = tprops.get('class')
+            if cls:
+                ship_classes.add(str(cls))
+
+            _add_weapons_from_mapping(tprops.get('weapons'))
+
+    return ship_classes, primary_weapons, secondary_weapons
+
+
+def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF', log_func) -> None:
+    """
+    Check that all ship classes and weapons used in the first FSIF mission are
+    present in the FCIF starting_loadout.
+
+    Issues [WARNING] messages for any missing items but does NOT abort conversion.
+
+    :param fsif_path_str: Path to the first mission's .fsif file.
+    :param fcif: The loaded FCIF object.
+    :param log_func: Logging function.
+    """
+    fsif_path = Path(fsif_path_str)
+    if not fsif_path.exists() or not fsif_path.is_file():
+        log_func(f"[WARNING] First mission check: file not found at '{fsif_path}'. Skipping check.")
+        return
+
+    if fsif_path.suffix.lower() != '.fsif':
+        log_func(f"[WARNING] First mission check: '{fsif_path}' does not have a .fsif extension. Skipping check.")
+        return
+
+    log_func(f"[INFO] Running first mission loadout check against '{fsif_path.name}'...")
+
+    result = _collect_fsif_ships_and_weapons(fsif_path, log_func)
+    if result is None:
+        return  # Error already logged inside helper
+
+    mission_ships, mission_primaries, mission_secondaries = result
+
+    loadout_ships = set(fcif.starting_loadout.ships)
+    loadout_weapons = set(fcif.starting_loadout.weapons)
+
+    missing_ships = sorted(mission_ships - loadout_ships)
+    missing_weapons = sorted((mission_primaries | mission_secondaries) - loadout_weapons)
+
+    warnings_issued = False
+
+    if missing_ships:
+        log_func(
+            f"[WARNING] First mission check: the following ship class(es) used in "
+            f"'{fsif_path.name}' are NOT in starting_loadout.ships:"
+        )
+        for s in missing_ships:
+            log_func(f"[WARNING]   - \"{s}\"")
+        log_func(
+            "[WARNING] Ships not in starting_loadout will not appear in the first mission. "
+            "Add them to starting_loadout.ships in the FCIF."
+        )
+        warnings_issued = True
+
+    if missing_weapons:
+        log_func(
+            f"[WARNING] First mission check: the following weapon(s) used in "
+            f"'{fsif_path.name}' are NOT in starting_loadout.weapons:"
+        )
+        for w in missing_weapons:
+            log_func(f"[WARNING]   - \"{w}\"")
+        log_func(
+            "[WARNING] Weapons not in starting_loadout will not be available in the first mission. "
+            "Add them to starting_loadout.weapons in the FCIF."
+        )
+        warnings_issued = True
+
+    if not warnings_issued:
+        log_func("[INFO] First mission loadout check passed: all ships and weapons are in starting_loadout.")
+
+
+def process_campaign(
+    input_file: str,
+    output_file: Optional[str] = None,
+    first_mission: Optional[str] = None,
+    log_func=print,
+) -> bool:
     """
     Core conversion logic for the campaign.
     
     :param input_file: Path to the .fcif file.
     :param output_file: Optional path for the output .fc2 file.
+    :param first_mission: Optional path to the first mission's .fsif file for loadout validation.
     :param log_func: Function to use for logging output (default: print).
     :return: True if successful, False otherwise.
     """
@@ -327,6 +488,10 @@ def process_campaign(input_file: str, output_file: Optional[str] = None, log_fun
         log_func(f"[FAILED] ASCII validation failed with {len(ascii_errors)} error(s). Aborting.")
         return False
 
+    # Optional: first-mission loadout check
+    if first_mission:
+        check_first_mission_loadout(first_mission, fcif_data, log_func)
+
     log_func(f"[INFO] Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
     try:
@@ -342,7 +507,18 @@ def main():
     parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate File) to FC2 format.")
     parser.add_argument("input", type=str, help="Input .fcif file")
     parser.add_argument("-o", "--output", type=str, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
-    
+    parser.add_argument(
+        "--first-mission",
+        dest="first_mission",
+        type=str,
+        default=None,
+        help=(
+            "Path to the first mission's .fsif file. "
+            "When provided, the converter checks that all ship classes and weapons used "
+            "in that mission are present in starting_loadout and warns about any that are missing."
+        ),
+    )
+
     args = parser.parse_args()
 
     # Create a custom log_func for CLI that directs ERROR and FAILED to stderr
@@ -352,7 +528,7 @@ def main():
         else:
             print(msg)
 
-    success = process_campaign(args.input, args.output, log_func=cli_log)
+    success = process_campaign(args.input, args.output, first_mission=args.first_mission, log_func=cli_log)
     if not success:
         sys.exit(1)
 
