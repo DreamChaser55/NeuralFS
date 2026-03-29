@@ -361,7 +361,7 @@ class MissionLoader:
         if alias_keys and 'dock' in ship_data:
              raise ValueError(f"Ship '{props.get('name')}' mixes 'dock' block with alias keys {alias_keys}.")
         
-        dock_src = ship_data.get('dock')
+        dock_src = props.get('dock')
         if isinstance(dock_src, dict):
             props['docked_with'] = dock_src.get('with')
             props['docker_point'] = dock_src.get('docker_point')
