@@ -19,13 +19,21 @@ DEFAULT_KAMIKAZE_DAMAGE = 1000
 
 
 def _normalize_vector(v: Any) -> List[float]:
-    """Ensure a 3-element float list."""
+    """Ensure a 3-element float list. Raises ValueError if input is present but malformed."""
     if not v:
         return [0.0, 0.0, 0.0]
     try:
-        return [float(v[0]), float(v[1]), float(v[2])]
-    except Exception:
-        return [0.0, 0.0, 0.0]
+        items = list(v)
+    except TypeError:
+        raise ValueError(f"Expected a 3-element [x, y, z] list, got: {v!r}")
+    if len(items) != 3:
+        raise ValueError(
+            f"Expected a 3-element [x, y, z] list, got {len(items)} element(s): {v!r}"
+        )
+    try:
+        return [float(items[0]), float(items[1]), float(items[2])]
+    except (ValueError, TypeError) as e:
+        raise ValueError(f"Vector coordinates must be numbers, got: {v!r}") from e
 
 
 def _normalize_orientation(v: Any) -> List[float]:
