@@ -816,13 +816,14 @@ class Validator:
                     closed = True
                     break
 
-                if next_tag != opening_tag:
-                    self.log_warning(
-                        f"{context}: span-style color tag '{opening_tag}' is unclosed before "
-                        f"'{next_tag}'. Add '$}}' before '{next_tag}' (or remove '{opening_tag}')."
-                    )
-                    warned = True
-                    break
+                # Any other tag means the current span is unclosed before this tag. FSO does not support
+                # nested span tags of any kind.
+                self.log_warning(
+                    f"{context}: span-style color tag '{opening_tag}' is unclosed before "
+                    f"'{next_tag}'. Add '$}}' before '{next_tag}' (or remove '{opening_tag}')."
+                )
+                warned = True
+                break
 
             if not closed and not warned:
                 self.log_warning(
