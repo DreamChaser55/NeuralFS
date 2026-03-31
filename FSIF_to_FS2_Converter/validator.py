@@ -816,6 +816,12 @@ class Validator:
                     closed = True
                     break
 
+                # Placeholders ($callsign, $rank, $quote, $semicolon) are
+                # text substitutions, not style tags. They do not open or
+                # close a span, so skip them and keep looking for $}.
+                if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', next_tag):
+                    continue
+
                 # Any other tag means the current span is unclosed before this tag. FSO does not support
                 # nested span tags of any kind.
                 self.log_warning(

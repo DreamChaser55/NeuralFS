@@ -147,6 +147,12 @@ class FictionViewerValidator:
                     closed = True
                     break
 
+                # Placeholders ($callsign, $rank, $quote, $semicolon) are
+                # text substitutions, not style tags. They do not open or
+                # close a span, so skip them and keep looking for $}.
+                if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', next_tag):
+                    continue
+
                 if next_tag != opening_tag:
                     # Encountered a different style tag before the closing $}
                     self.log_warning(
