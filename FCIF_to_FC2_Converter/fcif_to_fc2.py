@@ -2,15 +2,36 @@ import argparse
 import sys
 import yaml
 from pathlib import Path
-from typing import List, Optional
-from pydantic import BaseModel, Field, ConfigDict, ValidationError, field_validator, model_validator
+from typing import Annotated, List, Optional
+from pydantic import AfterValidator, BaseModel, Field, ConfigDict, ValidationError, field_validator, model_validator
+
+# ---------------------------------------------------------------------------
+# AsciiStr: a Pydantic Annotated type that enforces ASCII-only strings.
+# Applied to every FSO-facing string field so validity is guaranteed at
+# construction time ("Parse, don't validate").
+# ---------------------------------------------------------------------------
+
+def _ascii_check(v: str) -> str:
+    """AfterValidator: raises ValueError if *v* contains any non-ASCII character."""
+    if v.isascii():
+        return v
+    offenders: list[str] = []
+    for index, ch in enumerate(v):
+        if ord(ch) > 127:
+            offenders.append(f"{repr(ch)} (U+{ord(ch):04X}, index {index})")
+    details = ", ".join(offenders[:5])
+    if len(offenders) > 5:
+        details += f", ... (+{len(offenders) - 5} more)"
+    raise ValueError(f"contains non-ASCII character(s): {details}")
+
+AsciiStr = Annotated[str, AfterValidator(_ascii_check)]
 
 # --- FCIF Data Models ---
 
 class CampaignInfo(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    name: str
-    description: str
+    name: AsciiStr
+    description: AsciiStr
 
     @field_validator('description')
     @classmethod
@@ -25,16 +46,16 @@ class CampaignInfo(BaseModel):
 
 class StartingLoadout(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    ships: List[str] = Field(default_factory=list)
-    weapons: List[str] = Field(default_factory=list)
+    ships: List[AsciiStr] = Field(default_factory=list)
+    weapons: List[AsciiStr] = Field(default_factory=list)
 
 class CampaignMission(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    filename: str
-    success_goal: Optional[str] = None
-    success_event: Optional[str] = None
-    failure_goal: Optional[str] = None
-    failure_event: Optional[str] = None
+    filename: AsciiStr
+    success_goal: Optional[AsciiStr] = None
+    success_event: Optional[AsciiStr] = None
+    failure_goal: Optional[AsciiStr] = None
+    failure_event: Optional[AsciiStr] = None
 
     @model_validator(mode='after')
     def check_mutual_exclusivity(self) -> 'CampaignMission':
@@ -78,76 +99,6 @@ class FCIF(BaseModel):
                 f"Supported versions: {sorted(SUPPORTED_FCIF_VERSIONS)}"
             )
         return self
-
-# --- ASCII Validation ---
-
-def _check_ascii(path: str, text: Optional[str], errors: list) -> None:
-    """
-    Check that *text* contains only ASCII characters (code points 0–127).
-
-    ASCII control characters (newline, tab, etc.) are within the 7-bit range
-    and are therefore allowed.  Any character with ord > 127 is flagged.
-
-    On failure, appends a descriptive error string to *errors* that includes
-    the field path and the offending character(s) with their Unicode code points.
-    """
-    if text is None:
-        return
-    value = str(text)
-    if value.isascii():
-        return
-
-    offenders = []
-    for index, ch in enumerate(value):
-        if ord(ch) > 127:
-            offenders.append(f"{repr(ch)} (U+{ord(ch):04X}, index {index})")
-
-    if not offenders:
-        return
-
-    details = ", ".join(offenders[:5])
-    if len(offenders) > 5:
-        details += f", ... (+{len(offenders) - 5} more)"
-
-    errors.append(f"ASCII error: {path} contains non-ASCII character(s): {details}")
-
-
-def _check_ascii_list(path: str, values: Optional[List[str]], errors: list) -> None:
-    """Apply _check_ascii to every element of a list of strings."""
-    if not values:
-        return
-    for i, value in enumerate(values):
-        _check_ascii(f"{path}[{i}]", value, errors)
-
-
-def validate_ascii_fields(fcif: FCIF) -> List[str]:
-    """
-    Validate that all FSO-facing FCIF string fields contain only ASCII characters.
-
-    Returns a list of error strings (empty if all fields are valid).
-    Every string field that ends up written into the .fc2 file is checked here.
-    """
-    errors: List[str] = []
-
-    # Campaign section
-    _check_ascii("campaign.name", fcif.campaign.name, errors)
-    _check_ascii("campaign.description", fcif.campaign.description, errors)
-
-    # Starting loadout
-    _check_ascii_list("starting_loadout.ships", fcif.starting_loadout.ships, errors)
-    _check_ascii_list("starting_loadout.weapons", fcif.starting_loadout.weapons, errors)
-
-    # Missions
-    for i, mission in enumerate(fcif.missions):
-        prefix = f"missions[{i}]"
-        _check_ascii(f"{prefix}.filename", mission.filename, errors)
-        _check_ascii(f"{prefix}.success_goal", mission.success_goal, errors)
-        _check_ascii(f"{prefix}.success_event", mission.success_event, errors)
-        _check_ascii(f"{prefix}.failure_goal", mission.failure_goal, errors)
-        _check_ascii(f"{prefix}.failure_event", mission.failure_event, errors)
-
-    return errors
-
 
 # --- Logic ---
 
@@ -478,14 +429,6 @@ def process_campaign(
     fcif_data = load_fcif(input_path, log_func)
     
     if not fcif_data:
-        return False
-    
-    # Validate ASCII-only requirement for all FSO-facing fields
-    ascii_errors = validate_ascii_fields(fcif_data)
-    if ascii_errors:
-        for err in ascii_errors:
-            log_func(f"[ERROR] {err}")
-        log_func(f"[FAILED] ASCII validation failed with {len(ascii_errors)} error(s). Aborting.")
         return False
 
     # Optional: first-mission loadout check
