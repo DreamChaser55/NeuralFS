@@ -791,51 +791,64 @@ class Validator:
         """
         Validate span-style color tags ($c{ ... $}) in briefing/debriefing text.
 
-        Rule enforced:
-        - Every span opening tag must be closed with '$}' before either:
-          1) another, different style tag, or
-          2) end-of-text.
+        Single-pass O(N) stack-based approach:
+        - Push each span-opening tag onto a stack.
+        - $} pops the stack (span properly closed).
+        - Any other style tag while the stack is non-empty means the open span
+          was not closed — pop and warn. FSO does not support nested span tags.
+        - Placeholder tags ($callsign, $rank, $quote, $semicolon) are skipped.
+        - Tags remaining on the stack at the end are unclosed at end-of-text.
         """
         if not text:
             return
 
         tokens = list(self._BRIEFING_STYLE_TAG_RE.finditer(text))
+        stack: list = []  # unclosed span-opening tags
 
-        for idx, tok in enumerate(tokens):
-            opening_tag = tok.group(0)
-            if not self._BRIEFING_SPAN_OPEN_TAG_RE.match(opening_tag):
+        for tok in tokens:
+            tag = tok.group(0)
+
+            # Placeholders ($callsign, $rank, $quote, $semicolon) are text
+            # substitutions, not style tags. They do not open or close a span.
+            if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', tag):
                 continue
 
-            closed = False
-            warned = False
+            if self._BRIEFING_SPAN_OPEN_TAG_RE.match(tag):
+                # A new span-open tag: if one is already open it was never closed.
+                if stack:
+                    open_tag = stack.pop()
+                    self.log_warning(
+                        f"{context}: span-style color tag '{open_tag}' is unclosed before "
+                        f"'{tag}'. Add '$}}' before '{tag}' (or remove '{open_tag}')."
+                    )
+                stack.append(tag)
 
-            for next_tok in tokens[idx + 1:]:
-                next_tag = next_tok.group(0)
+            elif tag == '$}':
+                if stack:
+                    stack.pop()  # Span properly closed.
+                else:
+                    self.log_warning(
+                        f"{context}: found '$}}' with no matching opening span tag. "
+                        f"Remove the extra '$}}'."
+                    )
 
-                if next_tag == '$}':
-                    closed = True
-                    break
+            else:
+                # $| (color break) or single-word color tag (e.g. $R).
+                # FSO does not support nested span tags of any kind; if a span
+                # is currently open, this tag interrupts it.
+                if stack:
+                    open_tag = stack.pop()
+                    self.log_warning(
+                        f"{context}: span-style color tag '{open_tag}' is unclosed before "
+                        f"'{tag}'. Add '$}}' before '{tag}' (or remove '{open_tag}')."
+                    )
 
-                # Placeholders ($callsign, $rank, $quote, $semicolon) are
-                # text substitutions, not style tags. They do not open or
-                # close a span, so skip them and keep looking for $}.
-                if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', next_tag):
-                    continue
-
-                # Any other tag means the current span is unclosed before this tag. FSO does not support
-                # nested span tags of any kind.
-                self.log_warning(
-                    f"{context}: span-style color tag '{opening_tag}' is unclosed before "
-                    f"'{next_tag}'. Add '$}}' before '{next_tag}' (or remove '{opening_tag}')."
-                )
-                warned = True
-                break
-
-            if not closed and not warned:
-                self.log_warning(
-                    f"{context}: span-style color tag '{opening_tag}' is unclosed before end of text. "
-                    f"Add '$}}' to close the span."
-                )
+        # Any spans still on the stack were never closed.
+        for open_tag in stack:
+            self.log_warning(
+                f"{context}: span-style color tag '{open_tag}' is unclosed before end of text. "
+                f"Add '$}}' to close the span."
+            )
 
     def validate_briefing_span_tags(self):
         """

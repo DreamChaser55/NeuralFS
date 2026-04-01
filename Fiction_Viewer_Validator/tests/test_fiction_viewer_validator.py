@@ -158,6 +158,115 @@ class TestSpanTagCheck(unittest.TestCase):
             v.warnings,
         )
 
+    def test_same_tag_repeated_open_triggers_warning(self):
+        """
+        Bug-fix regression: $y{ text $y{ more $} — two opens, one close.
+        The old O(N²) look-ahead silently passed this because it encountered
+        the second $y{ (same tag), skipped it, found $} and declared the
+        first span 'closed'. The stack correctly warns about the first $y{
+        being unclosed before the second $y{ opens.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"$y{ word1 $y{ word2 $}")
+            v = FictionViewerValidator(p)
+            result = v.validate()
+
+        self.assertTrue(result)  # Warning only, not an error.
+        self.assertEqual(v.errors, [])
+        self.assertTrue(
+            any("unclosed" in w.lower() for w in v.warnings),
+            f"Expected an 'unclosed' warning for duplicate span open; got: {v.warnings}",
+        )
+
+    def test_span_interrupted_by_different_tag_triggers_warning(self):
+        """
+        $y{ text $f{ more $} — $y{ is never closed before $f{ opens.
+        Expected: one warning about $y{ being unclosed before $f{.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"$y{ text $f{ more $}")
+            v = FictionViewerValidator(p)
+            result = v.validate()
+
+        self.assertTrue(result)
+        self.assertEqual(v.errors, [])
+        self.assertTrue(
+            any("unclosed" in w.lower() for w in v.warnings),
+            f"Expected an 'unclosed' warning for span interrupted by different tag; got: {v.warnings}",
+        )
+
+    def test_sequential_spans_no_warning(self):
+        """
+        $y{ text $} $f{ more $} — two spans in sequence, both properly closed.
+        Expected: no warnings.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"$y{ Friendly $} met $f{ Hostile $} forces.")
+            v = FictionViewerValidator(p)
+            v.validate()
+
+        self.assertEqual(v.errors, [])
+        self.assertFalse(
+            any("unclosed" in w.lower() for w in v.warnings),
+            f"Expected no warnings for sequential closed spans; got: {v.warnings}",
+        )
+
+    def test_extra_close_tag_triggers_warning(self):
+        """
+        $} with no preceding open span tag — new check added by the stack approach.
+        Expected: a warning about the unmatched '$}'.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"Normal text $} with no open.")
+            v = FictionViewerValidator(p)
+            result = v.validate()
+
+        self.assertTrue(result)  # Warning only, not an error.
+        self.assertEqual(v.errors, [])
+        self.assertTrue(
+            any("$}" in w or "no matching" in w.lower() for w in v.warnings),
+            f"Expected a warning for unmatched '$}}'; got: {v.warnings}",
+        )
+
+    def test_placeholder_inside_span_no_false_warning(self):
+        """
+        Placeholders ($callsign, $rank) inside a span must NOT trigger an
+        'unclosed before' warning — they are text substitutions, not style tags.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"Good work, $f{ $rank $callsign $}.")
+            v = FictionViewerValidator(p)
+            v.validate()
+
+        self.assertEqual(v.errors, [])
+        self.assertFalse(
+            any("unclosed" in w.lower() for w in v.warnings),
+            f"Expected no warnings when only placeholders appear inside a span; got: {v.warnings}",
+        )
+
+    def test_single_word_color_inside_open_span_triggers_warning(self):
+        """
+        $y{ text $R word — a single-word color tag interrupts the open $y{ span.
+        Expected: a warning that $y{ is unclosed before $R.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = Path(tmpdir) / "story.txt"
+            p.write_bytes(b"$y{ intro $R warning text")
+            v = FictionViewerValidator(p)
+            result = v.validate()
+
+        self.assertTrue(result)
+        self.assertEqual(v.errors, [])
+        self.assertTrue(
+            any("unclosed" in w.lower() for w in v.warnings),
+            f"Expected an 'unclosed' warning for single-word color inside span; got: {v.warnings}",
+        )
+
 
 class TestErrorHandling(unittest.TestCase):
     """Regression: attempting to validate a missing file returns False."""

@@ -133,52 +133,67 @@ class FictionViewerValidator:
         """
         Validate span-style color tag closure.
 
-        Every span-opening tag (e.g. $y{) must be closed with $} before:
-          1) A different style tag appears, or
-          2) The end of the text is reached.
+        Single-pass O(N) stack-based approach:
+        - Push each span-opening tag ($y{, $f{, etc.) onto a stack.
+        - When $} is encountered, pop the stack (span properly closed).
+        - When any other style tag is encountered while the stack is non-empty,
+          the currently open span is unclosed — pop and warn.
+        - Placeholder tags ($callsign, $rank, $quote, $semicolon) are skipped.
+        - Any tags remaining on the stack after all tokens are unclosed at end.
 
         Mirrors the logic of Validator._validate_span_style_tags in
         FSIF_to_FS2_Converter/validator.py.
         """
         tokens = list(self._STYLE_TAG_RE.finditer(text))
+        stack: list = []  # unclosed span-opening tags
 
-        for idx, tok in enumerate(tokens):
-            opening_tag = tok.group(0)
-            if not self._SPAN_OPEN_TAG_RE.match(opening_tag):
-                continue  # Not a span-opening tag; skip.
+        for tok in tokens:
+            tag = tok.group(0)
 
-            closed = False
-            warned = False
+            # Placeholders ($callsign, $rank, $quote, $semicolon) are text
+            # substitutions, not style tags. They do not open or close a span.
+            if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', tag):
+                continue
 
-            for next_tok in tokens[idx + 1:]:
-                next_tag = next_tok.group(0)
-
-                if next_tag == '$}':
-                    closed = True
-                    break
-
-                # Placeholders ($callsign, $rank, $quote, $semicolon) are
-                # text substitutions, not style tags. They do not open or
-                # close a span, so skip them and keep looking for $}.
-                if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', next_tag):
-                    continue
-
-                if next_tag != opening_tag:
-                    # Encountered a different style tag before the closing $}
+            if self._SPAN_OPEN_TAG_RE.match(tag):
+                # A new span-open tag: if one is already open it was never closed.
+                if stack:
+                    open_tag = stack.pop()
                     self.log_warning(
-                        f"Span-style color tag '{opening_tag}' is unclosed before "
-                        f"'{next_tag}'. "
-                        f"Add '$}}' before '{next_tag}' to close the span "
-                        f"(or remove the opening '{opening_tag}' if unintentional)."
+                        f"Span-style color tag '{open_tag}' is unclosed before "
+                        f"'{tag}'. "
+                        f"Add '$}}' before '{tag}' to close the span "
+                        f"(or remove the opening '{open_tag}' if unintentional)."
                     )
-                    warned = True
-                    break
+                stack.append(tag)
 
-            if not closed and not warned:
-                self.log_warning(
-                    f"Span-style color tag '{opening_tag}' is unclosed at end of text. "
-                    f"Add '$}}' to close the span."
-                )
+            elif tag == '$}':
+                if stack:
+                    stack.pop()  # Span properly closed.
+                else:
+                    self.log_warning(
+                        "Found '$}' with no matching opening span tag. "
+                        "Remove the extra '$}'."
+                    )
+
+            else:
+                # $| (color break) or single-word color tag (e.g. $R).
+                # If a span is currently open, this tag interrupts it.
+                if stack:
+                    open_tag = stack.pop()
+                    self.log_warning(
+                        f"Span-style color tag '{open_tag}' is unclosed before "
+                        f"'{tag}'. "
+                        f"Add '$}}' before '{tag}' to close the span "
+                        f"(or remove the opening '{open_tag}' if unintentional)."
+                    )
+
+        # Any spans still on the stack were never closed.
+        for open_tag in stack:
+            self.log_warning(
+                f"Span-style color tag '{open_tag}' is unclosed at end of text. "
+                f"Add '$}}' to close the span."
+            )
 
     # ------------------------------------------------------------------
     # Output helpers
