@@ -7,6 +7,7 @@ import fs_data
 from data_models import Mission
 import briefing_icon_types
 from validate_sexp_scalar_styles import validate_sexp_styles
+from utils import calculate_briefing_camera_height
 
 try:
     from weapons_compatibility_data import WEAPON_COMPATIBILITY
@@ -933,11 +934,7 @@ class Validator:
         delta_x = max(x_values) - min(x_values)
         delta_z = max(z_values) - min(z_values)
 
-        final_width = max(delta_x, 2.5 * delta_z)
-        cam_width = final_width * 1.15
-        if cam_width < 1000.0:
-            cam_width = 1000.0
-        return cam_width
+        return calculate_briefing_camera_height(delta_x, delta_z)
 
     def validate_briefing(self):
         """

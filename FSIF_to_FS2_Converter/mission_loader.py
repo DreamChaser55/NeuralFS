@@ -14,6 +14,7 @@ from data_models import (
     AudioSettings
 )
 import briefing_icon_types as brief_types
+from utils import calculate_briefing_camera_height
 
 
 class MissionLoader:
@@ -464,25 +465,7 @@ class MissionLoader:
              center_x = (x_min + x_max) / 2.0
              center_z = (z_min + z_max) / 2.0
              
-             # 2. Define Target Aspect Ratio (Width / Height = 2.5)
-             # The 2.5 value comes from FSO engine defaults for the briefing grid aspect ratio.
-             target_ratio = 2.5
-             
-             # 3. Determine dimensions
-             # We need width >= delta_x AND width >= 2.5 * delta_z
-             # So width = max(delta_x, 2.5 * delta_z)
-             final_width = max(delta_x, target_ratio * delta_z)
-             
-             # 4. Calculate Camera Height
-             # The FSO briefing camera uses a 45-degree field of view (FOV).
-             # With a 45-degree FOV, setting the camera height (Y distance) equal to the 
-             # target horizontal width ensures the entire width fits in the view.
-             # We use the horizontal size (width) and add a 15% safety factor.
-             cam_h = final_width * 1.15
-             
-             # Maintain safety clamp to avoid singular views or extreme close-ups
-             if cam_h < 1000.0:
-                 cam_h = 1000.0
+             cam_h = calculate_briefing_camera_height(delta_x, delta_z)
              
              stage_data['camera_pos'] = [center_x, cam_h, center_z]
              stage_data['camera_orient'] = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0]

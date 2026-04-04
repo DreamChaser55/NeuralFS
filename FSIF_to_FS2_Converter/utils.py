@@ -1,5 +1,19 @@
 import re
 
+def calculate_briefing_camera_height(delta_x: float, delta_z: float) -> float:
+    """
+    Calculate the height (and effective width) of the FSO briefing camera 
+    given the bounding box dimensions of the briefing icons.
+    
+    The calculation uses a tight bounding box, constrained by the FSO 
+    briefing camera aspect ratio (2.5) and FOV. It ensures a safety 
+    factor of 15% (1.15) and clamps the minimum height to 1000.0.
+    """
+    target_ratio = 2.5
+    final_width = max(delta_x, target_ratio * delta_z)
+    cam_h = final_width * 1.15
+    return max(cam_h, 1000.0)
+
 def slugify_filename(s: str) -> str:
     """
     Convert an arbitrary string into a safe filename stem.
