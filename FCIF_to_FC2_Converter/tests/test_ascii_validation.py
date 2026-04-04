@@ -17,11 +17,13 @@ Coverage:
 """
 
 import sys
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 import yaml
+import logging
 from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
@@ -33,21 +35,44 @@ if str(_converter_dir) not in sys.path:
     sys.path.insert(0, str(_converter_dir))
 
 from fcif_to_fc2 import (
+    FCIF,
     CampaignInfo,
     CampaignMission,
-    FCIF,
     StartingLoadout,
     process_campaign,
+    logger as fcif_logger
 )
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _make_log():
-    """Return (log_func, messages_list). log_func appends to messages_list."""
-    messages = []
-    return messages.append, messages
+class LogCaptureHandler(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.messages = []
+
+    def emit(self, record):
+        level_name = record.levelname
+        if record.levelno == 25:
+            level_name = "SUCCESS"
+        self.messages.append(f"[{level_name}] {record.getMessage()}")
+
+import contextlib
+
+@contextlib.contextmanager
+def capture_logs():
+    """Context manager to capture fcif_logger logs."""
+    handler = LogCaptureHandler()
+    handler.setLevel(logging.DEBUG)
+    old_level = fcif_logger.level
+    fcif_logger.setLevel(logging.DEBUG)
+    fcif_logger.addHandler(handler)
+    try:
+        yield handler.messages
+    finally:
+        fcif_logger.removeHandler(handler)
+        fcif_logger.setLevel(old_level)
 
 
 def _minimal_fcif_dict(**overrides) -> dict:
@@ -333,15 +358,14 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
         Write yaml_content to a temp .fcif file, run process_campaign, return
         (success: bool, messages: list).
         """
-        log_fn, msgs = _make_log()
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fcif_path = _write_fcif(Path(tmpdir), yaml_content)
-            output_path = Path(tmpdir) / "out.fc2"
-            success = process_campaign(
-                str(fcif_path),
-                str(output_path),
-                log_func=log_fn,
-            )
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fcif_path = _write_fcif(Path(tmpdir), yaml_content)
+                output_path = Path(tmpdir) / "out.fc2"
+                success = process_campaign(
+                    str(fcif_path),
+                    str(output_path),
+                )
         return success, msgs
 
     def test_non_ascii_campaign_name_returns_false(self):

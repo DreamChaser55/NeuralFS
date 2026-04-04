@@ -1,9 +1,15 @@
 import argparse
 import sys
 import yaml
+import logging
 from pathlib import Path
 from typing import Annotated, List, Optional
 from pydantic import AfterValidator, BaseModel, Field, ConfigDict, ValidationError, field_validator, model_validator
+
+SUCCESS_LEVEL = 25
+logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # AsciiStr: a Pydantic Annotated type that enforces ASCII-only strings.
@@ -102,20 +108,20 @@ class FCIF(BaseModel):
 
 # --- Logic ---
 
-def load_fcif(path: Path, log_func=print) -> Optional[FCIF]:
+def load_fcif(path: Path) -> Optional[FCIF]:
     """Loads and validates the FCIF YAML file."""
     try:
         with open(path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
         return FCIF(**data)
     except yaml.YAMLError as e:
-        log_func(f"[ERROR] Error parsing YAML: {e}")
+        logger.error(f"Error parsing YAML: {e}")
         return None
     except ValidationError as e:
-        log_func(f"[ERROR] Validation Error:\n{e}")
+        logger.error(f"Validation Error:\n{e}")
         return None
     except Exception as e:
-        log_func(f"[ERROR] Error loading file: {e}")
+        logger.error(f"Error loading file: {e}")
         return None
 
 def format_sexp_string(s: str) -> str:
@@ -242,7 +248,7 @@ def write_fc2(fcif: FCIF, output_path: Path):
 
 # --- First Mission Loadout Check ---
 
-def _collect_fsif_ships_and_weapons(fsif_path: Path, log_func) -> Optional[tuple]:
+def _collect_fsif_ships_and_weapons(fsif_path: Path) -> Optional[tuple]:
     """
     Parse an FSIF YAML file and collect all ship classes and weapons referenced.
 
@@ -260,11 +266,11 @@ def _collect_fsif_ships_and_weapons(fsif_path: Path, log_func) -> Optional[tuple
         with open(fsif_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
     except Exception as e:
-        log_func(f"[WARNING] First mission check: could not load '{fsif_path}': {e}")
+        logger.warning(f"First mission check: could not load '{fsif_path}': {e}")
         return None
 
     if not isinstance(data, dict):
-        log_func(f"[WARNING] First mission check: '{fsif_path}' did not parse as a YAML mapping.")
+        logger.warning(f"First mission check: '{fsif_path}' did not parse as a YAML mapping.")
         return None
 
     entities = data.get('entities', {}) or {}
@@ -329,7 +335,7 @@ def _collect_fsif_ships_and_weapons(fsif_path: Path, log_func) -> Optional[tuple
     return ship_classes, primary_weapons, secondary_weapons
 
 
-def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF', log_func) -> None:
+def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF') -> None:
     """
     Check that all ship classes and weapons used in the first FSIF mission are
     present in the FCIF starting_loadout.
@@ -338,20 +344,19 @@ def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF', log_func) -> N
 
     :param fsif_path_str: Path to the first mission's .fsif file.
     :param fcif: The loaded FCIF object.
-    :param log_func: Logging function.
     """
     fsif_path = Path(fsif_path_str)
     if not fsif_path.exists() or not fsif_path.is_file():
-        log_func(f"[WARNING] First mission check: file not found at '{fsif_path}'. Skipping check.")
+        logger.warning(f"First mission check: file not found at '{fsif_path}'. Skipping check.")
         return
 
     if fsif_path.suffix.lower() != '.fsif':
-        log_func(f"[WARNING] First mission check: '{fsif_path}' does not have a .fsif extension. Skipping check.")
+        logger.warning(f"First mission check: '{fsif_path}' does not have a .fsif extension. Skipping check.")
         return
 
-    log_func(f"[INFO] Running first mission loadout check against '{fsif_path.name}'...")
+    logger.info(f"Running first mission loadout check against '{fsif_path.name}'...")
 
-    result = _collect_fsif_ships_and_weapons(fsif_path, log_func)
+    result = _collect_fsif_ships_and_weapons(fsif_path)
     if result is None:
         return  # Error already logged inside helper
 
@@ -366,40 +371,39 @@ def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF', log_func) -> N
     warnings_issued = False
 
     if missing_ships:
-        log_func(
-            f"[WARNING] First mission check: the following ship class(es) used in "
+        logger.warning(
+            f"First mission check: the following ship class(es) used in "
             f"'{fsif_path.name}' are NOT in starting_loadout.ships:"
         )
         for s in missing_ships:
-            log_func(f"[WARNING]   - \"{s}\"")
-        log_func(
-            "[WARNING] Ships not in starting_loadout will not appear in the first mission. "
+            logger.warning(f"  - \"{s}\"")
+        logger.warning(
+            "Ships not in starting_loadout will not appear in the first mission. "
             "Add them to starting_loadout.ships in the FCIF."
         )
         warnings_issued = True
 
     if missing_weapons:
-        log_func(
-            f"[WARNING] First mission check: the following weapon(s) used in "
+        logger.warning(
+            f"First mission check: the following weapon(s) used in "
             f"'{fsif_path.name}' are NOT in starting_loadout.weapons:"
         )
         for w in missing_weapons:
-            log_func(f"[WARNING]   - \"{w}\"")
-        log_func(
-            "[WARNING] Weapons not in starting_loadout will not be available in the first mission. "
+            logger.warning(f"  - \"{w}\"")
+        logger.warning(
+            "Weapons not in starting_loadout will not be available in the first mission. "
             "Add them to starting_loadout.weapons in the FCIF."
         )
         warnings_issued = True
 
     if not warnings_issued:
-        log_func("[INFO] First mission loadout check passed: all ships and weapons are in starting_loadout.")
+        logger.info("First mission loadout check passed: all ships and weapons are in starting_loadout.")
 
 
 def process_campaign(
     input_file: str,
     output_file: Optional[str] = None,
     first_mission: Optional[str] = None,
-    log_func=print,
 ) -> bool:
     """
     Core conversion logic for the campaign.
@@ -407,7 +411,6 @@ def process_campaign(
     :param input_file: Path to the .fcif file.
     :param output_file: Optional path for the output .fc2 file.
     :param first_mission: Optional path to the first mission's .fsif file for loadout validation.
-    :param log_func: Function to use for logging output (default: print).
     :return: True if successful, False otherwise.
     """
     input_path = Path(input_file)
@@ -418,31 +421,31 @@ def process_campaign(
         output_path = Path(output_file)
 
     if not input_path.exists() or not input_path.is_file():
-        log_func(f"[ERROR] Input file not found at '{input_path}'")
+        logger.error(f"Input file not found at '{input_path}'")
         return False
 
     if input_path.suffix.lower() != '.fcif':
-        log_func("[ERROR] Input file must have a .fcif extension.")
+        logger.error("Input file must have a .fcif extension.")
         return False
 
-    log_func(f"[INFO] Loading FCIF: {input_path}")
-    fcif_data = load_fcif(input_path, log_func)
+    logger.info(f"Loading FCIF: {input_path}")
+    fcif_data = load_fcif(input_path)
     
     if not fcif_data:
         return False
 
     # Optional: first-mission loadout check
     if first_mission:
-        check_first_mission_loadout(first_mission, fcif_data, log_func)
+        check_first_mission_loadout(first_mission, fcif_data)
 
-    log_func(f"[INFO] Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
+    logger.info(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
     try:
         write_fc2(fcif_data, output_path)
-        log_func(f"[SUCCESS] Successfully wrote: {output_path}")
+        logger.log(SUCCESS_LEVEL, f"Successfully wrote: {output_path}")
         return True
     except Exception as e:
-        log_func(f"[ERROR] Error writing output: {e}")
+        logger.error(f"Error writing output: {e}")
         return False
 
 
@@ -464,14 +467,10 @@ def main():
 
     args = parser.parse_args()
 
-    # Create a custom log_func for CLI that directs ERROR and FAILED to stderr
-    def cli_log(msg: str):
-        if msg.startswith("[ERROR]") or msg.startswith("[FAILED]"):
-            print(msg, file=sys.stderr)
-        else:
-            print(msg)
+    # Configure root logger for CLI
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
-    success = process_campaign(args.input, args.output, first_mission=args.first_mission, log_func=cli_log)
+    success = process_campaign(args.input, args.output, first_mission=args.first_mission)
     if not success:
         sys.exit(1)
 

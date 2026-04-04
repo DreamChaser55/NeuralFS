@@ -4,43 +4,40 @@ import threading
 import os
 import sys
 import traceback
+import logging
 from pathlib import Path
-from fcif_to_fc2 import process_campaign
+from fcif_to_fc2 import process_campaign, SUCCESS_LEVEL, logger as fcif_logger
 
-class RedirectText:
-    def __init__(self, text_widget, root, tag=None):
+class TextWidgetLogHandler(logging.Handler):
+    def __init__(self, text_widget, root):
+        super().__init__()
         self.text_widget = text_widget
         self.root = root
-        self.tag = tag
 
-    def write(self, string):
-        self.root.after(0, self._append_raw, string)
+    def emit(self, record):
+        msg = self.format(record)
+        self.root.after(0, self._append_raw, msg, record.levelno)
 
-    def flush(self):
-        pass
-
-    def _append_raw(self, string):
+    def _append_raw(self, msg, levelno):
         self.text_widget.config(state='normal')
-
-        tag_to_use = self.tag
-        if not tag_to_use:
-            lower = string.lower()
-            if "[error]" in lower or "[failed]" in lower:
-                tag_to_use = 'error'
-            elif "[warning]" in lower:
-                tag_to_use = 'warning'
-            elif "[success]" in lower or "[passed]" in lower:
-                tag_to_use = 'success'
-            elif "[info]" in lower:
-                tag_to_use = 'info'
-
+        
+        tag_to_use = None
+        if levelno >= logging.ERROR:
+            tag_to_use = 'error'
+        elif levelno == logging.WARNING:
+            tag_to_use = 'warning'
+        elif levelno == SUCCESS_LEVEL:
+            tag_to_use = 'success'
+        elif levelno == logging.INFO:
+            tag_to_use = 'info'
+            
         if tag_to_use:
-            self.text_widget.insert(tk.END, string, tag_to_use)
+            self.text_widget.insert(tk.END, msg + '\n', tag_to_use)
         else:
-            self.text_widget.insert(tk.END, string)
+            self.text_widget.insert(tk.END, msg + '\n')
+            
         self.text_widget.see(tk.END)
         self.text_widget.config(state='disabled')
-
 
 class ConverterGUI:
     def __init__(self, root):
@@ -189,30 +186,6 @@ class ConverterGUI:
         self.copy_feedback_label.config(text="")
         self.copy_feedback_after_id = None
 
-    def log(self, message):
-        self.root.after(0, self._append_log, message)
-
-    def _append_log(self, message):
-        self.log_text.config(state='normal')
-
-        tag = None
-        lower = message.lower()
-        if "[error]" in lower or "[failed]" in lower:
-            tag = 'error'
-        elif "[warning]" in lower:
-            tag = 'warning'
-        elif "[success]" in lower or "[passed]" in lower:
-            tag = 'success'
-        elif "[info]" in lower:
-            tag = 'info'
-
-        if tag:
-            self.log_text.insert(tk.END, message + "\n", tag)
-        else:
-            self.log_text.insert(tk.END, message + "\n")
-        self.log_text.see(tk.END)
-        self.log_text.config(state='disabled')
-
     def start_conversion(self):
         if self.is_converting:
             return
@@ -229,8 +202,6 @@ class ConverterGUI:
         self.clear_log()
         self.is_converting = True
         self.convert_btn.config(state='disabled')
-        self.log("-" * 50)
-        self.log("Starting conversion task...")
 
         thread = threading.Thread(target=self.run_conversion_task, args=(input_path,))
         thread.daemon = True
@@ -239,28 +210,27 @@ class ConverterGUI:
     def run_conversion_task(self, input_path):
         output_path = self.output_path_var.get().strip() or None
 
-        # Save old stdout/stderr
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-
-        # Redirect stdout/stderr to the log widget
-        stdout_redirector = RedirectText(self.log_text, self.root)
-        stderr_redirector = RedirectText(self.log_text, self.root, tag='error')
-        sys.stdout = stdout_redirector
-        sys.stderr = stderr_redirector
+        # Attach custom log handler
+        log_handler = TextWidgetLogHandler(self.log_text, self.root)
+        log_handler.setLevel(logging.INFO)
+        old_level = fcif_logger.level
+        fcif_logger.setLevel(logging.INFO)
+        fcif_logger.addHandler(log_handler)
+        
+        fcif_logger.info("-" * 50)
+        fcif_logger.info("Starting conversion task...")
 
         try:
             first_mission = self.first_mission_path_var.get().strip() or None
-            self.log(f"Processing single file: {input_path}")
-            process_campaign(input_path, output_file=output_path, first_mission=first_mission, log_func=self.log)
-            self.log("\nTask completed.")
+            fcif_logger.info(f"Processing single file: {input_path}")
+            process_campaign(input_path, output_file=output_path, first_mission=first_mission)
+            fcif_logger.info("\nTask completed.")
         except Exception as e:
-            self.log(f"Critical Error: {e}")
+            fcif_logger.error(f"Critical Error: {e}")
             traceback.print_exc()
         finally:
-            # Restore stdout/stderr
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
+            fcif_logger.removeHandler(log_handler)
+            fcif_logger.setLevel(old_level)
             self.root.after(0, self.reset_ui)
 
     def reset_ui(self):

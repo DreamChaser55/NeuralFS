@@ -18,6 +18,7 @@ ENV/
 *.swp
 *.swo
 *~
+/plans
 
 # API Keys and Secrets
 Gemini_API_key.txt
@@ -33,3 +34,4 @@ desktop.ini
 *.fc2
 *.wav
 *.bak
+campaigns/Demo_campaigns/campaign_demo.fc2

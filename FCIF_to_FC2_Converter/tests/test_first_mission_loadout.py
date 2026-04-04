@@ -10,6 +10,7 @@ Covers:
 import unittest
 import sys
 import tempfile
+import logging
 from pathlib import Path
 
 # Add the FCIF_to_FC2_Converter directory to path
@@ -23,12 +24,24 @@ from fcif_to_fc2 import (
     check_first_mission_loadout,
     process_campaign,
     FCIF,
+    logger as fcif_logger
 )
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+class LogCaptureHandler(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.messages = []
+
+    def emit(self, record):
+        level_name = record.levelname
+        if record.levelno == 25:
+            level_name = "SUCCESS"
+        self.messages.append(f"[{level_name}] {record.getMessage()}")
 
 def _write_fsif(directory: Path, name: str, content: str) -> Path:
     path = directory / name
@@ -42,10 +55,21 @@ def _write_fcif(directory: Path, name: str, content: str) -> Path:
     return path
 
 
-def _make_log() -> tuple:
-    """Return (log_func, messages_list). log_func appends to messages_list."""
-    messages = []
-    return messages.append, messages
+import contextlib
+
+@contextlib.contextmanager
+def capture_logs():
+    """Context manager to capture fcif_logger logs."""
+    handler = LogCaptureHandler()
+    handler.setLevel(logging.DEBUG)
+    old_level = fcif_logger.level
+    fcif_logger.setLevel(logging.DEBUG)
+    fcif_logger.addHandler(handler)
+    try:
+        yield handler.messages
+    finally:
+        fcif_logger.removeHandler(handler)
+        fcif_logger.setLevel(old_level)
 
 
 def _minimal_fcif_yaml(ships: list[str], weapons: list[str]) -> str:
@@ -88,8 +112,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -112,8 +136,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -137,8 +161,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -163,8 +187,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -187,8 +211,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -213,8 +237,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -243,8 +267,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -272,8 +296,8 @@ entities:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -288,8 +312,8 @@ entities: {}
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -306,8 +330,8 @@ mission_info:
 """
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", fsif)
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNotNone(result)
         assert result is not None
@@ -320,8 +344,8 @@ mission_info:
         """A non-existent file path returns None and emits a [WARNING] log message."""
         with tempfile.TemporaryDirectory() as tmpdir:
             nonexistent = Path(tmpdir) / "does_not_exist.fsif"
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(nonexistent, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(nonexistent)
 
         self.assertIsNone(result)
         self.assertTrue(any("[WARNING]" in str(m) for m in msgs), msgs)
@@ -330,8 +354,8 @@ mission_info:
         """A file with invalid YAML content returns None and emits a [WARNING]."""
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _write_fsif(Path(tmpdir), "m.fsif", "{ invalid yaml: [unclosed")
-            log_fn, msgs = _make_log()
-            result = _collect_fsif_ships_and_weapons(path, log_fn)
+            with capture_logs() as msgs:
+                result = _collect_fsif_ships_and_weapons(path)
 
         self.assertIsNone(result)
         self.assertTrue(any("[WARNING]" in str(m) for m in msgs), msgs)
@@ -355,11 +379,11 @@ class TestCheckFirstMissionLoadout(unittest.TestCase):
         """
         Write an FSIF file, build a minimal FCIF, run the check, return log messages.
         """
-        log_fn, msgs = _make_log()
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fsif_path = _write_fsif(Path(tmpdir), fsif_filename, fsif_content)
-            fcif = _load_fcif(_minimal_fcif_yaml(fcif_ships, fcif_weapons))
-            check_first_mission_loadout(str(fsif_path), fcif, log_fn)
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fsif_path = _write_fsif(Path(tmpdir), fsif_filename, fsif_content)
+                fcif = _load_fcif(_minimal_fcif_yaml(fcif_ships, fcif_weapons))
+                check_first_mission_loadout(str(fsif_path), fcif)
         return msgs
 
     # -- Happy path ----------------------------------------------------------
@@ -476,23 +500,23 @@ entities:
 
     def test_file_not_found_warns_and_returns_gracefully(self):
         """A non-existent .fsif path triggers a [WARNING] and does not raise an exception."""
-        log_fn, msgs = _make_log()
         fcif = _load_fcif(_minimal_fcif_yaml([], []))
 
-        check_first_mission_loadout("/nonexistent/path/m.fsif", fcif, log_fn)
+        with capture_logs() as msgs:
+            check_first_mission_loadout("/nonexistent/path/m.fsif", fcif)
 
         self.assertTrue(any("[WARNING]" in m for m in msgs), msgs)
         self.assertFalse(any("[ERROR]" in m for m in msgs), msgs)
 
     def test_wrong_extension_warns_and_returns_gracefully(self):
         """A path with a non-.fsif extension triggers a [WARNING] and is skipped."""
-        log_fn, msgs = _make_log()
-        with tempfile.TemporaryDirectory() as tmpdir:
-            # Write a valid-content file but with .yaml extension
-            wrong_ext = Path(tmpdir) / "mission.yaml"
-            wrong_ext.write_text("entities: {}", encoding="utf-8")
-            fcif = _load_fcif(_minimal_fcif_yaml([], []))
-            check_first_mission_loadout(str(wrong_ext), fcif, log_fn)
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                # Write a valid-content file but with .yaml extension
+                wrong_ext = Path(tmpdir) / "mission.yaml"
+                wrong_ext.write_text("entities: {}", encoding="utf-8")
+                fcif = _load_fcif(_minimal_fcif_yaml([], []))
+                check_first_mission_loadout(str(wrong_ext), fcif)
 
         self.assertTrue(any("[WARNING]" in m for m in msgs), msgs)
         # No ships/weapons INFO pass should have been logged (check was skipped)
@@ -538,21 +562,20 @@ entities:
         primary: ["ML-16 Laser"]
         secondary: ["MX-50"]
 """
-        log_fn, msgs = _make_log()
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
-            fcif_path = _write_fcif(
-                Path(tmpdir), "campaign.fcif",
-                self._make_fcif(ships=["GTF Ulysses"], weapons=["ML-16 Laser", "MX-50"])
-            )
-            output_path = Path(tmpdir) / "campaign.fc2"
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
+                fcif_path = _write_fcif(
+                    Path(tmpdir), "campaign.fcif",
+                    self._make_fcif(ships=["GTF Ulysses"], weapons=["ML-16 Laser", "MX-50"])
+                )
+                output_path = Path(tmpdir) / "campaign.fc2"
 
-            result = process_campaign(
-                str(fcif_path),
-                str(output_path),
-                first_mission=str(fsif_path),
-                log_func=log_fn,
-            )
+                result = process_campaign(
+                    str(fcif_path),
+                    str(output_path),
+                    first_mission=str(fsif_path),
+                )
 
         self.assertTrue(result)
         self.assertTrue(any("[INFO]" in m and "passed" in m for m in msgs), msgs)
@@ -572,25 +595,24 @@ entities:
         primary: ["Banshee"]
         secondary: []
 """
-        log_fn, msgs = _make_log()
         output_written = False
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
-            # FCIF starting_loadout intentionally missing the ship and weapon
-            fcif_path = _write_fcif(
-                Path(tmpdir), "campaign.fcif",
-                self._make_fcif(ships=[], weapons=[])
-            )
-            output_path = Path(tmpdir) / "campaign.fc2"
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
+                # FCIF starting_loadout intentionally missing the ship and weapon
+                fcif_path = _write_fcif(
+                    Path(tmpdir), "campaign.fcif",
+                    self._make_fcif(ships=[], weapons=[])
+                )
+                output_path = Path(tmpdir) / "campaign.fc2"
 
-            result = process_campaign(
-                str(fcif_path),
-                str(output_path),
-                first_mission=str(fsif_path),
-                log_func=log_fn,
-            )
-            # Check while tmpdir still exists
-            output_written = output_path.exists()
+                result = process_campaign(
+                    str(fcif_path),
+                    str(output_path),
+                    first_mission=str(fsif_path),
+                )
+                # Check while tmpdir still exists
+                output_written = output_path.exists()
 
         # Conversion must still succeed
         self.assertTrue(result)
@@ -602,20 +624,19 @@ entities:
 
     def test_conversion_without_first_mission_skips_check(self):
         """When first_mission=None, no loadout check log lines are emitted."""
-        log_fn, msgs = _make_log()
-        with tempfile.TemporaryDirectory() as tmpdir:
-            fcif_path = _write_fcif(
-                Path(tmpdir), "campaign.fcif",
-                self._make_fcif(ships=["GTF Ulysses"], weapons=["ML-16 Laser"])
-            )
-            output_path = Path(tmpdir) / "campaign.fc2"
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fcif_path = _write_fcif(
+                    Path(tmpdir), "campaign.fcif",
+                    self._make_fcif(ships=["GTF Ulysses"], weapons=["ML-16 Laser"])
+                )
+                output_path = Path(tmpdir) / "campaign.fc2"
 
-            result = process_campaign(
-                str(fcif_path),
-                str(output_path),
-                first_mission=None,
-                log_func=log_fn,
-            )
+                result = process_campaign(
+                    str(fcif_path),
+                    str(output_path),
+                    first_mission=None,
+                )
 
         self.assertTrue(result)
         # No "first mission" related INFO or WARNING should appear
