@@ -78,11 +78,6 @@ class VoiceManager:
             
         slug = slugify_filename(base)
         
-        # Note: We pass the full slug to _resolve_collision, which handles truncation/suffixing.
-        # However, to be safe, we can cap it here reasonably (e.g. 50 chars) so we don't pass massive strings.
-        if len(slug) > 50:
-            slug = slug[:50]
-
         # Collision Handling
         canonical = self._resolve_collision(slug, text_str)
         canonical = ensure_wav_extension(canonical)
