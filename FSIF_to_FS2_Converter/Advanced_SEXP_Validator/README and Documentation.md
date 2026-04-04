@@ -119,12 +119,12 @@ Located in the `/generated_code/` subfolder. **Do not edit manually.** Edit the 
 This validator is integrated with the main `FSIF_to_FS2_Converter` as a core validation step.
 
 ### **Entry Point**
-The function `validate_mission(mission, log_func)` in `advanced_sexp_validator.py` serves as the bridge. It:
+The function `validate_mission(mission)` in `advanced_sexp_validator.py` serves as the bridge. It:
 1.  Accepts a hydrated `data_models.Mission` object.
 2.  Builds a `MissionContext` containing all ships, wings, events, goals, and messages defined in the mission.
 3.  Iterates through every SEXP field in the mission (Event formulas, Goal formulas, Ship/Wing Arrival/Departure cues, AI Goals).
 4.  Validates each SEXP against the context and strict FSO typing rules.
-5.  Reports errors via the provided `log_func`.
+5.  Reports errors via the `logger`.
 
 ### **Usage**
 The validator runs automatically as part of the FSIF to FS2 conversion process.
