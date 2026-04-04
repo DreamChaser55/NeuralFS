@@ -286,7 +286,7 @@ class Validator:
                 icon_prefix = f'{prefix}.icons[{j}]'
                 self._validate_ascii_text(f'{icon_prefix}.type', icon.type)
                 self._validate_ascii_text(f'{icon_prefix}.team', icon.team)
-                self._validate_ascii_text(f'{icon_prefix}.class', icon.class_)
+                self._validate_ascii_text(f'{icon_prefix}.class', icon.ship_class)
                 self._validate_xstr_text(f'{icon_prefix}.label', icon.label)
 
         for i, stage in enumerate(self.mission.debriefing.stages):
@@ -972,14 +972,14 @@ class Validator:
                         self.log_error(f"Briefing icon has invalid team '{icon.team}'")
                         
                     # Class check
-                    if icon.class_ and icon.class_ not in self.ship_classes:
-                        self.log_error(f"Briefing icon class '{icon.class_}' is not a valid ship class.")
+                    if icon.ship_class and icon.ship_class not in self.ship_classes:
+                        self.log_error(f"Briefing icon class '{icon.ship_class}' is not a valid ship class.")
 
                     # Non-ship icon class check
                     if icon.type in self.non_ship_icon_types:
                         # Default is "Terran NavBuoy". If it's anything else, it's an error.
-                        if icon.class_ != "Terran NavBuoy":
-                            self.log_error(f"Briefing icon of type '{icon.type}' uses class '{icon.class_}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
+                        if icon.ship_class != "Terran NavBuoy":
+                            self.log_error(f"Briefing icon of type '{icon.type}' uses class '{icon.ship_class}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
 
             # Icon proximity check: warn if any two icons are closer than 5% of the camera width.
             # Camera width calcutated here mirrors the calculation in MissionLoader._calculate_briefing_camera.

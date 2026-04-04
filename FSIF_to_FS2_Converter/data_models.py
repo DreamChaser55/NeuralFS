@@ -233,7 +233,7 @@ class BriefingIcon(BaseModel):
     pos: List[float]
     label: str = ''
     highlighted: bool = False
-    class_: str = Field("Terran NavBuoy", alias='class')
+    ship_class: str = Field("Terran NavBuoy", alias='class')
 
     @field_validator('pos', mode='before')
     @classmethod

@@ -124,7 +124,7 @@ def load_fcif(path: Path) -> Optional[FCIF]:
         logger.error(f"Error loading file: {e}")
         return None
 
-def format_sexp_string(s: str) -> str:
+def quote_string(s: str) -> str:
     """Formats a string for SEXP (quoted)."""
     return f'"{s}"'
 
@@ -140,16 +140,16 @@ def _build_condition_sexp(mission: CampaignMission) -> Optional[str]:
         failure_goal  -> ( is-previous-goal-false  "mission" "name" )
         failure_event -> ( is-previous-event-false "mission" "name" )
     """
-    mission_quoted = format_sexp_string(mission.filename)
+    filename_quoted = quote_string(mission.filename)
 
     if mission.success_goal:
-        return f'( is-previous-goal-true {mission_quoted} {format_sexp_string(mission.success_goal)} )'
+        return f'( is-previous-goal-true {filename_quoted} {quote_string(mission.success_goal)} )'
     if mission.success_event:
-        return f'( is-previous-event-true {mission_quoted} {format_sexp_string(mission.success_event)} )'
+        return f'( is-previous-event-true {filename_quoted} {quote_string(mission.success_event)} )'
     if mission.failure_goal:
-        return f'( is-previous-goal-false {mission_quoted} {format_sexp_string(mission.failure_goal)} )'
+        return f'( is-previous-goal-false {filename_quoted} {quote_string(mission.failure_goal)} )'
     if mission.failure_event:
-        return f'( is-previous-event-false {mission_quoted} {format_sexp_string(mission.failure_event)} )'
+        return f'( is-previous-event-false {filename_quoted} {quote_string(mission.failure_event)} )'
 
     return None  # Unconditional
 
@@ -173,16 +173,16 @@ def generate_formula(mission: CampaignMission, next_mission_filename: Optional[s
         Target is ( end-of-campaign ) instead of ( next-mission ... )
     """
 
-    current_mission_quoted = format_sexp_string(mission.filename)
+    filename_quoted = quote_string(mission.filename)
 
     # Determine the "success" action
     if next_mission_filename:
-        next_action = f'( next-mission {format_sexp_string(next_mission_filename)} )'
+        next_action = f'( next-mission {quote_string(next_mission_filename)} )'
     else:
         next_action = '( end-of-campaign )'
 
     # Repeat action (fallback)
-    repeat_action = f'( next-mission {current_mission_quoted} )'
+    repeat_action = f'( next-mission {filename_quoted} )'
 
     # Build branches
     branches = []

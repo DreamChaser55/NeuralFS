@@ -61,12 +61,12 @@ class FS2Writer:
                 0.0, 0.0, 1.0
             ]
         
-        a, b, c, d, e, f, g, h, i = [float(x) for x in vals[:9]]
+        m00, m01, m02, m10, m11, m12, m20, m21, m22 = [float(x) for x in vals[:9]]
 
         return textwrap.indent(
-            f'{a:.6f}, {b:.6f}, {c:.6f},\n'
-            f'{d:.6f}, {e:.6f}, {f:.6f},\n'
-            f'{g:.6f}, {h:.6f}, {i:.6f}',
+            f'{m00:.6f}, {m01:.6f}, {m02:.6f},\n'
+            f'{m10:.6f}, {m11:.6f}, {m12:.6f},\n'
+            f'{m20:.6f}, {m21:.6f}, {m22:.6f}',
             '\t'
         )
 
@@ -225,7 +225,7 @@ class FS2Writer:
                 self._write('$start_icon')
                 self._write(f'$type: {icon.type_id}')
                 self._write(f'$team: {icon.team}')
-                self._write(f'$class: {icon.class_}')
+                self._write(f'$class: {icon.ship_class}')
                 self._write(f'$pos: {self._format_vector(icon.pos)}')
                 self._write(f'$label: {self._write_xstr(icon.label)}')
                 self._write(f'+id: {self._brief_icon_id}')
@@ -646,9 +646,9 @@ class FS2Writer:
         
         # Nebula Background Logic
         neb = env.nebula
-        suppress = False
+        suppress_starbitmaps = False
         if neb.enabled:
-            suppress = True
+            suppress_starbitmaps = True
             total = len(env.suns)  # Only suns are emitted for fullneb, starbitmaps are suppressed
         
         self._write(f'#Background bitmaps\t\t;! {total} total')
@@ -668,7 +668,7 @@ class FS2Writer:
         self._write('$Bitmap List:')
         self._write('+Flags: ( "corrected angles" )')
 
-        if suppress:
+        if suppress_starbitmaps:
             return
 
         for s in env.suns:
