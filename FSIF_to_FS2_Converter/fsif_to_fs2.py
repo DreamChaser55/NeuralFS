@@ -86,14 +86,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         'rate_limit_delay': 0.0
     }
     
-    # Backward compatibility for 'overwrite' boolean in tts_settings
     if tts_settings:
-        if 'overwrite' in tts_settings and 'mode' not in tts_settings:
-             # Map old overwrite boolean to mode
-             if tts_settings['overwrite']:
-                 tts_settings['mode'] = 'overwrite'
-             else:
-                 tts_settings['mode'] = 'unique'  # overwrite=False → unique mode (preserve existing files)
         tts_opts.update(tts_settings)
 
     # Resolve mode to flags
