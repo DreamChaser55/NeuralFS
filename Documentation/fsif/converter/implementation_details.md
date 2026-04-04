@@ -9,7 +9,7 @@ Purpose
 
 ## Current behavior
 
-Environment: backgrounds and full nebula are emitted to .fs2. FSIF 1.1 uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored in FSIF 2.6 as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. FSIF 1.2 adds environment.nebula authoring; when environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background starbitmaps. Background suns are still emitted.
+Environment: backgrounds and full nebula are emitted to .fs2. FSIF uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. When environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background starbitmaps. Background suns are still emitted.
 
 Fiction Viewer: if `mission_flow.fiction_viewer` is present, the converter emits `#Fiction Viewer` with `$File: <filename>`.
 
@@ -36,13 +36,13 @@ Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list
 
 Music: when a top-level `audio` mapping is present in FSIF, the converter emits `#Music` with `$Event Music` and `$Briefing Music`. Both values are written verbatim (e.g., `mission_music: "1: Genesis"` -> `$Event Music: 1: Genesis`, `briefing_music: "Brief1"` -> `$Briefing Music: Brief1`). If neither is provided, `#Music` is omitted.
 
-Reinforcements: FSIF 1.3 introduces canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_cue` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `( true )` arrival cues. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
+Reinforcements: FSIF uses canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_cue` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `( true )` arrival cues. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
 
 Reinforcement $Type emission: The converter chooses `$Type` automatically; authors should not specify a type in FSIF. Rules:
 - Wing entry → $Type: Attack/Protect
 - Ship entry with class starting with "GTS " or "PVS " (support ships) → $Type: Repair/Rearm
 - All other ship entries → $Type: Attack/Protect
-Any authored `type` field in FSIF is ignored; FSIF 1.5 no longer supports overriding the auto-detected reinforcement type.
+Any authored `type` field in FSIF is ignored; overriding the auto-detected reinforcement type is not supported.
 
 Events: if `mission_flow.events[*].directive_text` is present, the converter emits `+Objective: XSTR("...", -1)` under `#Events`. The directive appears on the HUD when it becomes possible for the player to fulfill the event and is greyed out once the event becomes true.
 

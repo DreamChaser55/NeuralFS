@@ -159,6 +159,8 @@ class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
     name: str = "Field_1"
     density: int = 50
+    # Note: FSIF authors provide 'type' (active/passive) and 'genre' (asteroid/debris) as strings.
+    # mission_loader.py transforms these strings into the integer fields below before Pydantic validation.
     field_type: int = 1 # 0=active, 1=passive
     debris_genre: int = 0 # 0=asteroid, 1=debris
     debris_types: List[str] = Field(default_factory=lambda: ["Brown", "Blue", "Orange"])
