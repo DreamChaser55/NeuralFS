@@ -2,17 +2,19 @@
 # Writes the hydrated Mission object to a valid.fs2 file.
 
 import textwrap
+import logging
 from data_models import Mission, DEFAULT_ORIENTATION, DEFAULT_KAMIKAZE_DAMAGE, pack_ambient_light_rgb
 import fs_flags_constants
 import fs_data
 import math
 
+logger = logging.getLogger(__name__)
+
 
 class FS2Writer:
-    def __init__(self, mission: Mission, output_path: str, log_func=print):
+    def __init__(self, mission: Mission, output_path: str):
         self.mission = mission
         self.output_path = output_path
-        self.log_func = log_func
         self.file = None
         self._brief_icon_id = 1
 
@@ -131,7 +133,7 @@ class FS2Writer:
                 unknown.append(str(f))
 
         if unknown:
-            self.log_func(f'[WARNING] [FSIF->FS2] Unknown mission flags ignored: {", ".join(unknown)}')
+            logger.warning(f'[WARNING] [FSIF->FS2] Unknown mission flags ignored: {", ".join(unknown)}')
 
         self._write(f'+Flags: {mask}')
         
@@ -443,7 +445,7 @@ class FS2Writer:
                 elif bucket == "flags2":
                     out_flags2.append(str(tok))
                 else:
-                    self.log_func(f'[WARNING] [FSIF->FS2] Unknown ship flag "{tok}" on {ship.name}; emitting in +Flags.')
+                    logger.warning(f'[WARNING] [FSIF->FS2] Unknown ship flag "{tok}" on {ship.name}; emitting in +Flags.')
                     out_flags.append(str(tok))
 
             for t in ship.flags:

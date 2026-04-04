@@ -1034,14 +1034,16 @@ class SexpValidator:
 # INTEGRATION ENTRY POINT
 # =============================================================================
 
-def validate_mission(mission, log_func=print) -> bool:
+import logging
+logger = logging.getLogger(__name__)
+
+def validate_mission(mission) -> bool:
     """
     Main entry point for FSIF converter integration.
     :param mission: The hydrated Mission object (data_models.Mission)
-    :param log_func: Function to log output
     :return: True if passed, False if errors found
     """
-    log_func("[INFO] [Advanced SEXP Validator] Starting strict validation...")
+    logger.info("[INFO] [Advanced SEXP Validator] Starting strict validation...")
 
     # 1. Build Context
     ctx = MissionContext.from_mission(mission)
@@ -1098,7 +1100,7 @@ def validate_mission(mission, log_func=print) -> bool:
 
     # Execution
     for desc, sexp, expected_type in tasks:
-        # log_func(f"Validating {desc}...")
+        # logger.info(f"Validating {desc}...")
         
         # Extract subject from description if it's an AI Goals task
         # Format: "Ship 'Name' AI Goals" or "Wing 'Name' AI Goals"
@@ -1113,17 +1115,17 @@ def validate_mission(mission, log_func=print) -> bool:
             for root in roots:
                 errors = validator.validate(root, expected_type=expected_type)
                 if errors:
-                    log_func(f"[ERROR] [FAIL] {desc}:")
+                    logger.error(f"[ERROR] [FAIL] {desc}:")
                     for e in errors:
-                        log_func(f"  - {e}")
+                        logger.error(f"  - {e}")
                     total_errors += len(errors)
         except Exception as e:
-            log_func(f"[ERROR] [CRASH] {desc}: Parser exception: {e}")
+            logger.error(f"[ERROR] [CRASH] {desc}: Parser exception: {e}")
             total_errors += 1
 
     if total_errors > 0:
-        log_func(f"[FAILED] [Advanced SEXP Validator] Validation FAILED with {total_errors} errors.")
+        logger.error(f"[FAILED] [Advanced SEXP Validator] Validation FAILED with {total_errors} errors.")
         return False
     else:
-        log_func("[SUCCESS] [Advanced SEXP Validator] Validation PASSED.")
+        logger.info("[SUCCESS] [Advanced SEXP Validator] Validation PASSED.")
         return True

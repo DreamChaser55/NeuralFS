@@ -5,8 +5,42 @@ import glob
 import os
 import sys
 import traceback
+import logging
 from pathlib import Path
 from fsif_to_fs2 import process_mission
+
+
+class TkinterTextHandler(logging.Handler):
+    def __init__(self, text_widget, root):
+        super().__init__()
+        self.text_widget = text_widget
+        self.root = root
+
+    def emit(self, record):
+        msg = self.format(record)
+        self.root.after(0, self._append_log, msg, record.levelno)
+
+    def _append_log(self, message, levelno):
+        self.text_widget.config(state='normal')
+
+        tag = None
+        if levelno >= logging.ERROR:
+            tag = 'error'
+        elif levelno >= logging.WARNING:
+            tag = 'warning'
+        elif levelno >= logging.INFO:
+            lower = message.lower()
+            if "[success]" in lower or "[passed]" in lower:
+                tag = 'success'
+            else:
+                tag = 'info'
+
+        if tag:
+            self.text_widget.insert(tk.END, message + "\n", tag)
+        else:
+            self.text_widget.insert(tk.END, message + "\n")
+        self.text_widget.see(tk.END)
+        self.text_widget.config(state='disabled')
 
 
 class RedirectText:
@@ -23,21 +57,8 @@ class RedirectText:
 
     def _append_raw(self, string):
         self.text_widget.config(state='normal')
-
-        tag_to_use = self.tag
-        if not tag_to_use:
-            lower = string.lower()
-            if "[error]" in lower or "[failed]" in lower:
-                tag_to_use = 'error'
-            elif "[warning]" in lower:
-                tag_to_use = 'warning'
-            elif "[success]" in lower or "[passed]" in lower:
-                tag_to_use = 'success'
-            elif "[info]" in lower:
-                tag_to_use = 'info'
-
-        if tag_to_use:
-            self.text_widget.insert(tk.END, string, tag_to_use)
+        if self.tag:
+            self.text_widget.insert(tk.END, string, self.tag)
         else:
             self.text_widget.insert(tk.END, string)
         self.text_widget.see(tk.END)
@@ -79,6 +100,13 @@ class ConverterGUI:
         self.copy_feedback_after_id = None
 
         self.create_widgets()
+
+        # Setup GUI logging handler
+        self.gui_handler = TkinterTextHandler(self.log_text, self.root)
+        self.gui_handler.setFormatter(logging.Formatter('%(message)s'))
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.INFO)
+        root_logger.addHandler(self.gui_handler)
 
     def create_widgets(self):
         main_frame = ttk.Frame(self.root, padding="10")
@@ -326,30 +354,6 @@ class ConverterGUI:
         self.copy_feedback_label.config(text="")
         self.copy_feedback_after_id = None
 
-    def log(self, message):
-        self.root.after(0, self._append_log, message)
-
-    def _append_log(self, message):
-        self.log_text.config(state='normal')
-
-        tag = None
-        lower = message.lower()
-        if "[error]" in lower or "[failed]" in lower:
-            tag = 'error'
-        elif "[warning]" in lower:
-            tag = 'warning'
-        elif "[success]" in lower or "[passed]" in lower:
-            tag = 'success'
-        elif "[info]" in lower:
-            tag = 'info'
-
-        if tag:
-            self.log_text.insert(tk.END, message + "\n", tag)
-        else:
-            self.log_text.insert(tk.END, message + "\n")
-        self.log_text.see(tk.END)
-        self.log_text.config(state='disabled')
-
     def start_conversion(self):
         if self.is_converting:
             return
@@ -366,8 +370,8 @@ class ConverterGUI:
         self.clear_log()
         self.is_converting = True
         self.convert_btn.config(state='disabled')
-        self.log("-" * 50)
-        self.log("Starting conversion task...")
+        logging.info("-" * 50)
+        logging.info("Starting conversion task...")
 
         thread = threading.Thread(target=self.run_conversion_task, args=(input_path,))
         thread.daemon = True
@@ -391,26 +395,26 @@ class ConverterGUI:
 
         try:
             if mode == "file":
-                self.log(f"Processing single file: {input_path}")
-                process_mission(input_path, output_file=output_path, tts_settings=tts_settings, log_func=self.log)
+                logging.info(f"Processing single file: {input_path}")
+                process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
             else:
                 # Folder mode
-                self.log(f"Scanning folder: {input_path}")
+                logging.info(f"Scanning folder: {input_path}")
                 search_pattern = os.path.join(input_path, "*.fsif")
                 files = glob.glob(search_pattern)
 
                 if not files:
-                    self.log("No .fsif files found in the selected directory.")
+                    logging.info("No .fsif files found in the selected directory.")
                 else:
-                    self.log(f"Found {len(files)} file(s).")
+                    logging.info(f"Found {len(files)} file(s).")
                     for i, file_path in enumerate(files, 1):
-                        self.log(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
-                        process_mission(file_path, tts_settings=tts_settings, log_func=self.log)
+                        logging.info(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
+                        process_mission(file_path, tts_settings=tts_settings)
 
-            self.log("\nAll tasks completed.")
+            logging.info("\nAll tasks completed.")
 
         except Exception as e:
-            self.log(f"Critical Error: {e}")
+            logging.error(f"Critical Error: {e}")
             traceback.print_exc()
         finally:
             # Restore stdout/stderr

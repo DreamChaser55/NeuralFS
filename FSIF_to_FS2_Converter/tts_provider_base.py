@@ -1,12 +1,16 @@
 # tts_provider_base.py
 # Abstract base class and common orchestration logic for TTS providers.
 
+import os
+import logging
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
-import time
 from typing import Dict, Any, List, Optional
 from utils import slugify_filename, ensure_wav_extension
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class TTSConfig:
@@ -198,7 +202,7 @@ class BaseTTSProvider(ABC):
         # Resolve voice_name
         voice_name = self._resolve_voice_name(node)
         if not voice_name:
-            print(
+            logger.warning(
                 f"[WARNING] Skipping line (section={item['section']}, index={item['index']}): "
                 f"no voice_name set and no default voice provided."
             )
@@ -207,7 +211,7 @@ class BaseTTSProvider(ABC):
         # Check if file exists and should skip
         if out_path.exists() and self.config.skip_existing:
             if not self.config.dry_run:
-                print(f"[INFO] Skipping existing file {out_path}")
+                logger.info(f"[INFO] Skipping existing file {out_path}")
             return False
 
         # Generate the file

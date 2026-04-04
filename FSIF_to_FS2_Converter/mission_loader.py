@@ -3,6 +3,7 @@
 
 import yaml
 import copy
+import logging
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any, Optional
@@ -15,6 +16,8 @@ from data_models import (
 )
 import briefing_icon_types as brief_types
 from utils import calculate_briefing_camera_height
+
+logger = logging.getLogger(__name__)
 
 
 class MissionLoader:
@@ -181,7 +184,7 @@ class MissionLoader:
             field_type = 0 if ftype == 'active' else 1
             
             if debris_genre == 1 and field_type == 0:
-                 print(f"[WARNING] Debris field '{af_src.get('name')}' cannot be active; coercing to passive.")
+                 logger.warning(f"[WARNING] Debris field '{af_src.get('name')}' cannot be active; coercing to passive.")
                  field_type = 1
             
             # Map bounds to min_vec/max_vec

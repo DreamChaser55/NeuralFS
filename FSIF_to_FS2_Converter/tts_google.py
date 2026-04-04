@@ -3,8 +3,11 @@
 
 import os
 import wave
+import logging
 from pathlib import Path
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 try:
     from google import genai
@@ -45,7 +48,7 @@ class GoogleTTSProvider(BaseTTSProvider):
                     if key:
                         return key
                 except Exception as e:
-                    print(f"[TTS] Warning: Could not read {key_file}: {e}")
+                    logger.warning(f"[TTS] Warning: Could not read {key_file}: {e}")
         return None
 
     def _ensure_client(self):
@@ -71,7 +74,7 @@ class GoogleTTSProvider(BaseTTSProvider):
             # Priority 3: File-based API Key
             file_api_key = self.read_api_key_from_file()
             if file_api_key:
-                print("[TTS] Using API key from Gemini_API_key.txt")
+                logger.info("[TTS] Using API key from Gemini_API_key.txt")
                 self.client = genai.Client(api_key=file_api_key)
                 return
 
@@ -81,12 +84,12 @@ class GoogleTTSProvider(BaseTTSProvider):
                 _, project = google.auth.default()
                 if project:
                     self.client = genai.Client(vertexai=True, project=project, location="us-central1")
-                    print(f"[TTS] Authenticated via Vertex AI (project: {project}, location: us-central1)")
+                    logger.info(f"[TTS] Authenticated via Vertex AI (project: {project}, location: us-central1)")
                     return
             except ImportError:
                 pass
             except Exception as e:
-                print(f"[TTS] Warning: Failed to auto-detect Vertex AI credentials: {e}")
+                logger.warning(f"[TTS] Warning: Failed to auto-detect Vertex AI credentials: {e}")
 
             # Fallback
             self.client = genai.Client()
@@ -94,7 +97,7 @@ class GoogleTTSProvider(BaseTTSProvider):
     def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
         """Synthesize text to WAV using Google GenAI."""
         if self.config.dry_run:
-            print(f"[DRY RUN] Would synthesize '{output_path}': voice={voice_name!r}, style={style!r}")
+            logger.info(f"[DRY RUN] Would synthesize '{output_path}': voice={voice_name!r}, style={style!r}")
             return
 
         try:
@@ -133,7 +136,7 @@ class GoogleTTSProvider(BaseTTSProvider):
                 not response.candidates[0].content or 
                 not response.candidates[0].content.parts or
                 not response.candidates[0].content.parts[0].inline_data):
-                print(f"[ERROR] No audio content returned for {output_path}")
+                logger.error(f"[ERROR] No audio content returned for {output_path}")
                 return
 
             pcm_data = response.candidates[0].content.parts[0].inline_data.data
@@ -146,7 +149,7 @@ class GoogleTTSProvider(BaseTTSProvider):
                 wf.setframerate(24000) # Gemini TTS output is 24kHz
                 wf.writeframes(pcm_data)
 
-            print(f"[TTS] Wrote {output_path}")
+            logger.info(f"[TTS] Wrote {output_path}")
 
         except Exception as exc:
-            print(f"[ERROR] Failed to synthesize {output_path}: {exc}")
+            logger.error(f"[ERROR] Failed to synthesize {output_path}: {exc}")

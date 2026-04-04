@@ -3,8 +3,11 @@
 
 import os
 import wave
+import logging
 from pathlib import Path
 from typing import Optional, Dict
+
+logger = logging.getLogger(__name__)
 
 try:
     from elevenlabs.client import ElevenLabs
@@ -77,7 +80,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
                     if key:
                         return key
                 except Exception as e:
-                    print(f"[TTS] Warning: Could not read {key_file}: {e}")
+                    logger.warning(f"[TTS] Warning: Could not read {key_file}: {e}")
         return None
 
     def _ensure_client(self):
@@ -117,7 +120,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
         voice_id = self._NAME_TO_ID.get(voice_name, voice_name)
 
         if self.config.dry_run:
-            print(f"[DRY RUN] Would synthesize '{output_path}': voice_name={voice_name!r} (ID={voice_id!r}), style={style!r}")
+            logger.info(f"[DRY RUN] Would synthesize '{output_path}': voice_name={voice_name!r} (ID={voice_id!r}), style={style!r}")
             return
 
         try:
@@ -145,7 +148,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
             pcm_data = b"".join(chunk for chunk in audio_stream)
 
             if not pcm_data:
-                 print(f"[ERROR] No audio content returned for {output_path}")
+                 logger.error(f"[ERROR] No audio content returned for {output_path}")
                  return
 
             # Save to WAV
@@ -157,7 +160,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
                 wf.setframerate(24000)
                 wf.writeframes(pcm_data)
 
-            print(f"[TTS] Wrote {output_path}")
+            logger.info(f"[TTS] Wrote {output_path}")
 
         except Exception as exc:
-            print(f"[ERROR] Failed to synthesize {output_path}: {exc}")
+            logger.error(f"[ERROR] Failed to synthesize {output_path}: {exc}")

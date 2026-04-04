@@ -1,5 +1,6 @@
 import re
 import math
+import logging
 from pathlib import Path
 from typing import Set, Dict, List, Optional
 import fs_flags_constants
@@ -13,6 +14,8 @@ try:
     from weapons_compatibility_data import WEAPON_COMPATIBILITY
 except ImportError:
     WEAPON_COMPATIBILITY = {}
+
+logger = logging.getLogger(__name__)
 
 
 class Validator:
@@ -109,9 +112,11 @@ class Validator:
 
     def log_error(self, msg: str):
         self.errors.append(msg)
+        logger.error(msg)
         
     def log_warning(self, msg: str):
         self.warnings.append(msg)
+        logger.warning(msg)
 
     def _validate_ascii_text(self, path: str, text: Optional[str]):
         """
@@ -315,7 +320,7 @@ class Validator:
         return False
 
     def validate(self) -> bool:
-        print("[INFO] [Validator] Starting validation...")
+        logger.info("[INFO] [Validator] Starting validation...")
         
         self.validate_global_names()
         self.validate_ascii_text_fields()
@@ -351,18 +356,18 @@ class Validator:
         
         # Report results
         if self.warnings:
-            print(f"\n[WARNING] [Validator] Warnings ({len(self.warnings)}):")
+            logger.warning(f"\n[WARNING] [Validator] Warnings ({len(self.warnings)}):")
             for w in self.warnings:
-                print(f"  - {w}")
+                logger.warning(f"  - {w}")
                 
         if self.errors:
-            print(f"\n[ERROR] [Validator] Errors ({len(self.errors)}):")
+            logger.error(f"\n[ERROR] [Validator] Errors ({len(self.errors)}):")
             for e in self.errors:
-                print(f"  - {e}")
-            print("\n[FAILED] [Validator] Validation FAILED.")
+                logger.error(f"  - {e}")
+            logger.error("\n[FAILED] [Validator] Validation FAILED.")
             return False
             
-        print("[SUCCESS] [Validator] Validation PASSED.")
+        logger.info("[SUCCESS] [Validator] Validation PASSED.")
         return True
 
     def validate_global_names(self):
