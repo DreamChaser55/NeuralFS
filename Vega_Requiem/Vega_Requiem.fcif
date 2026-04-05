@@ -1,0 +1,32 @@
+fcif_version: "1.1"
+
+campaign:
+  name: "Vega Requiem"
+  description: |
+    They named the system for a dying star. It was an omen no one chose to read.
+
+    A FreeSpace 1 Campaign.
+
+starting_loadout:
+  ships:
+    - "GTF Apollo"
+    - "GTEP Hermes"
+    - "SF Scorpion"
+    - "SF Basilisk"
+  weapons:
+    - "ML-16 Laser"
+    - "MX-50"
+    - "Fury"
+    - "Shivan Light Laser"
+    - "Shivan Heavy Laser"
+    - "MX-50#Shivan"
+    - "Fury#Shivan"
+
+missions:
+  - filename: "mission_1_1.fs2"
+  - filename: "mission_1_2.fs2"
+  - filename: "mission_1_3.fs2"
+  - filename: "mission_2_1.fs2"
+    success_goal: "Amadeus to Nav Bravo"
+  - filename: "mission_2_2.fs2"
+  - filename: "mission_2_3.fs2"

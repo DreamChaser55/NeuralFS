@@ -1,4 +1,4 @@
-The sensor display aboard the GTFr Aldrin One had been returning garbage data for twenty minutes. 
+The sensor display aboard the $f{ GTFr Aldrin One $} had been returning garbage data for twenty minutes. 
 
 Captain Elias Vance tapped the glass of the primary console. It didn't help. The screen remained a chaotic smear of static, false echoes, and ghost returns. The Vega system's asteroid belt - an ancient ring of debris around the dying star - was heavily saturated with metallic ore. The dust cloud thrown off by thousands of years of collisions was thick enough to reflect active radar back at the sender in a blinding wave of noise.
 
@@ -6,21 +6,21 @@ Vance was flying a three-thousand-ton military freighter through a rock garden, 
 
 "Navigational correction, point-two degrees starboard," his helmsman said, voice tight. "I think that's a clear lane."
 
-"Execute," Vance said. The deck shuddered as the Chronos-class freighter's massive thrusters pushed her into the new vector. 
+"Execute," Vance said. The deck shuddered as the $f{ Chronos $}-class freighter's massive thrusters pushed her into the new vector. 
 
-Behind them, somewhere in the static, was the GTD Amadeus. Beside them were Aldrin Two and Three. Behind all of them was the SC Ahriman.
+Behind them, somewhere in the static, was the $f{ GTD Amadeus $}. Beside them were $f{ Aldrin Two $} and $f{ Three $}. Behind all of them was the $h{ SC Ahriman $}.
 
-They couldn't see the Shivans. They couldn't see Alpha wing. All they had was the comms channel.
+They couldn't see the Shivans. They couldn't see $f{ Alpha $} wing. All they had was the comms channel.
 
-"Alpha Lead, break left! You've got a Shaitan on your six!" 
-That was a Valkyrie pilot, his voice cracking with G-force strain.
+"$f{ Alpha Lead $}, break left! You've got a $h{ Shaitan $} on your six!" 
+That was a $f{ Valkyrie $} pilot, his voice cracking with G-force strain.
 
-Vance gripped the railing of the bridge console. He was hauling thirty petabytes of encrypted sensor telemetry from Vega Prime - data that R&D needed to understand how the Shivan shields worked. It was the most valuable cargo he had ever carried, and in this moment, it meant absolutely nothing. If a Shivan bomber slipped past Alpha wing, the Aldrin One would be vaporized before Vance even saw the bomb on his dead sensors.
+Vance gripped the railing of the bridge console. He was hauling thirty petabytes of encrypted sensor telemetry from $y{ Vega Prime $} - data that R&D needed to understand how the Shivan shields worked. It was the most valuable cargo he had ever carried, and in this moment, it meant absolutely nothing. If a Shivan bomber slipped past $f{ Alpha $} wing, the $f{ Aldrin One $} would be vaporized before Vance even saw the bomb on his dead sensors.
 
 "Two more contacts," the comms crackled again. "They're using the asteroids for cover. I'm going in."
 
 Vance watched the dark viewport. Occasionally, a massive, jagged shadow would drift past, blotting out the distant stars. And occasionally, the darkness between the rocks would flash violently with the harsh, actinic blue of an Avenger cannon or the terrible red bloom of a Shivan weapon.
 
-They were hauling data. The Stentor was hauling the Amadeus's escape pods. But the only thing keeping any of them alive in the dark was four fighters, flying interception patterns through a blinding dust cloud.
+They were hauling data. The $f{ Stentor $} was hauling the $f{ Amadeus $}'s escape pods. But the only thing keeping any of them alive in the dark was four fighters, flying interception patterns through a blinding dust cloud.
 
 "Maintain speed," Vance said quietly to the helmsman, his eyes fixed on the flashes in the dark. "Don't make them work harder than they have to."
