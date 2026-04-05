@@ -305,9 +305,14 @@ def _collect_fsif_ships_and_weapons(fsif_path: Path) -> Optional[tuple]:
         for ship in ships_raw:
             if not isinstance(ship, dict):
                 continue
+            
+            tname = ship.get('template')
+            if tname is not None and not isinstance(tname, str):
+                logger.warning(f"First mission check: Ship '{ship.get('name', 'unknown')}' must use a string reference for 'template', found {type(tname).__name__} instead.")
+                return None
+                
             # If the ship references a template, merge: template provides class/weapons,
             # ship-level class overrides template class if present.
-            tname = ship.get('template')
             tprops = templates.get(tname, {}) if tname else {}
 
             cls = ship.get('class') or tprops.get('class')
@@ -323,7 +328,12 @@ def _collect_fsif_ships_and_weapons(fsif_path: Path) -> Optional[tuple]:
         for wing in wings_raw:
             if not isinstance(wing, dict):
                 continue
+            
             tname = wing.get('template')
+            if tname is not None and not isinstance(tname, str):
+                logger.warning(f"First mission check: Wing '{wing.get('name', 'unknown')}' must use a string reference for 'template', found {type(tname).__name__} instead.")
+                return None
+                
             tprops = templates.get(tname, {}) if tname else {}
 
             cls = tprops.get('class')

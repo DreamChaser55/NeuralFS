@@ -123,6 +123,7 @@
 
 **Ship Properties:**
 - `name` (String, required for `ships`)
+- `template` (String, optional). Name of a template defined in `ship_templates`.
 - `class` (String, required)
 - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`.
 - `location` (List[Float], required for `ships`). Format: `[x, y, z]`.

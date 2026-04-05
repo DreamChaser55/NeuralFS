@@ -280,6 +280,9 @@ class MissionLoader:
             raise ValueError(f"Wing '{wing_data.get('name')}' missing required 'count'.")
         
         tmpl_name = wing_data.get('template')
+        if tmpl_name is not None and not isinstance(tmpl_name, str):
+            raise ValueError(f"Validation Error: Wing '{wing_data.get('name', 'unknown')}' must use a string reference for 'template', found {type(tmpl_name).__name__} instead.")
+            
         if not tmpl_name or tmpl_name not in self.templates:
             raise ValueError(f"Wing '{wing_data.get('name')}' must reference a valid template.")
         
@@ -346,6 +349,8 @@ class MissionLoader:
         
         props = {}
         if 'template' in ship_data:
+            if ship_data['template'] is not None and not isinstance(ship_data['template'], str):
+                raise ValueError(f"Validation Error: Ship '{ship_data.get('name', 'unknown')}' must use a string reference for 'template', found {type(ship_data['template']).__name__} instead.")
             t_props = copy.deepcopy(self.templates.get(ship_data['template'], {}))
             props.update(t_props)
         props.update(ship_data)

@@ -223,17 +223,16 @@ class FictionViewerValidator:
 
 def collect_files(input_paths: List[str]) -> Optional[List[Path]]:
     """
-    Resolve a list of file/directory path strings into a flat list of .txt
-    file Paths. Returns None if any path does not exist.
+    Resolve a list of file path strings into a flat list of .txt
+    file Paths. Returns None if any path does not exist or if a directory
+    is passed.
     """
     files: List[Path] = []
     for raw in input_paths:
         p = Path(raw)
         if p.is_dir():
-            found = sorted(p.rglob('*.txt'))
-            if not found:
-                print(f"[WARNING] No .txt files found in directory '{p}'.")
-            files.extend(found)
+            print(f"[ERROR] Directory parsing is disabled to prevent accidental validation of design notes. Please pass specific .txt files (e.g., *_story.txt) instead of directories: '{p}'")
+            return None
         elif p.is_file():
             files.append(p)
         else:
@@ -254,8 +253,7 @@ def main():
         "input",
         nargs='+',
         help=(
-            "Path(s) to fiction viewer text file(s) or folder(s). "
-            "Folders are scanned recursively for .txt files."
+            "Path(s) to fiction viewer text file(s)."
         ),
     )
     args = parser.parse_args()
