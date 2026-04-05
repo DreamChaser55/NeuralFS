@@ -157,7 +157,6 @@ class Nebula(BaseModel):
 
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    name: str = "Field_1"
     density: int = 50
     # Note: FSIF authors provide 'type' (active/passive) and 'genre' (asteroid/debris) as strings.
     # mission_loader.py transforms these strings into the integer fields below before Pydantic validation.

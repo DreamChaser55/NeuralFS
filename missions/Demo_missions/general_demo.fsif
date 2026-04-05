@@ -21,7 +21,6 @@ environment:
     - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 }, div: { x: 1, y: 1 } }
   nebula: { enabled: false }
   asteroid_field:
-    name: "Field_Main"
     genre: "asteroid"
     type: "active"
     density: 10

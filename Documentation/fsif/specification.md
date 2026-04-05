@@ -40,7 +40,6 @@
     - `storm` (String, optional, default: `"s_standard"`)
     - `poofs` (List[String], optional, default: `[]`)
   - `asteroid_field` (Mapping, optional):
-    - `name` (String, optional, default: `"Field_1"`)
     - `genre` (String, optional, default: `"asteroid"`). Enum: `"asteroid"`, `"debris"`.
     - `type` (String, optional, default: `"passive"`). Enum: `"active"`, `"passive"`.
     - `density` (Integer, optional, default: `50`)

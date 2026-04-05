@@ -178,7 +178,6 @@ class Validator:
         - voice_name
         - voice_style_instructions
         - internal converter-only helper fields such as wing template names
-        - authored-but-not-emitted helper fields such as asteroid_field.name
         """
         self._validate_ascii_text('mission_flow.fiction_viewer', self.mission.fiction_viewer)
 
@@ -483,7 +482,7 @@ class Validator:
         if af and af.targets:
             # Targets are only valid for Active (0) Asteroid (0) fields
             if not (af.field_type == 0 and af.debris_genre == 0):
-                self.log_warning(f"Asteroid field '{af.name}' defines targets but they will be ignored (type={af.field_type}, genre={af.debris_genre}). Targets are only supported for Active Asteroid fields.")
+                self.log_warning(f"The asteroid field defines targets but they will be ignored (type={af.field_type}, genre={af.debris_genre}). Targets are only supported for Active Asteroid fields.")
 
     def validate_mission_scale_recommendations(self):
         """

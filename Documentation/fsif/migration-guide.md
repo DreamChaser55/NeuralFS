@@ -279,6 +279,7 @@ FSIF 2.0: Asteroid fields cleanup (breaking)
 Change
 - Removed support for `environment.asteroid_fields` (plural list).
 - FSIF 2.0 requires using the singular mapping `environment.asteroid_field`.
+- The `name` property under `asteroid_field` has been removed as the engine only supports one asteroid field per mission.
 - The legacy plural key was deprecated in earlier versions and is now rejected.
 
 Before (1.x legacy)
@@ -293,7 +294,6 @@ After (2.0)
 ```yaml
 environment:
   asteroid_field:
-    name: "Field_Main"
     density: 50
 ```
 
