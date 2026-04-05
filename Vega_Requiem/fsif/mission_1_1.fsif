@@ -16,7 +16,6 @@ environment:
     - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 }, div: { x: 1, y: 1 } }
     - { texture: dneb07, angles: [1.000000, 1.000000, 1.000000], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
   asteroid_field:
-    name: "Meridian_Wreckage"
     genre: "debris"
     type: "passive"
     density: 20
