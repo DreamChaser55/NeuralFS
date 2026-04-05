@@ -112,11 +112,9 @@ class Validator:
 
     def log_error(self, msg: str):
         self.errors.append(msg)
-        logger.error(msg)
         
     def log_warning(self, msg: str):
         self.warnings.append(msg)
-        logger.warning(msg)
 
     def _validate_ascii_text(self, path: str, text: Optional[str]):
         """
