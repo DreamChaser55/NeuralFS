@@ -231,7 +231,7 @@ def collect_files(input_paths: List[str]) -> Optional[List[Path]]:
     for raw in input_paths:
         p = Path(raw)
         if p.is_dir():
-            print(f"[ERROR] Directory parsing is disabled to prevent accidental validation of design notes. Please pass specific .txt files (e.g., *_story.txt) instead of directories: '{p}'")
+            print(f"[ERROR] Directory parsing is not supported. Please pass specific .txt files (e.g., *_story.txt) instead of directories: '{p}'")
             return None
         elif p.is_file():
             files.append(p)

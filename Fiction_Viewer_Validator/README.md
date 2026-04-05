@@ -14,7 +14,4 @@ python Fiction_Viewer_Validator/fiction_viewer_validator.py path/to/story.txt
 
 # Validate multiple files
 python Fiction_Viewer_Validator/fiction_viewer_validator.py file1.txt file2.txt
-
-# Note: Validating entire directories is disabled to prevent accidental 
-# validation of design notes. You must pass specific .txt file paths.
 ```
