@@ -80,12 +80,17 @@ PURPOSE AND PLAYER EXPERIENCE
 - This mission feels like escorting a wounded animal out of hunting grounds while the predator
   circles. Everything is slower. Everything is harder. And the destination is still far away.
 
+FICTION VIEWER NARRATIVE
+- Displayed before this mission.
+- File: Mission_2_1_story.txt
+- Summary: The story of Captain Elias Vance aboard GTFr Aldrin One, navigating the dense asteroid field blindly due to sensor interference, relying entirely on Alpha wing's comms chatter.
+- Purpose: Emphasizes the terror and claustrophobia of the asteroid field, as well as the absolute trust the vulnerable civilian and logistical crews must place in the player's hands.
+
 ENVIRONMENT AND SETUP
 - Datestamp: January 21, 2335
 - System: Vega — inner system, en route from center-system position to Antares node
-- Location: Moving convoy. The scene progresses along a corridor, with Nav Bravo as the goal.
-- Background: Standard deep space; Vega star visible but no longer dominant — the convoy is
-  moving outward from the inner system. Emptier than Act 1 missions. Darker in color register.
+- Location: Moving convoy. The scene progresses through a dense, hazardous asteroid field, with Nav Bravo as the goal.
+- Background: The convoy is navigating a treacherous asteroid belt (remnant of the dying Vega star's early ejections). Asteroids provide physical cover but pose navigational hazards. Sensor interference reduces radar range, creating a claustrophobic, horror-survival atmosphere. Darker in color register, punctuated by asteroid shadows.
 - Scene layout:
   - GTD Amadeus: Present and moving. Damaged (hull at approximately 60%). Escort formation.
     Moving at reduced speed (engine damage). Turrets operational.
@@ -195,6 +200,7 @@ Primary:
 
 Secondary:
   - At least 3 of 5 convoy ships (Aldrin 1/2/3, Rescue, Theta 3) survive to Nav Bravo.
+  - Surgical Strike: Disable SC Ahriman's forward beam/weapons subsystem to buy the convoy time.
 
 Bonus:
   - All 5 convoy ships survive. (Requires both bomber waves intercepted cleanly.)

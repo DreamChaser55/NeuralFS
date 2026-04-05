@@ -310,11 +310,11 @@ ACT 1
 
   Mission 1-2: "Breakwater"
   Date: 1/17/2335 | Location: GTI Vega Prime vicinity
-  Type: Installation defense / Evacuation cover
+  Type: Perimeter setup / Installation defense / Evacuation cover
   Primary: Escort Epsilon wing (GTT Elysium x4) to subspace jump point
-  Secondary: Preserve GTC Stentor above 50% hull
-  Narrative beat: Station falls but most civilians escape. Watch Vega Prime die.
-  Ships: GTI Vega Prime (destroyed), GTC Stentor, SC Malgor (Cain-class)
+  Secondary: Preserve GTC Stentor above 50% hull, Deploy Sentry Guns
+  Narrative beat: Player desperately sets up a perimeter before the station falls. Watch Vega Prime die.
+  Ships: GTI Vega Prime (destroyed), GTC Stentor, SC Malgor (Cain-class), Sentry Guns
   New tech: GTF Valkyrie (first available)
   Fiction Viewer: "Vega Prime, Deck Seven" — before this mission
 
@@ -326,7 +326,7 @@ ACT 1
   Type: Rescue / Multi-faction engagement
   Primary: Escort Theta wing (PVT Isis x3) to the Antares node
   Secondary: Destroy HoL blocking force (Pisces wing) at the node approach
-  Narrative beat: Vasudan fleet ambushed. Player helps enemy transports escape. Reluctant alliance.
+  Narrative beat: Vasudan fleet ambushed. Shivans massacre their HoL worshippers, demonstrating complete hostility to all life. Reluctant alliance.
   Ships: PVD Vigil (Typhon-class, destroyed), Theta wing, Aquarius wing (HoL Horus x4)
   New tech: GTW-15 Avenger (field-test unit, player only)
   Fiction Viewer: "The Approach Vector" — before this mission
@@ -337,11 +337,11 @@ ACT 2
   nodes. Antares node is the only exit. Amadeus leading convoy.
 
   Mission 2-1: "Dead Reckoning"
-  Date: 1/21/2335 | Location: Vega system, en route to Antares node
-  Type: Convoy escort / Fighting withdrawal
+  Date: 1/21/2335 | Location: Vega system, dense asteroid field en route to Antares node
+  Type: Convoy escort / Surgical strike
   Primary: GTD Amadeus survives to Nav Bravo (waypoint 12,000 m from Antares node)
-  Secondary: At least 3 of 5 convoy freighters/transports survive
-  Narrative beat: Shivan bombers hammer the convoy at every step. The SC Ahriman begins pursuit.
+  Secondary: At least 3 of 5 convoy freighters/transports survive; Disable SC Ahriman forward weapons
+  Narrative beat: Navigating a blind asteroid field. Player must disable the SC Ahriman's weapons to buy time while dodging rocks.
   Ships: GTD Amadeus (80% hull), GTC Stentor, GTFr Aldrin 1-3 (Chronos), SC Ahriman (Lilith)
   New tech: GTW-15 Avenger now standard for all Alpha wing ships
 
@@ -349,9 +349,9 @@ ACT 2
   Date: 1/22/2335 | Location: Vega system, Nav Charlie
   Type: Escape pod defense / Capital ship last stand
   Primary: At least 6 of 9 GTEP Hermes escape pods reach Nav Bravo
-  Secondary: All 9 pods survive
-  Bonus: Pod 1 (Admiral Wei's) specifically survives
-  Narrative beat: Amadeus holds position. Wei stays. Alpha fights to the last. The ship dies.
+  Secondary: Save the TAC-1 Tech Cargo container (forces moral choice vs Pods)
+  Bonus: All 9 pods survive; Pod 1 (Admiral Wei's) specifically survives
+  Narrative beat: Amadeus holds position. Player must choose between saving critical tech data or human lives. The ship dies.
   Ships: GTD Amadeus (dying), 9x GTEP Hermes, SC Ahriman, Bheema wing (SF Dragon x3)
   New tech: SF Dragon (first combat encounter in this campaign)
   Fiction Viewer: "Admiral Chen Wei — Personal Log — January 21, 2335" — before this mission

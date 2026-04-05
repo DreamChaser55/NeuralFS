@@ -83,6 +83,10 @@ Allied:
     on the Admiral's section.)
   - Pods reaching Nav Bravo are considered "safe" and no longer counted as vulnerable.
 
+- TAC-1 Tech Cargo Container and GTFr Aldrin 4 (GTFr Chronos-class):
+  - GTFr Aldrin 4 emerges from the Amadeus alongside Pod Group B, carrying the TAC-1 container clamped to its hull. Contains the ship's encrypted tactical databanks and Avenger prototype schematics.
+  - Aldrin 4 is slow, heavily targeted by the Shivans, and completely unarmed. The player must make a wrenching tactical choice: protecting this freighter likely means sacrificing at least one escape pod due to split attention. Command acknowledges the choice in the debriefing.
+
 - GTD Amadeus (GTD Orion-class): Stationary, dying
   - Hull: 40% at start. Ahriman is closing in. She will be destroyed before mission end —
     this is scripted. Wei's voice continues until his last transmission ("All pods are away.
@@ -162,6 +166,7 @@ Primary:
 
 Secondary:
   - At least 8 of 9 pods reach Nav Bravo. (Near-complete evacuation.)
+  - Save GTFr Aldrin 4 (carrying the TAC-1 Tech Cargo). (Forces a moral choice: data vs. lives).
 
 Bonus:
   - All 9 pods reach Nav Bravo. (Perfect evacuation — extremely difficult; requires killing

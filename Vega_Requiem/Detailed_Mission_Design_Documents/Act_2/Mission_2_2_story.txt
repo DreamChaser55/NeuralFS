@@ -49,10 +49,11 @@ offered no good choices.
 
 The $f{ Amadeus $} is a fine ship. She has a fine crew. Those pods will reach $y{ Antares $}.
 
+I have also secured the ship's tactical databanks and the telemetry from the Avenger prototypes. They are loaded aboard a reserve freighter, GTFr Aldrin 4, which will launch alongside the second group of pods. Terran Command needs that data more than they need us. The Shivans will likely recognize its electronic signature and target the freighter.
+
 One more thing. $f{ Alpha $} wing is out there. Whoever is flying $f{ Alpha 1 $} - I don't know which of the
 new pilots drew the senior slot, but they've been doing this for six days and they haven't died
-yet, which at this point I consider a meaningful credential. I need them focused on the pods and
-not on the $f{ Amadeus $}. The $f{ Amadeus $} is not the objective. People are the objective.
+yet, which at this point I consider a meaningful credential. They will have to choose between protecting that data and protecting the pods. I will not give them an order on which to save. I am leaving the final choice to $f{ Alpha Lead $}. The $f{ Amadeus $} is not the objective. I trust them to know what is.
 
 I am going to finish this log and then I am going to go to the bridge and sit in my chair and
 do my job until I can't anymore.

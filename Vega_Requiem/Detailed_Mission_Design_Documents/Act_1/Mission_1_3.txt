@@ -146,9 +146,10 @@ Allied (ad-hoc — no formal alliance):
 Hostile:
 - Brahma wing: SF Scorpion x4
   - Present at mission start, converging on Capella node approach (3 km flank approach)
-  - Initial orders: Attack PVD Vigil (primary), Attack Theta wing (secondary)
+  - Initial orders: Attack PVD Vigil (primary), Attack Theta wing (secondary), Attack Aquarius wing (tertiary)
   - This wave splits attention between destroying the Vigil (fast) and pursuing Theta (slower).
     Player can't stop the Vigil's death but can stop Brahma from following through to Theta.
+  - SHIVAN INDIFFERENCE MECHANIC: If HoL ships (Aquarius) get too close, Brahma wing will mercilessly annihilate them. The Shivans do not recognize their worshippers.
 
 - Aquarius wing (HoL): PVF Horus x4
   - Present at mission start on the far side of the node, moving to intercept Theta
@@ -157,7 +158,7 @@ Hostile:
     their approach vector cuts across the line from Capella node to Antares corridor.
   - HoL do NOT have Shivan shields. They're slightly tougher than stock Vasudans but killable
     with sustained ML-16 fire. The Avenger eats through them.
-  - First HoL encounter in campaign. Briefing warned about them. Now the player acts on it.
+  - First HoL encounter in campaign. The player can use HoL as a meatshield by baiting Shivans into them, watching the horrific spectacle of Shivans destroying their own worshippers.
 
 - Pisces wing (HoL): PVF Seth x3
   - Pre-positioned at Nav Alpha blocking position (10 km from player start position). They are

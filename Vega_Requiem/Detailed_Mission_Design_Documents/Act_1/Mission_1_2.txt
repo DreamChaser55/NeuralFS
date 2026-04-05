@@ -38,11 +38,12 @@ ENVIRONMENT AND SETUP
   - Nav Bravo: The Vega-Antares subspace jump node approach, 9,000m from station.
   - Epsilon wing (GTT Elysium x4): Docked at Vega Prime at mission start. Undock staggered across
     first 3 minutes, then form up at Nav Alpha before proceeding to Nav Bravo.
+  - GTFr Chronos freighter (unarmed): Drops two GTSG Watchdog sentry guns at the start of the mission near Nav Alpha to form a desperate defensive perimeter before jumping out.
   - Three TAC-1 cargo containers at docking arm 3 (civilian equipment — irrelevant to objectives
     but scannable as bonus; confirms civilian nature of station).
   - Four Terran NavBuoys marking the approach corridor to the Antares node.
   - Several GTSG Watchdog sentry guns around the station (3–4); they will be destroyed quickly by
-    the Shivans, but their presence establishes that someone tried to defend this place properly.
+    the Shivans. The player actively escorting the freighter deploying more sentries provides a proactive start.
 
 PARTICIPANTS
 
@@ -125,6 +126,7 @@ Primary:
 
 Secondary:
   - GTC Stentor hull remains above 50% when all Epsilon transports have departed.
+  - Escort the GTFr Chronos freighter to deploy the two Nav Alpha Sentry Guns successfully.
 
 Bonus:
   - All 4 Epsilon transports survive to jump out. (Full evacuation success.)
