@@ -13,6 +13,8 @@ environment:
     - { texture: SunVega, angles: [0.0, 3.14159, 0.0], scale: 1.0 }
   starbitmaps:
     - { texture: dneb03, angles: [0.0, 2.321286, 0.0], scale: { x: 4.0, y: 4.0 }, div: { x: 2, y: 2 } }
+    - { texture: neb11, angles: [0.5, 1.0, 0.0], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
+    - { texture: dneb07, angles: [1.0, 0.5, 0.5], scale: { x: 3.0, y: 3.0 }, div: { x: 1, y: 1 } }
 
 player_setup:
   start_ship: "Alpha 1"
@@ -149,6 +151,13 @@ mission_flow:
         voice_style_instructions: "dismissive, tired"
 
   events:
+    - name: "Protect Theta wing dir"
+      formula: |
+        ( when
+          ( percent-ships-departed 66 "Theta 1" "Theta 2" "Theta 3" )
+          ( do-nothing )
+        )
+      directive_text: "Protect Theta wing"
     - name: "Msg 1 Trigger"
       formula: |
         ( when
@@ -157,17 +166,25 @@ mission_flow:
         )
     - name: "Vigil Destroyed"
       formula: |
-        ( is-destroyed-delay 0 "PVD Vigil" )
+        ( when
+          ( is-destroyed-delay 0 "PVD Vigil" )
+          ( do-nothing )
+        )
     - name: "Msg 6 Trigger"
       formula: |
         ( when
           ( is-event-true-delay "Vigil Destroyed" 2 )
           ( send-message "#Command" "High" "Msg 6" )
-          ( add-goal "Brahma" ( ai-chase-wing "Theta" 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 1" 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 2" 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 3" 89 ) )
         )
     - name: "Vigil Critical"
       formula: |
-        ( <= ( hits-left "PVD Vigil" ) 10 )
+        ( when
+          ( <= ( hits-left "PVD Vigil" ) 10 )
+          ( do-nothing )
+        )
     - name: "Msg 5 Trigger"
       formula: |
         ( when
@@ -206,9 +223,12 @@ mission_flow:
         )
     - name: "Rama Arrives"
       formula: |
-        ( or
-          ( has-time-elapsed 300 )
-          ( is-event-true-delay "Vigil Destroyed" 0 )
+        ( when
+          ( or
+            ( has-time-elapsed 300 )
+            ( is-event-true-delay "Vigil Destroyed" 0 )
+          )
+          ( do-nothing )
         )
     - name: "Msg 8 Trigger"
       formula: |
@@ -224,9 +244,12 @@ mission_flow:
         )
     - name: "Mission complete check"
       formula: |
-        ( and
-           ( >= ( num-ships-in-battle "Theta 1" "Theta 2" "Theta 3" ) 2 )
-           ( percent-ships-departed 100 "Theta 1" "Theta 2" "Theta 3" )
+        ( when
+          ( and
+             ( >= ( num-ships-in-battle "Theta 1" "Theta 2" "Theta 3" ) 2 )
+             ( percent-ships-departed 100 "Theta 1" "Theta 2" "Theta 3" )
+          )
+          ( do-nothing )
         )
     - name: "Msg 10 Trigger"
       formula: |
@@ -305,35 +328,28 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Avenger", "ML-16 Laser"]
-        secondary: ["MX-50", "Fury"]
+        secondary: ["MX-50"]
     theta_transport:
       class: "PVT Isis"
       team: "Friendly"
       ai_class: "Lieutenant"
       weapons:
-        primary: ["Vasudan Light Laser"]
+        primary: ["ML-16 Laser"]
         secondary: []
-      arrival_cue: |
-        ( has-time-elapsed 20 )
-      departure_location: "Hyperspace"
-      departure_cue: |
-        ( < ( distance "<name>" "Nav Alpha:1" ) 1500 )
-      ai_goals: |
-        ( ai-waypoints "ThetaPath" 89 )
     hol_fighter:
       class: "PVF Horus"
       team: "Hostile"
       ai_class: "Captain"
       weapons:
-        primary: ["Vasudan Light Laser", "Vasudan Light Laser"]
-        secondary: ["Enemy MX-50"]
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50", "MX-50"]
     hol_fighter_heavy:
       class: "PVF Seth"
       team: "Hostile"
       ai_class: "Lieutenant"
       weapons:
-        primary: ["Vasudan Light Laser", "Vasudan Light Laser"]
-        secondary: ["Enemy MX-50"]
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50", "MX-50"]
     shivan_fighter:
       class: "SF Scorpion"
       team: "Hostile"
@@ -347,7 +363,7 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
-        secondary: ["MX-50#Shivan"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
 
   ships:
     - name: "PVD Vigil"
@@ -358,18 +374,37 @@ entities:
       arrival_delay: 20
       arrival_cue: |
         ( true )
-      ai_goals: |
-        ( ai-stay-still 89 )
     - name: "Theta 1"
       template: "theta_transport"
       location: [100.0, 0.0, 4500.0]
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 1" "Nav Alpha:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ThetaPath" 89 )
     - name: "Theta 2"
       template: "theta_transport"
       location: [-100.0, 0.0, 4500.0]
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 2" "Nav Alpha:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ThetaPath" 89 )
     - name: "Theta 3"
       template: "theta_transport"
       location: [0.0, -100.0, 4200.0]
       initial_velocity: 25
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 3" "Nav Alpha:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ThetaPath" 89 )
     - name: "GTS Casca"
       class: "GTS Centaur"
       team: "Friendly"
@@ -385,7 +420,8 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-guard-wing "Theta" 89 )
+        ( ai-guard "Theta 1" 89 )
+        ( ai-chase-any 89 )
     - name: "Brahma"
       template: "shivan_fighter"
       count: 4
@@ -394,6 +430,7 @@ entities:
         ( true )
       ai_goals: |
         ( ai-chase "PVD Vigil" 89 )
+        ( ai-chase "Theta 1" 80 )
     - name: "Aquarius"
       template: "hol_fighter"
       count: 4
@@ -401,7 +438,9 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-chase-wing "Theta" 89 )
+        ( ai-chase "Theta 1" 89 )
+        ( ai-chase "Theta 2" 89 )
+        ( ai-chase "Theta 3" 89 )
     - name: "Pisces"
       template: "hol_fighter_heavy"
       count: 3
@@ -409,7 +448,7 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-guard "Nav Alpha:1" 89 )
+        ( ai-chase-any 89 )
     - name: "Rama"
       template: "shivan_bomber_heavy"
       count: 3
@@ -417,7 +456,9 @@ entities:
       arrival_cue: |
         ( is-event-true-delay "Rama Arrives" 0 )
       ai_goals: |
-        ( ai-chase-wing "Theta" 89 )
+        ( ai-chase "Theta 1" 89 )
+        ( ai-chase "Theta 2" 89 )
+        ( ai-chase "Theta 3" 89 )
 
   waypoints:
     "Nav Alpha":

@@ -13,6 +13,8 @@ environment:
     - { texture: SunVega, angles: [0.2, 0.2, 0.2], scale: 1.0 }
   starbitmaps:
     - { texture: dneb03, angles: [0.0, 0.0, 0.0], scale: { x: 3.0, y: 3.0 }, div: { x: 1, y: 1 } }
+    - { texture: neb12, angles: [1.0, 1.0, 1.0], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
+    - { texture: neb02, angles: [0.5, -0.5, 0.5], scale: { x: 3.0, y: 3.0 }, div: { x: 1, y: 1 } }
   asteroid_field:
     genre: "asteroid"
     type: "active"
@@ -81,7 +83,7 @@ mission_flow:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 2000], label: "Alpha", highlighted: true }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [0, 10000], label: "Probable Threat" }
           - { type: "Bomber Wing", team: "Hostile", class: "SB Shaitan", pos: [0, -12000], label: "Probable Threat" }
-          - { type: "Support Ship", team: "Friendly", class: "GTS Centaur", pos: [-1500, 0], label: "GTS Casca" }
+          - { type: "Support Ship", team: "Friendly", class: "GTS Centaur", pos: [-3000, 0], label: "GTS Casca" }
 
   debriefing:
     stages:
@@ -175,7 +177,7 @@ mission_flow:
         ( when
           ( <= ( hits-left "GTC Stentor" ) 50 )
           ( send-message "GTC Stentor" "High" "Msg 6" )
-          ( add-goal "GTC Stentor" ( ai-guard "GTD Amadeus" 89 ) )
+          ( add-goal "GTC Stentor" ( ai-stay-near-ship "GTD Amadeus" 89 500 ) )
         )
     - name: "Msg 7 Trigger"
       formula: |
@@ -213,7 +215,17 @@ mission_flow:
         )
     - name: "Mission complete check"
       formula: |
-        ( < ( distance "GTD Amadeus" "Nav Bravo:1" ) 2000 )
+        ( when
+          ( < ( distance "GTD Amadeus" "Nav Bravo:1" ) 2000 )
+          ( do-nothing )
+        )
+    - name: "Amadeus to Nav Bravo dir"
+      formula: |
+        ( when
+          ( < ( distance "GTD Amadeus" "Nav Bravo:1" ) 2000 )
+          ( do-nothing )
+        )
+      directive_text: "Escort GTD Amadeus to Nav Bravo"
 
   goals:
     - name: "Amadeus to Nav Bravo"
@@ -297,20 +309,18 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Avenger", "ML-16 Laser"]
-        secondary: ["MX-50", "Fury"]
+        secondary: ["MX-50"]
     beta_apollo:
       class: "GTF Apollo"
       team: "Friendly"
       ai_class: "Captain"
       weapons:
         primary: ["Avenger", "Avenger"]
-        secondary: ["MX-50"]
+        secondary: ["MX-50", "MX-50"]
     aldrin_freighter:
       class: "GTFr Chronos"
       team: "Friendly"
       ai_class: "Lieutenant"
-      ai_goals: |
-        ( ai-waypoints "ConvoyPath" 89 )
     shaitan_bomber:
       class: "SB Shaitan"
       team: "Hostile"
@@ -331,7 +341,7 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
-        secondary: ["MX-50#Shivan"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
 
   ships:
     - name: "GTD Amadeus"
@@ -358,18 +368,24 @@ entities:
       initial_velocity: 15
       arrival_cue: |
         ( true )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTFr Aldrin 2"
       template: "aldrin_freighter"
       location: [0.0, 0.0, 1000.0]
       initial_velocity: 15
       arrival_cue: |
         ( true )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTFr Aldrin 3"
       template: "aldrin_freighter"
       location: [500.0, 0.0, 1000.0]
       initial_velocity: 15
       arrival_cue: |
         ( true )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTT Rescue"
       class: "GTT Elysium"
       team: "Friendly"

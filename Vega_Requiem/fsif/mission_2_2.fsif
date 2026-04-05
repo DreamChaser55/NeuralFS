@@ -13,6 +13,8 @@ environment:
     - { texture: SunVega, angles: [0.0, 3.14159, 0.0], scale: 1.0 }
   starbitmaps:
     - { texture: dneb03, angles: [0.0, 2.321286, 0.0], scale: { x: 4.0, y: 4.0 }, div: { x: 2, y: 2 } }
+    - { texture: neb12, angles: [1.0, 1.0, 1.0], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
+    - { texture: neb02, angles: [0.5, -0.5, 0.5], scale: { x: 3.0, y: 3.0 }, div: { x: 1, y: 1 } }
 
 player_setup:
   start_ship: "Alpha 1"
@@ -29,7 +31,7 @@ mission_flow:
         voice_style_instructions: "calm, final"
         icons:
           - { type: "Capital Ship", team: "Friendly", class: "GTD Orion", pos: [0, 0], label: "GTD Amadeus" }
-          - { type: "Waypoint", team: "Unknown", pos: [0, 0], label: "Nav Charlie" }
+          - { type: "Waypoint", team: "Unknown", pos: [-500, 0], label: "Nav Charlie" }
       - text: "The crew is being evacuated in nine Hermes pods. They'll move to Nav Bravo and continue to the Antares node under Stentor's escort. All non-essential personnel are clearing the ship now."
         voice_name: "Orus"
         voice_style_instructions: "methodical"
@@ -43,7 +45,7 @@ mission_flow:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, 1000], label: "Alpha", highlighted: true }
           - { type: "Cruiser", team: "Hostile", class: "SC Lilith", pos: [0, -8000], label: "SC Ahriman (NOT A TARGET)" }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [3000, 5000], label: "Asura" }
-          - { type: "Bomber Wing", team: "Hostile", class: "SB Shaitan", pos: [0, -9000], label: "Brahma" }
+          - { type: "Bomber Wing", team: "Hostile", class: "SB Shaitan", pos: [-2500, -9000], label: "Brahma" }
       - text: "I would appreciate it if you did not waste time trying to protect this ship. The Amadeus has served her purpose. The people in those pods have not."
         voice_name: "Orus"
         voice_style_instructions: "direct, selfless"
@@ -107,6 +109,13 @@ mission_flow:
         voice_style_instructions: "despairing but pushing on"
 
   events:
+    - name: "Evacuate Amadeus dir"
+      formula: |
+        ( when
+          ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( do-nothing )
+        )
+      directive_text: "Escort escape pods"
     - name: "Msg 1 Trigger"
       formula: |
         ( when
@@ -139,7 +148,10 @@ mission_flow:
         )
     - name: "Amadeus 60 pct"
       formula: |
-        ( <= ( hits-left "GTD Amadeus" ) 24 )
+        ( when
+          ( <= ( hits-left "GTD Amadeus" ) 24 )
+          ( do-nothing )
+        )
     - name: "Msg 6 Trigger"
       formula: |
         ( when
@@ -160,7 +172,10 @@ mission_flow:
         )
     - name: "Amadeus 20 pct"
       formula: |
-        ( <= ( hits-left "GTD Amadeus" ) 8 )
+        ( when
+          ( <= ( hits-left "GTD Amadeus" ) 8 )
+          ( do-nothing )
+        )
     - name: "Msg 9 Trigger"
       formula: |
         ( when
@@ -175,7 +190,10 @@ mission_flow:
         )
     - name: "Amadeus 5 pct"
       formula: |
-        ( <= ( hits-left "GTD Amadeus" ) 2 )
+        ( when
+          ( <= ( hits-left "GTD Amadeus" ) 2 )
+          ( do-nothing )
+        )
     - name: "Msg 11 Trigger"
       formula: |
         ( when
@@ -208,9 +226,12 @@ mission_flow:
         )
     - name: "Mission complete check"
       formula: |
-        ( or
-          ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
-          ( >= ( percent-ships-destroyed 44 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" ) 44 )
+        ( when
+          ( or
+            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( percent-ships-destroyed 44 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          )
+          ( do-nothing )
         )
     - name: "Msg 15 Trigger"
       formula: |
@@ -319,16 +340,11 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Avenger", "ML-16 Laser"]
-        secondary: ["MX-50", "Fury"]
+        secondary: ["MX-50"]
     hermes_pod:
       class: "GTEP Hermes"
       team: "Friendly"
       ai_class: "Lieutenant"
-      departure_location: "Hyperspace"
-      departure_cue: |
-        ( < ( distance "<name>" "Nav Bravo:1" ) 500 )
-      ai_goals: |
-        ( ai-waypoints "NavBravoPath" 89 )
     shivan_fighter:
       class: "SF Scorpion"
       team: "Hostile"
@@ -359,8 +375,6 @@ entities:
       initial_hull: 40
       arrival_cue: |
         ( true )
-      ai_goals: |
-        ( ai-stay-still 89 )
     - name: "SC Ahriman"
       class: "SC Lilith"
       team: "Hostile"
@@ -382,10 +396,10 @@ entities:
       team: "Friendly"
       location: [500.0, 0.0, 0.0]
       arrival_cue: |
-        ( has-time-elapsed 45 )
+        ( true )
       departure_location: "Hyperspace"
       departure_cue: |
-        ( < ( distance "<name>" "Nav Bravo:1" ) 1500 )
+        ( < ( distance "GTFr Aldrin 4" "Nav Bravo:1" ) 1500 )
       ai_goals: |
         ( ai-waypoints "NavBravoPath" 89 )
     - name: "TAC-1 Tech Data"
@@ -394,57 +408,102 @@ entities:
       location: [500.0, 50.0, 0.0]
       flags: ["scannable"]
       arrival_cue: |
-        ( has-time-elapsed 45 )
+        ( false )
       dock:
         with: "GTFr Aldrin 4"
-        docker_point: "cargo dock"
-        dockee_point: "cargo dock"
+        docker_point: "cargo dockpoint"
+        dockee_point: "cargo dockpoint"
 
     - name: "Pod 1"
       template: "hermes_pod"
       location: [200.0, -50.0, 100.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 1" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 2"
       template: "hermes_pod"
       location: [100.0, -50.0, 100.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 2" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 3"
       template: "hermes_pod"
       location: [300.0, -50.0, 100.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 3" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 4"
       template: "hermes_pod"
       location: [200.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 45 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 4" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 5"
       template: "hermes_pod"
       location: [100.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 45 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 5" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 6"
       template: "hermes_pod"
       location: [300.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 45 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 6" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 7"
       template: "hermes_pod"
       location: [200.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 90 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 7" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 8"
       template: "hermes_pod"
       location: [100.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 90 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 8" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
     - name: "Pod 9"
       template: "hermes_pod"
       location: [300.0, -50.0, 100.0]
       arrival_cue: |
         ( has-time-elapsed 90 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Pod 9" "Nav Bravo:1" ) 500 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
 
   wings:
     - name: "Alpha"

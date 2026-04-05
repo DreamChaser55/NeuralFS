@@ -39,7 +39,7 @@ mission_flow:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Valkyrie", pos: [0, -1000], label: "Alpha" }
           - { type: "Installation", team: "Friendly", class: "GTI Arcadia", pos: [0, 5000], label: "GTI Vega Prime" }
           - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [0, 2000], label: "GTC Stentor" }
-          - { type: "Transport Wing", team: "Friendly", class: "GTT Elysium", pos: [-500, 4500], label: "Epsilon Wing" }
+          - { type: "Transport Wing", team: "Friendly", class: "GTT Elysium", pos: [-1000, 4000], label: "Epsilon Wing" }
       - text: "You'll be flying Valkyries today. They just came in from the Amadeus complement - fast interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. The people on those transports are your mission."
         voice_name: "Kore"
         voice_style_instructions: "tactical advice, clear priorities"
@@ -118,6 +118,13 @@ mission_flow:
         voice_style_instructions: "resolute"
 
   events:
+    - name: "Protect Epsilon wing dir"
+      formula: |
+        ( when
+          ( percent-ships-departed 75 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+          ( do-nothing )
+        )
+      directive_text: "Protect Epsilon wing"
     - name: "Msg 1 Trigger"
       formula: |
         ( when
@@ -126,7 +133,10 @@ mission_flow:
         )
     - name: "Epsilon 1 undocks"
       formula: |
-        ( has-time-elapsed 90 )
+        ( when
+          ( has-time-elapsed 90 )
+          ( do-nothing )
+        )
     - name: "Msg 2 Trigger"
       formula: |
         ( when
@@ -138,10 +148,16 @@ mission_flow:
         )
     - name: "Epsilon 2 undocks"
       formula: |
-        ( has-time-elapsed 120 )
+        ( when
+          ( has-time-elapsed 120 )
+          ( do-nothing )
+        )
     - name: "Arjuna Wave 1 arrives"
       formula: |
-        ( has-time-elapsed 150 )
+        ( when
+          ( has-time-elapsed 150 )
+          ( do-nothing )
+        )
     - name: "Msg 3 Trigger"
       formula: |
         ( when
@@ -159,21 +175,33 @@ mission_flow:
         )
     - name: "Epsilon 3 undocks"
       formula: |
-        ( has-time-elapsed 165 )
+        ( when
+          ( has-time-elapsed 165 )
+          ( do-nothing )
+        )
     - name: "Epsilon 4 undocks"
       formula: |
-        ( has-time-elapsed 210 )
+        ( when
+          ( has-time-elapsed 210 )
+          ( do-nothing )
+        )
     - name: "Krishna arrives"
       formula: |
-        ( has-time-elapsed 270 )
+        ( when
+          ( has-time-elapsed 270 )
+          ( do-nothing )
+        )
     - name: "Arjuna Wave 2 arrives"
       formula: |
-        ( or
-          ( and
-            ( is-event-true-delay "Arjuna Wave 1 arrives" 0 )
-            ( <= ( num-ships-in-wing "Arjuna" ) 1 )
+        ( when
+          ( or
+            ( and
+              ( is-event-true-delay "Arjuna Wave 1 arrives" 0 )
+              ( <= ( num-ships-in-wing "Arjuna" ) 1 )
+            )
+            ( has-time-elapsed 330 )
           )
-          ( has-time-elapsed 330 )
+          ( do-nothing )
         )
     - name: "Msg 5 Trigger"
       formula: |
@@ -186,7 +214,10 @@ mission_flow:
         )
     - name: "Malgor arrives"
       formula: |
-        ( has-time-elapsed 390 )
+        ( when
+          ( has-time-elapsed 390 )
+          ( do-nothing )
+        )
     - name: "Msg 6 Trigger"
       formula: |
         ( when
@@ -198,7 +229,6 @@ mission_flow:
         ( when
           ( has-time-elapsed 480 )
           ( send-message "GTC Stentor" "High" "Msg 7" )
-          ( add-goal "SC Malgor" ( ai-chase-wing "Epsilon" 89 ) )
         )
     - name: "Msg 8 Trigger"
       formula: |
@@ -208,13 +238,15 @@ mission_flow:
         )
     - name: "Vega Prime Destroyed"
       formula: |
-        ( is-destroyed-delay 0 "GTI Vega Prime" )
+        ( when
+          ( is-destroyed-delay 0 "GTI Vega Prime" )
+          ( do-nothing )
+        )
     - name: "Msg 9 Trigger"
       formula: |
         ( when
           ( is-event-true-delay "Vega Prime Destroyed" 2 )
           ( send-message "Alpha 2" "Normal" "Msg 9" )
-          ( add-goal "GTC Stentor" ( ai-guard-wing "Epsilon" 89 ) )
         )
     - name: "Msg 10 Trigger"
       formula: |
@@ -227,9 +259,12 @@ mission_flow:
         )
     - name: "Mission complete check"
       formula: |
-        ( and
-           ( >= ( num-ships-in-battle "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" ) 3 )
-           ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+        ( when
+          ( and
+             ( >= ( num-ships-in-battle "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" ) 3 )
+             ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+          )
+          ( do-nothing )
         )
     - name: "Msg 11 Trigger"
       formula: |
@@ -241,7 +276,7 @@ mission_flow:
       formula: |
         ( when
           ( has-time-elapsed 45 )
-          ( add-goal "GTFr Chronos 1" ( ai-stay-still 89 ) )
+          ( do-nothing )
         )
     - name: "Sentry Gun 2 deploy"
       formula: |
@@ -348,7 +383,7 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
-        secondary: ["MX-50", "Fury"]
+        secondary: ["MX-50"]
     epsilon_transport:
       class: "GTT Elysium"
       team: "Friendly"
@@ -356,18 +391,13 @@ entities:
       weapons:
         primary: ["ML-16 Laser"]
         secondary: []
-      departure_location: "Hyperspace"
-      departure_cue: |
-        ( < ( distance "<name>" "Nav Bravo:1" ) 1500 )
-      ai_goals: |
-        ( ai-waypoints "EpsilonPath" 89 )
     arjuna_bomber:
       class: "SF Basilisk"
       team: "Hostile"
       ai_class: "Captain"
       weapons:
         primary: ["Shivan Light Laser", "Shivan Heavy Laser"]
-        secondary: ["MX-50#Shivan"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
 
   ships:
     - name: "GTI Vega Prime"
@@ -382,8 +412,6 @@ entities:
       location: [0.0, 0.0, 2000.0]
       arrival_cue: |
         ( true )
-      ai_goals: |
-        ( ai-guard "GTI Vega Prime" 89 )
     - name: "GTFr Chronos 1"
       class: "GTFr Chronos"
       team: "Friendly"
@@ -412,6 +440,11 @@ entities:
       arrival_distance: 0
       arrival_cue: |
         ( is-event-true-delay "Epsilon 1 undocks" 0 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon 1" "Nav Bravo:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "EpsilonPath" 89 )
     - name: "Epsilon 2"
       template: "epsilon_transport"
       location: [0.0, 0.0, 5500.0]
@@ -420,6 +453,11 @@ entities:
       arrival_distance: 0
       arrival_cue: |
         ( is-event-true-delay "Epsilon 2 undocks" 0 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon 2" "Nav Bravo:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "EpsilonPath" 89 )
     - name: "Epsilon 3"
       template: "epsilon_transport"
       location: [0.0, 0.0, 5500.0]
@@ -428,6 +466,11 @@ entities:
       arrival_distance: 0
       arrival_cue: |
         ( is-event-true-delay "Epsilon 3 undocks" 0 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon 3" "Nav Bravo:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "EpsilonPath" 89 )
     - name: "Epsilon 4"
       template: "epsilon_transport"
       location: [0.0, 0.0, 5500.0]
@@ -436,6 +479,11 @@ entities:
       arrival_distance: 0
       arrival_cue: |
         ( is-event-true-delay "Epsilon 4 undocks" 0 )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon 4" "Nav Bravo:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "EpsilonPath" 89 )
     - name: "GTS Casca"
       class: "GTS Centaur"
       team: "Friendly"
@@ -448,7 +496,7 @@ entities:
     - name: "SC Malgor"
       class: "SC Cain"
       team: "Hostile"
-      location: [0.0, 0.0, 17000.0]
+      location: [0.0, 0.0, 14000.0]
       arrival_cue: |
         ( is-event-true-delay "Malgor arrives" 0 )
       ai_goals: |
@@ -483,7 +531,8 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-guard-wing "Epsilon" 89 )
+        ( ai-guard "Epsilon 1" 89 )
+        ( ai-chase-any 89 )
     - name: "Durga"
       template: "shivan_fighter"
       count: 4
@@ -496,7 +545,7 @@ entities:
     - name: "Arjuna"
       template: "arjuna_bomber"
       count: 3
-      position: [0.0, 0.0, 17000.0]
+      position: [0.0, 0.0, 14000.0]
       arrival_cue: |
         ( is-event-true-delay "Arjuna Wave 1 arrives" 0 )
       ai_goals: |
@@ -504,11 +553,14 @@ entities:
     - name: "Arjuna Wave 2"
       template: "arjuna_bomber"
       count: 3
-      position: [0.0, 0.0, 17000.0]
+      position: [0.0, 0.0, 14000.0]
       arrival_cue: |
         ( is-event-true-delay "Arjuna Wave 2 arrives" 0 )
       ai_goals: |
-        ( ai-chase-wing "Epsilon" 89 )
+        ( ai-chase "Epsilon 1" 89 )
+        ( ai-chase "Epsilon 2" 89 )
+        ( ai-chase "Epsilon 3" 89 )
+        ( ai-chase "Epsilon 4" 89 )
     - name: "Krishna"
       template: "shivan_fighter"
       count: 3

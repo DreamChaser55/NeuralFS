@@ -49,7 +49,7 @@ entities:
       ai_class: "Colonel"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
-        secondary: ["Fury#Shivan"]
+        secondary: ["Fury#Shivan", "Fury#Shivan"]
   ships:
     - name: "Escape Pod 1"
       class: "GTEP Hermes"
@@ -229,23 +229,55 @@ mission_flow:
         voice_style_instructions: "firm, not placing blame"
 
   events:
+    - name: "Investigate Nav Alpha dir"
+      formula: |
+        ( when
+          ( < ( distance "Alpha 1" "Nav Alpha:1" ) 1500 )
+          ( do-nothing )
+        )
+      directive_text: "Investigate Nav Alpha"
+    - name: "Save Escape Pods dir"
+      formula: |
+        ( when
+          ( and
+            ( < ( distance "Escape Pod 1" "JumpOut:1" ) 500 )
+            ( < ( distance "Escape Pod 2" "JumpOut:1" ) 500 )
+          )
+          ( do-nothing )
+        )
+      directive_text: "Ensure Meridian escape pods reach the jump point"
     - name: "Brahma arrives"
       formula: |
-        ( has-arrived-delay 0 "Brahma" )
+        ( when
+          ( has-arrived-delay 0 "Brahma" )
+          ( do-nothing )
+        )
     - name: "Vishnu arrives"
       formula: |
-        ( has-arrived-delay 0 "Vishnu" )
+        ( when
+          ( has-arrived-delay 0 "Vishnu" )
+          ( do-nothing )
+        )
     - name: "Escape pod 1 safe"
       formula: |
-        ( < ( distance "Escape Pod 1" "JumpOut:1" ) 500 )
+        ( when
+          ( < ( distance "Escape Pod 1" "JumpOut:1" ) 500 )
+          ( do-nothing )
+        )
     - name: "Escape pod 2 safe"
       formula: |
-        ( < ( distance "Escape Pod 2" "JumpOut:1" ) 500 )
+        ( when
+          ( < ( distance "Escape Pod 2" "JumpOut:1" ) 500 )
+          ( do-nothing )
+        )
     - name: "Secondary objective complete"
       formula: |
-        ( and
-          ( is-event-true-delay "Escape pod 1 safe" 0 )
-          ( is-event-true-delay "Escape pod 2 safe" 0 )
+        ( when
+          ( and
+            ( is-event-true-delay "Escape pod 1 safe" 0 )
+            ( is-event-true-delay "Escape pod 2 safe" 0 )
+          )
+          ( do-nothing )
         )
     
     - name: "Msg 1 Trigger"

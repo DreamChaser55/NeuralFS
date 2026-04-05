@@ -189,6 +189,13 @@ mission_flow:
         voice_style_instructions: "final, tragic"
 
   events:
+    - name: "Stentor Transit dir"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTC Stentor" )
+          ( do-nothing )
+        )
+      directive_text: "GTC Stentor must transit the Antares jump node"
     - name: "Msg 1 Trigger"
       formula: |
         ( when
@@ -230,9 +237,12 @@ mission_flow:
         )
     - name: "Arjuna activates"
       formula: |
-        ( or
-          ( < ( distance "GTC Stentor" "Antares Node:1" ) 2500 )
-          ( < ( distance "Alpha 1" "Antares Node:1" ) 2500 )
+        ( when
+          ( or
+            ( < ( distance "GTC Stentor" "Antares Node:1" ) 2500 )
+            ( < ( distance "Alpha 1" "Antares Node:1" ) 2500 )
+          )
+          ( do-nothing )
         )
     - name: "Msg 7 Trigger"
       formula: |
@@ -243,7 +253,10 @@ mission_flow:
         )
     - name: "Malgor weapons dead"
       formula: |
-        ( <= ( hits-left-subsystem "SC Malgor" "weapons" ) 20 )
+        ( when
+          ( <= ( hits-left-subsystem "SC Malgor" "weapons" ) 20 )
+          ( do-nothing )
+        )
     - name: "Malgor suppression"
       formula: |
         ( when
@@ -283,7 +296,10 @@ mission_flow:
         )
     - name: "Convoy gone check"
       formula: |
-        ( percent-ships-departed 100 "GTC Stentor" "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" "GTS Casca" )
+        ( when
+          ( percent-ships-departed 100 "GTC Stentor" "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" "GTS Casca" )
+          ( do-nothing )
+        )
     - name: "Msg 14 Trigger"
       formula: |
         ( when
@@ -401,17 +417,12 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Avenger", "ML-16 Laser"]
-        secondary: ["MX-50", "Fury"]
+        secondary: ["MX-50"]
     aldrin_freighter:
       class: "GTFr Chronos"
       team: "Friendly"
       ai_class: "Lieutenant"
       initial_velocity: 25
-      departure_location: "Hyperspace"
-      departure_cue: |
-        ( < ( distance "<name>" "Antares Node:1" ) 1500 )
-      ai_goals: |
-        ( ai-waypoints "ConvoyPath" 89 )
     shivan_fighter:
       class: "SF Scorpion"
       team: "Hostile"
@@ -425,7 +436,7 @@ entities:
       ai_class: "Captain"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
-        secondary: ["MX-50#Shivan"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
     shivan_dragon:
       class: "SF Dragon"
       team: "Hostile"
@@ -453,16 +464,31 @@ entities:
       location: [200.0, -200.0, -1000.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 1" "Antares Node:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTFr Aldrin 2"
       template: "aldrin_freighter"
       location: [-200.0, -200.0, -1000.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 2" "Antares Node:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTFr Aldrin 3"
       template: "aldrin_freighter"
       location: [0.0, 200.0, -1000.0]
       arrival_cue: |
         ( true )
+      departure_location: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 3" "Antares Node:1" ) 1500 )
+      ai_goals: |
+        ( ai-waypoints "ConvoyPath" 89 )
     - name: "GTT Rescue"
       class: "GTT Elysium"
       team: "Friendly"
@@ -508,8 +534,6 @@ entities:
       location: [0.0, 0.0, 12000.0]
       arrival_cue: |
         ( true )
-      ai_goals: |
-        ( ai-stay-still 89 )
 
   wings:
     - name: "Alpha"
@@ -543,7 +567,7 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-stay-still 89 )
+        ( ai-guard "SC Malgor" 89 )
 
   waypoints:
     "Nav Alpha":
