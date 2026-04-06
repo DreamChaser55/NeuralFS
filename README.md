@@ -4,7 +4,7 @@
   <img src="neuralfslogo.png" alt="NeuralFS Logo" />
 </p>
 
-NeuralFS is an agentic AI framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
+NeuralFS is an agentic AI framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of two AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
 - Visual Studio Code (by using the Roo Code or Kilo Code extension)
 - OpenCode
 
@@ -21,6 +21,8 @@ This agent takes the detailed mission plans written by the previous agent and co
 The agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and branching logic.
 
 This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script.
+
+After writing each `.fsif` or `.fcif` file, this agent immediately runs it through the respective Python converter script to validate it. If the converter reports any errors or warnings, the agent autonomously analyzes the file, applies the necessary fixes, and retries the conversion until the file is valid and successfully converted to game-ready `.fs2` or `.fc2` formats.
 
 ### FSIF to FS2 Converter
 
@@ -40,10 +42,6 @@ The converter validates the FCIF input using Pydantic, generates S-expression (S
 This converter script also has both interfaces: CLI suitable for use by AI agents and GUI for use by humans.
 
 For details, see `\FCIF_to_FC2_Converter\README.md`.
-
-### FSIF+FCIF Converting Agent
-
-This agent automates the final step of the pipeline: generating the game-ready `.fs2` and `.fc2` files. It iteratively runs the FSIF to FS2 Converter on all `.fsif` mission files and the FCIF to FC2 Converter on the `.fcif` campaign file. If the converters report any errors, this agent autonomously analyzes the source files, applies the necessary fixes, and retries the conversion until all files are valid and successfully converted.
 
 ## Requirements
 - One of these agentic AI engines:
