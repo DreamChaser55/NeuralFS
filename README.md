@@ -26,7 +26,7 @@ After writing each `.fsif` or `.fcif` file, this agent immediately runs it throu
 
 ### FSIF to FS2 Converter
 
-A Python script then takes the intermediate FSIF representation of the mission and converts it into the FS2 format expected by FSO. During the conversion, the FSIF representation is extensively validated; if any errors are found, actionable error messages are printed to the console, so the AI agent can fix them and try again.
+A Python script that takes the intermediate FSIF representation of the mission and converts it into the FS2 format expected by FSO. During the conversion, the FSIF representation is extensively validated; if any errors are found, actionable error messages are printed to the console, so the AI agent can fix them and try again.
 
 The Converter script has both command line interface suitable for use by AI agents, and GUI for use by humans.
 
@@ -36,7 +36,7 @@ For details, see `\FSIF_to_FS2_Converter\README.md`.
 
 ### FCIF to FC2 Converter
 
-A separate Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
+This Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
 The converter validates the FCIF input using Pydantic, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
 
 This converter script also has both interfaces: CLI suitable for use by AI agents and GUI for use by humans.
@@ -50,11 +50,11 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 - Requirements of the FSIF to FS2 Converter: see `\FSIF_to_FS2_Converter\README.md`
 - Requirements of the FCIF to FC2 Converter: see `\FCIF_to_FC2_Converter\README.md`
 
-## Documentation
+## Documentation for AI agents
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.
 - `Freespace Bibles/` — Freespace universe Bibles (full and condensed version)
 
-## User manuals
+## User manuals for human users
 
 Read the manual based on your chosen agentic AI engine:
 - `Documentation/User manuals/Using NeuralFS with VS Code.md`.
