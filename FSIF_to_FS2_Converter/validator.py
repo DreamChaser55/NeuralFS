@@ -324,6 +324,7 @@ class Validator:
         self.validate_mission_info()
         self.validate_environment()
         self.validate_mission_scale_recommendations()
+        self.validate_3d_mission_design()
         self.validate_ships()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
@@ -566,6 +567,46 @@ class Validator:
 
         for wing in self.mission.wings:
             check_arrival_distance(f"Wing '{wing.name}'", wing.arrival_anchor, wing.arrival_distance)
+
+    def validate_3d_mission_design(self):
+        """
+        Warn if all objects in a mission are placed strictly on the XZ plane (Y-coordinate = 0).
+        This encourages using the 3D space to make missions more interesting and prevent unintended collisions.
+        """
+        positioned_objects = []
+
+        for ship in self.mission.ships:
+            positioned_objects.append(("Ship", ship.name, ship.location))
+
+        for wing in self.mission.wings:
+            wing_position = wing.position
+            if wing_position is None and wing.ships:
+                wing_position = wing.ships[0].location
+            if wing_position is not None:
+                positioned_objects.append(("Wing", wing.name, wing_position))
+
+        for jump_node in self.mission.jump_nodes:
+            positioned_objects.append(("Jump Node", jump_node.name, jump_node.position))
+
+        for path_name, points in self.mission.waypoints.items():
+            for index, point in enumerate(points, start=1):
+                positioned_objects.append(("Waypoint", f"{path_name}:{index}", point))
+
+        if not positioned_objects:
+            return
+
+        all_y_zero = True
+        for kind, name, pos in positioned_objects:
+            if abs(float(pos[1])) >= 0.001:
+                all_y_zero = False
+                break
+
+        if all_y_zero:
+            self.log_warning(
+                "Mission design recommendation: All objects are currently placed on the 2D XZ plane (Y=0). "
+                "Spreading objects in the third dimension (Y-axis) creates more interesting 3D missions "
+                "and prevents unintended collisions."
+            )
 
     def validate_ships(self):
         """

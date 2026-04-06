@@ -206,6 +206,33 @@ class CombinedTesting(unittest.TestCase):
             validator.warnings,
         )
 
+    def test_3d_mission_design_warns_when_all_objects_on_xz_plane(self):
+        mission = self.make_valid_mission()
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Mission design recommendation: All objects are placed on the 2D XZ plane (Y=0)" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_3d_mission_design_does_not_warn_when_objects_spread_in_y(self):
+        mission = self.make_valid_mission()
+        mission.jump_nodes = [
+            JumpNode(name="High Node", position=[0.0, 500.0, 0.0])
+        ]
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any(
+                "Mission design recommendation: All objects are placed on the 2D XZ plane (Y=0)" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
     def test_writer_always_emits_fixed_fog_multipliers(self):
         mission = self.make_valid_mission()
 
@@ -269,10 +296,10 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("accepts FSIF version '2.7' only", str(ctx.exception))
+        self.assertIn("accepts FSIF version '2.8' only", str(ctx.exception))
 
     def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
-        fsif_text = """fsif_version: \"2.7\"
+        fsif_text = """fsif_version: \"2.8\"
 
 mission_info:
   name: "Invalid Ambient"
@@ -305,10 +332,10 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("FSIF 2.6 requires environment.ambient_light_level to be authored as [red, green, blue]", str(ctx.exception))
+        self.assertIn("FSIF requires environment.ambient_light_level to be authored as [red, green, blue]", str(ctx.exception))
 
     def test_loader_rejects_arrival_delay_in_ship_template(self):
-        fsif_text = """fsif_version: "2.7"
+        fsif_text = """fsif_version: "2.8"
 
 mission_info:
   name: "Invalid Template Arrival Delay"
@@ -333,6 +360,9 @@ entities:
         ( true )
 
 mission_flow: {}
+
+environment:
+  ambient_light_level: [0, 0, 0]
 """
 
         with tempfile.TemporaryDirectory() as tmpdir:
