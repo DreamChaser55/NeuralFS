@@ -75,6 +75,10 @@ At most one condition field may be set per mission. This is enforced by a Pydant
 3.  **Last Mission**:
     - Targets `end-of-campaign` instead of a next mission filename.
 
+## Advance Conditions Check
+
+When the converter is invoked, it iterates over all missions and checks whether each mission has at least one advance condition defined (`success_goal`, `success_event`, `failure_goal`, or `failure_event`). If a mission does not define any advance conditions, it will log a warning (e.g., `Mission 'demo_m05.fs2' has no advance conditions (success or failure goals/events) defined. It will advance unconditionally.`). This is a non-fatal warning (does not abort conversion) because unconditional advancement is technically valid but often an oversight by campaign authors.
+
 ## Campaign-Wide Player Loadout Check
 
 When the converter is invoked, it performs a pre-conversion check to verify that the player's ships and weapons across the entire campaign are either in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The converter infers the path to the `.fsif` files by checking the `fsif` directory relative to the input `.fcif` path (e.g., `input_path.parent / "fsif" / f"{mission_stem}.fsif"`).

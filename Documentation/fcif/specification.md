@@ -76,7 +76,7 @@ Each mission may optionally specify **one** advance condition that determines wh
   - Emits `is-previous-event-false` in the fc2 formula.
   - Example: `failure_event: "Arjuna destroyed"` — advance if the "Arjuna destroyed" event did not occur (i.e., the Arjuna survived).
 
-If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement).
+If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement). **Note:** While this is perfectly valid, the converter will emit a warning for each mission that lacks an advance condition to help catch potential oversights by campaign authors.
 
 ### Goals vs. Events
 

@@ -393,6 +393,15 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
     return True
 
 
+def check_campaign_advance_conditions(fcif: 'FCIF'):
+    """
+    Check if any missions lack advance conditions and log a warning if so.
+    """
+    for mission in fcif.missions:
+        if not any([mission.success_goal, mission.success_event, mission.failure_goal, mission.failure_event]):
+            logger.warning(f"Advance conditions check: Mission '{mission.filename}' has no advance conditions (success or failure goals/events) defined. It will advance unconditionally.")
+
+
 def process_campaign(
     input_file: str,
     output_file: Optional[str] = None,
@@ -426,6 +435,7 @@ def process_campaign(
         return False
 
     if fcif_data.missions:
+        check_campaign_advance_conditions(fcif_data)
         if not check_campaign_player_loadouts(fcif_data, input_path):
             return False
 
