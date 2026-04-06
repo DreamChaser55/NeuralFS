@@ -2,6 +2,7 @@ import argparse
 import sys
 import yaml
 import logging
+import re
 from pathlib import Path
 from typing import Annotated, List, Optional
 from pydantic import AfterValidator, BaseModel, Field, ConfigDict, ValidationError, field_validator, model_validator
@@ -246,168 +247,150 @@ def write_fc2(fcif: FCIF, output_path: Path):
             
         f.write("#End\n")
 
-# --- First Mission Loadout Check ---
+# --- Campaign Loadout Check ---
 
-def _collect_fsif_ships_and_weapons(fsif_path: Path) -> Optional[tuple]:
+def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
     """
-    Parse an FSIF YAML file and collect all ship classes and weapons referenced.
+    Check that all player ship classes and weapons used across the campaign
+    are present in the FCIF starting_loadout or explicitly granted by allow-ship/allow-weapon SEXPs
+    in a previous mission.
 
-    Returns a tuple (ship_classes: set, primary_weapons: set, secondary_weapons: set),
-    or None if the file could not be loaded.
-
-    Covers:
-    - entities.ships[*].class  (standalone ships)
-    - entities.ship_templates[name].class  (templates used by wings)
-    - entities.wings[*].template -> resolved class from templates
-    - weapons from standalone ships (entities.ships[*].weapons.primary/secondary)
-    - weapons from templates (for wings and for standalone ships using a template)
+    Returns True if the check passes or if non-fatal warnings are issued,
+    False if an error occurs.
     """
-    try:
-        with open(fsif_path, 'r', encoding='utf-8') as f:
-            data = yaml.safe_load(f)
-    except Exception as e:
-        logger.warning(f"First mission check: could not load '{fsif_path}': {e}")
-        return None
+    allowed_ships = set(fcif.starting_loadout.ships)
+    allowed_weapons = set(fcif.starting_loadout.weapons)
+    
+    player_wings = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
 
-    if not isinstance(data, dict):
-        logger.warning(f"First mission check: '{fsif_path}' did not parse as a YAML mapping.")
-        return None
-
-    entities = data.get('entities', {}) or {}
-    templates_raw = entities.get('ship_templates', {}) or {}
-    ships_raw = entities.get('ships', []) or []
-    wings_raw = entities.get('wings', []) or []
-
-    ship_classes: set = set()
-    primary_weapons: set = set()
-    secondary_weapons: set = set()
-
-    def _add_weapons_from_mapping(weapons_mapping):
-        """Extract primary/secondary weapons from a weapons dict."""
-        if not isinstance(weapons_mapping, dict):
-            return
-        for w in (weapons_mapping.get('primary') or []):
-            if w:
-                primary_weapons.add(str(w))
-        for w in (weapons_mapping.get('secondary') or []):
-            if w:
-                secondary_weapons.add(str(w))
-
-    # --- Process templates ---
-    templates: dict = {}  # name -> properties dict
-    if isinstance(templates_raw, dict):
-        for tname, tprops in templates_raw.items():
-            if isinstance(tprops, dict):
-                templates[tname] = tprops
-
-    # --- Process standalone ships ---
-    if isinstance(ships_raw, list):
-        for ship in ships_raw:
-            if not isinstance(ship, dict):
-                continue
+    for mission in fcif.missions:
+        mission_filename = Path(mission.filename).stem
+        fsif_path = input_path.parent / "fsif" / f"{mission_filename}.fsif"
+        
+        if not fsif_path.exists() or not fsif_path.is_file():
+            logger.warning(f"Campaign loadout check: file not found at '{fsif_path}'. Skipping check for this mission.")
+            continue
             
-            tname = ship.get('template')
-            if tname is not None and not isinstance(tname, str):
-                logger.warning(f"First mission check: Ship '{ship.get('name', 'unknown')}' must use a string reference for 'template', found {type(tname).__name__} instead.")
-                return None
-                
-            # If the ship references a template, merge: template provides class/weapons,
-            # ship-level class overrides template class if present.
-            tprops = templates.get(tname, {}) if tname else {}
+        try:
+            with open(fsif_path, 'r', encoding='utf-8') as f:
+                raw_content = f.read()
+                data = yaml.safe_load(raw_content)
+        except Exception as e:
+            logger.warning(f"Campaign loadout check: could not load '{fsif_path}': {e}")
+            continue
 
-            cls = ship.get('class') or tprops.get('class')
-            if cls:
-                ship_classes.add(str(cls))
-
-            # Weapons: ship-level overrides template weapons
-            ship_weapons = ship.get('weapons') or tprops.get('weapons')
-            _add_weapons_from_mapping(ship_weapons)
-
-    # --- Process wings (resolved via templates) ---
-    if isinstance(wings_raw, list):
-        for wing in wings_raw:
-            if not isinstance(wing, dict):
-                continue
+        if not isinstance(data, dict):
+            logger.warning(f"Campaign loadout check: '{fsif_path}' did not parse as a YAML mapping.")
+            continue
             
-            tname = wing.get('template')
-            if tname is not None and not isinstance(tname, str):
-                logger.warning(f"First mission check: Wing '{wing.get('name', 'unknown')}' must use a string reference for 'template', found {type(tname).__name__} instead.")
-                return None
-                
-            tprops = templates.get(tname, {}) if tname else {}
+        # 1. Extract player loadout for the current mission
+        mission_player_ships = set()
+        mission_player_weapons = set()
 
-            cls = tprops.get('class')
-            if cls:
-                ship_classes.add(str(cls))
+        player_setup = data.get('player_setup', {}) or {}
+        if isinstance(player_setup, dict):
+            # start_ship
+            start_ship = player_setup.get('start_ship')
+            
+            # extra_ships
+            extra_ships = player_setup.get('extra_ships', []) or []
+            if isinstance(extra_ships, list):
+                for es in extra_ships:
+                    if isinstance(es, dict) and 'class' in es:
+                        mission_player_ships.add(str(es['class']))
+            
+            # extra_weapons
+            extra_weapons = player_setup.get('extra_weapons', []) or []
+            if isinstance(extra_weapons, list):
+                for ew in extra_weapons:
+                    mission_player_weapons.add(str(ew))
+        else:
+            start_ship = None
+                    
+        entities = data.get('entities', {}) or {}
+        templates_raw = entities.get('ship_templates', {}) or {}
+        ships_raw = entities.get('ships', []) or []
+        wings_raw = entities.get('wings', []) or []
 
-            _add_weapons_from_mapping(tprops.get('weapons'))
+        templates = {}
+        if isinstance(templates_raw, dict):
+            for tname, tprops in templates_raw.items():
+                if isinstance(tprops, dict):
+                    templates[tname] = tprops
 
-    return ship_classes, primary_weapons, secondary_weapons
+        def _add_weapons_from_mapping(weapons_mapping):
+            if not isinstance(weapons_mapping, dict):
+                return
+            for w in (weapons_mapping.get('primary') or []):
+                if w:
+                    mission_player_weapons.add(str(w))
+            for w in (weapons_mapping.get('secondary') or []):
+                if w:
+                    mission_player_weapons.add(str(w))
 
+        # Check wings
+        if isinstance(wings_raw, list):
+            for wing in wings_raw:
+                if not isinstance(wing, dict):
+                    continue
+                wname = wing.get('name')
+                if wname in player_wings:
+                    tname = wing.get('template')
+                    if tname is not None and not isinstance(tname, str):
+                        logger.error(f"Mission '{fsif_path.name}': Wing '{wname}' must use a string reference for 'template'.")
+                        return False
+                    tprops = templates.get(tname, {}) if tname else {}
+                    cls = tprops.get('class')
+                    if cls:
+                        mission_player_ships.add(str(cls))
+                    _add_weapons_from_mapping(tprops.get('weapons'))
 
-def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF') -> None:
-    """
-    Check that all ship classes and weapons used in the first FSIF mission are
-    present in the FCIF starting_loadout.
+        # Check start_ship if it's a standalone ship
+        if start_ship and isinstance(ships_raw, list):
+            for ship in ships_raw:
+                if not isinstance(ship, dict):
+                    continue
+                if ship.get('name') == start_ship:
+                    tname = ship.get('template')
+                    if tname is not None and not isinstance(tname, str):
+                        logger.error(f"Mission '{fsif_path.name}': Ship '{start_ship}' must use a string reference for 'template'.")
+                        return False
+                    tprops = templates.get(tname, {}) if tname else {}
+                    cls = ship.get('class') or tprops.get('class')
+                    if cls:
+                        mission_player_ships.add(str(cls))
+                    ship_weapons = ship.get('weapons') or tprops.get('weapons')
+                    _add_weapons_from_mapping(ship_weapons)
+                    break
 
-    Issues [WARNING] messages for any missing items but does NOT abort conversion.
+        # 2. Validate
+        missing_ships = sorted(mission_player_ships - allowed_ships)
+        missing_weapons = sorted(mission_player_weapons - allowed_weapons)
 
-    :param fsif_path_str: Path to the first mission's .fsif file.
-    :param fcif: The loaded FCIF object.
-    """
-    fsif_path = Path(fsif_path_str)
-    if not fsif_path.exists() or not fsif_path.is_file():
-        logger.warning(f"First mission check: file not found at '{fsif_path}'. Skipping check.")
-        return
+        if missing_ships or missing_weapons:
+            error_msg = f"Campaign loadout check failed in mission '{fsif_path.name}':\n"
+            if missing_ships:
+                error_msg += "  The following player ship class(es) were used but not granted:\n"
+                for s in missing_ships:
+                    error_msg += f"    - \"{s}\"\n"
+            if missing_weapons:
+                error_msg += "  The following player weapon(s) were used but not granted:\n"
+                for w in missing_weapons:
+                    error_msg += f"    - \"{w}\"\n"
+            error_msg += "Actionable advice: Add them to 'starting_loadout' in the FCIF or grant them via 'allow-ship'/'allow-weapon' SEXP in a previous mission."
+            logger.error(error_msg)
+            return False
 
-    if fsif_path.suffix.lower() != '.fsif':
-        logger.warning(f"First mission check: '{fsif_path}' does not have a .fsif extension. Skipping check.")
-        return
+        # 3. State Update (Granting items for the next mission)
+        granted_ships = re.findall(r'\(\s*allow-ship\s+"([^"]+)"', raw_content)
+        for s in granted_ships:
+            allowed_ships.add(s)
 
-    logger.info(f"Running first mission loadout check against '{fsif_path.name}'...")
+        granted_weapons = re.findall(r'\(\s*allow-weapon\s+"([^"]+)"', raw_content)
+        for w in granted_weapons:
+            allowed_weapons.add(w)
 
-    result = _collect_fsif_ships_and_weapons(fsif_path)
-    if result is None:
-        return  # Error already logged inside helper
-
-    mission_ships, mission_primaries, mission_secondaries = result
-
-    loadout_ships = set(fcif.starting_loadout.ships)
-    loadout_weapons = set(fcif.starting_loadout.weapons)
-
-    missing_ships = sorted(mission_ships - loadout_ships)
-    missing_weapons = sorted((mission_primaries | mission_secondaries) - loadout_weapons)
-
-    warnings_issued = False
-
-    if missing_ships:
-        logger.warning(
-            f"First mission check: the following ship class(es) used in "
-            f"'{fsif_path.name}' are NOT in starting_loadout.ships:"
-        )
-        for s in missing_ships:
-            logger.warning(f"  - \"{s}\"")
-        logger.warning(
-            "Ships not in starting_loadout will not appear in the first mission. "
-            "Add them to starting_loadout.ships in the FCIF."
-        )
-        warnings_issued = True
-
-    if missing_weapons:
-        logger.warning(
-            f"First mission check: the following weapon(s) used in "
-            f"'{fsif_path.name}' are NOT in starting_loadout.weapons:"
-        )
-        for w in missing_weapons:
-            logger.warning(f"  - \"{w}\"")
-        logger.warning(
-            "Weapons not in starting_loadout will not be available in the first mission. "
-            "Add them to starting_loadout.weapons in the FCIF."
-        )
-        warnings_issued = True
-
-    if not warnings_issued:
-        logger.info("First mission loadout check passed: all ships and weapons are in starting_loadout.")
+    return True
 
 
 def process_campaign(
@@ -443,9 +426,8 @@ def process_campaign(
         return False
 
     if fcif_data.missions:
-        first_mission_filename = Path(fcif_data.missions[0].filename).stem
-        inferred_fsif_path = input_path.parent / "fsif" / f"{first_mission_filename}.fsif"
-        check_first_mission_loadout(str(inferred_fsif_path), fcif_data)
+        if not check_campaign_player_loadouts(fcif_data, input_path):
+            return False
 
     logger.info(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     

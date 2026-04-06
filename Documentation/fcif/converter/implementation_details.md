@@ -75,32 +75,32 @@ At most one condition field may be set per mission. This is enforced by a Pydant
 3.  **Last Mission**:
     - Targets `end-of-campaign` instead of a next mission filename.
 
-## First Mission Loadout Check
+## Campaign-Wide Player Loadout Check
 
-When the converter is invoked, it performs an optional pre-conversion check to verify that the first mission's ships and weapons are all covered by `starting_loadout`. The converter infers the path to the first mission's `.fsif` file by checking the `fsif` directory relative to the input `.fcif` path (e.g., `input_path.parent / "fsif" / f"{first_mission_stem}.fsif"`).
+When the converter is invoked, it performs a pre-conversion check to verify that the player's ships and weapons across the entire campaign are either in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The converter infers the path to the `.fsif` files by checking the `fsif` directory relative to the input `.fcif` path (e.g., `input_path.parent / "fsif" / f"{mission_stem}.fsif"`).
 
 ### Why this matters
 
-For any mission after the first one, an `allow-ship` or `allow-weapon` SEXP executed in a previous mission can make a ship class or weapon available. The first mission has no prior mission, so no such SEXP can have run. Every ship class and every weapon used in the first mission must therefore be present in `starting_loadout` — otherwise FSO will simply not load or display those entities in the mission.
+For any mission after the first one, an `allow-ship` or `allow-weapon` SEXP executed in a previous mission can make a ship class or weapon available. Every ship class and every weapon used by the player in any mission must therefore be present in `starting_loadout` or granted by an `allow-ship`/`allow-weapon` SEXP in a previous mission — otherwise FSO will simply not load or display those entities in the mission.
 
 ### What is checked
 
-The converter parses the FSIF YAML file (using `yaml.safe_load`) and extracts:
+The converter iterates through all missions sequentially, parsing the FSIF YAML file (using `yaml.safe_load`) and extracting player loadouts for the current mission:
 
 - **Ship classes** from:
-  - `entities.ships[*].class` (standalone ships, including those that reference a template via `template:`)
-  - Templates referenced by `entities.wings[*].template` → resolved `entities.ship_templates[name].class`
-- **Primary weapons** from `weapons.primary` lists on standalone ships and their templates.
-- **Secondary weapons** from `weapons.secondary` lists on standalone ships and their templates.
+  - `player_setup.start_ship` (if it's a standalone ship, resolving its `template` if used)
+  - `player_setup.extra_ships`
+  - Wings named "Alpha", "Beta", "Gamma", "Delta", or "Epsilon" (resolving their `template`)
+- **Primary weapons** from `weapons.primary` lists on the extracted ships and their templates, as well as `player_setup.extra_weapons`.
+- **Secondary weapons** from `weapons.secondary` lists on the extracted ships and their templates, as well as `player_setup.extra_weapons`.
 
-The collected sets are compared against `starting_loadout.ships` and `starting_loadout.weapons` in the FCIF.
+The collected sets are compared against the running "allowed" sets (initialized with `starting_loadout`).
+Finally, the converter regex-scans the `.fsif` file for new `allow-ship` and `allow-weapon` SEXPs and adds those to the running "allowed" sets for the subsequent missions.
 
 ### Output
 
-- For each **ship class** present in the mission but absent from `starting_loadout.ships`, a `[WARNING]` is emitted listing the missing class and instructing the author to add it.
-- For each **weapon** (primary or secondary) present in the mission but absent from `starting_loadout.weapons`, a `[WARNING]` is emitted similarly.
-- If all ships and weapons are covered, an `[INFO]` confirmation is printed.
-- The check issues **warnings only** and never aborts or affects the generated `.fc2` output.
+- If an un-granted ship or weapon is used by the player, a `[ERROR]` is emitted listing the missing items and providing actionable advice. The conversion process returns `False` and aborts.
+- If all player ships and weapons are covered, an `[INFO]` confirmation is printed and the conversion proceeds.
 
 ## Version Handling
 

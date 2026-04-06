@@ -12,7 +12,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Localization of campaign description via XSTR
 - Linear campaign progression with optional per-mission advance conditions
 - Four advance condition types: goal true/false, event true/false (`is-previous-goal-true`, `is-previous-event-true`, `is-previous-goal-false`, `is-previous-event-false`)
-- **First-mission loadout check**: the converter automatically infers the path to the first mission's `.fsif` file and verifies that all ship classes and weapons used in that mission are present in `starting_loadout`. The check also validates that `template` references on ships and wings are strings.
+- **Campaign-wide player loadout check**: the converter automatically infers the path to the `.fsif` files and verifies that all player ship classes and weapons used in each mission are present in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in previous missions. The check also validates that `template` references on player ships and wings are strings.
 
 ## Versions
 FCIF and converter versions:
@@ -59,5 +59,5 @@ This tool allows you to:
 - Ship and weapon names in `starting_loadout` must match canonical FSO tokens exactly. Do not invent synonyms or casing/spacing variants.
 - The order of missions in the `missions` list determines campaign progression. The first mission is the starting mission; the last mission targets `end-of-campaign`.
 - Any ship or weapon used in the campaign must be either listed in `starting_loadout`, or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign, otherwise it will not appear in the game even if defined in the mission files.
-- For the very first mission there is no prior mission in which `allow-ship`/`allow-weapon` SEXPs could have run. Every ship class and weapon used in the first mission must be in `starting_loadout`. The converter automatically verifies this by checking the corresponding `.fsif` file.
+- For the campaign, the converter verifies the loadout validity across the *entire* campaign and will reject the `.fcif` file if an un-granted ship or weapon is used by the player without being in `starting_loadout` or granted by an `allow-ship`/`allow-weapon` SEXP in a prior mission.
 - The converter uses pydantic with `extra='forbid'`, so any unrecognized fields in the FCIF file will cause a validation error. Only fields documented in the [FCIF Specification](../Documentation/fcif/specification.md) are accepted.

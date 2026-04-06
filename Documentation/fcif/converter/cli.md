@@ -43,13 +43,13 @@ python fcif_to_fc2.py <input.fcif> [-o output.fc2]
     - Avoid spaces in directory and file names; use underscores instead.
     - When batching (cmd.exe example), ensure each `%%F` is quoted.
 
-## First-Mission Loadout Check
+## Campaign-Wide Player Loadout Check
 
-The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game.
+The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in the `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.
 
-The converter will automatically verify this by inferring the path to the `.fsif` file based on the first mission listed in the `.fcif` file.
+The converter will automatically verify this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha-Epsilon wings, `start_ship`, `extra_ships`, `extra_weapons`).
 
-The converter parses the inferred `.fsif` file, collects all ship classes and weapons, and compares them against `starting_loadout`. For each item that is present in the mission but missing from `starting_loadout`, a `[WARNING]` is printed.
+For each item that is used by the player but not previously granted, a `[ERROR]` is printed and the conversion process is aborted.
 
 ## Output
 - The converter writes the `.fc2` file to the specified (or derived) output path.
