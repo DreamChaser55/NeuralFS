@@ -1,0 +1,665 @@
+fsif_version: "2.8"
+
+mission_info:
+  name: "The Last Full Measure"
+  author: "Vega Requiem Campaign"
+  description: "Protect the Amadeus escape pods."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: ["no_builtin_msgs"]
+
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns:
+    - texture: SunVega
+      angles: [0.0, 3.14, 0.0]
+      scale: 1.0
+  starbitmaps:
+    - texture: dneb02
+      angles: [0.0, 1.0, 0.0]
+      scale: { x: 3.0, y: 3.0 }
+    - texture: neb04
+      angles: [0.5, 0.5, 0.5]
+      scale: { x: 2.0, y: 2.0 }
+    - texture: dneb13
+      angles: [1.5, 0.0, 1.0]
+      scale: { x: 2.5, y: 2.5 }
+  nebula:
+    enabled: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  extra_weapons:
+    - "Avenger"
+
+entities:
+  ship_templates:
+    alpha_valkyrie:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "ML-16 Laser"]
+        secondary: ["MX-50"]
+    hermes_pod:
+      class: "GTEP Hermes"
+      team: "Friendly"
+      ai_class: "Coward"
+    scorpion_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shaitan_bomber:
+      class: "SB Shaitan"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["Hornet#Shivan"]
+    dragon_fighter:
+      class: "SF Dragon"
+      team: "Hostile"
+      ai_class: "General"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Heavy Laser"]
+        secondary: ["Hornet#Shivan"]
+
+  ships:
+    - name: "GTD Amadeus"
+      class: "GTD Orion"
+      team: "Friendly"
+      location: [0.0, 0.0, 0.0]
+      initial_hull: 40
+      arrival_cue: |
+        ( true )
+      subsystems:
+        status: custom
+        list:
+          - { name: "engines", health: 0 }
+
+    - name: "SC Ahriman"
+      class: "SC Lilith"
+      team: "Hostile"
+      location: [0.0, 0.0, -8000.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "GTD Amadeus" 89 )
+
+    - name: "GTS Casca"
+      class: "GTS Centaur"
+      team: "Friendly"
+      location: [500.0, 500.0, 1000.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "Pod 1"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 2"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 3"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+
+    - name: "Pod 4"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 5"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 6"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+
+    - name: "GTFr Aldrin 4"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+
+    - name: "Pod 7"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 8"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+    - name: "Pod 9"
+      template: "hermes_pod"
+      location: [0.0, 0.0, 0.0]
+      arrival_location: "Docking Bay"
+      arrival_anchor: "GTD Amadeus"
+      arrival_distance: 0
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      ai_goals: |
+        ( ai-waypoints "NavBravoPath" 89 )
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_valkyrie"
+      count: 4
+      position: [0.0, 0.0, 2000.0]
+      arrival_cue: |
+        ( true )
+
+    - name: "Asura"
+      template: "scorpion_fighter"
+      count: 3
+      position: [0.0, 0.0, 6000.0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase "Pod 1" 89 )
+        ( ai-chase "Pod 2" 88 )
+        ( ai-chase "Pod 3" 87 )
+
+    - name: "Brahma"
+      template: "shaitan_bomber"
+      count: 3
+      position: [6000.0, 0.0, -4000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      ai_goals: |
+        ( ai-chase "GTD Amadeus" 89 )
+
+    - name: "Vishnu"
+      template: "scorpion_fighter"
+      count: 4
+      position: [0.0, 2000.0, -8000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 180 )
+      ai_goals: |
+        ( ai-chase "Pod 4" 89 )
+        ( ai-chase "Pod 5" 88 )
+        ( ai-chase "Pod 6" 87 )
+        ( ai-chase "GTFr Aldrin 4" 86 )
+
+    - name: "Bheema"
+      template: "dragon_fighter"
+      count: 3
+      position: [0.0, 0.0, -10000.0]
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( or
+          ( has-time-elapsed 360 )
+          ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+        )
+      ai_goals: |
+        ( ai-chase "Pod 7" 89 )
+        ( ai-chase "Pod 8" 88 )
+        ( ai-chase "Pod 9" 87 )
+
+  waypoints:
+    NavBravoPath:
+      - [0.0, 0.0, 7000.0]
+
+mission_flow:
+  fiction_viewer: "Mission_2_2_story.txt"
+  briefing:
+    stages:
+      - text: "This is Admiral Chen Wei. I'll be brief because the situation is simple. The Amadeus cannot transit to Antares. Her subspace drive is non-functional. We've run the numbers. We're holding here at Nav Charlie. The crew is being evacuated in nine Hermes pods. They'll move to Nav Bravo and continue to the Antares node under Stentor's escort. All non-essential personnel are clearing the ship now."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Admiral Wei, calm, final"
+        icons:
+          - type: "Capital Ship"
+            team: "Friendly"
+            class: "GTD Orion"
+            pos: [0, 0]
+            label: "GTD Amadeus"
+          - type: "Waypoint"
+            team: "Friendly"
+            pos: [0, 500]
+            label: "Nav Charlie"
+          - type: "Waypoint"
+            team: "Friendly"
+            pos: [0, 7000]
+            label: "Nav Bravo"
+          - type: "Player Fighter Wing"
+            team: "Friendly"
+            class: "GTF Valkyrie"
+            pos: [0, 2500]
+            label: "Alpha Wing"
+            highlighted: true
+      - text: "Alpha wing, your assignment is the pods. Nine of them, three groups. They come out in sequence over the next two minutes. You get them to Nav Bravo. The Ahriman is closing. We'll use the Amadeus's position and turrets to cover the pod corridor for as long as we can. I would appreciate it if you did not waste time trying to protect this ship. The Amadeus has served her purpose. The people in those pods have not."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Admiral Wei, resolute"
+        icons:
+          - type: "Cruiser"
+            team: "Hostile"
+            class: "SC Lilith"
+            pos: [0, -8000]
+            label: "SC Ahriman (NOT A TARGET)"
+          - type: "Capital Ship"
+            team: "Friendly"
+            class: "GTD Orion"
+            pos: [0, 0]
+            label: "GTD Amadeus"
+          - type: "Support Ship"
+            team: "Friendly"
+            class: "GTS Centaur"
+            pos: [3500, 0]
+            label: "GTS Casca"
+          - type: "Fighter Wing"
+            team: "Hostile"
+            class: "SF Scorpion"
+            pos: [0, 4000]
+            label: "Asura"
+          - type: "Bomber Wing"
+            team: "Hostile"
+            class: "SB Shaitan"
+            pos: [6000, -4000]
+            label: "Brahma"
+          - type: "Fighter Wing"
+            team: "Hostile"
+            class: "SF Scorpion"
+            pos: [0, -10000]
+            label: "Vishnu"
+          - type: "Fighter Wing"
+            team: "Hostile"
+            class: "SF Dragon"
+            pos: [0, -14000]
+            label: "Bheema"
+          - type: "Waypoint"
+            team: "Friendly"
+            pos: [0, 7000]
+            label: "Nav Bravo"
+          - type: "Player Fighter Wing"
+            team: "Friendly"
+            class: "GTF Valkyrie"
+            pos: [0, 2500]
+            label: "Alpha Wing"
+      - text: "One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the correct decision and that I made it freely. Command will review the documentation. Good luck. Amadeus out."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Admiral Wei, finality"
+        icons:
+          - type: "Capital Ship"
+            team: "Friendly"
+            class: "GTD Orion"
+            pos: [0, 0]
+            label: "GTD Amadeus"
+          - type: "Waypoint"
+            team: "Friendly"
+            pos: [0, 7000]
+            label: "Nav Bravo"
+          - type: "Player Fighter Wing"
+            team: "Friendly"
+            class: "GTF Valkyrie"
+            pos: [0, 2000]
+            label: "Alpha Wing"
+
+  debriefing:
+    stages:
+      - condition: |
+          ( and
+            ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( is-event-true-delay "Pod 1 Saved" 0 )
+          )
+        text: "All nine escape pods reached Nav Bravo. The entire crew of the Amadeus is accounted for. Admiral Chen Wei is listed as killed in action. He remained aboard as a decision he made openly and documented. His service record will reflect that. Every person in those pods owes their life to Alpha wing. I don't know another way to say that. The Amadeus is gone. She served for eleven years and she died doing what a ship is supposed to do - buying time for people who needed it. Brace yourself. We still have to get through the Antares node. And the SC Malgor is sitting on it."
+        voice_name: "Gacrux"
+      - condition: |
+          ( and
+            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( not ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" ) )
+          )
+        text: "Most of the escape pods reached Nav Bravo. We lost some in the evacuation. Admiral Wei is listed as killed in action. His log and his decisions have been forwarded to Terran Command. You held the line against three fighter waves and a Dragon flight. Whatever we lost out there, it could have been worse. Today's standard is survival, not perfection. The Malgor is still at the Antares node. We move as soon as the Stentor can reposition."
+        voice_name: "Gacrux"
+      - condition: |
+          ( percent-ships-destroyed 44 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+        text: "The evacuation failed. Of the nine pods that departed the Amadeus, only a few made it. Admiral Wei is listed as killed in action alongside the crew of the pods that were destroyed. I don't have words for this that are useful right now. We proceed because we have to. Whatever is at the Antares node, we have to go through it. All of us who are left."
+        voice_name: "Gacrux"
+
+  messages:
+    - name: "Msg1"
+      message: "Alpha wing, pods are away. Group A has cleared the bay. Watch your left - we're showing contacts at six kilometers."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Admiral Wei, calm authority"
+    - name: "Msg2"
+      message: "They're going for the pods directly. Forget the Amadeus - these things are targeting the pods."
+      voice_name: "Zubenelgenubi"
+      voice_style_instructions: "veteran wingman"
+    - name: "Msg3"
+      message: "Pod One is clear. Bridge officers are aboard. Get them to Nav Bravo."
+      voice_name: "Alnilam"
+    - name: "Msg4"
+      message: "Bombers inbound - they're going for the Amadeus. Do we- Command?"
+      voice_name: "Fenrir"
+    - name: "Msg5"
+      message: "Alpha wing, the Amadeus is not your objective. Let the Amadeus handle the Shaitans. Pods. Focus on the pods."
+      voice_name: "Gacrux"
+    - name: "Msg6"
+      message: "Some damage to frame forty. Manageable. Turrets holding. Alpha Lead, how are the pods?"
+      voice_name: "Alnilam"
+    - name: "Msg7"
+      message: "Another fighter wave - Scorpions, coming out of the aft sector. Four of them."
+      voice_name: "Zubenelgenubi"
+    - name: "Msg8"
+      message: "Five pods at Nav Bravo. Halfway there. Keep pushing."
+      voice_name: "Zubenelgenubi"
+    - name: "Msg9"
+      message: "Significant structural compromise, frames twenty through sixty. Casca - you'll want to move away from the ship. ... Alpha Lead. Don't mourn on my clock. Not yet."
+      voice_name: "Alnilam"
+    - name: "Msg10"
+      message: "Dragons. Three of them. They're fast - they're going for the pods."
+      voice_name: "Puck"
+    - name: "Msg11"
+      message: "All pods are away. All pods are clear. ... Alpha wing - you have your orders. Amadeus out."
+      voice_name: "Alnilam"
+    - name: "Msg12"
+      message: "...Copy, Admiral."
+      voice_name: "Zubenelgenubi"
+    - name: "Msg13"
+      message: "Alpha Lead, this is Stentor at Nav Bravo. The Amadeus - we're reading... confirmed destroyed. Get those pods to us. Bring everyone you can."
+      voice_name: "Kore"
+    - name: "Msg14"
+      message: "Seven pods at Nav Bravo. Alpha Lead, disengage and return when the area is clear."
+      voice_name: "Gacrux"
+    - name: "Msg15"
+      message: "Pods are safe. Alpha wing, withdraw to Nav Bravo. We're done here."
+      voice_name: "Gacrux"
+    - name: "Amadeus Warning"
+      message: "Amadeus structural failure imminent - clear the ship's immediate area."
+      voice_name: "Gacrux"
+
+  events:
+    - name: "Mission Start MSG"
+      formula: |
+        ( when
+          ( true )
+          ( send-message "GTD Amadeus" "High" "Msg1" )
+        )
+    - name: "Asura Attacks MSG"
+      formula: |
+        ( when
+          ( or
+            ( < ( distance "Asura 1" "Pod 1" ) 4000 )
+            ( < ( distance "Asura 2" "Pod 1" ) 4000 )
+            ( < ( distance "Asura 3" "Pod 1" ) 4000 )
+          )
+          ( send-message "Alpha 2" "High" "Msg2" )
+        )
+    - name: "Pod 1 Clear MSG"
+      formula: |
+        ( when
+          ( > ( distance "Pod 1" "GTD Amadeus" ) 3000 )
+          ( send-message "GTD Amadeus" "Normal" "Msg3" )
+        )
+    - name: "Brahma Arrival"
+      formula: |
+        ( when
+          ( has-time-elapsed 90 )
+          ( do-nothing )
+        )
+    - name: "Brahma Arrival MSG"
+      formula: |
+        ( when
+          ( is-event-true-delay "Brahma Arrival" 0 )
+          ( send-message "Alpha 3" "High" "Msg4" )
+        )
+    - name: "Command Ignore Amadeus MSG"
+      formula: |
+        ( when
+          ( is-event-true-delay "Brahma Arrival" 4 )
+          ( send-message "#Command" "High" "Msg5" )
+        )
+    - name: "Amadeus 60 Hull MSG"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 60 )
+          ( send-message "GTD Amadeus" "Normal" "Msg6" )
+        )
+    - name: "Vishnu Arrival"
+      formula: |
+        ( when
+          ( has-time-elapsed 180 )
+          ( send-message "Alpha 2" "High" "Msg7" )
+        )
+    - name: "5 Pods Safe MSG"
+      formula: |
+        ( when
+          ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( send-message "Alpha 2" "Normal" "Msg8" )
+        )
+    - name: "Amadeus 20 Hull MSG"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 20 )
+          ( send-message "GTD Amadeus" "Normal" "Msg9" )
+        )
+    - name: "Bheema Arrival"
+      formula: |
+        ( when
+          ( or
+            ( has-time-elapsed 360 )
+            ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          )
+          ( send-message "Alpha 3" "High" "Msg10" )
+        )
+    - name: "Amadeus Warning MSG"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 15 )
+          ( send-message "#Command" "High" "Amadeus Warning" )
+        )
+    - name: "Amadeus Dying"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 5 )
+          ( send-message "GTD Amadeus" "High" "Msg11" )
+        )
+    - name: "Alpha 2 Copy MSG"
+      formula: |
+        ( when
+          ( is-event-true-delay "Amadeus Dying" 15 )
+          ( send-message "Alpha 2" "Normal" "Msg12" )
+        )
+    - name: "Amadeus Destroyed Script"
+      formula: |
+        ( when
+          ( is-event-true-delay "Amadeus Dying" 18 )
+          ( destroy-instantly "GTD Amadeus" )
+        )
+    - name: "Ahriman Withdraws"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTD Amadeus" )
+          ( clear-goals "SC Ahriman" )
+          ( add-goal "SC Ahriman" ( ai-warp-out 89 ) )
+          ( send-message "#Command" "High" "Msg13" )
+        )
+    - name: "7 Pods Safe MSG"
+      formula: |
+        ( when
+          ( percent-ships-departed 77 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( send-message "#Command" "Normal" "Msg14" )
+        )
+    - name: "Mission complete"
+      formula: |
+        ( when
+          ( and
+            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( not ( is-event-true-delay "Mission failed" 0 ) )
+          )
+          ( send-message "#Command" "High" "Msg15" )
+        )
+    - name: "Return Base Dir"
+      formula: |
+        ( when
+          ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( do-nothing )
+        )
+      directive_text: "Alpha Wing: Withdraw to Nav Bravo"
+    - name: "Mission failed"
+      formula: |
+        ( when
+          ( percent-ships-destroyed 44 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( do-nothing )
+        )
+    - name: "Pod 1 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 1" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 1" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 2 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 2" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 2" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 3 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 3" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 3" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 4 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 4" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 4" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 5 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 5" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 5" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 6 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 6" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 6" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 7 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 7" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 7" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 8 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 8" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 8" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 9 Jump"
+      formula: |
+        ( when
+          ( < ( distance "Pod 9" "NavBravoPath:1" ) 1500 )
+          ( add-goal "Pod 9" ( ai-warp-out 89 ) )
+        )
+    - name: "Aldrin 4 Jump"
+      formula: |
+        ( when
+          ( < ( distance "GTFr Aldrin 4" "NavBravoPath:1" ) 1500 )
+          ( add-goal "GTFr Aldrin 4" ( ai-warp-out 89 ) )
+        )
+    - name: "Pod 1 Saved"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "Pod 1" )
+          ( do-nothing )
+        )
+
+  goals:
+    - name: "Save Pods"
+      type: "Primary"
+      message: "At least 6 of 9 pods reach Nav Bravo."
+      formula: |
+        ( is-event-true-delay "Mission complete" 0 )
+    - name: "Save 8 Pods"
+      type: "Secondary"
+      message: "At least 8 of 9 pods reach Nav Bravo."
+      formula: |
+        ( and
+          ( is-event-true-delay "Mission complete" 0 )
+          ( not ( percent-ships-destroyed 22 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" ) )
+        )
+    - name: "Save Data"
+      type: "Secondary"
+      message: "Save GTFr Aldrin 4 (carrying TAC-1 Tech Cargo)."
+      formula: |
+        ( has-departed-delay 0 "GTFr Aldrin 4" )
+    - name: "Save All Pods"
+      type: "Bonus"
+      message: "All 9 pods reach Nav Bravo."
+      formula: |
+        ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+    - name: "Save Admiral's Pod"
+      type: "Bonus"
+      message: "Pod 1 reaches Nav Bravo."
+      formula: |
+        ( is-event-true-delay "Pod 1 Saved" 0 )
+
+audio:
+  mission_music: "FS1-10: Darkside"
+  briefing_music: "FS1-BRIEF5"

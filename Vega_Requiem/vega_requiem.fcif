@@ -1,0 +1,29 @@
+fcif_version: "1.1"
+
+campaign:
+  name: "Vega Requiem"
+  description: |
+    They named the system for a dying star. It was an omen no one chose to read.
+    A FreeSpace 1 Campaign. Depicts the destruction of the GTD Amadeus in the Vega system in January 2335.
+
+starting_loadout:
+  ships:
+    - GTF Apollo
+  weapons:
+    - ML-16 Laser
+    - MX-50
+    - Fury
+
+missions:
+  - filename: Mission_1_1.fs2
+    success_goal: "Survive"
+  - filename: Mission_1_2.fs2
+    success_goal: "Evacuate Epsilon"
+  - filename: Mission_1_3.fs2
+    success_goal: "Save Transports"
+  - filename: Mission_2_1.fs2
+    success_goal: "Escort Amadeus"
+  - filename: Mission_2_2.fs2
+    success_goal: "Save Pods"
+  - filename: Mission_2_3.fs2
+    success_goal: "Stentor Transit"
