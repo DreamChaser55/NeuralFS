@@ -133,23 +133,24 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
     root_dir = Path(__file__).parent.parent.resolve()
     validator = Validator(mission, root_dir, ip, tts_provider=provider)
-    if not validator.validate():
-        logger.error("[ERROR] Validation failed.")
-        return False
+    is_valid = validator.validate()
 
     # Advanced SEXP Validation (Core Feature)
     logger.info("[INFO] Running Advanced SEXP Validation...")
     if advanced_sexp_validator:
         try:
             if not advanced_sexp_validator.validate_mission(mission):
-                logger.error("[ERROR] Advanced SEXP Validation failed.")
-                return False
+                is_valid = False
         except Exception as e:
             logger.error(f"[ERROR] Advanced SEXP validation crashed: {e}")
             traceback.print_exc()
-            return False
+            is_valid = False
     else:
          logger.warning("[WARNING] Advanced SEXP Validator module not available. Validation skipped.")
+
+    if not is_valid:
+        logger.error("[ERROR] Validation failed. See logs above for details.")
+        return False
 
     # Voice Filename Normalization (if TTS enabled)
     if tts_opts['enabled']:
