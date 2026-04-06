@@ -54,7 +54,7 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.
 - `Freespace Bibles/` — Freespace universe Bibles (full and condensed version)
 
-## User manuals for human users
+## Manuals for human users
 
 Read the manual based on your chosen agentic AI engine:
 - `Documentation/User manuals/Using NeuralFS with VS Code.md`.
