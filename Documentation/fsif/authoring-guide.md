@@ -421,11 +421,11 @@ Example
 )
 ```
 
-## Introducing new ships and weapons
-If the mission is part of a campaign, then by default, all ships and weapons are unavailable to the player. They need to be explicitly allowed, either in the campaign FCIF file (`starting_loadout` section) or with the `allow-ship` and `allow-weapon` SEXPs (see "/FSO SEXPs/Mission and Campaign.txt"). The enabling SEXPs need to be executed **before** the mission that should have the ship/weapon available is loaded (that is, at the end of the previous mission).
-
 ## Fighter and bomber weapon hardpoints
 All available primary and secondary weapon banks (hardpoints) in fighters and bombers must have assigned weapons. The number of entries in the `weapons.primary` and `weapons.secondary` lists for a given ship must be equal to the number of hardpoints specified in `\Documentation\FSO and fs2 format\fighter_bomber_hardpoints.md`.
+
+## Introducing new ships and weapons
+If the mission is part of a campaign, then by default, all ships and weapons are unavailable to the player and their wingmen (Alpha, Beta, Gamma, Delta, Epsilon). They need to be explicitly allowed, either in the campaign FCIF file (`starting_loadout` section) or with the `allow-ship` and `allow-weapon` SEXPs (see "/FSO SEXPs/Mission and Campaign.txt"). The enabling SEXPs need to be executed **before** the mission that should have the ship/weapon available is loaded (that is, at the end of the previous mission).
 
 ## Providing alternative player ships
 By default, the player and their wingmen will be restricted to the exact ship classes defined in the mission file for their starting wings. If you want to provide the player with strategic choices before the mission starts, you can use the `extra_ships` field under `player_setup` to provide a pool of alternative ships. The player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon) using the loadout screen.
@@ -438,8 +438,7 @@ player_setup:
     - { class: "GTB Ursa", count: 2 }
 ```
 
-## Automatic Weaponry Pool Generation
-The required weapon pool is calculated automatically based on the weapons equipped on the starting friendly wings (Alpha, Beta, Gamma, Delta, Epsilon). A 25% safety margin is added to the result.
+Note: These extra ships also need to be unlocked for the player in FCIF or in previous missions (see "Introducing new ships and weapons" above).
 
 ## Providing the player with extra weapons
 If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `extra_weapons` field under `player_setup`:
@@ -452,7 +451,10 @@ player_setup:
     - "Avenger"
     - "Harbinger"
 ```
-The maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons are automatically calculated and included in the mission Weaponry Pool with an added 25% safety margin.
+
+Note: These extra weapons also need to be unlocked for the player in FCIF or in previous missions (see "Introducing new ships and weapons" above).
+
+The maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons are automatically calculated and included in the fs2 mission `Weaponry Pool` with an added 25% safety margin.
 
 ## Directional arrivals quick reference
 - Directional arrival_location requires both arrival_anchor and arrival_distance.
