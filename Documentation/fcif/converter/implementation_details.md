@@ -77,7 +77,7 @@ At most one condition field may be set per mission. This is enforced by a Pydant
 
 ## First Mission Loadout Check
 
-When the converter is invoked with `--first-mission <path>` (CLI) or the equivalent GUI field, it performs an optional pre-conversion check to verify that the first mission's ships and weapons are all covered by `starting_loadout`.
+When the converter is invoked, it performs an optional pre-conversion check to verify that the first mission's ships and weapons are all covered by `starting_loadout`. The converter infers the path to the first mission's `.fsif` file by checking the `fsif` directory relative to the input `.fcif` path (e.g., `input_path.parent / "fsif" / f"{first_mission_stem}.fsif"`).
 
 ### Why this matters
 

@@ -4,7 +4,7 @@ Tests for the first-mission loadout check in fcif_to_fc2.py.
 Covers:
   - _collect_fsif_ships_and_weapons(): FSIF parser helper
   - check_first_mission_loadout(): comparison + warning logic
-  - process_campaign() integration with --first-mission
+  - process_campaign() integration with automatic first-mission inference
 """
 
 import unittest
@@ -564,7 +564,9 @@ entities:
 """
         with capture_logs() as msgs:
             with tempfile.TemporaryDirectory() as tmpdir:
-                fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
+                fsif_dir = Path(tmpdir) / "fsif"
+                fsif_dir.mkdir(parents=True, exist_ok=True)
+                fsif_path = _write_fsif(fsif_dir, "mission_01.fsif", fsif)
                 fcif_path = _write_fcif(
                     Path(tmpdir), "campaign.fcif",
                     self._make_fcif(ships=["GTF Ulysses"], weapons=["ML-16 Laser", "MX-50"])
@@ -574,7 +576,6 @@ entities:
                 result = process_campaign(
                     str(fcif_path),
                     str(output_path),
-                    first_mission=str(fsif_path),
                 )
 
         self.assertTrue(result)
@@ -598,7 +599,9 @@ entities:
         output_written = False
         with capture_logs() as msgs:
             with tempfile.TemporaryDirectory() as tmpdir:
-                fsif_path = _write_fsif(Path(tmpdir), "m01.fsif", fsif)
+                fsif_dir = Path(tmpdir) / "fsif"
+                fsif_dir.mkdir(parents=True, exist_ok=True)
+                fsif_path = _write_fsif(fsif_dir, "mission_01.fsif", fsif)
                 # FCIF starting_loadout intentionally missing the ship and weapon
                 fcif_path = _write_fcif(
                     Path(tmpdir), "campaign.fcif",
@@ -609,7 +612,6 @@ entities:
                 result = process_campaign(
                     str(fcif_path),
                     str(output_path),
-                    first_mission=str(fsif_path),
                 )
                 # Check while tmpdir still exists
                 output_written = output_path.exists()
@@ -623,7 +625,7 @@ entities:
         self.assertTrue(output_written)
 
     def test_conversion_without_first_mission_skips_check(self):
-        """When first_mission=None, no loadout check log lines are emitted."""
+        """When the inferred FSIF file is missing, it logs a warning and conversion succeeds."""
         with capture_logs() as msgs:
             with tempfile.TemporaryDirectory() as tmpdir:
                 fcif_path = _write_fcif(
@@ -635,13 +637,12 @@ entities:
                 result = process_campaign(
                     str(fcif_path),
                     str(output_path),
-                    first_mission=None,
                 )
 
         self.assertTrue(result)
-        # No "first mission" related INFO or WARNING should appear
-        self.assertFalse(
-            any("first mission" in m.lower() or "loadout" in m.lower() for m in msgs),
+        # Warning about the missing file should appear
+        self.assertTrue(
+            any("[WARNING]" in m and "file not found" in m.lower() for m in msgs),
             msgs,
         )
 

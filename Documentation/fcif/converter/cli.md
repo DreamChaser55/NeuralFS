@@ -29,7 +29,6 @@ python fcif_to_fc2.py <input.fcif> [-o output.fc2]
 | Flag | Description |
 |---|---|
 | `-o`, `--output` | Path to the output `.fc2` file. If omitted, defaults to the input path with the extension changed to `.fc2`. |
-| `--first-mission <path>` | Path to the first mission's `.fsif` file. When provided, the converter checks that all ship classes and weapons used in that mission are present in `starting_loadout` and issues actionable warnings for any that are missing. Does not affect the generated `.fc2` output. |
 
 ## Path quoting
 - The input and output paths may be provided with or without surrounding quotes. All of the following work:
@@ -48,13 +47,9 @@ python fcif_to_fc2.py <input.fcif> [-o output.fc2]
 
 The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game.
 
-Pass `--first-mission` to let the converter verify this automatically:
+The converter will automatically verify this by inferring the path to the `.fsif` file based on the first mission listed in the `.fcif` file.
 
-```bash
-python fcif_to_fc2.py campaigns/my_campaign.fcif --first-mission missions/m01.fsif
-```
-
-The converter will parse the specified `.fsif` file, collect all ship classes and weapons, and compare them against `starting_loadout`. For each item that is present in the mission but missing from `starting_loadout`, a `[WARNING]` is printed.
+The converter parses the inferred `.fsif` file, collects all ship classes and weapons, and compares them against `starting_loadout`. For each item that is present in the mission but missing from `starting_loadout`, a `[WARNING]` is printed.
 
 ## Output
 - The converter writes the `.fc2` file to the specified (or derived) output path.
@@ -86,11 +81,6 @@ python fcif_to_fc2.py campaigns/test_campaign.fcif
 ### Single conversion (explicit output name)
 ```bash
 python fcif_to_fc2.py campaigns/test_campaign.fcif -o campaigns/custom_name.fc2
-```
-
-### Conversion with first-mission loadout check
-```bash
-python fcif_to_fc2.py campaigns/my_campaign.fcif --first-mission missions/m01.fsif
 ```
 
 ## Troubleshooting

@@ -46,9 +46,9 @@ The '.fcif' file for the campaign is in the "/<campaign_folder>/" folder.
     1.4. Try the conversion again.
     Iterate until all '.fsif' files are successfully converted to '.fs2'.
 
-2. Use the FCIF to FC2 Converter (`fcif_to_fc2.py`) to convert the '.fcif' file to '.fc2'. Always pass `--first-mission` pointing to the first mission's '.fsif' file so the converter can verify that all ships and weapons used in the first mission are in `starting_loadout`:
+2. Use the FCIF to FC2 Converter (`fcif_to_fc2.py`) to convert the '.fcif' file to '.fc2'. The converter will automatically check the first mission's `.fsif` file to verify that all ships and weapons used in the first mission are in `starting_loadout`:
     ```
-    python fcif_to_fc2.py <path_to_campaign.fcif> --first-mission <path_to_first_mission.fsif>
+    python fcif_to_fc2.py <path_to_campaign.fcif>
     ```
     If the Converter reports any errors or warnings:
     2.1. Analyze the problematic fcif file (and the first mission fsif file if loadout warnings are reported) to determine the cause of the issues.

@@ -413,14 +413,12 @@ def check_first_mission_loadout(fsif_path_str: str, fcif: 'FCIF') -> None:
 def process_campaign(
     input_file: str,
     output_file: Optional[str] = None,
-    first_mission: Optional[str] = None,
 ) -> bool:
     """
     Core conversion logic for the campaign.
     
     :param input_file: Path to the .fcif file.
     :param output_file: Optional path for the output .fc2 file.
-    :param first_mission: Optional path to the first mission's .fsif file for loadout validation.
     :return: True if successful, False otherwise.
     """
     input_path = Path(input_file)
@@ -444,9 +442,10 @@ def process_campaign(
     if not fcif_data:
         return False
 
-    # Optional: first-mission loadout check
-    if first_mission:
-        check_first_mission_loadout(first_mission, fcif_data)
+    if fcif_data.missions:
+        first_mission_filename = Path(fcif_data.missions[0].filename).stem
+        inferred_fsif_path = input_path.parent / "fsif" / f"{first_mission_filename}.fsif"
+        check_first_mission_loadout(str(inferred_fsif_path), fcif_data)
 
     logger.info(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
@@ -463,24 +462,13 @@ def main():
     parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate File) to FC2 format.")
     parser.add_argument("input", type=str, help="Input .fcif file")
     parser.add_argument("-o", "--output", type=str, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
-    parser.add_argument(
-        "--first-mission",
-        dest="first_mission",
-        type=str,
-        default=None,
-        help=(
-            "Path to the first mission's .fsif file. "
-            "When provided, the converter checks that all ship classes and weapons used "
-            "in that mission are present in starting_loadout and warns about any that are missing."
-        ),
-    )
 
     args = parser.parse_args()
 
     # Configure root logger for CLI
     logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
-    success = process_campaign(args.input, args.output, first_mission=args.first_mission)
+    success = process_campaign(args.input, args.output)
     if not success:
         sys.exit(1)
 
