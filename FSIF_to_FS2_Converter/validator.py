@@ -748,6 +748,7 @@ class Validator:
                 return
                 
             points = [start_pos] + self.mission.waypoints[path_name]
+            collisions = {}
             
             for i in range(len(points) - 1):
                 p1 = points[i]
@@ -776,11 +777,16 @@ class Validator:
                     safe_dist = my_radius + obs['radius']
                     
                     if dist < safe_dist:
-                        self.log_warning(
-                            f"{entity_type} '{entity_name}' waypoint path '{path_name}' passes very close "
-                            f"({dist:.1f}m) to ship '{obs['name']}' (estimated safe radius {safe_dist:.1f}m). "
-                            f"This is likely to cause a collision during waypoint movement."
-                        )
+                        if obs['name'] not in collisions or dist < collisions[obs['name']][0]:
+                            collisions[obs['name']] = (dist, safe_dist)
+
+            if collisions:
+                details = ", ".join(f"ship '{name}' (distance {d:.1f}m, estimated safe radius {sd:.1f}m)" for name, (d, sd) in collisions.items())
+                self.log_warning(
+                    f"{entity_type} '{entity_name}' waypoint path '{path_name}' passes very close "
+                    f"to the initial location of {details}. "
+                    f"This could cause a collision during waypoint movement."
+                )
 
         # 2. Check standalone ships
         for s in self.mission.ships:
