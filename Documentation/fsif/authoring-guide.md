@@ -605,6 +605,9 @@ Use this section as a practical sanity guide: each item describes the preferred 
 - Keep docking leadership coherent: the dockee should be the arrival leader with `( true )`, and the docker should use `( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
 - Keep reinforcements callable by not giving them a blocking `arrival_cue`. Reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `( true )`.
 
+### Collision checks for waypoint paths
+- The Converter checks for potential collisions between larger ships moving along waypoint paths and **initial positions** of other larger ships. This check can produce spurious warnings because it does not account for the fact that ships may move from their initial positions during the mission. Always consider the planned mission flow movement of the referenced ships when reviewing these collision warnings.
+
 ### Final review before conversion
 After completing a mission file, do one deliberate review pass and confirm that:
 - all referenced tokens are canonical and documented
