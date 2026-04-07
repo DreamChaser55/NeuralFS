@@ -18,7 +18,7 @@ This agent brainstorms and iteratively writes the campaign description in natura
 
 This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: *FreeSpace Intermediate File (FSIF)*. This format is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with lots of redundant fields and boilerplate. An AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window. Also, YAML is much more common in the LLM training data than `.fs2` files. This is why it is better to use a more concise and compact intermediate format.
 
-The agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and branching logic.
+The agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
 
 This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script.
 
@@ -37,7 +37,7 @@ For details, see `\FSIF_to_FS2_Converter\README.md`.
 ### FCIF to FC2 Converter
 
 This Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
-The converter validates the FCIF input, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
+The converter validates the FCIF input, generates S-expression (SEXP) logic for mission progression (success/failure conditions), and writes the final `.fc2` file.
 
 This converter script also has both interfaces: CLI suitable for use by AI agents and GUI for use by humans.
 
@@ -67,6 +67,7 @@ Read the manual based on your chosen agentic AI engine:
   - Turret weapons cannot be changed.
   - Briefing icon placement is simplified and uses top-down 2D grid and automatic camera placement.
   - Event chaining is not supported.
+  - Branched campaigns are not supported.
 
 ## Example missions
 - `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
