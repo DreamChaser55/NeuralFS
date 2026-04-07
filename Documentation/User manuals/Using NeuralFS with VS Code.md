@@ -3,8 +3,8 @@
 This guide will walk you through the campaign creation process with NeuralFS using the VS Code agentic AI engine.
 
 ## Phase 1: Creative Writing
-1. Open the NeuralFS folder with Visual Studio Code. Roo Code or Kilo Code extension should automatically load the three AI agent definitions (defined in `.roomodes` and `.kilocodemodes` files).
-2. Open the Roo Code or Kilo Code extension.
+1. Open the NeuralFS folder with Visual Studio Code. Roo Code extension should automatically load the three AI agent definitions (defined in the `.roomodes` file).
+2. Open the Roo Code extension.
 3. Select the "Freespace Creative Writing Agent" as the interaction mode.
 4. Copy the initial prompt from `VS Code prompts/freespace creative writing agent.txt`.
 5. Add your campaign concept into the prompt. If you don't want the agent to work fully autonomously, delete the "Work autonomously." line (the agent will then ask for your approval after completing each significant phase of the work).
@@ -13,7 +13,7 @@ This guide will walk you through the campaign creation process with NeuralFS usi
 Note: Using AI for this phase is optional, of course. If you don't want to outsource your creativity to the AI, you can write your own Campaign Bible and mission design documents, then proceed to the next phase.
 
 ## Phase 2: FSIF and FCIF Writing and Converting
-1. Start a new task in Roo Code/Kilo Code. Switch the interation mode to "FSIF+FCIF Writing Agent".
+1. Start a new task in Roo Code. Switch the interation mode to "FSIF+FCIF Writing Agent".
 2. Copy the initial prompt from `VS Code prompts/fsif+fcif writing agent.txt`.
 3. Replace the "<campaign_folder>" string in the prompt with the name of the campaign folder created by the creative writing agent.
 4. Send the prompt and wait until the Agent completes its work. Afterwards, there should be:
