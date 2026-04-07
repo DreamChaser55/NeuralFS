@@ -47,8 +47,8 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 - One of these agentic AI engines:
   - Visual Studio Code with Roo Code extension
   - Opencode
-- Requirements of the FSIF to FS2 Converter: see `\FSIF_to_FS2_Converter\README.md`
-- Requirements of the FCIF to FC2 Converter: see `\FCIF_to_FC2_Converter\README.md`
+- PyYAML
+- pydantic
 
 ## Documentation for AI agents
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.
