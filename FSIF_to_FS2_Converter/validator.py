@@ -643,6 +643,8 @@ class Validator:
                 
         for s in self.mission.ships:
             radius = self._get_ship_approx_radius(s.ship_class)
+            if radius <= 50.0:
+                continue
             obstacles.append({
                 'name': s.name,
                 'pos': s.location,
@@ -704,25 +706,9 @@ class Validator:
                 if match:
                     path_name = match.group(1)
                     my_radius = self._get_ship_approx_radius(s.ship_class)
+                    if my_radius <= 50.0:
+                        continue
                     check_path_for_collisions("Ship", s.name, s.location, my_radius, path_name)
-                    
-        # 3. Check wings
-        for w in self.mission.wings:
-            if w.ai_goals:
-                match = wp_regex.search(w.ai_goals)
-                if match:
-                    path_name = match.group(1)
-                    # Use wing position or first ship's location
-                    start_pos = w.position
-                    if start_pos is None and w.ships:
-                        start_pos = w.ships[0].location
-                        
-                    if start_pos is not None:
-                        # Estimate wing radius (use leader's radius)
-                        my_radius = 50.0
-                        if w.ships:
-                            my_radius = self._get_ship_approx_radius(w.ships[0].ship_class)
-                        check_path_for_collisions("Wing", w.name, start_pos, my_radius, path_name)
 
     def validate_ships(self):
         """

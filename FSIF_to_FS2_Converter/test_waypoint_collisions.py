@@ -16,7 +16,7 @@ class TestWaypointCollisions(unittest.TestCase):
         # Moving ship at the origin
         ship_moving = Ship(
             name="Alpha 1", 
-            **{"class": "GTF Apollo"}, # using dict unpacking for 'class' alias
+            **{"class": "GTC Fenris"}, # using dict unpacking for 'class' alias
             team="Friendly", 
             location=[0.0, 0.0, 0.0], 
             ai_goals='( ai-waypoints "Path1" )'
@@ -59,7 +59,7 @@ class TestWaypointCollisions(unittest.TestCase):
         
         ship_moving = Ship(
             name="Alpha 1", 
-            **{"class": "GTF Apollo"},
+            **{"class": "GTC Fenris"},
             team="Friendly", 
             location=[0.0, 0.0, 0.0], 
             ai_goals='( ai-waypoints "Path1" )'
