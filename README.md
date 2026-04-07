@@ -37,7 +37,7 @@ For details, see `\FSIF_to_FS2_Converter\README.md`.
 ### FCIF to FC2 Converter
 
 This Python script converts campaign definition files from the FCIF format into the `.fc2` campaign format expected by FSO.
-The converter validates the FCIF input using Pydantic, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
+The converter validates the FCIF input, generates S-expression (SEXP) logic for mission progression (including conditional and unconditional branching), and writes the final `.fc2` file.
 
 This converter script also has both interfaces: CLI suitable for use by AI agents and GUI for use by humans.
 
