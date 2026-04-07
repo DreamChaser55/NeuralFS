@@ -634,6 +634,31 @@ class Validator:
         # Extracts the path name, stripping quotes if present
         wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+"?([^"\s)]+)"?', re.IGNORECASE)
 
+        ship_map = {s.name: s for s in self.mission.ships}
+
+        def get_effective_initial_location(ship_name, visited=None):
+            if visited is None:
+                visited = set()
+            if ship_name in visited:
+                return None
+            visited.add(ship_name)
+            
+            s = ship_map.get(ship_name)
+            if not s:
+                return None
+                
+            arr_loc = s.arrival_location.strip().lower()
+            if arr_loc == "hyperspace":
+                return s.location
+            elif arr_loc == "docking bay":
+                if s.arrival_anchor:
+                    anchor_loc = get_effective_initial_location(s.arrival_anchor, visited)
+                    if anchor_loc is not None:
+                        return anchor_loc
+                return s.location
+            else:
+                return None
+
         # 1. Collect all stationary or existing objects to check against
         obstacles = []
         wing_members = set()
@@ -645,9 +670,12 @@ class Validator:
             radius = self._get_ship_approx_radius(s.ship_class)
             if radius <= 50.0:
                 continue
+            eff_loc = get_effective_initial_location(s.name)
+            if eff_loc is None:
+                continue
             obstacles.append({
                 'name': s.name,
-                'pos': s.location,
+                'pos': eff_loc,
                 'radius': radius,
                 'is_wing_member': s.name in wing_members
             })
@@ -708,7 +736,10 @@ class Validator:
                     my_radius = self._get_ship_approx_radius(s.ship_class)
                     if my_radius <= 50.0:
                         continue
-                    check_path_for_collisions("Ship", s.name, s.location, my_radius, path_name)
+                    eff_loc = get_effective_initial_location(s.name)
+                    if eff_loc is None:
+                        continue
+                    check_path_for_collisions("Ship", s.name, eff_loc, my_radius, path_name)
 
     def validate_ships(self):
         """
