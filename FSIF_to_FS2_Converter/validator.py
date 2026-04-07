@@ -758,6 +758,17 @@ class Validator:
                     if obs['name'] == entity_name:
                         continue
                         
+                    # Exclude collision checks between a ship and its arrival anchor
+                    # if the ship starts in the anchor's docking bay
+                    entity_ship = ship_map.get(entity_name)
+                    obs_ship = ship_map.get(obs['name'])
+                    
+                    if entity_ship and entity_ship.arrival_location.strip().lower() == "docking bay" and entity_ship.arrival_anchor == obs['name']:
+                        continue
+                        
+                    if obs_ship and obs_ship.arrival_location.strip().lower() == "docking bay" and obs_ship.arrival_anchor == entity_name:
+                        continue
+
                     # Calculate distance
                     dist = point_segment_distance(obs['pos'], p1, p2)
                     
