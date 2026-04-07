@@ -325,6 +325,7 @@ class Validator:
         self.validate_environment()
         self.validate_mission_scale_recommendations()
         self.validate_3d_mission_design()
+        self.validate_waypoint_collisions()
         self.validate_ships()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
@@ -607,6 +608,121 @@ class Validator:
                 "Spreading objects in the third dimension (Y-axis) creates more interesting 3D missions "
                 "and prevents unintended collisions."
             )
+
+    def _get_ship_approx_radius(self, ship_class: str) -> float:
+        """Estimate the collision radius of a ship based on its class prefix."""
+        cls = ship_class.upper()
+        if any(p in cls for p in ['GTI', 'PVI', 'BASE', 'INSTALLATION']):
+            return 1000.0
+        if any(cls.startswith(p) for p in ['GTD', 'PVD', 'SD']):
+            return 600.0
+        if any(cls.startswith(p) for p in ['GTC', 'PVC', 'SC', 'GTSC', 'PVSC']):
+            return 150.0
+        if any(cls.startswith(p) for p in ['GTFR', 'PVFR', 'SFR', 'GTT', 'PVT', 'ST']):
+            return 150.0
+        return 50.0
+
+    def validate_waypoint_collisions(self):
+        """
+        Check if ship/wing waypoint move orders are likely to cause a collision 
+        with another ship or station in the mission.
+        """
+        import re
+        import math
+
+        # Regex to find ai-waypoints and ai-waypoints-once
+        # Extracts the path name, stripping quotes if present
+        wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+"?([^"\s)]+)"?', re.IGNORECASE)
+
+        # 1. Collect all stationary or existing objects to check against
+        obstacles = []
+        wing_members = set()
+        for w in self.mission.wings:
+            for s in w.ships:
+                wing_members.add(s.name)
+                
+        for s in self.mission.ships:
+            radius = self._get_ship_approx_radius(s.ship_class)
+            obstacles.append({
+                'name': s.name,
+                'pos': s.location,
+                'radius': radius,
+                'is_wing_member': s.name in wing_members
+            })
+
+        def point_segment_distance(p, a, b):
+            """Calculate the shortest distance from point p to line segment a-b."""
+            ab = [b[0]-a[0], b[1]-a[1], b[2]-a[2]]
+            ap = [p[0]-a[0], p[1]-a[1], p[2]-a[2]]
+            
+            ab_len_sq = ab[0]**2 + ab[1]**2 + ab[2]**2
+            if ab_len_sq == 0:
+                # a and b are the same point
+                return math.sqrt(ap[0]**2 + ap[1]**2 + ap[2]**2)
+                
+            t = (ap[0]*ab[0] + ap[1]*ab[1] + ap[2]*ab[2]) / ab_len_sq
+            t = max(0.0, min(1.0, t))
+            
+            closest = [a[0] + t*ab[0], a[1] + t*ab[1], a[2] + t*ab[2]]
+            dist = math.sqrt((p[0]-closest[0])**2 + (p[1]-closest[1])**2 + (p[2]-closest[2])**2)
+            return dist
+
+        def check_path_for_collisions(entity_type, entity_name, start_pos, my_radius, path_name):
+            if path_name not in self.mission.waypoints:
+                return
+                
+            points = [start_pos] + self.mission.waypoints[path_name]
+            
+            for i in range(len(points) - 1):
+                p1 = points[i]
+                p2 = points[i+1]
+                
+                for obs in obstacles:
+                    # Don't collide with yourself
+                    if obs['name'] == entity_name:
+                        continue
+                        
+                    # Calculate distance
+                    dist = point_segment_distance(obs['pos'], p1, p2)
+                    
+                    # Safe distance is the sum of radii plus a small buffer
+                    safe_dist = my_radius + obs['radius'] + 20.0
+                    
+                    if dist < safe_dist:
+                        self.log_warning(
+                            f"{entity_type} '{entity_name}' waypoint path '{path_name}' passes very close "
+                            f"({dist:.1f}m) to ship '{obs['name']}' (estimated safe radius {safe_dist:.1f}m). "
+                            f"This is likely to cause a collision during waypoint movement."
+                        )
+
+        # 2. Check standalone ships
+        for s in self.mission.ships:
+            if s.name in wing_members:
+                continue
+            if s.ai_goals:
+                match = wp_regex.search(s.ai_goals)
+                if match:
+                    path_name = match.group(1)
+                    my_radius = self._get_ship_approx_radius(s.ship_class)
+                    check_path_for_collisions("Ship", s.name, s.location, my_radius, path_name)
+                    
+        # 3. Check wings
+        for w in self.mission.wings:
+            if w.ai_goals:
+                match = wp_regex.search(w.ai_goals)
+                if match:
+                    path_name = match.group(1)
+                    # Use wing position or first ship's location
+                    start_pos = w.position
+                    if start_pos is None and w.ships:
+                        start_pos = w.ships[0].location
+                        
+                    if start_pos is not None:
+                        # Estimate wing radius (use leader's radius)
+                        my_radius = 50.0
+                        if w.ships:
+                            my_radius = self._get_ship_approx_radius(w.ships[0].ship_class)
+                        check_path_for_collisions("Wing", w.name, start_pos, my_radius, path_name)
 
     def validate_ships(self):
         """
