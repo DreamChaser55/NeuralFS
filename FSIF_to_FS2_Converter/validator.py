@@ -685,8 +685,8 @@ class Validator:
                     # Calculate distance
                     dist = point_segment_distance(obs['pos'], p1, p2)
                     
-                    # Safe distance is the sum of radii plus a small buffer
-                    safe_dist = my_radius + obs['radius'] + 20.0
+                    # Safe distance is the sum of radii
+                    safe_dist = my_radius + obs['radius']
                     
                     if dist < safe_dist:
                         self.log_warning(
