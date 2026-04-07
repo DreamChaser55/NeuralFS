@@ -29,18 +29,17 @@
 **Note on "Neutral" IFF team:**
 FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second Hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team. Use "Friendly", "Hostile" or "Unknown" for all ships, objects or briefing icons.
 
-
-Context: `$Team`, `$IFF`.
+Context: `team`.
 
 ### Arrival/Departure Locations
 
 #### Arrival and Departure
 - Hyperspace
 - Docking Bay
-  - must have a docking bay anchor (`$Arrival Anchor` / `$Departure Anchor`)
-  - `+Arrival Distance` with a docking bay is 0.
+  - must have a ship as docking bay anchor (`arrival_anchor` / `departure_anchor`)
+  - `arrival_distance` is forced to `0` with Docking Bay and should be omitted.
 
-Context:  `$Arrival Location`, `$Departure Location`.
+Context:  `arrival_location`, `departure_location`.
 
 #### Arrival-only
 - Near Ship
@@ -51,8 +50,8 @@ Context:  `$Arrival Location`, `$Departure Location`.
 - To left of ship
 - To right of ship
 
-Context: `$Arrival Location`.
-Requires `+Arrival Distance` and a ship `$Arrival Anchor`.
+Context: `arrival_location`.
+Requires `arrival_distance` and a ship `arrival_anchor`.
 
 ### Message priorities
 - "Low"

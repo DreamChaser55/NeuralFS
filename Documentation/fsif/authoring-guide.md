@@ -458,7 +458,7 @@ The maximum possible quantities needed to fully equip all available banks of all
 
 ## Directional arrivals quick reference
 - Directional arrival_location requires both arrival_anchor and arrival_distance.
-- Docking Bay typically uses arrival_distance 0.
+- Docking Bay: in this case `arrival_distance` is forced to `0` and should be omitted.
 - For wildcard anchors, use exact literals like "<any friendly player>".
 
 ## Maximum mission scale recommendation

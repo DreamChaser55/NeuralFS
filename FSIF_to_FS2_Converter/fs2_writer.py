@@ -414,10 +414,12 @@ class FS2Writer:
             
             arr_loc_norm = ship.arrival_location.strip().lower()
             if arr_loc_norm != "hyperspace":
-                 if ship.arrival_distance is not None:
-                     self._write(f'+Arrival Distance: {ship.arrival_distance}')
-                 if ship.arrival_anchor:
-                     self._write(f'$Arrival Anchor: {ship.arrival_anchor}')
+                if arr_loc_norm == "docking bay":
+                    self._write(f'+Arrival Distance: 0')
+                elif ship.arrival_distance is not None:
+                    self._write(f'+Arrival Distance: {ship.arrival_distance}')
+                if ship.arrival_anchor:
+                    self._write(f'$Arrival Anchor: {ship.arrival_anchor}')
             
             if ship.arrival_delay > 0:
                  self._write(f'+Arrival Delay: {ship.arrival_delay}')
@@ -516,11 +518,14 @@ class FS2Writer:
 
             self._write(f'$Arrival Location: {wing.arrival_location}')
             
-            if wing.arrival_location.strip().lower() != "hyperspace":
-                 if wing.arrival_distance is not None:
-                     self._write(f'+Arrival Distance: {wing.arrival_distance}')
-                 if wing.arrival_anchor:
-                     self._write(f'$Arrival Anchor: {wing.arrival_anchor}')
+            arr_loc_norm_w = wing.arrival_location.strip().lower()
+            if arr_loc_norm_w != "hyperspace":
+                if arr_loc_norm_w == "docking bay":
+                    self._write(f'+Arrival Distance: 0')
+                elif wing.arrival_distance is not None:
+                    self._write(f'+Arrival Distance: {wing.arrival_distance}')
+                if wing.arrival_anchor:
+                    self._write(f'$Arrival Anchor: {wing.arrival_anchor}')
             
             if wing.arrival_delay > 0:
                  self._write(f'+Arrival delay: {wing.arrival_delay}')
