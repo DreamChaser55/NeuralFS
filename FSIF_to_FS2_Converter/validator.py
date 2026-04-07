@@ -492,9 +492,52 @@ class Validator:
         It covers:
         - distances between positioned mission objects (standalone ships, wing centroids, jump nodes, waypoint points)
         - authored arrival_distance values on ships and wings that reference an arrival_anchor
+
+        Arrival location awareness:
+        - "Hyperspace" (default): the authored location/position field is used directly.
+        - "Docking Bay": the object's effective position is inherited from its arrival_anchor ship
+          (resolved recursively, with cycle detection).
+        - Any directional arrival (e.g. "Near Ship", "In front of ship"): the object is excluded
+          from distance checks because it has no definite initial position.
         """
         limit_m = self._MISSION_SCALE_RECOMMENDATION_METERS
         limit_km = limit_m / 1000.0
+
+        # Build a ship-name → Ship lookup for arrival_anchor resolution.
+        ship_map = {s.name: s for s in self.mission.ships}
+
+        def resolve_effective_position(arrival_location, arrival_anchor, own_position, visited=None):
+            """
+            Return the effective starting position of a ship or wing, taking arrival_location
+            into account.  Returns None when the object has no definite initial position and
+            should therefore be excluded from distance checks.
+            """
+            arr_loc = (arrival_location or "Hyperspace").strip().lower()
+
+            if arr_loc == "hyperspace":
+                return own_position
+
+            if arr_loc == "docking bay":
+                if not arrival_anchor:
+                    return None  # Malformed; skip
+                if visited is None:
+                    visited = set()
+                if arrival_anchor in visited:
+                    return None  # Cycle guard
+                visited.add(arrival_anchor)
+                anchor_ship = ship_map.get(arrival_anchor)
+                if anchor_ship is None:
+                    return None  # Anchor not found; skip
+                return resolve_effective_position(
+                    anchor_ship.arrival_location,
+                    anchor_ship.arrival_anchor,
+                    anchor_ship.location,
+                    visited,
+                )
+
+            # Any other directional arrival_location (e.g. "Near Ship", "In front of ship"):
+            # the object spawns relative to a moving anchor — no definite initial position.
+            return None
 
         positioned_objects = []
         distance_violations = []
@@ -507,16 +550,19 @@ class Validator:
         for ship in self.mission.ships:
             if ship.name in wing_member_names:
                 continue
-            positioned_objects.append(("Ship", ship.name, ship.location))
+            eff_pos = resolve_effective_position(ship.arrival_location, ship.arrival_anchor, ship.location)
+            if eff_pos is not None:
+                positioned_objects.append(("Ship", ship.name, eff_pos))
 
         for wing in self.mission.wings:
-            wing_position = wing.position
-            if wing_position is None and wing.ships:
+            wing_own_position = wing.position
+            if wing_own_position is None and wing.ships:
                 # Defensive fallback: use the leader position if the authored wing centroid is unexpectedly unavailable.
-                wing_position = wing.ships[0].location
+                wing_own_position = wing.ships[0].location
 
-            if wing_position is not None:
-                positioned_objects.append(("Wing", wing.name, wing_position))
+            eff_pos = resolve_effective_position(wing.arrival_location, wing.arrival_anchor, wing_own_position)
+            if eff_pos is not None:
+                positioned_objects.append(("Wing", wing.name, eff_pos))
 
         for jump_node in self.mission.jump_nodes:
             positioned_objects.append(("Jump Node", jump_node.name, jump_node.position))
