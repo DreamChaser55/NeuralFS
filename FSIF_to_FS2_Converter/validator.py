@@ -325,6 +325,7 @@ class Validator:
         self.validate_environment()
         self.validate_mission_scale_recommendations()
         self.validate_3d_mission_design()
+        self.validate_spawn_collisions()
         self.validate_waypoint_collisions()
         self.validate_ships()
         self.validate_wings()
@@ -654,6 +655,98 @@ class Validator:
                 "Spreading objects in the third dimension (Y-axis) creates more interesting 3D missions "
                 "and prevents unintended collisions."
             )
+
+    def validate_spawn_collisions(self):
+        """
+        Warn if ships or wings that arrive via Hyperspace spawn too close to each other.
+        """
+        positioned_objects = []
+        wing_members = set()
+
+        # Collect wing members
+        for w in self.mission.wings:
+            for s in w.ships:
+                wing_members.add(s.name)
+
+        # 1. Collect all standalone ships arriving via Hyperspace
+        for s in self.mission.ships:
+            if s.name in wing_members:
+                continue
+            
+            arr_loc = s.arrival_location.strip().lower()
+            if arr_loc != "hyperspace":
+                continue
+                
+            radius = self._get_ship_approx_radius(s.ship_class)
+            positioned_objects.append({
+                'type': 'Ship',
+                'name': s.name,
+                'pos': s.location,
+                'radius': radius,
+                'docked_with': s.docked_with
+            })
+
+        # 2. Collect all wings arriving via Hyperspace
+        for w in self.mission.wings:
+            arr_loc = w.arrival_location.strip().lower()
+            if arr_loc != "hyperspace":
+                continue
+                
+            # Use wing position, fallback to leader's position
+            pos = w.position
+            if pos is None and w.ships:
+                pos = w.ships[0].location
+                
+            if pos is None:
+                continue
+
+            # Estimate wing radius using the first ship's class
+            radius = 50.0  # default
+            if w.ships:
+                # Add extra padding for wing spread (FSIF converter uses 50m spacing by default)
+                # We'll just add an extra 100m to the leader's radius to account for wing spread roughly
+                leader_radius = self._get_ship_approx_radius(w.ships[0].ship_class)
+                radius = leader_radius + 100.0
+
+            positioned_objects.append({
+                'type': 'Wing',
+                'name': w.name,
+                'pos': pos,
+                'radius': radius,
+                'docked_with': None # Wings can't be pre-spawn docked
+            })
+
+        collisions = []
+
+        # 3. Pairwise check
+        for i in range(len(positioned_objects)):
+            obj_a = positioned_objects[i]
+            for j in range(i + 1, len(positioned_objects)):
+                obj_b = positioned_objects[j]
+
+                # Skip if a is explicitly docked to b or vice versa
+                if obj_a['docked_with'] == obj_b['name'] or obj_b['docked_with'] == obj_a['name']:
+                    continue
+
+                dx = float(obj_a['pos'][0]) - float(obj_b['pos'][0])
+                dy = float(obj_a['pos'][1]) - float(obj_b['pos'][1])
+                dz = float(obj_a['pos'][2]) - float(obj_b['pos'][2])
+                dist = math.sqrt(dx * dx + dy * dy + dz * dz)
+
+                safe_dist = obj_a['radius'] + obj_b['radius']
+
+                if dist < safe_dist:
+                    collisions.append((obj_a, obj_b, dist, safe_dist))
+
+        if collisions:
+            # Sort by distance for cleaner logging
+            collisions.sort(key=lambda x: x[2])
+            for obj_a, obj_b, dist, safe_dist in collisions:
+                self.log_warning(
+                    f"Mission design recommendation: {obj_a['type']} '{obj_a['name']}' spawns very close to "
+                    f"{obj_b['type']} '{obj_b['name']}' (distance {dist:.1f}m, estimated safe distance {safe_dist:.1f}m). "
+                    f"Both objects arrive via Hyperspace at static locations. This may cause an immediate collision upon mission start or arrival."
+                )
 
     def _get_ship_approx_radius(self, ship_class: str) -> float:
         """Estimate the collision radius of a ship based on its class prefix."""
