@@ -216,7 +216,7 @@ class Validator:
             self._validate_ascii_text(f'{prefix}.class', ship.ship_class)
             self._validate_ascii_text(f'{prefix}.team', ship.team)
             self._validate_ascii_text(f'{prefix}.ai_class', ship.ai_class)
-            self._validate_xstr_text(f'{prefix}.cargo_1', ship.cargo_1)
+            self._validate_xstr_text(f'{prefix}.cargo', ship.cargo)
             self._validate_ascii_text(f'{prefix}.arrival_location', ship.arrival_location)
             self._validate_ascii_text(f'{prefix}.arrival_anchor', ship.arrival_anchor)
             self._validate_ascii_text(f'{prefix}.arrival_cue', ship.arrival_cue)

@@ -127,10 +127,8 @@
 - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`.
 - `location` (List[Float], required for `ships`). Format: `[x, y, z]`.
 - `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats.
-- `iff` (String, optional, default: `"IFF 1"`)
-- `ai_behavior` (String, optional, default: `"None"`)
 - `ai_class` (String, optional)
-- `cargo_1` (String, optional, default: `"Nothing"`)
+- `cargo` (String, optional, default: `"Nothing"`)
 - `initial_velocity` (Integer, optional, default: `33`)
 - `initial_hull` (Integer, optional, default: `100`)
 - `arrival_location` (String, optional, default: `"Hyperspace"`)
@@ -141,10 +139,8 @@
 - `departure_location` (String, optional, default: `"Hyperspace"`)
 - `departure_anchor` (String, optional)
 - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
-- `determination` (Integer, optional, default: `10`)
 - `flags` (List[String], optional, default: `["cargo-known"]`)
 - `respawn_priority` (Integer, optional, default: `0`)
-- `score` (Integer, optional, default: `12`)
 - `subsystems` (Mapping, optional). Keys: `status` (`"all_ok"` or `"custom"`), `list` (List of `{name, health}`).
 - `weapons` (Mapping, optional). Keys: `primary` (List), `secondary` (List).
 - `dock` (Mapping, optional). Keys: `with`, `docker_point`, `dockee_point`.

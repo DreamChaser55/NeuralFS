@@ -165,7 +165,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       ai_class: "General"
-      flags: ["cargo-known"]
+      flags: ["no-shields"]
       weapons:
         primary: ["Prometheus", "Avenger"]
         secondary: ["Hornet"]
@@ -174,7 +174,7 @@ entities:
       class: "GTSC Faustus"
       team: "Friendly"
       location: [542.6, 699.5, 1305.4]
-      flags: ["no-shields", "escort"]
+      flags: ["cargo-known", "escort"]
       arrival_cue: |
         ( true )
       departure_cue: |

@@ -344,10 +344,8 @@ class Ship(BaseModel):
     ])
     
     # Optional props with defaults
-    iff: str = 'IFF 1'
-    ai_behavior: str = 'None'
     ai_class: Optional[str] = None
-    cargo_1: str = 'Nothing'
+    cargo: str = 'Nothing'
     initial_velocity: int = 33
     initial_hull: int = 100
     
@@ -361,7 +359,6 @@ class Ship(BaseModel):
     departure_anchor: Optional[str] = None
     departure_cue: str = '( false )'
     
-    determination: int = 10
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
     flags2: List[str] = Field(default_factory=list)
     

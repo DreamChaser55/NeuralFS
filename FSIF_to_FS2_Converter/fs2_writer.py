@@ -376,7 +376,7 @@ class FS2Writer:
             if ship.ai_goals:
                 self._write(f'$AI Goals: {self._format_sexp_inline(ship.ai_goals)}')
             
-            self._write(f'$Cargo 1:  {self._write_xstr(ship.cargo_1)}')
+            self._write(f'$Cargo 1:  {self._write_xstr(ship.cargo)}')
             self._write(f'+Initial Velocity: {ship.initial_velocity}')
             self._write(f'+Initial Hull: {ship.initial_hull}')
             
@@ -432,7 +432,7 @@ class FS2Writer:
                      self._write(f'$Departure Anchor: {ship.departure_anchor}')
             
             self._write(f'$Departure Cue: {ship.departure_cue}')
-            self._write(f'$Determination: {ship.determination}')
+            self._write(f'$Determination: 10')
 
             # Flags (mapped in fs_flags_constants)
 

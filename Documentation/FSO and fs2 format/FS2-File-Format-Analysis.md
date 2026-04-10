@@ -193,7 +193,7 @@ Note: Message `$Name` is referenced by send-message SEXP; sender strings may be 
 
 ### Observed per-ship/wing/mission property keys
 Ships (#Objects):
-- $Name, $Class, $Team, $Location, $Orientation, $IFF, $AI Behavior, +AI Class
+- $Name, $Class, $Team, $Location, $Orientation, +AI Class
 - $AI Goals: ( goals ... )
 - $Cargo 1: XSTR(...) (cargo label)
 - +Initial Velocity, +Initial Hull, +Initial Shields
