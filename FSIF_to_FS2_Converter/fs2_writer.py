@@ -4,6 +4,7 @@
 import textwrap
 import logging
 from data_models import Mission, DEFAULT_ORIENTATION, DEFAULT_KAMIKAZE_DAMAGE, pack_ambient_light_rgb
+from utils import calculate_briefing_camera_height
 import fs_flags_constants
 import fs_data
 import math
@@ -154,8 +155,59 @@ class FS2Writer:
         self._write('+Hull Repair Ceiling: 0.000000')
         self._write('+Subsystem Repair Ceiling: 100.000000')
 
-        self._write('+Viewer pos: 0.000000, 150.000000, -200.000000')
-        self._write(f'+Viewer orient:\n{self._format_matrix(DEFAULT_ORIENTATION)}')
+        # Calculate FRED camera position
+        # Find the center of the mission based on all ships, waypoints, jump nodes, and asteroid field bounds. Then calculate a suitable camera height by reusing the calculate_briefing_camera_height function.
+        
+        x_values = []
+        y_values = []
+        z_values = []
+        
+        # Add ships
+        for ship in self.mission.ships:
+            x_values.append(ship.location[0])
+            y_values.append(ship.location[1])
+            z_values.append(ship.location[2])
+            
+        # Add waypoints
+        for path in self.mission.waypoints.values():
+            for point in path:
+                x_values.append(point[0])
+                y_values.append(point[1])
+                z_values.append(point[2])
+                
+        # Add jump nodes
+        for jn in self.mission.jump_nodes:
+            x_values.append(jn.position[0])
+            y_values.append(jn.position[1])
+            z_values.append(jn.position[2])
+            
+        # Add asteroid field bounds
+        ast = self.mission.environment.asteroid_field
+        if ast:
+            x_values.extend([ast.min_vec[0], ast.max_vec[0]])
+            y_values.extend([ast.min_vec[1], ast.max_vec[1]])
+            z_values.extend([ast.min_vec[2], ast.max_vec[2]])
+
+        if not x_values:
+            center_x, cam_y, center_z = 0.0, 2000.0, 0.0
+        else:
+            x_min = min(x_values)
+            x_max = max(x_values)
+            y_max = max(y_values)
+            z_min = min(z_values)
+            z_max = max(z_values)
+            
+            center_x = (x_min + x_max) / 2.0
+            center_z = (z_min + z_max) / 2.0
+            
+            delta_x = x_max - x_min
+            delta_z = z_max - z_min
+            
+            cam_y = calculate_briefing_camera_height(delta_x, delta_z) + y_max
+
+        self._write(f'+Viewer pos: {center_x:.6f}, {cam_y:.6f}, {center_z:.6f}')
+        top_down_orient = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0]
+        self._write(f'+Viewer orient:\n{self._format_matrix(top_down_orient)}')
         
         self._write(f'\n$AI Profile: {info.ai_profile}')
 
