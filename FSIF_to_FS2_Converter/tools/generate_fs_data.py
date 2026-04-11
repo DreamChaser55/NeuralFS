@@ -277,6 +277,48 @@ def parse_hardpoints() -> Dict[str, Dict[str, int]]:
                 
     return hardpoints
 
+def parse_ship_bounding_boxes() -> Dict[str, Dict[str, List[float]]]:
+    path = FSO_DOC_DIR / "ship_bounding_boxes.md"
+    bounding_boxes = {}
+    
+    if not path.exists():
+        print(f"[Warning] Ship bounding boxes file not found: {path}")
+        return bounding_boxes
+        
+    content = path.read_text(encoding="utf-8")
+    lines = content.splitlines()
+    
+    current_ship = None
+    min_coords = None
+    
+    for line in lines:
+        line = line.strip()
+        if not line: continue
+        
+        if line.startswith("## Schema"):
+            continue
+            
+        if line.startswith("## "):
+            current_ship = line[3:].strip()
+            min_coords = None
+        elif current_ship:
+            try:
+                coords = [float(x.strip()) for x in line.split(",")]
+                if len(coords) == 3:
+                    if min_coords is None:
+                        min_coords = coords
+                    else:
+                        bounding_boxes[current_ship] = {
+                            "min": min_coords,
+                            "max": coords
+                        }
+                        current_ship = None
+                        min_coords = None
+            except ValueError:
+                print(f"[Warning] Invalid coordinate line for {current_ship}: {line}")
+                
+    return bounding_boxes
+
 def generate_file():
     print("Parsing documentation...")
     tokens = parse_tokens_reference()
@@ -292,6 +334,7 @@ def generate_file():
     hardpoints = parse_hardpoints()
     sbank_capacities = parse_secondary_capacities()
     weapon_sizes = parse_weapon_sizes()
+    bounding_boxes = parse_ship_bounding_boxes()
     
     # Combined collections
     backgrounds = tokens["suns"] | tokens["planets"] | tokens["nebulae_bitmaps"]
@@ -413,6 +456,14 @@ def generate_file():
         f.write("WEAPON_CARGO_SIZES = {\n")
         for weapon, size in sorted(weapon_sizes.items()):
             f.write(f"    {weapon!r}: {size},\n")
+        f.write("}\n\n")
+
+        # Ship Bounding Boxes
+        f.write("# --- 9. Ship Bounding Boxes ---\n")
+        f.write("# Mapping Class -> {'min': [x, y, z], 'max': [x, y, z]}\n")
+        f.write("SHIP_BOUNDING_BOXES = {\n")
+        for ship, box in sorted(bounding_boxes.items()):
+            f.write(f"    {ship!r}: {box},\n")
         f.write("}\n\n")
     
     print(f"Successfully generated {OUTPUT_FILE}")

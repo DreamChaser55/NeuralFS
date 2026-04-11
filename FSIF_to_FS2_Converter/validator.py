@@ -109,6 +109,9 @@ class Validator:
         # 6. Hardpoints
         self.num_hardpoints = fs_data.NUM_OF_HARDPOINTS
 
+        # 7. Ship bounding boxes
+        self.ship_bounding_boxes = getattr(fs_data, 'SHIP_BOUNDING_BOXES', {})
+
 
     def log_error(self, msg: str):
         self.errors.append(msg)
@@ -677,7 +680,7 @@ class Validator:
             if arr_loc != "hyperspace":
                 continue
                 
-            radius = self._get_ship_approx_radius(s.ship_class)
+            radius = self._get_ship_radius(s.ship_class)
             positioned_objects.append({
                 'type': 'Ship',
                 'name': s.name,
@@ -705,7 +708,7 @@ class Validator:
             if w.ships:
                 # Add extra padding for wing spread (FSIF converter uses 50m spacing by default)
                 # We'll just add an extra 100m to the leader's radius to account for wing spread roughly
-                leader_radius = self._get_ship_approx_radius(w.ships[0].ship_class)
+                leader_radius = self._get_ship_radius(w.ships[0].ship_class)
                 radius = leader_radius + 100.0
 
             positioned_objects.append({
@@ -748,8 +751,19 @@ class Validator:
                     f"Both objects arrive via Hyperspace at static locations. This may cause an immediate collision upon mission start or arrival."
                 )
 
-    def _get_ship_approx_radius(self, ship_class: str) -> float:
-        """Estimate the collision radius of a ship based on its class prefix."""
+    def _get_ship_radius(self, ship_class: str) -> float:
+        """Estimate the collision radius of a ship.
+        First tries to use accurate bounding box data, then falls back to prefix heuristic.
+        """
+        if ship_class in self.ship_bounding_boxes:
+            box = self.ship_bounding_boxes[ship_class]
+            min_x, min_y, min_z = box['min']
+            max_x, max_y, max_z = box['max']
+            # Max distance from center to any corner
+            return math.sqrt(max(abs(min_x), abs(max_x))**2 + 
+                             max(abs(min_y), abs(max_y))**2 + 
+                             max(abs(min_z), abs(max_z))**2)
+            
         cls = ship_class.upper()
         if any(p in cls for p in ['GTI', 'PVI', 'BASE', 'INSTALLATION']):
             return 1000.0
@@ -806,7 +820,7 @@ class Validator:
                 wing_members.add(s.name)
                 
         for s in self.mission.ships:
-            radius = self._get_ship_approx_radius(s.ship_class)
+            radius = self._get_ship_radius(s.ship_class)
             if radius <= 50.0:
                 continue
             eff_loc = get_effective_initial_location(s.name)
@@ -889,7 +903,7 @@ class Validator:
                 match = wp_regex.search(s.ai_goals)
                 if match:
                     path_name = match.group(1)
-                    my_radius = self._get_ship_approx_radius(s.ship_class)
+                    my_radius = self._get_ship_radius(s.ship_class)
                     if my_radius <= 50.0:
                         continue
                     eff_loc = get_effective_initial_location(s.name)
