@@ -680,12 +680,13 @@ class Validator:
             if arr_loc != "hyperspace":
                 continue
                 
-            radius = self._get_ship_radius(s.ship_class)
+            world_min, world_max = self._get_world_aabb(s.ship_class, s.orientation, s.location)
             positioned_objects.append({
                 'type': 'Ship',
                 'name': s.name,
                 'pos': s.location,
-                'radius': radius,
+                'world_min': world_min,
+                'world_max': world_max,
                 'docked_with': s.docked_with
             })
 
@@ -703,19 +704,23 @@ class Validator:
             if pos is None:
                 continue
 
-            # Estimate wing radius using the first ship's class
-            radius = 50.0  # default
+            # Estimate wing bounding box using the first ship's class
             if w.ships:
+                world_min, world_max = self._get_world_aabb(w.ships[0].ship_class, w.ships[0].orientation, pos)
                 # Add extra padding for wing spread (FSIF converter uses 50m spacing by default)
-                # We'll just add an extra 100m to the leader's radius to account for wing spread roughly
-                leader_radius = self._get_ship_radius(w.ships[0].ship_class)
-                radius = leader_radius + 100.0
+                # We'll just add an extra 100m to the AABB to account for wing spread roughly
+                world_min = [v - 100.0 for v in world_min]
+                world_max = [v + 100.0 for v in world_max]
+            else:
+                world_min = [pos[0] - 50.0, pos[1] - 50.0, pos[2] - 50.0]
+                world_max = [pos[0] + 50.0, pos[1] + 50.0, pos[2] + 50.0]
 
             positioned_objects.append({
                 'type': 'Wing',
                 'name': w.name,
                 'pos': pos,
-                'radius': radius,
+                'world_min': world_min,
+                'world_max': world_max,
                 'docked_with': None # Wings can't be pre-spawn docked
             })
 
@@ -731,23 +736,25 @@ class Validator:
                 if obj_a['docked_with'] == obj_b['name'] or obj_b['docked_with'] == obj_a['name']:
                     continue
 
-                dx = float(obj_a['pos'][0]) - float(obj_b['pos'][0])
-                dy = float(obj_a['pos'][1]) - float(obj_b['pos'][1])
-                dz = float(obj_a['pos'][2]) - float(obj_b['pos'][2])
-                dist = math.sqrt(dx * dx + dy * dy + dz * dz)
+                # AABB overlap test
+                overlap_x = obj_a['world_min'][0] < obj_b['world_max'][0] and obj_a['world_max'][0] > obj_b['world_min'][0]
+                overlap_y = obj_a['world_min'][1] < obj_b['world_max'][1] and obj_a['world_max'][1] > obj_b['world_min'][1]
+                overlap_z = obj_a['world_min'][2] < obj_b['world_max'][2] and obj_a['world_max'][2] > obj_b['world_min'][2]
 
-                safe_dist = obj_a['radius'] + obj_b['radius']
-
-                if dist < safe_dist:
-                    collisions.append((obj_a, obj_b, dist, safe_dist))
+                if overlap_x and overlap_y and overlap_z:
+                    dx = float(obj_a['pos'][0]) - float(obj_b['pos'][0])
+                    dy = float(obj_a['pos'][1]) - float(obj_b['pos'][1])
+                    dz = float(obj_a['pos'][2]) - float(obj_b['pos'][2])
+                    dist = math.sqrt(dx * dx + dy * dy + dz * dz)
+                    collisions.append((obj_a, obj_b, dist))
 
         if collisions:
             # Sort by distance for cleaner logging
             collisions.sort(key=lambda x: x[2])
-            for obj_a, obj_b, dist, safe_dist in collisions:
+            for obj_a, obj_b, dist in collisions:
                 self.log_warning(
                     f"Mission design recommendation: {obj_a['type']} '{obj_a['name']}' spawns very close to "
-                    f"{obj_b['type']} '{obj_b['name']}' (distance {dist:.1f}m, estimated safe distance {safe_dist:.1f}m). "
+                    f"{obj_b['type']} '{obj_b['name']}'. Their bounding boxes intersect (center distance {dist:.1f}m). "
                     f"Both objects arrive via Hyperspace at static locations. This may cause an immediate collision upon mission start or arrival."
                 )
 
@@ -774,6 +781,58 @@ class Validator:
         if any(cls.startswith(p) for p in ['GTFR', 'PVFR', 'SFR', 'GTT', 'PVT', 'ST']):
             return 150.0
         return 50.0
+
+    def _get_world_aabb(self, ship_class: str, orientation: List[float], location: List[float]) -> tuple[List[float], List[float]]:
+        """
+        Get the world-space Axis-Aligned Bounding Box (AABB) for a ship given its class, orientation, and location.
+        """
+        # 1. Get local bounding box
+        if ship_class in self.ship_bounding_boxes:
+            box = self.ship_bounding_boxes[ship_class]
+            min_x, min_y, min_z = box['min']
+            max_x, max_y, max_z = box['max']
+        else:
+            r = self._get_ship_radius(ship_class)
+            min_x, min_y, min_z = -r, -r, -r
+            max_x, max_y, max_z = r, r, r
+
+        # 2. Define the 8 corners in local space
+        corners = [
+            [min_x, min_y, min_z],
+            [min_x, min_y, max_z],
+            [min_x, max_y, min_z],
+            [min_x, max_y, max_z],
+            [max_x, min_y, min_z],
+            [max_x, min_y, max_z],
+            [max_x, max_y, min_z],
+            [max_x, max_y, max_z],
+        ]
+
+        # 3. Transform corners to world space using the orientation matrix and location
+        # orientation is a list of 9 floats representing a 3x3 matrix:
+        # [m00, m01, m02,
+        #  m10, m11, m12,
+        #  m20, m21, m22]
+        world_corners = []
+        for c in corners:
+            wx = orientation[0] * c[0] + orientation[1] * c[1] + orientation[2] * c[2] + location[0]
+            wy = orientation[3] * c[0] + orientation[4] * c[1] + orientation[5] * c[2] + location[1]
+            wz = orientation[6] * c[0] + orientation[7] * c[1] + orientation[8] * c[2] + location[2]
+            world_corners.append([wx, wy, wz])
+
+        # 4. Compute the world AABB
+        world_min = [
+            min(c[0] for c in world_corners),
+            min(c[1] for c in world_corners),
+            min(c[2] for c in world_corners),
+        ]
+        world_max = [
+            max(c[0] for c in world_corners),
+            max(c[1] for c in world_corners),
+            max(c[2] for c in world_corners),
+        ]
+
+        return world_min, world_max
 
     def validate_waypoint_collisions(self):
         """
