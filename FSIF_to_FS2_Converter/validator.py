@@ -680,13 +680,12 @@ class Validator:
             if arr_loc != "hyperspace":
                 continue
                 
-            world_min, world_max = self._get_world_aabb(s.ship_class, s.orientation, s.location)
+            obb = self._get_world_obb(s.ship_class, s.orientation, s.location, padding=0.0)
             positioned_objects.append({
                 'type': 'Ship',
                 'name': s.name,
                 'pos': s.location,
-                'world_min': world_min,
-                'world_max': world_max,
+                'obb': obb,
                 'docked_with': s.docked_with
             })
 
@@ -706,21 +705,16 @@ class Validator:
 
             # Estimate wing bounding box using the first ship's class
             if w.ships:
-                world_min, world_max = self._get_world_aabb(w.ships[0].ship_class, w.ships[0].orientation, pos)
-                # Add extra padding for wing spread (FSIF converter uses 50m spacing by default)
-                # We'll just add an extra 100m to the AABB to account for wing spread roughly
-                world_min = [v - 100.0 for v in world_min]
-                world_max = [v + 100.0 for v in world_max]
+                obb = self._get_world_obb(w.ships[0].ship_class, w.ships[0].orientation, pos, padding=100.0)
             else:
-                world_min = [pos[0] - 50.0, pos[1] - 50.0, pos[2] - 50.0]
-                world_max = [pos[0] + 50.0, pos[1] + 50.0, pos[2] + 50.0]
+                ident_orientation = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+                obb = self._get_world_obb("Unknown", ident_orientation, pos, padding=100.0)
 
             positioned_objects.append({
                 'type': 'Wing',
                 'name': w.name,
                 'pos': pos,
-                'world_min': world_min,
-                'world_max': world_max,
+                'obb': obb,
                 'docked_with': None # Wings can't be pre-spawn docked
             })
 
@@ -736,12 +730,8 @@ class Validator:
                 if obj_a['docked_with'] == obj_b['name'] or obj_b['docked_with'] == obj_a['name']:
                     continue
 
-                # AABB overlap test
-                overlap_x = obj_a['world_min'][0] < obj_b['world_max'][0] and obj_a['world_max'][0] > obj_b['world_min'][0]
-                overlap_y = obj_a['world_min'][1] < obj_b['world_max'][1] and obj_a['world_max'][1] > obj_b['world_min'][1]
-                overlap_z = obj_a['world_min'][2] < obj_b['world_max'][2] and obj_a['world_max'][2] > obj_b['world_min'][2]
-
-                if overlap_x and overlap_y and overlap_z:
+                # OBB overlap test
+                if self._obb_intersects(obj_a['obb'], obj_b['obb']):
                     dx = float(obj_a['pos'][0]) - float(obj_b['pos'][0])
                     dy = float(obj_a['pos'][1]) - float(obj_b['pos'][1])
                     dz = float(obj_a['pos'][2]) - float(obj_b['pos'][2])
@@ -757,6 +747,48 @@ class Validator:
                     f"{obj_b['type']} '{obj_b['name']}'. Their bounding boxes intersect (center distance {dist:.1f}m). "
                     f"Both objects arrive via Hyperspace at static locations. This may cause an immediate collision upon mission start or arrival."
                 )
+
+    def _dot(self, v1: List[float], v2: List[float]) -> float:
+        return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]
+
+    def _cross(self, v1: List[float], v2: List[float]) -> List[float]:
+        return [
+            v1[1]*v2[2] - v1[2]*v2[1],
+            v1[2]*v2[0] - v1[0]*v2[2],
+            v1[0]*v2[1] - v1[1]*v2[0]
+        ]
+
+    def _normalize(self, v: List[float]) -> List[float]:
+        mag = math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2])
+        if mag == 0:
+            return [0.0, 0.0, 0.0]
+        return [v[0]/mag, v[1]/mag, v[2]/mag]
+
+    def _obb_intersects(self, obb_a: dict, obb_b: dict) -> bool:
+        T = [obb_b['center'][i] - obb_a['center'][i] for i in range(3)]
+        
+        axes_a = obb_a['axes']
+        axes_b = obb_b['axes']
+        
+        axes_to_test = []
+        axes_to_test.extend(axes_a)
+        axes_to_test.extend(axes_b)
+        
+        for i in range(3):
+            for j in range(3):
+                cross_axis = self._cross(axes_a[i], axes_b[j])
+                if sum(c*c for c in cross_axis) > 1e-6:
+                    axes_to_test.append(self._normalize(cross_axis))
+                    
+        for L in axes_to_test:
+            t_proj = abs(self._dot(T, L))
+            r_a = sum(obb_a['extents'][i] * abs(self._dot(axes_a[i], L)) for i in range(3))
+            r_b = sum(obb_b['extents'][i] * abs(self._dot(axes_b[i], L)) for i in range(3))
+            
+            if t_proj > r_a + r_b:
+                return False
+                
+        return True
 
     def _get_ship_radius(self, ship_class: str) -> float:
         """Estimate the collision radius of a ship.
@@ -782,9 +814,9 @@ class Validator:
             return 150.0
         return 50.0
 
-    def _get_world_aabb(self, ship_class: str, orientation: List[float], location: List[float]) -> tuple[List[float], List[float]]:
+    def _get_world_obb(self, ship_class: str, orientation: List[float], location: List[float], padding: float = 0.0) -> dict:
         """
-        Get the world-space Axis-Aligned Bounding Box (AABB) for a ship given its class, orientation, and location.
+        Get the world-space Oriented Bounding Box (OBB) for a ship given its class, orientation, location, and optional padding.
         """
         # 1. Get local bounding box
         if ship_class in self.ship_bounding_boxes:
@@ -796,43 +828,30 @@ class Validator:
             min_x, min_y, min_z = -r, -r, -r
             max_x, max_y, max_z = r, r, r
 
-        # 2. Define the 8 corners in local space
-        corners = [
-            [min_x, min_y, min_z],
-            [min_x, min_y, max_z],
-            [min_x, max_y, min_z],
-            [min_x, max_y, max_z],
-            [max_x, min_y, min_z],
-            [max_x, min_y, max_z],
-            [max_x, max_y, min_z],
-            [max_x, max_y, max_z],
-        ]
+        # 2. Local center and extents
+        cx = (max_x + min_x) / 2.0
+        cy = (max_y + min_y) / 2.0
+        cz = (max_z + min_z) / 2.0
 
-        # 3. Transform corners to world space using the orientation matrix and location
-        # orientation is a list of 9 floats representing a 3x3 matrix:
-        # [m00, m01, m02,
-        #  m10, m11, m12,
-        #  m20, m21, m22]
-        world_corners = []
-        for c in corners:
-            wx = orientation[0] * c[0] + orientation[1] * c[1] + orientation[2] * c[2] + location[0]
-            wy = orientation[3] * c[0] + orientation[4] * c[1] + orientation[5] * c[2] + location[1]
-            wz = orientation[6] * c[0] + orientation[7] * c[1] + orientation[8] * c[2] + location[2]
-            world_corners.append([wx, wy, wz])
+        ex = (max_x - min_x) / 2.0 + padding
+        ey = (max_y - min_y) / 2.0 + padding
+        ez = (max_z - min_z) / 2.0 + padding
 
-        # 4. Compute the world AABB
-        world_min = [
-            min(c[0] for c in world_corners),
-            min(c[1] for c in world_corners),
-            min(c[2] for c in world_corners),
-        ]
-        world_max = [
-            max(c[0] for c in world_corners),
-            max(c[1] for c in world_corners),
-            max(c[2] for c in world_corners),
-        ]
+        # 3. Local axes in world space
+        axis_x = self._normalize([orientation[0], orientation[3], orientation[6]])
+        axis_y = self._normalize([orientation[1], orientation[4], orientation[7]])
+        axis_z = self._normalize([orientation[2], orientation[5], orientation[8]])
 
-        return world_min, world_max
+        # 4. Transform local center to world space
+        world_cx = orientation[0] * cx + orientation[1] * cy + orientation[2] * cz + location[0]
+        world_cy = orientation[3] * cx + orientation[4] * cy + orientation[5] * cz + location[1]
+        world_cz = orientation[6] * cx + orientation[7] * cy + orientation[8] * cz + location[2]
+
+        return {
+            'center': [world_cx, world_cy, world_cz],
+            'axes': [axis_x, axis_y, axis_z],
+            'extents': [ex, ey, ez]
+        }
 
     def validate_waypoint_collisions(self):
         """
