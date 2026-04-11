@@ -904,10 +904,14 @@ class Validator:
             eff_loc = get_effective_initial_location(s.name)
             if eff_loc is None:
                 continue
+            
+            obb = self._get_world_obb(s.ship_class, s.orientation, eff_loc, padding=0.0)
+            
             obstacles.append({
                 'name': s.name,
                 'pos': eff_loc,
                 'radius': radius,
+                'obb': obb,
                 'is_wing_member': s.name in wing_members
             })
 
@@ -928,7 +932,47 @@ class Validator:
             dist = math.sqrt((p[0]-closest[0])**2 + (p[1]-closest[1])**2 + (p[2]-closest[2])**2)
             return dist
 
-        def check_path_for_collisions(entity_type, entity_name, start_pos, my_radius, path_name):
+        def get_segment_obb(p1, p2, ship_class):
+            if ship_class in self.ship_bounding_boxes:
+                box = self.ship_bounding_boxes[ship_class]
+                min_x, min_y, min_z = box['min']
+                max_x, max_y, max_z = box['max']
+            else:
+                r = self._get_ship_radius(ship_class)
+                min_x, min_y, min_z = -r, -r, -r
+                max_x, max_y, max_z = r, r, r
+                
+            ex = (max_x - min_x) / 2.0
+            ey = (max_y - min_y) / 2.0
+            ez = (max_z - min_z) / 2.0
+            
+            dx = p2[0] - p1[0]
+            dy = p2[1] - p1[1]
+            dz = p2[2] - p1[2]
+            dist = math.sqrt(dx*dx + dy*dy + dz*dz)
+            
+            axis_z = self._normalize([dx, dy, dz])
+            if sum(abs(c) for c in axis_z) < 1e-6:
+                axis_z = [0.0, 0.0, 1.0]
+                
+            up = [0.0, 1.0, 0.0]
+            if abs(self._dot(axis_z, up)) > 0.999:
+                up = [1.0, 0.0, 0.0]
+                
+            axis_x = self._normalize(self._cross(up, axis_z))
+            axis_y = self._normalize(self._cross(axis_z, axis_x))
+            
+            cx = (p1[0] + p2[0]) / 2.0
+            cy = (p1[1] + p2[1]) / 2.0
+            cz = (p1[2] + p2[2]) / 2.0
+            
+            return {
+                'center': [cx, cy, cz],
+                'axes': [axis_x, axis_y, axis_z],
+                'extents': [ex, ey, ez + (dist / 2.0)]
+            }
+
+        def check_path_for_collisions(entity_type, entity_name, start_pos, entity_class, path_name):
             if path_name not in self.mission.waypoints:
                 return
                 
@@ -938,6 +982,8 @@ class Validator:
             for i in range(len(points) - 1):
                 p1 = points[i]
                 p2 = points[i+1]
+                
+                segment_obb = get_segment_obb(p1, p2, entity_class)
                 
                 for obs in obstacles:
                     # Don't collide with yourself
@@ -955,18 +1001,13 @@ class Validator:
                     if obs_ship and obs_ship.arrival_location.strip().lower() == "docking bay" and obs_ship.arrival_anchor == entity_name:
                         continue
 
-                    # Calculate distance
-                    dist = point_segment_distance(obs['pos'], p1, p2)
-                    
-                    # Safe distance is the sum of radii
-                    safe_dist = my_radius + obs['radius']
-                    
-                    if dist < safe_dist:
-                        if obs['name'] not in collisions or dist < collisions[obs['name']][0]:
-                            collisions[obs['name']] = (dist, safe_dist)
+                    if self._obb_intersects(segment_obb, obs['obb']):
+                        dist = point_segment_distance(obs['pos'], p1, p2)
+                        if obs['name'] not in collisions or dist < collisions[obs['name']]:
+                            collisions[obs['name']] = dist
 
             if collisions:
-                details = ", ".join(f"ship '{name}' (distance {d:.1f}m, estimated safe radius {sd:.1f}m)" for name, (d, sd) in collisions.items())
+                details = ", ".join(f"ship '{name}' (distance {d:.1f}m, bounding boxes intersect)" for name, d in collisions.items())
                 self.log_warning(
                     f"{entity_type} '{entity_name}' waypoint path '{path_name}' passes very close "
                     f"to the initial location of {details}. "
@@ -987,7 +1028,7 @@ class Validator:
                     eff_loc = get_effective_initial_location(s.name)
                     if eff_loc is None:
                         continue
-                    check_path_for_collisions("Ship", s.name, eff_loc, my_radius, path_name)
+                    check_path_for_collisions("Ship", s.name, eff_loc, s.ship_class, path_name)
 
     def validate_ships(self):
         """
