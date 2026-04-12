@@ -116,7 +116,6 @@ class FS2Writer:
         self._write(f'$Author: {info.author}')
         self._write(f'$Created: {info.created}')
         self._write(f'$Modified: {info.modified}')
-        self._write(f'$Notes:\n{info.notes}\n$End Notes:')
         self._write(f'$Mission Desc:\n {self._write_xstr(info.description)}\n$end_multi_text')
 
         game_type_map = {'single': 1, 'multiplayer': 2, 'training': 4}

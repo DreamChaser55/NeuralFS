@@ -185,7 +185,6 @@ class Validator:
         info = self.mission.mission_info
         self._validate_xstr_text('mission_info.name', info.name)
         self._validate_ascii_text('mission_info.author', info.author)
-        self._validate_ascii_text('mission_info.notes', info.notes)
         self._validate_xstr_text('mission_info.description', info.description)
         self._validate_ascii_text('mission_info.game_type', info.game_type)
         self._validate_ascii_text('mission_info.ai_profile', info.ai_profile)
@@ -1373,7 +1372,6 @@ class Validator:
         mi = self.mission.mission_info
         warn_if_has_tags("mission_info.name", mi.name)
         warn_if_has_tags("mission_info.description", mi.description)
-        warn_if_has_tags("mission_info.notes", mi.notes)
 
     def _calculate_briefing_camera_width(self, icons) -> float:
         """
