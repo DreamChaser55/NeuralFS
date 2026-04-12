@@ -862,7 +862,7 @@ class Validator:
 
         # Regex to find ai-waypoints and ai-waypoints-once
         # Extracts the path name, stripping quotes if present
-        wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+"?([^"\s)]+)"?', re.IGNORECASE)
+        wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+(?:"([^"]+)"|([^"\s)]+))', re.IGNORECASE)
 
         ships_with_waypoints = set()
         for w in self.mission.wings:
@@ -1032,7 +1032,7 @@ class Validator:
             if s.ai_goals:
                 match = wp_regex.search(s.ai_goals)
                 if match:
-                    path_name = match.group(1)
+                    path_name = match.group(1) or match.group(2)
                     my_radius = self._get_ship_radius(s.ship_class)
                     if my_radius <= 50.0:
                         continue
