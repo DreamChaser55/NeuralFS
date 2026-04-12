@@ -1118,6 +1118,12 @@ class Validator:
                 if norm not in fs_flags_constants.WING_FLAGS_BUCKET:
                      self.log_error(f"Wing '{wing.name}' has unknown/unsupported flag '{f}'")
 
+            if not wing.ai_goals or not wing.ai_goals.strip():
+                self.log_warning(
+                    f"Wing '{wing.name}' lacks initial orders (ai_goals). "
+                    f"AI-controlled ships in this wing will sit idle."
+                )
+
     # Common Terran wing name prefixes used in player starting wings.
     _WING_NAME_PATTERN = re.compile(r'^(Alpha|Beta|Gamma|Delta|Epsilon) \d+$')
 
