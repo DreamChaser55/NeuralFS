@@ -864,6 +864,16 @@ class Validator:
         # Extracts the path name, stripping quotes if present
         wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+"?([^"\s)]+)"?', re.IGNORECASE)
 
+        ships_with_waypoints = set()
+        for w in self.mission.wings:
+            if w.ai_goals and wp_regex.search(w.ai_goals):
+                for s in w.ships:
+                    ships_with_waypoints.add(s.name)
+                    
+        for s in self.mission.ships:
+            if s.ai_goals and wp_regex.search(s.ai_goals):
+                ships_with_waypoints.add(s.name)
+
         ship_map = {s.name: s for s in self.mission.ships}
 
         def get_effective_initial_location(ship_name, visited=None):
@@ -899,6 +909,8 @@ class Validator:
         for s in self.mission.ships:
             radius = self._get_ship_radius(s.ship_class)
             if radius <= 50.0:
+                continue
+            if s.name in ships_with_waypoints:
                 continue
             eff_loc = get_effective_initial_location(s.name)
             if eff_loc is None:
