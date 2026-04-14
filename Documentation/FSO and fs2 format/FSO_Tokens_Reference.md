@@ -73,14 +73,12 @@ Examples:
 - Colonel
 - General
 
-Example: +AI Class: Captain
+Example: ai_class: "Captain"
 
 ### Goal types
 - Primary
 - Secondary
 - Bonus
-
-Example: $Type: Primary
 
 ## Wildcards and special literals
 
@@ -100,9 +98,9 @@ Valid contexts:
 Examples:
 - (send-message "<any wingman>" "High" "Ambush_warning")
 - (send-message "#Command" "High" "Tactical_update")
-- $Arrival Anchor: <any friendly player>
-- $Arrival Anchor: <any friendly>
-- $Arrival Anchor: <any hostile>
+- arrival_anchor: "<any friendly player>"
+- arrival_anchor: "<any friendly>"
+- arrival_anchor: "<any hostile>"
 
 ## Flags catalog
 
