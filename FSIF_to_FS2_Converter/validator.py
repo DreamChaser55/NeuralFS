@@ -1526,23 +1526,43 @@ class Validator:
         name_to_ship = {s.name: s for s in self.mission.ships}
         valid_targets = set(name_to_ship.keys()) | {w.name for w in self.mission.wings} | self.allowed_anchors_tokens
         
+        directional_locations = {
+            "near ship", "in front of ship", "in back of ship",
+            "above ship", "below ship", "to left of ship", "to right of ship"
+        }
+
         # Check Ships
         for ship in self.mission.ships:
+            arr_loc = ship.arrival_location.strip().lower()
+            if arr_loc == "docking bay":
+                if not ship.arrival_anchor:
+                    self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
+            elif arr_loc in directional_locations:
+                if not ship.arrival_anchor:
+                    self.log_error(f"Ship '{ship.name}' uses directional arrival '{ship.arrival_location}' but is missing 'arrival_anchor'.")
+                if getattr(ship, 'arrival_distance', None) is None:
+                    self.log_error(f"Ship '{ship.name}' uses directional arrival '{ship.arrival_location}' but is missing 'arrival_distance'.")
+
             if ship.arrival_anchor and ship.arrival_anchor not in valid_targets:
                 self.log_error(f"Ship '{ship.name}' references unknown arrival_anchor '{ship.arrival_anchor}'")
             
             # Fighterbay check for Docking Bay arrival
-            if ship.arrival_location.strip().lower() == "docking bay" and ship.arrival_anchor:
+            if arr_loc == "docking bay" and ship.arrival_anchor:
                 if ship.arrival_anchor in name_to_ship:
                     anchor_ship = name_to_ship[ship.arrival_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival from anchor '{ship.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
 
+            dep_loc = ship.departure_location.strip().lower()
+            if dep_loc == "docking bay":
+                if not ship.departure_anchor:
+                    self.log_error(f"Ship '{ship.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
+
             if ship.departure_anchor and ship.departure_anchor not in valid_targets:
                 self.log_error(f"Ship '{ship.name}' references unknown departure_anchor '{ship.departure_anchor}'")
 
             # Fighterbay check for Docking Bay departure
-            if ship.departure_location.strip().lower() == "docking bay" and ship.departure_anchor:
+            if dep_loc == "docking bay" and ship.departure_anchor:
                 if ship.departure_anchor in name_to_ship:
                     anchor_ship = name_to_ship[ship.departure_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
@@ -1550,21 +1570,36 @@ class Validator:
 
         # Check Wings
         for w in self.mission.wings:
+            arr_loc = w.arrival_location.strip().lower()
+            if arr_loc == "docking bay":
+                if not w.arrival_anchor:
+                    self.log_error(f"Wing '{w.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
+            elif arr_loc in directional_locations:
+                if not w.arrival_anchor:
+                    self.log_error(f"Wing '{w.name}' uses directional arrival '{w.arrival_location}' but is missing 'arrival_anchor'.")
+                if getattr(w, 'arrival_distance', None) is None:
+                    self.log_error(f"Wing '{w.name}' uses directional arrival '{w.arrival_location}' but is missing 'arrival_distance'.")
+
             if w.arrival_anchor and w.arrival_anchor not in valid_targets:
                 self.log_error(f"Wing '{w.name}' references unknown arrival_anchor '{w.arrival_anchor}'")
             
             # Fighterbay check for Docking Bay arrival
-            if w.arrival_location.strip().lower() == "docking bay" and w.arrival_anchor:
+            if arr_loc == "docking bay" and w.arrival_anchor:
                 if w.arrival_anchor in name_to_ship:
                     anchor_ship = name_to_ship[w.arrival_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Wing '{w.name}' uses Docking Bay arrival from anchor '{w.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
 
+            dep_loc = w.departure_location.strip().lower()
+            if dep_loc == "docking bay":
+                if not w.departure_anchor:
+                    self.log_error(f"Wing '{w.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
+
             if w.departure_anchor and w.departure_anchor not in valid_targets:
                 self.log_error(f"Wing '{w.name}' references unknown departure_anchor '{w.departure_anchor}'")
 
             # Fighterbay check for Docking Bay departure
-            if w.departure_location.strip().lower() == "docking bay" and w.departure_anchor:
+            if dep_loc == "docking bay" and w.departure_anchor:
                 if w.departure_anchor in name_to_ship:
                     anchor_ship = name_to_ship[w.departure_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
