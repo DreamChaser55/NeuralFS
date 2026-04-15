@@ -212,7 +212,7 @@ class CombinedTesting(unittest.TestCase):
         self.assertTrue(validator.validate(), validator.errors)
         self.assertTrue(
             any(
-                "Mission design recommendation: All objects are placed on the 2D XZ plane (Y=0)" in warning
+                "All objects are currently placed on the 2D XZ plane (Y=0)" in warning
                 for warning in validator.warnings
             ),
             validator.warnings,
@@ -425,15 +425,12 @@ class VoiceManagerTesting(unittest.TestCase):
         ]
 
         vm1 = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm1.process()
-        filenames1 = [m.voice_filename for m in self.mission.messages]
-
-        for m in self.mission.messages:
-            m.voice_filename = None
+        voice_map1 = vm1.process()
+        filenames1 = [voice_map1.get(id(m)) for m in self.mission.messages]
 
         vm2 = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm2.process()
-        filenames2 = [m.voice_filename for m in self.mission.messages]
+        voice_map2 = vm2.process()
+        filenames2 = [voice_map2.get(id(m)) for m in self.mission.messages]
 
         self.assertEqual(filenames1, filenames2, "Filenames should be deterministic across runs")
         self.assertEqual(filenames1, ["alpha.wav", "alpha_1.wav", "alpha_2.wav"])
@@ -446,9 +443,9 @@ class VoiceManagerTesting(unittest.TestCase):
         ]
 
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm.process()
+        voice_map = vm.process()
 
-        fname = self.mission.messages[0].voice_filename
+        fname = voice_map.get(id(self.mission.messages[0]))
         self.assertIsNotNone(fname)
         assert fname is not None
         self.assertTrue(len(fname) <= 29, f"Filename '{fname}' exceeds 29 chars")
@@ -465,9 +462,9 @@ class VoiceManagerTesting(unittest.TestCase):
         ]
 
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm.process()
+        voice_map = vm.process()
 
-        fnames = [m.voice_filename for m in self.mission.messages]
+        fnames = [voice_map.get(id(m)) for m in self.mission.messages]
 
         for fn in fnames:
             self.assertIsNotNone(fn)
@@ -488,9 +485,9 @@ class VoiceManagerTesting(unittest.TestCase):
 
         self.mission.messages = msgs
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm.process()
+        voice_map = vm.process()
 
-        self.assertEqual(msgs[11].voice_filename, "test_limit_11.wav")
+        self.assertEqual(voice_map.get(id(msgs[11])), "test_limit_11.wav")
 
         vlong = "aaaaaaaaaaaaaaaaaaaaaaaaa"
         msgs = [
@@ -500,13 +497,13 @@ class VoiceManagerTesting(unittest.TestCase):
 
         self.mission.messages = msgs
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
-        vm.process()
+        voice_map = vm.process()
 
-        self.assertEqual(msgs[0].voice_filename, "a" * 25 + ".wav")
-        self.assertEqual(msgs[1].voice_filename, "a" * 23 + "_1.wav")
-        self.assertEqual(msgs[10].voice_filename, "a" * 22 + "_10.wav")
+        self.assertEqual(voice_map.get(id(msgs[0])), "a" * 25 + ".wav")
+        self.assertEqual(voice_map.get(id(msgs[1])), "a" * 23 + "_1.wav")
+        self.assertEqual(voice_map.get(id(msgs[10])), "a" * 22 + "_10.wav")
 
-        for fn in [m.voice_filename for m in msgs]:
+        for fn in [voice_map.get(id(m)) for m in msgs]:
             self.assertIsNotNone(fn)
             assert fn is not None
             self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")

@@ -153,10 +153,11 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         return False
 
     # Voice Filename Normalization (if TTS enabled)
+    voice_map = {}
     if tts_opts['enabled']:
         logger.info(f"[INFO] Normalizing voice filenames (Mode: {mode})...")
         vm = VoiceManager(mission, ip, tts_opts)
-        vm.process()
+        voice_map = vm.process()
     else:
         logger.info("[INFO] TTS disabled: Skipping voice filename generation (voice lines will be silent in FS2).")
 
@@ -189,7 +190,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
             if generator:
                 if generator.is_available():
                     logger.info(f"[INFO] Generating voice files (Provider: {provider}, Mode: {mode})...")
-                    items = generator.collect_items_from_mission(mission, ip.parent)
+                    items = generator.collect_items_from_mission(mission, ip.parent, voice_map)
                     
                     if items:
                         generated_count = generator.generate_all(items)
@@ -223,7 +224,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     
     # Allow logic errors to propagate with stack trace
     try:
-        writer = FS2Writer(mission, str(op))
+        writer = FS2Writer(mission, str(op), voice_map)
         writer.write_mission()
         logger.info("[SUCCESS] Conversion successful.")
         return True

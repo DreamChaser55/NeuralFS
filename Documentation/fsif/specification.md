@@ -71,6 +71,7 @@
     - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
     - `ai_goals` (String, optional).
     - `flags` (List[String], optional, default: `[]`).
+    - `spacing` (Float, optional, default: `50.0`)
   - `waypoints` (Mapping, optional). Keys are path names, values are Lists of `[x,y,z]`.
   - `reinforcement_wings` (List[Mapping], optional):
     - `name` (String, required)
@@ -141,9 +142,12 @@
 - `flags` (List[String], optional, default: `["cargo-known"]`)
 - `respawn_priority` (Integer, optional, default: `0`)
 - `subsystems` (Mapping, optional). Keys: `status` (`"all_ok"` or `"custom"`), `list` (List of `{name, health}`).
-- `weapons` (Mapping, optional). Keys: `primary` (List), `secondary` (List).
+- `weapons` (Mapping, optional). Keys: `primary` (List), `secondary` (List), `secondary_ammo` (List[Integer]).
 - `dock` (Mapping, optional). Keys: `with`, `docker_point`, `dockee_point`.
 - `ai_goals` (String, optional).
+- `escort_priority` (Integer, optional, default: `0`)
+- `kamikaze_damage` (Integer, optional, default: `1000`)
+- `destroy_before_mission` (Integer, optional, default: `0`)
 
 ## Minimal FSIF skeleton
 - A minimal and a standard FSIF skeletons are provided in the Authoring Guide.

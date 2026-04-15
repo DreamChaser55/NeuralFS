@@ -226,12 +226,10 @@ class Validator:
             self._validate_ascii_text(f'{prefix}.departure_anchor', ship.departure_anchor)
             self._validate_ascii_text(f'{prefix}.departure_cue', ship.departure_cue)
             self._validate_ascii_text_list(f'{prefix}.flags', ship.flags)
-            self._validate_ascii_text_list(f'{prefix}.flags2', ship.flags2)
             self._validate_ascii_text(f'{prefix}.ai_goals', ship.ai_goals)
             self._validate_ascii_text(f'{prefix}.docked_with', ship.docked_with)
             self._validate_ascii_text(f'{prefix}.docker_point', ship.docker_point)
             self._validate_ascii_text(f'{prefix}.dockee_point', ship.dockee_point)
-            self._validate_ascii_text_list(f'{prefix}.orders_accepted', ship.orders_accepted)
             for j, subsystem in enumerate(ship.subsystems.list):
                 self._validate_ascii_text(f'{prefix}.subsystems.list[{j}].name', subsystem.name)
             self._validate_ascii_text_list(f'{prefix}.weapons.primary', ship.weapons.primary)
@@ -269,18 +267,15 @@ class Validator:
             prefix = f'messages[{i}]'
             self._validate_ascii_text(f'{prefix}.name', message.name)
             self._validate_xstr_text(f'{prefix}.message', message.message)
-            self._validate_ascii_text(f'{prefix}.voice_filename', message.voice_filename)
 
         for i, stage in enumerate(self.mission.command_briefing.stages):
             prefix = f'command_briefing.stages[{i}]'
             self._validate_xstr_text(f'{prefix}.text', stage.text)
             self._validate_ascii_text(f'{prefix}.ani', stage.ani)
-            self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
 
         for i, stage in enumerate(self.mission.briefing.stages):
             prefix = f'briefing.stages[{i}]'
             self._validate_xstr_text(f'{prefix}.text', stage.text)
-            self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
             for j, icon in enumerate(stage.icons):
                 icon_prefix = f'{prefix}.icons[{j}]'
                 self._validate_ascii_text(f'{icon_prefix}.type', icon.type)
@@ -292,7 +287,6 @@ class Validator:
             prefix = f'debriefing.stages[{i}]'
             self._validate_xstr_text(f'{prefix}.text', stage.text)
             self._validate_ascii_text(f'{prefix}.condition', stage.condition)
-            self._validate_ascii_text(f'{prefix}.voice_filename', stage.voice_filename)
             self._validate_xstr_text(f'{prefix}.recommendation', stage.recommendation)
 
         for i, reinforcement in enumerate(self.mission.reinforcements):
@@ -1064,7 +1058,7 @@ class Validator:
                 self.log_error(f"Ship '{ship.name}' has invalid team '{ship.team}'")
             
             # 3. Flags
-            all_flags = ship.flags + ship.flags2
+            all_flags = ship.flags
             for f in all_flags:
                 norm = fs_flags_constants.normalize_flag(f)
                 if norm not in fs_flags_constants.SHIP_FLAGS_BUCKET:

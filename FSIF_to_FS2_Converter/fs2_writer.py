@@ -12,10 +12,13 @@ import math
 logger = logging.getLogger(__name__)
 
 
+from typing import Optional
+
 class FS2Writer:
-    def __init__(self, mission: Mission, output_path: str):
+    def __init__(self, mission: Mission, output_path: str, voice_map: Optional[dict] = None):
         self.mission = mission
         self.output_path = output_path
+        self.voice_map = voice_map or {}
         self.file = None
         self._brief_icon_id = 1
 
@@ -231,7 +234,7 @@ class FS2Writer:
             self._write(f' {self._write_xstr(st.text)}')
             self._write('$end_multi_text')
             self._write(f'$Ani Filename: {st.ani}')
-            self._write(f'+Wave Filename: {st.voice_filename}')
+            self._write(f'+Wave Filename: {self.voice_map.get(id(st), "none")}')
             self._write('')
 
     def write_briefing(self):
@@ -253,7 +256,7 @@ class FS2Writer:
             self._write('$start_stage')
 
             self._write(f'$multi_text\n {self._write_xstr(stage.text)}\n$end_multi_text')
-            self._write(f'$voice: {stage.voice_filename}')
+            self._write(f'$voice: {self.voice_map.get(id(stage), "none.wav")}')
 
             # Determine camera and icons
             icons = stage.icons
@@ -310,7 +313,7 @@ class FS2Writer:
             self._write(f'    {self._write_xstr(stage.text)}')
             self._write('$end_multi_text')
 
-            self._write(f'$Voice: {stage.voice_filename}')
+            self._write(f'$Voice: {self.voice_map.get(id(stage), "none.wav")}')
 
             self._write('$Recommendation text:')
             self._write(f'    {self._write_xstr(stage.recommendation)}')
@@ -504,8 +507,6 @@ class FS2Writer:
 
             for t in ship.flags:
                 _route_flag(t)
-            for t in ship.flags2:
-                _route_flag(t)
 
             if out_flags:
                 flags_str = " ".join([f'"{f}"' for f in out_flags])
@@ -541,16 +542,10 @@ class FS2Writer:
             if has_kamikaze_flag or ship.kamikaze_damage != DEFAULT_KAMIKAZE_DAMAGE:
                  self._write(f'+Kamikaze Damage: {ship.kamikaze_damage}')
             
-            # Destroy At
-            if ship.destroy_at > 0 and ship.name != start_name:
-                 self._write(f'+Destroy At: {ship.destroy_at}')
+            # Destroy Before Mission
+            if ship.destroy_before_mission > 0 and ship.name != start_name:
+                 self._write(f'+Destroy At: {ship.destroy_before_mission}')
             
-            # Orders
-            if ship.orders_accepted_mask is not None:
-                 self._write(f'+Orders Accepted: {ship.orders_accepted_mask}')
-            if ship.orders_accepted:
-                 olist = ' '.join([f'"{str(x)}"' for x in ship.orders_accepted])
-                 self._write(f'+Orders Accepted List: ( {olist} )')
 
             self._write("\n")
 
@@ -650,8 +645,9 @@ class FS2Writer:
             self._write(f'$Team: -1')
             self._write(f'$MessageNew:  {self._write_xstr(msg.message)}\n$end_multi_text')
             self._write(f'+AVI Name: <None>')
-            if msg.voice_filename:
-                self._write(f'+Wave Name: {msg.voice_filename}')
+            vf = self.voice_map.get(id(msg))
+            if vf:
+                self._write(f'+Wave Name: {vf}')
             self._write('')
 
     def write_reinforcements(self):

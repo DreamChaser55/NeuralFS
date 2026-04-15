@@ -26,26 +26,29 @@ class VoiceManager:
                 for f in voice_dir.rglob('*.wav'):
                     self.existing_voice_files.add(f.name.lower())
 
-    def process(self):
-        """Iterates through the mission and normalizes voice filenames."""
+    def process(self) -> Dict[int, str]:
+        """Iterates through the mission and normalizes voice filenames. Returns a mapping of id(item) -> filename"""
+        voice_map = {}
         # Messages
         for idx, msg in enumerate(self.mission.messages):
-            self._process_node(msg, text_attr='message', name_attr='name', section='messages')
+            self._process_node(msg, voice_map, text_attr='message', name_attr='name', section='messages')
 
         # Briefing Stages
         for idx, stage in enumerate(self.mission.briefing.stages):
-            self._process_node(stage, text_attr='text', section='briefing')
+            self._process_node(stage, voice_map, text_attr='text', section='briefing')
 
         # Debriefing Stages
         for idx, stage in enumerate(self.mission.debriefing.stages):
-            self._process_node(stage, text_attr='text', section='debriefing')
+            self._process_node(stage, voice_map, text_attr='text', section='debriefing')
             
         # Command Briefing Stages
         for idx, stage in enumerate(self.mission.command_briefing.stages):
-            self._process_node(stage, text_attr='text', section='command_briefing')
+            self._process_node(stage, voice_map, text_attr='text', section='command_briefing')
+
+        return voice_map
 
     def _process_node(self, voiced_item: Union[Message, BriefingStage, DebriefingStage, CommandBriefingStage],
-                      text_attr: str, section: str, name_attr: Optional[str] = None):
+                      voice_map: Dict[int, str], text_attr: str, section: str, name_attr: Optional[str] = None):
         
         text = getattr(voiced_item, text_attr, '')
         text_str = str(text) if text is not None else ''
@@ -60,12 +63,10 @@ class VoiceManager:
         # If not voiced (no voice_name), enforce "none" values and return
         if not voice_name:
             if 'command_briefing' in section:
-                voiced_item.voice_filename = 'none'
+                voice_map[id(voiced_item)] = 'none'
             elif 'briefing' in section or 'debriefing' in section:
-                voiced_item.voice_filename = 'none.wav'
-            # For Message, it's Optional[str] = None, so we leave it or set to None
-            if isinstance(voiced_item, Message):
-                voiced_item.voice_filename = None
+                voice_map[id(voiced_item)] = 'none.wav'
+            # For Message, it's Optional[str] = None, so we leave it absent from map
             return
 
         # Voiced line: Generate filename
@@ -83,7 +84,7 @@ class VoiceManager:
         canonical = ensure_wav_extension(canonical)
 
         # Update Voiced Item
-        voiced_item.voice_filename = canonical
+        voice_map[id(voiced_item)] = canonical
         # Ensure voice_name is clean
         voiced_item.voice_name = voice_name
         

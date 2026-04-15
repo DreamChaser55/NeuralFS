@@ -221,7 +221,6 @@ class Message(BaseModel):
     model_config = ConfigDict(extra='forbid')
     name: str
     message: str
-    voice_filename: Optional[str] = None
     voice_name: Optional[str] = None # For TTS
     voice_style_instructions: Optional[str] = None # For TTS
 
@@ -258,7 +257,6 @@ class BriefingIcon(BaseModel):
 class BriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str
-    voice_filename: str = 'none.wav'
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
     
@@ -289,7 +287,6 @@ class DebriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str
     condition: str = '( true )'
-    voice_filename: str = 'none.wav'
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
     recommendation: str = ''
@@ -302,7 +299,6 @@ class CommandBriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str
     ani: str = '<default>'
-    voice_filename: str = 'none' # Note: default value should have no extension here, contrary to the BriefingStage counterpart
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
 
@@ -359,22 +355,18 @@ class Ship(BaseModel):
     departure_cue: str = '( false )'
     
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
-    flags2: List[str] = Field(default_factory=list)
     
     respawn_priority: int = 0
-    score: int = 12
     
     subsystems: Subsystems = Field(default_factory=Subsystems)
     weapons: Weapons = Field(default_factory=Weapons)
     
     # Optional logic fields
     ai_goals: Optional[str] = None
-    orders_accepted: Optional[List[str]] = None
-    orders_accepted_mask: Optional[int] = None
     
     escort_priority: int = 0
     kamikaze_damage: int = 1000
-    destroy_at: int = 0
+    destroy_before_mission: int = 0
     
     # Docking
     docked_with: Optional[str] = None

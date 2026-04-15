@@ -46,7 +46,7 @@ class BaseTTSProvider(ABC):
         """Attempt to read API key from a provider-specific file."""
         pass
 
-    def collect_items_from_mission(self, mission, fsif_dir: Path) -> List[Dict[str, Any]]:
+    def collect_items_from_mission(self, mission, fsif_dir: Path, voice_map: dict) -> List[Dict[str, Any]]:
         """Extract all TTS work items from a Mission object (Provider-agnostic logic)."""
         items: List[Dict[str, Any]] = []
         
@@ -57,26 +57,26 @@ class BaseTTSProvider(ABC):
             voice_root = fsif_dir / 'voice'
 
         # Collect from messages
-        items.extend(self._collect_from_messages(mission, voice_root))
+        items.extend(self._collect_from_messages(mission, voice_root, voice_map))
 
         # Collect from briefing stages
         items.extend(self._collect_from_stages(
-            mission.briefing, voice_root, "briefing", "text"
+            mission.briefing, voice_root, "briefing", voice_map, "text"
         ))
 
         # Collect from debriefing stages
         items.extend(self._collect_from_stages(
-            mission.debriefing, voice_root, "debriefing", "text"
+            mission.debriefing, voice_root, "debriefing", voice_map, "text"
         ))
 
         # Collect from command briefing stages
         items.extend(self._collect_from_stages(
-            mission.command_briefing, voice_root, "command_briefing", "text"
+            mission.command_briefing, voice_root, "command_briefing", voice_map, "text"
         ))
 
         return items
 
-    def _collect_from_messages(self, mission, base_out_dir: Path) -> List[Dict[str, Any]]:
+    def _collect_from_messages(self, mission, base_out_dir: Path, voice_map: dict) -> List[Dict[str, Any]]:
         """Collect TTS items from mission.messages."""
         items: List[Dict[str, Any]] = []
         msgs = mission.messages or []
@@ -87,8 +87,8 @@ class BaseTTSProvider(ABC):
             if not text_str:
                 continue
 
-            # Get voice_filename (mission_loader has already normalized this)
-            vf_str = str(msg.voice_filename).strip() if msg.voice_filename else ""
+            # Get voice_filename
+            vf_str = voice_map.get(id(msg), "")
 
             # Skip if explicitly unvoiced
             if not vf_str or vf_str.lower() in ("none", "none.wav"):
@@ -119,6 +119,7 @@ class BaseTTSProvider(ABC):
         section_data: Any,
         base_out_dir: Path,
         section_key: str,
+        voice_map: dict,
         text_key: str = "text"
     ) -> List[Dict[str, Any]]:
         """Collect TTS items from briefing/debriefing/command_briefing stages."""
@@ -149,8 +150,7 @@ class BaseTTSProvider(ABC):
                 continue
 
             # Get voice_filename
-            vf_val = getattr(stage, 'voice_filename', None)
-            vf_str = str(vf_val).strip() if vf_val else ""
+            vf_str = voice_map.get(id(stage), "")
 
             # Check if voiced (skip if none/empty)
             if not vf_str or vf_str.lower() in ("none", "none.wav"):
