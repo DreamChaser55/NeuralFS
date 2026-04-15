@@ -405,11 +405,11 @@ class FS2Writer:
         """
         self._write(f'\n#Objects\t\t;! {len(self.mission.ships)} total\n')
         
-        start_name = self.mission.player_setup.start_ship
+        player_start_ship = self.mission.player_setup.start_ship
         ordered_ships = self.mission.ships[:]
-        if start_name:
+        if player_start_ship:
              for idx, s in enumerate(ordered_ships):
-                 if s.name == start_name:
+                 if s.name == player_start_ship:
                      if idx != 0:
                          ordered_ships.insert(0, ordered_ships.pop(idx))
                      break
@@ -543,7 +543,7 @@ class FS2Writer:
                  self._write(f'+Kamikaze Damage: {ship.kamikaze_damage}')
             
             # Destroy Before Mission
-            if ship.destroy_before_mission > 0 and ship.name != start_name:
+            if ship.destroy_before_mission > 0 and ship.name != player_start_ship:
                  self._write(f'+Destroy At: {ship.destroy_before_mission}')
             
 
