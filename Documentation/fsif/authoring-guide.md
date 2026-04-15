@@ -19,6 +19,9 @@ fsif_version: "2.8"
 mission_info:
   name: "Minimal Mission"
 
+environment:
+  ambient_light_level: [0, 0, 0]
+
 player_setup:
   start_ship: "Player Ship"
 

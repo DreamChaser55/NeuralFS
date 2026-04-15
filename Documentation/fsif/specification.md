@@ -21,8 +21,8 @@
   - `flags` (List[String], optional, default: `[]`)
   - `disallow_support` (Boolean, optional, default: `false`)
   - `ai_profile` (String, optional, default: `"FS1 RETAIL"`)
-- `environment` (Mapping, optional):
-  - `ambient_light_level` (List[Integer], optional, default: `[0, 0, 0]`). Format: `[red, green, blue]`, each channel `0..255`.
+- `environment` (Mapping, required):
+  - `ambient_light_level` (List[Integer], required). Format: `[red, green, blue]`, each channel `0..255`.
   - `suns` (List[Mapping], optional, default: `[]`):
     - `texture` (String, required)
     - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
