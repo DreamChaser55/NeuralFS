@@ -1064,6 +1064,19 @@ class Validator:
                 if norm not in fs_flags_constants.SHIP_FLAGS_BUCKET:
                     self.log_error(f"Ship '{ship.name}' has unknown flag '{f}'")
 
+            # escort_priority requires the 'escort' flag
+            if ship.escort_priority > 0:
+                has_escort_flag = any(
+                    fs_flags_constants.normalize_flag(f) == 'escort'
+                    for f in ship.flags
+                )
+                if not has_escort_flag:
+                    self.log_error(
+                        f"Ship '{ship.name}' has escort_priority {ship.escort_priority} set, "
+                        f"but is missing the 'escort' flag. "
+                        f"Add 'escort' to the ship's flags list."
+                    )
+
             # AI Class
             if ship.ai_class and ship.ai_class not in self.allowed_ai_classes:
                 self.log_error(f"Ship '{ship.name}' has invalid ai_class '{ship.ai_class}'")
