@@ -571,6 +571,9 @@ You should use the `escort` flag for:
 
 *Note: Maintain escort list hygiene. Flag only the most important ships to prevent cluttering the HUD. If you have multiple escorted ships, you can use the `escort_priority` property to control their display order.*
 
+## Creating ship debris
+You can use the optional `destroy_before_mission` field to create ship debris at mission start. The value is the number of seconds before the mission start when the ship will be destroyed. Zero value (default) results in no destruction (normal ship spawning).
+
 ## Pitfalls, best practices and recommendations
 Use this section as a practical sanity guide: each item describes the preferred authoring pattern and the common mistake or failure it prevents.
 
