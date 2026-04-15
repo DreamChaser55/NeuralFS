@@ -854,8 +854,11 @@ class Validator:
 
     def validate_waypoint_collisions(self):
         """
-        Check if ship/wing waypoint move orders are likely to cause a collision 
+        Check if standalone ship waypoint move orders are likely to cause a collision 
         with another ship or station in the mission.
+        
+        Note: Wing-level waypoint orders are intentionally not checked for path collisions. 
+        Wings typically consist of fighters or bombers which have their own AI routines for collision avoidance.
         """
         import re
         import math
