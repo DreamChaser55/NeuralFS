@@ -214,7 +214,6 @@ These tokens specify various ship properties and behaviors.
 Ancillary per-ship fields frequently seen with flags:
 - `escort_priority` (Integer; used with `escort`)
 - `kamikaze_damage` (Integer; used with `kamikaze`)
-- `orders_accepted` (List of strings)
 
 ### Wing flags (`entities.wings[*].flags`)
 
