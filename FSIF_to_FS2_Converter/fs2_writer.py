@@ -3,7 +3,7 @@
 
 import textwrap
 import logging
-from data_models import Mission, DEFAULT_ORIENTATION, DEFAULT_KAMIKAZE_DAMAGE, pack_ambient_light_rgb
+from data_models import Mission, DEFAULT_ORIENTATION, pack_ambient_light_rgb
 from utils import calculate_briefing_camera_height
 import fs_flags_constants
 import fs_data
@@ -536,11 +536,6 @@ class FS2Writer:
             has_escort_flag = any(fs_flags_constants.normalize_flag(x) == "escort" for x in ship.flags)
             if has_escort_flag or ship.escort_priority > 0:
                  self._write(f'+Escort priority: {ship.escort_priority}')
-
-            # Kamikaze
-            has_kamikaze_flag = any(fs_flags_constants.normalize_flag(x) == "kamikaze" for x in ship.flags)
-            if has_kamikaze_flag or ship.kamikaze_damage != DEFAULT_KAMIKAZE_DAMAGE:
-                 self._write(f'+Kamikaze Damage: {ship.kamikaze_damage}')
             
             # Destroy Before Mission
             if ship.destroy_before_mission > 0 and ship.name != player_start_ship:

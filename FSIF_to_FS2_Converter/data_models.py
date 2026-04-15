@@ -13,8 +13,6 @@ DEFAULT_ORIENTATION = [
     0.0, 0.0, 1.0
 ]
 
-DEFAULT_KAMIKAZE_DAMAGE = 1000
-
 # --- Helpers ---
 
 
@@ -365,7 +363,6 @@ class Ship(BaseModel):
     ai_goals: Optional[str] = None
     
     escort_priority: int = 0
-    kamikaze_damage: int = 1000
     destroy_before_mission: int = 0
     
     # Docking

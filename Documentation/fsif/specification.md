@@ -146,7 +146,6 @@
 - `dock` (Mapping, optional). Keys: `with`, `docker_point`, `dockee_point`.
 - `ai_goals` (String, optional).
 - `escort_priority` (Integer, optional, default: `0`)
-- `kamikaze_damage` (Integer, optional, default: `1000`)
 - `destroy_before_mission` (Integer, optional, default: `0`)
 
 ## Minimal FSIF skeleton

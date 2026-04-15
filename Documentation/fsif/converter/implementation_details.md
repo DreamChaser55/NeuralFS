@@ -17,7 +17,7 @@ Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks 
 
 Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single list; the converter routes tokens to the correct bucket automatically). For a complete list of supported flags and their mapping, see `../../FSO and fs2 format/FSO_Tokens_Reference.md`.
 
-Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when "escort"), +Kamikaze Damage (kamikaze_damage or defaults to 1000 when "kamikaze" set), +Destroy At (destroy_at > 0), +Orders Accepted (orders_accepted_mask), and +Orders Accepted List (orders_accepted).
+Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when "escort"), +Destroy At (destroy_at > 0), +Orders Accepted (orders_accepted_mask), and +Orders Accepted List (orders_accepted).
 
 AI goals: wing-level and per-ship ai_goals are emitted.
 
