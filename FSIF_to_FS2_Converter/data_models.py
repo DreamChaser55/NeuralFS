@@ -17,9 +17,9 @@ DEFAULT_ORIENTATION = [
 
 
 def _normalize_vector(v: Any) -> List[float]:
-    """Ensure a 3-element float list. Raises ValueError if input is present but malformed."""
-    if not v:
-        return [0.0, 0.0, 0.0]
+    """Ensure a 3-element float list. Raises ValueError on any malformed or absent input."""
+    if v is None:
+        raise ValueError("Expected a 3-element [x, y, z] list, got None.")
     try:
         items = list(v)
     except TypeError:
@@ -35,36 +35,29 @@ def _normalize_vector(v: Any) -> List[float]:
 
 
 def _normalize_orientation(v: Any) -> List[float]:
-    """Ensure a 9-element float list (matrix)."""
-    if not v:
-        return [
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0
-        ]
+    """Ensure a 9-element float list (3×3 rotation matrix). Raises ValueError on bad input."""
+    if v is None:
+        raise ValueError("orientation must be a 9-element flat list or 3×3 nested list, got None.")
 
-    # Handle nested lists if necessary, though typical input is flat or nested
-    flat = []
+    # Handle nested lists (3×3) as well as flat 9-element lists
+    flat: List[float] = []
     try:
         if isinstance(v[0], (list, tuple)):
-             for row in v:
-                 flat.extend(row)
+            for row in v:
+                flat.extend(row)
         else:
-             flat = list(v)
+            flat = list(v)
+    except (TypeError, IndexError) as e:
+        raise ValueError(f"orientation must be a 9-element flat list or 3×3 nested list, got: {v!r}") from e
 
-        if len(flat) < 9:
-             return [
-                1.0, 0.0, 0.0,
-                0.0, 1.0, 0.0,
-                0.0, 0.0, 1.0
-            ]
-        return [float(x) for x in flat[:9]]
-    except Exception:
-        return [
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0
-        ]
+    if len(flat) != 9:
+        raise ValueError(
+            f"orientation must have exactly 9 elements, got {len(flat)}: {v!r}"
+        )
+    try:
+        return [float(x) for x in flat]
+    except (TypeError, ValueError) as e:
+        raise ValueError(f"orientation elements must be numbers, got: {v!r}") from e
 
 
 def _normalize_ambient_light_rgb(v: Any) -> List[int]:
@@ -120,7 +113,7 @@ class Weapons(BaseModel):
 class ShipChoice(BaseModel):
     model_config = ConfigDict(extra='forbid')
     ship_class: str = Field(..., alias='class')
-    count: int
+    count: int = Field(..., ge=1)
 
 class Sun(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -155,7 +148,7 @@ class Nebula(BaseModel):
 
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    density: int = 50
+    density: int = Field(50, ge=0)
     # Note: FSIF authors provide 'type' (active/passive) and 'genre' (asteroid/debris) as strings.
     # mission_loader.py transforms these strings into the integer fields below before Pydantic validation.
     field_type: int = 1 # 0=active, 1=passive
@@ -198,7 +191,7 @@ class MissionInfo(BaseModel):
 
 class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    start_ship: Optional[str] = None
+    start_ship: str
     extra_ships: List[ShipChoice] = Field(default_factory=list)
     extra_weapons: List[str] = Field(default_factory=list)
 
@@ -262,7 +255,7 @@ class BriefingStage(BaseModel):
     camera_pos: Optional[List[float]] = None
     camera_orient: Optional[List[float]] = None
     
-    camera_time: int = 500
+    camera_time: int = Field(500, ge=0)
     icons: List[BriefingIcon] = Field(default_factory=list)
 
     @field_validator('camera_pos', mode='before')
@@ -307,8 +300,8 @@ class CommandBriefing(BaseModel):
 class Reinforcement(BaseModel):
     model_config = ConfigDict(extra='forbid')
     name: str
-    num_times: int = 1
-    arrival_delay: int = 0
+    num_times: int = Field(1, ge=1)
+    arrival_delay: int = Field(0, ge=0)
     no_messages: List[str] = Field(default_factory=list)
     yes_messages: List[str] = Field(default_factory=list)
 
@@ -339,13 +332,13 @@ class Ship(BaseModel):
     # Optional props with defaults
     ai_class: Optional[str] = None
     cargo: str = 'Nothing'
-    initial_velocity: int = 33
-    initial_hull: int = 100
+    initial_velocity: int = Field(33, ge=0, le=100)
+    initial_hull: int = Field(100, ge=0, le=100)
     
     arrival_location: str = 'Hyperspace'
-    arrival_distance: Optional[int] = None
+    arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
-    arrival_delay: int = 0
+    arrival_delay: int = Field(0, ge=0)
     arrival_cue: str = '( false )'
     
     departure_location: str = 'Hyperspace'
@@ -354,7 +347,7 @@ class Ship(BaseModel):
     
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
     
-    respawn_priority: int = 0
+    respawn_priority: int = Field(0, ge=0)
     
     subsystems: Subsystems = Field(default_factory=Subsystems)
     weapons: Weapons = Field(default_factory=Weapons)
@@ -362,8 +355,8 @@ class Ship(BaseModel):
     # Optional logic fields
     ai_goals: Optional[str] = None
     
-    escort_priority: int = 0
-    destroy_before_mission: int = 0
+    escort_priority: int = Field(0, ge=0)
+    destroy_before_mission: int = Field(0, ge=0)
     
     # Docking
     docked_with: Optional[str] = None
@@ -384,20 +377,20 @@ class Wing(BaseModel):
     model_config = ConfigDict(extra='forbid')
     
     name: str
-    count: int
+    count: int = Field(..., ge=1)
     ships: List[Ship] = Field(default_factory=list)
     
-    waves: int = 1
-    wave_threshold: int = 0
-    wave_delay_min: Optional[int] = None
-    wave_delay_max: Optional[int] = None
+    waves: int = Field(1, ge=1)
+    wave_threshold: int = Field(0, ge=0)
+    wave_delay_min: Optional[int] = Field(None, ge=0)
+    wave_delay_max: Optional[int] = Field(None, ge=0)
     # wave_delay can be object in FSIF, but normalized before/during loading? 
     # For now assume simplified or handle in loader.
     
     arrival_location: str = 'Hyperspace'
-    arrival_distance: Optional[int] = None
+    arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
-    arrival_delay: int = 0
+    arrival_delay: int = Field(0, ge=0)
     arrival_cue: str = '( true )'
     
     departure_location: str = 'Hyperspace'
@@ -409,7 +402,7 @@ class Wing(BaseModel):
     
     # FSIF 1.6+ centroid
     position: Optional[List[float]] = None
-    spacing: float = 50.0
+    spacing: float = Field(50.0, gt=0)
     
     # Template reference (used during expansion, kept for record)
     template: Optional[str] = None
