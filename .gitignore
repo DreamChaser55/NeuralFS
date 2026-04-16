@@ -18,7 +18,7 @@ ENV/
 *.swp
 *.swo
 *~
-.kilo/plans/
+.kilo/
 
 # API Keys and Secrets
 Gemini_API_key.txt
