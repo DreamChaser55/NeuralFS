@@ -6,40 +6,20 @@ import sys
 import traceback
 import logging
 from pathlib import Path
+
+# Make the project root importable so converter_gui_base can be found when
+# this script is run directly from its own subdirectory.
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from converter_gui_base import TkLogHandler, LogMixin
 from fcif_to_fc2 import process_campaign, SUCCESS_LEVEL, logger as fcif_logger
 
-class TextWidgetLogHandler(logging.Handler):
-    def __init__(self, text_widget, root):
-        super().__init__()
-        self.text_widget = text_widget
-        self.root = root
 
-    def emit(self, record):
-        msg = self.format(record)
-        self.root.after(0, self._append_raw, msg, record.levelno)
+def _is_success(record, msg):
+    """Success-detection strategy for the FCIF converter log handler."""
+    return record.levelno == SUCCESS_LEVEL
 
-    def _append_raw(self, msg, levelno):
-        self.text_widget.config(state='normal')
-        
-        tag_to_use = None
-        if levelno >= logging.ERROR:
-            tag_to_use = 'error'
-        elif levelno == logging.WARNING:
-            tag_to_use = 'warning'
-        elif levelno == SUCCESS_LEVEL:
-            tag_to_use = 'success'
-        elif levelno == logging.INFO:
-            tag_to_use = 'info'
-            
-        if tag_to_use:
-            self.text_widget.insert(tk.END, msg + '\n', tag_to_use)
-        else:
-            self.text_widget.insert(tk.END, msg + '\n')
-            
-        self.text_widget.see(tk.END)
-        self.text_widget.config(state='disabled')
 
-class ConverterGUI:
+class ConverterGUI(LogMixin):
     def __init__(self, root):
         self.root = root
         self.root.title("FCIF to FC2 Converter")
@@ -129,38 +109,6 @@ class ConverterGUI:
         if path:
             self.output_path_var.set(str(Path(path)))
 
-    def clear_log(self):
-        self.log_text.config(state='normal')
-        self.log_text.delete('1.0', tk.END)
-        self.log_text.config(state='disabled')
-
-    def copy_log_to_clipboard(self):
-        log_content = self.log_text.get('1.0', tk.END).strip()
-
-        if not log_content:
-            messagebox.showinfo("Copy log", "Log is empty, nothing to copy.")
-            return
-
-        try:
-            self.root.clipboard_clear()
-            self.root.clipboard_append(log_content)
-            self.root.update()
-            self._show_copy_feedback()
-        except tk.TclError as e:
-            messagebox.showerror("Copy log", f"Failed to copy log to clipboard.\n{e}")
-
-    def _show_copy_feedback(self):
-        if self.copy_feedback_after_id is not None:
-            self.root.after_cancel(self.copy_feedback_after_id)
-            self.copy_feedback_after_id = None
-
-        self.copy_feedback_label.config(text="Copied!")
-        self.copy_feedback_after_id = self.root.after(1000, self._hide_copy_feedback)
-
-    def _hide_copy_feedback(self):
-        self.copy_feedback_label.config(text="")
-        self.copy_feedback_after_id = None
-
     def start_conversion(self):
         if self.is_converting:
             return
@@ -185,20 +133,22 @@ class ConverterGUI:
     def run_conversion_task(self, input_path):
         output_path = self.output_path_var.get().strip() or None
 
-        # Attach custom log handler
-        log_handler = TextWidgetLogHandler(self.log_text, self.root)
+        # Attach custom log handler for this conversion run
+        log_handler = TkLogHandler(self.log_text, self.root, is_success=_is_success)
+        log_handler.setFormatter(logging.Formatter('%(message)s'))
         log_handler.setLevel(logging.INFO)
         old_level = fcif_logger.level
         fcif_logger.setLevel(logging.INFO)
         fcif_logger.addHandler(log_handler)
-        
+
         fcif_logger.info("-" * 50)
         fcif_logger.info("Starting conversion task...")
 
         try:
             fcif_logger.info(f"Processing single file: {input_path}")
-            process_campaign(input_path, output_file=output_path)
-            fcif_logger.info("\nTask completed.")
+            success = process_campaign(input_path, output_file=output_path)
+            if not success:
+                fcif_logger.error("Conversion failed.")
         except Exception as e:
             fcif_logger.error(f"Critical Error: {e}")
             traceback.print_exc()
@@ -210,6 +160,7 @@ class ConverterGUI:
     def reset_ui(self):
         self.is_converting = False
         self.convert_btn.config(state='normal')
+
 
 if __name__ == "__main__":
     root = tk.Tk()

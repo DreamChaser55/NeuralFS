@@ -7,40 +7,20 @@ import sys
 import traceback
 import logging
 from pathlib import Path
+
+# Make the project root importable so converter_gui_base can be found when
+# this script is run directly from its own subdirectory.
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from converter_gui_base import TkLogHandler, LogMixin
 from fsif_to_fs2 import process_mission
 
 
-class TkinterTextHandler(logging.Handler):
-    def __init__(self, text_widget, root):
-        super().__init__()
-        self.text_widget = text_widget
-        self.root = root
-
-    def emit(self, record):
-        msg = self.format(record)
-        self.root.after(0, self._append_log, msg, record.levelno)
-
-    def _append_log(self, message, levelno):
-        self.text_widget.config(state='normal')
-
-        tag = None
-        if levelno >= logging.ERROR:
-            tag = 'error'
-        elif levelno >= logging.WARNING:
-            tag = 'warning'
-        elif levelno >= logging.INFO:
-            lower = message.lower()
-            if "[success]" in lower or "[passed]" in lower:
-                tag = 'success'
-            else:
-                tag = 'info'
-
-        if tag:
-            self.text_widget.insert(tk.END, message + "\n", tag)
-        else:
-            self.text_widget.insert(tk.END, message + "\n")
-        self.text_widget.see(tk.END)
-        self.text_widget.config(state='disabled')
+def _is_success(record, msg):
+    """Success-detection strategy for the FSIF converter log handler."""
+    if record.levelno == logging.INFO:
+        lower = msg.lower()
+        return "[success]" in lower or "[passed]" in lower
+    return False
 
 
 class RedirectText:
@@ -65,14 +45,14 @@ class RedirectText:
         self.text_widget.config(state='disabled')
 
 
-class ConverterGUI:
+class ConverterGUI(LogMixin):
     def __init__(self, root):
         self.root = root
         self.root.title("FSIF to FS2 Converter")
         self.root.geometry("1000x700")
         try:
             self.root.state('zoomed')
-        except:
+        except Exception:
             pass
 
         # Variables
@@ -102,7 +82,7 @@ class ConverterGUI:
         self.create_widgets()
 
         # Setup GUI logging handler
-        self.gui_handler = TkinterTextHandler(self.log_text, self.root)
+        self.gui_handler = TkLogHandler(self.log_text, self.root, is_success=_is_success)
         self.gui_handler.setFormatter(logging.Formatter('%(message)s'))
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.INFO)
@@ -322,38 +302,6 @@ class ConverterGUI:
             self.api_key_label.grid()
             self.api_key_entry.grid()
 
-    def clear_log(self):
-        self.log_text.config(state='normal')
-        self.log_text.delete('1.0', tk.END)
-        self.log_text.config(state='disabled')
-
-    def copy_log_to_clipboard(self):
-        log_content = self.log_text.get('1.0', tk.END).strip()
-
-        if not log_content:
-            messagebox.showinfo("Copy log", "Log is empty, nothing to copy.")
-            return
-
-        try:
-            self.root.clipboard_clear()
-            self.root.clipboard_append(log_content)
-            self.root.update()
-            self._show_copy_feedback()
-        except tk.TclError as e:
-            messagebox.showerror("Copy log", f"Failed to copy log to clipboard.\n{e}")
-
-    def _show_copy_feedback(self):
-        if self.copy_feedback_after_id is not None:
-            self.root.after_cancel(self.copy_feedback_after_id)
-            self.copy_feedback_after_id = None
-
-        self.copy_feedback_label.config(text="Copied!")
-        self.copy_feedback_after_id = self.root.after(1000, self._hide_copy_feedback)
-
-    def _hide_copy_feedback(self):
-        self.copy_feedback_label.config(text="")
-        self.copy_feedback_after_id = None
-
     def start_conversion(self):
         if self.is_converting:
             return
@@ -396,7 +344,9 @@ class ConverterGUI:
         try:
             if mode == "file":
                 logging.info(f"Processing single file: {input_path}")
-                process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
+                success = process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
+                if not success:
+                    logging.error("Conversion failed.")
             else:
                 # Folder mode
                 logging.info(f"Scanning folder: {input_path}")
@@ -407,11 +357,19 @@ class ConverterGUI:
                     logging.info("No .fsif files found in the selected directory.")
                 else:
                     logging.info(f"Found {len(files)} file(s).")
+                    succeeded = 0
+                    failed = 0
                     for i, file_path in enumerate(files, 1):
                         logging.info(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
-                        process_mission(file_path, tts_settings=tts_settings)
+                        if process_mission(file_path, tts_settings=tts_settings):
+                            succeeded += 1
+                        else:
+                            failed += 1
 
-            logging.info("\nAll tasks completed.")
+                    if failed == 0:
+                        logging.info(f"\nAll {succeeded} file(s) converted successfully.")
+                    else:
+                        logging.error(f"\n{succeeded}/{len(files)} file(s) succeeded, {failed} failed.")
 
         except Exception as e:
             logging.error(f"Critical Error: {e}")
