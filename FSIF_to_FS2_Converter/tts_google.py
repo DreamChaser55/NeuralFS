@@ -38,7 +38,6 @@ class GoogleTTSProvider(BaseTTSProvider):
         """
         candidates = [
             Path.cwd() / "Gemini_API_key.txt",
-            Path(__file__).parent / "Gemini_API_key.txt"
         ]
 
         for key_file in candidates:
@@ -91,8 +90,12 @@ class GoogleTTSProvider(BaseTTSProvider):
             except Exception as e:
                 logger.warning(f"[TTS] Warning: Failed to auto-detect Vertex AI credentials: {e}")
 
-            # Fallback
-            self.client = genai.Client()
+            raise ValueError(
+                "No Google API key found. Provide it via --google-api-key, "
+                "the GEMINI_API_KEY or GOOGLE_API_KEY environment variable, "
+                "a Gemini_API_key.txt file in the current working directory, "
+                "or configure Vertex AI Application Default Credentials."
+            )
 
     def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
         """Synthesize text to WAV using Google GenAI."""

@@ -63,12 +63,11 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
     def read_api_key_from_file(self) -> Optional[str]:
         """
-        Attempt to read ElevenLabs API key from Elevenlabs_API_key.txt.
-        Checks CWD and the module directory.
+        Attempt to read ElevenLabs API key from Elevenlabs_API_key.txt in CWD.
+        Returns the key string, or None if file not found/empty.
         """
         candidates = [
             Path.cwd() / "Elevenlabs_API_key.txt",
-            Path(__file__).parent / "Elevenlabs_API_key.txt"
         ]
 
         for key_file in candidates:

@@ -94,11 +94,6 @@ class BaseTTSProvider(ABC):
             if not vf_str or vf_str.lower() in ("none", "none.wav"):
                 continue
 
-            if not vf_str:
-                # Fallback: derive from message name
-                name_str = str(msg.name) if msg.name else f"message_{idx+1}"
-                vf_str = slugify_filename(name_str) + ".wav"
-
             vf_str = ensure_wav_extension(vf_str)
             out_path = base_out_dir / 'special' / vf_str
 
@@ -155,10 +150,6 @@ class BaseTTSProvider(ABC):
             # Check if voiced (skip if none/empty)
             if not vf_str or vf_str.lower() in ("none", "none.wav"):
                 continue
-
-            if not vf_str:
-                # Fallback: use section_name_index.wav
-                vf_str = f"{section_key}_{idx+1}.wav"
 
             vf_str = ensure_wav_extension(vf_str)
             out_path = base_out_dir / subfolder / vf_str
