@@ -49,9 +49,9 @@ Events: if `mission_flow.events[*].directive_text` is present, the converter emi
 Waypoints/Jump Nodes: waypoint lists are emitted; top-level `jump_nodes` are emitted in `#Waypoints` as `$Jump Node` and `$Jump Node Name` (not counted in "lists total").
 
 Docking: Pre-spawn inter-ship docking pairs are supported. Author docking only on the docker ship via `dock`. The converter:
-- validates the pair and ensures exactly one leader with `$Arrival Cue: ( true )` (the dockee) and sets the docker to `( false )` if needed,
-- emits `+Docked With`, `$Docker Point` (point on DOCKEE), and `$Dockee Point` (point on DOCKER) per FS2’s reversed naming,
-- discards docking that involves the player start ship, with a warning.
+- validates the pair and strictly enforces that the dockee (leader) has `arrival_cue: ( true )` and the docker (follower) has `( false )`; any other configuration (both `( true )`, both `( false )`, or docker `( true )` / dockee `( false )`) is a hard error that aborts conversion,
+- emits `+Docked With`, `$Docker Point` (point on DOCKEE), and `$Dockee Point` (point on DOCKER) per FS2's reversed naming,
+- aborts conversion with an error if either ship in the docking pair is the player start ship; player ships cannot be pre-spawn docked.
 Only pairs (2 ships) are supported; multi-ship docking trees are not supported in this version.
 Names for $Docker Point and $Dockee Point must be canonical for the specific ship class; see ../../FSO and fs2 format/ship-dockpoint-names.md.
 
