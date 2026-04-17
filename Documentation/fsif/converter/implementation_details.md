@@ -114,7 +114,7 @@ The converter supports multiple Text-to-Speech providers. The user selects the p
 
 ### 2. ElevenLabs TTS
 *   **Engine**: ElevenLabs API (`elevenlabs` library)
-*   **Model**: `eleven_multilingual_v2` (default, configurable via CLI)
+*   **Model**: `eleven_v3` (default, configurable via CLI)
 *   **Audio Format**: `pcm_24000` (raw 24kHz PCM wrapped into WAV container by the converter)
 *   **Authentication Priority**:
     1. Key explicitly provided as an argument.

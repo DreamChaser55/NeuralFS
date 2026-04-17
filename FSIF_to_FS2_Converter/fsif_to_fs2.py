@@ -274,7 +274,7 @@ def main():
     
     # ElevenLabs specific
     parser.add_argument("--elevenlabs-model", dest="elevenlabs_model",
-                        help="ElevenLabs model ID (default: eleven_multilingual_v2)")
+                        help="ElevenLabs model ID (default: eleven_v3)")
     
     parser.add_argument("--tts-rate-limit-delay", dest="tts_rate_limit_delay", type=float, default=0.0,
                         help="Delay in seconds between consecutive TTS API calls (default: 0.0)")

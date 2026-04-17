@@ -130,7 +130,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
             # Using default VoiceSettings is usually best unless we expose specific knobs.
 
             # Determine model
-            model_id = self.config.model_id or "eleven_multilingual_v2"
+            model_id = self.config.model_id or "eleven_v3"
 
             # Call API
             # Returns a generator of bytes (chunks)
