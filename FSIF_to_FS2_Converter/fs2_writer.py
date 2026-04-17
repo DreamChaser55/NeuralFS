@@ -520,9 +520,9 @@ class FS2Writer:
                  self._write(f'+Respawn priority: {ship.respawn_priority}')
 
             # Pre-spawn docking
-            dw = ship.docked_with
-            if dw and dw in _all_names:
-                 self._write(f'+Docked With: {dw}')
+            docked_with = ship.docked_with
+            if docked_with and docked_with in _all_names:
+                 self._write(f'+Docked With: {docked_with}')
                  # FS2 engine expects docking points in a reversed naming convention:
                  #  - `$Docker Point` specifies the point on the DOCKEE (the other ship).
                  #  - `$Dockee Point` specifies the point on the DOCKER (this ship).
@@ -659,17 +659,17 @@ class FS2Writer:
 
         for reinf in self.mission.reinforcements:
             self._write(f'$Name: {reinf.name}')
-            type_emit = "Attack/Protect"
+            reinf_type = "Attack/Protect"
             if reinf.name in wing_names:
                 pass # Default
             elif reinf.name in ship_by_name:
                 cls = ship_by_name[reinf.name].ship_class.strip()
                 if cls.startswith("GTS ") or cls.startswith("PVS "):
-                    type_emit = "Repair/Rearm"
+                    reinf_type = "Repair/Rearm"
             else:
                  pass # Default/Warn?
 
-            self._write(f'$Type: {type_emit}')
+            self._write(f'$Type: {reinf_type}')
             self._write(f'$Num times: {reinf.num_times}')
             
             if reinf.arrival_delay > 0:

@@ -326,9 +326,9 @@ class MissionLoader:
              if ship_name == player_setup.start_ship:
                  ship_props.setdefault('flags', []).append('player-start')
              
-             s_obj = Ship(**ship_props)
-             wing_ships_objs.append(s_obj)
-             self.all_ships.append(s_obj)
+             ship_obj = Ship(**ship_props)
+             wing_ships_objs.append(ship_obj)
+             self.all_ships.append(ship_obj)
         
         self.all_wings.append(Wing(ships=wing_ships_objs, **wing_data))
 
@@ -504,11 +504,11 @@ class MissionLoader:
             n = str(item.get('name', '')).strip()
             if not n or n in seen: continue
             
-            w_obj = name_to_wing.get(n)
-            if not w_obj: raise ValueError(f"Unknown reinforcement wing '{n}'")
+            wing_obj = name_to_wing.get(n)
+            if not wing_obj: raise ValueError(f"Unknown reinforcement wing '{n}'")
             
-            if 'reinforcement' not in [x.lower() for x in w_obj.flags]:
-                w_obj.flags.append('reinforcement')
+            if 'reinforcement' not in [x.lower() for x in wing_obj.flags]:
+                wing_obj.flags.append('reinforcement')
                 
             reinforcements.append(Reinforcement(**item))
             seen.add(n)
