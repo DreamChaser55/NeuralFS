@@ -104,7 +104,7 @@ The converter supports multiple Text-to-Speech providers. The user selects the p
 
 ### 1. Google Gemini TTS (Default)
 *   **Engine**: Google GenAI (`google-genai` library)
-*   **Model**: `gemini-2.5-pro-preview-tts`
+*   **Model**: `gemini-3.1-flash-tts-preview`
 *   **Audio Format**: 24kHz, 16-bit Mono WAV
 *   **Authentication Priority**:
     1. Key explicitly provided as an argument.

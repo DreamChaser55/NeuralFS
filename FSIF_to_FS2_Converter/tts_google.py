@@ -129,7 +129,7 @@ class GoogleTTSProvider(BaseTTSProvider):
 
             # Call API
             response = self.client.models.generate_content(
-                model="gemini-2.5-pro-preview-tts",
+                model="gemini-3.1-flash-tts-preview",
                 contents=prompt_text,
                 config=config
             )

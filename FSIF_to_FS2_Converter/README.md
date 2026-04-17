@@ -16,7 +16,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Jump nodes
 - Reinforcements
 - Automatic TTS voice generation during conversion
-  - **Google Gemini 2.5 TTS** (Default)
+  - **Google Gemini 3.1 Flash TTS** (Default)
   - **ElevenLabs TTS**
 - Basic validation of FSIF files with actionable error reports
 - Advanced SEXP Validation (semantic checks)
