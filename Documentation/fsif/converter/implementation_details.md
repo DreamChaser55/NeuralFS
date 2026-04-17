@@ -9,11 +9,11 @@ Purpose
 
 ## Current behavior
 
-Environment: backgrounds and full nebula are emitted to .fs2. FSIF uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. When environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses both background starbitmaps and suns.
+Environment: backgrounds and full nebula are emitted to .fs2. FSIF uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. When environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background starbitmaps but still emits suns (suns remain visible in full-nebula missions).
 
 Fiction Viewer: if `mission_flow.fiction_viewer` is present, the converter emits `#Fiction Viewer` with `$File: <filename>`.
 
-Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks and +Secondary Banks; +Sbank Ammo is emitted when secondary ammo is provided (weapons.bank_ammo/secondary_ammo). Custom subsystem states are emitted as `+Subsystem: <name>` with optional `$Damage: <percent>` (percent damaged = 100 - health). A minimal `+Subsystem: Pilot` is always written.
+Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks and +Secondary Banks; +Sbank Ammo is emitted when secondary ammo is provided (weapons.secondary_ammo). Custom subsystem states are emitted as `+Subsystem: <name>` with optional `$Damage: <percent>` (percent damaged = 100 - health). A minimal `+Subsystem: Pilot` is always written.
 
 Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single list; the converter routes tokens to the correct bucket automatically). For a complete list of supported flags and their mapping, see `../../FSO and fs2 format/FSO_Tokens_Reference.md`.
 
@@ -30,7 +30,7 @@ Localization: XSTR wrapping is applied to mission name/description, goals $Messa
 
 Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
 
-Validation: If the player's starting ship is standalone (not part of any wing), its arrival_cue must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print a warning if this constraint is violated.
+Validation: If the player's starting ship is standalone (not part of any wing), its arrival_cue must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
 
 Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list).
 

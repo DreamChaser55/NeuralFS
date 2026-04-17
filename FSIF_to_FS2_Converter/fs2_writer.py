@@ -693,11 +693,12 @@ class FS2Writer:
         total = len(env.suns) + len(env.starbitmaps)
         
         # Nebula Background Logic
+        # When full nebula is active, starbitmaps are suppressed (the volumetric nebula
+        # fills the background), but suns are still emitted and visible.
         neb = env.nebula
-        suppress_starbitmaps = False
-        if neb.enabled:
-            suppress_starbitmaps = True
-            total = len(env.suns)  # Only suns are emitted for fullneb, starbitmaps are suppressed
+        suppress_starbitmaps = neb.enabled
+        if suppress_starbitmaps:
+            total = len(env.suns)  # Only suns are emitted for fullneb; starbitmaps are suppressed
         
         self._write(f'#Background bitmaps\t\t;! {total} total')
         self._write(f'')
@@ -716,15 +717,15 @@ class FS2Writer:
         self._write('$Bitmap List:')
         self._write('+Flags: ( "corrected angles" )')
 
-        if suppress_starbitmaps:
-            return
-
         for s in env.suns:
             self._write(f'$Sun: {s.texture}')
             p, b, h = s.angles
             self._write(f'+Angles: {p:.6f} {b:.6f} {h:.6f}')
             self._write(f'+Scale: {s.scale:.6f}')
-            
+
+        if suppress_starbitmaps:
+            return
+
         for s in env.starbitmaps:
             self._write(f'$Starbitmap: {s.texture}')
             p, b, h = s.angles
