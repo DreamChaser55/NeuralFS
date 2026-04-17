@@ -11,10 +11,8 @@ logger = logging.getLogger(__name__)
 
 try:
     from elevenlabs.client import ElevenLabs
-    from elevenlabs import VoiceSettings
 except ImportError:
     ElevenLabs = None
-    VoiceSettings = None
 
 from tts_provider_base import BaseTTSProvider, TTSConfig
 
