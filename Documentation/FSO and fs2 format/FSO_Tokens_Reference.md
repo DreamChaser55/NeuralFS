@@ -119,7 +119,7 @@ These tokens specify various mission properties and behaviors.
 *   `beam_free_all_by_default` — Beam-free-all by default
 *   `no_briefing` — No briefing, jump right into mission
 *   `toggle_debriefing` — Turn off debriefing.
-*   `red_alert` — A red-alert mission (player damage and loadout persists from the previous mission)
+*   `red_alert` — A red-alert mission (player damage and loadout persists from the previous mission, only the first briefing stage text is shown)
 *   `scramble` — A scramble mission (no loadout customization)
 *   `no_builtin_command` — Turns off Command messages without turning off pilots
 *   `all_attack` — All teams at war

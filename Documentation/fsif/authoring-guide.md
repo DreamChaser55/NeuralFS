@@ -614,6 +614,9 @@ Use this section as a practical sanity guide: each item describes the preferred 
 ### Collision checks for waypoint paths
 - The Converter checks for potential collisions between larger ships moving along waypoint paths and **initial positions** of other larger ships. This check can produce spurious warnings because it does not account for the fact that ships may move from their initial positions during the mission. Always consider the planned mission flow movement of the referenced ships when reviewing these collision warnings.
 
+### Red alert missions
+- Missions with the `red_alert` flag inherit player ship (hull integrity and loadout) from the previous mission (they represent a mission that begins immediately after the previous mission ends). The briefing view shows only the first briefing stage text with no icons. If you want to carry more ships between missions, use the `red_alert_carry` flag on them (in both missions).
+
 ### Final review before conversion
 After completing a mission file, do one deliberate review pass and confirm that:
 - all referenced tokens are canonical and documented
