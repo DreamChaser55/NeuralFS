@@ -162,7 +162,7 @@
 3. player_setup
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".
 4. entities
-  - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
+  - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Override semantics are **shallow**: a top-level key on the ship replaces the entire value from the template, so nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary`, you must re-specify the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
     - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`.
   - ships:
     - subsystems: Names must match the per-ship canonical lists.
