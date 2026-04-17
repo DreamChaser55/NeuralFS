@@ -94,6 +94,8 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [-500.0, 0.0, 500.0]
+      ai_goals: |
+        ( ai-chase-any 70 )
 
   reinforcement_wings:
     - name: "Beta"
