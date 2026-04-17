@@ -758,8 +758,10 @@ class FS2Writer:
 
         self._write('\n#Asteroid Fields\n')
         self._write(f'$Density: {fld.density}')
-        self._write(f'+Field Type: {fld.field_type}')
-        self._write(f'+Debris Genre: {fld.debris_genre}')
+        field_type_int   = 0 if fld.field_type == 'active'   else 1
+        debris_genre_int = 0 if fld.genre      == 'asteroid' else 1
+        self._write(f'+Field Type: {field_type_int}')
+        self._write(f'+Debris Genre: {debris_genre_int}')
 
         for t in fld.debris_types:
             self._write(f'+Field Debris Type Name: {t}')
@@ -768,7 +770,7 @@ class FS2Writer:
         self._write(f'$Minimum: {self._format_vector(fld.min_vec)}')
         self._write(f'$Maximum: {self._format_vector(fld.max_vec)}')
 
-        if fld.field_type == 0 and fld.debris_genre == 0 and fld.targets:
+        if fld.field_type == 'active' and fld.genre == 'asteroid' and fld.targets:
             targets_joined = ' '.join([f'"{name}"' for name in fld.targets])
             self._write(f'$Asteroid Targets: ( {targets_joined} )')
 

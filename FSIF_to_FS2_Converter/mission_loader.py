@@ -176,31 +176,31 @@ class MissionLoader:
         # Asteroid Field Normalization
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
-            # Logic: genre vs type constraints
+            # Normalise the two human-readable string keys.
+            # 'genre' -> 'asteroid' | 'debris'  (kept as-is in the model)
+            # 'type'  -> 'active'   | 'passive'  (renamed to 'field_type' for the model)
             genre = str(af_src.get('genre', 'asteroid')).lower()
             ftype = str(af_src.get('type', 'passive')).lower()
-            
-            debris_genre = 1 if genre != 'asteroid' else 0
-            field_type = 0 if ftype == 'active' else 1
-            
-            if debris_genre == 1 and field_type == 0:
-                 logger.warning(f"[WARNING] Debris field '{af_src.get('name')}' cannot be active; coercing to passive.")
-                 field_type = 1
-            
+
+            # Enforce constraint: a debris field cannot be active.
+            if genre != 'asteroid' and ftype == 'active':
+                logger.warning(f"[WARNING] Debris field cannot be active; coercing to passive.")
+                ftype = 'passive'
+
             # Map bounds to min_vec/max_vec
             if 'bounds' in af_src and isinstance(af_src['bounds'], dict):
                 b = af_src['bounds']
                 if 'min' in b: af_src['min_vec'] = b['min']
                 if 'max' in b: af_src['max_vec'] = b['max']
 
-            af_src['field_type'] = field_type
-            af_src['debris_genre'] = debris_genre
-            
+            # Write normalised strings back; rename 'type' -> 'field_type' to match model field.
+            af_src['genre'] = genre
+            af_src['field_type'] = ftype
+
             # Cleanup source for strict model
-            af_src.pop('genre', None)
             af_src.pop('type', None)
             af_src.pop('bounds', None)
-            
+
             env_data['asteroid_field'] = af_src
 
         return Environment(**env_data)

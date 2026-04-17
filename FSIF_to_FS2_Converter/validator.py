@@ -477,9 +477,9 @@ class Validator:
         # Asteroid/Debris Field Logic
         af = env.asteroid_field
         if af and af.targets:
-            # Targets are only valid for Active (0) Asteroid (0) fields
-            if not (af.field_type == 0 and af.debris_genre == 0):
-                self.log_warning(f"The asteroid field defines targets but they will be ignored (type={af.field_type}, genre={af.debris_genre}). Targets are only supported for Active Asteroid fields.")
+            # Targets are only valid for Active Asteroid fields
+            if not (af.field_type == 'active' and af.genre == 'asteroid'):
+                self.log_warning(f"The asteroid field defines targets but they will be ignored (type='{af.field_type}', genre='{af.genre}'). Targets are only supported for Active Asteroid fields.")
 
     def validate_mission_scale_recommendations(self):
         """

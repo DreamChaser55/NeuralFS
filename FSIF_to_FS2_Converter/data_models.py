@@ -2,7 +2,7 @@
 # Defines Pydantic models for the FSIF mission structure.
 
 from __future__ import annotations
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any, Literal, Optional, Union
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 # --- Constants ---
@@ -149,10 +149,8 @@ class Nebula(BaseModel):
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
     density: int = Field(50, ge=0)
-    # Note: FSIF authors provide 'type' (active/passive) and 'genre' (asteroid/debris) as strings.
-    # mission_loader.py transforms these strings into the integer fields below before Pydantic validation.
-    field_type: int = 1 # 0=active, 1=passive
-    debris_genre: int = 0 # 0=asteroid, 1=debris
+    field_type: Literal['active', 'passive'] = 'passive'
+    genre: Literal['asteroid', 'debris'] = 'asteroid'
     debris_types: List[str] = Field(default_factory=lambda: ["Brown", "Blue", "Orange"])
     average_speed: float = 20.0
     min_vec: List[float] = Field(default_factory=lambda: [-1000.0, -1000.0, -1000.0])
