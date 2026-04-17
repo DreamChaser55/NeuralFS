@@ -7,7 +7,7 @@ mission_info:
   game_type: "single"
   ai_profile: "FS1 RETAIL"
   flags: []
-  disallow_support: false
+  disallow_support_ships: false
 
 environment:
   ambient_light_level: [10, 10, 10]

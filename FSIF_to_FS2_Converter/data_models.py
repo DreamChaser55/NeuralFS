@@ -182,7 +182,7 @@ class MissionInfo(BaseModel):
     description: str = 'No description provided.'
     game_type: str = 'single'
     flags: List[str] = Field(default_factory=list)
-    disallow_support: bool = False
+    disallow_support_ships: bool = False
     ai_profile: str = 'FS1 RETAIL'
     created: Optional[str] = None
     modified: Optional[str] = None
