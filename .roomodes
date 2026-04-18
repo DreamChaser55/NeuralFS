@@ -36,7 +36,8 @@ customModes:
       - Flag risks: potential canon conflicts, node-map stretch, era tech mismatches.
 
       Stage 2 - Campaign Bible (approval gate)
-      - Create a new 'Campaign_Bible.txt' document in your current workspace.
+      - Create a new folder in your current workspace with the same name as the new campaign.
+      - Create a 'Campaign_Bible.txt' document inside the new campaign folder.
       - Summarize the chosen pitch into a concise Campaign Bible (You will write this summary into the 'Campaign_Bible.txt'):
         - Timeline placement (date window), systems and node routes used (cite the map; justify any unstable nodes).
         - Factions and order of battle (named capital ships with classes, squadrons/wing names from canonical pools).
@@ -61,7 +62,7 @@ customModes:
       - Write this concise mission list into 'Campaign_Bible.txt'.
 
       Stage 4 - Detailed Mission Design Documents (MDDs) (approval gate per document)
-      - Create a new folder in your workspace: "Detailed Mission Design Documents"
+      - Create a new folder inside the new campaign folder: "Detailed Mission Design Documents"
       - Inside the "Detailed Mission Design Documents", create a folder for each Act ('Act 1', 'Act 2', 'Act 3' etc.)
       - For each mission, deliver a mission design document. Use the template structure below.
       - Each MDD should be in its own, separate '.txt' file, appropriately named and placed in the correct Act folder. A Command Briefing should be placed in the MDD file of the mission that follows it.
@@ -171,7 +172,7 @@ customModes:
           2.6. Read '/FCIF_to_FC2_Converter/README.md' and '/Documentation/fcif/converter/cli.md'.
       3. Read any provided story outlines, notes and the 'Campaign_Bible.txt' describing the campaign you will be transcribing into FSIF files.
       4. Study the provided campaign mission scenarios. They should be provided to you as detailed mission design documents. The fiction viewer story (if it exists) is provided as a separate '.txt' file next to the mission document. It is named according to this schema: 'missionname_story.txt'.
-      5. Transcribe the mission scenarios into valid '.fsif' files, one by one. Try to respect the source material as much as possible, but you are allowed to modify the scenarios if they present implementation issues in FSIF or do not respect the capabilities and limitations of FSO SEXP engine. After writing each '.fsif' file, use the FSIF to FS2 Converter (`fsif_to_fs2.py`) to convert it to '.fs2'. If the Converter reports any errors or warnings, analyze the problematic '.fsif' file, fix the issues, and iterate until the file converts cleanly. Once a mission cleanly converts to '.fs2', proceed to transcribe the next mission.
+      5. Transcribe the mission scenarios into valid '.fsif' files, one by one. Try to respect the source material as much as possible, but you are allowed to modify the scenarios if they present implementation issues in FSIF or do not respect the capabilities and limitations of FSO SEXP engine. After writing each '.fsif' file, use the FSIF to FS2 Converter (`fsif_to_fs2.py`) to convert it to '.fs2'. If the Converter reports any errors or warnings, analyze the problematic '.fsif' file, fix the issues, and iterate until the file converts cleanly. Always do at least one final checking pass to verify the absence of any mistakes in the written '.fsif' file! Once a mission cleanly converts to '.fs2', proceed to transcribe the next mission.
       6. After all mission files are converted cleanly, create the campaign definition file in FCIF format ('.fcif'). Place it in the root of the campaign folder (alongside 'Campaign_Bible.txt'). Derive the campaign name and description from the Campaign Bible. List all the mission filenames in the correct order. Determine the starting loadout (ships and weapons available at the start of the campaign) based on the ships and weapons used in the early missions or mentioned in the Bible. Add any advance conditions (success/failure goals or events) for the missions if applicable.
       7. After writing the '.fcif' file, use the FCIF to FC2 Converter (`fcif_to_fc2.py`) to convert it to '.fc2'. The converter will automatically check the '.fsif' files to verify loadouts. If the Converter reports any errors or warnings, fix the file(s) and iterate until the '.fcif' cleanly converts.
       8. IMPORTANT: Do NOT attempt to read or analyze the resulting '.fs2' or '.fc2' files. They are very large and will quickly fill your entire context window. The feedback provided by the Converter should be enough to fix any issues you encounter.
