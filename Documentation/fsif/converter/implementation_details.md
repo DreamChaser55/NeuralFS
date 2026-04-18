@@ -17,7 +17,7 @@ Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks 
 
 Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single list; the converter routes tokens to the correct bucket automatically). For a complete list of supported flags and their mapping, see `../../FSO and fs2 format/FSO_Tokens_Reference.md`.
 
-Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when "escort"), +Destroy At (destroy_at > 0), +Orders Accepted (orders_accepted_mask), and +Orders Accepted List (orders_accepted).
+Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when the `escort` flag is present or `escort_priority > 0`; the validator requires the `escort` flag to be set whenever `escort_priority` is non-zero), and +Destroy At (destroy_before_mission > 0).
 
 AI goals: wing-level and per-ship ai_goals are emitted.
 
@@ -171,7 +171,12 @@ The validator checks the following areas:
 *   Checks for valid team names, message priorities, and mission flags.
 *   Validates background bitmaps and nebula patterns.
 *   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
-*   Warns if distances between any two objects or anchor-based arrival distances exceed 20,000 meters, as large mission spaces can lead to long travel times.
+*   **Sparse background advisory**: warns when a non-subspace, non-full-nebula mission has fewer than 3 nebula starbitmaps in `environment.starbitmaps`. A sky with very few background nebulae looks unusually empty.
+*   **Starbitmaps forbidden in subspace or full-nebula missions**: emits an error if `environment.starbitmaps` is non-empty when the `subspace` mission flag is set or when `environment.nebula.enabled: true` — starbitmaps are not visible in those contexts.
+*   **Mission scale recommendation**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any authored `arrival_distance` exceeds 20,000 meters, as large mission spaces lead to long travel times. The check is **arrival-location-aware**:
+    *   Objects arriving via `Hyperspace` use their authored `location`/`position` directly.
+    *   Objects arriving via `Docking Bay` inherit the effective position of their `arrival_anchor` ship (resolved recursively with cycle detection).
+    *   Objects arriving via any directional location (e.g., `Near Ship`, `In front of ship`) have no fixed initial position and are **excluded** from the distance check.
 
 #### **ASCII Enforcement for FSO-facing Strings**:
 *   FreeSpace Open only supports ASCII reliably for mission-facing content written into `.fs2`.
@@ -226,6 +231,52 @@ The validator checks the following areas:
     *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
     *   Wing member: author the fields on the corresponding `entities.wings[*]` entry.
 
+#### **3D Mission Design**:
+*   Warns if all positioned objects in the mission (standalone ships, wing centroids, jump nodes, waypoint points) have Y-coordinate exactly 0 — i.e., the entire mission is laid out on the flat XZ plane.
+*   FreeSpace is a fully 3D game. Spreading objects along the Y-axis creates more interesting geometry and prevents unintended collisions between ships that are otherwise stacked on the same plane. The warning is advisory and does not abort conversion.
+
+#### **Hyperspace Spawn Collisions**:
+*   Warns when two ships or wings that both arrive via `Hyperspace` at static positions have **Oriented Bounding Boxes (OBBs)** that intersect at mission start.
+*   Bounding boxes are derived from `fs_data.SHIP_BOUNDING_BOXES` (accurate per-class data) or from a heuristic radius based on the ship class prefix when no accurate data is available.
+*   Pre-spawn docking pairs are excluded: if ship A is docked to ship B, their overlap is intentional and not flagged.
+*   The warning is advisory and does not abort conversion.
+
+#### **Waypoint Path Collisions**:
+*   Warns when a standalone ship's `ai-waypoints` or `ai-waypoints-once` path is likely to pass through or very close to the initial position of another large ship or installation.
+*   **Scope**: only standalone ships with waypoint AI goals are checked. Wing-level waypoints are intentionally not checked — wings of fighters/bombers rely on their own AI collision avoidance routines.
+*   **Collision test**: a segment OBB is constructed for each waypoint leg and tested against the static OBBs of potential obstacles.
+*   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from both the mover and obstacle sets. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
+*   The effective start position of the moving ship is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships with directional arrival locations are excluded (no fixed initial position).
+*   The warning is advisory and does not abort conversion.
+
+#### **Anchor Validation**:
+*   Validates `arrival_anchor` and `departure_anchor` references for all ships and wings. The anchor must refer to a known ship, wing, or a valid special token (e.g., `<no anchor>`).
+*   **Directional arrival locations** (`Near Ship`, `In front of ship`, `In back of ship`, `Above ship`, `Below ship`, `To left of ship`, `To right of ship`) require **both** `arrival_anchor` and `arrival_distance` to be specified — missing either is an error.
+*   **Docking Bay arrival/departure** requires `arrival_anchor` / `departure_anchor` to be specified.
+*   **Fighterbay requirement**: when a ship or wing uses `Docking Bay` arrival or departure, the validator checks that the referenced anchor ship class has a `fighterbay` subsystem. A fighterbay is required for ships to emerge from or land in a bay; using a class without one is an error.
+
+#### **Wings Without Initial Orders**:
+*   Warns if a wing has no `ai_goals` (empty or missing). AI-controlled ships in such a wing will sit idle.
+*   The warning is advisory and does not abort conversion.
+
+#### **Escort Priority Requires `escort` Flag**:
+*   Error if `escort_priority > 0` is set on a ship that does not have the `escort` flag. The `+Escort priority` field is only meaningful for escort-flagged ships; setting a non-zero priority without the flag is almost certainly an authoring mistake.
+
+#### **Goals vs. Directives Count**:
+*   Warns when a mission has more `mission_flow.goals` than events with `directive_text`. It is strongly recommended that every important goal has a matching event with a `directive_text` so the player can see the objective on the HUD.
+*   The warning is advisory and does not abort conversion.
+
+#### **Briefing Icon Proximity**:
+*   Warns if any two briefing icons in the same stage are closer than **5 % of the auto-computed camera width** for that stage. Icons that close visually overlap, making them hard to distinguish on the briefing map.
+*   Camera width is calculated using the same formula as `MissionLoader._calculate_briefing_camera` (tight bounding box → 2.5 aspect ratio clamp → 15 % safety factor → 1000 m minimum).
+*   The warning is advisory and does not abort conversion.
+
+#### **SEXP YAML Scalar Style**:
+*   All SEXP-bearing FSIF fields (`arrival_cue`, `departure_cue`, `ai_goals`, `formula`, `condition`) **must** be authored using the YAML **literal block scalar style** (`|`). Flow scalars (`"..."`) and folded block style (`>`) are not accepted.
+*   The check is performed by `validate_sexp_scalar_styles.validate_sexp_styles()` which reads the raw YAML AST of the `.fsif` file and inspects the node style for each SEXP field.
+*   A mismatch produces a validation error that aborts conversion.
+*   Example correct usage: `arrival_cue: |` followed by the SEXP on the next line.
+
 ### Error Reporting
 *   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic, non-ASCII characters in FSO-facing fields) will print an error message and **fail the validation**, aborting the conversion.
 *   **Warnings**: Minor issues (e.g., unknown mission flags, potential logic oddities) are logged but do not stop conversion.
@@ -273,7 +324,8 @@ Ships (#Objects)
   1) $Arrival Location
   2) +Arrival Distance (if any)
   3) $Arrival Anchor (if any)
-  4) $Arrival Cue
+  4) +Arrival Delay (if provided)
+  5) $Arrival Cue
 - Departure emission order:
   1) $Departure Location (Hyperspace | Docking Bay)
   2) $Departure Anchor (only when Docking Bay)
