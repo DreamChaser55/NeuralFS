@@ -8,6 +8,14 @@ from pathlib import Path
 from typing import List, Optional
 
 
+# Add FSIF_to_FS2_Converter to path to import text_styling_utils
+converter_dir = Path(__file__).parent.parent / "FSIF_to_FS2_Converter"
+if str(converter_dir) not in sys.path:
+    sys.path.append(str(converter_dir))
+
+from text_styling_utils import validate_span_style_tags
+
+
 class FictionViewerValidator:
     """
     Validates a single fiction viewer text file for FSO compatibility.
@@ -19,28 +27,6 @@ class FictionViewerValidator:
     3. Span-style color tag closure (warning) — unclosed $c{ ... $} spans
        will produce incorrect colors in-game.
     """
-
-    # Matches a span-opening tag: a '$' followed by a single color letter and '{'
-    # e.g. $y{, $R{, $f{, $W{, etc.
-    _SPAN_OPEN_TAG_RE = re.compile(r'^\$([WwKkBbGgYyEeVvRrPpOoFfHhNn])\{$')
-
-    # Tokenizes all recognized text styling tags in a string.
-    # Matches (in order):
-    #   - span color open:    $y{
-    #   - single-word color:  $R  (followed by whitespace or end of string)
-    #   - color break:        $|
-    #   - span color close:   $}
-    #   - special placeholders: $quote, $semicolon, $callsign, $rank
-    _STYLE_TAG_RE = re.compile(
-        r"""
-        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn]\{ |          # span color open, e.g. $y{
-        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn](?=(?:\s|$)) | # single-word color, e.g. $R text
-        \$\| |                                         # color break
-        \$\} |                                         # span color close
-        \$(?:quote|semicolon|callsign|rank)\b          # special placeholders
-        """,
-        re.VERBOSE,
-    )
 
     def __init__(self, file_path: Path):
         self.file_path = file_path
@@ -132,68 +118,10 @@ class FictionViewerValidator:
     def _validate_span_tags(self, text: str):
         """
         Validate span-style color tag closure.
-
-        Single-pass O(N) stack-based approach:
-        - Push each span-opening tag ($y{, $f{, etc.) onto a stack.
-        - When $} is encountered, pop the stack (span properly closed).
-        - When any other style tag is encountered while the stack is non-empty,
-          the currently open span is unclosed — pop and warn.
-        - Placeholder tags ($callsign, $rank, $quote, $semicolon) are skipped.
-        - Any tags remaining on the stack after all tokens are unclosed at end.
-
-        Mirrors the logic of Validator._validate_span_style_tags in
-        FSIF_to_FS2_Converter/validator.py.
         """
-        tokens = list(self._STYLE_TAG_RE.finditer(text))
-        stack: list = []  # unclosed span-opening tags
-
-        for tok in tokens:
-            tag = tok.group(0)
-
-            # Placeholders ($callsign, $rank, $quote, $semicolon) are text
-            # substitutions, not style tags. They do not open or close a span.
-            if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', tag):
-                continue
-
-            if self._SPAN_OPEN_TAG_RE.match(tag):
-                # A new span-open tag: if one is already open it was never closed.
-                if stack:
-                    open_tag = stack.pop()
-                    self.log_warning(
-                        f"Span-style color tag '{open_tag}' is unclosed before "
-                        f"'{tag}'. "
-                        f"Add '$}}' before '{tag}' to close the span "
-                        f"(or remove the opening '{open_tag}' if unintentional)."
-                    )
-                stack.append(tag)
-
-            elif tag == '$}':
-                if stack:
-                    stack.pop()  # Span properly closed.
-                else:
-                    self.log_warning(
-                        "Found '$}' with no matching opening span tag. "
-                        "Remove the extra '$}'."
-                    )
-
-            else:
-                # $| (color break) or single-word color tag (e.g. $R).
-                # If a span is currently open, this tag interrupts it.
-                if stack:
-                    open_tag = stack.pop()
-                    self.log_warning(
-                        f"Span-style color tag '{open_tag}' is unclosed before "
-                        f"'{tag}'. "
-                        f"Add '$}}' before '{tag}' to close the span "
-                        f"(or remove the opening '{open_tag}' if unintentional)."
-                    )
-
-        # Any spans still on the stack were never closed.
-        for open_tag in stack:
-            self.log_warning(
-                f"Span-style color tag '{open_tag}' is unclosed at end of text. "
-                f"Add '$}}' to close the span."
-            )
+        for w in validate_span_style_tags(text):
+            # Capitalize the first letter for consistency with original messages
+            self.log_warning(w[0].upper() + w[1:])
 
     # ------------------------------------------------------------------
     # Output helpers

@@ -9,6 +9,7 @@ from data_models import Mission
 import briefing_icon_types
 from validate_sexp_scalar_styles import validate_sexp_styles
 from utils import calculate_briefing_camera_height
+from text_styling_utils import extract_briefing_style_tags, validate_span_style_tags
 
 try:
     from weapons_compatibility_data import WEAPON_COMPATIBILITY
@@ -20,17 +21,6 @@ logger = logging.getLogger(__name__)
 
 class Validator:
     _MISSION_SCALE_RECOMMENDATION_METERS = 20_000.0
-    _BRIEFING_SPAN_OPEN_TAG_RE = re.compile(r'^\$([WwKkBbGgYyEeVvRrPpOoFfHhNn])\{$')
-    _BRIEFING_STYLE_TAG_RE = re.compile(
-        r"""
-        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn]\{ |      # span color open, e.g. $y{
-        \$[WwKkBbGgYyEeVvRrPpOoFfHhNn](?=(?:\s|$)) | # single-word color, e.g. $R text
-        \$\| |                                   # color break
-        \$\} |                                   # span color close
-        \$(?:quote|semicolon|callsign|rank)\b    # special placeholders
-        """,
-        re.VERBOSE,
-    )
 
     def __init__(self, mission: Mission, root_dir: Path, fsif_path: Optional[Path] = None, tts_provider: str = 'google'):
         self.mission = mission
@@ -1274,74 +1264,12 @@ class Validator:
             if msg.voice_name and msg.voice_name not in self.voices:
                 self.log_error(f"Message '{msg.name}' uses unknown voice_name '{msg.voice_name}'")
 
-    def _extract_briefing_style_tags(self, text: Optional[str]) -> List[str]:
-        if not text:
-            return []
-        matches = {m.group(0) for m in self._BRIEFING_STYLE_TAG_RE.finditer(text)}
-        return sorted(matches)
-
     def _validate_span_style_tags(self, context: str, text: Optional[str]):
         """
         Validate span-style color tags ($c{ ... $}) in briefing/debriefing text.
-
-        Single-pass O(N) stack-based approach:
-        - Push each span-opening tag onto a stack.
-        - $} pops the stack (span properly closed).
-        - Any other style tag while the stack is non-empty means the open span
-          was not closed — pop and warn. FSO does not support nested span tags.
-        - Placeholder tags ($callsign, $rank, $quote, $semicolon) are skipped.
-        - Tags remaining on the stack at the end are unclosed at end-of-text.
         """
-        if not text:
-            return
-
-        tokens = list(self._BRIEFING_STYLE_TAG_RE.finditer(text))
-        stack: list = []  # unclosed span-opening tags
-
-        for tok in tokens:
-            tag = tok.group(0)
-
-            # Placeholders ($callsign, $rank, $quote, $semicolon) are text
-            # substitutions, not style tags. They do not open or close a span.
-            if re.match(r'^\$(?:quote|semicolon|callsign|rank)\b', tag):
-                continue
-
-            if self._BRIEFING_SPAN_OPEN_TAG_RE.match(tag):
-                # A new span-open tag: if one is already open it was never closed.
-                if stack:
-                    open_tag = stack.pop()
-                    self.log_warning(
-                        f"{context}: span-style color tag '{open_tag}' is unclosed before "
-                        f"'{tag}'. Add '$}}' before '{tag}' (or remove '{open_tag}')."
-                    )
-                stack.append(tag)
-
-            elif tag == '$}':
-                if stack:
-                    stack.pop()  # Span properly closed.
-                else:
-                    self.log_warning(
-                        f"{context}: found '$}}' with no matching opening span tag. "
-                        f"Remove the extra '$}}'."
-                    )
-
-            else:
-                # $| (color break) or single-word color tag (e.g. $R).
-                # FSO does not support nested span tags of any kind; if a span
-                # is currently open, this tag interrupts it.
-                if stack:
-                    open_tag = stack.pop()
-                    self.log_warning(
-                        f"{context}: span-style color tag '{open_tag}' is unclosed before "
-                        f"'{tag}'. Add '$}}' before '{tag}' (or remove '{open_tag}')."
-                    )
-
-        # Any spans still on the stack were never closed.
-        for open_tag in stack:
-            self.log_warning(
-                f"{context}: span-style color tag '{open_tag}' is unclosed before end of text. "
-                f"Add '$}}' to close the span."
-            )
+        for w in validate_span_style_tags(text):
+            self.log_warning(f"{context}: {w}")
 
     def validate_briefing_span_tags(self):
         """
@@ -1370,7 +1298,7 @@ class Validator:
         )
 
         def warn_if_has_tags(context: str, text: Optional[str]):
-            tags = self._extract_briefing_style_tags(text)
+            tags = extract_briefing_style_tags(text)
             if tags:
                 tags_joined = ", ".join(tags)
                 self.log_warning(f"{context} contains briefing styling tags ({tags_joined}). {guidance}")
