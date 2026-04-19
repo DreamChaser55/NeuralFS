@@ -115,10 +115,8 @@ class VoiceManager:
             # Safety check to prevent infinite loops or absurd filenames
             if len(suffix) >= MAX_STEM_LEN:
                  # This should technically never happen given reasonably small counters,
-                 # but as a fallback for huge counters, we return a truncated randomized fallback
-                 # or just the truncated stem (collision inevitable but safe length).
-                 # For now, let's just break and return current_stem to respect length.
-                 return current_stem
+                 # but if we run out of space for suffixes, raise a hard error.
+                 raise RuntimeError(f"Unable to generate unique voice filename for '{original_slug}'. Too many collisions.")
             
             # Truncate base to make room for suffix
             base_len = MAX_STEM_LEN - len(suffix)
