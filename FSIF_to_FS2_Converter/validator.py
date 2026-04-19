@@ -1736,14 +1736,14 @@ class Validator:
         if open_p != close_p:
             self.log_error(f"SEXP error: {context}: Mismatched parentheses (Open: {open_p}, Close: {close_p})")
             
+        # Regex to strip string literals, respecting escaped quotes/backslashes
+        clean = re.sub(r'"(\\.|[^"\\])*"', '""', sexp)
+
         # 2. YAML Comments (# space)
-        if re.search(r'#\s', sexp):
+        if re.search(r'#\s', clean):
              self.log_error(f"SEXP error: {context}: Likely YAML comment leakage ('# ' found).")
              
         # 3. Token Length & Operator Validity
-        # Regex to strip string literals, respecting escaped quotes/backslashes
-        clean = re.sub(r'"(\\.|[^"\\])*"', '""', sexp)
-        
         # Parse first token (Outermost Operator)
         match = re.search(r'\(\s*([^\s)]+)', clean)
         if match:
