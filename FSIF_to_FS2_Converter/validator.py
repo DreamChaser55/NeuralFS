@@ -1113,6 +1113,9 @@ class Validator:
 
     def validate_wings(self):
         for wing in self.mission.wings:
+            if wing.count > 6:
+                self.log_error(f"Wing '{wing.name}' has count {wing.count}. FSO enforces a hard maximum of 6 ships per wing.")
+
             for f in wing.flags:
                 norm = fs_flags_constants.normalize_flag(f)
                 if norm not in fs_flags_constants.WING_FLAGS_BUCKET:
