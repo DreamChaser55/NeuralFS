@@ -152,7 +152,7 @@ class FS2Writer:
         self._write('+Fog Near Mult: 1.000000')
         self._write('+Fog Far Mult: 1.000000')
  
-       # Support ships
+        # Support ships
         disallow_sup = 1 if info.disallow_support_ships else 0
         self._write(f'+Disallow Support: {disallow_sup}')
 
