@@ -39,7 +39,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
         "Thomas": "GBv7mTt5XYQqbY4UYG9b",
         
         # Female voices
-        "Bella": "EXAVITQu4vr4xnSDxMaL",
+        "Bella": "hpp4J3VqNfWAUOO0d1Us",
         "Charlotte": "XB0fDUnXU5powFXDhCwa",
         "Dorothy": "ThT5KcBeYPX3keUQqHPh",
         "Elli": "MF3mGyEYCl7XYWbV9V6O",
@@ -49,7 +49,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
         "Matilda": "XrExE9yKIg1WjnnlVkGX",
         "Nicole": "piTKgcLEGmPE4e6mEKli",
         "Rachel": "21m00Tcm4TlvDq8ikWAM",
-        "Sarah": "EXAVITQu4vr4xnSDxMaL", # Note: Bella/Sarah share same ID in some lists, keeping generic
+        "Sarah": "EXAVITQu4vr4xnSDxMaL",
         "Serena": "pMsXgVXv3BLzUgSXRplE",
     }
 
