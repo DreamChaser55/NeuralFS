@@ -225,7 +225,7 @@ The validator checks the following areas:
 
 #### **Ship Template Authoring Rules**:
 *   `entities.ship_templates` may only contain reusable shared ship properties.
-*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, and `ai_goals`.
+*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, and `dockee_point`.
 *   This is a hard error because those fields do not work correctly or are not semantically appropriate when inherited by ships that are part of a wing.
 *   Correct authoring locations:
     *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
