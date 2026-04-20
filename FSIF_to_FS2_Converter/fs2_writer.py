@@ -74,9 +74,6 @@ class FS2Writer:
             '\t'
         )
 
-    def _format_sexp_inline(self, sexp: str) -> str:
-        return ' '.join(str(sexp).split())
-
     def write_mission(self):
         """
         Orchestrate the writing of the entire FS2 mission file.
@@ -430,7 +427,7 @@ class FS2Writer:
                 self._write(f'+AI Class: {ship.ai_class}')
 
             if ship.ai_goals:
-                self._write(f'$AI Goals: {self._format_sexp_inline(ship.ai_goals)}')
+                self._write(f'$AI Goals: {ship.ai_goals}')
             
             self._write(f'$Cargo 1:  {self._write_xstr(ship.cargo)}')
             self._write(f'+Initial Velocity: {ship.initial_velocity}')
