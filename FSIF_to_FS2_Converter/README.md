@@ -31,7 +31,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - pydantic>=2.0
 
 Optional (for Google TTS):
-- `google-genai` (for Gemini 2.5 TTS)
+- `google-genai`
 - A configured Google Cloud project (API Key or Vertex AI)
 
 Optional (for ElevenLabs TTS):
