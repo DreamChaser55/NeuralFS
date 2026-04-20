@@ -237,10 +237,6 @@ class MissionContext:
             if w.ships:
                 ctx.wing_to_template_class[w.name] = w.ships[0].ship_class
                 ctx.wing_to_team[w.name] = w.ships[0].team
-            elif w.template and hasattr(mission, 'templates') and w.template in mission.templates:
-                tmpl = mission.templates[w.template]
-                ctx.wing_to_template_class[w.name] = tmpl.get('class', 'Unknown')
-                ctx.wing_to_team[w.name] = tmpl.get('team', 'Unknown')
             
         # 3. Events
         for e in mission.events:
