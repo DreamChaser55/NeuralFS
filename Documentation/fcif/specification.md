@@ -1,4 +1,4 @@
-# Freespace Campaign Intermediate File (FCIF) Specification
+# Freespace Campaign Intermediate Format (FCIF) Specification
 
 FCIF is a simplified, YAML-based format for defining Freespace 2 campaigns. It is designed to be human-readable and easily writable by AI agents, abstracting away the verbose syntax of the legacy `.fc2` format.
 

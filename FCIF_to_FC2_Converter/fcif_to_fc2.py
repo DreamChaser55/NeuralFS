@@ -451,7 +451,7 @@ def process_campaign(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate File) to FC2 format.")
+    parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate Format) to FC2 format.")
     parser.add_argument("input", type=str, help="Input .fcif file")
     parser.add_argument("-o", "--output", type=str, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
 

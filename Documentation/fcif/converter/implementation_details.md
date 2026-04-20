@@ -1,4 +1,4 @@
-# Freespace Campaign Intermediate File (FCIF) Implementation
+# Freespace Campaign Intermediate Format (FCIF) Implementation
 
 This file documents the implementation details of FCIF and of the fcif->fc2 converter. It is not intended for `.fcif` file authors, but for FCIF converter programmers.
 

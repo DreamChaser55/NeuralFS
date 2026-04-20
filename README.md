@@ -16,7 +16,7 @@ This agent brainstorms and iteratively writes the campaign description in natura
 
 ### FSIF+FCIF Writing Agent
 
-This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: *FreeSpace Intermediate File (FSIF)*. This format is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with lots of redundant fields and boilerplate. An AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window. Also, YAML is much more common in the LLM training data than `.fs2` files. This is why it is better to use a more concise and compact intermediate format.
+This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: *Freespace Intermediate Format (FSIF)*. This format is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with lots of redundant fields and boilerplate. An AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window. Also, YAML is much more common in the LLM training data than `.fs2` files. This is why it is better to use a more concise and compact intermediate format.
 
 The agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
 
@@ -46,7 +46,7 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 ## Requirements
 - One of these agentic AI engines:
   - Visual Studio Code with Roo Code extension
-  - Opencode
+  - OpenCode
 - PyYAML
 - pydantic
 
