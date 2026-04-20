@@ -382,13 +382,21 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
             return False
 
         # 3. State Update (Granting items for the next mission)
-        granted_ships = re.findall(r'\(\s*allow-ship\s+"([^"]+)"', raw_content)
-        for s in granted_ships:
-            allowed_ships.add(s)
+        def extract_all_strings(obj):
+            if isinstance(obj, str):
+                yield obj
+            elif isinstance(obj, dict):
+                for v in obj.values():
+                    yield from extract_all_strings(v)
+            elif isinstance(obj, list):
+                for item in obj:
+                    yield from extract_all_strings(item)
 
-        granted_weapons = re.findall(r'\(\s*allow-weapon\s+"([^"]+)"', raw_content)
-        for w in granted_weapons:
-            allowed_weapons.add(w)
+        for text_val in extract_all_strings(data):
+            for s in re.findall(r'\(\s*allow-ship\s+"([^"]+)"', text_val):
+                allowed_ships.add(s)
+            for w in re.findall(r'\(\s*allow-weapon\s+"([^"]+)"', text_val):
+                allowed_weapons.add(w)
 
     return True
 
