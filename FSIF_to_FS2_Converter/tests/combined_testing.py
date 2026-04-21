@@ -406,7 +406,7 @@ class VoiceManagerTesting(unittest.TestCase):
     def setUp(self):
         self.mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(extra_ships=[]),
+            player_setup=PlayerSetup(start_ship="Player Ship", extra_ships=[]),
             environment=Environment(),
         )
         self.temp_dir = tempfile.TemporaryDirectory()
