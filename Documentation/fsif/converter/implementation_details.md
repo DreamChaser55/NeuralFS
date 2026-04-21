@@ -132,7 +132,19 @@ Both use the `Name -- Characteristic` format. For ElevenLabs, the internal conve
 
 ## Strict Validation System
 
-The converter now employs a comprehensive **Strict Validation** system via a dedicated `Validator` class. Unlike previous versions which often emitted warnings and continued, the new system **aborts conversion** if any critical errors are found. This ensures that generated FS2 files are valid and crash-free.
+The converter employs a comprehensive **Strict Validation** system via a modular `Validator` class (implemented using Mixins across the `validator/` package). This system accumulates all critical errors found during the validation pass, logs them comprehensively, and then aborts the conversion before generating the final FS2 file. This ensures that generated FS2 files are valid and crash-free.
+
+### Validator Architecture
+The validator is structured as a single `Validator` class built using a Python Mixin pattern across a dedicated `validator/` package. The base state and execution flow are managed in `core.py`, while specific validation domains are separated into specialized mixin modules:
+*   `ascii_checks`: Enforces ASCII-only characters in FSO-facing strings.
+*   `sexp_checks`: Validates SEXP structures, parenthesis matching, and formatting.
+*   `spatial`: Checks mission scale, object overlaps, and waypoint collisions.
+*   `ship_wing_checks`: Validates ship/wing relationships, names, anchors, and assignments.
+*   `environment`: Ensures valid sun, nebula, and bitmap configurations.
+*   `briefing`: Validates briefing/debriefing stages and icon placements.
+*   `misc`: Validates templates, global name uniqueness, docking pairs, and reinforcements.
+
+This modular design prevents a monolithic class structure while allowing all checks to seamlessly share and modify the internal validation state.
 
 ### Validation Checks
 The validator checks the following areas:
