@@ -366,7 +366,7 @@ class FS2Writer:
         self._write(f'$Ship Choices: (\n\t{choices}\n)')
         
         # Calculate Weapon Pool automatically
-        friendly_starting_wings = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
+        friendly_starting_wings = fs_data.PLAYER_WING_NAMES
         
         # Track raw calculated demands
         weapon_demand = {}

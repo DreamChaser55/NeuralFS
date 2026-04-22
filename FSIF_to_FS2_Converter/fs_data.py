@@ -368,3 +368,6 @@ SHIP_BOUNDING_BOXES = {
     'Vasudan Asteroid Base': {'min': [-908.4, -460.1, -1025.4], 'max': [895.0, 457.4, 1029.9]},
 }
 
+# --- 10. Player Wing Names ---
+PLAYER_WING_NAMES = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
+

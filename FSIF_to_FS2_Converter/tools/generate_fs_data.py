@@ -465,6 +465,10 @@ def generate_file():
         for ship, box in sorted(bounding_boxes.items()):
             f.write(f"    {ship!r}: {box},\n")
         f.write("}\n\n")
+
+        # Player Wing Names
+        f.write("# --- 10. Player Wing Names ---\n")
+        f.write("PLAYER_WING_NAMES = {\"Alpha\", \"Beta\", \"Gamma\", \"Delta\", \"Epsilon\"}\n\n")
     
     print(f"Successfully generated {OUTPUT_FILE}")
 

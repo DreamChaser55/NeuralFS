@@ -1,13 +1,14 @@
 import re
 from typing import Set
 import fs_flags_constants
+import fs_data
 try:
     from weapons_compatibility_data import WEAPON_COMPATIBILITY
 except ImportError:
     WEAPON_COMPATIBILITY = {}
 
 class ShipWingChecksMixin:
-    _WING_NAME_PATTERN = re.compile(r'^(Alpha|Beta|Gamma|Delta|Epsilon) \d+$')
+    _WING_NAME_PATTERN = re.compile(r'^(' + '|'.join(sorted(fs_data.PLAYER_WING_NAMES)) + r') \d+$')
 
     def _ship_has_fighterbay(self, ship_class: str) -> bool:
         """Check if a ship class has a fighterbay subsystem."""
