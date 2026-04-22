@@ -266,6 +266,19 @@ class MissionLoader:
             f"Author these values directly on a standalone ship, or on the corresponding wing if the ship is part of a wing."
         )
 
+    def _normalize_ai_goals(self, entity_name: str, raw_goals_str: str) -> str:
+        """
+        Validates and wraps AI goals.
+        """
+        goals_raw = str(raw_goals_str).strip()
+        # FSIF 2.2: Reject explicit ( goals ... ) wrapper
+        cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
+        if cleaned:
+            if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
+                raise ValueError(f"{entity_name} ai_goals must NOT be wrapped in '( goals ... )'.")
+            return f"( goals\n{goals_raw}\n)"
+        return raw_goals_str
+
     def _process_wing(self, wing_data: Dict[str, Any], player_setup: PlayerSetup):
         """
         Expand a wing definition into individual ship objects.
@@ -306,13 +319,10 @@ class MissionLoader:
 
         # Validate and wrap ai_goals
         if 'ai_goals' in wing_data:
-            goals_raw = str(wing_data['ai_goals']).strip()
-            # FSIF 2.2: Reject explicit ( goals ... ) wrapper
-            cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
-            if cleaned:
-                if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
-                    raise ValueError(f"Wing '{wing_data.get('name')}' ai_goals must NOT be wrapped in '( goals ... )'.")
-                wing_data['ai_goals'] = f"( goals\n{goals_raw}\n)"
+            wing_data['ai_goals'] = self._normalize_ai_goals(
+                f"Wing '{wing_data.get('name')}'", 
+                wing_data['ai_goals']
+            )
 
         spacing = float(wing_data.get('spacing', 50.0))
         wing_ships_objs = []
@@ -382,13 +392,10 @@ class MissionLoader:
 
         # Validate and wrap ai_goals
         if 'ai_goals' in props:
-            goals_raw = str(props['ai_goals']).strip()
-            # FSIF 2.2: Reject explicit ( goals ... ) wrapper
-            cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
-            if cleaned:
-                if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
-                    raise ValueError(f"Ship '{props.get('name')}' ai_goals must NOT be wrapped in '( goals ... )'.")
-                props['ai_goals'] = f"( goals\n{goals_raw}\n)"
+            props['ai_goals'] = self._normalize_ai_goals(
+                f"Ship '{props.get('name')}'", 
+                props['ai_goals']
+            )
 
         props.pop('template', None)
         props.pop('dock', None)
