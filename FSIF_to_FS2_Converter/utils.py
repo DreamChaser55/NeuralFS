@@ -1,4 +1,24 @@
+import os
 import re
+from pathlib import Path
+
+def sanitize_path(arg: str) -> str:
+    """
+    Conservative path normalization:
+    - Remove one symmetric outer quote layer if present.
+    - Expand ~ and environment variables.
+    - Preserve embedded spaces and valid characters.
+    - Return a normalized path string appropriate for the current OS.
+    """
+    if not arg:
+        return ""
+
+    p = str(arg).strip()
+    if len(p) >= 2 and ((p[0] == '"' and p[-1] == '"') or (p[0] == "'" and p[-1] == "'")):
+        p = p[1:-1]
+
+    p = os.path.expandvars(os.path.expanduser(p))
+    return str(Path(p))
 
 def calculate_briefing_camera_height(delta_x: float, delta_z: float) -> float:
     """

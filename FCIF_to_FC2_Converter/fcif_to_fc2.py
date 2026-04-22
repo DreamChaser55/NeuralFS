@@ -7,6 +7,11 @@ from pathlib import Path
 from typing import Annotated, List, Optional
 from pydantic import AfterValidator, BaseModel, Field, ConfigDict, ValidationError, field_validator, model_validator
 
+_root_dir = Path(__file__).resolve().parent.parent
+if str(_root_dir) not in sys.path:
+    sys.path.insert(0, str(_root_dir))
+from FSIF_to_FS2_Converter.utils import sanitize_path
+
 SUCCESS_LEVEL = 25
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
 
@@ -421,12 +426,12 @@ def process_campaign(
     :param output_file: Optional path for the output .fc2 file.
     :return: True if successful, False otherwise.
     """
-    input_path = Path(input_file)
+    input_path = Path(sanitize_path(input_file))
     
     if output_file is None:
         output_path = input_path.with_suffix('.fc2')
     else:
-        output_path = Path(output_file)
+        output_path = Path(sanitize_path(output_file))
 
     if not input_path.exists() or not input_path.is_file():
         logger.error(f"Input file not found at '{input_path}'")

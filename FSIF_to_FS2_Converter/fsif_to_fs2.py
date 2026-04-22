@@ -11,6 +11,7 @@ from mission_loader import load_mission_from_fsif
 from fs2_writer import FS2Writer
 from validator import Validator
 from voice_manager import VoiceManager
+from utils import sanitize_path
 
 # Setup basic module logger
 logger = logging.getLogger(__name__)
@@ -35,25 +36,6 @@ except (ImportError, ValueError):
                 advanced_sexp_validator = None
         else:
             advanced_sexp_validator = None
-
-
-def sanitize_path(arg: str) -> str:
-    """
-    Conservative path normalization:
-    - Remove one symmetric outer quote layer if present.
-    - Expand ~ and environment variables.
-    - Preserve embedded spaces and valid characters.
-    - Return a normalized path string appropriate for the current OS.
-    """
-    if not arg:
-        return ""
-
-    p = str(arg).strip()
-    if len(p) >= 2 and ((p[0] == '"' and p[-1] == '"') or (p[0] == "'" and p[-1] == "'")):
-        p = p[1:-1]
-
-    p = os.path.expandvars(os.path.expanduser(p))
-    return str(Path(p))
 
 
 def process_mission(input_file, output_file=None, tts_settings=None):

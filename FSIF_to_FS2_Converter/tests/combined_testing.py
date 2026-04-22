@@ -26,7 +26,7 @@ from data_models import (
     pack_ambient_light_rgb,
 )
 from fs2_writer import FS2Writer
-from fsif_to_fs2 import sanitize_path
+from utils import sanitize_path
 from mission_loader import load_mission_from_fsif
 from validator import Validator
 from voice_manager import VoiceManager
