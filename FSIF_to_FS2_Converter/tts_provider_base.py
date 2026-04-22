@@ -12,6 +12,12 @@ from utils import slugify_filename, ensure_wav_extension
 
 logger = logging.getLogger(__name__)
 
+_SECTION_SUBFOLDER = {
+    'command_briefing': 'command_briefings',
+    'briefing': 'briefing',
+    'debriefing': 'debriefing',
+}
+
 @dataclass
 class TTSConfig:
     """Configuration for TTS generation."""
@@ -120,14 +126,7 @@ class BaseTTSProvider(ABC):
         items: List[Dict[str, Any]] = []
         
         # Determine subfolder
-        if section_key == 'command_briefing':
-            subfolder = 'command_briefings'
-        elif section_key == 'briefing':
-            subfolder = 'briefing'
-        elif section_key == 'debriefing':
-            subfolder = 'debriefing'
-        else:
-            subfolder = section_key # Fallback
+        subfolder = _SECTION_SUBFOLDER.get(section_key, section_key)
 
         # section_data is now an object (Briefing, Debriefing, etc.) with a .stages list
         if not section_data:
