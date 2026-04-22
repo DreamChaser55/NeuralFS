@@ -74,6 +74,37 @@ class FS2Writer:
             '\t'
         )
 
+    def _write_arrival_block(self, entity, is_wing=False):
+        self._write(f'$Arrival Location: {entity.arrival_location}')
+        
+        arr_loc_norm = entity.arrival_location.strip().lower()
+        if arr_loc_norm != "hyperspace":
+            if arr_loc_norm == "docking bay":
+                self._write(f'+Arrival Distance: 0')
+            elif entity.arrival_distance is not None:
+                self._write(f'+Arrival Distance: {entity.arrival_distance}')
+            if entity.arrival_anchor:
+                self._write(f'$Arrival Anchor: {entity.arrival_anchor}')
+        
+        if entity.arrival_delay > 0:
+            # FRED uses lowercase 'd' for wings and uppercase 'D' for ships
+            # This is intentional to ensure exact compatibility with FSO.
+            if is_wing:
+                self._write(f'+Arrival delay: {entity.arrival_delay}')
+            else:
+                self._write(f'+Arrival Delay: {entity.arrival_delay}')
+
+        self._write(f'$Arrival Cue: {entity.arrival_cue}')
+
+    def _write_departure_block(self, entity):
+        self._write(f'$Departure Location: {entity.departure_location}')
+        
+        if entity.departure_location.strip().lower() == "docking bay":
+             if entity.departure_anchor:
+                 self._write(f'$Departure Anchor: {entity.departure_anchor}')
+        
+        self._write(f'$Departure Cue: {entity.departure_cue}')
+
     def write_mission(self):
         """
         Orchestrate the writing of the entire FS2 mission file.
@@ -463,28 +494,8 @@ class FS2Writer:
                      ammo_str = " ".join(str(x) for x in sanitized)
                      self._write(f'+Sbank Ammo: ( {ammo_str} )')
 
-            self._write(f'$Arrival Location: {ship.arrival_location}')
-            
-            arr_loc_norm = ship.arrival_location.strip().lower()
-            if arr_loc_norm != "hyperspace":
-                if arr_loc_norm == "docking bay":
-                    self._write(f'+Arrival Distance: 0')
-                elif ship.arrival_distance is not None:
-                    self._write(f'+Arrival Distance: {ship.arrival_distance}')
-                if ship.arrival_anchor:
-                    self._write(f'$Arrival Anchor: {ship.arrival_anchor}')
-            
-            if ship.arrival_delay > 0:
-                 self._write(f'+Arrival Delay: {ship.arrival_delay}')
-
-            self._write(f'$Arrival Cue: {ship.arrival_cue}')
-            self._write(f'$Departure Location: {ship.departure_location}')
-            
-            if ship.departure_location.strip().lower() == "docking bay":
-                 if ship.departure_anchor:
-                     self._write(f'$Departure Anchor: {ship.departure_anchor}')
-            
-            self._write(f'$Departure Cue: {ship.departure_cue}')
+            self._write_arrival_block(ship)
+            self._write_departure_block(ship)
             self._write(f'$Determination: 10')
 
             # Flags (mapped in fs_flags_constants)
@@ -556,28 +567,8 @@ class FS2Writer:
             self._write(f'$Wave Threshold: {wing.wave_threshold}')
             self._write(f'$Special Ship: 0\t\t;! Wing Leader')
 
-            self._write(f'$Arrival Location: {wing.arrival_location}')
-            
-            arr_loc_norm_w = wing.arrival_location.strip().lower()
-            if arr_loc_norm_w != "hyperspace":
-                if arr_loc_norm_w == "docking bay":
-                    self._write(f'+Arrival Distance: 0')
-                elif wing.arrival_distance is not None:
-                    self._write(f'+Arrival Distance: {wing.arrival_distance}')
-                if wing.arrival_anchor:
-                    self._write(f'$Arrival Anchor: {wing.arrival_anchor}')
-            
-            if wing.arrival_delay > 0:
-                 self._write(f'+Arrival delay: {wing.arrival_delay}')
-            
-            self._write(f'$Arrival Cue: {wing.arrival_cue}')
-            self._write(f'$Departure Location: {wing.departure_location}')
-            
-            if wing.departure_location.strip().lower() == "docking bay":
-                 if wing.departure_anchor:
-                     self._write(f'$Departure Anchor: {wing.departure_anchor}')
-            
-            self._write(f'$Departure Cue: {wing.departure_cue}')
+            self._write_arrival_block(wing, is_wing=True)
+            self._write_departure_block(wing)
             
             ship_names = '\n'.join([f'\t"{ship.name}"' for ship in wing.ships])
             self._write(f'$Ships: (\n{ship_names}\n)')
