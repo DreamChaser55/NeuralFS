@@ -212,6 +212,7 @@ class Message(BaseModel):
     message: str
     voice_name: Optional[str] = None # For TTS
     voice_style_instructions: Optional[str] = None # For TTS
+    voice_filename: Optional[str] = Field(default=None, exclude=True)
 
 class BriefingIcon(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -248,6 +249,7 @@ class BriefingStage(BaseModel):
     text: str
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
+    voice_filename: Optional[str] = Field(default=None, exclude=True)
     
     # Internal fields (calculated by loader, not authored in FSIF 2.1)
     camera_pos: Optional[List[float]] = None
@@ -278,6 +280,7 @@ class DebriefingStage(BaseModel):
     condition: str = '( true )'
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
+    voice_filename: Optional[str] = Field(default=None, exclude=True)
     recommendation: str = ''
 
 class Debriefing(BaseModel):
@@ -290,6 +293,7 @@ class CommandBriefingStage(BaseModel):
     ani: str = '<default>'
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
+    voice_filename: Optional[str] = Field(default=None, exclude=True)
 
 class CommandBriefing(BaseModel):
     model_config = ConfigDict(extra='forbid')

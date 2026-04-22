@@ -15,10 +15,9 @@ logger = logging.getLogger(__name__)
 from typing import Optional
 
 class FS2Writer:
-    def __init__(self, mission: Mission, output_path: str, voice_map: Optional[dict] = None):
+    def __init__(self, mission: Mission, output_path: str):
         self.mission = mission
         self.output_path = output_path
-        self.voice_map = voice_map or {}
         self.file = None
         self._brief_icon_id = 1
 
@@ -263,7 +262,7 @@ class FS2Writer:
             self._write(f' {self._write_xstr(st.text)}')
             self._write('$end_multi_text')
             self._write(f'$Ani Filename: {st.ani}')
-            self._write(f'+Wave Filename: {self.voice_map.get(id(st), "none")}')
+            self._write(f'+Wave Filename: {getattr(st, "voice_filename", None) or "none"}')
             self._write('')
 
     def write_briefing(self):
@@ -285,7 +284,7 @@ class FS2Writer:
             self._write('$start_stage')
 
             self._write(f'$multi_text\n {self._write_xstr(stage.text)}\n$end_multi_text')
-            self._write(f'$voice: {self.voice_map.get(id(stage), "none.wav")}')
+            self._write(f'$voice: {getattr(stage, "voice_filename", None) or "none.wav"}')
 
             # Determine camera and icons
             icons = stage.icons
@@ -342,7 +341,7 @@ class FS2Writer:
             self._write(f'    {self._write_xstr(stage.text)}')
             self._write('$end_multi_text')
 
-            self._write(f'$Voice: {self.voice_map.get(id(stage), "none.wav")}')
+            self._write(f'$Voice: {getattr(stage, "voice_filename", None) or "none.wav"}')
 
             self._write('$Recommendation text:')
             self._write(f'    {self._write_xstr(stage.recommendation)}')
@@ -629,7 +628,7 @@ class FS2Writer:
             self._write(f'$Team: -1')
             self._write(f'$MessageNew:  {self._write_xstr(msg.message)}\n$end_multi_text')
             self._write(f'+AVI Name: <None>')
-            vf = self.voice_map.get(id(msg))
+            vf = getattr(msg, "voice_filename", None)
             if vf:
                 self._write(f'+Wave Name: {vf}')
             self._write('')
