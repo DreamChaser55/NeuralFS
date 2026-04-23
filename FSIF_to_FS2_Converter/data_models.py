@@ -252,23 +252,11 @@ class BriefingStage(BaseModel):
     voice_filename: Optional[str] = Field(default=None, exclude=True)
     
     # Internal fields (calculated by loader, not authored in FSIF 2.1)
-    camera_pos: Optional[List[float]] = None
-    camera_orient: Optional[List[float]] = None
+    camera_pos: Optional[List[float]] = Field(default=None, exclude=True, repr=False)
+    camera_orient: Optional[List[float]] = Field(default=None, exclude=True, repr=False)
     
     camera_time: int = Field(500, ge=0)
     icons: List[BriefingIcon] = Field(default_factory=list)
-
-    @field_validator('camera_pos', mode='before')
-    @classmethod
-    def validate_pos(cls, v):
-        if v is None: return None
-        return _normalize_vector(v)
-    
-    @field_validator('camera_orient', mode='before')
-    @classmethod
-    def validate_orient(cls, v):
-        if v is None: return None
-        return _normalize_orientation(v)
 
 class Briefing(BaseModel):
     model_config = ConfigDict(extra='forbid')
