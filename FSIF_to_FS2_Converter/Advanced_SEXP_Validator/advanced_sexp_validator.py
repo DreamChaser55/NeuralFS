@@ -130,16 +130,7 @@ class SexpReturnType(IntEnum):
     AMBIGUOUS = 17
     FLEXIBLE_ARGUMENT = 18 # Goober5000
 
-# For backward compatibility
-OPR_NONE = SexpReturnType.NONE
-OPR_NUMBER = SexpReturnType.NUMBER
-OPR_BOOL = SexpReturnType.BOOL
-OPR_NULL = SexpReturnType.NULL
-OPR_AI_GOAL = SexpReturnType.AI_GOAL
-OPR_POSITIVE = SexpReturnType.POSITIVE
-OPR_STRING = SexpReturnType.STRING
-OPR_AMBIGUOUS = SexpReturnType.AMBIGUOUS
-OPR_FLEXIBLE_ARGUMENT = SexpReturnType.FLEXIBLE_ARGUMENT
+
 
 # =============================================================================
 # DATA STRUCTURES
@@ -260,7 +251,7 @@ class MissionContext:
             ctx.jump_nodes.add(jn.name)
 
         # 8. Variables (TODO: FSIF doesn't explicitly define variables yet)
-        # ctx.variables["mission_time"] = OPR_NUMBER
+        # ctx.variables["mission_time"] = SexpReturnType.NUMBER
         
         return ctx
 
@@ -287,18 +278,18 @@ def map_opf_to_opr(opf_type):
     This tells us what kind of operator can be plugged into an argument slot.
     """
     if opf_type == OPF_BOOL:
-        return OPR_BOOL
+        return SexpReturnType.BOOL
     if opf_type == OPF_NUMBER:
-        return OPR_NUMBER
+        return SexpReturnType.NUMBER
     if opf_type == OPF_POSITIVE:
-        return OPR_POSITIVE
+        return SexpReturnType.POSITIVE
     if opf_type == OPF_NULL:
-        return OPR_NULL
+        return SexpReturnType.NULL
     if opf_type == OPF_AI_GOAL:
-        return OPR_AI_GOAL
+        return SexpReturnType.AI_GOAL
     
     # Most things (Ships, Wings, Messages, etc.) are just strings in the SEXP tree
-    return OPR_STRING
+    return SexpReturnType.STRING
 
 # =============================================================================
 # PARSER (Mirrors missionparse.cpp / get_sexp_main)
@@ -481,7 +472,7 @@ class SexpValidator:
             OPF_SOUNDTRACK_NAME: self._validate_soundtrack_name,
         }
 
-    def validate(self, node: SexpNode, expected_type: SexpReturnType = OPR_NULL, recursive: bool = True, context: str = "") -> List[str]:
+    def validate(self, node: SexpNode, expected_type: SexpReturnType = SexpReturnType.NULL, recursive: bool = True, context: str = "") -> List[str]:
         """
         Recursively validates the node.
         
@@ -498,7 +489,7 @@ class SexpValidator:
         
         # 1. Determine Actual Return Type
         op_def = None
-        actual_type = OPR_AMBIGUOUS
+        actual_type = SexpReturnType.AMBIGUOUS
 
         if node.is_list:
             if node.text in OPERATORS:
@@ -509,7 +500,7 @@ class SexpValidator:
                 # FSO does not generally allow anonymous lists (containers) where an operator is expected.
                 # If we encounter one, it's likely a syntax error (e.g. ((...))).
                 errors.append(self._format_error(f"Unexpected nested list (container). Expected an operator.", context))
-                actual_type = OPR_NONE  # Force type mismatch if expected type is strict
+                actual_type = SexpReturnType.NONE  # Force type mismatch if expected type is strict
             else:
                 errors.append(self._format_error(f"Unknown operator: '{node.text}'", context))
                 # Treat as AMBIGUOUS if unknown, allowing it to pass type check
@@ -657,12 +648,12 @@ class SexpValidator:
         if expected_opr == SexpReturnType.AMBIGUOUS or actual_opr == SexpReturnType.AMBIGUOUS:
             return True
             
-        if expected_opr == OPR_NUMBER:
-            return actual_opr in [OPR_NUMBER, OPR_POSITIVE]
+        if expected_opr == SexpReturnType.NUMBER:
+            return actual_opr in [SexpReturnType.NUMBER, SexpReturnType.POSITIVE]
             
-        if expected_opr == OPR_POSITIVE:
+        if expected_opr == SexpReturnType.POSITIVE:
             # FSO allows Number where Positive is expected (relaxed)
-            return actual_opr in [OPR_POSITIVE, OPR_NUMBER]
+            return actual_opr in [SexpReturnType.POSITIVE, SexpReturnType.NUMBER]
             
         # Strict matches for others (Bool, Null, Goal, String)
         return expected_opr == actual_opr
@@ -1055,37 +1046,37 @@ def validate_mission(mission) -> bool:
     # Events
     for e in mission.events:
         if e.formula:
-            tasks.append((f"Event '{e.name or '<unnamed>'}'", e.formula, OPR_NULL))
+            tasks.append((f"Event '{e.name or '<unnamed>'}'", e.formula, SexpReturnType.NULL))
             
     # Goals
     for g in mission.goals:
         if g.formula:
-            tasks.append((f"Goal '{g.name}'", g.formula, OPR_BOOL))
+            tasks.append((f"Goal '{g.name}'", g.formula, SexpReturnType.BOOL))
             
     # Ships
     for s in mission.ships:
         if s.arrival_cue:
-            tasks.append((f"Ship '{s.name}' Arrival Cue", s.arrival_cue, OPR_BOOL))
+            tasks.append((f"Ship '{s.name}' Arrival Cue", s.arrival_cue, SexpReturnType.BOOL))
         if s.departure_cue:
-            tasks.append((f"Ship '{s.name}' Departure Cue", s.departure_cue, OPR_BOOL))
+            tasks.append((f"Ship '{s.name}' Departure Cue", s.departure_cue, SexpReturnType.BOOL))
         if s.ai_goals:
             # ai_goals field usually contains "( goals ... )"
-            # 'goals' operator returns OPR_NULL (Action), but contains AI Goals.
-            tasks.append((f"Ship '{s.name}' AI Goals", s.ai_goals, OPR_NULL))
+            # 'goals' operator returns SexpReturnType.NULL (Action), but contains AI Goals.
+            tasks.append((f"Ship '{s.name}' AI Goals", s.ai_goals, SexpReturnType.NULL))
             
     # Wings
     for w in mission.wings:
         if w.arrival_cue:
-            tasks.append((f"Wing '{w.name}' Arrival Cue", w.arrival_cue, OPR_BOOL))
+            tasks.append((f"Wing '{w.name}' Arrival Cue", w.arrival_cue, SexpReturnType.BOOL))
         if w.departure_cue:
-            tasks.append((f"Wing '{w.name}' Departure Cue", w.departure_cue, OPR_BOOL))
+            tasks.append((f"Wing '{w.name}' Departure Cue", w.departure_cue, SexpReturnType.BOOL))
         if w.ai_goals:
-            tasks.append((f"Wing '{w.name}' AI Goals", w.ai_goals, OPR_NULL))
+            tasks.append((f"Wing '{w.name}' AI Goals", w.ai_goals, SexpReturnType.NULL))
             
     # Debriefing
     for i, stage in enumerate(mission.debriefing.stages):
         if stage.condition:
-            tasks.append((f"Debriefing Stage {i+1}", stage.condition, OPR_BOOL))
+            tasks.append((f"Debriefing Stage {i+1}", stage.condition, SexpReturnType.BOOL))
 
     # Briefing (if any conditions exist - usually not in standard briefing, but check spec)
     # Standard briefing uses $Formula but usually ( true ). 

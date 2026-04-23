@@ -9,7 +9,7 @@ Successfully integrated the Advanced SEXP Validator with the FSIF Converter as a
 - **CLI Flag**: Added `--experimental-sexp-validator` to `fsif_to_fs2.py` to trigger this validation.
 - **Bug Fixes**:
     - **Transpiler Fix**: Updated `generate_argument_logic.py` to rename the C++ variable `op` to match the Python function signature, and to automatically quote `OP_` constants in generated logic.
-    - **Return Types**: Corrected validation for `ai_goals` fields (the `goals` operator returns `OPR_NULL`, not `OPR_AI_GOAL`).
+    - **Return Types**: Corrected validation for `ai_goals` fields (the `goals` operator returns `SexpReturnType.NULL`, not `SexpReturnType.AI_GOAL`).
 - **Atom Validation**: Implemented strict name checking for Events, Goals, and Messages (in addition to Ships and Wings).
 
 **Status Update:**
@@ -32,7 +32,7 @@ Successfully refactored the validator to mirror the Freespace Open SEXP validati
     - **Booleans**: Strictly validates `OPF_BOOL` arguments (accepting "true", "false", or numbers).
     - **Ships/Wings**: Validates `OPF_SHIP` and `OPF_WING` arguments against the `MissionContext` (ships/wings lists).
     - **Positives**: Validates `OPF_POSITIVE` arguments are non-negative numbers.
-- **Type Matching Logic**: Ported `sexp_query_type_match` from C++ to handle type inheritance (e.g., `OPR_POSITIVE` is accepted where `OPR_NUMBER` is expected).
+- **Type Matching Logic**: Ported `sexp_query_type_match` from C++ to handle type inheritance (e.g., `SexpReturnType.POSITIVE` is accepted where `SexpReturnType.NUMBER` is expected).
 
 **Status Update:**
 | Task | Status |

@@ -21,7 +21,7 @@ To see the parser in action, simply run the script. It includes a test harness w
 ### **Example Usage in Code**
 
 ```python
-from advanced_sexp_validator import SexpParser, SexpValidator, MissionContext, OperatorDef, SexpReturnType, OPR_NULL
+from advanced_sexp_validator import SexpParser, SexpValidator, MissionContext, OperatorDef, SexpReturnType
 ```
 
 1. Setup Context (Mocking a Mission)  
