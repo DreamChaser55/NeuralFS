@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="FSIF_to_FS2_Converter",
-    version="2.4.0",
+    version="2.8.0",
     description="Converts FSIF mission files to Freespace 2 (.fs2) format",
     author="NeuralFS",
     packages=find_packages(),
