@@ -334,6 +334,46 @@ environment:
 
         self.assertIn("FSIF requires environment.ambient_light_level to be authored as [red, green, blue]", str(ctx.exception))
 
+    def test_validator_rejects_invalid_ai_orders_and_goals(self):
+        fsif_text = """
+fsif_version: "2.8"
+mission_info:
+  name: "Invalid Orders Demo"
+player_setup:
+  start_ship: "Player Ship"
+entities:
+  ships:
+    - name: "Player Ship"
+      class: "GTF Ulysses"
+      team: "Friendly"
+      location: [0, 0, 0]
+      arrival_cue: "( true )"
+    - name: "Cruiser 1"
+      class: "GTC Fenris"
+      team: "Hostile"
+      location: [0, 0, 0]
+      ai_goals: '( ai-guard "Player Ship" 89 )'
+mission_flow:
+  events:
+    - formula: '( set-player-orders "Player Ship" ( true ) "Do a barrel roll" )'
+environment:
+  ambient_light_level: [0, 0, 0]
+"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fsif_path = Path(tmpdir) / "invalid_orders.fsif"
+            fsif_path.write_text(fsif_text, encoding="utf-8")
+
+            # Load should succeed
+            mission = load_mission_from_fsif(str(fsif_path))
+            
+            # But Advanced SEXP Validation should fail it
+            adv_val_dir = _repo_root / "FSIF_to_FS2_Converter" / "Advanced_SEXP_Validator"
+            if str(adv_val_dir) not in sys.path:
+                sys.path.insert(0, str(adv_val_dir))
+            import advanced_sexp_validator
+            is_valid = advanced_sexp_validator.validate_mission(mission)
+            self.assertFalse(is_valid, "Expected advanced SEXP validation to fail due to invalid player order and invalid cruiser goal.")
+
     def test_loader_rejects_arrival_delay_in_ship_template(self):
         fsif_text = """fsif_version: "2.8"
 

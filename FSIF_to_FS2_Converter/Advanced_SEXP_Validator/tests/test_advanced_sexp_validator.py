@@ -166,5 +166,29 @@ class TestAdvancedSexpValidator(unittest.TestCase):
         errors = self.validate_string('(is-facing "Alpha 1" "InvalidTarget" 0)', SexpReturnType.BOOL)
         self.assertTrue(any("Invalid Ship/Point" in e for e in errors))
 
+    # --- Tests for Player Orders and AI Goals Applicability ---
+
+    def test_valid_player_order(self):
+        errors = self.validate_string('(set-player-orders "Alpha 1" (true) "Attack Target")', SexpReturnType.NULL)
+        self.assertEqual(errors, [])
+
+    def test_invalid_player_order(self):
+        errors = self.validate_string('(set-player-orders "Alpha 1" (true) "Do a barrel roll")', SexpReturnType.NULL)
+        self.assertTrue(any("Invalid Player AI Order" in e for e in errors), f"Got: {errors}")
+
+    def test_fighter_bomber_only_goals_on_large_ship(self):
+        self.ctx.ship_to_class["Orion 1"] = "GTD Orion"
+        self.ctx.ships.add("Orion 1")
+        self.ctx.ships.add("Beta 1")
+        errors = self.validate_string('(add-goal "Orion 1" ( ai-guard "Beta 1" 89 ))', SexpReturnType.NULL)
+        self.assertTrue(any("invalid for non-fighter/non-bomber ship" in e for e in errors), f"Got: {errors}")
+
+    def test_fighter_bomber_only_goals_on_fighter(self):
+        self.ctx.ship_to_class["Ulysses 1"] = "GTF Ulysses"
+        self.ctx.ships.add("Ulysses 1")
+        self.ctx.ships.add("Beta 1")
+        errors = self.validate_string('(add-goal "Ulysses 1" ( ai-guard "Beta 1" 89 ))', SexpReturnType.NULL)
+        self.assertEqual(errors, [])
+
 if __name__ == '__main__':
     unittest.main()

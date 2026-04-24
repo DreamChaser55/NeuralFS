@@ -1,4 +1,4 @@
-AI goals
+  AI goals
 
 *ai-chase*
     Ai-chase (Ship goal)
@@ -25,6 +25,29 @@ AI goals
     same team; defaults to false.
     4 (optional): Whether to afterburn as hard as possible to the
     target; defaults to false.
+*ai-chase-ship-type*
+    Ai-chase ship type (Ship goal)
+    Causes the specified ship to chase and attack the specified
+    target ship type.
+
+    Takes 2 to 4 arguments...
+    1: Name of ship type to chase (e.g. fighter, bomber).
+    2: Goal priority (number between 0 and 200).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-chase-wing*
+    Ai-chase wing (Ship goal)
+    Causes the specified ship to chase and attack ships in the specified wing.
+
+    Takes 2 to 4 arguments...
+    1: Name of wing to chase.
+    2: Goal priority (number between 0 and 200).
+    3 (optional): Whether to attack the target even if it is on the
+    same team; defaults to false.
+    4 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
 *ai-chase-any*
     Ai-chase-any (Ship goal)
     Causes the specified ship to chase and attack any ship on the
@@ -44,6 +67,16 @@ AI goals
     1: Name of ship to guard.
     2: Goal priority (number between 0 and 200. Player orders have a
     priority of 90-100).
+    3 (optional): Whether to afterburn as hard as possible to the
+    target; defaults to false.
+*ai-guard-wing*
+    Ai-guard wing (Ship goal)
+    Causes the specified ship to guard all ships in the specified wing from other ships not
+    on the same team.
+
+    Takes 2 or 3 arguments...
+    1: Name of wing to guard.
+    2: Goal priority (number between 0 and 200).
     3 (optional): Whether to afterburn as hard as possible to the
     target; defaults to false.
 *ai-destroy-subsystem*
@@ -140,6 +173,13 @@ AI goals
     same team; defaults to false.
     4 (optional): Whether to afterburn as hard as possible to the
     target; defaults to false.
+*ai-warp*
+    Ai-warp (Ship/Wing Goal)
+    Causes the specified ship/wing to warp out via a specified jump node.
+    
+    Takes 2 arguments...
+    1: Goal priority (number between 0 and 89).
+    2: Name of jump node to warp out through.
 *ai-warp-out*
     Ai-warp-out (Ship/Wing Goal)
     Causes the specified ship/wing to immediately warp out of the

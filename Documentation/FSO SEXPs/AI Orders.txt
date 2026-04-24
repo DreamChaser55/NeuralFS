@@ -1,0 +1,30 @@
+  AI Orders
+
+The following are valid player-issued communication orders (OPF_AI_ORDER) that can be passed to SEXPs like set-player-orders or set-order-allowed-for-target. These exact strings represent the orders that the player can issue via the communication menu.
+
+*Attack Target*
+    Orders the ship or wing to attack the player's current target.
+*Disable Target*
+    Orders the ship or wing to destroy the engine subsystems of the target.
+*Disarm Target*
+    Orders the ship or wing to destroy the turret subsystems of the target.
+*Destroy Subsystem*
+    Orders the ship or wing to attack the currently selected subsystem.
+*Protect Target*
+    Orders the ship or wing to protect the player's current target.
+*Ignore Target*
+    Orders the ship or wing to ignore the player's current target.
+*Form on my wing*
+    Orders the ship or wing to form up on the player's wing.
+*Cover me*
+    Orders the ship or wing to protect the player.
+*Engage Enemy*
+    Orders the ship or wing to attack any hostile target.
+*Capture Target*
+    Orders the ship to dock with and capture the target.
+*Rearm me*
+    Orders a support ship to rearm and repair the player.
+*Abort rearm*
+    Orders the support ship to abort the rearm operation.
+*Depart*
+    Orders the ship or wing to warp out of the mission.

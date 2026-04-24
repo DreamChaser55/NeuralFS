@@ -1,6 +1,6 @@
 # FSO SEXPs Index
 
-This index is automatically generated from the documentation files in this directory. Each section corresponds to a 'txt' file with detailed specification of the listed SEXPs.
+This index was automatically generated from the documentation files in this directory. Each section corresponds to a 'txt' file with detailed specification of the listed SEXPs.
 
 ## AI Control
 - `add-goal`
@@ -20,9 +20,27 @@ This index is automatically generated from the documentation files in this direc
 - `cap-waypoint-speed`
 - `set-wing-formation`
 
+## AI Orders (player-issued)
+- `Attack Target`
+- `Disable Target`
+- `Disarm Target`
+- `Destroy Subsystem`
+- `Protect Target`
+- `Ignore Target`
+- `Form on my wing`
+- `Cover me`
+- `Engage Enemy`
+- `Capture Target`
+- `Rearm me`
+- `Abort rearm`
+- `Depart`
+
 ## AI goals
 - `ai-chase`
+- `ai-chase-any`
 - `ai-chase-ship-class`
+- `ai-chase-ship-type`
+- `ai-chase-wing`
 - `ai-chase-any`
 - `ai-guard`
 - `ai-destroy-subsystem`

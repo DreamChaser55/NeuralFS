@@ -38,12 +38,20 @@ except (ImportError, ValueError):
 
 def is_fighter_bomber(ship_class: str) -> bool:
     """
-    Heuristic to determine if a ship class is a Fighter or Bomber.
-    Standard FSO prefixes: GTF (Terran Fighter), GTB (Terran Bomber), 
-    PVF/PVB (Vasudan), SF/SB (Shivan).
+    Determine if a ship class is a Fighter or Bomber.
+    First checks weapons_compatibility_data (which is extracted exactly from ship flags).
+    Falls back to a prefix heuristic.
     """
     if not ship_class:
         return False
+        
+    try:
+        from weapons_compatibility_data import WEAPON_COMPATIBILITY
+        if ship_class in WEAPON_COMPATIBILITY:
+            return True
+    except ImportError:
+        pass
+        
     sc = ship_class.upper()
     return any(sc.startswith(p) for p in ["GTF", "GTB", "PVF", "PVB", "SF", "SB", "GVF", "GVB"])
 
@@ -470,6 +478,7 @@ class SexpValidator:
             OPF_NEBULA_PATTERN: self._validate_nebula_pattern,
             OPF_NEBULA_POOF: self._validate_nebula_poof,
             OPF_SOUNDTRACK_NAME: self._validate_soundtrack_name,
+            OPF_AI_ORDER: self._validate_ai_order,
         }
 
     def validate(self, node: SexpNode, expected_type: SexpReturnType = SexpReturnType.NULL, recursive: bool = True, context: str = "") -> List[str]:
@@ -1015,6 +1024,17 @@ class SexpValidator:
         valid_music = fs_data.ALLOWED_MUSIC_MISSION | fs_data.ALLOWED_MUSIC_BRIEFING
         if text not in valid_music:
             return [self._format_error(f"Invalid Soundtrack Name: '{text}'", context)]
+        return []
+
+    def _validate_ai_order(self, text: str, context: str, node: SexpNode) -> List[str]:
+        valid_orders = {
+            "Attack Target", "Disable Target", "Disarm Target", "Destroy Subsystem",
+            "Protect Target", "Ignore Target", "Form on my wing", "Cover me",
+            "Engage Enemy", "Capture Target", "Rearm me", "Abort rearm", "Depart",
+            "Stay Near Target", "Keep Safe Distance", "Evade Target"
+        }
+        if text not in valid_orders:
+            return [self._format_error(f"Invalid Player AI Order: '{text}'. Expected one of {sorted(valid_orders)}.", context)]
         return []
 
 # =============================================================================
