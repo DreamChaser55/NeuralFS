@@ -6,7 +6,7 @@ import copy
 import logging
 from pathlib import Path
 from datetime import datetime
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 
 from data_models import (
     Mission, Ship, Wing, Environment, MissionInfo, PlayerSetup,
@@ -25,6 +25,7 @@ class MissionLoader:
         self.fsif_path = Path(fsif_path)
         self.data: Dict[str, Any] = {}
         self.fsif_version: Optional[str] = None
+        self.root_node: Optional[yaml.Node] = None
         
         # Intermediate state
         self.templates: Dict[str, Any] = {}
@@ -88,8 +89,17 @@ class MissionLoader:
         )
 
     def _read_yaml(self):
-        with open(self.fsif_path, 'r') as f:
-            self.data = yaml.safe_load(f) or {}
+        with open(self.fsif_path, 'r', encoding='utf-8') as f:
+            raw_yaml = f.read()
+
+        self.data = yaml.safe_load(raw_yaml) or {}
+
+        # Compose once from the same in-memory YAML text so downstream
+        # validators can inspect scalar styles without re-opening the file.
+        try:
+            self.root_node = yaml.compose(raw_yaml)
+        except Exception:
+            self.root_node = None
 
     def _validate_version(self):
         """
@@ -572,3 +582,13 @@ def load_mission_from_fsif(fsif_path: str) -> Mission:
     """Wrapper for backward compatibility."""
     loader = MissionLoader(fsif_path)
     return loader.load()
+
+
+def load_mission_with_yaml_root(fsif_path: str) -> Tuple[Mission, Optional[yaml.Node]]:
+    """
+    Load a mission and return both the hydrated Mission object and the composed
+    YAML root node (if available).
+    """
+    loader = MissionLoader(fsif_path)
+    mission = loader.load()
+    return mission, loader.root_node

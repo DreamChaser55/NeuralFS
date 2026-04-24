@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 from typing import Set, Dict, List, Optional
 import fs_data
+import yaml
 from data_models import Mission
 import briefing_icon_types
 from validate_sexp_scalar_styles import validate_sexp_styles
@@ -25,10 +26,18 @@ class Validator(
     BriefingChecksMixin,
     MiscChecksMixin
 ):
-    def __init__(self, mission: Mission, root_dir: Path, fsif_path: Optional[Path] = None, tts_provider: str = 'google'):
+    def __init__(
+        self,
+        mission: Mission,
+        root_dir: Path,
+        fsif_path: Optional[Path] = None,
+        tts_provider: str = 'google',
+        fsif_root_node: Optional[yaml.Node] = None,
+    ):
         self.mission = mission
         self.root_dir = root_dir
         self.fsif_path = fsif_path
+        self.fsif_root_node = fsif_root_node
         self.tts_provider = tts_provider.lower()
         self.documentation_dir = root_dir / 'Documentation'
         
@@ -144,8 +153,8 @@ class Validator(
         self.validate_directive_text_sexp_compatibility()
 
         # Validate SEXP scalar styles (YAML block format check)
-        if self.fsif_path:
-            style_errors = validate_sexp_styles(self.fsif_path)
+        if self.fsif_root_node is not None or self.fsif_path:
+            style_errors = validate_sexp_styles(fsif_path=self.fsif_path, root_node=self.fsif_root_node)
             if style_errors:
                 for e in style_errors:
                     self.log_error(e)

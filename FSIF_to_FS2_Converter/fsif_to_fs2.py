@@ -7,7 +7,7 @@ import sys
 import traceback
 import logging
 from pathlib import Path
-from mission_loader import load_mission_from_fsif
+from mission_loader import load_mission_with_yaml_root
 from fs2_writer import FS2Writer
 from validator import Validator
 from voice_manager import VoiceManager
@@ -103,7 +103,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     logger.info(f"[INFO] Loading and processing '{ip}'...")
     try:
         # Load mission (without voice generation)
-        mission = load_mission_from_fsif(str(ip))
+        mission, fsif_root_node = load_mission_with_yaml_root(str(ip))
     except ValueError as e:
         logger.error(f"[ERROR] Validation failed during loading: {e}")
         return False
@@ -114,7 +114,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     # Determine root directory (where script/Documentation are)
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
     root_dir = Path(__file__).parent.parent.resolve()
-    validator = Validator(mission, root_dir, ip, tts_provider=provider)
+    validator = Validator(mission, root_dir, ip, tts_provider=provider, fsif_root_node=fsif_root_node)
     is_valid = validator.validate()
 
     # Advanced SEXP Validation (Core Feature)
