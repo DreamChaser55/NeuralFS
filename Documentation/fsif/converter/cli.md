@@ -58,19 +58,19 @@ The converter searches for the API key depending on the selected provider.
 #### Google (Gemini TTS)
 1. **CLI argument**: `--google-api-key <key>` (or GUI text field)
 2. **Environment variables**: `GEMINI_API_KEY` or `GOOGLE_API_KEY`
-3. **File**: `Gemini_API_key.txt` in the current working directory
+3. **File**: `Gemini_API_key.txt` in the `API_keys` directory
 4. **Vertex AI**: Application Default Credentials (for GCP environments)
 
 #### ElevenLabs TTS
 1. **CLI argument**: `--elevenlabs-api-key <key>` (or GUI text field)
 2. **Environment variable**: `ELEVENLABS_API_KEY`
-3. **File**: `Elevenlabs_API_key.txt` in the current working directory
+3. **File**: `Elevenlabs_API_key.txt` in the `API_keys` directory
 
 The first source that provides a valid key is used.
 
 ### Using API Key Files
 
-To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the directory from which you run the converter (most often the NeuralFS root folder), containing only your API key.
+To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the `API_keys` directory located in the NeuralFS root folder, containing only your API key.
 
 **Security Note**: Make sure your API key text files are not committed to version control. They are in `.gitignore`, so this should not happen.
 

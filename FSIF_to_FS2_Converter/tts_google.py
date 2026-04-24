@@ -32,11 +32,11 @@ class GoogleTTSProvider(BaseTTSProvider):
 
     def read_api_key_from_file(self) -> Optional[str]:
         """
-        Attempt to read Gemini API key from Gemini_API_key.txt located in the CWD directory.
+        Attempt to read Gemini API key from API_keys/Gemini_API_key.txt located in the project root.
         Returns the key string, or None if file not found/empty.
         """
         candidates = [
-            Path.cwd() / "Gemini_API_key.txt",
+            Path(__file__).resolve().parent.parent / "API_keys" / "Gemini_API_key.txt",
         ]
 
         for key_file in candidates:
@@ -72,7 +72,7 @@ class GoogleTTSProvider(BaseTTSProvider):
             # Priority 3: File-based API Key
             file_api_key = self.read_api_key_from_file()
             if file_api_key:
-                logger.info("[TTS] Using API key from Gemini_API_key.txt")
+                logger.info("[TTS] Using API key from API_keys/Gemini_API_key.txt")
                 self.client = genai.Client(api_key=file_api_key)
                 return
 
@@ -92,7 +92,7 @@ class GoogleTTSProvider(BaseTTSProvider):
             raise ValueError(
                 "No Google API key found. Provide it via --google-api-key, "
                 "the GEMINI_API_KEY or GOOGLE_API_KEY environment variable, "
-                "a Gemini_API_key.txt file in the current working directory, "
+                "an API_keys/Gemini_API_key.txt file in the project root, "
                 "or configure Vertex AI Application Default Credentials."
             )
 

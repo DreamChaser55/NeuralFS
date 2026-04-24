@@ -63,11 +63,11 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
     def read_api_key_from_file(self) -> Optional[str]:
         """
-        Attempt to read ElevenLabs API key from Elevenlabs_API_key.txt in CWD.
+        Attempt to read ElevenLabs API key from API_keys/Elevenlabs_API_key.txt in the project root.
         Returns the key string, or None if file not found/empty.
         """
         candidates = [
-            Path.cwd() / "Elevenlabs_API_key.txt",
+            Path(__file__).resolve().parent.parent / "API_keys" / "Elevenlabs_API_key.txt",
         ]
 
         for key_file in candidates:
@@ -103,7 +103,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
             if not api_key:
                  raise ValueError(
                      "No ElevenLabs API key found. Please provide it via argument, "
-                     "ELEVENLABS_API_KEY env var, or Elevenlabs_API_key.txt file."
+                     "ELEVENLABS_API_KEY env var, or an API_keys/Elevenlabs_API_key.txt file."
                  )
 
             self.client = ElevenLabs(api_key=api_key)

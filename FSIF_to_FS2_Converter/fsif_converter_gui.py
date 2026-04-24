@@ -70,8 +70,9 @@ class ConverterGUI(LogMixin):
         self.tts_rate_limit_var = tk.DoubleVar(value=0.0)
 
         # Check for file-based API keys
-        self.google_key_file = Path("Gemini_API_key.txt")
-        self.elevenlabs_key_file = Path("Elevenlabs_API_key.txt")
+        api_keys_dir = Path(__file__).resolve().parent.parent / "API_keys"
+        self.google_key_file = api_keys_dir / "Gemini_API_key.txt"
+        self.elevenlabs_key_file = api_keys_dir / "Elevenlabs_API_key.txt"
         
         self.has_google_key_file = self.google_key_file.exists()
         self.has_elevenlabs_key_file = self.elevenlabs_key_file.exists()
@@ -286,11 +287,11 @@ class ConverterGUI(LogMixin):
         if provider == "google":
             self.api_key_label.config(text="Gemini API Key:")
             has_file = self.has_google_key_file
-            filename = "Gemini_API_key.txt"
+            filename = "API_keys/Gemini_API_key.txt"
         else:
             self.api_key_label.config(text="ElevenLabs API Key:")
             has_file = self.has_elevenlabs_key_file
-            filename = "Elevenlabs_API_key.txt"
+            filename = "API_keys/Elevenlabs_API_key.txt"
             
         if has_file:
             self.api_key_label.grid_remove()

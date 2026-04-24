@@ -21,8 +21,7 @@ ENV/
 .kilo/
 
 # API Keys and Secrets
-Gemini_API_key.txt
-Elevenlabs_API_key.txt
+API_keys/
 
 # OS
 .DS_Store

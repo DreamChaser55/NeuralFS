@@ -109,7 +109,7 @@ The converter supports multiple Text-to-Speech providers. The user selects the p
 *   **Authentication Priority**:
     1. Key explicitly provided as an argument.
     2. `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) environment variable.
-    3. `Gemini_API_key.txt` file in the converter directory.
+    3. `Gemini_API_key.txt` file in the `API_keys` directory.
     4. Vertex AI Application Default Credentials.
 
 ### 2. ElevenLabs TTS
@@ -119,7 +119,7 @@ The converter supports multiple Text-to-Speech providers. The user selects the p
 *   **Authentication Priority**:
     1. Key explicitly provided as an argument.
     2. `ELEVENLABS_API_KEY` environment variable.
-    3. `Elevenlabs_API_key.txt` file in the converter directory.
+    3. `Elevenlabs_API_key.txt` file in the `API_keys` directory.
 
 **Voice Lists and Parsing**:
 The system loads allowed voices from the documentation folder corresponding to the selected provider:
