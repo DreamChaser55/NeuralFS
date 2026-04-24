@@ -48,12 +48,11 @@ ICON_TYPE_ID_BY_NAME: Dict[str, int] = {
 ICON_TYPE_NAME_BY_ID: Dict[int, str] = {v: k for k, v in ICON_TYPE_ID_BY_NAME.items()}
 
 
-def normalize_icon_type_str(name: str) -> int:
-    """Normalize a string icon type to its canonical numeric ID.
+def parse_icon_type(name) -> int:
+    """Public entry point used by the loader.
 
-    FSIF is strict: only exact canonical names from
-    ICON_TYPE_ID_BY_NAME are accepted. Any other value results in
-    ValueError so callers can surface a clear authoring error.
+    Expects an exact canonical string; raises ValueError for anything
+    else so the caller can decide how to handle the error.
     """
     if not isinstance(name, str):
         raise ValueError(f"Icon type must be a canonical string; got {name!r}")
@@ -63,15 +62,6 @@ def normalize_icon_type_str(name: str) -> int:
     if key not in ICON_TYPE_ID_BY_NAME:
         raise ValueError(f"Unknown briefing icon type: '{name}'")
     return ICON_TYPE_ID_BY_NAME[key]
-
-
-def parse_icon_type(name) -> int:
-    """Public entry point used by the loader.
-
-    Expects an exact canonical string; raises ValueError for anything
-    else so the caller can decide how to handle the error.
-    """
-    return normalize_icon_type_str(name)
 
 
 def canonical_name_for_id(type_id: int) -> str:
