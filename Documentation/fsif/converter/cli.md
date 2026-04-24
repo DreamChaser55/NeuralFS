@@ -66,9 +66,13 @@ The converter searches for the API key depending on the selected provider.
 2. **Environment variable**: `ELEVENLABS_API_KEY`
 3. **File**: `Elevenlabs_API_key.txt` in the current working directory
 
-The first source that provides a valid key is used. To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the directory where you run the converter, containing only your API key.
+The first source that provides a valid key is used.
 
-**Security Note**: Do not commit API key text files to version control. Add them to `.gitignore` if needed.
+### Using API Key Files
+
+To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the directory from which you run the converter (most often the NeuralFS root folder), containing only your API key.
+
+**Security Note**: Make sure your API key text files are not committed to version control. They are in `.gitignore`, so this should not happen.
 
 ## Advanced Validation
 - The Advanced SEXP Validator runs automatically. It performs a deep semantic check on all SEXP formulas (Events, Goals, Cues, AI Goals) using FSO engine logic (type checking, return types, reference validation).

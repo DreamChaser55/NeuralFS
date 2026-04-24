@@ -74,6 +74,7 @@ entities:
       team: "Friendly"
       location: [0.0, 0.0, 1000.0]
       initial_hull: 55
+      flags: ["escort"]
       escort_priority: 100
       arrival_cue: |
         ( true )
@@ -108,6 +109,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       location: [0.0, 0.0, -800.0]
+      flags: ["escort"]
       escort_priority: 90
       arrival_cue: |
         ( true )
@@ -118,6 +120,7 @@ entities:
       class: "PVT Isis"
       team: "Friendly"
       location: [0.0, 0.0, -1600.0]
+      flags: ["escort"]
       escort_priority: 80
       arrival_cue: |
         ( true )
@@ -136,7 +139,7 @@ entities:
     - name: "SC Malgor"
       class: "SC Cain"
       team: "Hostile"
-      location: [0.0, 0.0, 7000.0]
+      location: [1500.0, 0.0, 7000.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -149,6 +152,8 @@ entities:
       position: [0.0, 500.0, 1500.0]
       arrival_cue: |
         ( true )
+      ai_goals: |
+        ( ai-chase-any 89 )
 
     - name: "Krishna"
       template: "scorpion_fighter"
@@ -205,22 +210,22 @@ mission_flow:
           - type: "Freighter Wing (no cargo)"
             team: "Friendly"
             class: "GTFr Chronos"
-            pos: [0, 0]
+            pos: [0, -2000]
             label: "Aldrin 1-3"
           - type: "Transport"
             team: "Friendly"
             class: "GTT Elysium"
-            pos: [0, -1000]
+            pos: [0, -4000]
             label: "GTT Rescue"
           - type: "Transport"
             team: "Friendly"
             class: "PVT Isis"
-            pos: [0, -2000]
+            pos: [0, -6000]
             label: "Theta 3"
           - type: "Cruiser"
             team: "Hostile"
             class: "SC Cain"
-            pos: [0, 7000]
+            pos: [0, 8000]
             label: "SC Malgor"
           - type: "Jump Node"
             team: "Unknown"
@@ -229,7 +234,7 @@ mission_flow:
           - type: "Player Fighter Wing"
             team: "Friendly"
             class: "GTF Valkyrie"
-            pos: [0, 2000]
+            pos: [0, 4000]
             label: "Alpha Wing"
             highlighted: true
       - text: "The people from the Amadeus evacuation pods are aboard the Stentor. Nine pods, most of them intact. They are in the cargo bays right now. I will not tell you what it means to me personally to have them aboard. I will tell you that they are going through that node if I have to take the Stentor through the Malgor on a collision course. Alpha wing, your job is to suppress the Malgor and clear the fighter screen. Get her turrets down if you can. If you can take out her weapons subsystem, do it - that's what matters. Destroy her if you have time. We move on my mark. Do not hesitate when the node is clear enough. Transit and don't look back."
@@ -244,7 +249,7 @@ mission_flow:
           - type: "Cruiser"
             team: "Hostile"
             class: "SC Cain"
-            pos: [0, 7000]
+            pos: [0, 8000]
             label: "SC Malgor"
           - type: "Fighter Wing"
             team: "Hostile"
@@ -254,12 +259,12 @@ mission_flow:
           - type: "Fighter Wing"
             team: "Hostile"
             class: "SF Basilisk"
-            pos: [0, 6000]
+            pos: [0, 5000]
             label: "Indra"
           - type: "Fighter Wing"
             team: "Hostile"
             class: "SF Dragon"
-            pos: [0, 10000]
+            pos: [0, 11000]
             label: "Arjuna"
           - type: "Jump Node"
             team: "Unknown"
@@ -268,7 +273,7 @@ mission_flow:
           - type: "Player Fighter Wing"
             team: "Friendly"
             class: "GTF Valkyrie"
-            pos: [0, 2000]
+            pos: [0, 4000]
             label: "Alpha Wing"
             highlighted: true
       - text: "One more thing. There's a Vasudan transport at the back of the convoy. PVT Theta Three. She was here when no one asked her to be. She goes through that node. That is not optional. Okafor out."
@@ -278,7 +283,7 @@ mission_flow:
           - type: "Transport"
             team: "Friendly"
             class: "PVT Isis"
-            pos: [0, -2000]
+            pos: [0, -6000]
             label: "Theta 3"
             highlighted: true
           - type: "Jump Node"

@@ -50,6 +50,12 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 - PyYAML
 - pydantic
 
+Optional (for TTS):
+- `google-genai`
+- `elevenlabs`
+
+If you want to use TTS, you need to provide the API key for your chosen provider. Simplest way is to place `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` containing the key into the NeuralFS root folder.
+
 ## Documentation for AI agents
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.
 - `Freespace Bibles/` — Freespace universe Bibles (full and condensed version)

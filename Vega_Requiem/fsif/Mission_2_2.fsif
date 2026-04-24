@@ -281,12 +281,12 @@ mission_flow:
             label: "Nav Charlie"
           - type: "Waypoint"
             team: "Friendly"
-            pos: [0, 7000]
+            pos: [0, 12000]
             label: "Nav Bravo"
           - type: "Player Fighter Wing"
             team: "Friendly"
             class: "GTF Valkyrie"
-            pos: [0, 2500]
+            pos: [0, 4000]
             label: "Alpha Wing"
             highlighted: true
       - text: "Alpha wing, your assignment is the pods. Nine of them, three groups. They come out in sequence over the next two minutes. You get them to Nav Bravo. The Ahriman is closing. We'll use the Amadeus's position and turrets to cover the pod corridor for as long as we can. I would appreciate it if you did not waste time trying to protect this ship. The Amadeus has served her purpose. The people in those pods have not."
@@ -311,7 +311,7 @@ mission_flow:
           - type: "Fighter Wing"
             team: "Hostile"
             class: "SF Scorpion"
-            pos: [0, 4000]
+            pos: [0, 8000]
             label: "Asura"
           - type: "Bomber Wing"
             team: "Hostile"
@@ -330,12 +330,12 @@ mission_flow:
             label: "Bheema"
           - type: "Waypoint"
             team: "Friendly"
-            pos: [0, 7000]
+            pos: [0, 12000]
             label: "Nav Bravo"
           - type: "Player Fighter Wing"
             team: "Friendly"
             class: "GTF Valkyrie"
-            pos: [0, 2500]
+            pos: [0, 4000]
             label: "Alpha Wing"
       - text: "One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the correct decision and that I made it freely. Command will review the documentation. Good luck. Amadeus out."
         voice_name: "Alnilam"
@@ -348,7 +348,7 @@ mission_flow:
             label: "GTD Amadeus"
           - type: "Waypoint"
             team: "Friendly"
-            pos: [0, 7000]
+            pos: [0, 12000]
             label: "Nav Bravo"
           - type: "Player Fighter Wing"
             team: "Friendly"

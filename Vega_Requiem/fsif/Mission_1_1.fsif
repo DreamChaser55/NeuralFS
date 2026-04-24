@@ -67,7 +67,6 @@ entities:
       class: "GTEP Hermes"
       team: "Friendly"
       location: [200.0, 0.0, 6000.0]
-      ai_behavior: "None"
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -77,7 +76,6 @@ entities:
       class: "GTEP Hermes"
       team: "Friendly"
       location: [-150.0, 0.0, 6150.0]
-      ai_behavior: "None"
       arrival_cue: |
         ( true )
       ai_goals: |

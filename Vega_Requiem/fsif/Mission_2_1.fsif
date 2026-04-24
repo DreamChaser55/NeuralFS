@@ -79,6 +79,7 @@ entities:
       team: "Friendly"
       location: [0.0, 0.0, 0.0]
       initial_hull: 60
+      flags: ["escort"]
       escort_priority: 100
       arrival_cue: |
         ( true )
@@ -92,8 +93,9 @@ entities:
     - name: "GTC Stentor"
       class: "GTC Fenris"
       team: "Friendly"
-      location: [1000.0, 0.0, 0.0]
+      location: [2000.0, 0.0, 0.0]
       initial_hull: 70
+      flags: ["escort"]
       escort_priority: 90
       arrival_cue: |
         ( true )
@@ -102,7 +104,7 @@ entities:
 
     - name: "GTFr Aldrin 1"
       template: "aldrin_freighter"
-      location: [0.0, 0.0, 1500.0]
+      location: [0.0, 0.0, 3000.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -110,7 +112,7 @@ entities:
 
     - name: "GTFr Aldrin 2"
       template: "aldrin_freighter"
-      location: [500.0, 0.0, 1500.0]
+      location: [1000.0, 0.0, 3000.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -118,7 +120,7 @@ entities:
 
     - name: "GTFr Aldrin 3"
       template: "aldrin_freighter"
-      location: [-500.0, 0.0, 1500.0]
+      location: [-1000.0, 0.0, 3000.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -127,7 +129,8 @@ entities:
     - name: "GTT Rescue"
       class: "GTT Elysium"
       team: "Friendly"
-      location: [0.0, 0.0, 800.0]
+      location: [0.0, 0.0, 2000.0]
+      flags: ["escort"]
       escort_priority: 80
       arrival_cue: |
         ( true )
@@ -137,7 +140,8 @@ entities:
     - name: "PVT Theta 3"
       class: "PVT Isis"
       team: "Friendly"
-      location: [0.0, 0.0, -800.0]
+      location: [0.0, 0.0, -2000.0]
+      flags: ["escort"]
       escort_priority: 75
       arrival_cue: |
         ( true )
@@ -147,7 +151,7 @@ entities:
     - name: "GTS Casca"
       class: "GTS Centaur"
       team: "Friendly"
-      location: [-1000.0, 0.0, 0.0]
+      location: [-2000.0, 0.0, 0.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -169,11 +173,13 @@ entities:
       position: [0.0, 0.0, 2000.0]
       arrival_cue: |
         ( true )
+      ai_goals: |
+        ( ai-chase-any 89 )
 
     - name: "Beta"
       template: "beta_apollo"
       count: 4
-      position: [0.0, 200.0, 800.0]
+      position: [0.0, 500.0, 2000.0]
       arrival_cue: |
         ( true )
       ai_goals: |
@@ -273,25 +279,25 @@ mission_flow:
           - type: "Freighter Wing (has cargo)"
             team: "Friendly"
             class: "GTFr Chronos"
-            pos: [0, 3000]
+            pos: [0, 6000]
             label: "Aldrin 1-3"
           - type: "Transport"
             team: "Friendly"
             class: "GTT Elysium"
-            pos: [0, -3000]
+            pos: [0, 3000]
             label: "GTT Rescue"
           - type: "Transport"
             team: "Friendly"
             class: "PVT Isis"
-            pos: [0, -6000]
+            pos: [0, -3000]
             label: "Theta 3"
           - type: "Waypoint"
             team: "Friendly"
-            pos: [0, 8000]
+            pos: [0, 10000]
             label: "Nav Alpha"
           - type: "Waypoint"
             team: "Friendly"
-            pos: [0, 16000]
+            pos: [0, 18000]
             label: "Nav Bravo"
           - type: "Cruiser"
             team: "Hostile"
@@ -301,7 +307,7 @@ mission_flow:
           - type: "Player Fighter Wing"
             team: "Friendly"
             class: "GTF Valkyrie"
-            pos: [0, 5500]
+            pos: [0, -6000]
             label: "Alpha Wing"
             highlighted: true
       - text: "Intelligence expects bomber contact. Shaitans - they've been the primary capital ship threat in this system and I don't see why they'd change tactics now. Your engagement priority is bombers before fighters. If you have to let a Scorpion wing get past you to intercept a Shaitan wing, that's the correct choice. The Amadeus's turrets can handle close fighters. They cannot shoot down bombs fast enough to compensate for a full Shaitan attack run. Casca is with the convoy. Rearm when you need to - don't wait until you're empty. Go. We need to move."
@@ -315,7 +321,7 @@ mission_flow:
           - type: "Support Ship"
             team: "Friendly"
             class: "GTS Centaur"
-            pos: [-2000, 0]
+            pos: [-4000, 0]
             label: "GTS Casca"
           - type: "Fighter Wing"
             team: "Hostile"
@@ -493,6 +499,12 @@ mission_flow:
             ( not ( is-event-true-delay "Mission failed" 0 ) )
           )
           ( send-message "GTD Amadeus" "High" "Msg11" )
+        )
+    - name: "Escort Amadeus Dir"
+      formula: |
+        ( when
+          ( < ( distance "GTD Amadeus" "ConvoyPath:2" ) 2000 )
+          ( do-nothing )
         )
       directive_text: "Escort GTD Amadeus to Nav Bravo"
     - name: "Mission failed"
