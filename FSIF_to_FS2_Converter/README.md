@@ -18,8 +18,10 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Automatic TTS voice generation during conversion
   - **Google Gemini 3.1 Flash TTS** (Default)
   - **ElevenLabs TTS**
-- Basic validation of FSIF files with actionable error reports
-- Advanced SEXP Validation (semantic checks)
+- Validation of FSIF files with actionable warning/error reports
+  - Reported errors must be fixed for the conversion to succeed
+  - Reported warnings are non-fatal, but should be addressed for best results
+- Advanced SEXP Validation
 
 ## Versions
 - **Current FSIF version**: 2.8
