@@ -250,7 +250,7 @@ mission_flow:
           - { type: "Transport", team: "Friendly", class: "GTT Elysium", pos: [300, 140], label: "Elysium" }
           - { type: "Waypoint", team: "Unknown", pos: [700, 0], label: "Nav Buoy" }
           - { type: "Freighter (has cargo)", team: "Friendly", class: "GTFr Poseidon", pos: [860, 240], label: "Poseidon" }
-          - { type: "Cargo", team: "Hostile", pos: [940, 320], label: "Cargo Pod" }
+          - { type: "Cargo", team: "Hostile", class: "TSC 2", pos: [940, 320], label: "Cargo Pod" }
       - text: "Once the scan is complete, the $f{ Elysium $} will break away and the $f{ Fenris $} will run for the jump node. $f{ Beta Wing $} will reinforce the inspection force after the scan."
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
