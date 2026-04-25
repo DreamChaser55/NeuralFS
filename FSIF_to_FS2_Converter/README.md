@@ -18,6 +18,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Automatic TTS voice generation during conversion
   - **Google Gemini 3.1 Flash TTS** (Default)
   - **ElevenLabs TTS**
+  - **Inworld TTS**
 - Validation of FSIF files with actionable warning/error reports
   - Reported errors must be fixed for the conversion to succeed
   - Reported warnings are non-fatal, but should be addressed for best results
@@ -40,6 +41,10 @@ Optional (for ElevenLabs TTS):
 - `elevenlabs` (for ElevenLabs API)
 - An ElevenLabs account and API Key
 
+Optional (for Inworld TTS):
+- `requests` (for REST API)
+- An Inworld account and API Key
+
 ## Installation
 Install the required libraries:
 ```bash
@@ -51,6 +56,9 @@ pip install google-genai
 
 # For ElevenLabs TTS
 pip install elevenlabs
+
+# For Inworld TTS
+pip install requests
 ```
 
 ## Documentation

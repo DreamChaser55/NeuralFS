@@ -30,7 +30,7 @@ A Python script that takes the intermediate FSIF representation of the mission a
 
 The Converter script has both command line interface suitable for use by AI agents, and GUI for use by humans.
 
-If provided with Google Gemini or ElevenLabs API key, the Converter script can optionally generate voice files for briefings/messages/debriefings, using Gemini or ElevenLabs TTS API.
+If provided with Google Gemini, ElevenLabs, or Inworld API key, the Converter script can optionally generate voice files for briefings/messages/debriefings, using their respective TTS API.
 
 For details, see `\FSIF_to_FS2_Converter\README.md`.
 
@@ -53,8 +53,9 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 Optional (for TTS):
 - `google-genai`
 - `elevenlabs`
+- `requests` (for Inworld TTS)
 
-If you want to use TTS, you need to provide the API key for your chosen provider. Simplest way is to place `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` containing the key into the `API_keys` directory.
+If you want to use TTS, you need to provide the API key for your chosen provider. Simplest way is to place `Gemini_API_key.txt`, `Elevenlabs_API_key.txt`, or `Inworld_API_key.txt` containing the key into the `API_keys` directory.
 
 ## Documentation for AI agents
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.

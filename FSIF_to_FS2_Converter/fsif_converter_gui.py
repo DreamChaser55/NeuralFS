@@ -73,9 +73,11 @@ class ConverterGUI(LogMixin):
         api_keys_dir = Path(__file__).resolve().parent.parent / "API_keys"
         self.google_key_file = api_keys_dir / "Gemini_API_key.txt"
         self.elevenlabs_key_file = api_keys_dir / "Elevenlabs_API_key.txt"
+        self.inworld_key_file = api_keys_dir / "Inworld_API_key.txt"
         
         self.has_google_key_file = self.google_key_file.exists()
         self.has_elevenlabs_key_file = self.elevenlabs_key_file.exists()
+        self.has_inworld_key_file = self.inworld_key_file.exists()
 
         self.is_converting = False
         self.copy_feedback_after_id = None
@@ -156,6 +158,8 @@ class ConverterGUI(LogMixin):
                         value="google", command=self.update_api_key_visibility).pack(side="left", padx=5)
         ttk.Radiobutton(provider_frame, text="ElevenLabs TTS", variable=self.tts_provider_var, 
                         value="elevenlabs", command=self.update_api_key_visibility).pack(side="left", padx=5)
+        ttk.Radiobutton(provider_frame, text="Inworld TTS", variable=self.tts_provider_var, 
+                        value="inworld", command=self.update_api_key_visibility).pack(side="left", padx=5)
 
         # Filename Conflicts Strategy Section
         strategy_frame = ttk.LabelFrame(self.tts_options_inner, text="Filename Conflicts Strategy", padding=5)
@@ -288,10 +292,14 @@ class ConverterGUI(LogMixin):
             self.api_key_label.config(text="Gemini API Key:")
             has_file = self.has_google_key_file
             filename = "API_keys/Gemini_API_key.txt"
-        else:
+        elif provider == "elevenlabs":
             self.api_key_label.config(text="ElevenLabs API Key:")
             has_file = self.has_elevenlabs_key_file
             filename = "API_keys/Elevenlabs_API_key.txt"
+        else:
+            self.api_key_label.config(text="Inworld API Key:")
+            has_file = self.has_inworld_key_file
+            filename = "API_keys/Inworld_API_key.txt"
             
         if has_file:
             self.api_key_label.grid_remove()

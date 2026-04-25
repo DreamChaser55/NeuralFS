@@ -330,6 +330,7 @@ def generate_file():
     
     voices_google = parse_voices(DOC_DIR, 'Google TTS')
     voices_elevenlabs = parse_voices(DOC_DIR, 'ElevenLabs TTS')
+    voices_inworld = parse_voices(DOC_DIR, 'Inworld TTS')
     
     hardpoints = parse_hardpoints()
     sbank_capacities = parse_secondary_capacities()
@@ -342,7 +343,7 @@ def generate_file():
     
     print(f"Found {len(ships)} ships, {len(sexps)} SEXPs, {len(subs)} subsystem entries, "
           f"{len(voices_google)} Google voices, {len(voices_elevenlabs)} ElevenLabs voices, "
-          f"{len(hardpoints)} hardpoint definitions.")
+          f"{len(voices_inworld)} Inworld voices, {len(hardpoints)} hardpoint definitions.")
     
     def fmt_set(s):
         if not s: return "set()"
@@ -432,7 +433,8 @@ def generate_file():
         # Voices
         f.write("# --- 5. Voices ---\n")
         f.write(f"ALLOWED_VOICES_GOOGLE = {fmt_set(voices_google)}\n")
-        f.write(f"ALLOWED_VOICES_ELEVENLABS = {fmt_set(voices_elevenlabs)}\n\n")
+        f.write(f"ALLOWED_VOICES_ELEVENLABS = {fmt_set(voices_elevenlabs)}\n")
+        f.write(f"ALLOWED_VOICES_INWORLD = {fmt_set(voices_inworld)}\n\n")
         
         # Hardpoints
         f.write("# --- 6. Hardpoints ---\n")

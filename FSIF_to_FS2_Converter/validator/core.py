@@ -101,6 +101,8 @@ class Validator(
         # 4. Voices (Provider Aware)
         if self.tts_provider == 'elevenlabs':
             self.voices = fs_data.ALLOWED_VOICES_ELEVENLABS
+        elif self.tts_provider == 'inworld':
+            self.voices = fs_data.ALLOWED_VOICES_INWORLD
         else:
             # Default to Google
             self.voices = fs_data.ALLOWED_VOICES_GOOGLE

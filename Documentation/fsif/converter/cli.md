@@ -36,7 +36,7 @@ python fsif_to_fs2.py <path_to_mission.fsif>
 ## TTS Options
 The converter supports automatic voice generation using Google GenAI and ElevenLabs TTS. TTS is disabled by default.
 - `--enable-tts`: Enable TTS generation.
-- `--tts-provider <google|elevenlabs>`: TTS Provider to use (default: `google`).
+- `--tts-provider <google|elevenlabs|inworld>`: TTS Provider to use (default: `google`).
 - `--tts-out-root <path>`: Specify output directory for voice files.
 - `--tts-mode <mode>`: Voice filename strategy (default: `unique`).
   - `unique`: Generate unique filenames (e.g. `msg1.wav`) to avoid colliding with existing files. Useful for batch conversions or shared output directories.
@@ -48,7 +48,9 @@ The converter supports automatic voice generation using Google GenAI and ElevenL
 - `--tts-default-voice <voice_name>`: Fallback voice for lines without a `voice_name` specified.
 - `--google-api-key <key>`: Provide Google API key directly (overrides other key sources).
 - `--elevenlabs-api-key <key>`: Provide ElevenLabs API key directly (overrides other key sources).
+- `--inworld-api-key <key>`: Provide Inworld API key directly (overrides other key sources).
 - `--elevenlabs-model <id>`: ElevenLabs model ID (default: `eleven_v3`).
+- `--inworld-model <id>`: Inworld model ID (default: `inworld-tts-1.5-max`).
 - `--tts-rate-limit-delay <seconds>`: Delay in seconds between consecutive TTS API calls (default: `0.0`).
 
 ### API Key Resolution Priority
@@ -66,11 +68,16 @@ The converter searches for the API key depending on the selected provider.
 2. **Environment variable**: `ELEVENLABS_API_KEY`
 3. **File**: `Elevenlabs_API_key.txt` in the `API_keys` directory
 
+#### Inworld TTS
+1. **CLI argument**: `--inworld-api-key <key>` (or GUI text field)
+2. **Environment variable**: `INWORLD_API_KEY`
+3. **File**: `Inworld_API_key.txt` in the `API_keys` directory
+
 The first source that provides a valid key is used.
 
 ### Using API Key Files
 
-To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the `API_keys` directory located in the NeuralFS root folder, containing only your API key.
+To use a key file, create a text file named `Gemini_API_key.txt`, `Elevenlabs_API_key.txt`, or `Inworld_API_key.txt` in the `API_keys` directory located in the NeuralFS root folder, containing only your API key.
 
 **Security Note**: Make sure your API key text files are not committed to version control. The `API_keys` directory is in `.gitignore`, so this should not happen with Git.
 

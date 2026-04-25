@@ -245,6 +245,13 @@ def get_provider(config: TTSConfig) -> BaseTTSProvider:
             return ElevenLabsTTSProvider(config)
         except ImportError:
             raise ImportError("Could not import ElevenLabsTTSProvider. Ensure tts_elevenlabs.py exists.")
+            
+    elif provider_name == 'inworld':
+        try:
+            from tts_inworld import InworldTTSProvider
+            return InworldTTSProvider(config)
+        except ImportError:
+            raise ImportError("Could not import InworldTTSProvider. Ensure tts_inworld.py exists.")
     
     else:
         raise ValueError(f"Unknown TTS provider: {provider_name}")

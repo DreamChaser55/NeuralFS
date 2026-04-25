@@ -70,6 +70,7 @@ Voice names:
   - .\Google TTS\male_voices.txt
   - .\Google TTS\female_voices.txt
 - ElevenLabs voices: .\ElevenLabs TTS\voices.txt
+- Inworld voices: .\Inworld TTS\voices.txt
 
 Demo missions (FSIF feature showcases): in ../missions/Demo_missions/ folder
 - general_demo.fsif

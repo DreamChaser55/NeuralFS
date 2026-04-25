@@ -1,0 +1,95 @@
+Loretta -- Inviting, folksy Southern female voice, perfect for cooking shows, heartwarming family tales, and cozy radio ads.
+Darlene -- Soothing, comforting Southern female voice, ideal for bedtime stories, family-centered commercials, and nostalgic narrations.
+Marlene -- Friendly, relaxed Southern female voice, ideal for home-style cooking tutorials, community event promotions, and downhome commercials.
+Hank -- Warm, laid-back Southern male voice, ideal for travel documentaries, heritage storytelling, and down-to-earth podcast ads.
+Evelyn -- A gentle and intimate female voice, ideal for personal ASMR content, affirmations, and close, calming conversations.
+Celeste -- Soft, whispery female voice, ideal for ASMR videos, soothing lullabies, and gentle mindfulness sessions.
+Pippa -- Friendly and casual Australian female voice, ideal for relaxed instructional content.
+Tessa -- Upbeat, conversational Australian female voice, perfect for lifestyle vlogs, playful advertisements, and engaging social media content.
+Liam -- Upbeat, motivating Australian male voice, perfect for energizing workout sessions, lively event promotions, and informal lifestyle content.
+Callum -- Casual and friendly Australian male voice, ideal for informal instructional content.
+Hamish -- Friendly and casual Australian male voice, ideal for character-driven roles and upbeat fitness.
+Abby -- Bright, eager American female child voice, ideal for animated characters, upbeat educational content, and lively kids' commercials.
+Graham -- Profound, authoritative British male voice, perfect for historical documentaries, luxury brand advertisements, and educational content.
+Rupert -- Resonant, commanding British male voice, ideal for motivational speeches, epic film trailers, and dynamic corporate presentations.
+Mortimer -- Gravelly, aggressive male character voice, ideal for fantasy villains and high-intensity game dialogue.
+Snik -- Hoarse, cunning male voice, perfect for devious goblin roles, fantasy heist scenarios, and trickster-themed animations.
+Anjali -- A confident and articulate Indian female voice, ideal for professional training materials.
+Saanvi -- Crisp, articulate Indian female voice, ideal for dynamic e-learning modules, articulate documentary narrations, and vibrant travel vlogs.
+Arjun -- Clear, composed Indian male voice, well-suited for instructional webinars and technology explainers.
+Claire -- Warm, gentle Eastern European female voice, ideal for bedtime stories, relaxation podcasts
+Oliver -- Neutral and clear male voice, ideal for public announcements and educational information.
+Simon -- Articulate, insightful male voice, perfect for corporate presentations, technical tutorials, and steady news reporting.
+Elliot -- A calm, steady male voice, suitable for nature documentaries, general informational content, and relaxed narrations.
+James -- Vibrant, expressive male voice, perfect for animated video content, lively event hosting, and captivating children's stories.
+Serena -- Soft, nurturing female voice, perfect for mindfulness sessions, nature-inspired visualizations, and gentle wellness podcasts.
+Gareth -- Soothing, gentle male voice, ideal for guided meditations, mindfulness exercises, and relaxation-focused wellness content.
+Vinny -- Gritty, assertive New York male voice, perfect for crime dramas, urban documentaries, and no-nonsense character roles.
+Lauren -- Confident, friendly American female voice, ideal for corporate presentations, upbeat commercials, and engaging podcasts.
+Jessica -- Encouraging, articulate American female voice, perfect for self-help audiobooks, warm customer service messages, and clear e-learning modules.
+Ethan -- Assured, precise male voice, perfect for tech tutorials, detailed gadget overviews, and captivating product demonstrations.
+Tyler -- Authoritative, insightful male voice, ideal for tech explainer videos, in-depth software reviews, and dynamic coding guides.
+Jason -- Lucid, engrossing male voice, ideal for tech tips, creative productivity hacks, and supportive user interface tutorials.
+Chloe -- Thoughtful, introspective youthful female voice, perfect for coming-of-age narratives, personal growth stories, and emotional teen dramas.
+Veronica -- Intimidating, commanding female voice, perfect for ruthless antagonists, high-stakes negotiations, and chilling monologues.
+Victoria -- Silky, cunning British female voice, ideal for narrating intricate plots
+Miranda -- Menacing, cold-hearted female voice, perfect for strategic villains, mysterious narratives
+Sebastian -- Intimidating, steely male voice, perfect for ruthless antagonists, strategic power struggles, and chilling monologues.
+Victor -- Ominous, sinister male voice, ideal for dark conspiracies, eerie suspense scenes, and enigmatic villain roles.
+Malcolm -- Authoritative, manipulative male voice, perfect for cunning leaders, intense negotiation scenes, and persuasive villain speeches.
+Nate -- Conversational, sociable male voice, great for customer support and friendly guidance
+Brian -- Friendly, encouraging American male voice, ideal for educational tutorials, motivational content, and instructional videos.
+Amina -- Warm, inviting West African female voice, ideal for community outreach, cultural storytelling, and educational workshops.
+Kelsey -- Warm, empathetic, reassuring female voice, ideal for phone support, appointment confirmations, and customer success calls.
+Derek -- Steady, professional, composed American male voice, ideal for banking support, account inquiries, and service escalation calls.
+Evan -- Friendly, approachable, easygoing male voice, ideal for onboarding calls, retail assistance, and customer check-ins.
+Kayla -- Enthusiastic, youthful female voice, ideal for reaction videos, trendy product reviews, and energetic lifestyle vlogs.
+Jake -- Amiable, introspective male voice, ideal for motivational talks, personal growth content, and charming interviews.
+Grant -- Calm, attentive, helpful male voice, ideal for insurance claims, troubleshooting walkthroughs, and helpdesk interactions.
+Tristan -- Deliberate, controlled male voice, ideal for documentary narration, polished voiceover campaigns, and clear long-form infomercial storytelling.
+Nadia -- Personable, lively female voice, perfect for tutorial walkthroughs, friendly support messaging, and engaging narration for creator-led product content.
+Selene -- Soft, flirtatious female voice, ideal for companion-style interactions, charming game dialogue, and emotionally playful character-driven story scenes.
+Marcus -- Authoritative, empathetic male voice, great for civic campaigns, community outreach explainers, and trustworthy commercial reads with emotional credibility.
+Riley -- Playful, youthful female voice, perfect for animated storytelling, upbeat game characters, and high-energy kid-focused digital content.
+Damon -- Calm, raspy male voice, suited for moody narration, atmospheric roleplay characters, and grounded meditative reads with subtle tension.
+Cedric -- Crisp, measured male voice, ideal for formal announcements, premium trailer narration, and command-forward presentation scripts.
+Mia -- Youthful, expressive female voice, ideal for adolescent characters, school-age animation dialogue, and bright coming-of-age narrative scenes.
+Naomi -- Warm, grounded female voice, perfect for narrative podcasting, people-first customer guidance, and emotionally real brand storytelling.
+Jonah -- Soothing, calm male voice, great for tutorial guidance, reassuring support flows, and gentle instructional narration with steady pacing.
+Levi -- Measured, ominous male voice, ideal for suspense narration, dark fantasy storytelling, and composed dramatic monologues.
+Avery -- Youthful, performative male voice, suited for gameshow-style hosting, energetic presenter reads, and expressive young character parts.
+Brandon -- Bold, strident male voice, ideal for structured announcements, news-style reads, and direct promotional messaging.
+Conrad -- Gruff, weathered male voice, perfect for detective archetypes, hard-edged audiobook roles, and serious investigative narration.
+Bianca -- Deep, controlled female voice, ideal for serious corporate reads, composed documentary segments, and measured authority-led explainers.
+Lucian -- Brooding, foreboding male voice, suited for villainous character arcs, gothic drama scenes, and dark narrative worldbuilding.
+Trevor -- Punchy, expressive male voice, perfect for energetic promos, announcer-driven reveals, and fast-moving scripted event intros.
+Alex -- Energetic and expressive mid-range male voice, with a mildly nasal quality
+Ashley -- A warm, natural female voice
+Craig -- Older British male with a refined and articulate voice
+Deborah -- Warm, peaceful female voice with a calm tone
+Dennis -- Middle-aged man with a smooth, calm and friendly voice
+Edward -- American male with a emphatic, confident and streetwise tone
+Elizabeth -- Professional middle-aged woman, perfect for narrations and voiceovers
+Hades -- Commanding and gruff male voice, think an omniscient narrator or castle guard
+Julia -- Quirky, high-pitched female voice that delivers lines with playful energy
+Pixie -- High-pitched, childlike female voice with a squeaky quality - great for a cartoon character
+Mark -- Energetic, expressive man with a rapid-fire delivery
+Olivia -- Young, British female with a friendly and helpful tone, conveying confidence and efficiency.
+Priya -- Even-toned female voice with an Indian accent
+Ronald -- Confident, British man with a deep, gravelly voice
+Sarah -- Fast-talking young adult woman, with a questioning and curious tone
+Shaun -- Friendly, dynamic male voice great for conversations
+Theodore -- Gravelly male voice, with a time-worn quality
+Timothy -- Lively, upbeat American male voice
+Wendy -- Posh, middle-aged British female voice
+Dominus -- Robotic, deep male voice with a menacing quality. Perfect for villains
+Hana -- Bright, expressive young female voice, perfect for storytelling, gaming, and playful content
+Clive -- British-accented English-language male voice with a calm, cordial quality
+Carter -- Energetic, mature radio announcer-style male voice, great for storytelling, pep talks, and voiceovers.
+Blake -- Rich, intimate male voice, perfect for audiobooks, romantic content, and reassuring narration
+Luna -- Calm, relaxing female voice, perfect for meditations, sleep stories, and mindfulness exercises
+Reed -- Clear, professional American male voice, well-suited for support and training.
+Duncan -- Warm, articulate British male voice for customer support and education.
+Felix -- Calm, friendly British male voice, ideal for help and tutorials.
+Eleanor -- Polished, approachable British female voice for support and learning.
+Sophie -- Friendly British female voice, great for assistance and knowledge sharing.

@@ -239,7 +239,7 @@ def main():
                         help="[Deprecated] Alias for --tts-mode overwrite")
     
     # Provider selection
-    parser.add_argument("--tts-provider", dest="tts_provider", choices=['google', 'elevenlabs'],
+    parser.add_argument("--tts-provider", dest="tts_provider", choices=['google', 'elevenlabs', 'inworld'],
                         default='google', help="TTS Provider to use (default: google)")
 
     parser.add_argument("--tts-dry-run", dest="tts_dry_run", action="store_true",
@@ -252,10 +252,14 @@ def main():
                         help="Google API Key for TTS generation")
     parser.add_argument("--elevenlabs-api-key", dest="elevenlabs_api_key",
                         help="ElevenLabs API Key for TTS generation")
+    parser.add_argument("--inworld-api-key", dest="inworld_api_key",
+                        help="Inworld API Key for TTS generation")
     
-    # ElevenLabs specific
+    # ElevenLabs / Inworld specific
     parser.add_argument("--elevenlabs-model", dest="elevenlabs_model",
                         help="ElevenLabs model ID (default: eleven_v3)")
+    parser.add_argument("--inworld-model", dest="inworld_model",
+                        help="Inworld model ID (default: inworld-tts-1.5-max)")
     
     parser.add_argument("--tts-rate-limit-delay", dest="tts_rate_limit_delay", type=float, default=0.0,
                         help="Delay in seconds between consecutive TTS API calls (default: 0.0)")
@@ -271,10 +275,15 @@ def main():
 
     # Determine API key based on provider
     api_key = None
+    model_id = None
     if args.tts_provider == 'google':
         api_key = args.google_api_key
     elif args.tts_provider == 'elevenlabs':
         api_key = args.elevenlabs_api_key
+        model_id = args.elevenlabs_model
+    elif args.tts_provider == 'inworld':
+        api_key = args.inworld_api_key
+        model_id = args.inworld_model
 
     # Map args to tts_settings dict
     tts_settings = {
@@ -285,7 +294,7 @@ def main():
         'dry_run': args.tts_dry_run,
         'default_voice': args.tts_default_voice,
         'api_key': api_key,
-        'model_id': args.elevenlabs_model,
+        'model_id': model_id,
         'rate_limit_delay': args.tts_rate_limit_delay
     }
 
