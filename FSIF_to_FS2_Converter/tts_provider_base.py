@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from utils import slugify_filename, ensure_wav_extension
+from text_styling_utils import strip_text_styling_tags
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +108,7 @@ class BaseTTSProvider(ABC):
                 "section": "messages",
                 "index": idx,
                 "node": msg,
-                "text": text_str,
+                "text": strip_text_styling_tags(text_str),
                 "style": str(msg.voice_style_instructions or ""),
                 "voice_filename": vf_str,
                 "out_path": out_path,
@@ -156,7 +157,7 @@ class BaseTTSProvider(ABC):
                 "section": section_key,
                 "index": idx,
                 "node": stage,
-                "text": text_str,
+                "text": strip_text_styling_tags(text_str),
                 "style": str(getattr(stage, 'voice_style_instructions', "") or ""),
                 "voice_filename": vf_str,
                 "out_path": out_path,

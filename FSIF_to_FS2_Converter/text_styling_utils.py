@@ -23,6 +23,34 @@ STYLE_TAG_RE = re.compile(
     re.VERBOSE,
 )
 
+def strip_text_styling_tags(text: Optional[str]) -> str:
+    """
+    Strips FSO text styling tags from a string and replaces 
+    placeholders with TTS-friendly equivalents.
+    Useful for cleaning text before sending it to a TTS provider.
+    """
+    if not text:
+        return ""
+        
+    def replacer(match):
+        tag = match.group(0)
+        if tag.startswith('$quote'):
+            return '"'
+        elif tag.startswith('$semicolon'):
+            return ';'
+        elif tag.startswith('$callsign'):
+            return 'Pilot'
+        elif tag.startswith('$rank'):
+            return 'Lieutenant'
+        else:
+            return ''
+            
+    clean_text = STYLE_TAG_RE.sub(replacer, text)
+    # Clean up double spaces that might result from tag stripping
+    clean_text = re.sub(r'\s+', ' ', clean_text).strip()
+    return clean_text
+
+
 def extract_briefing_style_tags(text: Optional[str]) -> List[str]:
     """
     Extract all recognized text styling tags from a string.
