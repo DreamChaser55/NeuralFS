@@ -60,6 +60,7 @@ entities:
       team: "Friendly"
       location: [0.0, 0.0, 6000.0]
       flags: ["ignore-count"]
+      destroy_before_mission: 10
       arrival_cue: |
         ( true )
 
@@ -114,6 +115,8 @@ entities:
   waypoints:
     JumpOutPath:
       - [0.0, 0.0, -1000.0]
+    MeridianLoc:
+      - [0.0, 0.0, 6000.0]
 
   jump_nodes:
     - name: "Capella Jump Node"
@@ -236,16 +239,10 @@ mission_flow:
       voice_name: "Zubenelgenubi"
 
   events:
-    - name: "Setup Meridian Wreckage"
-      formula: |
-        ( when
-          ( true )
-          ( destroy-instantly-with-debris "GTT Meridian" )
-        )
     - name: "Alpha 2 Wreckage MSG"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "GTT Meridian" ) 1500 )
+          ( < ( distance "Alpha 1" "MeridianLoc:1" ) 1500 )
           ( send-message-list
             "Alpha 2" "Normal" "Alpha 2 Wreckage" 0
             "#Command" "Normal" "System Pods" 3000
@@ -254,7 +251,7 @@ mission_flow:
     - name: "Brahma wing arrives"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "GTT Meridian" ) 3000 )
+          ( < ( distance "Alpha 1" "MeridianLoc:1" ) 3000 )
           ( send-message "Alpha 3" "High" "Alpha 3 Contact" )
         )
       directive_text: "Investigate Meridian wreckage"
