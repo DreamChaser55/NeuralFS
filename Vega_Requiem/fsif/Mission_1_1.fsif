@@ -122,22 +122,22 @@ entities:
 mission_flow:
   command_briefing:
     stages:
-      - text: "Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the Amadeus and the 3rd Fleet detachment in the Vega system. We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect GTA assets. The GTI Vega Prime installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms - routine administrative work that I want completed without incident. The war is not formally over. Until it is, standard rules of engagement remain in effect. Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder."
+      - text: "Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the $f{ Amadeus $} and the 3rd Fleet detachment in the Vega system. We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect GTA assets. The $f{ GTI Vega Prime $} installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms - routine administrative work that I want completed without incident. The war is not formally over. Until it is, standard rules of engagement remain in effect. Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
         ani: "brief-01.ani"
-      - text: "We lost contact with the patrol transport GTT Meridian at 0340 this morning. She was running a standard pass along the Capella approach corridor, approximately 15,000 meters from the Capella jump node. Her last beacon ping was normal. Then nothing. This is most likely a systems failure. Meridian's drive was flagged for maintenance two weeks ago. However, standing orders require that all unexplained beacon silences be investigated within six hours. Alpha wing - that's you, Pilot - you're going out to investigate. Four ships, standard loadout. Check on Meridian, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first."
+      - text: "We lost contact with the patrol transport $f{ GTT Meridian $} at 0340 this morning. She was running a standard pass along the $y{ Capella approach corridor $}, approximately 15,000 meters from the $y{ Capella jump node $}. Her last beacon ping was normal. Then nothing. This is most likely a systems failure. $f{ Meridian $}'s drive was flagged for maintenance two weeks ago. However, standing orders require that all unexplained beacon silences be investigated within six hours. $f{ Alpha wing $} - that's you, Pilot - you're going out to investigate. Four ships, standard loadout. Check on $f{ Meridian $}, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
         ani: "brief-02.ani"
-      - text: "If this is your first duty rotation on the Amadeus, welcome. This is not a glamorous posting. Vega is a four-node intersection that hasn't seen a major fleet engagement in seven months. Most of your work here will be exactly what Alpha wing is doing today: investigating silences, protecting convoys, holding the line. Do it well. The Amadeus has a reputation, and I intend to keep it. Dismissed. Report to your wing station at 0820."
+      - text: "If this is your first duty rotation on the $f{ Amadeus $}, welcome. This is not a glamorous posting. Vega is a four-node intersection that hasn't seen a major fleet engagement in seven months. Most of your work here will be exactly what $f{ Alpha wing $} is doing today: investigating silences, protecting convoys, holding the line. Do it well. The $f{ Amadeus $} has a reputation, and I intend to keep it. Dismissed. Report to your wing station at 0820."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
         ani: "brief-03.ani"
 
   briefing:
     stages:
-      - text: "GTD Amadeus Operations, this is your mission package. GTT Meridian's beacon last pinged at these coordinates in the Capella corridor. You'll jump in approximately six kilometers from her last known position. We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard rules of engagement. Expected duration: thirty minutes. Come home clean."
+      - text: "$f{ GTD Amadeus $} Operations, this is your mission package. $f{ GTT Meridian $}'s beacon last pinged at these coordinates in the $y{ Capella corridor $}. You'll jump in approximately six kilometers from her last known position. We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard rules of engagement. Expected duration: thirty minutes. Come home clean."
         voice_name: "Gacrux"
         voice_style_instructions: "professional"
         icons:
@@ -150,7 +150,7 @@ mission_flow:
             class: "GTF Apollo"
             pos: [0, 0]
             label: "Alpha"
-      - text: "Alpha wing, you're cleared to the Capella corridor. Nav Alpha marks the Meridian's last position. You'll jump in approximately six kilometers from her last known position. Proceed there, assess the situation, and return when complete. Don't get ambitious out there."
+      - text: "$f{ Alpha wing $}, you're cleared to the $y{ Capella corridor $}. $y{ Nav Alpha $} marks the $f{ Meridian $}'s last position. You'll jump in approximately six kilometers from her last known position. Proceed there, assess the situation, and return when complete. Don't get ambitious out there."
         voice_name: "Gacrux"
         voice_style_instructions: "professional"
         icons:
@@ -176,7 +176,7 @@ mission_flow:
             ( is-event-true-delay "Mission success" 0 )
             ( is-event-true-delay "Secondary objective complete" 0 )
           )
-        text: "You made it back. The sensor data from your engagement has been transmitted to Terran Command. We have never encountered ships matching these profiles in any GTA database. They are not Vasudan, and they are not anything we've seen before. Commander's evaluation: your ML-16 rounds were largely ineffective against their shields. You know this. We know this. R&D is being alerted. Meridian's survivors are being treated aboard the Amadeus. Their account matches your sensor data: these ships came from the direction of the Capella node. We do not know what is through that node. Well done for getting the pods home. We will have more answers by morning. I wish I could promise better news when we do."
+        text: "You made it back. The sensor data from your engagement has been transmitted to Terran Command. We have never encountered ships matching these profiles in any GTA database. They are not Vasudan, and they are not anything we've seen before. Commander's evaluation: your ML-16 rounds were largely ineffective against their shields. You know this. We know this. R&D is being alerted. $f{ Meridian $}'s survivors are being treated aboard the $f{ Amadeus $}. Their account matches your sensor data: these ships came from the direction of the $y{ Capella node $}. We do not know what is through that node. Well done for getting the pods home. We will have more answers by morning. I wish I could promise better news when we do."
         voice_name: "Gacrux"
       - condition: |
           ( and
@@ -187,7 +187,7 @@ mission_flow:
               ( is-event-true-delay "Escape pod 2 safe" 0 )
             )
           )
-        text: "Alpha Lead, welcome back. You got one of the Meridian's pods out. The other is presumed lost. I want you to understand that those were not typical combat conditions. Our weapons were not designed for whatever we just encountered, and this was not a failure of tactics. You were handed the wrong tools for the job and you still brought people home. We're sending all your sensor recordings to Command immediately. Whatever those ships are, we need answers fast."
+        text: "$f{ Alpha Lead $}, welcome back. You got one of the $f{ Meridian $}'s pods out. The other is presumed lost. I want you to understand that those were not typical combat conditions. Our weapons were not designed for whatever we just encountered, and this was not a failure of tactics. You were handed the wrong tools for the job and you still brought people home. We're sending all your sensor recordings to Command immediately. Whatever those ships are, we need answers fast."
         voice_name: "Gacrux"
       - condition: |
           ( and
@@ -195,7 +195,7 @@ mission_flow:
             ( not ( is-event-true-delay "Escape pod 1 safe" 0 ) )
             ( not ( is-event-true-delay "Escape pod 2 safe" 0 ) )
           )
-        text: "Alpha Lead, glad you're back. The pods are lost. The crew of the Meridian will be listed as killed in action. That is a hard outcome, but given what you faced out there, I'm not prepared to call this your fault. Those shields absorbed everything you had. The data you brought back is the only thing we came away with. It had better count for something."
+        text: "$f{ Alpha Lead $}, glad you're back. The pods are lost. The crew of the $f{ Meridian $} will be listed as killed in action. That is a hard outcome, but given what you faced out there, I'm not prepared to call this your fault. Those shields absorbed everything you had. The data you brought back is the only thing we came away with. It had better count for something."
         voice_name: "Gacrux"
 
   messages:

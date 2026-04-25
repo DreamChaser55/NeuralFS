@@ -243,26 +243,26 @@ mission_flow:
   fiction_viewer: "Mission_2_1_story.txt"
   command_briefing:
     stages:
-      - text: "This is Rear Admiral Chen Wei. Listen carefully. I'm not going to spend time softening this. Vega is lost. I want to be precise about what that means. We have not been defeated in open battle. We have been systematically dismantled by an enemy whose capabilities exceed ours in every measurable category, and whose intentions we still do not fully understand. GTI Vega Prime is gone. The Shivans control the Capella and Deneb node approaches with capital ship elements. The Beta Aquilae approach has not yet been probed, but I expect that within forty-eight hours. That leaves the Antares node. That is our exit. I am ordering an organized withdrawal of all GTA assets from Vega system, effective immediately. I want to be equally precise about what 'organized' means: we leave together, we leave in order, and we do not leave anyone behind who can be brought out."
+      - text: "This is Rear Admiral Chen Wei. Listen carefully. I'm not going to spend time softening this. Vega is lost. I want to be precise about what that means. We have not been defeated in open battle. We have been systematically dismantled by an enemy whose capabilities exceed ours in every measurable category, and whose intentions we still do not fully understand. $f{ GTI Vega Prime $} is gone. The $h{ Shivans $} control the $y{ Capella $} and $y{ Deneb node $} approaches with capital ship elements. The $y{ Beta Aquilae approach $} has not yet been probed, but I expect that within forty-eight hours. That leaves the $y{ Antares node $}. That is our exit. I am ordering an organized withdrawal of all GTA assets from Vega system, effective immediately. I want to be equally precise about what 'organized' means: we leave together, we leave in order, and we do not leave anyone behind who can be brought out."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, grave"
         ani: "brief-01.ani"
-      - text: "The GTD Amadeus will lead the withdrawal convoy, with GTC Stentor on the flank. We are escorting five ships: GTFr Aldrin One, Two, and Three - military freighters carrying sensor equipment and ground station salvage from Vega Prime - GTT Meridian's Rescue (a transport carrying Meridian's surviving crew, recovered from the escape pods you brought back), and the Vasudan transport Theta Three. Theta One and Two made good their jump from Vega in Mission Twelve. Theta Three had a drive fault that delayed her transit. She's been holding here under our observation for two days. She comes out with us. I expect objections. I do not have time for objections. The ceasefire is being formalized as we speak. Theta Three is under my protection as commanding officer of this convoy and I am not going to abandon a transport full of Vasudan civilians to whatever is waiting at the Capella and Deneb nodes. That is final."
+      - text: "The $f{ GTD Amadeus $} will lead the withdrawal convoy, with $f{ GTC Stentor $} on the flank. We are escorting five ships: $f{ GTFr Aldrin One $}, Two, and Three - military freighters carrying sensor equipment and ground station salvage from $f{ Vega Prime $} - $f{ GTT Meridian $}'s $f{ Rescue $} (a transport carrying $f{ Meridian $}'s surviving crew, recovered from the escape pods you brought back), and the Vasudan transport $f{ Theta Three $}. $f{ Theta One and Two $} made good their jump from Vega in Mission Twelve. $f{ Theta Three $} had a drive fault that delayed her transit. She's been holding here under our observation for two days. She comes out with us. I expect objections. I do not have time for objections. The ceasefire is being formalized as we speak. $f{ Theta Three $} is under my protection as commanding officer of this convoy and I am not going to abandon a transport full of Vasudan civilians to whatever is waiting at the $y{ Capella $} and $y{ Deneb $} nodes. That is final."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, resolute"
         ani: "brief-02.ani"
-      - text: "Shivan pressure has increased since yesterday. We're tracking fighter wings in the inner system. More concerning: we have a Lilith-class cruiser on our sensors, designated SC Ahriman, which has been shadowing the Amadeus at long range since early this morning. The Ahriman has not committed to a direct engagement. I believe she's waiting for us to begin our transit - more exposed, less maneuverable, the freighters slowing us down. I believe correctly. Expect the Ahriman to become an active problem as soon as we move. Alpha wing's assignment is to run fighter intercept ahead of the convoy. The bombers are our greatest vulnerability. Keep Shivan bomber wings off the Amadeus and the transports. The Stentor will engage the Ahriman if she closes; that is not your problem. Your problem is everything with wings."
+      - text: "$h{ Shivan $} pressure has increased since yesterday. We're tracking fighter wings in the inner system. More concerning: we have a Lilith-class cruiser on our sensors, designated $h{ SC Ahriman $}, which has been shadowing the $f{ Amadeus $} at long range since early this morning. The $h{ Ahriman $} has not committed to a direct engagement. I believe she's waiting for us to begin our transit - more exposed, less maneuverable, the freighters slowing us down. I believe correctly. Expect the $h{ Ahriman $} to become an active problem as soon as we move. $f{ Alpha wing $}'s assignment is to run fighter intercept ahead of the convoy. The bombers are our greatest vulnerability. Keep $h{ Shivan $} bomber wings off the $f{ Amadeus $} and the transports. The $f{ Stentor $} will engage the $h{ Ahriman $} if she closes; that is not your problem. Your problem is everything with wings."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, tactical"
         ani: "brief-03.ani"
-      - text: "If the convoy sustains losses that prevent safe transit before we reach the node, I will hold at Nav Bravo and reassess. This is not something I anticipate. I also do not anticipate many things that have happened in the last six days. Report to your wing stations immediately. We move in fifteen minutes."
+      - text: "If the convoy sustains losses that prevent safe transit before we reach the node, I will hold at $y{ Nav Bravo $} and reassess. This is not something I anticipate. I also do not anticipate many things that have happened in the last six days. Report to your wing stations immediately. We move in fifteen minutes."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, determined"
         ani: "brief-04.ani"
 
   briefing:
     stages:
-      - text: "Alpha wing, we are under way. Convoy disposition: the Amadeus is at the center, Stentor on the starboard flank. Three Chronos freighters - Aldrin One, Two, Three - are leading the column. GTT Rescue is behind them. PVT Theta Three is at the rear. Nav Alpha is the midpoint check. Nav Bravo is where we hold for the node transit. That's the destination. The Ahriman is on our flank. The Stentor has her. Your job is everything else."
+      - text: "$f{ Alpha wing $}, we are under way. Convoy disposition: the $f{ Amadeus $} is at the center, $f{ Stentor $} on the starboard flank. Three Chronos freighters - $f{ Aldrin One $}, Two, Three - are leading the column. $f{ GTT Rescue $} is behind them. $f{ PVT Theta Three $} is at the rear. $y{ Nav Alpha $} is the midpoint check. $y{ Nav Bravo $} is where we hold for the node transit. That's the destination. The $h{ Ahriman $} is on our flank. The $f{ Stentor $} has her. Your job is everything else."
         voice_name: "Gacrux"
         voice_style_instructions: "professional"
         icons:
@@ -310,7 +310,7 @@ mission_flow:
             pos: [0, -6000]
             label: "Alpha Wing"
             highlighted: true
-      - text: "Intelligence expects bomber contact. Shaitans - they've been the primary capital ship threat in this system and I don't see why they'd change tactics now. Your engagement priority is bombers before fighters. If you have to let a Scorpion wing get past you to intercept a Shaitan wing, that's the correct choice. The Amadeus's turrets can handle close fighters. They cannot shoot down bombs fast enough to compensate for a full Shaitan attack run. Casca is with the convoy. Rearm when you need to - don't wait until you're empty. Go. We need to move."
+      - text: "Intelligence expects bomber contact. $h{ Shaitans $} - they've been the primary capital ship threat in this system and I don't see why they'd change tactics now. Your engagement priority is bombers before fighters. If you have to let a $h{ Scorpion wing $} get past you to intercept a $h{ Shaitan wing $}, that's the correct choice. The $f{ Amadeus $}'s turrets can handle close fighters. They cannot shoot down bombs fast enough to compensate for a full $h{ Shaitan $} attack run. $f{ Casca $} is with the convoy. Rearm when you need to - don't wait until you're empty. Go. We need to move."
         voice_name: "Gacrux"
         icons:
           - type: "Capital Ship"
@@ -344,7 +344,7 @@ mission_flow:
             ( is-event-true-delay "Mission complete" 0 )
             ( not ( percent-ships-destroyed 20 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "PVT Theta 3" ) )
           )
-        text: "The convoy is at Nav Bravo. All five ships made it. I want to note what that means in terms of what was at stake: Aldrin One and Two are carrying the complete sensor database from Vega Prime. We didn't lose a sensor record. GTT Rescue has every surviving crew member from the Meridian. Theta Three is intact. The Stentor is damaged, but she held the Ahriman at range. Commander Okafor did her job exactly as planned. We know the Ahriman is still shadowing us. We'll deal with that when it becomes unavoidable. Good flying, Alpha. Tomorrow will be harder."
+        text: "The convoy is at $y{ Nav Bravo $}. All five ships made it. I want to note what that means in terms of what was at stake: $f{ Aldrin One $} and Two are carrying the complete sensor database from $f{ Vega Prime $}. We didn't lose a sensor record. $f{ GTT Rescue $} has every surviving crew member from the $f{ Meridian $}. $f{ Theta Three $} is intact. The $f{ Stentor $} is damaged, but she held the $h{ Ahriman $} at range. Commander Okafor did her job exactly as planned. We know the $h{ Ahriman $} is still shadowing us. We'll deal with that when it becomes unavoidable. Good flying, $f{ Alpha $}. Tomorrow will be harder."
         voice_name: "Alnilam"
       - condition: |
           ( and
@@ -352,18 +352,18 @@ mission_flow:
             ( percent-ships-destroyed 20 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "PVT Theta 3" )
             ( not ( percent-ships-destroyed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "PVT Theta 3" ) )
           )
-        text: "Convoy reached Nav Bravo. We lost some ships on the transit. The sensor data or personnel on those ships is gone. We couldn't help that, but the loss is real. We proceed. The Ahriman is still with us. She'll be a problem at the node. Rest while you can."
+        text: "Convoy reached $y{ Nav Bravo $}. We lost some ships on the transit. The sensor data or personnel on those ships is gone. We couldn't help that, but the loss is real. We proceed. The $h{ Ahriman $} is still with us. She'll be a problem at the node. Rest while you can."
         voice_name: "Alnilam"
       - condition: |
           ( and
             ( is-event-true-delay "Mission complete" 0 )
             ( percent-ships-destroyed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "PVT Theta 3" )
           )
-        text: "Convoy reached Nav Bravo, but we took unacceptable losses. Too many transports were destroyed. We failed to protect the people and data that made this withdrawal necessary. The Ahriman is still with us. Tomorrow will be harder."
+        text: "Convoy reached $y{ Nav Bravo $}, but we took unacceptable losses. Too many transports were destroyed. We failed to protect the people and data that made this withdrawal necessary. The $h{ Ahriman $} is still with us. Tomorrow will be harder."
         voice_name: "Alnilam"
       - condition: |
           ( is-event-true-delay "Mission failed" 0 )
-        text: "The Amadeus did not survive the transit. Without the Amadeus, there is no convoy, no organized withdrawal. Whatever makes it to Antares will scatter. This is the worst outcome of this operation. The Ahriman's pressure, the bomber waves - one of them found the limit."
+        text: "The $f{ Amadeus $} did not survive the transit. Without the $f{ Amadeus $}, there is no convoy, no organized withdrawal. Whatever makes it to $y{ Antares $} will scatter. This is the worst outcome of this operation. The $h{ Ahriman $}'s pressure, the bomber waves - one of them found the limit."
         voice_name: "Alnilam"
 
   messages:
