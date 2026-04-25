@@ -46,8 +46,8 @@ The converter supports automatic voice generation using Google GenAI and ElevenL
 - `--tts-skip-existing`: [Deprecated] Equivalent to `--tts-mode keep`.
 - `--tts-dry-run`: Simulate generation without calling the API.
 - `--tts-default-voice <voice_name>`: Fallback voice for lines without a `voice_name` specified.
-- `--google-api-key <key>`: Provide Google API key directly (overrides environment variables).
-- `--elevenlabs-api-key <key>`: Provide ElevenLabs API key directly (overrides environment variables).
+- `--google-api-key <key>`: Provide Google API key directly (overrides other key sources).
+- `--elevenlabs-api-key <key>`: Provide ElevenLabs API key directly (overrides other key sources).
 - `--elevenlabs-model <id>`: ElevenLabs model ID (default: `eleven_v3`).
 - `--tts-rate-limit-delay <seconds>`: Delay in seconds between consecutive TTS API calls (default: `0.0`).
 
@@ -72,7 +72,7 @@ The first source that provides a valid key is used.
 
 To use a key file, create a text file named `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` in the `API_keys` directory located in the NeuralFS root folder, containing only your API key.
 
-**Security Note**: Make sure your API key text files are not committed to version control. They are in `.gitignore`, so this should not happen.
+**Security Note**: Make sure your API key text files are not committed to version control. The `API_keys` directory is in `.gitignore`, so this should not happen with Git.
 
 ## Advanced Validation
 - The Advanced SEXP Validator runs automatically. It performs a deep semantic check on all SEXP formulas (Events, Goals, Cues, AI Goals) using FSO engine logic (type checking, return types, reference validation).

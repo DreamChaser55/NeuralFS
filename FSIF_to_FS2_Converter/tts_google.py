@@ -32,7 +32,7 @@ class GoogleTTSProvider(BaseTTSProvider):
 
     def read_api_key_from_file(self) -> Optional[str]:
         """
-        Attempt to read Gemini API key from API_keys/Gemini_API_key.txt located in the project root.
+        Attempt to read Gemini API key from API_keys/Gemini_API_key.txt.
         Returns the key string, or None if file not found/empty.
         """
         candidates = [

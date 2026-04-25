@@ -54,7 +54,7 @@ Optional (for TTS):
 - `google-genai`
 - `elevenlabs`
 
-If you want to use TTS, you need to provide the API key for your chosen provider. Simplest way is to place `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` containing the key into the NeuralFS root folder.
+If you want to use TTS, you need to provide the API key for your chosen provider. Simplest way is to place `Gemini_API_key.txt` or `Elevenlabs_API_key.txt` containing the key into the `API_keys` directory.
 
 ## Documentation for AI agents
 - `Documentation/index.md` — documentation home and index, navigation, and recommended reading order.

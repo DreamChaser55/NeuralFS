@@ -34,7 +34,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 
 Optional (for Google TTS):
 - `google-genai`
-- A configured Google Cloud project (API Key or Vertex AI)
+- A configured Google Cloud project (API Key or Vertex AI credentials)
 
 Optional (for ElevenLabs TTS):
 - `elevenlabs` (for ElevenLabs API)
