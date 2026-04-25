@@ -125,6 +125,13 @@ mission_flow:
         )
       directive_text: "Engage Hostiles"
 
+    - name: "Mission complete"
+      formula: |
+        ( when
+          ( is-goal-true-delay "Protect Orpheus" 3 )
+          ( send-message "#Command" "High" "All clear" )
+        )
+
   goals:
     - name: "Protect Orpheus"
       type: "Primary"
@@ -140,6 +147,11 @@ mission_flow:
       message: "Contact! Shivan fighters ahead!"
       voice_name: "Iapetus"
       voice_style_instructions: "Alert, combat shout"
+
+    - name: "All clear"
+      message: "All hostiles eliminated. You are clear to jump out of the subspace corridor."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Authoritative command order"
 
 audio:
   mission_music: "1: Genesis"
