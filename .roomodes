@@ -180,6 +180,7 @@ customModes:
       Note: Before writing any missions, ask the user which TTS provider they intend to use for voice generation:
       - Google TTS: use voice names exclusively from "/Documentation/Google TTS/male_voices.txt" and "/Documentation/Google TTS/female_voices.txt"
       - ElevenLabs TTS: use voice names exclusively from "/Documentation/ElevenLabs TTS/voices.txt"
+      - Inworld TTS: use voice names exclusively from "/Documentation/Inworld TTS/voices.txt"
       Use ONLY voice names from the chosen provider's documentation, consistently across ALL missions in the campaign. Do not mix voice names from different providers.
     whenToUse: This mode is a specialized agent, only used for the writing of FSIF Freespace mission files and FCIF campaign files based on their natural language description. It should not be used for other programming tasks.
     description: Writes Freespace FSIF mission files and FCIF campaign files based on a natural language description, and converts them to FS2/FC2.
