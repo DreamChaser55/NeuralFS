@@ -22,6 +22,13 @@ Note: Using AI for this phase is optional, of course. If you don't want to outso
 
 Note: You can optionally do a final conversion pass with the GUI Converter and voice generation enabled.
 
+## Alternative Workflow: Editing Single Missions
+If you want to edit an existing FSIF mission or create a single standalone mission without going through the full campaign creation process:
+1. Start a new task in Roo Code. Switch the interaction mode to "Single FSIF Mission Editing Agent".
+2. Copy the initial prompt from `VS Code prompts/single fsif mission editing agent.txt`.
+3. Provide your instructions (e.g. what mission to edit and how, or the details for a new mission) at the end of the prompt.
+4. Send the prompt and wait until the Agent completes its work. It will write the FSIF file and run it through the converter to validate it.
+
 ## Phase 3: Final steps
 1. Move the `.fs2` and `.fc2` files into your `/FSO/fsport-mediavps/data/missions/` folder.
 2. If there are any fiction viewer files created by the first agent (located alongside the mission design documents, named as 'missionname_story.txt'), move them into your `/FSO/fsport-mediavps/data/fiction/` folder.

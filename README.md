@@ -4,7 +4,7 @@
   <img src="neuralfslogo.png" alt="NeuralFS Logo" />
 </p>
 
-NeuralFS is an agentic AI framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of two AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
+NeuralFS is an agentic AI framework that can write original campaigns for the Freespace Open (FSO) engine. It consists of three AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
 - Visual Studio Code (by using the Roo Code extension)
 - OpenCode
 
@@ -23,6 +23,10 @@ The agent also writes the campaign definition file in a custom *FreeSpace Campai
 This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script.
 
 After writing each `.fsif` or `.fcif` file, this agent immediately runs it through the respective Python converter script to validate it. If the converter reports any errors or warnings, the agent autonomously analyzes the file, applies the necessary fixes, and retries the conversion until the file is valid and successfully converted to game-ready `.fs2` or `.fc2` formats.
+
+### Single FSIF Mission Editing Agent
+
+This agent is intended to write or edit single FSIF missions or FCIF campaign files, outside the existing NeuralFS campaign creation workflow. It allows users to quickly make changes to existing missions or create standalone missions without going through the full campaign authoring process. Similar to the FSIF+FCIF Writing Agent, it works with the FSIF and FCIF formats and runs the converter scripts to validate its work.
 
 ### FSIF to FS2 Converter
 

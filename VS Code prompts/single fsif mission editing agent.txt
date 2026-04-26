@@ -1,0 +1,40 @@
+Here are the relevant documents:
+
+Freespace Universe Bible (condensed):
+@/Freespace\ Bibles/FS_Universe_Bible_Condensed.txt 
+
+NeuralFS:
+@/README.md 
+@/Documentation/index.md 
+
+FSIF:
+@/Documentation/fsif/specification.md 
+@/Documentation/fsif/authoring-guide.md 
+
+FSO:
+@/Documentation/FSO\ and\ fs2\ format/FSO_Tokens_Reference.md 
+@/Documentation/FSO\ SEXPs/INDEX.md 
+@/Documentation/FSO\ and\ fs2\ format/text_styling_guide.txt 
+
+FCIF:
+@/Documentation/fcif/specification.md
+
+FSIF Converter:
+@/FSIF_to_FS2_Converter/README.md 
+@/Documentation/fsif/converter/cli.md 
+
+FCIF Converter:
+@/FCIF_to_FC2_Converter/README.md 
+@/Documentation/fcif/converter/cli.md 
+
+Fiction Viewer Validator:
+@/Fiction_Viewer_Validator/README.md
+
+FSIF Demo:
+@/missions/Demo_missions/general_demo.fsif 
+
+FCIF Demo:
+@/campaigns/Demo_campaigns/campaign_demo.fcif
+
+Create a new / edit an existing FSIF mission file...
+[Specify your mission details, changes, or provide the path to your notes/FSIF file here]
