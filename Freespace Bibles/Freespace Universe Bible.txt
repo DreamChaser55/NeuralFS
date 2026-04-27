@@ -1796,32 +1796,42 @@ END OF ACT 3 AND THE END OF FREESPACE 1
 Advice for authoring your own missions/campaigns
 
 Purpose:
-Use this Bible for lore, era, node-map, ship, weapon, and naming reference. The Creative Writing Agent prompt defines the campaign workflow and Mission Design Document structure; this section only adds compact implementation advice for mission ideas.
+This section adds compact implementation advice for mission ideas.
 
 Mission clarity and player agency:
-- Give each mission one dominant playable task, then add complications gradually.
-- Make objectives measurable: protect a named ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a visible Nav Buoy.
-- If a ship or installation is scripted or historically doomed, make the real objective something the player can accomplish: save escape pods, delay bombers, cover survivors, recover data, or buy time.
+- Give each mission one dominant playable task, then add complications gradually. Exceptional long chapter-ending missions can have multiple main tasks and happen in multiple phases.
+- Make objectives measurable: protect a named ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a Jump Node or a Nav Buoy.
+- If a ship or installation is destined to be doomed, make the real objective something the player can accomplish: save escape pods, delay bombers, cover survivors, recover data, or buy time.
 - Define partial success for evacuation, convoy, and last-stand missions.
 
 Scale, navigation, and pacing:
-- Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for transports or damaged ships.
-- If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or comms.
-- Do not put critical threats so far away that the player spends most of the mission just flying toward them.
-- If the player needs an in-game destination, use a visible ship, jump node, or `Terran NavBuoy`; FSO waypoints are hidden to the player and should be used for AI paths and logic checks, not player guidance.
+- Maximum speed of fighters is about 80 m/s, much lower for larger ships.
+- Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for larger ships.
+- If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or radio chatter.
+- If the player needs an in-game destination, use a visible ship, jump node, or a navigation buoy (`Terran NavBuoy` ship class); FSO waypoints are hidden to the player and should be used for AI paths and logic checks, not player guidance.
 
 Simple event logic:
-- Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker.
-- Describe logic in plain English, not detailed SEXP code.
+- Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker or finishing a waypoint path.
+- In Mission Design Documents describe logic in plain English.
 - Avoid abstract conditions the engine cannot see, such as morale, player intent, fear, or complex tactical judgment.
+- Every mission should have a clear ending so the player knows when to warp out or dock in a capital ship fighterbay.
 
 Balance reminders:
 - Bombers are the main threat to cruisers, destroyers, transports, installations, and escape pods; fighters usually escort, distract, or pressure the player.
 - Give the player warning and intercept distance before bomber attacks.
 - Stagger enemy waves so several bomber and fighter groups do not overwhelm the player at once.
 - Support ships and reinforcements should arrive early enough to matter.
+- In more challenging missions allow player to call in 1-2 reinforcement wings with the FSO Reinforcements feature, if the campaign lore allows it.
 
-Useful handoff details:
-- Name exact ship classes, wing names, counts, arrival directions or distances, objectives, message triggers, and debrief outcomes.
-- Keep implementation-facing names short and distinct, ideally under 30 characters.
-- Do not rely on a reliable Neutral faction; ambiguous contacts should be Friendly, Hostile, or Unknown to the player.
+Useful tips:
+- Name exact ship classes, wing names and wing wave counts.
+- Describe arrival directions or distances, objectives, message triggers, and debrief outcomes.
+- Keep implementation-facing names short and distinct, ideally under 30 characters. FSO does not support very long ship or object names.
+
+FSO engine capabilities:
+- FSO supported mission environments:
+  - normal space
+  - dense nebula (reduced visibility and sensor range, can simulate supernova remnant nebula or gas giant atmosphere)
+  - subspace tunnel (space inside inter-system connection)
+  - asteroid or debris field (asteroid fields can be set to actively harass a specific ship, causing damaging impacts unless the incoming rocks are destroyed)
+- All ships should be Friendly, Hostile, or Unknown to the player. "Neutral" is not supported in FSO.
