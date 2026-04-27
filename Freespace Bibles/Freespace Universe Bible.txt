@@ -218,39 +218,6 @@ Enemy Shivan wing names: Brahma, Vishnu, Durga, Rama, Krishna, Indra, Arjuna, De
 
 In most missions, the Player is the leader of Alpha wing (Alpha 1), but there are exceptions.
 
-Advice for authoring your own missions/campaigns
-
-Purpose:
-Use this Bible for lore, era, node-map, ship, weapon, and naming reference. The Creative Writing Agent prompt defines the campaign workflow and Mission Design Document structure; this section only adds compact implementation advice for mission ideas.
-
-Mission clarity and player agency:
-- Give each mission one dominant playable task, then add complications gradually.
-- Make objectives measurable: protect a named ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a visible Nav Buoy.
-- If a ship or installation is scripted or historically doomed, make the real objective something the player can accomplish: save escape pods, delay bombers, cover survivors, recover data, or buy time.
-- Define partial success for evacuation, convoy, and last-stand missions.
-
-Scale, navigation, and pacing:
-- Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for transports or damaged ships.
-- If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or comms.
-- Do not put critical threats so far away that the player spends most of the mission just flying toward them.
-- If the player needs an in-game destination, use a visible ship, jump node, or `Terran NavBuoy`; hidden waypoints are for AI paths and logic checks, not player guidance.
-
-Simple event logic:
-- Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker.
-- Describe logic in plain English, not detailed SEXP code.
-- Avoid abstract conditions the engine cannot see, such as morale, player intent, fear, or complex tactical judgment.
-
-Balance reminders:
-- Bombers are the main threat to cruisers, destroyers, transports, installations, and escape pods; fighters usually escort, distract, or pressure the player.
-- Give the player warning and intercept distance before bomber attacks.
-- Stagger enemy waves so several bomber and fighter groups do not overwhelm the player at once.
-- Support ships and reinforcements should arrive early enough to matter.
-
-Useful handoff details:
-- Name exact ship classes, wing names, counts, arrival directions or distances, objectives, message triggers, and debrief outcomes.
-- Keep implementation-facing names short and distinct, ideally under 30 characters.
-- Do not rely on a reliable Neutral faction; ambiguous contacts should be Friendly, Hostile, or Unknown to the player.
-
 Terran spacecraft classes
 
 	Fighters (prefix GTF)
@@ -1825,3 +1792,36 @@ In the Vasudan war, we learned how to adapt. We learned how to study our enemy. 
 All the jump points from Earth are gone. But the Shivans can rebuild them. I'm told we can expect them again, but not in my lifetime. Such is liberation.
 
 END OF ACT 3 AND THE END OF FREESPACE 1
+
+Advice for authoring your own missions/campaigns
+
+Purpose:
+Use this Bible for lore, era, node-map, ship, weapon, and naming reference. The Creative Writing Agent prompt defines the campaign workflow and Mission Design Document structure; this section only adds compact implementation advice for mission ideas.
+
+Mission clarity and player agency:
+- Give each mission one dominant playable task, then add complications gradually.
+- Make objectives measurable: protect a named ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a visible Nav Buoy.
+- If a ship or installation is scripted or historically doomed, make the real objective something the player can accomplish: save escape pods, delay bombers, cover survivors, recover data, or buy time.
+- Define partial success for evacuation, convoy, and last-stand missions.
+
+Scale, navigation, and pacing:
+- Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for transports or damaged ships.
+- If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or comms.
+- Do not put critical threats so far away that the player spends most of the mission just flying toward them.
+- If the player needs an in-game destination, use a visible ship, jump node, or `Terran NavBuoy`; hidden waypoints are for AI paths and logic checks, not player guidance.
+
+Simple event logic:
+- Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker.
+- Describe logic in plain English, not detailed SEXP code.
+- Avoid abstract conditions the engine cannot see, such as morale, player intent, fear, or complex tactical judgment.
+
+Balance reminders:
+- Bombers are the main threat to cruisers, destroyers, transports, installations, and escape pods; fighters usually escort, distract, or pressure the player.
+- Give the player warning and intercept distance before bomber attacks.
+- Stagger enemy waves so several bomber and fighter groups do not overwhelm the player at once.
+- Support ships and reinforcements should arrive early enough to matter.
+
+Useful handoff details:
+- Name exact ship classes, wing names, counts, arrival directions or distances, objectives, message triggers, and debrief outcomes.
+- Keep implementation-facing names short and distinct, ideally under 30 characters.
+- Do not rely on a reliable Neutral faction; ambiguous contacts should be Friendly, Hostile, or Unknown to the player.
