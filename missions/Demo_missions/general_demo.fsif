@@ -209,6 +209,7 @@ entities:
         ( ai-guard "GTC Fenris 1" 80 )
 
   waypoints:
+    # Hidden AI/SEXP reference paths only. Player-facing navigation uses the visible Terran NavBuoy ship named "Nav Buoy" above.
     DeparturePath:
       - [1600.0, 0.0, 0.0]
       - [2400.0, 0.0, 0.0]

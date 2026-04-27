@@ -202,6 +202,13 @@ Wings must define `position: [x, y, z]`, which is interpreted as the centroid of
 
 Wing members are spaced 50 m apart by default and the line is centered on the specified centroid.
 
+## Waypoints vs. Nav Buoys
+FSIF `entities.waypoints` are invisible to the player in the actual mission. They do not create a HUD marker, radar contact, targetable object, visible model, or any other in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
+
+If the player needs to rendezvous at a location, fly toward a marker, identify a destination, or otherwise be guided to a point in-game, place an actual navigation buoy ship instead; use the canonical ship class `Terran NavBuoy`.
+
+Refer to that ship name in briefing text, directives, messages, and SEXPs when the player needs a visible or targetable reference. Do not tell the player to "follow the waypoint" unless there is an actual visible object, such as a Nav Buoy, at that location.
+
 ## Events, goals and messages
 ```yaml
 mission_flow:
@@ -264,7 +271,7 @@ mission_flow:
 mission_flow:
   briefing:
     stages:
-      - text: "Rendezvous at NavPath and scan the marked container."
+      - text: "Rendezvous at Nav Buoy and scan the marked container."
         icons: [...]
         voice_style_instructions: "commanding, directing"
         voice_name: "Achernar"
@@ -401,16 +408,17 @@ Author briefing icons using the string field `type`.
 mission_flow:
   briefing:
     stages:
-      - text: "Alpha, rendezvous at the nav point and inspect the cargo."
+      - text: "Alpha, inspect the cargo at the marked location shown on this briefing schematic."
         voice_name: "Achernar"
         icons:
           - { type: "Fighter", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha", highlighted: true }
           - { type: "Cargo", team: "Hostile", pos: [500, 200], label: "Rosetta Cargo" }
-          - { type: "Waypoint", team: "Unknown", pos: [1000, 0], label: "Nav" }
+          - { type: "Waypoint", team: "Unknown", pos: [1000, 0], label: "Schematic marker" }
 ```
 
 **Notes:**
 - If `pos` is omitted, defaults to `[0, 0]`.
+- A briefing icon with `type: "Waypoint"` is only a briefing-room schematic symbol. It does **not** create a visible in-mission waypoint or player guidance marker.
 
 ## Message sender and priority literals
 - Allowed sender strings include named ships and special senders like "<any wingman>" and "#Command" (Note: the angle brackets/hash must not be omitted)
@@ -586,10 +594,10 @@ Use this section as a practical sanity guide: each item describes the preferred 
 
 ### Templates, names and references
 - Use templates for repeated ship configurations to avoid repeating class/team/weapon data. Wings must use a template.
-- Name waypoint paths clearly and reference individual points as `PathName:N` (1-based).
+- Name waypoint paths clearly and reference individual points as `PathName:N` (1-based). Remember that waypoint points are hidden AI/logic references, not visible player navigation markers.
 - Keep custom names short: ship, wing, waypoint, jump node, event, goal, message, and mission names should stay under 30 characters to avoid engine token-limit problems.
 - Avoid name collisions across authored objects. Do not reuse the same name for different entities, and do not author a standalone ship whose name would already be created by a wing expansion such as `Alpha 1`.
-- If your mission design calls for a navigation buoy, use the `Terran NavBuoy` ship class.
+- If your mission design calls for a player-visible navigation marker, use an actual ship with the `Terran NavBuoy` ship class. Do not use `entities.waypoints` for player guidance; they are invisible in-game.
 - Reinforcement entries must reference ships and wings that are actually defined in `entities.ships` and `entities.wings`.
 - Message names referenced from events must exist in `mission_flow.messages`.
 
@@ -600,7 +608,7 @@ Use this section as a practical sanity guide: each item describes the preferred 
 - Never place YAML-style `#` comments inside SEXP block scalars; put comments on surrounding YAML lines instead.
 - Check every SEXP operator against the SEXP documentation: verify the operator name, argument order, argument count, and whether it expects ship names, wing names, or both.
 - Many SEXPs are ship-only. If a SEXP does not accept a wing name, target a specific ship in the wing or choose a wing-compatible alternative.
-- Jump nodes are not interchangeable with ships/wings/waypoints in SEXPs like `distance`. If you need a targetable reference at a jump node's position, place a waypoint or NavBuoy there instead.
+- Jump nodes are not interchangeable with ships/wings/waypoints in SEXPs like `distance`. If you need a hidden reference point for internal distance/logic checks, place a waypoint there. If the player needs a visible or targetable reference at that location, place a `Terran NavBuoy` ship there instead.
 - Use exact FSO weapon token strings as defined in the Tokens reference. Make sure to omit the lore prefixes. For example, write `ML-16 Laser`, not `GTW ML-16 Laser`.
 - Check that goal formulas are not already true at mission start unless that is explicitly intended.
 - Events with `directive_text` must use simple, directly-evaluable conditions. Do **not** use `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in the formula of an event that has a `directive_text`. The engine cannot initially evaluate whether such an event could ever become true, so the grey "pending" directive is never shown on the HUD. Use direct object-state checks (e.g., `is-destroyed-delay`, `has-arrived-delay`) instead.

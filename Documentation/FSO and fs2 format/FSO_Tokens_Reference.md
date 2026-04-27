@@ -248,10 +248,13 @@ These fields are authored in `entities.ships` and `entities.wings`.
 ### Waypoints and Jump Nodes
 
 #### Waypoints (`entities.waypoints`)
-Waypoints are authored as a mapping of path names to a list of [x,y,z] coordinates. They are invisible to the player and used only to guide AI-controlled ships.
+Waypoints are authored as a mapping of path names to a list of [x,y,z] coordinates. They are invisible to the player and used only for AI-controlled ship paths and internal SEXP references.
+
 - Path Name (Map Key): Literal string (e.g. "Alpha Patrol").
 - Point reference in SEXPs: "PathName:N" (1-based index).
   - Example: "Alpha Patrol:1" refers to the first point in the path "Alpha Patrol".
+
+**Important:** FSIF waypoints do not create HUD markers, radar contacts, targetable objects, or any visible in-game navigation cue. They cannot be used to guide the player. If the player needs a visible rendezvous marker or navigation reference, author an actual Nav Buoy ship (`class: "Terran NavBuoy"`).
 
 #### Jump Nodes (`entities.jump_nodes`)
 Jump nodes are authored as a list of objects. They are visible to the player.

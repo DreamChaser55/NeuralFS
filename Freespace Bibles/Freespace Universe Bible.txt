@@ -218,8 +218,13 @@ Enemy Shivan wing names: Brahma, Vishnu, Durga, Rama, Krishna, Indra, Arjuna, De
 
 In most missions, the Player is the leader of Alpha wing (Alpha 1), but there are exceptions.
 
+Advice for authoring your own missions/campaigns
+
 Mission scale:
 Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
+
+Guiding the AI ships and the player:
+FSO waypoints are hidden AI/logic path points, not player-visible navigation markers. If the player must be guided to a location in-game, place a visible Nav Buoy ship (class `Terran NavBuoy`) and direct the player to that buoy instead of to a waypoint.
 
 Terran spacecraft classes
 
