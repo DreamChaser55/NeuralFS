@@ -220,113 +220,36 @@ In most missions, the Player is the leader of Alpha wing (Alpha 1), but there ar
 
 Advice for authoring your own missions/campaigns
 
-General purpose of this advice:
-These notes are for writing campaign outlines and natural-language mission design documents that can later be implemented in FRED/FSO. Focus on clear, implementable mission plans: exact participants, objectives, trigger descriptions, arrivals, departures, player-facing messages, and debriefing outcomes. Do not invent complicated mechanics that require unsupported campaign branching, persistent variables, procedural logic, or detailed SEXP programming. Describe mission logic in plain English.
+Purpose:
+Use this Bible for lore, era, node-map, ship, weapon, and naming reference. The Creative Writing Agent prompt defines the campaign workflow and Mission Design Document structure; this section only adds compact implementation advice for mission ideas.
 
-Campaign structure and continuity:
-- Prefer linear campaigns. Do not rely on branched campaign paths or persistent variables between missions.
-- Optional or bonus objectives can change debriefing tone, medal awards, or local consequences, but should not require an entirely different later campaign branch.
-- Place the campaign precisely in the FS1 timeline. Track which ships, weapons, shields, and jump-drive capabilities are available at that date.
-- For FS1 or shortly post-FS1 campaigns, avoid FS2-era assumptions: no corvettes, no capital beam cannons, no routine fighter intersystem jumps, and no GTA/PVN fighter shields before the campaign date supports them.
-- Use official jump node connections whenever possible. If an unstable or uncharted node is used, justify it in the Campaign Bible as a desperate, rare, or Shivan-enabled route.
-- New ships and weapons should have clear introduction points. If a mission requires a new craft or weapon, mention when Command makes it available before the mission that uses it.
-- Avoid contradicting major canon events. Side stories work best when they explain a known loss, cover a nearby front, protect refugees, recover intelligence, or show a local consequence of the Great War.
+Mission clarity and player agency:
+- Give each mission one dominant playable task, then add complications gradually.
+- Make objectives measurable: protect a named ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a visible Nav Buoy.
+- If a ship or installation is scripted or historically doomed, make the real objective something the player can accomplish: save escape pods, delay bombers, cover survivors, recover data, or buy time.
+- Define partial success for evacuation, convoy, and last-stand missions.
 
-Mission design fundamentals:
-- Give every mission a clear player fantasy: patrol, escort, interception, recon, depot strike, capture, evacuation, holding action, last stand, convoy withdrawal, node defense, or capital ship assault.
-- Define one dominant task for the player. Add complications gradually rather than presenting many simultaneous priorities at mission start.
-- State what the player can influence and what is scripted history. If a ship is doomed, make the real objective something the player can accomplish, such as saving escape pods, delaying bombers, or escorting survivors.
-- Include primary, secondary, and bonus objectives where appropriate. Each objective should have a measurable success condition.
-- Include partial success when appropriate. Evacuation, convoy, and last-stand missions are often more dramatic when the player can save some but not all allied ships.
-- Make the emotional beat explicit: dread, confusion, first contact horror, professional discipline, desperate adaptation, relief, betrayal, grief, or Pyrrhic victory.
+Scale, navigation, and pacing:
+- Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for transports or damaged ships.
+- If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or comms.
+- Do not put critical threats so far away that the player spends most of the mission just flying toward them.
+- If the player needs an in-game destination, use a visible ship, jump node, or `Terran NavBuoy`; hidden waypoints are for AI paths and logic checks, not player guidance.
 
-Mission scale:
-Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
-- Ten kilometers is already a long flight for the player, and much longer for transports, freighters, escape pods, and damaged ships.
-- If a slow convoy must travel several kilometers, fill the time with enemy waves, comms chatter, inspections, docking, subsystem repairs, asteroid hazards, or other meaningful beats.
-- Avoid placing mission-critical threats so far away that the player spends most of the mission just flying toward them.
-- Avoid placing simultaneous objectives on opposite sides of a huge battlespace unless the intended feeling is helpless triage.
+Simple event logic:
+- Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker.
+- Describe logic in plain English, not detailed SEXP code.
+- Avoid abstract conditions the engine cannot see, such as morale, player intent, fear, or complex tactical judgment.
 
-Guiding the AI ships and the player:
-FSO waypoints are hidden AI/logic path points, not player-visible navigation markers. If the player must be guided to a location in-game, place a visible Nav Buoy ship (class `Terran NavBuoy`) and direct the player to that buoy instead of to a waypoint.
-- It is fine to use named positions such as Nav Alpha, Nav Bravo, Nav Charlie, rally point, convoy lane, or node approach in the story and briefing, but the mission plan should say whether this is represented by a visible Nav Buoy, a jump node, a ship, or only a hidden AI path.
-- Use visible Nav Buoys for rendezvous points, evacuation checkpoints, convoy route markers, inspection points, and jump-node approach lanes.
-- Hidden waypoints are useful for AI movement paths and distance checks, but do not tell the player to follow a hidden waypoint as if it were visible in the HUD.
+Balance reminders:
+- Bombers are the main threat to cruisers, destroyers, transports, installations, and escape pods; fighters usually escort, distract, or pressure the player.
+- Give the player warning and intercept distance before bomber attacks.
+- Stagger enemy waves so several bomber and fighter groups do not overwhelm the player at once.
+- Support ships and reinforcements should arrive early enough to matter.
 
-FRED/FSO-friendly event logic:
-- Use simple triggers that can be implemented reliably: mission time, ship or wing arrival, ship or wing destruction, a ship reaching a Nav Buoy or jump node, cargo scanned, docking or undocking completed, a subsystem disabled, a hull threshold reached, or a previous mission event completed.
-- Do not write detailed SEXP code in mission design documents. Describe the logic in plain English, such as: 'Rama wing arrives 30 seconds after the first bomber wave is destroyed' or 'The transport jumps when it reaches Nav Alpha.'
-- Avoid abstract conditions that the engine cannot easily observe, such as morale, fear, player intent, exact formation discipline, or a complex tactical judgment.
-- Stagger enemy arrivals. A mission can become unfair if several bomber and fighter waves activate at once.
-- If the player must react quickly, give a message, briefing warning, visible arrival vector, or enough distance to intercept.
-- Important objectives should be visible through briefing text, directives, messages, or targetable objects. Do not hide mission-critical logic from the player.
-
-Balance and encounter pacing:
-- Bombers are the main threat to cruisers, destroyers, transports, installations, and escape pods. Fighters often serve as escorts, distractions, or pressure against the player.
-- Give the player enough intercept time against bombers. If hostile bombers arrive too close to a fragile target, the mission becomes trial-and-error.
-- Avoid forcing the player to defend many fragile ships in widely separated places at the same time.
-- If a mission has multiple waves, consider making later waves arrive only after the previous wave is mostly handled, or after a minimum time has passed.
-- Support ships and reinforcements should matter. Introduce them before or during the crisis, not after the outcome is already decided.
-- A capital ship battle can be mostly background spectacle while the player's real job is intercepting bombers, disarming turrets, scanning cargo, or protecting transports.
-- On harder difficulties, enemy ships are dangerous. Do not assume Alpha wing can casually defeat large numbers of Shivans while also escorting several vulnerable ships.
-
-Participants, naming, and object clarity:
-- Use exact ship classes from this Bible when possible: for example, GTF Apollo, GTF Valkyrie, GTC Fenris, GTD Orion, PVF Horus, PVD Typhon, SF Scorpion, SB Shaitan, SC Cain, SD Demon.
-- Fighters and bombers are typically deployed in wings of 3 to 6 ships.
-- Use canonical wing-name pools listed above for Terran, Vasudan, and Shivan wings. Avoid reusing the same wing name for different active wings in the same mission.
-- Give important ships clear names and roles: carrier, escort cruiser, transport leader, science vessel, refugee convoy, traitor freighter, blocking cruiser, etc.
-- Keep implementation-facing names short and simple, ideally under 30 characters. Avoid very long ship names, punctuation-heavy names, and multiple objects with nearly identical names.
-- Do not invent a reliable neutral faction behavior. In mission terms, decide whether ambiguous ships are Friendly, Hostile, or Unknown to the player.
-- Shivan ship names are Terran/Vasudan designations. Do not write Shivan dialogue or imply that Terrans know the Shivans' own names for their ships.
-
-Player craft, weapons, support, and unlocks:
-- For every mission, specify the player's likely craft, allowed alternatives, default weapons, support availability, and whether reinforcements can be called.
-- The first mission of a campaign needs all player-usable ships and weapons available from the start. Later ships and weapons must be introduced before their first required use.
-- Respect the FS1 tech progression. Do not require Avengers, shields, Stilettos, Tsunamis, Ursas, Harbingers, or fighter intersystem jump drives before the date in which the GTA/PVN plausibly has them.
-- If a mission is a scramble, red-alert continuation, stealth recon, or special loadout mission, say so explicitly.
-- If support is unavailable, explain why: patrol sortie, jammed communications, emergency launch, destroyed support craft, enemy control of the area, or command decision.
-
-Objectives and directives:
-- Write objectives in measurable terms: destroy a named ship, protect a ship until departure, scan a container, disable engines, disarm turrets, escort at least 3 of 4 transports, keep a cruiser above 50% hull, or reach a Nav Buoy.
-- Important objectives should have short directive-style wording suitable for the HUD, such as 'Protect Epsilon wing' or 'Destroy the Shaitan bombers.'
-- Secondary and bonus objectives should reward skilled or proactive play without making the primary objective depend on perfection.
-- For evacuation or convoy missions, define the exact threshold for success, partial success, and failure.
-- If the player should not attack a particular capital ship, say so clearly in the briefing and make another objective more prominent.
-
-Briefings, fiction viewer text, messages, and debriefings:
-- Fiction viewer text is best used as a short prose scene, log entry, aftermath report, or cutscene substitute shown before the mission. Do not use the phrase 'Fiction Viewer' in player-facing narrative text.
-- Command Briefings focus on strategic context, the wider front, new intelligence, new technology, and why the next operation matters.
-- Mission Briefings focus on actionable orders: where the player is going, what must be protected or destroyed, known threats, route markers, support availability, and what Command does not know.
-- Briefings should not reveal surprises that Command has no way to know. Foreshadow likely threat sectors instead.
-- In-mission messages should be short, persona-consistent, and useful under combat pressure. Use them for warnings, changing priorities, emotional beats, and confirmation that objectives have changed.
-- Debriefings should cover full success, partial success, failure, and special outcomes when relevant. They should explain consequences, not merely congratulate or scold.
-- Player-facing text should use plain ASCII punctuation. Avoid curly quotes, em dashes, single-character ellipses, and unnecessary double quotes.
-
-Environment and visuals:
-- State the star system and exact tactical location: jump-node approach, convoy lane, asteroid field, installation perimeter, depot, deep space patrol zone, or subspace corridor.
-- Missions in the same star system should usually share similar background assumptions unless the tactical location changes substantially.
-- Hazards such as asteroid fields, nebulae, debris clouds, and sensor interference should have simple, understandable gameplay effects.
-- If a location needs to be targetable or visible, represent it with a ship, cargo object, Nav Buoy, installation, sentry gun, escape pod, or jump node.
-
-Implementation handoff checklist for every Mission Design Document:
-- Datestamp, star system, and exact tactical location.
-- Player wing name, player ship class, default loadout, allowed alternatives, and support/reinforcement availability.
-- Allied and hostile participants with exact classes, counts, named capital ships, and wing names.
-- Starting positions or relative positions in meters, especially distances to Nav Buoys, jump nodes, convoys, and threat arrival vectors.
-- Arrival and departure timing or trigger descriptions for each major ship and wing.
-- Primary, secondary, bonus, success, partial-success, and failure conditions.
-- Clear identification of any scripted loss and the real player-achievable objective.
-- Message list with sender, trigger, persona, and purpose.
-- Command Briefing and Mission Briefing text or stage summaries, including briefing icon notes.
-- Debriefing variants for major outcomes.
-- QA notes: possible softlocks, overwhelming wave overlaps, arrival safety, collision risks, rearm timing, and maximum concurrent ships.
-
-Do / Don't examples:
-- Do: 'Escort at least 3 of 4 Epsilon transports to Nav Alpha.' Don't: 'Protect the evacuation generally.'
-- Do: 'Brahma wing arrives 8 km from the convoy at T+02:30.' Don't: 'Enemies appear when dramatic.'
-- Do: 'The Orion is scripted to die; the player must save the escape pods.' Don't: 'The player must save the doomed destroyer.'
-- Do: 'Use a visible Terran NavBuoy for the rendezvous point.' Don't: 'Tell the player to fly to an invisible waypoint.'
-- Do: 'The Lilith is a background threat; intercept its bombers.' Don't: 'Expect fighters to destroy a Lilith without bombers.'
+Useful handoff details:
+- Name exact ship classes, wing names, counts, arrival directions or distances, objectives, message triggers, and debrief outcomes.
+- Keep implementation-facing names short and distinct, ideally under 30 characters.
+- Do not rely on a reliable Neutral faction; ambiguous contacts should be Friendly, Hostile, or Unknown to the player.
 
 Terran spacecraft classes
 
