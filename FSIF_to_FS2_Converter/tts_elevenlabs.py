@@ -108,7 +108,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
             self.client = ElevenLabs(api_key=api_key)
 
-    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
+    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> bool:
         """Synthesize text to WAV using ElevenLabs."""
         
         # Resolve Voice Name to ID
@@ -118,7 +118,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
         if self.config.dry_run:
             logger.info(f"[DRY RUN] Would synthesize '{output_path}': voice_name={voice_name!r} (ID={voice_id!r}), style={style!r}")
-            return
+            return True
 
         try:
             self._ensure_client()
@@ -146,7 +146,7 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
             if not pcm_data:
                  logger.error(f"[ERROR] No audio content returned for {output_path}")
-                 return
+                 return False
 
             # Save to WAV
             # ElevenLabs pcm_24000 is raw PCM, so we must wrap it in a WAV container manually.
@@ -158,6 +158,8 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
                 wf.writeframes(pcm_data)
 
             logger.info(f"[TTS] Wrote {output_path}")
+            return True
 
         except Exception as exc:
             logger.error(f"[ERROR] Failed to synthesize {output_path}: {exc}")
+            return False

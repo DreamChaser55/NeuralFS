@@ -43,8 +43,8 @@ class BaseTTSProvider(ABC):
         pass
 
     @abstractmethod
-    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
-        """Synthesize text to a WAV file using the provider's API."""
+    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> bool:
+        """Synthesize text to a WAV file using the provider's API. Returns True on success, False on failure."""
         pass
     
     @abstractmethod
@@ -204,7 +204,9 @@ class BaseTTSProvider(ABC):
             return False
 
         # Generate the file
-        self.synthesize_to_wav(voice_name, style, text_str, out_path)
+        success = self.synthesize_to_wav(voice_name, style, text_str, out_path)
+        if not success:
+            raise RuntimeError(f"TTS synthesis failed for {out_path}")
         return True
 
     def _resolve_voice_name(self, node: Any) -> Optional[str]:

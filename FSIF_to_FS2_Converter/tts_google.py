@@ -96,11 +96,11 @@ class GoogleTTSProvider(BaseTTSProvider):
                 "or configure Vertex AI Application Default Credentials."
             )
 
-    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
+    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> bool:
         """Synthesize text to WAV using Google GenAI."""
         if self.config.dry_run:
             logger.info(f"[DRY RUN] Would synthesize '{output_path}': voice={voice_name!r}, style={style!r}")
-            return
+            return True
 
         try:
             self._ensure_client()
@@ -139,7 +139,7 @@ class GoogleTTSProvider(BaseTTSProvider):
                 not response.candidates[0].content.parts or
                 not response.candidates[0].content.parts[0].inline_data):
                 logger.error(f"[ERROR] No audio content returned for {output_path}")
-                return
+                return False
 
             pcm_data = response.candidates[0].content.parts[0].inline_data.data
 
@@ -152,6 +152,8 @@ class GoogleTTSProvider(BaseTTSProvider):
                 wf.writeframes(pcm_data)
 
             logger.info(f"[TTS] Wrote {output_path}")
+            return True
 
         except Exception as exc:
             logger.error(f"[ERROR] Failed to synthesize {output_path}: {exc}")
+            return False

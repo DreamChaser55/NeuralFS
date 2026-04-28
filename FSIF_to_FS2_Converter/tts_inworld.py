@@ -65,11 +65,11 @@ class InworldTTSProvider(BaseTTSProvider):
                 )
             self.api_key = api_key
 
-    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> None:
+    def synthesize_to_wav(self, voice_name: str, style: str, text: str, output_path: Path) -> bool:
         """Synthesize text to WAV using Inworld REST API."""
         if self.config.dry_run:
             logger.info(f"[DRY RUN] Would synthesize '{output_path}': voice_name={voice_name!r}")
-            return
+            return True
 
         try:
             self._ensure_api_key()
@@ -96,18 +96,18 @@ class InworldTTSProvider(BaseTTSProvider):
             
             if response.status_code != 200:
                 logger.error(f"[ERROR] Failed to synthesize {output_path}: {response.status_code} - {response.text}")
-                return
+                return False
 
             result = response.json()
             if 'audioContent' not in result:
                 logger.error(f"[ERROR] No audio content returned for {output_path}")
-                return
+                return False
 
             pcm_data = base64.b64decode(result['audioContent'])
 
             if not pcm_data:
                  logger.error(f"[ERROR] Decoded audio content is empty for {output_path}")
-                 return
+                 return False
 
             # Save to WAV (LINEAR16, 48000Hz)
             output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -118,6 +118,8 @@ class InworldTTSProvider(BaseTTSProvider):
                 wf.writeframes(pcm_data)
 
             logger.info(f"[TTS] Wrote {output_path}")
+            return True
 
         except Exception as exc:
             logger.error(f"[ERROR] Failed to synthesize {output_path}: {exc}")
+            return False

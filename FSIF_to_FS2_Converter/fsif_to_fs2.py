@@ -188,10 +188,10 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                 else:
                     logger.info(f"[INFO] TTS provider '{provider}' libraries not available - skipping TTS generation")
                     logger.info("       Install 'google-genai' for Google TTS or 'elevenlabs' for ElevenLabs TTS.")
-        except Exception:
-            logger.warning(f"[WARNING] TTS generation failed:")
+        except Exception as e:
+            logger.error(f"[ERROR] TTS generation failed: {e}")
             traceback.print_exc()
-            logger.warning("         Continuing with FS2 conversion...")
+            return False
 
     if output_file:
         op = Path(sanitize_path(output_file))
