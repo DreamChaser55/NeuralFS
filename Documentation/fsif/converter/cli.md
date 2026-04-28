@@ -45,7 +45,6 @@ The converter supports automatic voice generation using Google GenAI and ElevenL
 - `--tts-overwrite`: [Deprecated] Equivalent to `--tts-mode overwrite`.
 - `--tts-skip-existing`: [Deprecated] Equivalent to `--tts-mode keep`.
 - `--tts-dry-run`: Simulate generation without calling the API.
-- `--tts-default-voice <voice_name>`: Fallback voice for lines without a `voice_name` specified.
 - `--google-api-key <key>`: Provide Google API key directly (overrides other key sources).
 - `--elevenlabs-api-key <key>`: Provide ElevenLabs API key directly (overrides other key sources).
 - `--inworld-api-key <key>`: Provide Inworld API key directly (overrides other key sources).

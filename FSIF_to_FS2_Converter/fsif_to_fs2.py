@@ -50,7 +50,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                          - out_root: str (optional)
                          - mode: str (default 'unique', can be 'unique', 'overwrite', or 'keep')
                          - dry_run: bool (default False)
-                         - default_voice: str (optional)
                          - api_key: str (optional)
                          - model_id: str (optional)
     :return: True if successful, False otherwise.
@@ -62,7 +61,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         'out_root': None,
         'mode': 'unique', # unique | overwrite | keep
         'dry_run': False,
-        'default_voice': None,
         'api_key': None,
         'model_id': None,
         'rate_limit_delay': 0.0
@@ -155,7 +153,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                 out_root=path_root,
                 skip_existing=skip_existing,
                 dry_run=tts_opts['dry_run'],
-                default_voice=tts_opts['default_voice'],
                 api_key=tts_opts.get('api_key'),
                 model_id=tts_opts.get('model_id'),
                 rate_limit_delay=tts_opts.get('rate_limit_delay', 0.0)
@@ -244,8 +241,6 @@ def main():
 
     parser.add_argument("--tts-dry-run", dest="tts_dry_run", action="store_true",
                         help="Show what TTS would generate without calling API")
-    parser.add_argument("--tts-default-voice", dest="tts_default_voice",
-                        help="Fallback voice for lines without voice_name")
     
     # API Keys
     parser.add_argument("--google-api-key", dest="google_api_key",
@@ -292,7 +287,6 @@ def main():
         'out_root': args.tts_out_root,
         'mode': mode,
         'dry_run': args.tts_dry_run,
-        'default_voice': args.tts_default_voice,
         'api_key': api_key,
         'model_id': model_id,
         'rate_limit_delay': args.tts_rate_limit_delay

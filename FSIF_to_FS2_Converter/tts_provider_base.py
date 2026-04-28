@@ -26,7 +26,6 @@ class TTSConfig:
     out_root: Optional[Path] = None  # Base directory for .wav files
     skip_existing: bool = True  # Don't overwrite existing files
     dry_run: bool = False  # Print what would be done without calling API
-    default_voice: Optional[str] = None  # Fallback voice for lines without voice_name
     api_key: Optional[str] = None  # Provider-specific API Key
     model_id: Optional[str] = None # Provider-specific model ID (e.g. for ElevenLabs)
     rate_limit_delay: float = 0.0  # Delay in seconds between consecutive API calls
@@ -194,7 +193,7 @@ class BaseTTSProvider(ABC):
         if not voice_name:
             logger.warning(
                 f"[WARNING] Skipping line (section={item['section']}, index={item['index']}): "
-                f"no voice_name set and no default voice provided."
+                f"no voice_name set."
             )
             return False
 
@@ -209,7 +208,7 @@ class BaseTTSProvider(ABC):
         return True
 
     def _resolve_voice_name(self, node: Any) -> Optional[str]:
-        """Resolve voice_name from node or default."""
+        """Resolve voice_name from node."""
         voice_name = getattr(node, 'voice_name', None)
         if voice_name:
             try:
@@ -218,10 +217,6 @@ class BaseTTSProvider(ABC):
                 vs = ""
             if vs:
                 return vs
-
-        # Fall back to default voice
-        if self.config.default_voice:
-            return self.config.default_voice
 
         return None
 
