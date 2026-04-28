@@ -42,16 +42,12 @@ class ShipWingChecksMixin:
             # 3. Flags
             all_flags = ship.flags
             for f in all_flags:
-                norm = fs_flags_constants.normalize_flag(f)
-                if norm not in fs_flags_constants.SHIP_FLAGS_BUCKET:
+                if f not in fs_flags_constants.SHIP_FLAGS_BUCKET:
                     self.log_error(f"Ship '{ship.name}' has unknown flag '{f}'")
 
             # escort_priority requires the 'escort' flag
             if ship.escort_priority > 0:
-                has_escort_flag = any(
-                    fs_flags_constants.normalize_flag(f) == 'escort'
-                    for f in ship.flags
-                )
+                has_escort_flag = 'escort' in ship.flags
                 if not has_escort_flag:
                     self.log_error(
                         f"Ship '{ship.name}' has escort_priority {ship.escort_priority} set, "
@@ -109,8 +105,7 @@ class ShipWingChecksMixin:
                 self.log_error(f"Wing '{wing.name}' has count {wing.count}. FSO enforces a hard maximum of 6 ships per wing.")
 
             for f in wing.flags:
-                norm = fs_flags_constants.normalize_flag(f)
-                if norm not in fs_flags_constants.WING_FLAGS_BUCKET:
+                if f not in fs_flags_constants.WING_FLAGS_BUCKET:
                      self.log_error(f"Wing '{wing.name}' has unknown/unsupported flag '{f}'")
 
             if not wing.ai_goals or not wing.ai_goals.strip():
@@ -173,7 +168,7 @@ class ShipWingChecksMixin:
         for s in self.mission.ships:
              # Check flags for player-start
              for f in s.flags:
-                 if fs_flags_constants.normalize_flag(f) == 'player_start':
+                 if f == 'player-start':
                      player_ships.add(s.name)
 
         for ship in self.mission.ships:

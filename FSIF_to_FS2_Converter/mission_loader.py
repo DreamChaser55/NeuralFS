@@ -199,8 +199,8 @@ class MissionLoader:
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
             # Normalise the two human-readable string keys.
-            # 'genre' -> 'asteroid' | 'debris'  (kept as-is in the model)
-            # 'type'  -> 'active'   | 'passive'  (renamed to 'field_type' for the model)
+            # 'genre' -> 'asteroid' | 'debris'
+            # 'type'  -> 'active'   | 'passive'
             genre = str(af_src.get('genre', 'asteroid')).lower()
             ftype = str(af_src.get('type', 'passive')).lower()
 
@@ -215,12 +215,11 @@ class MissionLoader:
                 if 'min' in b: af_src['min_vec'] = b['min']
                 if 'max' in b: af_src['max_vec'] = b['max']
 
-            # Write normalised strings back; rename 'type' -> 'field_type' to match model field.
+            # Write normalised strings back.
             af_src['genre'] = genre
-            af_src['field_type'] = ftype
+            af_src['type'] = ftype
 
             # Cleanup source for strict model
-            af_src.pop('type', None)
             af_src.pop('bounds', None)
 
             env_data['asteroid_field'] = af_src

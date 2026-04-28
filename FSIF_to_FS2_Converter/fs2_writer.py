@@ -503,8 +503,7 @@ class FS2Writer:
             out_flags2 = []
 
             def _route_flag(tok):
-                n = fs_flags_constants.normalize_flag(tok)
-                bucket = fs_flags_constants.SHIP_FLAGS_BUCKET.get(n)
+                bucket = fs_flags_constants.SHIP_FLAGS_BUCKET.get(tok)
                 if bucket == "flags":
                     out_flags.append(str(tok))
                 elif bucket == "flags2":
@@ -541,7 +540,7 @@ class FS2Writer:
                  self._write(f'$Dockee Point: {ship.docker_point}')
             
             # Escort
-            has_escort_flag = any(fs_flags_constants.normalize_flag(x) == "escort" for x in ship.flags)
+            has_escort_flag = "escort" in ship.flags
             if has_escort_flag or ship.escort_priority > 0:
                  self._write(f'+Escort priority: {ship.escort_priority}')
             
@@ -746,7 +745,7 @@ class FS2Writer:
 
         self._write('\n#Asteroid Fields\n')
         self._write(f'$Density: {fld.density}')
-        field_type_int   = 0 if fld.field_type == 'active'   else 1
+        field_type_int   = 0 if fld.type == 'active'   else 1
         debris_genre_int = 0 if fld.genre      == 'asteroid' else 1
         self._write(f'+Field Type: {field_type_int}')
         self._write(f'+Debris Genre: {debris_genre_int}')
@@ -758,7 +757,7 @@ class FS2Writer:
         self._write(f'$Minimum: {self._format_vector(fld.min_vec)}')
         self._write(f'$Maximum: {self._format_vector(fld.max_vec)}')
 
-        if fld.field_type == 'active' and fld.genre == 'asteroid' and fld.targets:
+        if fld.type == 'active' and fld.genre == 'asteroid' and fld.targets:
             targets_joined = ' '.join([f'"{name}"' for name in fld.targets])
             self._write(f'$Asteroid Targets: ( {targets_joined} )')
 

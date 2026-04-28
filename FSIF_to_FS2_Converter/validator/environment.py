@@ -59,10 +59,10 @@ class EnvironmentChecksMixin:
 
         # Asteroid/Debris Field Logic
         af = env.asteroid_field
-        if af and af.targets:
-            # Targets are only valid for Active Asteroid fields
-            if not (af.field_type == 'active' and af.genre == 'asteroid'):
-                self.log_warning(f"The asteroid field defines targets but they will be ignored (type='{af.field_type}', genre='{af.genre}'). Targets are only supported for Active Asteroid fields.")
+        if af:
+            if af.targets:
+                if not (af.type == 'active' and af.genre == 'asteroid'):
+                    self.log_warning(f"The asteroid field defines targets but they will be ignored (type='{af.type}', genre='{af.genre}'). Targets are only supported for Active Asteroid fields.")
 
     def validate_asteroid_targets(self):
         af = self.mission.environment.asteroid_field

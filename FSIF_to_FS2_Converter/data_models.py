@@ -133,7 +133,7 @@ class SubsystemStatus(BaseModel):
 
 class Subsystems(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    status: str = 'all_ok'
+    status: Literal['all_ok', 'custom'] = 'all_ok'
     list: List[SubsystemStatus] = Field(default_factory=list)
 
 class Weapons(BaseModel):
@@ -181,7 +181,7 @@ class Nebula(BaseModel):
 class AsteroidField(BaseModel):
     model_config = ConfigDict(extra='forbid')
     density: int = Field(50, ge=0)
-    field_type: Literal['active', 'passive'] = 'passive'
+    type: Literal['active', 'passive'] = 'passive'
     genre: Literal['asteroid', 'debris'] = 'asteroid'
     debris_types: List[str] = Field(default_factory=lambda: ["Brown", "Blue", "Orange"])
     average_speed: float = 20.0
@@ -212,7 +212,7 @@ class MissionInfo(BaseModel):
     name: str
     author: str = 'FSIF Converter'
     description: str = 'No description provided.'
-    game_type: str = 'single'
+    game_type: Literal['single', 'multiplayer', 'training'] = 'single'
     flags: List[str] = Field(default_factory=list)
     disallow_support_ships: bool = False
     ai_profile: str = 'FS1 RETAIL'
@@ -236,7 +236,7 @@ class Goal(BaseModel):
     name: str
     formula: str
     message: str
-    type: str = 'Primary'
+    type: Literal['Primary', 'Secondary', 'Bonus'] = 'Primary'
 
 class Message(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -250,7 +250,7 @@ class BriefingIcon(BaseModel):
     model_config = ConfigDict(extra='forbid')
     type_id: int
     type: str # canonical string
-    team: str
+    team: Literal['Friendly', 'Hostile', 'Unknown']
     pos: List[float]
     label: str = ''
     highlighted: bool = False
@@ -343,7 +343,7 @@ class Ship(BaseModel):
 
     name: str
     ship_class: str = Field(..., alias='class') # Required field
-    team: str
+    team: Literal['Friendly', 'Hostile', 'Unknown']
     location: List[float] = Field(default_factory=lambda: [0.0, 0.0, 0.0])
     orientation: List[float] = Field(default_factory=lambda: [
         1.0, 0.0, 0.0,
@@ -357,13 +357,13 @@ class Ship(BaseModel):
     initial_velocity: int = Field(33, ge=0, le=100)
     initial_hull: int = Field(100, ge=0, le=100)
     
-    arrival_location: str = 'Hyperspace'
+    arrival_location: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = 'Hyperspace'
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
     arrival_cue: str = '( false )'
     
-    departure_location: str = 'Hyperspace'
+    departure_location: Literal['Hyperspace', 'Docking Bay'] = 'Hyperspace'
     departure_anchor: Optional[str] = None
     departure_cue: str = '( false )'
     
@@ -409,13 +409,13 @@ class Wing(BaseModel):
     # wave_delay can be object in FSIF, but normalized before/during loading? 
     # For now assume simplified or handle in loader.
     
-    arrival_location: str = 'Hyperspace'
+    arrival_location: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = 'Hyperspace'
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
     arrival_cue: str = '( true )'
     
-    departure_location: str = 'Hyperspace'
+    departure_location: Literal['Hyperspace', 'Docking Bay'] = 'Hyperspace'
     departure_anchor: Optional[str] = None
     departure_cue: str = '( false )'
     

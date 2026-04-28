@@ -989,14 +989,12 @@ class SexpValidator:
         return []
 
     def _validate_ship_flag(self, text: str, context: str, node: SexpNode) -> List[str]:
-        norm = fs_flags_constants.normalize_flag(text)
-        if norm not in fs_flags_constants.SHIP_FLAGS_BUCKET:
+        if text not in fs_flags_constants.SHIP_FLAGS_BUCKET:
             return [self._format_error(f"Invalid Ship Flag: '{text}'", context)]
         return []
 
     def _validate_wing_flag(self, text: str, context: str, node: SexpNode) -> List[str]:
-        norm = fs_flags_constants.normalize_flag(text)
-        if norm not in fs_flags_constants.WING_FLAGS_BUCKET:
+        if text not in fs_flags_constants.WING_FLAGS_BUCKET:
             return [self._format_error(f"Invalid Wing Flag: '{text}'", context)]
         return []
 
