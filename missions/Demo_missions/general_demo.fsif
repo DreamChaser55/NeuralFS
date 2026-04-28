@@ -1,4 +1,4 @@
-fsif_version: "2.8"
+fsif_version: "2.9"
 
 mission_info:
   name: "FSIF All Features Showcase"
@@ -223,6 +223,9 @@ entities:
   reinforcement_ships:
     - name: "GTS Centaur 1"
       num_times: 1
+
+  jump_nodes:
+    - { name: "Delta Serpentis Jump Node", position: [3200.0, 0.0, 0.0] }
 
 mission_flow:
   fiction_viewer: "story.txt"
@@ -499,6 +502,3 @@ mission_flow:
 audio:
   mission_music: "1: Genesis"
   briefing_music: "Brief1"
-
-jump_nodes:
-  - { name: "Delta Serpentis Jump Node", position: [3200.0, 0.0, 0.0] }

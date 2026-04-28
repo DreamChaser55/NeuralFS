@@ -1,11 +1,44 @@
-# FSIF Migration Guide (1.0 → ... → 2.8)
+# FSIF Migration Guide (1.0 → ... → 2.9)
 
 Purpose
 - Practical, snippet-led instructions to update existing FSIF files to the latest spec and converter expectations.
 - Covers breaking changes and notable behavior shifts.
 
 Status
-- Current FSIF version: 2.8. The converter accepts FSIF 2.8 only; use this guide to update older FSIF files to the 2.8 schema before converting.
+- Current FSIF version: 2.9. The converter accepts FSIF 2.9 only; use this guide to update older FSIF files to the 2.9 schema before converting.
+
+FSIF 2.9: `jump_nodes` moved under `entities` (breaking)
+
+Change
+- The `jump_nodes` field has moved from the top level of the FSIF document into the `entities` section.
+- This conceptually groups all object definitions (ships, wings, waypoints, and jump nodes) together.
+
+Migration guidance
+- Find any top-level `jump_nodes` key in your `.fsif` files and move it to be a sub-key of `entities`.
+- Bump `fsif_version` to `"2.9"`.
+
+Before (2.8)
+```yaml
+fsif_version: "2.8"
+
+entities:
+  ships: []
+
+jump_nodes:
+  - { name: "Delta Serpentis Jump Node", position: [3200.0, 0.0, 0.0] }
+```
+
+After (2.9)
+```yaml
+fsif_version: "2.9"
+
+entities:
+  ships: []
+  jump_nodes:
+    - { name: "Delta Serpentis Jump Node", position: [3200.0, 0.0, 0.0] }
+```
+
+---
 
 FSIF 2.8: `fiction_viewer` moved under `mission_flow` (breaking)
 

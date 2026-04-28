@@ -178,7 +178,7 @@ class AsciiChecksMixin:
             self._validate_ascii_text_list(f'{prefix}.yes_messages', reinforcement.yes_messages)
 
         for i, jump_node in enumerate(self.mission.jump_nodes):
-            self._validate_ascii_text(f'jump_nodes[{i}].name', jump_node.name)
+            self._validate_ascii_text(f'entities.jump_nodes[{i}].name', jump_node.name)
 
         audio = self.mission.audio
         self._validate_ascii_text('audio.mission_music', audio.mission_music)

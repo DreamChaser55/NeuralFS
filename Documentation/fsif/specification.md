@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 2.8 (current)
+- FSIF version: 2.9 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,7 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"2.8"`.
+- `fsif_version` (String, required): Must be `"2.9"`.
 - `mission_info` (Mapping, required):
   - `name` (String, required)
   - `author` (String, optional, default: `"FSIF Converter"`)
@@ -80,6 +80,9 @@
     - `no_messages` (List[String], optional)
     - `yes_messages` (List[String], optional)
   - `reinforcement_ships` (List[Mapping], optional). Same structure as `reinforcement_wings`.
+  - `jump_nodes` (List[Mapping], optional):
+    - `name` (String, required)
+    - `position` (List[Float], required). Format: `[x, y, z]`.
 - `mission_flow` (Mapping, required):
   - `fiction_viewer` (String, optional): Filename of the text file to display.
   - `events` (List[Mapping], optional):
@@ -116,9 +119,6 @@
 - `audio` (Mapping, optional):
   - `mission_music` (String, optional)
   - `briefing_music` (String, optional)
-- `jump_nodes` (List[Mapping], optional):
-  - `name` (String, required)
-  - `position` (List[Float], required). Format: `[x, y, z]`.
 
 **Ship Properties:**
 - `name` (String, required for `ships`)

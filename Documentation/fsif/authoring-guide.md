@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "2.8"
+fsif_version: "2.9"
 
 mission_info:
   name: "Minimal Mission"
@@ -47,7 +47,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "2.8"
+fsif_version: "2.9"
 
 mission_info:
   name: "Mission name string"

@@ -102,6 +102,7 @@ class EntitiesSection(BaseModel):
     waypoints: Optional[Dict[str, Any]] = None
     reinforcement_wings: Optional[List[Dict[str, Any]]] = None
     reinforcement_ships: Optional[List[Dict[str, Any]]] = None
+    jump_nodes: Optional[List[Dict[str, Any]]] = None
 
 class MissionFlowSection(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -122,7 +123,6 @@ class FSIFDocument(BaseModel):
     entities: EntitiesSection
     mission_flow: MissionFlowSection
     audio: Optional[Dict[str, Any]] = None
-    jump_nodes: Optional[List[Dict[str, Any]]] = None
 
 # --- Sub-Component Models ---
 
