@@ -92,6 +92,38 @@ def pack_ambient_light_rgb(rgb: Any) -> int:
     red, green, blue = _normalize_ambient_light_rgb(rgb)
     return red | (green << 8) | (blue << 16)
 
+# --- Raw Document Models (for initial strict validation) ---
+
+class EntitiesSection(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    ship_templates: Optional[Dict[str, Any]] = None
+    ships: Optional[List[Dict[str, Any]]] = None
+    wings: Optional[List[Dict[str, Any]]] = None
+    waypoints: Optional[Dict[str, Any]] = None
+    reinforcement_wings: Optional[List[Dict[str, Any]]] = None
+    reinforcement_ships: Optional[List[Dict[str, Any]]] = None
+
+class MissionFlowSection(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    fiction_viewer: Optional[str] = None
+    events: Optional[List[Dict[str, Any]]] = None
+    goals: Optional[List[Dict[str, Any]]] = None
+    messages: Optional[List[Dict[str, Any]]] = None
+    briefing: Optional[Dict[str, Any]] = None
+    debriefing: Optional[Dict[str, Any]] = None
+    command_briefing: Optional[Dict[str, Any]] = None
+
+class FSIFDocument(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    fsif_version: str
+    mission_info: Dict[str, Any]
+    environment: Dict[str, Any]
+    player_setup: Dict[str, Any]
+    entities: EntitiesSection
+    mission_flow: MissionFlowSection
+    audio: Optional[Dict[str, Any]] = None
+    jump_nodes: Optional[List[Dict[str, Any]]] = None
+
 # --- Sub-Component Models ---
 
 class SubsystemStatus(BaseModel):

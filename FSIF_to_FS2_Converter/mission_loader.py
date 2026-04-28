@@ -94,6 +94,14 @@ class MissionLoader:
 
         self.data = yaml.safe_load(raw_yaml) or {}
 
+        # Strict field validation for the raw FSIF document before processing
+        from data_models import FSIFDocument
+        from pydantic import ValidationError
+        try:
+            FSIFDocument(**self.data)
+        except ValidationError as e:
+            raise ValueError(f"FSIF raw document validation error:\n{e}")
+
         # Compose once from the same in-memory YAML text so downstream
         # validators can inspect scalar styles without re-opening the file.
         try:
