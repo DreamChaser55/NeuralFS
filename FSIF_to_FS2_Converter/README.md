@@ -121,7 +121,7 @@ This will re-parse the Markdown files and overwrite `fs_data.py` with the latest
 - `fsif_converter_gui.py` — Graphical User Interface (GUI) for the converter.
 - `mission_loader.py` — Loads FSIF, applies templates, expands wings.
 - `fs2_writer.py` — Emits FS2 sections.
-- `validator.py` — Performs strict validation of logic, references, and constraints.
+- `validator/` — This package performs strict validation of logic, references, and constraints.
 - `data_models.py` — Pydantic models for in-memory mission structures and schema validation.
 - `fs_flags_constants.py` — FS2 format flag definitions and bitmask constants.
 - `fs_data.py` — Auto-generated static reference data and token lists (teams, weapons, backgrounds, etc.) for validation. Do not edit manually.
