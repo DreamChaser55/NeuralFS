@@ -216,8 +216,6 @@ class MissionInfo(BaseModel):
     flags: List[str] = Field(default_factory=list)
     disallow_support_ships: bool = False
     ai_profile: str = 'FS1 RETAIL'
-    created: Optional[str] = None
-    modified: Optional[str] = None
 
 class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -466,3 +464,7 @@ class Mission(BaseModel):
     jump_nodes: List[JumpNode] = Field(default_factory=list)
     
     audio: AudioSettings = Field(default_factory=AudioSettings)
+
+    # Internal metadata — generated at conversion time, never authored in FSIF.
+    created: str = ''
+    modified: str = ''

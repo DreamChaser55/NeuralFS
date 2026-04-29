@@ -144,8 +144,8 @@ class FS2Writer:
         self._write(f'$Version: 23.1')
         self._write(f'$Name:  {self._write_xstr(info.name)}')
         self._write(f'$Author: {info.author}')
-        self._write(f'$Created: {info.created}')
-        self._write(f'$Modified: {info.modified}')
+        self._write(f'$Created: {self.mission.created}')
+        self._write(f'$Modified: {self.mission.modified}')
         self._write(f'$Notes:\n nothing \n$End Notes:')
         self._write(f'$Mission Desc:\n {self._write_xstr(info.description)}\n$end_multi_text')
 

@@ -67,7 +67,10 @@ class MissionLoader:
         jump_nodes = [JumpNode(**jn) for jn in self.data.get('jump_nodes', [])]
         reinforcements = self._process_reinforcements()
         audio = self._load_audio()
-        
+
+        # Generate conversion timestamps (internal metadata, never authored in FSIF)
+        now = datetime.now().strftime('%m/%d/%y at %H:%M:%S')
+
         # Construct Mission
         return Mission(
             mission_info=mission_info,
@@ -85,7 +88,9 @@ class MissionLoader:
             fiction_viewer=flow_data['fiction_viewer'],
             reinforcements=reinforcements,
             jump_nodes=jump_nodes,
-            audio=audio
+            audio=audio,
+            created=now,
+            modified=now,
         )
 
     def _read_yaml(self):
@@ -138,9 +143,7 @@ class MissionLoader:
     def _load_mission_info(self) -> MissionInfo:
         """
         Parse and validate the 'mission_info' section.
-        
-        Injects creation and modification timestamps.
-        
+
         Returns:
             MissionInfo: Populated mission info object.
             
@@ -150,11 +153,6 @@ class MissionLoader:
         mission_info_data = self.data.get('mission_info', {})
         if 'name' not in mission_info_data:
             raise ValueError("mission_info.name is required.")
-        
-        # Add generated timestamps
-        now = datetime.now().strftime('%m/%d/%y at %H:%M:%S')
-        mission_info_data['created'] = now
-        mission_info_data['modified'] = now
         
         return MissionInfo(**mission_info_data)
 
