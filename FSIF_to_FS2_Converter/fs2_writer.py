@@ -372,7 +372,7 @@ class FS2Writer:
         
         # Track max possible capacities to satisfy 'extra_weapons'
         total_primary_banks_demand = 0
-        total_secondary_capacity_demand = 0
+        all_secondary_bank_capacities = []
         
         for w in self.mission.wings:
             if w.name not in friendly_starting_wings:
@@ -391,7 +391,7 @@ class FS2Writer:
                 if not p: continue
                 weapon_demand[p] = weapon_demand.get(p, 0) + count
                 
-            # Secondary Banks (count capacity)
+            # Secondary Banks (calculate missile counts from capacity and size)
             for i, sec in enumerate(ship.weapons.secondary):
                 # Default capacity if ship not in tables or bank index out of bounds
                 capacity = 50
@@ -400,16 +400,22 @@ class FS2Writer:
                     if i < len(caps):
                         capacity = caps[i]
                 
-                total_secondary_capacity_demand += count * capacity
+                for _ in range(count):
+                    all_secondary_bank_capacities.append(capacity)
+                    
                 if not sec: continue
-                weapon_demand[sec] = weapon_demand.get(sec, 0) + (count * capacity)
+                cargo_size = fs_data.WEAPON_CARGO_SIZES.get(sec, 1.0)
+                missile_count = int(capacity / cargo_size)
+                weapon_demand[sec] = weapon_demand.get(sec, 0) + (count * missile_count)
                 
         # Process extra weapons
         for ew in setup.extra_weapons:
             if ew in fs_data.ALLOWED_PRIMARY_WEAPONS:
                 weapon_demand[ew] = max(weapon_demand.get(ew, 0), total_primary_banks_demand)
             elif ew in fs_data.ALLOWED_SECONDARY_WEAPONS:
-                weapon_demand[ew] = max(weapon_demand.get(ew, 0), total_secondary_capacity_demand)
+                cargo_size = fs_data.WEAPON_CARGO_SIZES.get(ew, 1.0)
+                max_demand = sum(int(cap / cargo_size) for cap in all_secondary_bank_capacities)
+                weapon_demand[ew] = max(weapon_demand.get(ew, 0), max_demand)
                 
         # Apply 25% safety factor and cast to int
         pool_lines = []

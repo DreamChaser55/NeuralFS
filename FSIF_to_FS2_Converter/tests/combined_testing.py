@@ -233,6 +233,57 @@ class CombinedTesting(unittest.TestCase):
             validator.warnings,
         )
 
+    def test_writer_weapon_pool_secondary_sizes(self):
+        mission = self.make_valid_mission()
+        
+        # We must add two ships to the wing's `ships` list, since `fs2_writer` uses `len(wing.ships)`
+        ship1 = Ship.model_validate(
+            {
+                "name": "Alpha 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "location": [0.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["Harbinger"],
+                ),
+            }
+        )
+        ship2 = Ship.model_validate(
+            {
+                "name": "Alpha 2",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "location": [0.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["Harbinger"],
+                ),
+            }
+        )
+        
+        mission.wings = [
+            Wing(
+                name="Alpha",
+                count=2,
+                ships=[ship1, ship2],
+                position=[0.0, 0.0, 0.0],
+                arrival_cue="( true )",
+            )
+        ]
+        mission.player_setup.extra_weapons = ["Tsunami"]
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = Path(tmpdir) / "mission.fs2"
+            writer = FS2Writer(mission, str(output_path))
+            writer.write_mission()
+            content = output_path.read_text(encoding="utf-8")
+
+        self.assertIn('"Harbinger"\t3', content)
+        self.assertIn('"Tsunami"\t5', content)
+
     def test_writer_always_emits_fixed_fog_multipliers(self):
         mission = self.make_valid_mission()
 
