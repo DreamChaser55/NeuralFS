@@ -274,7 +274,9 @@ class ShipWingChecksMixin:
             
             # Fighterbay check for Docking Bay arrival
             if arr_loc == "docking bay" and ship.arrival_anchor:
-                if ship.arrival_anchor in name_to_ship:
+                if ship.arrival_anchor not in name_to_ship:
+                    self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival but anchor '{ship.arrival_anchor}' is not a valid ship.")
+                else:
                     anchor_ship = name_to_ship[ship.arrival_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival from anchor '{ship.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
@@ -289,7 +291,9 @@ class ShipWingChecksMixin:
 
             # Fighterbay check for Docking Bay departure
             if dep_loc == "docking bay" and ship.departure_anchor:
-                if ship.departure_anchor in name_to_ship:
+                if ship.departure_anchor not in name_to_ship:
+                    self.log_error(f"Ship '{ship.name}' uses Docking Bay departure but anchor '{ship.departure_anchor}' is not a valid ship.")
+                else:
                     anchor_ship = name_to_ship[ship.departure_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Ship '{ship.name}' uses Docking Bay departure via anchor '{ship.departure_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
@@ -311,7 +315,9 @@ class ShipWingChecksMixin:
             
             # Fighterbay check for Docking Bay arrival
             if arr_loc == "docking bay" and w.arrival_anchor:
-                if w.arrival_anchor in name_to_ship:
+                if w.arrival_anchor not in name_to_ship:
+                    self.log_error(f"Wing '{w.name}' uses Docking Bay arrival but anchor '{w.arrival_anchor}' is not a valid ship.")
+                else:
                     anchor_ship = name_to_ship[w.arrival_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Wing '{w.name}' uses Docking Bay arrival from anchor '{w.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
@@ -326,7 +332,9 @@ class ShipWingChecksMixin:
 
             # Fighterbay check for Docking Bay departure
             if dep_loc == "docking bay" and w.departure_anchor:
-                if w.departure_anchor in name_to_ship:
+                if w.departure_anchor not in name_to_ship:
+                    self.log_error(f"Wing '{w.name}' uses Docking Bay departure but anchor '{w.departure_anchor}' is not a valid ship.")
+                else:
                     anchor_ship = name_to_ship[w.departure_anchor]
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Wing '{w.name}' uses Docking Bay departure via anchor '{w.departure_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
