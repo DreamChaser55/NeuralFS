@@ -190,5 +190,28 @@ class TestAdvancedSexpValidator(unittest.TestCase):
         errors = self.validate_string('(add-goal "Ulysses 1" ( ai-guard "Beta 1" 89 ))', SexpReturnType.NULL)
         self.assertEqual(errors, [])
 
+    # --- Tests for malformed parenthesis detection ---
+
+    def test_extra_closing_paren_top_level(self):
+        """An extra ')' after a well-formed expression must raise SyntaxError."""
+        with self.assertRaises(SyntaxError):
+            self.parser.parse('(when (true) (do-nothing)))')
+
+    def test_leading_closing_paren(self):
+        """A bare ')' before any opening expression must raise SyntaxError."""
+        with self.assertRaises(SyntaxError):
+            self.parser.parse(')(when (true) (do-nothing))')
+
+    def test_extra_closing_paren_between_expressions(self):
+        """A stray ')' between two otherwise valid expressions must raise SyntaxError."""
+        with self.assertRaises(SyntaxError):
+            self.parser.parse('(when (true) (do-nothing))) (do-nothing)')
+
+    def test_balanced_parens_do_not_raise(self):
+        """Correctly balanced expressions must not raise."""
+        # Should not raise; just verifying symmetry with the error cases above.
+        result = self.parser.parse('(when (true) (do-nothing))')
+        self.assertTrue(result)
+
 if __name__ == '__main__':
     unittest.main()

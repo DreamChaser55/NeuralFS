@@ -415,11 +415,12 @@ class SexpParser:
                 
                 return node
         
-        # Case B: End of List (Should be handled by loop in Case A, but safety check)
+        # Case B: Stray closing parenthesis — always a structural error.
+        # The loop in Case A already stops before consuming ')'.
+        # If we reach here, a ')' appeared at the top level or in a position
+        # where no matching '(' preceded it.
         elif token == ')':
-             # raise SyntaxError("Unexpected closing parenthesis")
-             # Actually, this might happen if we parse a fragment.
-             return None
+            raise SyntaxError("Unexpected closing parenthesis")
 
         # Case C: Atom (Number, String, Variable)
         else:
