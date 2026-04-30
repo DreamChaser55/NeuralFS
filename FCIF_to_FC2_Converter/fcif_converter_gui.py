@@ -24,7 +24,11 @@ class ConverterGUI(LogMixin):
         self.root = root
         self.root.title("FCIF to FC2 Converter")
         self.root.geometry("1000x700")
-
+        try:
+            self.root.state('zoomed')
+        except Exception:
+            pass
+        
         # Variables
         self.input_path_var = tk.StringVar()
         self.output_path_var = tk.StringVar()
