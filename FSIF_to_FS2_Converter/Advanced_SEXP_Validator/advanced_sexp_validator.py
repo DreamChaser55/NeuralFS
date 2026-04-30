@@ -211,7 +211,7 @@ class MissionContext:
         self.events: Set[str] = set()
         self.goals: Set[str] = set()
         self.messages: Set[str] = set()
-        self.waypoints: Set[str] = set()
+        self.waypoints: Dict[str, int] = {}
         self.jump_nodes: Set[str] = set()
 
     @classmethod
@@ -251,8 +251,8 @@ class MissionContext:
             ctx.messages.add(m.name)
             
         # 6. Waypoints
-        for wp_name in mission.waypoints.keys():
-            ctx.waypoints.add(wp_name)
+        for wp_name, wp_list in mission.waypoints.items():
+            ctx.waypoints[wp_name] = len(wp_list)
 
         # 7. Jump Nodes
         for jn in mission.jump_nodes:
@@ -751,6 +751,28 @@ class SexpValidator:
         if text in self.context.wings: return []
         return [self._format_error(f"Invalid Ship/Wing name: '{text}'", context)]
 
+    def _validate_specific_point(self, text: str, context: str) -> List[str]:
+        """Helper to validate Path:N syntax and range."""
+        parts = text.split(':')
+        if len(parts) != 2:
+            return [self._format_error(f"Invalid waypoint syntax: '{text}'. Expected format 'PathName:Index'.", context)]
+        
+        base_name, index_str = parts
+        if base_name not in self.context.waypoints:
+            return [self._format_error(f"Invalid waypoint path: '{base_name}' in '{text}'.", context)]
+            
+        try:
+            index = int(index_str)
+        except ValueError:
+            return [self._format_error(f"Invalid waypoint point index '{index_str}' in '{text}'. Must be an integer.", context)]
+            
+        # Point indices are 1-based in FSO SEXPs
+        count = self.context.waypoints[base_name]
+        if index < 1 or index > count:
+            return [self._format_error(f"Waypoint point index {index} out of bounds for path '{base_name}' (has {count} points).", context)]
+            
+        return []
+
     def _validate_ship_wing_point(self, text: str, context: str, node: SexpNode) -> List[str]:
         if self._is_valid_special_token(text): return []
         if text in self.context.ships: return []
@@ -758,8 +780,7 @@ class SexpValidator:
         
         # Check waypoint path reference (PathName:Index)
         if ":" in text:
-            base_name = text.split(':')[0]
-            if base_name in self.context.waypoints: return []
+            return self._validate_specific_point(text, context)
             
         return [self._format_error(f"Invalid Ship/Wing/Point name: '{text}'", context)]
 
@@ -771,8 +792,7 @@ class SexpValidator:
         
         # Specific waypoint point Path:N
         if ":" in text:
-            base_name = text.split(':')[0]
-            if base_name in self.context.waypoints: return []
+            return self._validate_specific_point(text, context)
 
         return [self._format_error(f"Invalid Point/Waypoint name: '{text}'", context)]
 
@@ -783,8 +803,7 @@ class SexpValidator:
         # Point (Waypoint/Specific Point)
         if text in self.context.waypoints: return []
         if ":" in text:
-            base_name = text.split(':')[0]
-            if base_name in self.context.waypoints: return []
+            return self._validate_specific_point(text, context)
             
         return [self._format_error(f"Invalid Ship/Point name: '{text}'", context)]
 

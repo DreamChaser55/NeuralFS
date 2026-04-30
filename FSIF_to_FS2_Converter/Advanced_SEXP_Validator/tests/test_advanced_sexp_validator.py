@@ -136,24 +136,46 @@ class TestAdvancedSexpValidator(unittest.TestCase):
     # --- Tests for Points and Waypoints (OPF_POINT, OPF_SHIP_POINT) ---
 
     def test_valid_point_waypoint(self):
-        self.ctx.waypoints.add("Path1")
+        self.ctx.waypoints["Path1"] = 3
         # ai-waypoints uses OPF_WAYPOINT_PATH
         errors = self.validate_string('(ai-waypoints "Path1" 89)', SexpReturnType.AI_GOAL)
         self.assertEqual(errors, [])
 
     def test_valid_point_specific(self):
-        self.ctx.waypoints.add("Path1")
+        self.ctx.waypoints["Path1"] = 3
         # distance can use OPF_SHIP_WING_POINT
         errors = self.validate_string('(distance "Alpha 1" "Path1:1")', SexpReturnType.NUMBER)
         self.assertEqual(errors, [])
 
+    def test_invalid_point_bounds(self):
+        self.ctx.waypoints["Path1"] = 3
+        
+        # Point out of bounds
+        errors = self.validate_string('(distance "Alpha 1" "Path1:4")', SexpReturnType.NUMBER)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("out of bounds for path 'Path1' (has 3 points)", errors[0])
+        
+        # Invalid index type
+        errors = self.validate_string('(distance "Alpha 1" "Path1:abc")', SexpReturnType.NUMBER)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Must be an integer", errors[0])
+        
+        # Invalid path name
+        errors = self.validate_string('(distance "Alpha 1" "Path99:1")', SexpReturnType.NUMBER)
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Invalid waypoint path: 'Path99'", errors[0])
+
     def test_invalid_point(self):
         # distance can use OPF_SHIP_WING_POINT
         errors = self.validate_string('(distance "Alpha 1" "NonExistentPath:1")', SexpReturnType.NUMBER)
-        self.assertTrue(any("Invalid Ship/Wing/Point" in e for e in errors))
+        self.assertTrue(
+            any("Invalid Ship/Wing/Point" in e for e in errors) or
+            any("Invalid waypoint path" in e for e in errors),
+            f"Errors: {errors}"
+        )
 
     def test_valid_ship_point(self):
-        self.ctx.waypoints.add("Path1")
+        self.ctx.waypoints["Path1"] = 3
         # is-facing arg 1 uses OPF_SHIP_POINT
         # (is-facing "Alpha 1" "Path1:1" 0)
         errors = self.validate_string('(is-facing "Alpha 1" "Path1:1" 0)', SexpReturnType.BOOL)
