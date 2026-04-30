@@ -11,6 +11,7 @@ _root_dir = Path(__file__).resolve().parent.parent
 if str(_root_dir) not in sys.path:
     sys.path.insert(0, str(_root_dir))
 from FSIF_to_FS2_Converter.utils import sanitize_path
+from FSIF_to_FS2_Converter.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS
 
 SUCCESS_LEVEL = 25
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
@@ -60,6 +61,22 @@ class StartingLoadout(BaseModel):
     model_config = ConfigDict(extra='forbid')
     ships: List[AsciiStr] = Field(default_factory=list)
     weapons: List[AsciiStr] = Field(default_factory=list)
+
+    @field_validator('ships')
+    @classmethod
+    def validate_ships(cls, v: List[str]) -> List[str]:
+        for ship in v:
+            if ship not in ALLOWED_SHIP_CLASSES:
+                raise ValueError(f"Ship '{ship}' is not a valid FSO ship class token.")
+        return v
+
+    @field_validator('weapons')
+    @classmethod
+    def validate_weapons(cls, v: List[str]) -> List[str]:
+        for weapon in v:
+            if weapon not in ALLOWED_WEAPONS:
+                raise ValueError(f"Weapon '{weapon}' is not a valid FSO weapon token.")
+        return v
 
 class CampaignMission(BaseModel):
     model_config = ConfigDict(extra='forbid')
