@@ -5,6 +5,7 @@ import os
 import wave
 import base64
 import logging
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -92,10 +93,30 @@ class InworldTTSProvider(BaseTTSProvider):
                 }
             }
 
-            response = requests.post(self.url, json=payload, headers=headers)
-            
-            if response.status_code != 200:
-                logger.error(f"[ERROR] Failed to synthesize {output_path}: {response.status_code} - {response.text}")
+            max_retries = 3
+            backoff_factor = 2.0
+            timeout_sec = 30.0
+            response = None
+
+            for attempt in range(max_retries):
+                try:
+                    response = requests.post(self.url, json=payload, headers=headers, timeout=timeout_sec)
+                    if response.status_code == 200:
+                        break
+                    elif response.status_code in (429, 500, 502, 503, 504):
+                        logger.warning(f"[TTS] Server error {response.status_code} for {output_path}. Retrying...")
+                    else:
+                        logger.error(f"[ERROR] Failed to synthesize {output_path}: {response.status_code} - {response.text}")
+                        return False
+                except requests.exceptions.RequestException as e:
+                    logger.warning(f"[TTS] Request exception for {output_path}: {e}. Retrying...")
+                
+                if attempt < max_retries - 1:
+                    sleep_time = backoff_factor * (2 ** attempt)
+                    logger.info(f"[TTS] Backing off for {sleep_time} seconds before retry {attempt + 1}...")
+                    time.sleep(sleep_time)
+            else:
+                logger.error(f"[ERROR] Max retries reached. Failed to synthesize {output_path}")
                 return False
 
             result = response.json()
