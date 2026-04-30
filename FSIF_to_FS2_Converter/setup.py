@@ -10,8 +10,12 @@ setup(
     install_requires=[
         "PyYAML",
         "pydantic>=2.0",
-        "google-genai",  # Optional, for TTS
     ],
+    extras_require={
+        "google-tts": ["google-genai"],
+        "elevenlabs-tts": ["elevenlabs"],
+        "inworld-tts": ["requests"],
+    },
     entry_points={
         'console_scripts': [
             'fsif-convert=FSIF_to_FS2_Converter.fsif_to_fs2:main',
