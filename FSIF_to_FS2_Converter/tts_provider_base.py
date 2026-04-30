@@ -23,7 +23,6 @@ _SECTION_SUBFOLDER = {
 class TTSConfig:
     """Configuration for TTS generation."""
     provider: str = 'google' # 'google' | 'elevenlabs'
-    out_root: Optional[Path] = None  # Base directory for .wav files
     skip_existing: bool = True  # Don't overwrite existing files
     dry_run: bool = False  # Print what would be done without calling API
     api_key: Optional[str] = None  # Provider-specific API Key
@@ -57,10 +56,7 @@ class BaseTTSProvider(ABC):
         items: List[Dict[str, Any]] = []
         
         # Determine voice root directory
-        if self.config.out_root:
-            voice_root = self.config.out_root
-        else:
-            voice_root = fsif_dir / 'voice'
+        voice_root = fsif_dir / 'voice'
 
         # Collect from messages
         items.extend(self._collect_from_messages(mission, voice_root))

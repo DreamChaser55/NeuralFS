@@ -47,7 +47,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     :param tts_settings: Dictionary containing TTS options:
                          - enabled: bool (default False)
                          - provider: str (default 'google')
-                         - out_root: str (optional)
                          - mode: str (default 'unique', can be 'unique', 'overwrite', or 'keep')
                          - dry_run: bool (default False)
                          - api_key: str (optional)
@@ -58,7 +57,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     tts_opts = {
         'enabled': False,
         'provider': 'google',
-        'out_root': None,
         'mode': 'unique', # unique | overwrite | keep
         'dry_run': False,
         'api_key': None,
@@ -145,12 +143,8 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         try:
             from tts_provider_base import TTSConfig, get_provider
             
-            raw_root = tts_opts['out_root']
-            path_root = Path(raw_root) if raw_root and isinstance(raw_root, str) else None
-            
             tts_config = TTSConfig(
                 provider=provider,
-                out_root=path_root,
                 skip_existing=skip_existing,
                 dry_run=tts_opts['dry_run'],
                 api_key=tts_opts.get('api_key'),
@@ -221,8 +215,6 @@ def main():
     # TTS options
     parser.add_argument("--enable-tts", dest="tts", action="store_true", default=False,
                         help="Enable automatic TTS generation (default: disabled; requires Google GenAI)")
-    parser.add_argument("--tts-out-root", dest="tts_out_root",
-                        help="Base directory for generated voice files (default: same as .fsif)")
     
     # Mode selection
     parser.add_argument("--tts-mode", dest="tts_mode", choices=['unique', 'overwrite', 'keep'],
@@ -284,7 +276,6 @@ def main():
     tts_settings = {
         'enabled': args.tts,
         'provider': args.tts_provider,
-        'out_root': args.tts_out_root,
         'mode': mode,
         'dry_run': args.tts_dry_run,
         'api_key': api_key,

@@ -64,7 +64,6 @@ class ConverterGUI(LogMixin):
         self.tts_provider_var = tk.StringVar(value="google")
         self.tts_mode_var = tk.StringVar(value="unique")
         self.tts_dry_run_var = tk.BooleanVar(value=False)
-        self.tts_out_root_var = tk.StringVar()
         self.api_key_var = tk.StringVar()
         self.tts_rate_limit_var = tk.DoubleVar(value=0.0)
 
@@ -178,23 +177,19 @@ class ConverterGUI(LogMixin):
         tts_paths_frame = ttk.Frame(self.tts_options_inner)
         tts_paths_frame.pack(fill="x", pady=5)
 
-        ttk.Label(tts_paths_frame, text="Output Root (Optional):").grid(row=0, column=0, sticky="w")
-        ttk.Entry(tts_paths_frame, textvariable=self.tts_out_root_var).grid(row=0, column=1, sticky="ew", padx=5)
-        ttk.Button(tts_paths_frame, text="Browse...", command=self.browse_tts_root).grid(row=0, column=2)
-
         # Rate Limit row
-        ttk.Label(tts_paths_frame, text="Rate Limit Delay (seconds):").grid(row=1, column=0, sticky="w", pady=5)
-        ttk.Entry(tts_paths_frame, textvariable=self.tts_rate_limit_var).grid(row=1, column=1, sticky="ew", padx=5, pady=5)
+        ttk.Label(tts_paths_frame, text="Rate Limit Delay (seconds):").grid(row=0, column=0, sticky="w", pady=5)
+        ttk.Entry(tts_paths_frame, textvariable=self.tts_rate_limit_var).grid(row=0, column=1, sticky="ew", padx=5, pady=5)
 
         # API Key row - Dynamic based on provider
         self.api_key_label = ttk.Label(tts_paths_frame, text="API Key (Optional):")
-        self.api_key_label.grid(row=2, column=0, sticky="w", pady=5)
+        self.api_key_label.grid(row=1, column=0, sticky="w", pady=5)
         
         self.api_key_entry = ttk.Entry(tts_paths_frame, textvariable=self.api_key_var, show="*")
-        self.api_key_entry.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+        self.api_key_entry.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
         
         self.api_key_info = ttk.Label(tts_paths_frame, text="", foreground="green")
-        self.api_key_info.grid(row=2, column=0, columnspan=3, sticky="w", pady=5)
+        self.api_key_info.grid(row=1, column=0, columnspan=3, sticky="w", pady=5)
         
         # Initial UI state update
         self.update_api_key_visibility()
@@ -252,11 +247,6 @@ class ConverterGUI(LogMixin):
         )
         if path:
             self.output_path_var.set(str(Path(path)))
-
-    def browse_tts_root(self):
-        path = filedialog.askdirectory()
-        if path:
-            self.tts_out_root_var.set(str(Path(path)))
 
     def _set_state_recursive(self, widget, state):
         """Recursively set state for a widget and all its children."""
@@ -396,7 +386,6 @@ class ConverterGUI(LogMixin):
         return {
             'enabled': self.tts_enabled_var.get(),
             'provider': provider,
-            'out_root': self.tts_out_root_var.get().strip() or None,
             'mode': self.tts_mode_var.get(),
             'dry_run': self.tts_dry_run_var.get(),
             'api_key': api_key,
