@@ -23,28 +23,6 @@ def _is_success(record, msg):
     return False
 
 
-class RedirectText:
-    def __init__(self, text_widget, root, tag=None):
-        self.text_widget = text_widget
-        self.root = root
-        self.tag = tag
-
-    def write(self, string):
-        self.root.after(0, self._append_raw, string)
-
-    def flush(self):
-        pass
-
-    def _append_raw(self, string):
-        self.text_widget.config(state='normal')
-        if self.tag:
-            self.text_widget.insert(tk.END, string, self.tag)
-        else:
-            self.text_widget.insert(tk.END, string)
-        self.text_widget.see(tk.END)
-        self.text_widget.config(state='disabled')
-
-
 class ConverterGUI(LogMixin):
     def __init__(self, root):
         self.root = root
@@ -81,13 +59,6 @@ class ConverterGUI(LogMixin):
         self.copy_feedback_after_id = None
 
         self.create_widgets()
-
-        # Setup GUI logging handler
-        self.gui_handler = TkLogHandler(self.log_text, self.root, is_success=_is_success)
-        self.gui_handler.setFormatter(logging.Formatter('%(message)s'))
-        root_logger = logging.getLogger()
-        root_logger.setLevel(logging.INFO)
-        root_logger.addHandler(self.gui_handler)
 
     def create_widgets(self):
         main_frame = ttk.Frame(self.root, padding="10")
@@ -324,54 +295,40 @@ class ConverterGUI(LogMixin):
 
         mode = self.mode_var.get()
         output_path = self.output_path_var.get().strip() or None
-
-        # Save old stdout/stderr
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-
-        # Redirect stdout/stderr to the log widget
-        stdout_redirector = RedirectText(self.log_text, self.root)
-        stderr_redirector = RedirectText(self.log_text, self.root, tag='error')
-        sys.stdout = stdout_redirector
-        sys.stderr = stderr_redirector
+        
+        root_logger = logging.getLogger()
 
         try:
-            if mode == "file":
-                logging.info(f"Processing single file: {input_path}")
-                success = process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
-                if not success:
-                    logging.error("Conversion failed.")
-            else:
-                # Folder mode
-                logging.info(f"Scanning folder: {input_path}")
-                search_pattern = os.path.join(input_path, "*.fsif")
-                files = glob.glob(search_pattern)
-
-                if not files:
-                    logging.info("No .fsif files found in the selected directory.")
+            with self.conversion_runner(root_logger, _is_success):
+                if mode == "file":
+                    logging.info(f"Processing single file: {input_path}")
+                    success = process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
+                    if not success:
+                        logging.error("Conversion failed.")
                 else:
-                    logging.info(f"Found {len(files)} file(s).")
-                    succeeded = 0
-                    failed = 0
-                    for i, file_path in enumerate(files, 1):
-                        logging.info(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
-                        if process_mission(file_path, tts_settings=tts_settings):
-                            succeeded += 1
-                        else:
-                            failed += 1
-
-                    if failed == 0:
-                        logging.info(f"\nAll {succeeded} file(s) converted successfully.")
+                    # Folder mode
+                    logging.info(f"Scanning folder: {input_path}")
+                    search_pattern = os.path.join(input_path, "*.fsif")
+                    files = glob.glob(search_pattern)
+    
+                    if not files:
+                        logging.info("No .fsif files found in the selected directory.")
                     else:
-                        logging.error(f"\n{succeeded}/{len(files)} file(s) succeeded, {failed} failed.")
-
-        except Exception as e:
-            logging.error(f"Critical Error: {e}")
-            traceback.print_exc()
+                        logging.info(f"Found {len(files)} file(s).")
+                        succeeded = 0
+                        failed = 0
+                        for i, file_path in enumerate(files, 1):
+                            logging.info(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
+                            if process_mission(file_path, tts_settings=tts_settings):
+                                succeeded += 1
+                            else:
+                                failed += 1
+    
+                        if failed == 0:
+                            logging.info(f"\nAll {succeeded} file(s) converted successfully.")
+                        else:
+                            logging.error(f"\n{succeeded}/{len(files)} file(s) succeeded, {failed} failed.")
         finally:
-            # Restore stdout/stderr
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
             self.root.after(0, self.reset_ui)
 
     def reset_ui(self):

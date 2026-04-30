@@ -13,6 +13,31 @@ import tkinter as tk
 from tkinter import messagebox, scrolledtext
 import logging
 from typing import Optional
+from contextlib import contextmanager
+import sys
+import traceback
+
+
+class RedirectText:
+    def __init__(self, text_widget, root, tag=None):
+        self.text_widget = text_widget
+        self.root = root
+        self.tag = tag
+
+    def write(self, string):
+        self.root.after(0, self._append_raw, string)
+
+    def flush(self):
+        pass
+
+    def _append_raw(self, string):
+        self.text_widget.config(state='normal')
+        if self.tag:
+            self.text_widget.insert(tk.END, string, self.tag)
+        else:
+            self.text_widget.insert(tk.END, string)
+        self.text_widget.see(tk.END)
+        self.text_widget.config(state='disabled')
 
 
 class TkLogHandler(logging.Handler):
@@ -124,3 +149,36 @@ class LogMixin:
     def _hide_copy_feedback(self):
         self.copy_feedback_label.config(text="")
         self.copy_feedback_after_id = None
+
+    @contextmanager
+    def conversion_runner(self, target_logger, is_success_cb):
+        """
+        Context manager to set up logging and stdout/stderr redirection
+        for a single conversion run.
+        """
+        log_handler = TkLogHandler(self.log_text, self.root, is_success=is_success_cb)
+        log_handler.setFormatter(logging.Formatter('%(message)s'))
+        log_handler.setLevel(logging.INFO)
+
+        old_level = target_logger.level
+        target_logger.setLevel(logging.INFO)
+        target_logger.addHandler(log_handler)
+
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+
+        stdout_redirector = RedirectText(self.log_text, self.root)
+        stderr_redirector = RedirectText(self.log_text, self.root, tag='error')
+        sys.stdout = stdout_redirector
+        sys.stderr = stderr_redirector
+
+        try:
+            yield
+        except Exception as e:
+            target_logger.error(f"Critical Error: {e}")
+            traceback.print_exc()
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            target_logger.removeHandler(log_handler)
+            target_logger.setLevel(old_level)

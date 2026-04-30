@@ -133,28 +133,16 @@ class ConverterGUI(LogMixin):
     def run_conversion_task(self, input_path):
         output_path = self.output_path_var.get().strip() or None
 
-        # Attach custom log handler for this conversion run
-        log_handler = TkLogHandler(self.log_text, self.root, is_success=_is_success)
-        log_handler.setFormatter(logging.Formatter('%(message)s'))
-        log_handler.setLevel(logging.INFO)
-        old_level = fcif_logger.level
-        fcif_logger.setLevel(logging.INFO)
-        fcif_logger.addHandler(log_handler)
-
-        fcif_logger.info("-" * 50)
-        fcif_logger.info("Starting conversion task...")
-
         try:
-            fcif_logger.info(f"Processing single file: {input_path}")
-            success = process_campaign(input_path, output_file=output_path)
-            if not success:
-                fcif_logger.error("Conversion failed.")
-        except Exception as e:
-            fcif_logger.error(f"Critical Error: {e}")
-            traceback.print_exc()
+            with self.conversion_runner(fcif_logger, _is_success):
+                fcif_logger.info("-" * 50)
+                fcif_logger.info("Starting conversion task...")
+
+                fcif_logger.info(f"Processing single file: {input_path}")
+                success = process_campaign(input_path, output_file=output_path)
+                if not success:
+                    fcif_logger.error("Conversion failed.")
         finally:
-            fcif_logger.removeHandler(log_handler)
-            fcif_logger.setLevel(old_level)
             self.root.after(0, self.reset_ui)
 
     def reset_ui(self):
