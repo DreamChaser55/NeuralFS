@@ -14,6 +14,7 @@ if str(converter_dir) not in sys.path:
     sys.path.append(str(converter_dir))
 
 from text_styling_utils import validate_span_style_tags
+from utils import sanitize_path
 
 
 class FictionViewerValidator:
@@ -157,7 +158,7 @@ def collect_files(input_paths: List[str]) -> Optional[List[Path]]:
     """
     files: List[Path] = []
     for raw in input_paths:
-        p = Path(raw)
+        p = Path(sanitize_path(raw))
         if p.is_dir():
             print(f"[ERROR] Directory parsing is not supported. Please pass specific .txt files (e.g., *_story.txt) instead of directories: '{p}'")
             return None
