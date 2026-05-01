@@ -158,12 +158,22 @@ class Sun(BaseModel):
     def validate_angles(cls, v):
         return _normalize_vector(v)
 
+class XYFloat(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    x: float
+    y: float
+
+class XYInt(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    x: int
+    y: int
+
 class StarBitmap(BaseModel):
     model_config = ConfigDict(extra='forbid')
     texture: str
     angles: List[float]
-    scale: Union[float, Dict[str, float]] = 1.0
-    div: Union[Dict[str, int], int] = 1 # simplified for now, usually dict x/y
+    scale: Union[float, XYFloat] = 1.0
+    div: Union[int, XYInt] = 1
     
     @field_validator('angles', mode='before')
     @classmethod

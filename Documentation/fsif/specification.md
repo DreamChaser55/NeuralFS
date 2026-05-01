@@ -31,7 +31,7 @@
     - `texture` (String, required)
     - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
     - `scale` (Float or Mapping `{x, y}`, optional, default: `1.0`)
-    - `div` (Mapping `{x, y}`, optional, default: `{x: 1, y: 1}`)
+    - `div` (Integer or Mapping `{x, y}`, optional, default: `1`)
   - `nebula` (Mapping, optional):
     - `enabled` (Boolean, optional, default: `false`)
     - `pattern` (String, required if `enabled` is `true`)

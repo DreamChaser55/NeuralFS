@@ -724,23 +724,23 @@ class FS2Writer:
             p, b, h = s.angles
             self._write(f'+Angles: {p:.6f} {b:.6f} {h:.6f}')
             
-            # Handle scale dict/float
+            # Handle scale XYFloat/float
             sx, sy = 1.0, 1.0
             if isinstance(s.scale, (int, float)):
                  sx = sy = float(s.scale)
             else:
-                 sx = s.scale.get('x', 1.0)
-                 sy = s.scale.get('y', sx)
+                 sx = s.scale.x
+                 sy = s.scale.y
             self._write(f'+ScaleX: {sx:.6f}')
             self._write(f'+ScaleY: {sy:.6f}')
             
-            # Handle div dict/int
+            # Handle div XYInt/int
             dx, dy = 1, 1
             if isinstance(s.div, int):
                 dx = dy = s.div
             else:
-                dx = s.div.get('x', 1)
-                dy = s.div.get('y', 1)
+                dx = s.div.x
+                dy = s.div.y
             self._write(f'+DivX: {dx}')
             self._write(f'+DivY: {dy}')
 
