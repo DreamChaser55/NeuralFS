@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "2.9"
+fsif_version: "3.0"
 
 mission_info:
   name: "Minimal Mission"
@@ -47,7 +47,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "2.9"
+fsif_version: "3.0"
 
 mission_info:
   name: "Mission name string"
@@ -143,11 +143,9 @@ environment:
     - texture: dneb03
       angles: [0.000000, 2.321286, 0.000000]
       scale: { x: 4.0, y: 4.0 }
-      div: { x: 2, y: 2 }
     - texture: neb11
       angles: [0.401425, 0.663225, 0.139626]
       scale: { x: 2.0, y: 4.0 }
-      div: { x: 1, y: 1 }
 ```
 Notes
 - `ambient_light_level` is authored as `[red, green, blue]`, with each channel in range `0..255`.

@@ -1,11 +1,45 @@
-# FSIF Migration Guide (1.0 → ... → 2.9)
+# FSIF Migration Guide (1.0 → ... → 3.0)
 
 Purpose
 - Practical, snippet-led instructions to update existing FSIF files to the latest spec and converter expectations.
 - Covers breaking changes and notable behavior shifts.
 
 Status
-- Current FSIF version: 2.9. The converter accepts FSIF 2.9 only; use this guide to update older FSIF files to the 2.9 schema before converting.
+- Current FSIF version: 3.0. The converter accepts FSIF 3.0 only; use this guide to update older FSIF files to the 3.0 schema before converting.
+
+FSIF 3.0: `environment.starbitmaps.div` removed (breaking)
+
+Change
+- The `div` field under `environment.starbitmaps` has been completely removed from the schema because the resulting `+DivX` and `+DivY` flags in modern FSO have no functional effect. The converter now hardcodes these values automatically when writing the `.fs2` file.
+
+Migration guidance
+- Find any `div` key inside the `environment.starbitmaps` list in your `.fsif` files and delete it.
+- Bump `fsif_version` to `"3.0"`.
+
+Before (2.9)
+```yaml
+fsif_version: "2.9"
+
+environment:
+  starbitmaps:
+    - texture: dneb03
+      angles: [0.000000, 2.321286, 0.000000]
+      scale: { x: 4.0, y: 4.0 }
+      div: { x: 2, y: 2 }
+```
+
+After (3.0)
+```yaml
+fsif_version: "3.0"
+
+environment:
+  starbitmaps:
+    - texture: dneb03
+      angles: [0.000000, 2.321286, 0.000000]
+      scale: { x: 4.0, y: 4.0 }
+```
+
+---
 
 FSIF 2.9: `jump_nodes` moved under `entities` (breaking)
 

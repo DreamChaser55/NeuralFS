@@ -59,7 +59,7 @@ Subspace missions: Author "subspace" in mission_info.flags to mark a mission as 
 
 Versioning:
 - The converter currently emits `$Version: 23.1` in `#Mission Info`. This is the FSO version NeuralFS was developed against.
-- **FSIF input support:** the converter accepts FSIF version `"2.9"` only.
+- **FSIF input support:** the converter accepts FSIF version `"3.0"` only.
   - Files authored against older FSIF versions must be updated before conversion; see the FSIF Migration Guide.
 
 ---

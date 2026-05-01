@@ -173,7 +173,6 @@ class StarBitmap(BaseModel):
     texture: str
     angles: List[float]
     scale: Union[float, XYFloat] = 1.0
-    div: Union[int, XYInt] = 1
     
     @field_validator('angles', mode='before')
     @classmethod

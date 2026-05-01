@@ -357,10 +357,10 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("accepts FSIF version '2.9' only", str(ctx.exception))
+        self.assertIn("accepts FSIF version '3.0' only", str(ctx.exception))
 
     def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
-        fsif_text = """fsif_version: \"2.9\"
+        fsif_text = """fsif_version: \"3.0\"
 
 mission_info:
   name: "Invalid Ambient"
@@ -397,7 +397,7 @@ environment:
 
     def test_validator_rejects_invalid_ai_orders_and_goals(self):
         fsif_text = """
-fsif_version: "2.9"
+fsif_version: "3.0"
 mission_info:
   name: "Invalid Orders Demo"
 player_setup:
@@ -436,7 +436,7 @@ environment:
             self.assertFalse(is_valid, "Expected advanced SEXP validation to fail due to invalid player order and invalid cruiser goal.")
 
     def test_loader_rejects_arrival_delay_in_ship_template(self):
-        fsif_text = """fsif_version: "2.9"
+        fsif_text = """fsif_version: "3.0"
 
 mission_info:
   name: "Invalid Template Arrival Delay"

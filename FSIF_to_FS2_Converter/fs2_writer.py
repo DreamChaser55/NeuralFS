@@ -734,15 +734,9 @@ class FS2Writer:
             self._write(f'+ScaleX: {sx:.6f}')
             self._write(f'+ScaleY: {sy:.6f}')
             
-            # Handle div XYInt/int
-            dx, dy = 1, 1
-            if isinstance(s.div, int):
-                dx = dy = s.div
-            else:
-                dx = s.div.x
-                dy = s.div.y
-            self._write(f'+DivX: {dx}')
-            self._write(f'+DivY: {dy}')
+            # DivX/DivY have no effect in modern FSO but must be written for the parser
+            self._write('+DivX: 1')
+            self._write('+DivY: 1')
 
     def write_asteroid_field(self):
         fld = self.mission.environment.asteroid_field

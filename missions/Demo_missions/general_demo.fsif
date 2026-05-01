@@ -1,4 +1,4 @@
-fsif_version: "2.9"
+fsif_version: "3.0"
 
 mission_info:
   name: "FSIF All Features Showcase"
@@ -15,10 +15,10 @@ environment:
     - { texture: SunWhite, angles: [0.000000, 0.000000, 0.523599], scale: 1.5 }
     - { texture: SunSiriusA, angles: [0.087266, 0.000000, 2.356194], scale: 2.0 }
   starbitmaps:
-    - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 }, div: { x: 2, y: 2 } }
-    - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 }, div: { x: 1, y: 1 } }
-    - { texture: neb01,  angles: [1.000000, 1.000000, 1.000000], scale: { x: 2.0, y: 2.0 }, div: { x: 1, y: 1 } }
-    - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 }, div: { x: 1, y: 1 } }
+    - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
+    - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 } }
+    - { texture: neb01,  angles: [1.000000, 1.000000, 1.000000], scale: { x: 2.0, y: 2.0 } }
+    - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 } }
   nebula: { enabled: false }
   asteroid_field:
     genre: "asteroid"

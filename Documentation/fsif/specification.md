@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 2.9 (current)
+- FSIF version: 3.0 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,7 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"2.9"`.
+- `fsif_version` (String, required): Must be `"3.0"`.
 - `mission_info` (Mapping, required):
   - `name` (String, required)
   - `author` (String, optional, default: `"FSIF Converter"`)
@@ -31,7 +31,6 @@
     - `texture` (String, required)
     - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
     - `scale` (Float or Mapping `{x, y}`, optional, default: `1.0`)
-    - `div` (Integer or Mapping `{x, y}`, optional, default: `1`)
   - `nebula` (Mapping, optional):
     - `enabled` (Boolean, optional, default: `false`)
     - `pattern` (String, required if `enabled` is `true`)
