@@ -420,6 +420,7 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
             for w in re.findall(r'\(\s*allow-weapon\s+"([^"]+)"', text_val):
                 allowed_weapons.add(w)
 
+    logger.info("Campaign loadout check passed: all player ships and weapons are covered.")
     return True
 
 
