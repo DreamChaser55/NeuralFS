@@ -66,13 +66,16 @@ def capture_logs():
     handler = LogCaptureHandler()
     handler.setLevel(logging.DEBUG)
     old_level = fcif_logger.level
+    old_propagate = fcif_logger.propagate
     fcif_logger.setLevel(logging.DEBUG)
     fcif_logger.addHandler(handler)
+    fcif_logger.propagate = False
     try:
         yield handler.messages
     finally:
         fcif_logger.removeHandler(handler)
         fcif_logger.setLevel(old_level)
+        fcif_logger.propagate = old_propagate
 
 
 def _minimal_fcif_dict(**overrides) -> dict:

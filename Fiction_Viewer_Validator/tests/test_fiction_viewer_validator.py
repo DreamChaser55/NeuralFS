@@ -1,6 +1,8 @@
 import unittest
 import sys
 import tempfile
+import io
+import contextlib
 from pathlib import Path
 
 # Add Fiction_Viewer_Validator/ to sys.path so the validator can be imported
@@ -25,7 +27,8 @@ class TestNonAsciiDetection(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(raw)
             v = FictionViewerValidator(p)
-            v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                v.validate()
         return v
 
     def test_non_utf8_byte_reports_actual_hex_value(self):
@@ -89,7 +92,8 @@ class TestCleanFile(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"This is a clean ASCII story.\nNo issues here.\n")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         self.assertTrue(result)
         self.assertEqual(v.errors, [])
@@ -104,7 +108,8 @@ class TestFictionViewerStringCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"This text mentions fiction viewer in it.")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         # Warning only — not an error, so validate() returns True.
         self.assertTrue(result)
@@ -119,7 +124,8 @@ class TestFictionViewerStringCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"Normal story text with no internal feature names.")
             v = FictionViewerValidator(p)
-            v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                v.validate()
 
         self.assertFalse(
             any("fiction viewer" in w.lower() for w in v.warnings),
@@ -135,7 +141,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"Engage $f{ Alpha Wing and destroy the enemy.")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         # Warning only — not an error.
         self.assertTrue(result)
@@ -150,7 +157,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"Engage $f{ Alpha Wing $} and destroy the enemy.")
             v = FictionViewerValidator(p)
-            v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                v.validate()
 
         self.assertEqual(v.errors, [])
         self.assertFalse(
@@ -170,7 +178,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"$y{ word1 $y{ word2 $}")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         self.assertTrue(result)  # Warning only, not an error.
         self.assertEqual(v.errors, [])
@@ -188,7 +197,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"$y{ text $f{ more $}")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         self.assertTrue(result)
         self.assertEqual(v.errors, [])
@@ -206,7 +216,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"$y{ Friendly $} met $f{ Hostile $} forces.")
             v = FictionViewerValidator(p)
-            v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                v.validate()
 
         self.assertEqual(v.errors, [])
         self.assertFalse(
@@ -223,7 +234,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"Normal text $} with no open.")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         self.assertTrue(result)  # Warning only, not an error.
         self.assertEqual(v.errors, [])
@@ -241,7 +253,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"Good work, $f{ $rank $callsign $}.")
             v = FictionViewerValidator(p)
-            v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                v.validate()
 
         self.assertEqual(v.errors, [])
         self.assertFalse(
@@ -258,7 +271,8 @@ class TestSpanTagCheck(unittest.TestCase):
             p = Path(tmpdir) / "story.txt"
             p.write_bytes(b"$y{ intro $R warning text")
             v = FictionViewerValidator(p)
-            result = v.validate()
+            with contextlib.redirect_stdout(io.StringIO()):
+                result = v.validate()
 
         self.assertTrue(result)
         self.assertEqual(v.errors, [])
@@ -274,7 +288,8 @@ class TestErrorHandling(unittest.TestCase):
     def test_nonexistent_file_returns_false(self):
         p = Path("/nonexistent/path/that/does/not/exist.txt")
         v = FictionViewerValidator(p)
-        result = v.validate()
+        with contextlib.redirect_stdout(io.StringIO()):
+            result = v.validate()
 
         self.assertFalse(result)
         self.assertTrue(len(v.errors) > 0, "Expected at least one error for a missing file")

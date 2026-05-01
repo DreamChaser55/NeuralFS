@@ -33,6 +33,16 @@ from voice_manager import VoiceManager
 
 
 class CombinedTesting(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    @classmethod
+    def tearDownClass(cls):
+        import logging
+        logging.disable(logging.NOTSET)
+
     def make_valid_mission(self) -> Mission:
         return Mission(
             mission_info=MissionInfo(name="Test Mission"),
@@ -494,6 +504,16 @@ environment:
 
 
 class VoiceManagerTesting(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    @classmethod
+    def tearDownClass(cls):
+        import logging
+        logging.disable(logging.NOTSET)
+
     def setUp(self):
         self.mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
@@ -601,6 +621,16 @@ class VoiceManagerTesting(unittest.TestCase):
 
 
 class DemoConversionTesting(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    @classmethod
+    def tearDownClass(cls):
+        import logging
+        logging.disable(logging.NOTSET)
+
     def test_demo_missions_conversion(self):
         demo_missions_dir = _repo_root / "missions" / "Demo_missions"
         self.assertTrue(demo_missions_dir.exists(), f"Demo missions directory not found: {demo_missions_dir}")
