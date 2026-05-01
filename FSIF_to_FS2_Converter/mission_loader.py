@@ -135,7 +135,7 @@ class MissionLoader:
         self.fsif_version = version_str
 
     def _check_required_sections(self):
-        required = ['mission_info', 'player_setup', 'entities', 'mission_flow']
+        required = ['mission_info', 'environment', 'player_setup', 'entities', 'mission_flow']
         for sec in required:
             if sec not in self.data:
                 raise ValueError(f"Missing required top-level section: '{sec}'.")
