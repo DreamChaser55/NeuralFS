@@ -107,7 +107,7 @@
       - `camera_time` (Integer, optional, default: `500`)
       - `icons` (List[Mapping], optional):
         - `type` (String, required). See Tokens Reference.
-        - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`, `Unknown`.
+        - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`, `"Unknown"`.
         - `pos` (List[Float], optional, default: `[0, 0]`). Format: `[x, z]`.
         - `label` (String, optional)
         - `class` (String, optional, default: `"Terran NavBuoy"`). Ship class name.
