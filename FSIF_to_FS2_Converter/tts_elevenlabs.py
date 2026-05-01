@@ -122,20 +122,20 @@ class ElevenLabsTTSProvider(BaseTTSProvider):
 
         try:
             self._ensure_client()
-            
-            # Note on style: ElevenLabs API doesn't support a free-text 'style' prompt like Gemini.
-            # It uses voice_settings (stability, similarity_boost, etc.).
-            # We could parse the 'style' string to adjust settings, but for now we ignore it,
-            # as the mapping would be complex/arbitrary.
-            # Using default VoiceSettings is usually best unless we expose specific knobs.
 
             # Determine model
             model_id = self.config.model_id or "eleven_v3"
+            
+            # Eleven v3 supports emotional control and delivery instructions via audio tags
+            # enclosed in square brackets. We wrap the style instructions and prepend them.
+            prompt_text = text
+            if style:
+                prompt_text = f"[{style}] {text}"
 
             # Call API
             # Returns a generator of bytes (chunks)
             audio_stream = self.client.text_to_speech.convert(
-                text=text,
+                text=prompt_text,
                 voice_id=voice_id,
                 model_id=model_id,
                 output_format="pcm_24000" # 24kHz 16-bit mono PCM (raw bytes, no header)
