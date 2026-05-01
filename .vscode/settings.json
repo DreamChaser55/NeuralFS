@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.fsif": "yaml",
+    "*.fcif": "yaml"
+  }
+}
