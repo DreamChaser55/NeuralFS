@@ -235,7 +235,7 @@ mission_flow:
         ani: "brief-01.ani"
         voice_style_instructions: "officer speaking, authoritative"
         voice_name: "Gacrux"
-      - text: "The cloaked freighter $f{ GTFr Poseidon $} is inbound with a sealed cargo pod recovered near Shivan patrol routes. $f{ Alpha Wing $} will inspect the pod the moment it reaches the buoy."
+      - text: "GTI freighter $f{ GTFr Poseidon $} with reduced sensor signature is inbound with a sealed cargo pod recovered near Shivan patrol routes. $f{ Alpha Wing $} will inspect the pod the moment it reaches the buoy."
         ani: "brief-02.ani"
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
