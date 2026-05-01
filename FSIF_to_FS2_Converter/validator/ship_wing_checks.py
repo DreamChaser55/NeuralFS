@@ -20,6 +20,53 @@ class ShipWingChecksMixin:
                 return True
         return False
 
+    def validate_fs1_shield_weapon_canon(self):
+        """
+        Check for FS1 timeline canon inconsistency:
+        Friendly shielded fighters/bombers should not exist if the only
+        available primary weapons are basic ones (ML-16 Laser, Disruptor).
+        Shields were issued after the Avenger.
+        """
+        friendly_fighter_bombers = [
+            s for s in self.mission.ships 
+            if s.team == 'Friendly' and s.ship_class in self.num_hardpoints
+        ] # num_hardpoints (fs_data.NUM_OF_HARDPOINTS) contains exactly the set of all fighters and bombers
+
+        
+        if not friendly_fighter_bombers:
+            return
+            
+        has_shields = False
+        for s in friendly_fighter_bombers:
+            if 'no-shields' not in s.flags:
+                has_shields = True
+                break
+                
+        if not has_shields:
+            return
+            
+        # Gather all primary weapons used by friendly fighters/bombers
+        primaries_used = set()
+        for s in friendly_fighter_bombers:
+            for w in s.weapons.primary:
+                if w:
+                    primaries_used.add(w)
+                    
+        # Add extra weapons that are primary weapons
+        for w in self.mission.player_setup.extra_weapons:
+            if w in self.allowed_primary_weapons:
+                primaries_used.add(w)
+                
+        if not primaries_used:
+            return
+            
+        if primaries_used.issubset({'ML-16 Laser', 'Disruptor'}):
+            self.log_warning(
+                "Canon inconsistency: Friendly fighters/bombers have shields but are only equipped with basic primary weapons (ML-16 Laser, Disruptor). "
+                "In FS1 canon, shields were issued after the Avenger cannon. "
+                "Consider adding the 'Avenger' to the loadout (e.g., in extra_weapons) or adding the 'no-shields' flag to all friendly fighters/bombers."
+            )
+
     def validate_ships(self):
         """
         Validate ship properties.
@@ -29,7 +76,10 @@ class ShipWingChecksMixin:
         - Known flags and AI class.
         - Weapon compatibility (if data available).
         - Subsystem validity (if data available).
+        - FS1 shield/weapon canon timeline consistency.
         """
+        self.validate_fs1_shield_weapon_canon()
+        
         for i, ship in enumerate(self.mission.ships):
             # 1. Class
             if ship.ship_class not in self.ship_classes:
