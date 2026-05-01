@@ -11,11 +11,11 @@
   ```
 
 ## Entry point
-- Script: fcif_to_fc2.py
+- Script: FCIF_to_FC2_Converter/fcif_to_fc2.py
 
 ## Basic usage
 ```bash
-python fcif_to_fc2.py <input.fcif> [-o output.fc2]
+python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
 ```
 
 ## Arguments
@@ -33,8 +33,8 @@ python fcif_to_fc2.py <input.fcif> [-o output.fc2]
 ## Path quoting
 - The input and output paths may be provided with or without surrounding quotes. All of the following work:
   ```bash
-  python fcif_to_fc2.py campaigns/my_campaign.fcif -o campaigns/my_campaign.fc2
-  python fcif_to_fc2.py "campaigns/my_campaign.fcif" -o "campaigns/my_campaign.fc2"
+  python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/my_campaign.fcif -o campaigns/my_campaign.fc2
+  python FCIF_to_FC2_Converter/fcif_to_fc2.py "campaigns/my_campaign.fcif" -o "campaigns/my_campaign.fc2"
   ```
 - Warning about paths with spaces:
   - Some shells or process runners may split arguments at spaces even when quoted, causing argparse errors.
@@ -74,13 +74,13 @@ For each item that is used by the player but not previously granted, a `[ERROR]`
 
 ### Single conversion (deriving output name)
 ```bash
-python fcif_to_fc2.py campaigns/test_campaign.fcif
+python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif
 # Creates campaigns/test_campaign.fc2
 ```
 
 ### Single conversion (explicit output name)
 ```bash
-python fcif_to_fc2.py campaigns/test_campaign.fcif -o campaigns/custom_name.fc2
+python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif -o campaigns/custom_name.fc2
 ```
 
 ## Troubleshooting

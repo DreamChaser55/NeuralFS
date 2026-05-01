@@ -11,19 +11,19 @@
   ```
 
 ## Entry point
-- Script: fsif_to_fs2.py
+- Script: FSIF_to_FS2_Converter/fsif_to_fs2.py
 
 ## Basic usage
 ```bash
-python fsif_to_fs2.py <path_to_mission.fsif>
+python FSIF_to_FS2_Converter/fsif_to_fs2.py <path_to_mission.fsif>
 ```
 
 ## Path quoting
 - The input path may be provided with or without surrounding quotes. All of the following work:
   ```bash
-  python fsif_to_fs2.py missions/my_ambush_mission.fsif
-  python fsif_to_fs2.py "missions/my_ambush_mission.fsif"
-  python fsif_to_fs2.py 'missions/my_ambush_mission.fsif'
+  python FSIF_to_FS2_Converter/fsif_to_fs2.py missions/my_ambush_mission.fsif
+  python FSIF_to_FS2_Converter/fsif_to_fs2.py "missions/my_ambush_mission.fsif"
+  python FSIF_to_FS2_Converter/fsif_to_fs2.py 'missions/my_ambush_mission.fsif'
   ```
 - Warning about paths with spaces:
   - Some shells or process runners may split arguments at spaces even when quoted, causing argparse errors.
@@ -99,20 +99,20 @@ To use a key file, create a text file named `Gemini_API_key.txt`, `Elevenlabs_AP
 
 ### Demo missions convert
 ```bash
-python fsif_to_fs2.py "missions/Demo_missions/general_demo.fsif"
-python fsif_to_fs2.py "missions/Demo_missions/nebula_demo.fsif"
+python FSIF_to_FS2_Converter/fsif_to_fs2.py "missions/Demo_missions/general_demo.fsif"
+python FSIF_to_FS2_Converter/fsif_to_fs2.py "missions/Demo_missions/nebula_demo.fsif"
 ```
 
 ### Batch conversion (PowerShell example)
 ```powershell
 Get-ChildItem -Recurse -Filter *.fsif | ForEach-Object {
-  python fsif_to_fs2.py $_.FullName
+  python FSIF_to_FS2_Converter/fsif_to_fs2.py $_.FullName
 }
 ```
 
 ### Batch conversion (cmd.exe example)
 ```bat
 for /R %%F in (*.fsif) do (
-  python fsif_to_fs2.py "%%F"
+  python FSIF_to_FS2_Converter/fsif_to_fs2.py "%%F"
 )
 ```
