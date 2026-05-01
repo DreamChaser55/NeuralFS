@@ -63,8 +63,8 @@ class ShipWingChecksMixin:
         if primaries_used.issubset({'ML-16 Laser', 'Disruptor'}):
             self.log_warning(
                 "Canon inconsistency: Friendly fighters/bombers have shields but are only equipped with basic primary weapons (ML-16 Laser, Disruptor). "
-                "In FS1 canon, shields were issued after the Avenger cannon. "
-                "Consider adding the 'Avenger' to the loadout (e.g., in extra_weapons) or adding the 'no-shields' flag to all friendly fighters/bombers."
+                "In FS1 canon, shields were issued **after** the Avenger cannon. "
+                "Depending on the timeline, Consider adding the 'Avenger' to the loadout or adding the 'no-shields' flag to all friendly fighters/bombers."
             )
 
     def validate_ships(self):
