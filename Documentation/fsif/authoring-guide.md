@@ -236,7 +236,7 @@ Notes:
 - Available mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
 - The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
 - **Directive text limitation — avoid event/goal references in the formula:** Events intended to display a directive text must use simple, directly-evaluable conditions. If the formula references another event or goal using `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay`, the directive will silently fail: the engine cannot determine at mission start whether such an event could ever become true or false, so the grey "pending" directive is never displayed on the HUD. Use direct object-state SEXPs (e.g., `is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events that have a `directive_text`.
-- Try to include enough comms chatter (messages) to in your missions to make them lively and prevent player boredom.
+- Try to include enough comms chatter (messages) in your missions to make them lively and prevent player boredom.
 
 ## Authoring dialogue (TTS voicing)
 
@@ -386,7 +386,7 @@ Contrary to briefing stages, debriefing stages are **not** simply displayed chro
 
 ## Briefing Room Grid View
 
-Unless the mision is very short and trivial, you should always author a briefing schematic view with relevant icons for every briefing stage. Note that briefings are authored from the commanding officer's POV and are depicting his prediction of the mission events. They should not reveal any surprises or show things that the commander has no way of knowing in advance.
+Unless the mission is very short and trivial, you should always author a briefing schematic view with relevant icons for every briefing stage. Note that briefings are authored from the commanding officer's POV and are depicting his prediction of the mission events. They should not reveal any surprises or show things that the commander has no way of knowing in advance.
 
 ### Layout
 The briefing room uses a grid on the **XZ plane**.
