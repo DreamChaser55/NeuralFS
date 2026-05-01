@@ -48,6 +48,7 @@ This converter script also has both interfaces: CLI suitable for use by AI agent
 For details, see `\FCIF_to_FC2_Converter\README.md`.
 
 ## Requirements
+- Python 3.9+
 - One of these agentic AI engines:
   - Visual Studio Code with Roo Code extension
   - OpenCode
