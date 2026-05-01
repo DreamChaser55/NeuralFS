@@ -212,12 +212,12 @@ FSIF 2.3: Removal of "Neutral" IFF (breaking)
 
 Change
 - The "Neutral" team has been removed from the FSIF specification because its implementation in FSO is broken (it essentially acts as a second "Hostile" team).
-- Authors must now use "Hostile" or "Friendly" (as appropriate) for all ships and briefing icons that were previously "Neutral".
-- Briefing icons for landmarks (Jump Nodes, Planets, Asteroid Fields) should generally use "Hostile" (red) or "Friendly" (green) depending on the desired color; "Neutral" is no longer a valid option.
+- Authors must now use "Hostile", "Friendly" or "Unknown" (as appropriate) for all ships and briefing icons that were previously "Neutral".
+- Briefing icons for landmarks (Jump Nodes, Planets, Asteroid Fields) should generally use "Hostile" (red), "Friendly" (green) or "Unknown" (purple) depending on the desired color; "Neutral" is no longer a valid option.
 
 Migration guidance
 - Find all instances of `team: "Neutral"` in your FSIF files (ships, wings, and briefing icons).
-- Change them to `team: "Hostile"` (recommended for most cases, especially if the object is a target or obstacle) or `team: "Friendly"`.
+- Change them to `team: "Hostile"`, `team: "Unknown"` or `team: "Friendly"`.
 - Bump `fsif_version` to "2.3".
 
 Before (2.2)
@@ -234,7 +234,7 @@ After (2.3)
 ```yaml
 ships:
   - name: "Nav Buoy"
-    team: "Hostile"
+    team: "Friendly"
 briefing:
   icons:
     - { type: "Jump Node", team: "Hostile" }
