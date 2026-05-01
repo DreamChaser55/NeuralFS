@@ -16,10 +16,9 @@ except (ImportError, ValueError):
     # This allows running the script directly without -m package.module syntax
     _current_dir = Path(__file__).resolve().parent
     
-    # Add generated_code to path for local imports
-    _generated_dir = _current_dir / "generated_code"
-    if str(_generated_dir) not in sys.path:
-        sys.path.append(str(_generated_dir))
+    # Add Advanced_SEXP_Validator to path for local imports
+    if str(_current_dir) not in sys.path:
+        sys.path.append(str(_current_dir))
         
     # Add parent to path for fs_data
     _parent_dir = _current_dir.parent

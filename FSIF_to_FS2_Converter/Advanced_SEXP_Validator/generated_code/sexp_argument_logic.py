@@ -1,8 +1,8 @@
 # sexp_argument_logic.py
 # Auto-generated from FSO sexp.cpp. Do not edit manually.
 
-from opf_definitions import *
-from sexp_definitions import INT_MAX
+from .opf_definitions import *
+from .sexp_definitions import INT_MAX
 
 
 def get_argument_type(op, arg_index):

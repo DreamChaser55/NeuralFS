@@ -117,8 +117,8 @@ def transpile_cpp_to_python(cpp_code):
                         seen.add(op)
 
     # 3. Generation Phase: Produce Python Code
-    py_lines.append("from opf_definitions import *")
-    py_lines.append("from sexp_definitions import INT_MAX")
+    py_lines.append("from .opf_definitions import *")
+    py_lines.append("from .sexp_definitions import INT_MAX")
     py_lines.append("\n")
     py_lines.append("def get_argument_type(op, arg_index):")
     

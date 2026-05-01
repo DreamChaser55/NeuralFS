@@ -22,19 +22,9 @@ try:
 except (ImportError, ValueError):
     try:
         # Fallback: Absolute/Local import (Script Mode)
-        # Assuming Advanced_SEXP_Validator is in the same directory or PYTHONPATH
         from Advanced_SEXP_Validator import advanced_sexp_validator
     except ImportError:
-        # Last resort: Try adding path if not found (legacy behavior)
-        _adv_val_dir = Path(__file__).parent / "Advanced_SEXP_Validator"
-        if _adv_val_dir.exists() and str(_adv_val_dir) not in sys.path:
-            sys.path.append(str(_adv_val_dir))
-            try:
-                import advanced_sexp_validator
-            except ImportError:
-                advanced_sexp_validator = None
-        else:
-            advanced_sexp_validator = None
+        advanced_sexp_validator = None
 
 
 def process_mission(input_file, output_file=None, tts_settings=None):
