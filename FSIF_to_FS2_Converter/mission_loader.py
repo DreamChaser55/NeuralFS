@@ -528,7 +528,9 @@ class MissionLoader:
         # Wings
         for item in entities.get('reinforcement_wings', []):
             n = str(item.get('name', '')).strip()
-            if not n or n in seen: continue
+            if not n: continue
+            if n in seen:
+                raise ValueError(f"Duplicate reinforcement entry found for '{n}'. Each ship or wing can only be listed as a reinforcement once.")
             
             wing_obj = name_to_wing.get(n)
             if not wing_obj: raise ValueError(f"Unknown reinforcement wing '{n}'")
@@ -542,7 +544,9 @@ class MissionLoader:
         # Ships
         for item in entities.get('reinforcement_ships', []):
             n = str(item.get('name', '')).strip()
-            if not n or n in seen: continue
+            if not n: continue
+            if n in seen:
+                raise ValueError(f"Duplicate reinforcement entry found for '{n}'. Each ship or wing can only be listed as a reinforcement once.")
             
             s_obj = name_to_ship.get(n)
             if not s_obj: raise ValueError(f"Unknown reinforcement ship '{n}'")
