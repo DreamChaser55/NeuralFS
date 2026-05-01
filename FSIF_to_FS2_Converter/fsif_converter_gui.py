@@ -4,7 +4,6 @@ import threading
 import glob
 import os
 import sys
-import traceback
 import logging
 from pathlib import Path
 

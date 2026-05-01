@@ -15,7 +15,6 @@ import logging
 from typing import Optional
 from contextlib import contextmanager
 import sys
-import traceback
 
 
 class RedirectText:
@@ -175,8 +174,7 @@ class LogMixin:
         try:
             yield
         except Exception as e:
-            target_logger.error(f"Critical Error: {e}")
-            traceback.print_exc()
+            target_logger.exception(f"Critical Error: {e}")
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr

@@ -3,7 +3,6 @@ from tkinter import ttk, filedialog, scrolledtext, messagebox
 import threading
 import os
 import sys
-import traceback
 import logging
 from pathlib import Path
 

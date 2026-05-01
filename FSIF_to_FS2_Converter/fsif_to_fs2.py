@@ -4,7 +4,6 @@
 import argparse
 import os
 import sys
-import traceback
 import logging
 from pathlib import Path
 from mission_loader import load_mission_with_yaml_root
@@ -120,8 +119,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
             if not advanced_sexp_validator.validate_mission(mission):
                 is_valid = False
         except Exception as e:
-            logger.error(f"[ERROR] Advanced SEXP validation crashed: {e}")
-            traceback.print_exc()
+            logger.exception(f"[ERROR] Advanced SEXP validation crashed: {e}")
             is_valid = False
     else:
          logger.warning("[WARNING] Advanced SEXP Validator module not available. Validation skipped.")
@@ -183,8 +181,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                     logger.info(f"[INFO] TTS provider '{provider}' libraries not available - skipping TTS generation")
                     logger.info("       Install 'google-genai' for Google TTS or 'elevenlabs' for ElevenLabs TTS.")
         except Exception as e:
-            logger.error(f"[ERROR] TTS generation failed: {e}")
-            traceback.print_exc()
+            logger.exception(f"[ERROR] TTS generation failed: {e}")
             return False
 
     if output_file:
