@@ -1,4 +1,15 @@
-# v0.5 (current version)
+# v0.6 (current version)
+
+Advanced SEXP Validation is now a core feature of the converter and runs automatically. The experimental phase has ended.
+
+**Key Changes:**
+- **Core Integration**: Removed the `--experimental-sexp-validator` CLI flag. Advanced SEXP validation is now an automatic and mandatory step in the conversion process.
+- **Test Harness Removed**: Removed the standalone built-in test suite from `advanced_sexp_validator.py` to streamline the module for production use. Testing is now handled by the NeuralFS test suite.
+- **Dependencies Updated**: Formalized the requirement for Python 3.9+ and integration with NeuralFS project dependencies.
+
+---
+
+# v0.5
 
 Successfully integrated the Advanced SEXP Validator with the FSIF Converter as an experimental validation step.
 

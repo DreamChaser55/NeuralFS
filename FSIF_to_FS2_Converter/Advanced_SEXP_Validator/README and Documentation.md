@@ -10,13 +10,12 @@ Main executable file: advanced_sexp_validator.py.
 
 ### **Prerequisites**
 
-* Python 3.6 or higher.  
-* No external dependencies are required.
+* Python 3.9 or higher.
+* The tool depends on internal NeuralFS converter components (e.g., `fs_data.py`, `fs_flags_constants.py`, and `data_models.py`).
 
 ### **Running the Tool**
 
-To see the parser in action, simply run the script. It includes a test harness with several examples (both valid and invalid) to demonstrate the validation logic.  
-`python advanced_sexp_validator.py`
+The tool is integrated as a core component of the `FSIF_to_FS2_Converter` and runs automatically during the conversion process.
 
 ### **Example Usage in Code**
 
@@ -128,12 +127,6 @@ The function `validate_mission(mission)` in `advanced_sexp_validator.py` serves 
 
 ### **Usage**
 The validator runs automatically as part of the FSIF to FS2 conversion process.
-
-You can also run the validator standalone for testing:
-```bash
-python advanced_sexp_validator.py
-```
-*(Note: Running standalone triggers a built-in test suite for core functionality.)*
 
 ## **Extending the System**
 
