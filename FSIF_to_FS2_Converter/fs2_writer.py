@@ -660,7 +660,7 @@ class FS2Writer:
                 if cls.startswith("GTS ") or cls.startswith("PVS "):
                     reinf_type = "Repair/Rearm"
             else:
-                 pass # Default/Warn?
+                 logger.warning(f"[WARNING] [FSIF->FS2] Reinforcement '{reinf.name}' not found in mission ships or wings. Defaulting to 'Attack/Protect'.")
 
             self._write(f'$Type: {reinf_type}')
             self._write(f'$Num times: {reinf.num_times}')
