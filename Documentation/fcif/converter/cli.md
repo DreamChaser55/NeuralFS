@@ -64,8 +64,7 @@ For each item that is used by the player but not previously granted, a `[ERROR]`
   - Pydantic validation errors (missing required fields, unrecognized fields, wrong types)
   - Input file not found
   - Error writing the output file
-- Errors are printed to stderr.
-- On success, progress messages are printed to stdout:
+- All progress messages (successes, warnings and errors) are printed to stderr (`logging.basicConfig` default output):
   - `Loading FCIF: <path>`
   - `Converting '<campaign_name>' (<N> missions)...`
   - `Successfully wrote: <output_path>`
