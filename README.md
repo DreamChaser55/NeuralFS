@@ -26,7 +26,7 @@ After writing each `.fsif` or `.fcif` file, this agent immediately runs it throu
 
 ### Single FSIF Mission Editing Agent
 
-This agent is intended to write or edit single FSIF missions or FCIF campaign files, outside the existing NeuralFS campaign creation workflow. It allows users to quickly make changes to existing missions or create standalone missions without going through the full campaign authoring process. Similar to the FSIF+FCIF Writing Agent, it works with the FSIF and FCIF formats and runs the converter scripts to validate its work. You can think of this agent as a NeuralFS FRED alternative!
+This agent is intended to write or edit single FSIF missions or FCIF campaign files, outside the existing NeuralFS campaign creation workflow. It allows users to quickly make changes to existing missions or create standalone missions without going through the full campaign authoring process. Similar to the FSIF+FCIF Writing Agent, it works with the FSIF and FCIF formats and runs the converter scripts to validate its work. You can think of this agent as a NeuralFS FRED alternative. For the first time in history, you can create a FreeSpace mission just by talking to your editor in plain English!
 
 ### FSIF to FS2 Converter
 
