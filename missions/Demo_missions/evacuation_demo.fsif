@@ -27,7 +27,7 @@ environment:
     bounds:
       min: [-3000.0, -2000.0, -3000.0]
       max: [4000.0, 2000.0, 5000.0]
-    targets: ["GTC Leviathan 1", "GTFr Poseidon 1"]
+    targets: ["GTC Dauntless", "GTFr Trent"]
 
 player_setup:
   start_ship: "Alpha 1"
@@ -77,7 +77,7 @@ entities:
       arrival_cue: |
         ( true )
 
-    - name: "GTC Leviathan 1"
+    - name: "GTC Dauntless"
       class: "GTC Leviathan"
       team: "Friendly"
       location: [0.0, 0.0, 0.0]
@@ -93,11 +93,11 @@ entities:
         ( true )
       departure_location: "Hyperspace"
       departure_cue: |
-        ( < ( distance "GTC Leviathan 1" "JumpNodeWaypoint:1" ) 500 )
+        ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 500 )
       ai_goals: |
         ( ai-waypoints-once "ConvoyPath" 89 )
 
-    - name: "GTFr Poseidon 1"
+    - name: "GTFr Trent"
       class: "GTFr Poseidon"
       team: "Friendly"
       location: [-500.0, -300.0, -500.0]
@@ -106,7 +106,7 @@ entities:
         ( true )
       departure_location: "Hyperspace"
       departure_cue: |
-        ( < ( distance "GTFr Poseidon 1" "JumpNodeWaypoint:1" ) 500 )
+        ( < ( distance "GTFr Trent" "JumpNodeWaypoint:1" ) 500 )
       ai_goals: |
         ( ai-waypoints-once "ConvoyPath" 89 )
 
@@ -117,11 +117,11 @@ entities:
       arrival_cue: |
         ( false )
       dock:
-        with: "GTFr Poseidon 1"
+        with: "GTFr Trent"
         docker_point: "cargo dock"
         dockee_point: "cargo dock"
 
-    - name: "GTC Fenris 1"
+    - name: "GTC Somerset"
       class: "GTC Fenris"
       team: "Friendly"
       location: [-1000.0, 500.0, -1000.0]
@@ -170,7 +170,7 @@ entities:
       arrival_cue: |
         ( is-event-true-delay "Blockade arrival" 0 )
       ai_goals: |
-        ( ai-chase "GTC Leviathan 1" 89 )
+        ( ai-chase "GTC Dauntless" 89 )
 
   wings:
     - name: "Alpha"
@@ -180,14 +180,14 @@ entities:
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-guard "GTC Leviathan 1" 95 )
+        ( ai-guard "GTC Dauntless" 95 )
 
     - name: "Delta"
       template: "delta_fighter"
       count: 4
       position: [-500.0, 0.0, -500.0]
       ai_goals: |
-        ( ai-guard "GTC Leviathan 1" 80 )
+        ( ai-guard "GTC Dauntless" 80 )
 
     - name: "Rama"
       template: "shivan_fighter"
@@ -198,7 +198,7 @@ entities:
       wave_delay_min: 5
       wave_delay_max: 10
       arrival_location: "In front of ship"
-      arrival_anchor: "GTC Leviathan 1"
+      arrival_anchor: "GTC Dauntless"
       arrival_distance: 1500
       arrival_delay: 10
       arrival_cue: |
@@ -206,7 +206,7 @@ entities:
       ai_goals: |
         ( ai-chase-any 60 )
 
-    - name: "Chi"
+    - name: "Krishna"
       template: "shivan_bomber"
       count: 4
       position: [0.0, 0.0, 2000.0]
@@ -215,13 +215,13 @@ entities:
       wave_delay_min: 15
       wave_delay_max: 20
       arrival_location: "Above ship"
-      arrival_anchor: "GTC Leviathan 1"
+      arrival_anchor: "GTC Dauntless"
       arrival_distance: 1800
       arrival_delay: 30
       arrival_cue: |
         ( true )
       ai_goals: |
-        ( ai-chase "GTC Leviathan 1" 90 )
+        ( ai-chase "GTC Dauntless" 90 )
 
   waypoints:
     ConvoyPath:
@@ -237,7 +237,7 @@ entities:
       num_times: 1
 
   reinforcement_ships:
-    - name: "GTC Fenris 1"
+    - name: "GTC Somerset"
       num_times: 1
 
   jump_nodes:
@@ -251,7 +251,7 @@ mission_flow:
       - text: "The Shivan offensive has bypassed our outer blockades. We are evacuating the system."
         voice_name: "Alnilam"
         voice_style_instructions: "Serious, authoritative commander"
-      - text: "The $f{ GTC Leviathan $} and $f{ GTFr Poseidon $} are part of the last convoy making a run for the $y{ Delta Serpentis jump node $}. You will provide rearguard escort."
+      - text: "The $f{ GTC Dauntless $} and $f{ GTFr Trent $} are part of the last convoy making a run for the $y{ Delta Serpentis jump node $}. You will provide rearguard escort."
         voice_name: "Alnilam"
         voice_style_instructions: "Clear directive"
       - text: "Expect heavy Shivan resistance. The enemy is hunting down stragglers. Do whatever it takes to ensure the convoy survives."
@@ -259,22 +259,22 @@ mission_flow:
         voice_style_instructions: "Determined"
   briefing:
     stages:
-      - text: "Alpha Wing, you will escort the $f{ GTC Leviathan $} and the $f{ GTFr Poseidon $} to the jump node."
+      - text: "Alpha Wing, you will escort the $f{ GTC Dauntless $} and the $f{ GTFr Trent $} to the jump node."
         voice_name: "Gacrux"
         voice_style_instructions: "Military briefing officer"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha Wing", highlighted: true }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Leviathan", pos: [-100, 200], label: "Leviathan" }
-          - { type: "Freighter (has cargo)", team: "Friendly", class: "GTFr Poseidon", pos: [100, 200], label: "Poseidon" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Leviathan", pos: [-100, 200], label: "Dauntless" }
+          - { type: "Freighter (has cargo)", team: "Friendly", class: "GTFr Poseidon", pos: [100, 200], label: "Trent" }
           - { type: "Jump Node", team: "Unknown", pos: [0, 800], label: "Jump Node" }
-      - text: "We anticipate intercepts by $h Rama wing fighters and $h Chi wing bombers. Keep them off the convoy."
+      - text: "We anticipate intercepts by $h Rama wing fighters and $h Krishna wing bombers. Keep them off the convoy."
         voice_name: "Gacrux"
         voice_style_instructions: "Tactical warning"
         icons:
           - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha Wing" }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Leviathan", pos: [-100, 200], label: "Leviathan" }
+          - { type: "Cruiser", team: "Friendly", class: "GTC Leviathan", pos: [-100, 200], label: "Dauntless" }
           - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [-300, 500], label: "Rama" }
-          - { type: "Bomber Wing", team: "Hostile", class: "SB Nephilim", pos: [300, 600], label: "Chi" }
+          - { type: "Bomber Wing", team: "Hostile", class: "SB Nephilim", pos: [300, 600], label: "Krishna" }
       - text: "If things get hot, you are authorized to call in $f{ Delta Wing $} for reinforcements."
         voice_name: "Gacrux"
         voice_style_instructions: "Supportive"
@@ -285,19 +285,19 @@ mission_flow:
   debriefing:
     stages:
       - condition: |
-          ( is-destroyed-delay 0 "GTC Leviathan 1" )
-        text: "We lost the $f{ Leviathan $}. This is a heavy blow to the evacuation effort."
+          ( is-destroyed-delay 0 "GTC Dauntless" )
+        text: "We lost the $f{ Dauntless $}. This is a heavy blow to the evacuation effort."
         voice_name: "Gacrux"
       - condition: |
-          ( is-destroyed-delay 0 "GTFr Poseidon 1" )
-        text: "The $f{ Poseidon $} was destroyed. Hundreds of refugees were lost."
+          ( is-destroyed-delay 0 "GTFr Trent" )
+        text: "The $f{ Trent $} was destroyed. Dozens of refugees were lost."
         voice_name: "Gacrux"
       - condition: |
           ( and
-            ( has-departed-delay 0 "GTC Leviathan 1" )
-            ( has-departed-delay 0 "GTFr Poseidon 1" )
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
           )
-        text: "Outstanding work, pilot. Both the $f{ Leviathan $} and the $f{ Poseidon $} made it to the jump node safely."
+        text: "Outstanding work, pilot. Both the $f{ Dauntless $} and the $f{ Trent $} made it to the jump node safely."
         voice_name: "Gacrux"
       - condition: |
           ( is-cargo-known-delay 0 "Mephisto 1" )
@@ -319,8 +319,8 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( has-departed-delay 0 "GTC Leviathan 1" )
-            ( has-departed-delay 0 "GTFr Poseidon 1" )
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
           )
           ( do-nothing )
         )
@@ -329,7 +329,7 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 0 "Rama" )
-          ( send-message "GTC Leviathan 1" "Normal" "Rama arrived msg" )
+          ( send-message "GTC Dauntless" "Normal" "Rama arrived msg" )
         )
     - name: "Mephisto Arrived Msg"
       formula: |
@@ -350,16 +350,16 @@ mission_flow:
           ( has-arrived-delay 60 "Mephisto 1" )
           ( do-nothing )
         )
-    - name: "Chi Warning"
+    - name: "Krishna Warning"
       formula: |
         ( when
-          ( has-arrived-delay 0 "Chi" )
-          ( send-message "#Command" "High" "Chi arrived msg" )
+          ( has-arrived-delay 0 "Krishna" )
+          ( send-message "#Command" "High" "Krishna arrived msg" )
         )
     - name: "Blockade arrival"
       formula: |
         ( when
-          ( < ( distance "GTC Leviathan 1" "JumpNodeWaypoint:1" ) 2500 )
+          ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 2500 )
           ( send-message-list
             "#Command" "High" "Cain arrived msg" 0
             "#Command" "High" "Zealot warning msg" 3500
@@ -376,8 +376,8 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( has-departed-delay 0 "GTC Leviathan 1" )
-            ( has-departed-delay 0 "GTFr Poseidon 1" )
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
           )
           ( send-message "#Command" "High" "Convoy safe msg" )
         )
@@ -385,8 +385,8 @@ mission_flow:
       formula: |
         ( when
           ( or
-            ( is-destroyed-delay 0 "GTC Leviathan 1" )
-            ( is-destroyed-delay 0 "GTFr Poseidon 1" )
+            ( is-destroyed-delay 0 "GTC Dauntless" )
+            ( is-destroyed-delay 0 "GTFr Trent" )
           )
           ( send-message "#Command" "High" "Convoy destroyed msg" )
         )
@@ -403,11 +403,11 @@ mission_flow:
   goals:
     - name: "Escort the Convoy"
       type: "Primary"
-      message: "Protect the GTC Leviathan and GTFr Poseidon."
+      message: "Protect the GTC Dauntless and GTFr Trent."
       formula: |
         ( and
-          ( has-departed-delay 0 "GTC Leviathan 1" )
-          ( has-departed-delay 0 "GTFr Poseidon 1" )
+          ( has-departed-delay 0 "GTC Dauntless" )
+          ( has-departed-delay 0 "GTFr Trent" )
         )
     - name: "Scan the Mephisto"
       type: "Bonus"
@@ -437,8 +437,8 @@ mission_flow:
       message: "Good job. We have the data."
       voice_name: "Alnilam"
       voice_style_instructions: "Approving"
-    - name: "Chi arrived msg"
-      message: "Warning, Shivan bombers inbound. Chi wing is targeting the Leviathan."
+    - name: "Krishna arrived msg"
+      message: "Warning, Shivan bombers inbound. Krishna wing is targeting the Dauntless."
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent warning"
     - name: "Cain arrived msg"
@@ -446,7 +446,7 @@ mission_flow:
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked command"
     - name: "Zealot warning msg"
-      message: "Warning, a Shivan fighter has locked on a collision course with the Leviathan! Stop that kamikaze!"
+      message: "Warning, a Shivan fighter has locked on a collision course with the Dauntless! Stop that kamikaze!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked warning"
     - name: "Cain disarmed msg"
