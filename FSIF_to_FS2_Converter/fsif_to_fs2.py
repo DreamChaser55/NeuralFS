@@ -97,15 +97,16 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     cli_provider = tts_opts.get('provider')
     cli_enable = tts_opts.get('enabled')
 
-    if cli_provider is not None:
-        final_provider = cli_provider.lower().strip()
-    elif fsif_tts_provider is not None:
-        final_provider = fsif_tts_provider.lower().strip()
-    elif cli_enable:
-        final_provider = 'google'
-    else:
+    if not cli_enable:
         final_provider = 'none'
-        
+    else:
+        if cli_provider is not None and cli_provider.lower().strip() != 'fsif':
+            final_provider = cli_provider.lower().strip()
+        elif fsif_tts_provider is not None:
+            final_provider = fsif_tts_provider.lower().strip()
+        else:
+            final_provider = 'google'
+            
     tts_enabled = (final_provider != 'none')
     provider = final_provider if tts_enabled else 'google' # Fallback for validator/voice manager if disabled
 

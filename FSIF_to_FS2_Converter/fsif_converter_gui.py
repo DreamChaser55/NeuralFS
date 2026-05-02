@@ -38,7 +38,7 @@ class ConverterGUI(LogMixin):
         self.output_path_var = tk.StringVar()
 
         self.tts_enabled_var = tk.BooleanVar(value=False)
-        self.tts_provider_var = tk.StringVar(value="google")
+        self.tts_provider_var = tk.StringVar(value="fsif")
         self.tts_mode_var = tk.StringVar(value="unique")
         self.tts_dry_run_var = tk.BooleanVar(value=False)
         self.api_key_var = tk.StringVar()
@@ -112,24 +112,24 @@ class ConverterGUI(LogMixin):
         tts_frame = ttk.LabelFrame(left_frame, text="TTS Options", padding="5")
         tts_frame.pack(fill="x", pady=(0, 10))
 
-        ttk.Checkbutton(tts_frame, text="Override FSIF TTS Provider",
+        ttk.Checkbutton(tts_frame, text="Enable TTS Generation",
                         variable=self.tts_enabled_var, command=self.toggle_tts_options).pack(anchor="w")
 
         self.tts_options_inner = ttk.Frame(tts_frame)
         self.tts_options_inner.pack(fill="x", padx=20, pady=5)
 
         # Provider Selection
-        provider_frame = ttk.LabelFrame(self.tts_options_inner, text="Provider Override", padding=5)
+        provider_frame = ttk.LabelFrame(self.tts_options_inner, text="TTS Provider", padding=5)
         provider_frame.pack(fill="x", pady=(0, 5))
         
-        ttk.Radiobutton(provider_frame, text="Google (Gemini TTS)", variable=self.tts_provider_var, 
+        ttk.Radiobutton(provider_frame, text="From FSIF File", variable=self.tts_provider_var, 
+                        value="fsif", command=self.update_api_key_visibility).pack(side="left", padx=5)
+        ttk.Radiobutton(provider_frame, text="Google (Gemini)", variable=self.tts_provider_var, 
                         value="google", command=self.update_api_key_visibility).pack(side="left", padx=5)
-        ttk.Radiobutton(provider_frame, text="ElevenLabs TTS", variable=self.tts_provider_var, 
+        ttk.Radiobutton(provider_frame, text="ElevenLabs", variable=self.tts_provider_var, 
                         value="elevenlabs", command=self.update_api_key_visibility).pack(side="left", padx=5)
-        ttk.Radiobutton(provider_frame, text="Inworld TTS", variable=self.tts_provider_var, 
+        ttk.Radiobutton(provider_frame, text="Inworld", variable=self.tts_provider_var, 
                         value="inworld", command=self.update_api_key_visibility).pack(side="left", padx=5)
-        ttk.Radiobutton(provider_frame, text="None (Disable TTS)", variable=self.tts_provider_var, 
-                        value="none", command=self.update_api_key_visibility).pack(side="left", padx=5)
 
         # Filename Conflicts Strategy Section
         strategy_frame = ttk.LabelFrame(self.tts_options_inner, text="Filename Conflicts Strategy", padding=5)
@@ -253,10 +253,13 @@ class ConverterGUI(LogMixin):
             self.api_key_label.config(text="ElevenLabs API Key:")
             has_file = self.has_elevenlabs_key_file
             filename = "API_keys/Elevenlabs_API_key.txt"
-        else:
+        elif provider == "inworld":
             self.api_key_label.config(text="Inworld API Key:")
             has_file = self.has_inworld_key_file
             filename = "API_keys/Inworld_API_key.txt"
+        else:
+            self.api_key_label.config(text="API Key (depends on FSIF):")
+            has_file = False
             
         if has_file:
             self.api_key_label.grid_remove()
@@ -338,12 +341,14 @@ class ConverterGUI(LogMixin):
 
     def _build_tts_settings(self):
         """Build normalized TTS settings dict from current GUI state."""
-        # If the override checkbox is not checked, provider is None.
-        provider = self.tts_provider_var.get() if self.tts_enabled_var.get() else None
+        provider = self.tts_provider_var.get()
+        if provider == "fsif":
+            provider = None
+            
         api_key = self.api_key_var.get().strip() or None
 
         return {
-            'enabled': False,  # No longer forcing enable; provider selection overrides
+            'enabled': self.tts_enabled_var.get(),
             'provider': provider,
             'mode': self.tts_mode_var.get(),
             'dry_run': self.tts_dry_run_var.get(),
