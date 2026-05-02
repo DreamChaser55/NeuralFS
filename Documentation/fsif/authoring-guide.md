@@ -108,6 +108,9 @@ mission_flow:
   events: []
   goals: []
   messages: []
+
+audio:
+  tts_provider: "none"
 ```
 
 ## Fiction Viewer
@@ -238,8 +241,9 @@ Notes:
 
 ## Authoring dialogue (TTS voicing)
 
-**Required field:**
-Any **voiced** line (command briefing, briefing, debriefing, message) must provide `voice_name` (Google TTS voice identifier) for automatic TTS voice generation. See `Documentation/Google TTS/male_voices.txt` and `female_voices.txt` for voice names along with their characteristics.
+**Required fields:**
+- Any mission containing voiced lines **must** explicitly define `tts_provider` under the `audio` section (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Choose a provider and consistently use voices from its respective voice list across all missions, or use `"none"` if the mission has no voiced lines.
+- Any **voiced** line (command briefing, briefing, debriefing, message) must provide `voice_name` (a valid voice identifier from your chosen TTS provider's documentation) for automatic TTS voice generation. See `Documentation/<Provider> TTS/voices.txt` for voice names along with their characteristics.
 
 **Optional field:**
 - `voice_style_instructions: String` — Optional "Director's Note" for the AI. This allows you to guide the delivery style (e.g. `"Military commander delivering a briefing"`, `"Shouting in panic"`, `"Calm and robotic"`).
@@ -261,7 +265,7 @@ mission_flow:
     - name: "Ambush warning"
       message: "It looks like an ambush!"
       voice_style_instructions: "energetic, agitated"  # optional style prompt
-      voice_name: "Charon"                             # Google TTS voice name
+      voice_name: "Charon"                             # TTS voice name matching the provider
 ```
 
 **Example (briefing stage):**

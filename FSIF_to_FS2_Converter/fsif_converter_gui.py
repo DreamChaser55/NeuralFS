@@ -112,14 +112,14 @@ class ConverterGUI(LogMixin):
         tts_frame = ttk.LabelFrame(left_frame, text="TTS Options", padding="5")
         tts_frame.pack(fill="x", pady=(0, 10))
 
-        ttk.Checkbutton(tts_frame, text="Enable Automatic TTS Generation",
+        ttk.Checkbutton(tts_frame, text="Override FSIF TTS Provider",
                         variable=self.tts_enabled_var, command=self.toggle_tts_options).pack(anchor="w")
 
         self.tts_options_inner = ttk.Frame(tts_frame)
         self.tts_options_inner.pack(fill="x", padx=20, pady=5)
 
         # Provider Selection
-        provider_frame = ttk.LabelFrame(self.tts_options_inner, text="Provider", padding=5)
+        provider_frame = ttk.LabelFrame(self.tts_options_inner, text="Provider Override", padding=5)
         provider_frame.pack(fill="x", pady=(0, 5))
         
         ttk.Radiobutton(provider_frame, text="Google (Gemini TTS)", variable=self.tts_provider_var, 
@@ -128,6 +128,8 @@ class ConverterGUI(LogMixin):
                         value="elevenlabs", command=self.update_api_key_visibility).pack(side="left", padx=5)
         ttk.Radiobutton(provider_frame, text="Inworld TTS", variable=self.tts_provider_var, 
                         value="inworld", command=self.update_api_key_visibility).pack(side="left", padx=5)
+        ttk.Radiobutton(provider_frame, text="None (Disable TTS)", variable=self.tts_provider_var, 
+                        value="none", command=self.update_api_key_visibility).pack(side="left", padx=5)
 
         # Filename Conflicts Strategy Section
         strategy_frame = ttk.LabelFrame(self.tts_options_inner, text="Filename Conflicts Strategy", padding=5)
@@ -336,11 +338,12 @@ class ConverterGUI(LogMixin):
 
     def _build_tts_settings(self):
         """Build normalized TTS settings dict from current GUI state."""
-        provider = self.tts_provider_var.get()
+        # If the override checkbox is not checked, provider is None.
+        provider = self.tts_provider_var.get() if self.tts_enabled_var.get() else None
         api_key = self.api_key_var.get().strip() or None
 
         return {
-            'enabled': self.tts_enabled_var.get(),
+            'enabled': False,  # No longer forcing enable; provider selection overrides
             'provider': provider,
             'mode': self.tts_mode_var.get(),
             'dry_run': self.tts_dry_run_var.get(),

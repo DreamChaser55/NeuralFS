@@ -34,9 +34,10 @@ python FSIF_to_FS2_Converter/fsif_to_fs2.py <path_to_mission.fsif>
     - When batching (cmd.exe example), ensure each `%%F` is quoted.
 
 ## TTS Options
-The converter supports automatic voice generation using Google GenAI, ElevenLabs or Inworld TTS. TTS is disabled by default.
-- `--enable-tts`: Enable TTS generation.
-- `--tts-provider <google|elevenlabs|inworld>`: TTS Provider to use (default: `google`).
+The converter supports automatic voice generation using Google GenAI, ElevenLabs or Inworld TTS. The TTS provider should ideally be specified in the `.fsif` file itself under the `audio.tts_provider` field. The CLI arguments act as optional overrides.
+
+- `--enable-tts`: Force enable TTS generation, using Google if no provider is specified in the `.fsif` file or CLI.
+- `--tts-provider <google|elevenlabs|inworld|none>`: Force the TTS Provider to use, overriding the `.fsif` file setting. Use `none` to forcefully disable TTS generation.
 - `--tts-mode <mode>`: Voice filename strategy (default: `unique`).
   - `unique`: Generate unique filenames (e.g. `msg1.wav`) to avoid colliding with existing files. Useful for batch conversions or shared output directories.
   - `overwrite`: Use canonical filenames (e.g. `msg.wav`) and overwrite existing files on disk.

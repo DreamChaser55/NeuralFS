@@ -118,6 +118,7 @@
 - `audio` (Mapping, optional):
   - `mission_music` (String, optional)
   - `briefing_music` (String, optional)
+  - `tts_provider` (String, optional). Specifies the Text-to-Speech provider for the mission. Valid options: `"google"`, `"elevenlabs"`, `"inworld"`, `"none"`. Defaults to `"none"` if unspecified.
 
 **Ship Properties:**
 - `name` (String, required for `ships`)

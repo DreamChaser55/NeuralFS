@@ -502,3 +502,4 @@ mission_flow:
 audio:
   mission_music: "1: Genesis"
   briefing_music: "Brief1"
+  tts_provider: "google"

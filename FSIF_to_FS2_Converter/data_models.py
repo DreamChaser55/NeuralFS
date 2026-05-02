@@ -446,6 +446,14 @@ class AudioSettings(BaseModel):
     model_config = ConfigDict(extra='forbid')
     mission_music: Optional[str] = None
     briefing_music: Optional[str] = None
+    tts_provider: Optional[Literal['google', 'elevenlabs', 'inworld', 'none']] = None
+
+    @field_validator('tts_provider', mode='before')
+    @classmethod
+    def validate_tts_provider(cls, v):
+        if v is not None and isinstance(v, str):
+            return v.lower()
+        return v
 
 class Mission(BaseModel):
     model_config = ConfigDict(extra='forbid')

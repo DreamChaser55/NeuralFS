@@ -45,7 +45,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     # Default TTS settings
     tts_opts = {
         'enabled': False,
-        'provider': 'google',
+        'provider': None,
         'mode': 'unique', # unique | overwrite | keep
         'dry_run': False,
         'api_key': None,
@@ -58,7 +58,6 @@ def process_mission(input_file, output_file=None, tts_settings=None):
 
     # Resolve mode to flags
     mode = str(tts_opts.get('mode', 'unique')).lower().strip()
-    provider = str(tts_opts.get('provider', 'google')).lower().strip()
     
     # Mode logic for TTS Generator (file writing)
     # unique: skip_existing=True (TTS respects file)
@@ -93,8 +92,25 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         logger.error(f"[ERROR] Validation failed during loading: {e}")
         return False
 
+    # Determine final TTS provider and enable state
+    fsif_tts_provider = mission.audio.tts_provider if mission.audio and mission.audio.tts_provider else None
+    cli_provider = tts_opts.get('provider')
+    cli_enable = tts_opts.get('enabled')
+
+    if cli_provider is not None:
+        final_provider = cli_provider.lower().strip()
+    elif fsif_tts_provider is not None:
+        final_provider = fsif_tts_provider.lower().strip()
+    elif cli_enable:
+        final_provider = 'google'
+    else:
+        final_provider = 'none'
+        
+    tts_enabled = (final_provider != 'none')
+    provider = final_provider if tts_enabled else 'google' # Fallback for validator/voice manager if disabled
+
     # Extended Validation
-    logger.info(f"[INFO] TTS Provider: {provider}")
+    logger.info(f"[INFO] TTS Provider: {final_provider}")
     logger.info(f"[INFO] Validating mission structure...")
     # Determine root directory (where script/Documentation are)
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
@@ -119,15 +135,17 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         return False
 
     # Voice Filename Normalization (if TTS enabled)
-    if tts_opts['enabled']:
+    if tts_enabled:
         logger.info(f"[INFO] Normalizing voice filenames (Mode: {mode})...")
+        # Update tts_opts so VoiceManager uses the resolved provider
+        tts_opts['provider'] = provider
         vm = VoiceManager(mission, ip, tts_opts)
         vm.process()
     else:
         logger.info("[INFO] TTS disabled: Skipping voice filename generation (voice lines will be silent in FS2).")
 
     # Generate TTS voice files (if enabled and library available)
-    if tts_opts['enabled']:
+    if tts_enabled:
         try:
             from tts_provider_base import TTSConfig, get_provider
             
@@ -215,8 +233,8 @@ def main():
                         help="[Deprecated] Alias for --tts-mode overwrite")
     
     # Provider selection
-    parser.add_argument("--tts-provider", dest="tts_provider", choices=['google', 'elevenlabs', 'inworld'],
-                        default='google', help="TTS Provider to use (default: google)")
+    parser.add_argument("--tts-provider", dest="tts_provider", choices=['google', 'elevenlabs', 'inworld', 'none'],
+                        default=None, help="TTS Provider to use (overrides FSIF setting)")
 
     parser.add_argument("--tts-dry-run", dest="tts_dry_run", action="store_true",
                         help="Show what TTS would generate without calling API")

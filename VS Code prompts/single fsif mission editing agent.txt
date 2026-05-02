@@ -37,4 +37,5 @@ FCIF Demo:
 @/campaigns/Demo_campaigns/campaign_demo.fcif
 
 Create a new / edit an existing FSIF mission file...
+When writing FSIF files, explicitly define the `audio.tts_provider` field (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Match the voices to your chosen provider, or use `"none"` if the mission has no voiced lines.
 [Specify your mission details, changes, or provide the path to your notes/FSIF file here]
