@@ -350,6 +350,12 @@ mission_flow:
           ( has-arrived-delay 60 "SFr Mahishi" )
           ( do-nothing )
         )
+    - name: "Mephisto spooling"
+      formula: |
+        ( when
+          ( has-arrived-delay 55 "SFr Mahishi" )
+          ( send-message "GTC Dauntless" "Normal" "Mephisto warping out msg" )
+        )
     - name: "Krishna Warning"
       formula: |
         ( when
@@ -437,6 +443,10 @@ mission_flow:
       message: "Good job. We have the data."
       voice_name: "Alnilam"
       voice_style_instructions: "Approving"
+    - name: "Mephisto warping out msg"
+      message: "The Shivan transport's drives are active! It's spooling up to jump!"
+      voice_name: "Achird"
+      voice_style_instructions: "Urgent update"
     - name: "Krishna arrived msg"
       message: "Warning, Shivan bombers inbound. Krishna wing is targeting the Dauntless."
       voice_name: "Alnilam"
