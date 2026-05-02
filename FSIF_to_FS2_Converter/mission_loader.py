@@ -64,7 +64,8 @@ class MissionLoader:
         flow_data = self._load_mission_flow()
         
         # Other top-level
-        jump_nodes = [JumpNode(**jn) for jn in self.data.get('jump_nodes', [])]
+        entities_data = self.data.get('entities', {})
+        jump_nodes = [JumpNode(**jn) for jn in entities_data.get('jump_nodes', [])]
         reinforcements = self._process_reinforcements()
         audio = self._load_audio()
 
