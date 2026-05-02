@@ -141,7 +141,7 @@ entities:
         ( true )
       departure_location: "Hyperspace"
       departure_cue: |
-        ( is-event-true-delay "Mephisto warped out" 0 )
+        ( is-event-true-delay "Mephisto warping out" 0 )
       ai_goals: |
         ( ai-play-dead 89 )
 
@@ -344,7 +344,7 @@ mission_flow:
           ( send-message "#Command" "Normal" "Mephisto scanned msg" )
         )
       directive_text: "Scan the Shivan transport SFr Mahishi"
-    - name: "Mephisto warped out"
+    - name: "Mephisto warping out"
       formula: |
         ( when
           ( has-arrived-delay 60 "SFr Mahishi" )
@@ -354,7 +354,7 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 55 "SFr Mahishi" )
-          ( send-message "GTC Dauntless" "Normal" "Mephisto warping out msg" )
+          ( send-message "GTC Dauntless" "Normal" "Mephisto spooling msg" )
         )
     - name: "Krishna Warning"
       formula: |
@@ -443,7 +443,7 @@ mission_flow:
       message: "Good job. We have the data."
       voice_name: "Alnilam"
       voice_style_instructions: "Approving"
-    - name: "Mephisto warping out msg"
+    - name: "Mephisto spooling msg"
       message: "The Shivan transport's drives are active! It's spooling up to jump!"
       voice_name: "Achird"
       voice_style_instructions: "Urgent update"
