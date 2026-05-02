@@ -128,7 +128,7 @@ entities:
       arrival_cue: |
         ( true )
 
-    - name: "Mephisto 1"
+    - name: "SFr Mahishi"
       class: "SFr Mephisto"
       team: "Hostile"
       location: [1500.0, 500.0, -1000.0]
@@ -145,7 +145,7 @@ entities:
       ai_goals: |
         ( ai-play-dead 89 )
 
-    - name: "SC Cain 1"
+    - name: "SC Vinayaka"
       class: "SC Cain"
       team: "Hostile"
       location: [2500.0, 0.0, 3000.0]
@@ -300,11 +300,11 @@ mission_flow:
         text: "Outstanding work, pilot. Both the $f{ Dauntless $} and the $f{ Trent $} made it to the jump node safely."
         voice_name: "Gacrux"
       - condition: |
-          ( is-cargo-known-delay 0 "Mephisto 1" )
+          ( is-cargo-known-delay 0 "SFr Mahishi" )
         text: "Your scan of the Shivan transport provided us with valuable intelligence on their supply routes."
         voice_name: "Gacrux"
       - condition: |
-          ( is-subsystem-destroyed-delay "SC Cain 1" "weapons" 0 )
+          ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
         text: "Disarming that Shivan cruiser was a brilliant tactical move. It saved the convoy from taking heavy fire."
         voice_name: "Gacrux"
 
@@ -334,20 +334,20 @@ mission_flow:
     - name: "Mephisto Arrived Msg"
       formula: |
         ( when
-          ( has-arrived-delay 0 "Mephisto 1" )
+          ( has-arrived-delay 0 "SFr Mahishi" )
           ( send-message "#Command" "Normal" "Mephisto msg" )
         )
     - name: "Mephisto scan directive"
       formula: |
         ( when
-          ( is-cargo-known-delay 0 "Mephisto 1" )
+          ( is-cargo-known-delay 0 "SFr Mahishi" )
           ( send-message "#Command" "Normal" "Mephisto scanned msg" )
         )
-      directive_text: "Scan the Shivan transport Mephisto 1"
+      directive_text: "Scan the Shivan transport SFr Mahishi"
     - name: "Mephisto warped out"
       formula: |
         ( when
-          ( has-arrived-delay 60 "Mephisto 1" )
+          ( has-arrived-delay 60 "SFr Mahishi" )
           ( do-nothing )
         )
     - name: "Krishna Warning"
@@ -368,10 +368,10 @@ mission_flow:
     - name: "Disarm Cain"
       formula: |
         ( when
-          ( is-subsystem-destroyed-delay "SC Cain 1" "weapons" 0 )
+          ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
           ( send-message "#Command" "Normal" "Cain disarmed msg" )
         )
-      directive_text: "Destroy the weapons subsystem on SC Cain 1"
+      directive_text: "Destroy the weapons subsystem on SC Vinayaka"
     - name: "Convoy Safe"
       formula: |
         ( when
@@ -413,12 +413,12 @@ mission_flow:
       type: "Bonus"
       message: "Scan the Shivan transport."
       formula: |
-        ( is-cargo-known-delay 0 "Mephisto 1" )
+        ( is-cargo-known-delay 0 "SFr Mahishi" )
     - name: "Disarm the Blockade"
       type: "Secondary"
       message: "Destroy the weapons subsystem of the Shivan cruiser."
       formula: |
-        ( is-subsystem-destroyed-delay "SC Cain 1" "weapons" 0 )
+        ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
 
   messages:
     - name: "Start msg"
