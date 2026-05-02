@@ -246,7 +246,11 @@ Notes:
 - Any **voiced** line (command briefing, briefing, debriefing, message) must provide `voice_name` (a valid voice identifier from your chosen TTS provider's documentation) for automatic TTS voice generation. See `Documentation/<Provider> TTS/voices.txt` for voice names along with their characteristics.
 
 **Optional field:**
-- `voice_style_instructions: String` — Optional "Director's Note" for the AI. This allows you to guide the delivery style (e.g. `"Military commander delivering a briefing"`, `"Shouting in panic"`, `"Calm and robotic"`).
+- `voice_style_instructions: String` — Optional "Director's Note" for the AI. This allows you to guide the delivery style.
+  **Important:** The required complexity of this field depends on the chosen TTS provider:
+  - **Google (Gemini TTS):** Supports and benefits from complex, sentence-like prompts (e.g., `"Military commander delivering a briefing with an authoritative tone"`, `"Shouting in panic while under heavy fire"`, `"Calm and robotic AI voice"`).
+  - **ElevenLabs TTS:** Does *not* support complex sentence prompts. You must use simple, comma-separated word-style emotion tags. The converter automatically encloses them in square brackets and prepends them to the spoken text (e.g., use `"energetic, agitated"`, `"shouting, panic"`, or `"calm, robotic"`).
+  - **Inworld TTS:** Currently does not utilize the style instructions.
 
 Unvoiced lines (text-only) should omit these fields.
 
