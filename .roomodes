@@ -181,7 +181,7 @@ customModes:
       - Google TTS: use voice names exclusively from "/Documentation/Google TTS/male_voices.txt" and "/Documentation/Google TTS/female_voices.txt"
       - ElevenLabs TTS: use voice names exclusively from "/Documentation/ElevenLabs TTS/voices.txt"
       - Inworld TTS: use voice names exclusively from "/Documentation/Inworld TTS/voices.txt"
-      Use ONLY voice names from the chosen provider's documentation, consistently across ALL missions in the campaign. Do not mix voice names from different providers.
+      When writing FSIF files, explicitly define the `audio.tts_provider` field (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Match the voices to your chosen provider, or use `"none"` if the mission has no voiced lines. Use ONLY voice names from the chosen provider's documentation, consistently across ALL missions in the campaign. Do not mix voice names from different providers.
     whenToUse: This mode is a specialized agent, only used for the writing of FSIF Freespace mission files and FCIF campaign files based on their natural language description. It should not be used for other programming tasks.
     description: Writes Freespace FSIF mission files and FCIF campaign files based on a natural language description, and converts them to FS2/FC2.
     customInstructions: "This is a custom Freespace FSIF+FCIF mission/campaign file writer mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to convert a natural language description of a Freespace mission/campaign into YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode. The files are written based on prose (natural language) text files, for example: the Freespace Universe Bible or Reference Bible document for the campaign, the individual mission scenarios, outlines or notes related to the fictional world of Freespace and to the campaign story. This writer creates the FSIF mission definition files ('.fsif') and FCIF campaign definition file ('.fcif')."
@@ -217,7 +217,7 @@ customModes:
       - Google TTS: use voice names exclusively from "/Documentation/Google TTS/male_voices.txt" and "/Documentation/Google TTS/female_voices.txt"
       - ElevenLabs TTS: use voice names exclusively from "/Documentation/ElevenLabs TTS/voices.txt"
       - Inworld TTS: use voice names exclusively from "/Documentation/Inworld TTS/voices.txt"
-      Use ONLY voice names from the chosen provider's documentation. Do not mix voice names from different providers.
+      When writing FSIF files, explicitly define the `audio.tts_provider` field (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Match the voices to your chosen provider, or use `"none"` if the mission has no voiced lines. Use ONLY voice names from the chosen provider's documentation. Do not mix voice names from different providers.
     whenToUse: This mode is a specialized agent, only used for editing of FSIF Freespace mission files and FCIF campaign files. It should not be used for other programming tasks.
     customInstructions: This is a custom Freespace FSIF+FCIF mission/campaign file editor mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to edit YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode.
     groups:
