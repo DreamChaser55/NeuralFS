@@ -36,5 +36,5 @@ FSIF Demo:
 FCIF Demo:
 @/campaigns/Demo_campaigns/campaign_demo.fcif
 
-Create a new / edit an existing FSIF mission file...
-[Specify your mission details, changes, or provide the path to your notes/FSIF file here]
+Create a new / edit an existing FSIF mission...
+[Specify your mission details, changes, or provide the path to your existing notes/FSIF file here with the `@` mention]
