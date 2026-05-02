@@ -7,6 +7,7 @@ mission_info:
   game_type: "single"
   ai_profile: "FS1 RETAIL"
   flags: []
+  disallow_support_ships: false
 
 environment:
   ambient_light_level: [5, 5, 5]
@@ -18,6 +19,15 @@ environment:
     - { texture: neb11,  angles: [0.800000, 1.200000, 0.500000], scale: { x: 3.0, y: 3.0 } }
     - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 } }
   nebula: { enabled: false }
+  asteroid_field:
+    genre: "asteroid"
+    type: "active"
+    density: 15
+    average_speed: 15.0
+    bounds:
+      min: [-3000.0, -2000.0, -3000.0]
+      max: [4000.0, 2000.0, 5000.0]
+    targets: ["GTC Fenris 1", "GTFr Poseidon 1"]
 
 player_setup:
   start_ship: "Alpha 1"
@@ -72,7 +82,13 @@ entities:
       team: "Friendly"
       location: [0.0, 0.0, 0.0]
       escort_priority: 90
+      initial_hull: 60
       flags: ["escort"]
+      subsystems:
+        status: custom
+        list:
+          - { name: "sensors", health: 70 }
+          - { name: "engine", health: 80 }
       arrival_cue: |
         ( true )
       departure_location: "Hyperspace"
@@ -85,7 +101,7 @@ entities:
       class: "GTFr Poseidon"
       team: "Friendly"
       location: [-500.0, -300.0, -500.0]
-      flags: ["escort"]
+      flags: ["hidden-from-sensors", "escort"]
       arrival_cue: |
         ( true )
       departure_location: "Hyperspace"
@@ -104,6 +120,14 @@ entities:
         with: "GTFr Poseidon 1"
         docker_point: "cargo dock"
         dockee_point: "cargo dock"
+
+    - name: "GTS Centaur 1"
+      class: "GTS Centaur"
+      team: "Friendly"
+      location: [-1000.0, 500.0, -1000.0]
+      flags: ["weapons-locked"]
+      arrival_cue: |
+        ( true )
 
     - name: "Mephisto 1"
       class: "SFr Mephisto"
@@ -132,6 +156,22 @@ entities:
         ( is-event-true-delay "Blockade arrival" 0 )
       ai_goals: |
         ( ai-stay-still "Nav Buoy" 89 )
+
+    - name: "Zealot 1"
+      class: "SF Manticore"
+      team: "Hostile"
+      location: [2000.0, 500.0, 2500.0]
+      flags: ["kamikaze", "escort"]
+      escort_priority: 80
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
+      arrival_delay: 3
+      arrival_location: "Hyperspace"
+      arrival_cue: |
+        ( is-event-true-delay "Blockade arrival" 0 )
+      ai_goals: |
+        ( ai-chase "GTC Fenris 1" 89 )
 
   wings:
     - name: "Alpha"
@@ -195,6 +235,10 @@ entities:
 
   reinforcement_wings:
     - name: "Delta"
+      num_times: 1
+
+  reinforcement_ships:
+    - name: "GTS Centaur 1"
       num_times: 1
 
   jump_nodes:
@@ -317,7 +361,10 @@ mission_flow:
       formula: |
         ( when
           ( < ( distance "GTC Fenris 1" "JumpNodeWaypoint:1" ) 2500 )
-          ( send-message "#Command" "High" "Cain arrived msg" )
+          ( send-message-list
+            "#Command" "High" "Cain arrived msg" 0
+            "#Command" "High" "Zealot warning msg" 3500
+          )
         )
     - name: "Disarm Cain"
       formula: |
@@ -399,6 +446,10 @@ mission_flow:
       message: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to cover the convoy!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked command"
+    - name: "Zealot warning msg"
+      message: "Warning, a Shivan fighter has locked on a collision course with the Fenris! Stop that kamikaze!"
+      voice_name: "Alnilam"
+      voice_style_instructions: "Panicked warning"
     - name: "Cain disarmed msg"
       message: "The Cain's weapons are down! Excellent work!"
       voice_name: "Alnilam"
