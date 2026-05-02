@@ -128,15 +128,12 @@ mission_flow:
       - text: "Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the $f{ Amadeus $} and the 3rd Fleet detachment in the Vega system. We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect GTA assets. The $f{ GTI Vega Prime $} installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms - routine administrative work that I want completed without incident. The war is not formally over. Until it is, standard rules of engagement remain in effect. Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a recognized ceasefire transponder."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
-        ani: "brief-01.ani"
       - text: "We lost contact with the patrol transport $f{ GTT Meridian $} at 0340 this morning. She was running a standard pass along the $y{ Capella approach corridor $}, approximately 15,000 meters from the $y{ Capella jump node $}. Her last beacon ping was normal. Then nothing. This is most likely a systems failure. $f{ Meridian $}'s drive was flagged for maintenance two weeks ago. However, standing orders require that all unexplained beacon silences be investigated within six hours. $f{ Alpha wing $} - that's you, Pilot - you're going out to investigate. Four ships, standard loadout. Check on $f{ Meridian $}, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
-        ani: "brief-02.ani"
       - text: "If this is your first duty rotation on the $f{ Amadeus $}, welcome. This is not a glamorous posting. Vega is a four-node intersection that hasn't seen a major fleet engagement in seven months. Most of your work here will be exactly what $f{ Alpha wing $} is doing today: investigating silences, protecting convoys, holding the line. Do it well. The $f{ Amadeus $} has a reputation, and I intend to keep it. Dismissed. Report to your wing station at 0820."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, clear directive"
-        ani: "brief-03.ani"
 
   briefing:
     stages:

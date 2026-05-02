@@ -232,11 +232,9 @@ mission_flow:
   command_briefing:
     stages:
       - text: "The $f{ GTC Fenris $} and docked $f{ GTT Elysium $} are holding at the Nav Buoy, one short burn from the $y{ Delta Serpentis jump node $}."
-        ani: "brief-01.ani"
         voice_style_instructions: "officer speaking, authoritative"
         voice_name: "Gacrux"
       - text: "GTI freighter $f{ GTFr Poseidon $} with reduced sensor signature is inbound with a sealed cargo pod recovered near Shivan patrol routes. $f{ Alpha Wing $} will inspect the pod the moment it reaches the buoy."
-        ani: "brief-02.ani"
         voice_style_instructions: "military briefing, directive"
         voice_name: "Gacrux"
       - text: "Once the scan confirms the cargo, the convoy will withdraw immediately. Expect a Shivan reaction and keep the $f{ Fenris $} alive until it clears the node."

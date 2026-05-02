@@ -317,7 +317,6 @@ class Debriefing(BaseModel):
 class CommandBriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str
-    ani: str = '<default>'
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
     voice_filename: Optional[str] = Field(default=None, exclude=True)

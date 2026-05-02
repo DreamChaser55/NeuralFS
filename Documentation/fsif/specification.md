@@ -114,7 +114,7 @@
   - `debriefing` (Mapping, optional):
     - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`, `condition` (SEXP, required), `recommendation`.
   - `command_briefing` (Mapping, optional):
-    - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`, `ani` (default `"<default>"`).
+    - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`.
 - `audio` (Mapping, optional):
   - `mission_music` (String, optional)
   - `briefing_music` (String, optional)

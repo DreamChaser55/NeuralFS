@@ -252,7 +252,7 @@ class FS2Writer:
         """
         Write the '#Command Briefing' section.
         
-        Emits stages with text, animation filename, and voice filename.
+        Emits stages with text and voice filename.
         """
         self._write('\n#Command Briefing\n')
         cb = self.mission.command_briefing
@@ -261,7 +261,7 @@ class FS2Writer:
             self._write('$Stage Text:')
             self._write(f' {self._write_xstr(st.text)}')
             self._write('$end_multi_text')
-            self._write(f'$Ani Filename: {st.ani}')
+            self._write(f'$Ani Filename: <default>') # Must be emitted for a valid FS2 file
             self._write(f'+Wave Filename: {getattr(st, "voice_filename", None) or "none"}')
             self._write('')
 

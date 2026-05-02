@@ -110,7 +110,6 @@ mission_flow:
       - text: "We have received a $y{ distress signal $} from the $e{ nebula sector $}. $R Investigate immediately."
         voice_name: "Alnilam"
         voice_style_instructions: "Authoritative, urgent command"
-        ani: "fafdemo_CB1"
 
   briefing:
     stages:

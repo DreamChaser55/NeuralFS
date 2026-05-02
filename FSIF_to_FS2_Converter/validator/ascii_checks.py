@@ -153,7 +153,6 @@ class AsciiChecksMixin:
         for i, stage in enumerate(self.mission.command_briefing.stages):
             prefix = f'command_briefing.stages[{i}]'
             self._validate_xstr_text(f'{prefix}.text', stage.text)
-            self._validate_ascii_text(f'{prefix}.ani', stage.ani)
 
         for i, stage in enumerate(self.mission.briefing.stages):
             prefix = f'briefing.stages[{i}]'

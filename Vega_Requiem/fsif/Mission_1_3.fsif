@@ -194,19 +194,15 @@ mission_flow:
       - text: "Attention, pilots. This is Rear Admiral Chen Wei. Terran Command has now officially confirmed what $f{ Alpha wing $} brought back from the $y{ Capella corridor $} three days ago. The unidentified contacts are not Vasudan. They are not any species or faction in the GTA database. Command has designated them '$h{ Shivans $},' pending further data. That designation comes from their apparent intent, which is the destruction of everything that encounters them. The $f{ GTI Vega Prime $} installation was destroyed this morning. We hold this system by the barest margins. The $f{ GTC Stentor $} is conducting running repairs. We lost four pilots in the last forty-eight hours. Their names are on the board in the corridor outside the briefing room. I expect you to read them."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, grave"
-        ani: "brief-01.ani"
       - text: "The GTW-15 Avenger cannon prototypes began arriving on the $f{ Amadeus $} this morning. R&D has modified the Avenger specifically based on your sensor data - the weapon is calibrated to suppress $h{ Shivan $} shield harmonics. It is not a miracle. But it is a significant improvement over the ML-16 against their shields. We have enough units for one field-test assignment right now. Additional units are expected within three days. The pilot who draws the Avenger assignment today will be leading $f{ Alpha wing $}, and I expect a full sensor report on its combat effectiveness."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, technical"
-        ani: "brief-02.ani"
       - text: "You will have questions about what I'm about to say. I ask that you hold them until the end. We have received a priority signal from a Vasudan warship - the $f{ PVD Vigil $}, commanding a 9th Fleet advance element - indicating they are transiting into Vega system from the $y{ Capella node $}. Their stated mission: engage the $h{ Shivan $} presence in Vega. They report three refugee transports under escort - Vasudan civilians from an outpost that was overrun. The ceasefire negotiations are still ongoing. We are NOT at peace with the Vasudans. What we are, today, in this system, is outgunned by something that is killing both of us with equal commitment. I have received no orders from Terran Command on how to handle Vasudan forces that are fighting the same enemy we are. I am therefore operating on my own initiative. The Vega-$y{ Antares jump node $} is open. If those refugee transports need to use it, I see no reason to prevent them. I have not asked any of you to like the Vasudans. I'm asking you to stay focused on what matters."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, resolute"
-        ani: "brief-03.ani"
       - text: "One more element. Intelligence has flagged activity in Vega from a faction calling themselves the $h{ Hammer of Light $} - a Vasudan splinter group that appears to be actively aiding the $h{ Shivans $}. They have been reported attacking Vasudan assets. If you encounter ships broadcasting $h{ HoL $} transponders, treat them as hostile. They have given us no reason to do otherwise. Report to your wing stations in twenty minutes."
         voice_name: "Alnilam"
         voice_style_instructions: "Commanding, warning"
-        ani: "brief-04.ani"
 
   briefing:
     stages:
