@@ -141,7 +141,7 @@ entities:
         ( true )
       departure_location: "Hyperspace"
       departure_cue: |
-        ( is-event-true-delay "Mephisto warping out" 0 )
+        ( is-event-true-delay "MephistoWarpingOut" 0 )
       ai_goals: |
         ( ai-play-dead 89 )
 
@@ -152,7 +152,7 @@ entities:
       flags: ["escort"]
       arrival_location: "Hyperspace"
       arrival_cue: |
-        ( is-event-true-delay "Blockade arrival" 0 )
+        ( is-event-true-delay "BlockadeArrival" 0 )
       ai_goals: |
         ( ai-stay-still "Nav Buoy" 89 )
 
@@ -168,7 +168,7 @@ entities:
       arrival_delay: 3
       arrival_location: "Hyperspace"
       arrival_cue: |
-        ( is-event-true-delay "Blockade arrival" 0 )
+        ( is-event-true-delay "BlockadeArrival" 0 )
       ai_goals: |
         ( ai-chase "GTC Dauntless" 89 )
 
@@ -309,13 +309,13 @@ mission_flow:
         voice_name: "Gacrux"
 
   events:
-    - name: "Mission Start Msg"
+    - name: "MissionStartMsg"
       formula: |
         ( when
           ( true )
-          ( send-message "#Command" "High" "Start msg" )
+          ( send-message "#Command" "High" "StartMsg" )
         )
-    - name: "Escort Directive"
+    - name: "EscortDirective"
       formula: |
         ( when
           ( and
@@ -325,89 +325,89 @@ mission_flow:
           ( do-nothing )
         )
       directive_text: "Escort the convoy to the jump node"
-    - name: "Rama Warning"
+    - name: "RamaWarning"
       formula: |
         ( when
           ( has-arrived-delay 0 "Rama" )
-          ( send-message "GTC Dauntless" "Normal" "Rama arrived msg" )
+          ( send-message "GTC Dauntless" "Normal" "RamaArrivedMsg" )
         )
-    - name: "Mephisto Arrived Msg"
+    - name: "MephistoArrivedMsg"
       formula: |
         ( when
           ( has-arrived-delay 0 "SFr Mahishi" )
-          ( send-message "#Command" "Normal" "Mephisto msg" )
+          ( send-message "#Command" "Normal" "MephistoMsg" )
         )
-    - name: "Mephisto scan directive"
+    - name: "MephistoScanDirective"
       formula: |
         ( when
           ( is-cargo-known-delay 0 "SFr Mahishi" )
-          ( send-message "#Command" "Normal" "Mephisto scanned msg" )
+          ( send-message "#Command" "Normal" "MephistoScannedMsg" )
         )
       directive_text: "Scan the Shivan transport SFr Mahishi"
-    - name: "Mephisto warping out"
+    - name: "MephistoWarpingOut"
       formula: |
         ( when
           ( has-arrived-delay 60 "SFr Mahishi" )
           ( do-nothing )
         )
-    - name: "Mephisto spooling"
+    - name: "MephistoSpooling"
       formula: |
         ( when
           ( has-arrived-delay 55 "SFr Mahishi" )
-          ( send-message "GTC Dauntless" "Normal" "Mephisto spooling msg" )
+          ( send-message "GTC Dauntless" "Normal" "MephistoSpoolingMsg" )
         )
-    - name: "Krishna Warning"
+    - name: "KrishnaWarning"
       formula: |
         ( when
           ( has-arrived-delay 0 "Krishna" )
-          ( send-message "#Command" "High" "Krishna arrived msg" )
+          ( send-message "#Command" "High" "KrishnaArrivedMsg" )
         )
-    - name: "Blockade arrival"
+    - name: "BlockadeArrival"
       formula: |
         ( when
           ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 2500 )
           ( send-message-list
-            "#Command" "High" "Cain arrived msg" 0
-            "#Command" "High" "Zealot warning msg" 3500
+            "#Command" "High" "CainArrivedMsg" 0
+            "#Command" "High" "ZealotWarningMsg" 3500
           )
         )
-    - name: "Disarm Cain"
+    - name: "DisarmCain"
       formula: |
         ( when
           ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
-          ( send-message "#Command" "Normal" "Cain disarmed msg" )
+          ( send-message "#Command" "Normal" "CainDisarmedMsg" )
         )
       directive_text: "Destroy the weapons subsystem on SC Vinayaka"
-    - name: "Convoy Safe"
+    - name: "ConvoySafe"
       formula: |
         ( when
           ( and
             ( has-departed-delay 0 "GTC Dauntless" )
             ( has-departed-delay 0 "GTFr Trent" )
           )
-          ( send-message "#Command" "High" "Convoy safe msg" )
+          ( send-message "#Command" "High" "ConvoySafeMsg" )
         )
-    - name: "Convoy Destroyed"
+    - name: "ConvoyDestroyed"
       formula: |
         ( when
           ( or
             ( is-destroyed-delay 0 "GTC Dauntless" )
             ( is-destroyed-delay 0 "GTFr Trent" )
           )
-          ( send-message "#Command" "High" "Convoy destroyed msg" )
+          ( send-message "#Command" "High" "ConvoyDestroyedMsg" )
         )
-    - name: "Return to base"
+    - name: "ReturnToBase"
       formula: |
         ( when
           ( or
-            ( is-event-true-delay "Convoy Safe" 5 )
-            ( is-event-true-delay "Convoy Destroyed" 5 )
+            ( is-event-true-delay "ConvoySafe" 5 )
+            ( is-event-true-delay "ConvoyDestroyed" 5 )
           )
-          ( send-message "#Command" "High" "RTB msg" )
+          ( send-message "#Command" "High" "RtbMsg" )
         )
 
   goals:
-    - name: "Escort the Convoy"
+    - name: "EscortConvoy"
       type: "Primary"
       message: "Protect the GTC Dauntless and GTFr Trent."
       formula: |
@@ -415,63 +415,63 @@ mission_flow:
           ( has-departed-delay 0 "GTC Dauntless" )
           ( has-departed-delay 0 "GTFr Trent" )
         )
-    - name: "Scan the Mephisto"
+    - name: "ScanMephisto"
       type: "Bonus"
       message: "Scan the Shivan transport."
       formula: |
         ( is-cargo-known-delay 0 "SFr Mahishi" )
-    - name: "Disarm the Blockade"
+    - name: "DisarmBlockade"
       type: "Secondary"
       message: "Destroy the weapons subsystem of the Shivan cruiser."
       formula: |
         ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
 
   messages:
-    - name: "Start msg"
+    - name: "StartMsg"
       message: "Alpha, the convoy is moving. Keep your eyes open, Shivans are everywhere."
       voice_name: "Alnilam"
       voice_style_instructions: "Commanding"
-    - name: "Rama arrived msg"
+    - name: "RamaArrivedMsg"
       message: "Command, we have Shivan fighters dropping in. Rama wing is engaging."
       voice_name: "Achird"
       voice_style_instructions: "Cruiser captain under fire"
-    - name: "Mephisto msg"
+    - name: "MephistoMsg"
       message: "Alpha, a Shivan transport just warped in, likely suffering from drive failure. Scan it if you can."
       voice_name: "Alnilam"
       voice_style_instructions: "Tactical update"
-    - name: "Mephisto scanned msg"
+    - name: "MephistoScannedMsg"
       message: "Good job. We have the data."
       voice_name: "Alnilam"
       voice_style_instructions: "Approving"
-    - name: "Mephisto spooling msg"
+    - name: "MephistoSpoolingMsg"
       message: "The Shivan transport's drives are active! It's spooling up to jump!"
       voice_name: "Achird"
       voice_style_instructions: "Urgent update"
-    - name: "Krishna arrived msg"
+    - name: "KrishnaArrivedMsg"
       message: "Warning, Shivan bombers inbound. Krishna wing is targeting the Dauntless."
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent warning"
-    - name: "Cain arrived msg"
+    - name: "CainArrivedMsg"
       message: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to cover the convoy!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked command"
-    - name: "Zealot warning msg"
+    - name: "ZealotWarningMsg"
       message: "Warning, a Shivan fighter has locked on a collision course with the Dauntless! Stop that kamikaze!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked warning"
-    - name: "Cain disarmed msg"
+    - name: "CainDisarmedMsg"
       message: "The Cain's weapons are down! Excellent work!"
       voice_name: "Alnilam"
       voice_style_instructions: "Relieved"
-    - name: "Convoy safe msg"
+    - name: "ConvoySafeMsg"
       message: "The convoy has successfully jumped out."
       voice_name: "Alnilam"
       voice_style_instructions: "Relieved"
-    - name: "Convoy destroyed msg"
+    - name: "ConvoyDestroyedMsg"
       message: "The convoy has been destroyed. We failed."
       voice_name: "Alnilam"
       voice_style_instructions: "Somber"
-    - name: "RTB msg"
+    - name: "RtbMsg"
       message: "Alpha, return to base immediately."
       voice_name: "Alnilam"
       voice_style_instructions: "Commanding"

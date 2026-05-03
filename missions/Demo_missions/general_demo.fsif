@@ -284,21 +284,21 @@ mission_flow:
         voice_name: "Gacrux"
       - condition: |
           ( and
-            ( is-event-true-delay "Fenris clear" 0 )
+            ( is-event-true-delay "FenrisClear" 0 )
             ( is-cargo-known-delay 0 "TSC 2 Cargo" )
           )
         text: "Excellent work, $rank $callsign. You identified the cargo, held off the ambush, and escorted the $f{ Fenris $} to a safe jump."
         voice_name: "Gacrux"
 
   events:
-    - name: "Mission start"
+    - name: "MissionStart"
       formula: |
         ( when
           ( true )
-          ( send-message "#Command" "High" "Hold at buoy" )
+          ( send-message "#Command" "High" "HoldAtBuoy" )
         )
 
-    - name: "Inspect cargo dir"
+    - name: "InspectCargoDir"
       formula: |
         ( when
           ( is-cargo-known-delay 0 "TSC 2 Cargo" )
@@ -306,7 +306,7 @@ mission_flow:
         )
       directive_text: "Rendezvous at Nav Buoy and scan the marked cargo"
 
-    - name: "Escort Fenris dir"
+    - name: "EscortFenrisDir"
       formula: |
         ( when
           ( has-departed-delay 0 "GTC Fenris 1" )
@@ -314,7 +314,7 @@ mission_flow:
         )
       directive_text: "Protect the Fenris until it jumps"
 
-    - name: "Hit Chi bonus dir"
+    - name: "HitChiBonusDir"
       formula: |
         ( when
           ( percent-ships-destroyed 33 "Chi 1" "Chi 2" "Chi 3" )
@@ -322,177 +322,177 @@ mission_flow:
         )
       directive_text: "Destroy at least one Chi bomber"
 
-    - name: "Poseidon arrived"
+    - name: "PoseidonArrived"
       formula: |
         ( when
           ( has-arrived-delay 0 "GTFr Poseidon 1" )
-          ( send-message "GTFr Poseidon 1" "Normal" "Poseidon arrived" )
+          ( send-message "GTFr Poseidon 1" "Normal" "PoseidonArrived" )
         )
 
-    - name: "Inspect reminder"
+    - name: "InspectReminder"
       formula: |
         ( when
           ( and
             ( has-time-elapsed 45 )
             ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
           )
-          ( send-message "#Command" "High" "Inspect reminder" )
+          ( send-message "#Command" "High" "InspectReminder" )
         )
 
-    - name: "Scan complete"
+    - name: "ScanComplete"
       formula: |
         ( when
           ( is-cargo-known-delay 0 "TSC 2 Cargo" )
-          ( send-message "#Command" "High" "Scan complete" )
+          ( send-message "#Command" "High" "ScanComplete" )
         )
 
-    - name: "Withdrawal ordered"
+    - name: "WithdrawalOrdered"
       formula: |
         ( when
-          ( is-event-true-delay "Scan complete" 3 )
+          ( is-event-true-delay "ScanComplete" 3 )
           ( send-message-list
-            "#Command" "High" "Withdraw now" 0
-            "#Command" "Normal" "Delta available" 3500
+            "#Command" "High" "WithdrawNow" 0
+            "#Command" "Normal" "DeltaAvailable" 3500
           )
           ( add-goal "GTT Elysium 1" ( ai-undock 89 ) )
           ( add-goal "GTFr Poseidon 1" ( ai-warp-out 89 ) )
         )
 
-    - name: "Fenris breakaway"
+    - name: "FenrisBreakaway"
       formula: |
         ( when
           ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 0 )
-          ( send-message "GTC Fenris 1" "High" "Fenris breakaway" )
+          ( send-message "GTC Fenris 1" "High" "FenrisBreakaway" )
           ( add-goal "GTC Fenris 1" ( ai-waypoints-once "DeparturePath" 89 ) )
         )
 
-    - name: "Beta arrived"
+    - name: "BetaArrived"
       formula: |
         ( when
           ( has-arrived-delay 0 "Beta" )
-          ( send-message "Beta" "Normal" "Beta arrived" )
+          ( send-message "Beta" "Normal" "BetaArrived" )
         )
 
-    - name: "Rama inbound"
+    - name: "RamaInbound"
       formula: |
         ( when
           ( has-arrived-delay 0 "Rama" )
-          ( send-message "#Command" "High" "Rama inbound" )
+          ( send-message "#Command" "High" "RamaInbound" )
         )
 
-    - name: "Chi inbound"
+    - name: "ChiInbound"
       formula: |
         ( when
           ( has-arrived-delay 0 "Chi" )
-          ( send-message "#Command" "High" "Chi inbound" )
+          ( send-message "#Command" "High" "ChiInbound" )
         )
 
-    - name: "Fenris jumping"
+    - name: "FenrisJumping"
       formula: |
         ( when
           ( < ( distance "GTC Fenris 1" "JumpNodeLoc:1" ) 900 )
-          ( send-message "#Command" "Normal" "Fenris jumping" )
+          ( send-message "#Command" "Normal" "FenrisJumping" )
         )
 
-    - name: "Fenris clear"
+    - name: "FenrisClear"
       formula: |
         ( when
           ( has-departed-delay 0 "GTC Fenris 1" )
-          ( send-message "#Command" "High" "Fenris clear" )
+          ( send-message "#Command" "High" "FenrisClear" )
         )
 
-    - name: "Fenris lost"
+    - name: "FenrisLost"
       formula: |
         ( when
           ( is-destroyed-delay 0 "GTC Fenris 1" )
-          ( send-message "#Command" "High" "Fenris lost" )
+          ( send-message "#Command" "High" "FenrisLost" )
         )
 
-    - name: "Mission complete"
+    - name: "MissionComplete"
       formula: |
         ( when
-          ( is-event-true-delay "Fenris clear" 5 )
-          ( send-message "#Command" "High" "Jump out order" )
+          ( is-event-true-delay "FenrisClear" 5 )
+          ( send-message "#Command" "High" "JumpOutOrder" )
         )
 
-    - name: "Mission failed"
+    - name: "MissionFailed"
       formula: |
         ( when
-          ( is-event-true-delay "Fenris lost" 5 )
-          ( send-message "#Command" "High" "Jump out order" )
+          ( is-event-true-delay "FenrisLost" 5 )
+          ( send-message "#Command" "High" "JumpOutOrder" )
         )
 
   goals:
-    - name: "Protect the Fenris"
+    - name: "ProtectFenris"
       type: "Primary"
       message: "Escort the GTC Fenris 1 until it departs."
       formula: |
         ( has-departed-delay 0 "GTC Fenris 1" )
-    - name: "Scan the cargo"
+    - name: "ScanCargo"
       type: "Secondary"
       message: "Scan the marked cargo pod carried in by the Poseidon."
       formula: |
         ( is-cargo-known-delay 0 "TSC 2 Cargo" )
-    - name: "Eliminate bomber ace"
+    - name: "EliminateBomberAce"
       type: "Bonus"
       message: "Destroy at least one of the Chi bombers."
       formula: |
         ( percent-ships-destroyed 33 "Chi 1" "Chi 2" "Chi 3" )
 
   messages:
-    - name: "Hold at buoy"
+    - name: "HoldAtBuoy"
       message: "Alpha, hold with the Fenris at Nav Buoy and be ready to inspect the Poseidon's cargo pod."
       voice_name: "Alnilam"
       voice_style_instructions: "Commanding, clear directive"
-    - name: "Poseidon arrived"
+    - name: "PoseidonArrived"
       message: "Poseidon at the buoy. The cargo pod is stable and ready for inspection."
       voice_name: "Alnilam"
       voice_style_instructions: "Calm transport pilot, professional"
-    - name: "Inspect reminder"
+    - name: "InspectReminder"
       message: "Alpha, close on the marked pod and finish that scan."
       voice_name: "Alnilam"
       voice_style_instructions: "Firm reminder from command"
-    - name: "Scan complete"
+    - name: "ScanComplete"
       message: "Scan complete. The pod matches the Shivan recovery manifests."
       voice_name: "Alnilam"
       voice_style_instructions: "Informative, professional"
-    - name: "Withdraw now"
+    - name: "WithdrawNow"
       message: "Confirmed. Elysium, clear the Fenris. Fenris, withdraw to the jump node."
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent command order"
-    - name: "Delta available"
+    - name: "DeltaAvailable"
       message: "Delta wing and the Centaur are on standby. Call them if the escort starts to break."
       voice_name: "Alnilam"
       voice_style_instructions: "Helpful, tactical"
-    - name: "Fenris breakaway"
+    - name: "FenrisBreakaway"
       message: "Fenris breaking away now. Stay with us and keep those bombers off the hull."
       voice_name: "Alnilam"
       voice_style_instructions: "Cruiser captain under pressure"
-    - name: "Beta arrived"
+    - name: "BetaArrived"
       message: "Beta wing on station. We're moving to engage the hostiles threatening the Fenris."
       voice_name: "Alnilam"
       voice_style_instructions: "Confident fighter pilot"
-    - name: "Rama inbound"
+    - name: "RamaInbound"
       message: "Hostile fighters inbound. Rama wing is dropping in ahead of the convoy."
       voice_name: "Alnilam"
       voice_style_instructions: "Alert, tactical"
-    - name: "Chi inbound"
+    - name: "ChiInbound"
       message: "Chi wing is above the Fenris. Bombers are making their run."
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent tactical warning"
-    - name: "Fenris jumping"
+    - name: "FenrisJumping"
       message: "Fenris is on final approach to the node. Hold the line for a few more seconds."
       voice_name: "Alnilam"
       voice_style_instructions: "Controlled urgency"
-    - name: "Fenris clear"
+    - name: "FenrisClear"
       message: "Fenris has cleared the node. Good work, Alpha."
       voice_name: "Alnilam"
       voice_style_instructions: "Relieved but professional"
-    - name: "Fenris lost"
+    - name: "FenrisLost"
       message: "The Fenris is gone. Break off and return to base."
       voice_name: "Alnilam"
       voice_style_instructions: "Somber command order"
-    - name: "Jump out order"
+    - name: "JumpOutOrder"
       message: "All pilots, jump out now."
       voice_name: "Alnilam"
       voice_style_instructions: "Authoritative command order"

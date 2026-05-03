@@ -139,22 +139,22 @@ mission_flow:
         voice_style_instructions: "Disappointed, serious"
 
   events:
-    - name: "Mission Start"
+    - name: "MissionStart"
       formula: |
         ( when
           ( true )
-          ( invalidate-goal "Destroy Cain" )
+          ( invalidate-goal "DestroyCain" )
         )
 
-    - name: "Ambush Warning"
+    - name: "AmbushWarning"
       formula: |
         ( when
           ( has-arrived-delay 0 "SC Dakini" )
           ( send-message "#Command" "High" "Ambush" )
-          ( validate-goal "Destroy Cain" )
+          ( validate-goal "DestroyCain" )
         )
 
-    - name: "Destroy Cain Directive"
+    - name: "DestroyCainDirective"
       formula: |
         ( when
           ( is-destroyed-delay 0 "SC Dakini" )
@@ -163,7 +163,7 @@ mission_flow:
       directive_text: "Destroy the SC Cain"
 
   goals:
-    - name: "Destroy Cain"
+    - name: "DestroyCain"
       type: "Primary"
       message: "Destroy the Shivan Cruiser SC Cain."
       formula: |

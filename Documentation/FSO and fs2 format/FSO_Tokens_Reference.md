@@ -10,7 +10,7 @@
   - Do: "<any friendly player>"   Don’t: "<any player>", "<any Friendly Player>"
   - Do: "High"                    Don’t: "high"
   - Do: "ai-guard-wing"           Don’t: "ai_guard_wing"
-- Token length limit: Custom tokens used inside SEXPs (like ship, message or event names) must be shorter than 30 characters to avoid errors.
+- Token length limit: Custom tokens used inside SEXPs (like ship, message or event names) must be shorter than 30 characters to avoid errors. To keep custom names short and minimize the risk of hitting the length limit, we recommend using CamelCase for custom token strings like event, goal, and message names (e.g., `AmbushWarning`, `ScanComplete`) instead of using spaces or underscores.
 - Strings/literals: Treat special selectors like "<any wingman>" and "<any friendly player>" as ordinary quoted strings in SEXPs; do not escape the angle brackets specially.
 
 ## Related reference files
