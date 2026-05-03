@@ -7,10 +7,10 @@ import sys
 import logging
 from pathlib import Path
 
-# Make the project root importable so converter_gui_base can be found when
+# Make the project root importable so common.converter_gui_base can be found when
 # this script is run directly from its own subdirectory.
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from converter_gui_base import TkLogHandler, LogMixin
+from common.converter_gui_base import TkLogHandler, LogMixin
 from fsif_to_fs2 import process_mission
 
 
