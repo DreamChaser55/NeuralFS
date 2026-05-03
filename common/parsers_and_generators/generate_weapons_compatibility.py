@@ -58,9 +58,10 @@ def parse_ship_tables(input_path: Path):
     return compatibility
 
 def main():
-    # This script is in FSIF_to_FS2_Converter/tools/
-    tools_dir = Path(__file__).resolve().parent
-    converter_dir = tools_dir.parent
+    # This script is in common/parsers_and_generators/
+    current_dir = Path(__file__).resolve().parent
+    root_dir = current_dir.parent.parent
+    converter_dir = root_dir / "FSIF_to_FS2_Converter"
     
     input_file = converter_dir / "ship_tables.txt"
     output_file = converter_dir / "weapons_compatibility_data.py"

@@ -24,8 +24,8 @@ Outputs (written to FSIF_to_FS2_Converter/):
   secondary_weapon_sizes.md
 
 Usage:
-  python tools/parse_tables.py
-  (Run from the FSIF_to_FS2_Converter/ directory or its parent.)
+  python common/parsers_and_generators/parse_tables.py
+  (Run from the project root.)
 """
 
 import os
@@ -128,13 +128,14 @@ def parse_weapon_tables(input_file, output_file):
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.dirname(base_dir)
+    root_dir = os.path.dirname(os.path.dirname(base_dir))
+    target_dir = os.path.join(root_dir, 'FSIF_to_FS2_Converter')
     
-    ship_file = os.path.join(parent_dir, 'ship_tables.txt')
-    weapon_file = os.path.join(parent_dir, 'weapon_tables.txt')
+    ship_file = os.path.join(target_dir, 'ship_tables.txt')
+    weapon_file = os.path.join(target_dir, 'weapon_tables.txt')
     
-    out_ship = os.path.join(parent_dir, 'secondary_bank_capacities.md')
-    out_weapon = os.path.join(parent_dir, 'secondary_weapon_sizes.md')
+    out_ship = os.path.join(target_dir, 'secondary_bank_capacities.md')
+    out_weapon = os.path.join(target_dir, 'secondary_weapon_sizes.md')
     
     if os.path.exists(ship_file):
         parse_ship_tables(ship_file, out_ship)

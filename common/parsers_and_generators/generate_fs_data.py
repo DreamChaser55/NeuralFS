@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Set, Dict, List
 
 # Paths
-# This script is located in FSIF_to_FS2_Converter/tools/
+# This script is located in common/parsers_and_generators/
 # Root is ../../
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 DOC_DIR = ROOT_DIR / "Documentation"

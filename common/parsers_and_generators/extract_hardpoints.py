@@ -7,9 +7,9 @@ from pathlib import Path
 
 
 def extract_hardpoints():
-    tools_dir = Path(__file__).resolve().parent
-    converter_dir = tools_dir.parent
-    root_dir = converter_dir.parent
+    current_dir = Path(__file__).resolve().parent
+    root_dir = current_dir.parent.parent
+    converter_dir = root_dir / "FSIF_to_FS2_Converter"
 
     input_file = converter_dir / "ship_tables.txt"
     output_file = root_dir / "Documentation" / "FSO and fs2 format" / "fighter_bomber_hardpoints.md"
