@@ -40,6 +40,7 @@ class MissionLoader:
         'arrival_cue',
         'departure_location',
         'departure_anchor',
+        'departure_delay',
         'departure_cue',
         'ai_goals',
         'dock',

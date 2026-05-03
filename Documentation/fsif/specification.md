@@ -67,6 +67,7 @@
     - `arrival_cue` (String, optional). SEXP.
     - `departure_location` (String, optional, default: `"Hyperspace"`)
     - `departure_anchor` (String, optional)
+    - `departure_delay` (Integer, optional, default: `0`)
     - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
     - `ai_goals` (String, optional).
     - `flags` (List[String], optional, default: `[]`).
@@ -138,6 +139,7 @@
 - `arrival_delay` (Integer, optional, default: `0`)
 - `departure_location` (String, optional, default: `"Hyperspace"`)
 - `departure_anchor` (String, optional)
+- `departure_delay` (Integer, optional, default: `0`)
 - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
 - `flags` (List[String], optional, default: `["cargo-known"]`)
 - `respawn_priority` (Integer, optional, default: `0`)
@@ -163,7 +165,7 @@
   - If the start_ship is standalone (not in a wing), its ships[*].arrival_cue must be "( true )".
 4. entities
   - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Override semantics are **shallow**: a top-level key on the ship replaces the entire value from the template, so nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary`, you must re-specify the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
-    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
+    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_delay`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
   - ships:
     - subsystems: Names must match the per-ship canonical lists.
     - docking: Author only on the docker under dock.with, dock.docker_point, dock.dockee_point; pairs only; player ships cannot be pre-spawn docked.

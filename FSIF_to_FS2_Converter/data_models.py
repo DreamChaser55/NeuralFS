@@ -371,6 +371,7 @@ class Ship(BaseModel):
     
     departure_location: Literal['Hyperspace', 'Docking Bay'] = 'Hyperspace'
     departure_anchor: Optional[str] = None
+    departure_delay: int = Field(0, ge=0)
     departure_cue: str = '( false )'
     
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
@@ -423,6 +424,7 @@ class Wing(BaseModel):
     
     departure_location: Literal['Hyperspace', 'Docking Bay'] = 'Hyperspace'
     departure_anchor: Optional[str] = None
+    departure_delay: int = Field(0, ge=0)
     departure_cue: str = '( false )'
     
     flags: List[str] = Field(default_factory=list)

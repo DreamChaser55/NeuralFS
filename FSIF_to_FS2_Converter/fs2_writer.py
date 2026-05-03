@@ -102,6 +102,9 @@ class FS2Writer:
              if entity.departure_anchor:
                  self._write(f'$Departure Anchor: {entity.departure_anchor}')
         
+        if entity.departure_delay > 0:
+            self._write(f'+Departure delay: {entity.departure_delay}')
+            
         self._write(f'$Departure Cue: {entity.departure_cue}')
 
     def write_mission(self):

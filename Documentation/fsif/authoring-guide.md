@@ -592,7 +592,7 @@ Use this section as a practical sanity guide: each item describes the preferred 
 ### Spawning, arrivals and authored entities
 - `player_setup.start_ship` must exist in `entities`. It can be a standalone ship in `entities.ships` or a ship created by a starting wing such as `Alpha 1`.
 - If the start ship is standalone, give it `arrival_cue: ( true )`; otherwise the player ship will not spawn at mission start.
-- Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
+- Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_delay`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
 - Use `arrival_cue` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
 - Leave enough physical clearance between spawned objects, especially around large ships. Tight placement can cause ships to spawn inside each other; cruisers are roughly 300 m long and destroyers roughly 2000 m long.
 
