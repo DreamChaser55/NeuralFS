@@ -1096,28 +1096,28 @@ def validate_mission(mission) -> bool:
             
     # Ships
     for s in mission.ships:
-        if s.arrival_cue:
-            tasks.append((f"Ship '{s.name}' Arrival Cue", s.arrival_cue, SexpReturnType.BOOL))
-        if s.departure_cue:
-            tasks.append((f"Ship '{s.name}' Departure Cue", s.departure_cue, SexpReturnType.BOOL))
-        if s.ai_goals:
-            # ai_goals field usually contains "( goals ... )"
+        if s.arrival_condition:
+            tasks.append((f"Ship '{s.name}' Arrival Cue", s.arrival_condition, SexpReturnType.BOOL))
+        if s.departure_condition:
+            tasks.append((f"Ship '{s.name}' Departure Cue", s.departure_condition, SexpReturnType.BOOL))
+        if s.initial_orders:
+            # initial_orders field usually contains "( goals ... )"
             # 'goals' operator returns SexpReturnType.NULL (Action), but contains AI Goals.
-            tasks.append((f"Ship '{s.name}' AI Goals", s.ai_goals, SexpReturnType.NULL))
+            tasks.append((f"Ship '{s.name}' AI Goals", s.initial_orders, SexpReturnType.NULL))
             
     # Wings
     for w in mission.wings:
-        if w.arrival_cue:
-            tasks.append((f"Wing '{w.name}' Arrival Cue", w.arrival_cue, SexpReturnType.BOOL))
-        if w.departure_cue:
-            tasks.append((f"Wing '{w.name}' Departure Cue", w.departure_cue, SexpReturnType.BOOL))
-        if w.ai_goals:
-            tasks.append((f"Wing '{w.name}' AI Goals", w.ai_goals, SexpReturnType.NULL))
+        if w.arrival_condition:
+            tasks.append((f"Wing '{w.name}' Arrival Cue", w.arrival_condition, SexpReturnType.BOOL))
+        if w.departure_condition:
+            tasks.append((f"Wing '{w.name}' Departure Cue", w.departure_condition, SexpReturnType.BOOL))
+        if w.initial_orders:
+            tasks.append((f"Wing '{w.name}' AI Goals", w.initial_orders, SexpReturnType.NULL))
             
     # Debriefing
     for i, stage in enumerate(mission.debriefing.stages):
-        if stage.condition:
-            tasks.append((f"Debriefing Stage {i+1}", stage.condition, SexpReturnType.BOOL))
+        if stage.display_condition:
+            tasks.append((f"Debriefing Stage {i+1}", stage.display_condition, SexpReturnType.BOOL))
 
     # Briefing (if any conditions exist - usually not in standard briefing, but check spec)
     # Standard briefing uses $Formula but usually ( true ). 

@@ -86,7 +86,7 @@ class MiscChecksMixin:
         if num_goals == 0:
             return
 
-        num_directives = sum(1 for event in self.mission.events if event.directive_text)
+        num_directives = sum(1 for event in self.mission.events if event.hud_directive_text)
 
         if num_directives < num_goals:
             self.log_warning(

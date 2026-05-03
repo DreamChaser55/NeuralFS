@@ -29,14 +29,14 @@ class SexpChecksMixin:
             
         # Ships/Wings conditions and initial_orders
         for s in self.mission.ships:
-            if s.arrival_cue: sexps.append((f"Ship '{s.name}' arrival_condition", s.arrival_cue))
-            if s.departure_cue: sexps.append((f"Ship '{s.name}' departure_condition", s.departure_cue))
-            if s.ai_goals: sexps.append((f"Ship '{s.name}' initial_orders", s.ai_goals))
+            if s.arrival_condition: sexps.append((f"Ship '{s.name}' arrival_condition", s.arrival_condition))
+            if s.departure_condition: sexps.append((f"Ship '{s.name}' departure_condition", s.departure_condition))
+            if s.initial_orders: sexps.append((f"Ship '{s.name}' initial_orders", s.initial_orders))
             
         for w in self.mission.wings:
-            if w.arrival_cue: sexps.append((f"Wing '{w.name}' arrival_condition", w.arrival_cue))
-            if w.departure_cue: sexps.append((f"Wing '{w.name}' departure_condition", w.departure_cue))
-            if w.ai_goals: sexps.append((f"Wing '{w.name}' initial_orders", w.ai_goals))
+            if w.arrival_condition: sexps.append((f"Wing '{w.name}' arrival_condition", w.arrival_condition))
+            if w.departure_condition: sexps.append((f"Wing '{w.name}' departure_condition", w.departure_condition))
+            if w.initial_orders: sexps.append((f"Wing '{w.name}' initial_orders", w.initial_orders))
             
         for ctx, sexp in sexps:
             self._check_sexp_string(ctx, sexp)
@@ -101,7 +101,7 @@ class SexpChecksMixin:
         ]
 
         for i, event in enumerate(self.mission.events):
-            if not event.directive_text or not event.formula:
+            if not event.hud_directive_text or not event.formula:
                 continue
 
             # Strip quoted string literals to avoid false positives from event/goal

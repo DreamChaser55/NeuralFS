@@ -137,14 +137,13 @@ class Subsystems(BaseModel):
     list: List[SubsystemStatus] = Field(default_factory=list)
 
 class Weapons(BaseModel):
-    # FSIF 4.0: 'secondary_ammo' renamed to 'secondary_ammo_counts'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     primary: List[str] = Field(default_factory=list)
     secondary: List[str] = Field(default_factory=list)
-    secondary_ammo: List[int] = Field(default_factory=list, alias='secondary_ammo_counts')
+    secondary_ammo_counts: List[int] = Field(default_factory=list)
 
 class ShipChoice(BaseModel):
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     ship_class: str = Field(..., alias='class')
     count: int = Field(..., ge=1)
 
@@ -169,9 +168,7 @@ class XYInt(BaseModel):
     x: int
     y: int
 
-class StarBitmap(BaseModel):
-    # FSIF 4.0: 'starbitmaps' list renamed to 'background_bitmaps' at the
-    # parent mapping. Items are still simple background bitmap descriptors. This class should be renamed to reflect the new name.
+class BackgroundBitmap(BaseModel):
     model_config = ConfigDict(extra='forbid')
     texture: str
     angles: List[float]
@@ -183,36 +180,27 @@ class StarBitmap(BaseModel):
         return _normalize_vector(v)
 
 class Nebula(BaseModel):
-    # FSIF 4.0:
-    #   'awacs' → 'sensor_range'
-    #   'poofs' → 'cloud_sprites'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     enabled: bool = False
-    awacs: float = Field(3000.0, alias='sensor_range')
+    sensor_range: float = Field(3000.0)
     storm: str = 's_standard'
     pattern: Optional[str] = None
-    poofs: List[str] = Field(default_factory=list, alias='cloud_sprites')
+    cloud_sprites: List[str] = Field(default_factory=list)
 
 class AsteroidField(BaseModel):
-    # FSIF 4.0:
-    #   'genre'        → 'object_type'      (asteroid | debris)
-    #   'type'         → 'behavior'         (active | passive)
-    #   'debris_types' → 'object_variants'
-    #   'targets'      → 'target_ships'
     # 'min_vec'/'max_vec' are an internal representation produced by the
     # mission_loader from the authored 'bounds.min'/'bounds.max' mapping.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     density: int = Field(50, ge=0)
-    type: Literal['active', 'passive'] = Field('passive', alias='behavior')
-    genre: Literal['asteroid', 'debris'] = Field('asteroid', alias='object_type')
-    debris_types: List[str] = Field(
-        default_factory=lambda: ["Brown", "Blue", "Orange"],
-        alias='object_variants',
+    behavior: Literal['active', 'passive'] = Field('passive')
+    object_type: Literal['asteroid', 'debris'] = Field('asteroid')
+    object_variants: List[str] = Field(
+        default_factory=lambda: ["Brown", "Blue", "Orange"]
     )
     average_speed: float = 20.0
     min_vec: List[float] = Field(default_factory=lambda: [-1000.0, -1000.0, -1000.0])
     max_vec: List[float] = Field(default_factory=lambda: [1000.0, 1000.0, 1000.0])
-    targets: List[str] = Field(default_factory=list, alias='target_ships')
+    target_ships: List[str] = Field(default_factory=list)
 
     @field_validator('min_vec', 'max_vec', mode='before')
     @classmethod
@@ -220,11 +208,10 @@ class AsteroidField(BaseModel):
         return _normalize_vector(v)
 
 class Environment(BaseModel):
-    # FSIF 4.0: 'starbitmaps' → 'background_bitmaps'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     ambient_light_level: List[int] = Field(default_factory=lambda: [0, 0, 0])
     suns: List[Sun] = Field(default_factory=list)
-    starbitmaps: List[StarBitmap] = Field(default_factory=list, alias='background_bitmaps')
+    background_bitmaps: List[BackgroundBitmap] = Field(default_factory=list)
     nebula: Nebula = Field(default_factory=lambda: Nebula())
     asteroid_field: Optional[AsteroidField] = None
 
@@ -244,55 +231,45 @@ class MissionInfo(BaseModel):
     ai_profile: str = 'FS1 RETAIL'
 
 class PlayerSetup(BaseModel):
-    # FSIF 4.0:
-    #   'extra_ships'   → 'additional_ship_choices'
-    #   'extra_weapons' → 'additional_weapons'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     start_ship: str
-    extra_ships: List[ShipChoice] = Field(default_factory=list, alias='additional_ship_choices')
-    extra_weapons: List[str] = Field(default_factory=list, alias='additional_weapons')
+    additional_ship_choices: List[ShipChoice] = Field(default_factory=list)
+    additional_weapons: List[str] = Field(default_factory=list)
 
 class Event(BaseModel):
-    # FSIF 4.0: 'directive_text' → 'hud_directive_text'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     name: Optional[str] = None
     formula: str
-    directive_text: Optional[str] = Field(default=None, alias='hud_directive_text')
+    hud_directive_text: Optional[str] = Field(default=None)
 
 class Goal(BaseModel):
-    # FSIF 4.0: 'message' → 'objective_text'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     name: str
     formula: str
-    message: str = Field(..., alias='objective_text')
+    objective_text: str = Field(...)
     type: Literal['Primary', 'Secondary', 'Bonus'] = 'Primary'
 
 class Message(BaseModel):
-    # FSIF 4.0: 'message' → 'text'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     name: str
-    message: str = Field(..., alias='text')
+    text: str = Field(...)
     voice_name: Optional[str] = None # For TTS
     voice_style_instructions: Optional[str] = None # For TTS
     voice_filename: Optional[str] = Field(default=None, exclude=True)
 
 class BriefingIcon(BaseModel):
-    # FSIF 4.0:
-    #   'type'  → 'icon_type'
-    #   'class' → 'display_class'
-    #   'pos'   → 'map_position'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     type_id: int
-    type: str = Field(..., alias='icon_type')
+    icon_type: str = Field(...)
     team: Literal['Friendly', 'Hostile', 'Unknown']
-    pos: List[float] = Field(default_factory=lambda: [0.0, 0.0, 0.0], alias='map_position')
+    map_position: List[float] = Field(default_factory=lambda: [0.0, 0.0, 0.0])
     label: str = ''
     highlighted: bool = False
-    ship_class: str = Field("Terran NavBuoy", alias='display_class')
+    display_class: str = Field("Terran NavBuoy")
 
-    @field_validator('pos', mode='before')
+    @field_validator('map_position', mode='before')
     @classmethod
-    def validate_pos(cls, v):
+    def validate_map_position(cls, v):
         # FSIF 4.0: Icons are on XZ plane. Input [x, z] ONLY.
         # Normalized to [x, 0.0, z] for internal use.
         if not v:
@@ -329,10 +306,9 @@ class Briefing(BaseModel):
     stages: List[BriefingStage] = Field(default_factory=list)
 
 class DebriefingStage(BaseModel):
-    # FSIF 4.0: 'condition' → 'display_condition'.
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     text: str
-    condition: str = Field('( true )', alias='display_condition')
+    display_condition: str = Field('( true )')
     voice_name: Optional[str] = None
     voice_style_instructions: Optional[str] = None
     voice_filename: Optional[str] = Field(default=None, exclude=True)
@@ -354,16 +330,12 @@ class CommandBriefing(BaseModel):
     stages: List[CommandBriefingStage] = Field(default_factory=list)
 
 class Reinforcement(BaseModel):
-    # FSIF 4.0:
-    #   'num_times'    → 'max_uses'
-    #   'no_messages'  → 'unavailable_messages'
-    #   'yes_messages' → 'available_messages'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     name: str
-    num_times: int = Field(1, ge=1, alias='max_uses')
+    max_uses: int = Field(1, ge=1)
     arrival_delay: int = Field(0, ge=0)
-    no_messages: List[str] = Field(default_factory=list, alias='unavailable_messages')
-    yes_messages: List[str] = Field(default_factory=list, alias='available_messages')
+    unavailable_messages: List[str] = Field(default_factory=list)
+    available_messages: List[str] = Field(default_factory=list)
 
 class JumpNode(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -376,23 +348,12 @@ class JumpNode(BaseModel):
         return _normalize_vector(v)
 
 class Ship(BaseModel):
-    # FSIF 4.0 renames (alias = new YAML key, Python attr = internal name):
-    #   'location'                → 'position'
-    #   'arrival_location'        → 'arrival_method'
-    #   'arrival_cue'             → 'arrival_condition'
-    #   'departure_location'      → 'departure_method'
-    #   'departure_cue'           → 'departure_condition'
-    #   'ai_goals'                → 'initial_orders'
-    #   'escort_priority'         → 'escort_list_priority'
-    #   'initial_velocity'        → 'initial_speed_percent'
-    #   'initial_hull'            → 'initial_hull_percent'
-    #   'destroy_before_mission'  → 'destroyed_before_mission_seconds'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
 
     name: str
     ship_class: str = Field(..., alias='class') # Required field
     team: Literal['Friendly', 'Hostile', 'Unknown']
-    location: List[float] = Field(default_factory=lambda: [0.0, 0.0, 0.0], alias='position')
+    position: List[float] = Field(default_factory=lambda: [0.0, 0.0, 0.0])
     orientation: List[float] = Field(default_factory=lambda: [
         1.0, 0.0, 0.0,
         0.0, 1.0, 0.0,
@@ -402,19 +363,19 @@ class Ship(BaseModel):
     # Optional props with defaults
     ai_class: Optional[str] = None
     cargo: str = 'Nothing'
-    initial_velocity: int = Field(33, ge=0, le=100, alias='initial_speed_percent')
-    initial_hull: int = Field(100, ge=0, le=100, alias='initial_hull_percent')
+    initial_speed_percent: int = Field(33, ge=0, le=100)
+    initial_hull_percent: int = Field(100, ge=0, le=100)
     
-    arrival_location: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace', alias='arrival_method')
+    arrival_method: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace')
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
-    arrival_cue: str = Field('( false )', alias='arrival_condition')
+    arrival_condition: str = Field('( false )')
     
-    departure_location: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace', alias='departure_method')
+    departure_method: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
-    departure_cue: str = Field('( false )', alias='departure_condition')
+    departure_condition: str = Field('( false )')
     
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
     
@@ -423,19 +384,19 @@ class Ship(BaseModel):
     subsystems: Subsystems = Field(default_factory=Subsystems)
     weapons: Weapons = Field(default_factory=Weapons)
     
-    ai_goals: Optional[str] = Field(None, alias='initial_orders')
+    initial_orders: Optional[str] = Field(None)
     
-    escort_priority: int = Field(0, ge=0, alias='escort_list_priority')
-    destroy_before_mission: int = Field(0, ge=0, alias='destroyed_before_mission_seconds')
+    escort_list_priority: int = Field(0, ge=0)
+    destroyed_before_mission_seconds: int = Field(0, ge=0)
     
     # Docking (internal storage; authored as a 'dock' block on the docker)
     docked_with: Optional[str] = None
     docker_point: Optional[str] = None
     dockee_point: Optional[str] = None
     
-    @field_validator('location', mode='before')
+    @field_validator('position', mode='before')
     @classmethod
-    def validate_loc(cls, v):
+    def validate_position(cls, v):
         return _normalize_vector(v)
 
     @field_validator('orientation', mode='before')
@@ -444,45 +405,34 @@ class Ship(BaseModel):
         return _normalize_orientation(v)
 
 class Wing(BaseModel):
-    # FSIF 4.0 renames (alias = new YAML key, Python attr = internal name):
-    #   'arrival_location'      → 'arrival_method'
-    #   'arrival_cue'           → 'arrival_condition'
-    #   'departure_location'    → 'departure_method'
-    #   'departure_cue'         → 'departure_condition'
-    #   'ai_goals'              → 'initial_orders'
-    #   'waves'                 → 'wave_count'
-    #   'wave_threshold'        → 'next_wave_threshold'
-    #   'wave_delay_min'        → 'next_wave_delay_min'
-    #   'wave_delay_max'        → 'next_wave_delay_max'
-    #   'spacing'               → 'member_spacing'
-    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(extra='forbid')
     
     name: str
     count: int = Field(..., ge=1)
     ships: List[Ship] = Field(default_factory=list)
     
-    waves: int = Field(1, ge=1, alias='wave_count')
-    wave_threshold: int = Field(0, ge=0, alias='next_wave_threshold')
-    wave_delay_min: Optional[int] = Field(None, ge=0, alias='next_wave_delay_min')
-    wave_delay_max: Optional[int] = Field(None, ge=0, alias='next_wave_delay_max')
+    wave_count: int = Field(1, ge=1)
+    next_wave_threshold: int = Field(0, ge=0)
+    next_wave_delay_min: Optional[int] = Field(None, ge=0)
+    next_wave_delay_max: Optional[int] = Field(None, ge=0)
     
-    arrival_location: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace', alias='arrival_method')
+    arrival_method: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace')
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
-    arrival_cue: str = Field('( true )', alias='arrival_condition')
+    arrival_condition: str = Field('( true )')
     
-    departure_location: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace', alias='departure_method')
+    departure_method: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
-    departure_cue: str = Field('( false )', alias='departure_condition')
+    departure_condition: str = Field('( false )')
     
     flags: List[str] = Field(default_factory=list)
-    ai_goals: Optional[str] = Field(None, alias='initial_orders')
+    initial_orders: Optional[str] = Field(None)
     
-    # Wing centroid position (not renamed — wings always used 'position')
+    # Wing centroid position
     position: Optional[List[float]] = None
-    spacing: float = Field(50.0, gt=0, alias='member_spacing')
+    member_spacing: float = Field(50.0, gt=0)
     
     # Template reference (used during expansion, kept for record)
     template: Optional[str] = None

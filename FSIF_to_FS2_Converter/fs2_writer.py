@@ -74,9 +74,9 @@ class FS2Writer:
         )
 
     def _write_arrival_block(self, entity, is_wing=False):
-        self._write(f'$Arrival Location: {entity.arrival_location}')
+        self._write(f'$Arrival Location: {entity.arrival_method}')
         
-        arr_loc_norm = entity.arrival_location.strip().lower()
+        arr_loc_norm = entity.arrival_method.strip().lower()
         if arr_loc_norm != "hyperspace":
             if arr_loc_norm == "docking bay":
                 self._write(f'+Arrival Distance: 0')
@@ -93,19 +93,19 @@ class FS2Writer:
             else:
                 self._write(f'+Arrival Delay: {entity.arrival_delay}')
 
-        self._write(f'$Arrival Cue: {entity.arrival_cue}')
+        self._write(f'$Arrival Cue: {entity.arrival_condition}')
 
     def _write_departure_block(self, entity):
-        self._write(f'$Departure Location: {entity.departure_location}')
+        self._write(f'$Departure Location: {entity.departure_method}')
         
-        if entity.departure_location.strip().lower() == "docking bay":
+        if entity.departure_method.strip().lower() == "docking bay":
              if entity.departure_anchor:
                  self._write(f'$Departure Anchor: {entity.departure_anchor}')
         
         if entity.departure_delay > 0:
             self._write(f'+Departure delay: {entity.departure_delay}')
             
-        self._write(f'$Departure Cue: {entity.departure_cue}')
+        self._write(f'$Departure Cue: {entity.departure_condition}')
 
     def write_mission(self):
         """
@@ -176,7 +176,7 @@ class FS2Writer:
         
         # Nebula specifics
         if neb.enabled:
-            self._write(f'+NebAwacs: {neb.awacs:.6f}')
+            self._write(f'+NebAwacs: {neb.sensor_range:.6f}')
             self._write(f'+Storm: {neb.storm}')
 
         self._write('+Fog Near Mult: 1.000000')
@@ -198,9 +198,9 @@ class FS2Writer:
         
         # Add ships
         for ship in self.mission.ships:
-            x_values.append(ship.location[0])
-            y_values.append(ship.location[1])
-            z_values.append(ship.location[2])
+            x_values.append(ship.position[0])
+            y_values.append(ship.position[1])
+            z_values.append(ship.position[2])
             
         # Add waypoints
         for path in self.mission.waypoints.values():
@@ -311,8 +311,8 @@ class FS2Writer:
                 self._write('$start_icon')
                 self._write(f'$type: {icon.type_id}')
                 self._write(f'$team: {icon.team}')
-                self._write(f'$class: {icon.ship_class}')
-                self._write(f'$pos: {self._format_vector(icon.pos)}')
+                self._write(f'$class: {icon.display_class}')
+                self._write(f'$pos: {self._format_vector(icon.map_position)}')
                 self._write(f'$label: {self._write_xstr(icon.label)}')
                 self._write(f'+id: {self._brief_icon_id}')
                 self._write(f'$hlight: {1 if icon.highlighted else 0}')
@@ -338,7 +338,7 @@ class FS2Writer:
         self._write('')
 
         for stage in stages:
-            self._write(f'$Formula: {stage.condition}')
+            self._write(f'$Formula: {stage.display_condition}')
 
             self._write('$Multi text')
             self._write(f'    {self._write_xstr(stage.text)}')
@@ -364,7 +364,7 @@ class FS2Writer:
         setup = self.mission.player_setup
         self._write(f'$Starting Shipname: {setup.start_ship}')
         
-        choices = '\n\t'.join([f'"{c.ship_class}"\t{c.count}' for c in setup.extra_ships])
+        choices = '\n\t'.join([f'"{c.ship_class}"\t{c.count}' for c in setup.additional_ship_choices])
         self._write(f'$Ship Choices: (\n\t{choices}\n)')
         
         # Calculate Weapon Pool automatically
@@ -412,7 +412,7 @@ class FS2Writer:
                 weapon_demand[sec] = weapon_demand.get(sec, 0) + (count * missile_count)
                 
         # Process extra weapons
-        for ew in setup.extra_weapons:
+        for ew in setup.additional_weapons:
             if ew in fs_data.ALLOWED_PRIMARY_WEAPONS:
                 weapon_demand[ew] = max(weapon_demand.get(ew, 0), total_primary_banks_demand)
             elif ew in fs_data.ALLOWED_SECONDARY_WEAPONS:
@@ -459,18 +459,18 @@ class FS2Writer:
             self._write(f'$Name: {ship.name}\t\t;! Object #{i}')
             self._write(f'$Class: {ship.ship_class}')
             self._write(f'$Team: {ship.team}')
-            self._write(f'$Location: {self._format_vector(ship.location)}')
+            self._write(f'$Location: {self._format_vector(ship.position)}')
             self._write(f'$Orientation:\n{self._format_matrix(ship.orientation)}')
             
             if ship.ai_class:
                 self._write(f'+AI Class: {ship.ai_class}')
 
-            if ship.ai_goals:
-                self._write(f'$AI Goals: {ship.ai_goals}')
+            if ship.initial_orders:
+                self._write(f'$AI Goals: {ship.initial_orders}')
             
             self._write(f'$Cargo 1:  {self._write_xstr(ship.cargo)}')
-            self._write(f'+Initial Velocity: {ship.initial_velocity}')
-            self._write(f'+Initial Hull: {ship.initial_hull}')
+            self._write(f'+Initial Velocity: {ship.initial_speed_percent}')
+            self._write(f'+Initial Hull: {ship.initial_hull_percent}')
             
             # Subsystems
             self._write(f'+Subsystem: Pilot')
@@ -493,7 +493,7 @@ class FS2Writer:
                 self._write(f'+Secondary Banks: ( {_fmt_bank_names(weapons.secondary)} )')
                 
                 # Ammo logic
-                ammo = weapons.secondary_ammo
+                ammo = weapons.secondary_ammo_counts
                 if ammo:
                      sanitized = []
                      for k in range(len(weapons.secondary)):
@@ -550,12 +550,12 @@ class FS2Writer:
             
             # Escort
             has_escort_flag = "escort" in ship.flags
-            if has_escort_flag or ship.escort_priority > 0:
-                 self._write(f'+Escort priority: {ship.escort_priority}')
+            if has_escort_flag or ship.escort_list_priority > 0:
+                 self._write(f'+Escort priority: {ship.escort_list_priority}')
             
             # Destroy Before Mission
-            if ship.destroy_before_mission > 0 and ship.name != player_start_ship:
-                 self._write(f'+Destroy At: {ship.destroy_before_mission}')
+            if ship.destroyed_before_mission_seconds > 0 and ship.name != player_start_ship:
+                 self._write(f'+Destroy At: {ship.destroyed_before_mission_seconds}')
             
 
             self._write("\n")
@@ -570,8 +570,8 @@ class FS2Writer:
         self._write(f'#Wings\t\t;! {len(self.mission.wings)} total\n')
         for wing in self.mission.wings:
             self._write(f'$Name: {wing.name}')
-            self._write(f'$Waves: {wing.waves}')
-            self._write(f'$Wave Threshold: {wing.wave_threshold}')
+            self._write(f'$Waves: {wing.wave_count}')
+            self._write(f'$Wave Threshold: {wing.next_wave_threshold}')
             self._write(f'$Special Ship: 0\t\t;! Wing Leader')
 
             self._write_arrival_block(wing, is_wing=True)
@@ -580,18 +580,18 @@ class FS2Writer:
             ship_names = '\n'.join([f'\t"{ship.name}"' for ship in wing.ships])
             self._write(f'$Ships: (\n{ship_names}\n)')
             
-            if wing.ai_goals:
-                self._write(f'$AI Goals: {wing.ai_goals}')
+            if wing.initial_orders:
+                self._write(f'$AI Goals: {wing.initial_orders}')
             
             if wing.flags:
                 flags_formatted = [f'"{flag}"' for flag in wing.flags]
                 flags_str = " ".join(flags_formatted)
                 self._write(f'+Flags: ( {flags_str} )')
 
-            if wing.wave_delay_min is not None:
-                 self._write(f'+Wave Delay Min: {wing.wave_delay_min}')
-            if wing.wave_delay_max is not None:
-                 self._write(f'+Wave Delay Max: {wing.wave_delay_max}')
+            if wing.next_wave_delay_min is not None:
+                 self._write(f'+Wave Delay Min: {wing.next_wave_delay_min}')
+            if wing.next_wave_delay_max is not None:
+                 self._write(f'+Wave Delay Max: {wing.next_wave_delay_max}')
 
             self._write('')
 
@@ -601,8 +601,8 @@ class FS2Writer:
             self._write(f'$Formula: {event.formula}')
             if event.name:
                 self._write(f'+Name: {event.name}')
-            if event.directive_text:
-                self._write(f'+Objective:  {self._write_xstr(event.directive_text)}')
+            if event.hud_directive_text:
+                self._write(f'+Objective:  {self._write_xstr(event.hud_directive_text)}')
             self._write('')
 
     def write_goals(self):
@@ -610,7 +610,7 @@ class FS2Writer:
         for goal in self.mission.goals:
             self._write(f'$Type: {goal.type}')
             self._write(f'+Name: {goal.name}')
-            self._write(f'$MessageNew:  {self._write_xstr(goal.message)}\n$end_multi_text')
+            self._write(f'$MessageNew:  {self._write_xstr(goal.objective_text)}\n$end_multi_text')
             self._write(f'$Formula: {goal.formula}\n')
 
     def write_waypoints(self):
@@ -634,7 +634,7 @@ class FS2Writer:
         for msg in self.mission.messages:
             self._write(f'$Name: {msg.name}')
             self._write(f'$Team: -1')
-            self._write(f'$MessageNew:  {self._write_xstr(msg.message)}\n$end_multi_text')
+            self._write(f'$MessageNew:  {self._write_xstr(msg.text)}\n$end_multi_text')
             self._write(f'+AVI Name: <None>')
             vf = getattr(msg, "voice_filename", None)
             if vf:
@@ -666,15 +666,15 @@ class FS2Writer:
                  logger.warning(f"[WARNING] [FSIF->FS2] Reinforcement '{reinf.name}' not found in mission ships or wings. Defaulting to 'Attack/Protect'.")
 
             self._write(f'$Type: {reinf_type}')
-            self._write(f'$Num times: {reinf.num_times}')
+            self._write(f'$Num times: {reinf.max_uses}')
             
             if reinf.arrival_delay > 0:
                 self._write(f'+Arrival Delay: {reinf.arrival_delay}')
-            if reinf.no_messages:
-                msg_list = ' '.join([f'"{msg}"' for msg in reinf.no_messages])
+            if reinf.unavailable_messages:
+                msg_list = ' '.join([f'"{msg}"' for msg in reinf.unavailable_messages])
                 self._write(f'+No Messages: ( {msg_list} )')
-            if reinf.yes_messages:
-                msg_list = ' '.join([f'"{msg}"' for msg in reinf.yes_messages])
+            if reinf.available_messages:
+                msg_list = ' '.join([f'"{msg}"' for msg in reinf.available_messages])
                 self._write(f'+Yes Messages: ( {msg_list} )')
             self._write('')
 
@@ -686,7 +686,7 @@ class FS2Writer:
         configurations. Manages background suppression if full nebula is enabled.
         """
         env = self.mission.environment
-        total = len(env.suns) + len(env.starbitmaps)
+        total = len(env.suns) + len(env.background_bitmaps)
         
         # Nebula Background Logic
         # When full nebula is active, background_bitmaps are suppressed (the volumetric nebula
@@ -705,8 +705,8 @@ class FS2Writer:
         if neb.enabled and neb.pattern:
             self._write('')
             self._write(f'+Neb2: {neb.pattern}')
-            if neb.poofs:
-                poofs_joined = " ".join([f'"{str(p)}"' for p in neb.poofs])
+            if neb.cloud_sprites:
+                poofs_joined = " ".join([f'"{str(p)}"' for p in neb.cloud_sprites])
                 self._write(f'+Neb2 Poofs List: ( {poofs_joined} )')
 
         self._write('')
@@ -722,7 +722,7 @@ class FS2Writer:
         if suppress_background_bitmaps:
             return
 
-        for s in env.starbitmaps:
+        for s in env.background_bitmaps:
             self._write(f'$Starbitmap: {s.texture}')
             p, b, h = s.angles
             self._write(f'+Angles: {p:.6f} {b:.6f} {h:.6f}')
@@ -748,20 +748,20 @@ class FS2Writer:
 
         self._write('\n#Asteroid Fields\n')
         self._write(f'$Density: {fld.density}')
-        field_type_int   = 0 if fld.type == 'active'   else 1
-        debris_genre_int = 0 if fld.genre      == 'asteroid' else 1
+        field_type_int   = 0 if fld.behavior == 'active'   else 1
+        debris_genre_int = 0 if fld.object_type == 'asteroid' else 1
         self._write(f'+Field Type: {field_type_int}')
         self._write(f'+Debris Genre: {debris_genre_int}')
 
-        for t in fld.debris_types:
+        for t in fld.object_variants:
             self._write(f'+Field Debris Type Name: {t}')
 
         self._write(f'$Average Speed: {fld.average_speed:.6f}')
         self._write(f'$Minimum: {self._format_vector(fld.min_vec)}')
         self._write(f'$Maximum: {self._format_vector(fld.max_vec)}')
 
-        if fld.type == 'active' and fld.genre == 'asteroid' and fld.targets:
-            targets_joined = ' '.join([f'"{name}"' for name in fld.targets])
+        if fld.behavior == 'active' and fld.object_type == 'asteroid' and fld.target_ships:
+            targets_joined = ' '.join([f'"{name}"' for name in fld.target_ships])
             self._write(f'$Asteroid Targets: ( {targets_joined} )')
 
         self._write('')

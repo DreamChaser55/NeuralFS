@@ -47,21 +47,21 @@ class BriefingChecksMixin:
         for idx, msg in enumerate(self.mission.messages, start=1):
             warn_if_has_tags(
                 f"mission_flow.messages[{idx}] ('{msg.name}') text",
-                msg.message,
+                msg.text,
             )
 
         for idx, goal in enumerate(self.mission.goals, start=1):
             warn_if_has_tags(
                 f"mission_flow.goals[{idx}] ('{goal.name}') objective_text",
-                goal.message,
+                goal.objective_text,
             )
 
         for idx, event in enumerate(self.mission.events, start=1):
-            if event.directive_text:
+            if event.hud_directive_text:
                 event_name = event.name if event.name else f"Event {idx}"
                 warn_if_has_tags(
                     f"mission_flow.events[{idx}] ('{event_name}') hud_directive_text",
-                    event.directive_text,
+                    event.hud_directive_text,
                 )
 
         # Other authored text fields outside supported briefing/debriefing contexts.
@@ -82,13 +82,13 @@ class BriefingChecksMixin:
           cam_width   = max(final_width * 1.15, 1000.0)
 
         Args:
-            icons: Iterable of BriefingIcon objects (must have .pos as [x, 0, z]).
+            icons: Iterable of BriefingIcon objects (must have .map_position as [x, 0, z]).
 
         Returns:
             float: The computed camera width (minimum 1000.0).
         """
-        x_values = [ic.pos[0] for ic in icons]
-        z_values = [ic.pos[2] for ic in icons]
+        x_values = [ic.map_position[0] for ic in icons]
+        z_values = [ic.map_position[2] for ic in icons]
 
         delta_x = max(x_values) - min(x_values)
         delta_z = max(z_values) - min(z_values)
@@ -118,22 +118,22 @@ class BriefingChecksMixin:
             # Validate icon properties
             if stage.icons:
                 for icon in stage.icons:
-                    if icon.type not in self.allowed_icons:
-                        self.log_error(f"Briefing icon has invalid type '{icon.type}'")
+                    if icon.icon_type not in self.allowed_icons:
+                        self.log_error(f"Briefing icon has invalid type '{icon.icon_type}'")
                     
                     # Team check
                     if icon.team and icon.team not in self.allowed_teams:
                         self.log_error(f"Briefing icon has invalid team '{icon.team}'")
                         
                     # Class check
-                    if icon.ship_class and icon.ship_class not in self.ship_classes:
-                        self.log_error(f"Briefing icon class '{icon.ship_class}' is not a valid ship class.")
+                    if icon.display_class and icon.display_class not in self.ship_classes:
+                        self.log_error(f"Briefing icon class '{icon.display_class}' is not a valid ship class.")
 
                     # Non-ship icon class check
-                    if icon.type in self.non_ship_icon_types:
+                    if icon.icon_type in self.non_ship_icon_types:
                         # Default is "Terran NavBuoy". If it's anything else, it's an error.
-                        if icon.ship_class != "Terran NavBuoy":
-                            self.log_error(f"Briefing icon of type '{icon.type}' uses class '{icon.ship_class}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
+                        if icon.display_class != "Terran NavBuoy":
+                            self.log_error(f"Briefing icon of type '{icon.icon_type}' uses class '{icon.display_class}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
 
             # Icon proximity check: warn if any two icons are closer than 5% of the camera width.
             # Camera width calcutated here mirrors the calculation in MissionLoader._calculate_briefing_camera.
@@ -144,16 +144,16 @@ class BriefingChecksMixin:
                 def _icon_label(ic) -> str:
                     """Return a human-readable identifier for an icon."""
                     if ic.label:
-                        return f"'{ic.label}' ({ic.type})"
-                    return f"(type '{ic.type}')"
+                        return f"'{ic.label}' ({ic.icon_type})"
+                    return f"(type '{ic.icon_type}')"
 
                 icons_list = stage.icons
                 for a_idx in range(len(icons_list)):
                     for b_idx in range(a_idx + 1, len(icons_list)):
                         ic_a = icons_list[a_idx]
                         ic_b = icons_list[b_idx]
-                        dx = ic_a.pos[0] - ic_b.pos[0]
-                        dz = ic_a.pos[2] - ic_b.pos[2]
+                        dx = ic_a.map_position[0] - ic_b.map_position[0]
+                        dz = ic_a.map_position[2] - ic_b.map_position[2]
                         dist = math.sqrt(dx * dx + dz * dz)
                         if dist < threshold:
                             self.log_warning(
@@ -167,12 +167,12 @@ class BriefingChecksMixin:
     def validate_debriefing(self):
         for i, stage in enumerate(self.mission.debriefing.stages):
             # Validate SEXP condition
-            if stage.condition:
-                self._check_sexp_string(f"Debriefing stage {i+1} display_condition", stage.condition)
+            if stage.display_condition:
+                self._check_sexp_string(f"Debriefing stage {i+1} display_condition", stage.display_condition)
 
                 # Warn if condition is a bare '( true )' — always-true conditions are
                 # insufficiently restrictive and may cause incorrect text to be shown
-                normalized_cue = "".join(stage.condition.split()).lower()
+                normalized_cue = "".join(stage.display_condition.split()).lower()
                 if normalized_cue == '(true)':
                     self.log_warning(
                         f"Debriefing stage {i+1} uses '( true )' as its display_condition. "

@@ -53,7 +53,7 @@ class ShipWingChecksMixin:
                     primaries_used.add(w)
                     
         # Add extra weapons that are primary weapons
-        for w in self.mission.player_setup.extra_weapons:
+        for w in self.mission.player_setup.additional_weapons:
             if w in self.allowed_primary_weapons:
                 primaries_used.add(w)
                 
@@ -96,11 +96,11 @@ class ShipWingChecksMixin:
                     self.log_error(f"Ship '{ship.name}' has unknown flag '{f}'")
 
             # escort_list_priority requires the 'escort' flag
-            if ship.escort_priority > 0:
+            if ship.escort_list_priority > 0:
                 has_escort_flag = 'escort' in ship.flags
                 if not has_escort_flag:
                     self.log_error(
-                        f"Ship '{ship.name}' has escort_list_priority {ship.escort_priority} set, "
+                        f"Ship '{ship.name}' has escort_list_priority {ship.escort_list_priority} set, "
                         f"but is missing the 'escort' flag. "
                         f"Add 'escort' to the ship's flags list."
                     )
@@ -110,8 +110,8 @@ class ShipWingChecksMixin:
                 self.log_error(f"Ship '{ship.name}' has invalid ai_class '{ship.ai_class}'")
 
             # Hull Range
-            if not (0 <= ship.initial_hull <= 100):
-                self.log_error(f"Ship '{ship.name}' initial_hull_percent {ship.initial_hull} out of range [0, 100]")
+            if not (0 <= ship.initial_hull_percent <= 100):
+                self.log_error(f"Ship '{ship.name}' initial_hull_percent {ship.initial_hull_percent} out of range [0, 100]")
 
             # 4. Weapon Compatibility
             # Only validate if we have data for this class
@@ -158,7 +158,7 @@ class ShipWingChecksMixin:
                 if f not in fs_flags_constants.WING_FLAGS_BUCKET:
                      self.log_error(f"Wing '{wing.name}' has unknown/unsupported flag '{f}'")
 
-            if not wing.ai_goals or not wing.ai_goals.strip():
+            if not wing.initial_orders or not wing.initial_orders.strip():
                 self.log_warning(
                     f"Wing '{wing.name}' lacks initial_orders. "
                     f"AI-controlled ships in this wing will sit idle."
@@ -269,8 +269,8 @@ class ShipWingChecksMixin:
                          self.log_error(f"Ship '{ship.name}' references invalid dockee_point '{ship.dockee_point}' for class '{other.ship_class}' (ship '{other.name}')")
 
             # 7. Arrival Logic (Strict)
-            docker_true = ("".join(ship.arrival_cue.split()).lower() == '(true)')
-            dockee_true = ("".join(other.arrival_cue.split()).lower() == '(true)')
+            docker_true = ("".join(ship.arrival_condition.split()).lower() == '(true)')
+            dockee_true = ("".join(other.arrival_condition.split()).lower() == '(true)')
             
             if docker_true and dockee_true:
                 self.log_error(f"Docking pair '{ship.name}'/'{dw}': Both have arrival_condition '( true )'. Only the dockee (leader) should be true.")
@@ -309,15 +309,15 @@ class ShipWingChecksMixin:
 
         # Check Ships
         for ship in self.mission.ships:
-            arr_loc = ship.arrival_location.strip().lower()
+            arr_loc = ship.arrival_method.strip().lower()
             if arr_loc == "docking bay":
                 if not ship.arrival_anchor:
                     self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
             elif arr_loc in directional_locations:
                 if not ship.arrival_anchor:
-                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_location}' but is missing 'arrival_anchor'.")
+                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_anchor'.")
                 if getattr(ship, 'arrival_distance', None) is None:
-                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_location}' but is missing 'arrival_distance'.")
+                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_distance'.")
 
             if ship.arrival_anchor and ship.arrival_anchor not in valid_targets:
                 self.log_error(f"Ship '{ship.name}' references unknown arrival_anchor '{ship.arrival_anchor}'")
@@ -331,7 +331,7 @@ class ShipWingChecksMixin:
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival from anchor '{ship.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
 
-            dep_loc = ship.departure_location.strip().lower()
+            dep_loc = ship.departure_method.strip().lower()
             if dep_loc == "docking bay":
                 if not ship.departure_anchor:
                     self.log_error(f"Ship '{ship.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
@@ -350,15 +350,15 @@ class ShipWingChecksMixin:
 
         # Check Wings
         for w in self.mission.wings:
-            arr_loc = w.arrival_location.strip().lower()
+            arr_loc = w.arrival_method.strip().lower()
             if arr_loc == "docking bay":
                 if not w.arrival_anchor:
                     self.log_error(f"Wing '{w.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
             elif arr_loc in directional_locations:
                 if not w.arrival_anchor:
-                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_location}' but is missing 'arrival_anchor'.")
+                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_anchor'.")
                 if getattr(w, 'arrival_distance', None) is None:
-                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_location}' but is missing 'arrival_distance'.")
+                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_distance'.")
 
             if w.arrival_anchor and w.arrival_anchor not in valid_targets:
                 self.log_error(f"Wing '{w.name}' references unknown arrival_anchor '{w.arrival_anchor}'")
@@ -372,7 +372,7 @@ class ShipWingChecksMixin:
                     if not self._ship_has_fighterbay(anchor_ship.ship_class):
                         self.log_error(f"Wing '{w.name}' uses Docking Bay arrival from anchor '{w.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
 
-            dep_loc = w.departure_location.strip().lower()
+            dep_loc = w.departure_method.strip().lower()
             if dep_loc == "docking bay":
                 if not w.departure_anchor:
                     self.log_error(f"Wing '{w.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
@@ -398,11 +398,11 @@ class ShipWingChecksMixin:
         - Validity of additional_ship_choices provided.
         """
         setup = self.mission.player_setup
-        for w_name in setup.extra_weapons:
+        for w_name in setup.additional_weapons:
             if w_name not in self.allowed_weapons:
                 self.log_error(f"Player setup 'additional_weapons' references unknown weapon '{w_name}'")
                 
-        for choice in setup.extra_ships:
+        for choice in setup.additional_ship_choices:
             if choice.ship_class not in self.ship_classes:
                 self.log_error(f"Player setup 'additional_ship_choices' references unknown ship class '{choice.ship_class}'")
 
@@ -434,6 +434,6 @@ class ShipWingChecksMixin:
         
         if not in_wing:
             # Standalone must have arrival_condition true
-            cue = "".join(ship.arrival_cue.split()).lower()
+            cue = "".join(ship.arrival_condition.split()).lower()
             if cue != '(true)':
                 self.log_error(f"Player start ship '{start_name}' (standalone) must have arrival_condition '( true )'.")

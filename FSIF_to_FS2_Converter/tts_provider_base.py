@@ -85,7 +85,7 @@ class BaseTTSProvider(ABC):
 
         for idx, msg in enumerate(msgs):
             # Check if this message should be voiced (has voice_name and text)
-            text_str = str(msg.message).strip() if msg.message else ""
+            text_str = str(msg.text).strip() if msg.text else ""
             if not text_str:
                 continue
 

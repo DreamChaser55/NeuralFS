@@ -33,7 +33,6 @@ class MissionLoader:
         self.all_wings: List[Wing] = []
 
     _FORBIDDEN_TEMPLATE_FIELDS = (
-        # FSIF 4.0 YAML key names (aliases)
         'arrival_method',
         'arrival_anchor',
         'arrival_distance',
@@ -48,20 +47,12 @@ class MissionLoader:
         'docked_with',
         'docker_point',
         'dockee_point',
-        # FSIF 3.0 names kept so old-name usage in templates also triggers a clear error
-        # NOTE: this is to be removed when breaking change to FSIF 4.0 is fully adopted.
-        'arrival_location',
-        'arrival_cue',
-        'departure_location',
-        'departure_cue',
-        'ai_goals',
     )
         
     def load(self) -> Mission:
         """Main execution method."""
         self._read_yaml()
         self._validate_version()
-        self._validate_no_legacy_fsif_3_keys()
         self._check_required_sections()
         
         # Load sections
@@ -124,156 +115,6 @@ class MissionLoader:
             self.root_node = yaml.compose(raw_yaml)
         except Exception:
             self.root_node = None
-
-    def _validate_no_legacy_fsif_3_keys(self):
-        """
-        Reject renamed FSIF 3.0 YAML keys before Pydantic hydration.
-
-        Internally, several Pydantic model attributes still use the old names
-        because they correspond closely to the emitted FS2 fields.  Since FSIF
-        4.0 is intentionally a breaking author-facing schema cleanup, old YAML
-        keys must fail loudly instead of being accepted via populate_by_name.
-        Note: this function should be removed when the FSIF 4.0 breaking change is fully adopted and old keys are no longer expected in external YAML files.
-        """
-        if not isinstance(self.data, dict):
-            raise ValueError("FSIF root document must be a YAML mapping.")
-
-        errors: List[str] = []
-
-        def report(path: str, old_key: str, new_key: str):
-            errors.append(f"{path}.{old_key} is a legacy FSIF 3.0 key; use {path}.{new_key} in FSIF 4.0.")
-
-        def check_mapping(path: str, mapping: Any, replacements: Dict[str, str]):
-            if not isinstance(mapping, dict):
-                return
-            for old_key, new_key in replacements.items():
-                if old_key in mapping:
-                    report(path, old_key, new_key)
-
-        env = self.data.get('environment')
-        if isinstance(env, dict):
-            check_mapping('environment', env, {'starbitmaps': 'background_bitmaps'})
-            check_mapping('environment.nebula', env.get('nebula'), {'awacs': 'sensor_range', 'poofs': 'cloud_sprites'})
-            check_mapping(
-                'environment.asteroid_field',
-                env.get('asteroid_field'),
-                {
-                    'genre': 'object_type',
-                    'type': 'behavior',
-                    'debris_types': 'object_variants',
-                    'targets': 'target_ships',
-                },
-            )
-
-        check_mapping(
-            'player_setup',
-            self.data.get('player_setup'),
-            {'extra_ships': 'additional_ship_choices', 'extra_weapons': 'additional_weapons'},
-        )
-
-        entities = self.data.get('entities')
-        if isinstance(entities, dict):
-            ship_replacements = {
-                'location': 'position',
-                'arrival_location': 'arrival_method',
-                'arrival_cue': 'arrival_condition',
-                'departure_location': 'departure_method',
-                'departure_cue': 'departure_condition',
-                'ai_goals': 'initial_orders',
-                'initial_velocity': 'initial_speed_percent',
-                'initial_hull': 'initial_hull_percent',
-                'escort_priority': 'escort_list_priority',
-                'destroy_before_mission': 'destroyed_before_mission_seconds',
-            }
-            template_replacements = ship_replacements
-            templates = entities.get('ship_templates')
-            if isinstance(templates, dict):
-                for template_name, template in templates.items():
-                    template_path = f"entities.ship_templates.{template_name}"
-                    check_mapping(template_path, template, template_replacements)
-                    if isinstance(template, dict):
-                        check_mapping(f"{template_path}.weapons", template.get('weapons'), {'secondary_ammo': 'secondary_ammo_counts'})
-
-            ships = entities.get('ships')
-            if isinstance(ships, list):
-                for i, ship in enumerate(ships):
-                    ship_path = f"entities.ships[{i}]"
-                    check_mapping(ship_path, ship, ship_replacements)
-                    if isinstance(ship, dict):
-                        check_mapping(f"{ship_path}.weapons", ship.get('weapons'), {'secondary_ammo': 'secondary_ammo_counts'})
-                        check_mapping(f"{ship_path}.dock", ship.get('dock'), {'with': 'dockee'})
-
-            wing_replacements = {
-                'arrival_location': 'arrival_method',
-                'arrival_cue': 'arrival_condition',
-                'departure_location': 'departure_method',
-                'departure_cue': 'departure_condition',
-                'ai_goals': 'initial_orders',
-                'waves': 'wave_count',
-                'wave_threshold': 'next_wave_threshold',
-                'wave_delay_min': 'next_wave_delay_min',
-                'wave_delay_max': 'next_wave_delay_max',
-                'spacing': 'member_spacing',
-            }
-            wings = entities.get('wings')
-            if isinstance(wings, list):
-                for i, wing in enumerate(wings):
-                    check_mapping(f"entities.wings[{i}]", wing, wing_replacements)
-
-            reinforcement_replacements = {
-                'num_times': 'max_uses',
-                'no_messages': 'unavailable_messages',
-                'yes_messages': 'available_messages',
-            }
-            for section_name in ('reinforcement_wings', 'reinforcement_ships'):
-                items = entities.get(section_name)
-                if isinstance(items, list):
-                    for i, item in enumerate(items):
-                        check_mapping(f"entities.{section_name}[{i}]", item, reinforcement_replacements)
-
-        flow = self.data.get('mission_flow')
-        if isinstance(flow, dict):
-            events = flow.get('events')
-            if isinstance(events, list):
-                for i, event in enumerate(events):
-                    check_mapping(f"mission_flow.events[{i}]", event, {'directive_text': 'hud_directive_text'})
-
-            goals = flow.get('goals')
-            if isinstance(goals, list):
-                for i, goal in enumerate(goals):
-                    check_mapping(f"mission_flow.goals[{i}]", goal, {'message': 'objective_text'})
-
-            messages = flow.get('messages')
-            if isinstance(messages, list):
-                for i, message in enumerate(messages):
-                    check_mapping(f"mission_flow.messages[{i}]", message, {'message': 'text'})
-
-            briefing = flow.get('briefing')
-            if isinstance(briefing, dict):
-                stages = briefing.get('stages')
-                if isinstance(stages, list):
-                    for si, stage in enumerate(stages):
-                        if not isinstance(stage, dict):
-                            continue
-                        icons = stage.get('icons')
-                        if isinstance(icons, list):
-                            for ii, icon in enumerate(icons):
-                                check_mapping(
-                                    f"mission_flow.briefing.stages[{si}].icons[{ii}]",
-                                    icon,
-                                    {'type': 'icon_type', 'class': 'display_class', 'pos': 'map_position'},
-                                )
-
-            debriefing = flow.get('debriefing')
-            if isinstance(debriefing, dict):
-                stages = debriefing.get('stages')
-                if isinstance(stages, list):
-                    for i, stage in enumerate(stages):
-                        check_mapping(f"mission_flow.debriefing.stages[{i}]", stage, {'condition': 'display_condition'})
-
-        if errors:
-            joined = "\n".join(f"  - {msg}" for msg in errors)
-            raise ValueError(f"FSIF 4.0 legacy key validation failed:\n{joined}")
 
     def _validate_version(self):
         """
@@ -513,7 +354,7 @@ class MissionLoader:
              ship_props = copy.deepcopy(template_base)
              
              offset = (i - center_index) * spacing
-             ship_props['location'] = [cx + offset, cy, cz]
+             ship_props['position'] = [cx + offset, cy, cz]
              ship_props['name'] = ship_name
              
              if ship_name == player_setup.start_ship:
@@ -619,10 +460,7 @@ class MissionLoader:
                  rid = brief_types.parse_icon_type(typ_str)
                  ic_data = dict(ic)
                  ic_data['type_id'] = rid
-                 # Normalize to the Python attribute name (alias-bypass via populate_by_name)
-                 ic_data['type'] = brief_types.canonical_name_for_id(rid)
-                 # Remove both alias variants so only one survives
-                 ic_data.pop('icon_type', None)
+                 ic_data['icon_type'] = brief_types.canonical_name_for_id(rid)
                  new_icons.append(BriefingIcon(**ic_data))
              st['icons'] = new_icons 
              
@@ -654,8 +492,8 @@ class MissionLoader:
          """
          if icons:
              # 1. Find the extent of the points (Tight Bounding Box)
-             x_values = [ic.pos[0] for ic in icons]
-             z_values = [ic.pos[2] for ic in icons]
+             x_values = [ic.map_position[0] for ic in icons]
+             z_values = [ic.map_position[2] for ic in icons]
              
              x_min = min(x_values)
              x_max = max(x_values)

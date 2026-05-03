@@ -14,21 +14,21 @@ class TestWaypointCollisions(unittest.TestCase):
         waypoints = {"Path1": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
         
         # Moving ship at the origin
-        ship_moving = Ship(
-            name="Alpha 1", 
-            **{"class": "GTC Fenris"}, # using dict unpacking for 'class' alias
-            team="Friendly", 
-            location=[0.0, 0.0, 0.0], 
-            ai_goals='( ai-waypoints "Path1" )'
-        )
+        ship_moving = Ship.model_validate({
+            "name": "Alpha 1", 
+            "class": "GTC Fenris",
+            "team": "Friendly", 
+            "position": [0.0, 0.0, 0.0], 
+            "initial_orders": '( ai-waypoints "Path1" )'
+        })
         
         # Obstacle ship squarely in the middle of the second path segment
-        ship_obstacle = Ship(
-            name="GTCv Deimos", 
-            **{"class": "GTC Leviathan"}, 
-            team="Friendly", 
-            location=[250.0, 0.0, 0.0]
-        )
+        ship_obstacle = Ship.model_validate({
+            "name": "GTCv Deimos", 
+            "class": "GTC Leviathan", 
+            "team": "Friendly", 
+            "position": [250.0, 0.0, 0.0]
+        })
         
         mission = Mission(
             mission_info=info,
@@ -57,21 +57,21 @@ class TestWaypointCollisions(unittest.TestCase):
         # Path along X-axis
         waypoints = {"Path1": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
         
-        ship_moving = Ship(
-            name="Alpha 1", 
-            **{"class": "GTC Fenris"},
-            team="Friendly", 
-            location=[0.0, 0.0, 0.0], 
-            ai_goals='( ai-waypoints "Path1" )'
-        )
+        ship_moving = Ship.model_validate({
+            "name": "Alpha 1", 
+            "class": "GTC Fenris",
+            "team": "Friendly", 
+            "position": [0.0, 0.0, 0.0], 
+            "initial_orders": '( ai-waypoints "Path1" )'
+        })
         
         # Obstacle ship far away on the Y-axis
-        ship_obstacle_safe = Ship(
-            name="GTCv Safe", 
-            **{"class": "GTC Leviathan"}, 
-            team="Friendly", 
-            location=[250.0, 5000.0, 0.0]
-        )
+        ship_obstacle_safe = Ship.model_validate({
+            "name": "GTCv Safe", 
+            "class": "GTC Leviathan", 
+            "team": "Friendly", 
+            "position": [250.0, 5000.0, 0.0]
+        })
         
         mission = Mission(
             mission_info=info,

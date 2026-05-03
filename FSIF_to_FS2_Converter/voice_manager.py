@@ -30,7 +30,7 @@ class VoiceManager:
         """Iterates through the mission and normalizes voice filenames on the objects."""
         # Messages
         for idx, msg in enumerate(self.mission.messages):
-            self._process_node(msg, text_attr='message', name_attr='name', section='messages')
+            self._process_node(msg, text_attr='text', name_attr='name', section='messages')
 
         # Briefing Stages
         for idx, stage in enumerate(self.mission.briefing.stages):

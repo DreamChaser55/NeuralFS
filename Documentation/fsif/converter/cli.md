@@ -81,7 +81,7 @@ To use a key file, create a text file named `Gemini_API_key.txt`, `Elevenlabs_AP
 **Security Note**: Make sure your API key text files are not committed to version control. The `API_keys` directory is in `.gitignore`, so this should not happen with Git.
 
 ## Advanced Validation
-- The Advanced SEXP Validator runs automatically. It performs a deep semantic check on all SEXP formulas (Events, Goals, Cues, AI Goals) using FSO engine logic (type checking, return types, reference validation).
+- The Advanced SEXP Validator runs automatically. It performs a deep semantic check on all SEXP formulas (Events, Goals, Arrival/Departure Conditions, AI Goals) using FSO engine logic (type checking, return types, reference validation).
 
 ## Output
 - The converter writes a peer .fs2 file next to the input, preserving the base name:

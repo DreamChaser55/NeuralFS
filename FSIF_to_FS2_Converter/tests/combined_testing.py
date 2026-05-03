@@ -48,7 +48,7 @@ class CombinedTesting(unittest.TestCase):
     def make_valid_mission(self) -> Mission:
         return Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Player Ship", extra_ships=[]),
+            player_setup=PlayerSetup(start_ship="Player Ship", additional_ship_choices=[]),
             environment=Environment(),
             ships=[
                 Ship.model_validate(
@@ -56,8 +56,8 @@ class CombinedTesting(unittest.TestCase):
                         "name": "Player Ship",
                         "class": "GTF Ulysses",
                         "team": "Friendly",
-                        "location": [0.0, 0.0, 0.0],
-                        "arrival_cue": "( true )",
+                        "position": [0.0, 0.0, 0.0],
+                        "arrival_condition": "( true )",
                         "weapons": Weapons(
                             primary=["Avenger", "Avenger"],
                             secondary=["MX-50"],
@@ -137,11 +137,11 @@ class CombinedTesting(unittest.TestCase):
                     "name": "Escort 1",
                     "class": "GTC Fenris",
                     "team": "Friendly",
-                    "location": [500.0, 0.0, 0.0],
-                    "arrival_location": "In front of ship",
+                    "position": [500.0, 0.0, 0.0],
+                    "arrival_method": "In front of ship",
                     "arrival_anchor": "Player Ship",
                     "arrival_distance": 25001,
-                    "arrival_cue": "( true )",
+                    "arrival_condition": "( true )",
                 }
             )
         )
@@ -155,8 +155,8 @@ class CombinedTesting(unittest.TestCase):
                             "name": "Beta 1",
                             "class": "GTF Ulysses",
                             "team": "Friendly",
-                            "location": [1000.0, 0.0, 0.0],
-                            "arrival_cue": "( true )",
+                            "position": [1000.0, 0.0, 0.0],
+                            "arrival_condition": "( true )",
                             "weapons": Weapons(
                                 primary=["Avenger", "Avenger"],
                                 secondary=["MX-50"],
@@ -165,10 +165,10 @@ class CombinedTesting(unittest.TestCase):
                     )
                 ],
                 position=[1000.0, 0.0, 0.0],
-                arrival_location="In front of ship",
+                arrival_method="In front of ship",
                 arrival_anchor="Player Ship",
                 arrival_distance=22000,
-                arrival_cue="( true )",
+                arrival_condition="( true )",
             )
         ]
 
@@ -201,11 +201,11 @@ class CombinedTesting(unittest.TestCase):
                     "name": "Escort 1",
                     "class": "GTC Fenris",
                     "team": "Friendly",
-                    "location": [500.0, 0.0, 0.0],
-                    "arrival_location": "In front of ship",
+                    "position": [500.0, 0.0, 0.0],
+                    "arrival_method": "In front of ship",
                     "arrival_anchor": "Player Ship",
                     "arrival_distance": 20000,
-                    "arrival_cue": "( true )",
+                    "arrival_condition": "( true )",
                 }
             )
         )
@@ -254,8 +254,8 @@ class CombinedTesting(unittest.TestCase):
                 "name": "Alpha 1",
                 "class": "GTF Ulysses",
                 "team": "Friendly",
-                "location": [0.0, 0.0, 0.0],
-                "arrival_cue": "( true )",
+                "position": [0.0, 0.0, 0.0],
+                "arrival_condition": "( true )",
                 "weapons": Weapons(
                     primary=["Avenger", "Avenger"],
                     secondary=["Harbinger"],
@@ -267,8 +267,8 @@ class CombinedTesting(unittest.TestCase):
                 "name": "Alpha 2",
                 "class": "GTF Ulysses",
                 "team": "Friendly",
-                "location": [0.0, 0.0, 0.0],
-                "arrival_cue": "( true )",
+                "position": [0.0, 0.0, 0.0],
+                "arrival_condition": "( true )",
                 "weapons": Weapons(
                     primary=["Avenger", "Avenger"],
                     secondary=["Harbinger"],
@@ -282,10 +282,10 @@ class CombinedTesting(unittest.TestCase):
                 count=2,
                 ships=[ship1, ship2],
                 position=[0.0, 0.0, 0.0],
-                arrival_cue="( true )",
+                arrival_condition="( true )",
             )
         ]
-        mission.player_setup.extra_weapons = ["Tsunami"]
+        mission.player_setup.additional_weapons = ["Tsunami"]
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output_path = Path(tmpdir) / "mission.fs2"
@@ -339,8 +339,8 @@ entities:
     - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: |
+      position: [0, 0, 0]
+      arrival_condition: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -521,7 +521,7 @@ class VoiceManagerTesting(unittest.TestCase):
     def setUp(self):
         self.mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Player Ship", extra_ships=[]),
+            player_setup=PlayerSetup(start_ship="Player Ship", additional_ship_choices=[]),
             environment=Environment(),
         )
         self.temp_dir = tempfile.TemporaryDirectory()
@@ -534,9 +534,9 @@ class VoiceManagerTesting(unittest.TestCase):
     def test_determinism(self):
         """Test that re-running with same input produces same filenames (determinism)."""
         self.mission.messages = [
-            Message(name="Alpha", message="Msg 1", voice_name="Voice1"),
-            Message(name="Alpha", message="Msg 2", voice_name="Voice1"),
-            Message(name="Alpha", message="Msg 3", voice_name="Voice1"),
+            Message(name="Alpha", text="Msg 1", voice_name="Voice1"),
+            Message(name="Alpha", text="Msg 2", voice_name="Voice1"),
+            Message(name="Alpha", text="Msg 3", voice_name="Voice1"),
         ]
 
         vm1 = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
@@ -554,7 +554,7 @@ class VoiceManagerTesting(unittest.TestCase):
         """Test strict truncation to 25 chars for stem."""
         long_name = "this_is_a_very_long_name_that_exceeds_limit"
         self.mission.messages = [
-            Message(name=long_name, message="Msg", voice_name="Voice1")
+            Message(name=long_name, text="Msg", voice_name="Voice1")
         ]
 
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
@@ -571,9 +571,9 @@ class VoiceManagerTesting(unittest.TestCase):
         """Test truncation when suffix is added."""
         long_name = "this_is_a_very_long_name_that_exceeds_limit"
         self.mission.messages = [
-            Message(name=long_name, message="Msg 1", voice_name="Voice1"),
-            Message(name=long_name, message="Msg 2", voice_name="Voice1"),
-            Message(name=long_name, message="Msg 3", voice_name="Voice1"),
+            Message(name=long_name, text="Msg 1", voice_name="Voice1"),
+            Message(name=long_name, text="Msg 2", voice_name="Voice1"),
+            Message(name=long_name, text="Msg 3", voice_name="Voice1"),
         ]
 
         vm = VoiceManager(self.mission, self.fsif_path, self.tts_settings)
@@ -594,7 +594,7 @@ class VoiceManagerTesting(unittest.TestCase):
         """Test logic with longer suffixes (e.g. _10)."""
         long_name = "test_limit"
         msgs = [
-            Message(name=long_name, message=f"Msg {i}", voice_name="Voice1")
+            Message(name=long_name, text=f"Msg {i}", voice_name="Voice1")
             for i in range(12)
         ]
 
@@ -606,7 +606,7 @@ class VoiceManagerTesting(unittest.TestCase):
 
         vlong = "aaaaaaaaaaaaaaaaaaaaaaaaa"
         msgs = [
-            Message(name=vlong, message=f"Msg {i}", voice_name="Voice1")
+            Message(name=vlong, text=f"Msg {i}", voice_name="Voice1")
             for i in range(12)
         ]
 

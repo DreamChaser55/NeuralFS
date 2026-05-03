@@ -22,24 +22,24 @@ class EnvironmentChecksMixin:
                 )
 
         # Background bitmaps
-        for i, s in enumerate(env.starbitmaps):
+        for i, s in enumerate(env.background_bitmaps):
             if s.texture not in self.allowed_backgrounds:
                  self.log_error(f"Invalid background bitmap texture '{s.texture}' in environment.background_bitmaps[{i}]")
 
-        if env.nebula and env.nebula.enabled and env.starbitmaps:
+        if env.nebula and env.nebula.enabled and env.background_bitmaps:
             self.log_error(f"environment.background_bitmaps must be empty when full nebula is enabled (environment.nebula.enabled: true)")
 
         mission_flags_lower = {str(flag).strip().lower() for flag in self.mission.mission_info.flags}
         is_subspace_mission = 'subspace' in mission_flags_lower
         is_full_nebula_mission = bool(env.nebula and env.nebula.enabled)
 
-        if is_subspace_mission and env.starbitmaps:
+        if is_subspace_mission and env.background_bitmaps:
             self.log_error(f"environment.background_bitmaps must be empty in subspace missions (they are not visible in subspace)")
 
         # Sparse normal-space background advisory
         if not is_subspace_mission and not is_full_nebula_mission:
             background_nebula_count = sum(
-                1 for bitmap in env.starbitmaps if bitmap.texture in self.allowed_nebulae_bitmaps
+                1 for bitmap in env.background_bitmaps if bitmap.texture in self.allowed_nebulae_bitmaps
             )
             if background_nebula_count < 3:
                 self.log_warning(
@@ -53,23 +53,23 @@ class EnvironmentChecksMixin:
             if env.nebula.pattern and env.nebula.pattern not in self.allowed_nebula_patterns:
                 self.log_error(f"Invalid nebula pattern '{env.nebula.pattern}'")
             
-            for p in env.nebula.poofs:
+            for p in env.nebula.cloud_sprites:
                 if p not in self.allowed_nebula_poofs:
                     self.log_error(f"Invalid nebula cloud_sprites entry '{p}'")
 
         # Asteroid/Debris Field Logic
         af = env.asteroid_field
         if af:
-            if af.targets:
-                if not (af.type == 'active' and af.genre == 'asteroid'):
-                    self.log_warning(f"The asteroid field defines target_ships but they will be ignored (behavior='{af.type}', object_type='{af.genre}'). target_ships are only supported for active asteroid fields.")
+            if af.target_ships:
+                if not (af.behavior == 'active' and af.object_type == 'asteroid'):
+                    self.log_warning(f"The asteroid field defines target_ships but they will be ignored (behavior='{af.behavior}', object_type='{af.object_type}'). target_ships are only supported for active asteroid fields.")
 
     def validate_asteroid_targets(self):
         af = self.mission.environment.asteroid_field
-        if not af or not af.targets:
+        if not af or not af.target_ships:
             return
             
         valid_ships = {s.name for s in self.mission.ships}
-        for t in af.targets:
+        for t in af.target_ships:
             if t not in valid_ships:
                 self.log_error(f"Asteroid field target '{t}' does not exist.")

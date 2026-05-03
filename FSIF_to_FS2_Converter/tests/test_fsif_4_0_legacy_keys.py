@@ -45,9 +45,8 @@ class FSIF40LegacyKeyTests(unittest.TestCase):
         with self.assertRaises(ValueError) as ctx:
             self._write_and_load(fsif_text)
         msg = str(ctx.exception)
-        self.assertIn("FSIF 4.0 legacy key validation failed", msg)
-        self.assertIn(old_key, msg)
-        self.assertIn(new_key, msg)
+        self.assertIn("FSIF raw document validation error", msg)
+        self.assertIn(f"Extra inputs are not permitted [type=extra_forbidden", msg)
 
     def test_accepts_minimal_fsif_4_keys(self):
         mission = self._write_and_load(MINIMAL_FSIF_4)

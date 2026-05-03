@@ -26,13 +26,13 @@ class SpatialChecksMixin:
         # Build a ship-name → Ship lookup for arrival_anchor resolution.
         ship_map = {s.name: s for s in self.mission.ships}
 
-        def resolve_effective_position(arrival_location, arrival_anchor, own_position, visited=None):
+        def resolve_effective_position(arrival_method, arrival_anchor, own_position, visited=None):
             """
-            Return the effective starting position of a ship or wing, taking arrival_location
+            Return the effective starting position of a ship or wing, taking arrival_method
             into account.  Returns None when the object has no definite initial position and
             should therefore be excluded from distance checks.
             """
-            arr_loc = (arrival_location or "Hyperspace").strip().lower()
+            arr_loc = (arrival_method or "Hyperspace").strip().lower()
 
             if arr_loc == "hyperspace":
                 return own_position
@@ -49,13 +49,13 @@ class SpatialChecksMixin:
                 if anchor_ship is None:
                     return None  # Anchor not found; skip
                 return resolve_effective_position(
-                    anchor_ship.arrival_location,
+                    anchor_ship.arrival_method,
                     anchor_ship.arrival_anchor,
-                    anchor_ship.location,
+                    anchor_ship.position,
                     visited,
                 )
 
-            # Any other directional arrival_location (e.g. "Near Ship", "In front of ship"):
+            # Any other directional arrival_method (e.g. "Near Ship", "In front of ship"):
             # the object spawns relative to a moving anchor — no definite initial position.
             return None
 
@@ -70,7 +70,7 @@ class SpatialChecksMixin:
         for ship in self.mission.ships:
             if ship.name in wing_member_names:
                 continue
-            eff_pos = resolve_effective_position(ship.arrival_location, ship.arrival_anchor, ship.location)
+            eff_pos = resolve_effective_position(ship.arrival_method, ship.arrival_anchor, ship.position)
             if eff_pos is not None:
                 positioned_objects.append(("Ship", ship.name, eff_pos))
 
@@ -78,9 +78,9 @@ class SpatialChecksMixin:
             wing_own_position = wing.position
             if wing_own_position is None and wing.ships:
                 # Defensive fallback: use the leader position if the authored wing centroid is unexpectedly unavailable.
-                wing_own_position = wing.ships[0].location
+                wing_own_position = wing.ships[0].position
 
-            eff_pos = resolve_effective_position(wing.arrival_location, wing.arrival_anchor, wing_own_position)
+            eff_pos = resolve_effective_position(wing.arrival_method, wing.arrival_anchor, wing_own_position)
             if eff_pos is not None:
                 positioned_objects.append(("Wing", wing.name, eff_pos))
 
@@ -143,12 +143,12 @@ class SpatialChecksMixin:
         positioned_objects = []
 
         for ship in self.mission.ships:
-            positioned_objects.append(("Ship", ship.name, ship.location))
+            positioned_objects.append(("Ship", ship.name, ship.position))
 
         for wing in self.mission.wings:
             wing_position = wing.position
             if wing_position is None and wing.ships:
-                wing_position = wing.ships[0].location
+                wing_position = wing.ships[0].position
             if wing_position is not None:
                 positioned_objects.append(("Wing", wing.name, wing_position))
 
@@ -192,29 +192,29 @@ class SpatialChecksMixin:
             if s.name in wing_members:
                 continue
             
-            arr_loc = s.arrival_location.strip().lower()
+            arr_loc = s.arrival_method.strip().lower()
             if arr_loc != "hyperspace":
                 continue
                 
-            obb = self._get_world_obb(s.ship_class, s.orientation, s.location, padding=0.0)
+            obb = self._get_world_obb(s.ship_class, s.orientation, s.position, padding=0.0)
             positioned_objects.append({
                 'type': 'Ship',
                 'name': s.name,
-                'pos': s.location,
+                'pos': s.position,
                 'obb': obb,
                 'docked_with': s.docked_with
             })
 
         # 2. Collect all wings arriving via Hyperspace
         for w in self.mission.wings:
-            arr_loc = w.arrival_location.strip().lower()
+            arr_loc = w.arrival_method.strip().lower()
             if arr_loc != "hyperspace":
                 continue
                 
             # Use wing position, fallback to leader's position
             pos = w.position
             if pos is None and w.ships:
-                pos = w.ships[0].location
+                pos = w.ships[0].position
                 
             if pos is None:
                 continue
@@ -386,12 +386,12 @@ class SpatialChecksMixin:
 
         ships_with_waypoints = set()
         for w in self.mission.wings:
-            if w.ai_goals and wp_regex.search(w.ai_goals):
+            if w.initial_orders and wp_regex.search(w.initial_orders):
                 for s in w.ships:
                     ships_with_waypoints.add(s.name)
                     
         for s in self.mission.ships:
-            if s.ai_goals and wp_regex.search(s.ai_goals):
+            if s.initial_orders and wp_regex.search(s.initial_orders):
                 ships_with_waypoints.add(s.name)
 
         ship_map = {s.name: s for s in self.mission.ships}
@@ -407,15 +407,15 @@ class SpatialChecksMixin:
             if not s:
                 return None
                 
-            arr_loc = s.arrival_location.strip().lower()
+            arr_loc = s.arrival_method.strip().lower()
             if arr_loc == "hyperspace":
-                return s.location
+                return s.position
             elif arr_loc == "docking bay":
                 if s.arrival_anchor:
                     anchor_loc = get_effective_initial_location(s.arrival_anchor, visited)
                     if anchor_loc is not None:
                         return anchor_loc
-                return s.location
+                return s.position
             else:
                 return None
 
@@ -526,10 +526,10 @@ class SpatialChecksMixin:
                     entity_ship = ship_map.get(entity_name)
                     obs_ship = ship_map.get(obs['name'])
                     
-                    if entity_ship and entity_ship.arrival_location.strip().lower() == "docking bay" and entity_ship.arrival_anchor == obs['name']:
+                    if entity_ship and entity_ship.arrival_method.strip().lower() == "docking bay" and entity_ship.arrival_anchor == obs['name']:
                         continue
                         
-                    if obs_ship and obs_ship.arrival_location.strip().lower() == "docking bay" and obs_ship.arrival_anchor == entity_name:
+                    if obs_ship and obs_ship.arrival_method.strip().lower() == "docking bay" and obs_ship.arrival_anchor == entity_name:
                         continue
 
                     if self._obb_intersects(segment_obb, obs['obb']):
@@ -549,8 +549,8 @@ class SpatialChecksMixin:
         for s in self.mission.ships:
             if s.name in wing_members:
                 continue
-            if s.ai_goals:
-                match = wp_regex.search(s.ai_goals)
+            if s.initial_orders:
+                match = wp_regex.search(s.initial_orders)
                 if match:
                     path_name = match.group(1) or match.group(2)
                     my_radius = self._get_ship_radius(s.ship_class)
