@@ -285,18 +285,18 @@ class MissionLoader:
             f"Author these values directly on a standalone ship, or on the corresponding wing if the ship is part of a wing."
         )
 
-    def _normalize_ai_goals(self, entity_name: str, raw_goals_str: str) -> str:
+    def _normalize_initial_orders(self, entity_name: str, raw_orders_str: str) -> str:
         """
         Validates and wraps AI goals (initial_orders in FSIF 4.0).
         """
-        goals_raw = str(raw_goals_str).strip()
+        goals_raw = str(raw_orders_str).strip()
         # FSIF 2.2: Reject explicit ( goals ... ) wrapper
         cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
         if cleaned:
             if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
                 raise ValueError(f"{entity_name} initial_orders must NOT be wrapped in '( goals ... )'.")
             return f"( goals\n{goals_raw}\n)"
-        return raw_goals_str
+        return raw_orders_str
 
     def _process_wing(self, wing_data: Dict[str, Any], player_setup: PlayerSetup):
         """
@@ -339,7 +339,7 @@ class MissionLoader:
         # Validate and wrap initial_orders (FSIF 4.0)
         orders_key = 'initial_orders' if 'initial_orders' in wing_data else None
         if orders_key:
-            wing_data[orders_key] = self._normalize_ai_goals(
+            wing_data[orders_key] = self._normalize_initial_orders(
                 f"Wing '{wing_data.get('name')}'",
                 wing_data[orders_key]
             )
@@ -389,7 +389,7 @@ class MissionLoader:
             props.update(t_props)
         props.update(ship_data)
         
-        if 'location' not in props and 'position' not in props:
+        if 'position' not in props:
              raise ValueError(f"Ship '{props.get('name')}' missing required 'position'.")
         
         # Normalize custom subsystems
@@ -413,7 +413,7 @@ class MissionLoader:
         # Validate and wrap initial_orders (FSIF 4.0)
         orders_key = 'initial_orders' if 'initial_orders' in props else None
         if orders_key:
-            props[orders_key] = self._normalize_ai_goals(
+            props[orders_key] = self._normalize_initial_orders(
                 f"Ship '{props.get('name')}'",
                 props[orders_key]
             )

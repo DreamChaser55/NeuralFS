@@ -1,6 +1,6 @@
 ## FSIF 4.0 clarity upgrade plan
 
-I recommend a breaking version bump from `fsif_version: "3.0"` to `"4.0"`, with the converter accepting FSIF 4.0 only after the migration. This keeps the schema clean and avoids carrying aliases unless you specifically want transitional compatibility.
+I recommend a breaking version bump from `fsif_version: "3.0"` to `"4.0"`, with the converter accepting FSIF 4.0 only after the migration. This keeps the schema clean and avoids carrying aliases.
 
 The guiding rule should be:
 
@@ -122,12 +122,6 @@ Modify:
 - `FSIF_to_FS2_Converter/data_models.py`
 - `FSIF_to_FS2_Converter/mission_loader.py`
 
-Approach:
-
-- Prefer clean FSIF 4.0 field names externally.
-- Internal Python attributes can either be renamed fully or mapped during loading where that reduces risk.
-- Since this is breaking and experimental, I would mostly rename internal attributes too where practical, but keep low-level FS2 writer comments showing emitted `.fs2` equivalents.
-
 ### 3. Update writer and validators
 Modify all references in:
 
@@ -140,7 +134,7 @@ Modify all references in:
 - `FSIF_to_FS2_Converter/validator/sexp_checks.py`
 - `FSIF_to_FS2_Converter/validator/misc.py`
 - `FSIF_to_FS2_Converter/validate_sexp_scalar_styles.py`
-- `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/advanced_sexp_validator.py` if it enumerates SEXP fields by old names
+- `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/advanced_sexp_validator.py`
 
 ### 4. Update all docs and examples
 Modify documentation:
@@ -185,7 +179,7 @@ If tests exist and are practical, run the relevant converter tests too.
 The FSIF 4.0 clarity pass is complete when:
 
 - The schema accepts only `fsif_version: "4.0"`.
-- Poorly named external YAML fields are replaced with clearer names.
+- Poorly named external YAML fields are replaced with clearer names, internal variable names are replaced to match.
 - Docs explain any remaining FSO-specific terms.
 - Demo missions use the new field names and convert successfully.
 - Migration guide includes clear 3.0 → 4.0 instructions.

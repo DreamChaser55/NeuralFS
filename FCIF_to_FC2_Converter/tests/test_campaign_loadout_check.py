@@ -141,8 +141,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: ["ML-16 Laser"]
         secondary: ["MX-50"]
@@ -199,8 +199,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Hercules"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
 player_setup:
   start_ship: "Alpha 1"
 """
@@ -219,8 +219,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: ["Prometheus"]
         secondary: []
@@ -246,8 +246,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: []
         secondary: ["Hornet"]
@@ -273,8 +273,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Hercules"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: ["Banshee"]
         secondary: []
@@ -304,7 +304,7 @@ entities:
     - name: "Alpha 1"
       class: "GTF Hercules"
       team: "Friendly"
-      location: [0, 0, 0]
+      position: [0, 0, 0]
       weapons:
         primary: ["Prometheus"]
 player_setup:
@@ -370,8 +370,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: ["ML-16 Laser"]
         secondary: ["MX-50"]
@@ -405,8 +405,8 @@ entities:
     - name: "Alpha 1"
       class: "GTF Hercules"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: "( true )"
       weapons:
         primary: ["Banshee"]
         secondary: []
