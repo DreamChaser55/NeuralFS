@@ -45,6 +45,9 @@ FCIF Converter docs
 Fiction Viewer Validator docs
 - README.md: ../Fiction_Viewer_Validator/README.md
 
+Parsers and Generators docs
+- parsers_and_generators.md: ../common/parsers_and_generators/parsers_and_generators.md
+
 References
 - FSO Tokens Reference: ./FSO and fs2 format/FSO_Tokens_Reference.md
   - Practical list of valid FSO tokens/literals (canonical spellings)
