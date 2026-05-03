@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Dict, Set, Optional, Union, List
 
 from data_models import Mission, Message, BriefingStage, DebriefingStage, CommandBriefingStage
-from utils import slugify_filename, ensure_wav_extension
+from common.utils import slugify_filename, ensure_wav_extension
 
 class VoiceManager:
     def __init__(self, mission: Mission, fsif_path: Path, tts_settings: dict):

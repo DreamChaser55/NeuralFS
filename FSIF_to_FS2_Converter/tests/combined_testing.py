@@ -8,6 +8,8 @@ from pathlib import Path
 _current_dir = Path(__file__).resolve().parent
 _parent_dir = _current_dir.parent
 _repo_root = _parent_dir.parent
+if str(_repo_root) not in sys.path:
+    sys.path.insert(0, str(_repo_root))
 if str(_parent_dir) not in sys.path:
     sys.path.insert(0, str(_parent_dir))
 
@@ -26,7 +28,7 @@ from data_models import (
     pack_ambient_light_rgb,
 )
 from fs2_writer import FS2Writer
-from utils import sanitize_path
+from common.utils import sanitize_path
 from mission_loader import load_mission_from_fsif
 from validator import Validator
 from voice_manager import VoiceManager

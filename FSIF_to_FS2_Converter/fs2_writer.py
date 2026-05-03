@@ -4,9 +4,9 @@
 import textwrap
 import logging
 from data_models import Mission, DEFAULT_ORIENTATION, pack_ambient_light_rgb
-from utils import calculate_briefing_camera_height
+from common.utils import calculate_briefing_camera_height
 import fs_flags_constants
-import fs_data
+from common import fs_data
 import math
 
 logger = logging.getLogger(__name__)

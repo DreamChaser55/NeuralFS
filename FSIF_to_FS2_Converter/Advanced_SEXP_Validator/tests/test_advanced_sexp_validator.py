@@ -10,9 +10,11 @@ converter_dir = validator_dir.parent
 
 sys.path.insert(0, str(converter_dir))
 sys.path.insert(0, str(validator_dir))
+repo_root = converter_dir.parent
+sys.path.insert(0, str(repo_root))
 
 from advanced_sexp_validator import SexpParser, SexpValidator, MissionContext, SexpReturnType
-import fs_data
+from common import fs_data
 
 class TestAdvancedSexpValidator(unittest.TestCase):
     def setUp(self):

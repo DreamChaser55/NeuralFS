@@ -1,7 +1,7 @@
 import re
 from typing import Set
 import fs_flags_constants
-import fs_data
+from common import fs_data
 try:
     from weapons_compatibility_data import WEAPON_COMPATIBILITY
 except ImportError:

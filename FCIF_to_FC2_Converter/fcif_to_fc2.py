@@ -10,8 +10,8 @@ from pydantic import AfterValidator, BaseModel, Field, ConfigDict, ValidationErr
 _root_dir = Path(__file__).resolve().parent.parent
 if str(_root_dir) not in sys.path:
     sys.path.insert(0, str(_root_dir))
-from FSIF_to_FS2_Converter.utils import sanitize_path
-from FSIF_to_FS2_Converter.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS
+from common.utils import sanitize_path
+from common.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS
 
 SUCCESS_LEVEL = 25
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")

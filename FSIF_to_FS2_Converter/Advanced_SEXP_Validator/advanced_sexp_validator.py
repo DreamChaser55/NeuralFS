@@ -6,7 +6,7 @@ from typing import List, Set, Dict, Any, Optional, Union
 
 # Try relative imports (Package Mode)
 try:
-    from .. import fs_data
+    from common import fs_data
     from .. import fs_flags_constants
     from .generated_code.sexp_definitions import SEXP_DEFINITIONS, INT_MAX
     from .generated_code.opf_definitions import *
@@ -24,8 +24,12 @@ except (ImportError, ValueError):
     _parent_dir = _current_dir.parent
     if str(_parent_dir) not in sys.path:
         sys.path.append(str(_parent_dir))
+        
+    _root_dir = _parent_dir.parent
+    if str(_root_dir) not in sys.path:
+        sys.path.append(str(_root_dir))
 
-    import fs_data
+    from common import fs_data
     import fs_flags_constants
     from generated_code.sexp_definitions import SEXP_DEFINITIONS, INT_MAX
     from generated_code.opf_definitions import *

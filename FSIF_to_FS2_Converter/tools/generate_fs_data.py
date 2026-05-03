@@ -9,8 +9,8 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 DOC_DIR = ROOT_DIR / "Documentation"
 FSO_DOC_DIR = DOC_DIR / "FSO and fs2 format"
 SEXP_DOC_DIR = DOC_DIR / "FSO SEXPs"
-# Output to FSIF_to_FS2_Converter/fs_data.py (one level up)
-OUTPUT_FILE = Path(__file__).resolve().parent.parent / "fs_data.py"
+# Output to common/fs_data.py
+OUTPUT_FILE = Path(__file__).resolve().parent.parent.parent / "common" / "fs_data.py"
 
 def parse_tokens_reference():
     """Parses FSO_Tokens_Reference.md for various lists."""

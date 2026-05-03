@@ -15,7 +15,7 @@ from data_models import (
     AudioSettings
 )
 import briefing_icon_types as brief_types
-from utils import calculate_briefing_camera_height
+from common.utils import calculate_briefing_camera_height
 
 logger = logging.getLogger(__name__)
 

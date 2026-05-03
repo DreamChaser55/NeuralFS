@@ -8,8 +8,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Any, List, Optional
-from utils import slugify_filename, ensure_wav_extension
-from text_styling_utils import strip_text_styling_tags
+from common.utils import slugify_filename, ensure_wav_extension
+from common.text_styling_utils import strip_text_styling_tags
 
 logger = logging.getLogger(__name__)
 

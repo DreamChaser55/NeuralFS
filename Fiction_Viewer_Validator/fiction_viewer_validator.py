@@ -8,13 +8,13 @@ from pathlib import Path
 from typing import List, Optional
 
 
-# Add FSIF_to_FS2_Converter to path to import text_styling_utils
-converter_dir = Path(__file__).parent.parent / "FSIF_to_FS2_Converter"
-if str(converter_dir) not in sys.path:
-    sys.path.append(str(converter_dir))
+# Add root to path to import common utils
+root_dir = Path(__file__).parent.parent
+if str(root_dir) not in sys.path:
+    sys.path.append(str(root_dir))
 
-from text_styling_utils import validate_span_style_tags
-from utils import sanitize_path
+from common.text_styling_utils import validate_span_style_tags
+from common.utils import sanitize_path
 
 
 class FictionViewerValidator:

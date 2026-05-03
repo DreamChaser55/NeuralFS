@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 from typing import Set, Dict, List, Optional
-import fs_data
+from common import fs_data
 import yaml
 from data_models import Mission
 import briefing_icon_types

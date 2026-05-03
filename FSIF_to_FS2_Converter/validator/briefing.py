@@ -1,7 +1,7 @@
 import math
 from typing import Optional
-from utils import calculate_briefing_camera_height
-from text_styling_utils import extract_briefing_style_tags, validate_span_style_tags
+from common.utils import calculate_briefing_camera_height
+from common.text_styling_utils import extract_briefing_style_tags, validate_span_style_tags
 
 class BriefingChecksMixin:
     def _validate_span_style_tags(self, context: str, text: Optional[str]):

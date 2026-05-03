@@ -6,11 +6,17 @@ import os
 import sys
 import logging
 from pathlib import Path
+
+# Inject root directory to sys.path to allow imports from common
+_root_dir = Path(__file__).resolve().parent.parent
+if str(_root_dir) not in sys.path:
+    sys.path.insert(0, str(_root_dir))
+
 from mission_loader import load_mission_with_yaml_root
 from fs2_writer import FS2Writer
 from validator import Validator
 from voice_manager import VoiceManager
-from utils import sanitize_path
+from common.utils import sanitize_path
 
 # Setup basic module logger
 logger = logging.getLogger(__name__)
