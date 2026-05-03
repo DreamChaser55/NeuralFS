@@ -73,8 +73,8 @@ def parse_tokens_reference():
             if line.startswith("Pattern:"):
                 parts = line.replace("Pattern:", "").split(",")
                 data["nebula_patterns"].update(p.strip() for p in parts if p.strip())
-            if line.startswith("Poofs:"):
-                parts = line.replace("Poofs:", "").split(",")
+            if line.startswith("Cloud Sprites:"):
+                parts = line.replace("Cloud Sprites:", "").split(",")
                 data["nebula_poofs"].update(p.strip() for p in parts if p.strip())
                 
     # Weapons

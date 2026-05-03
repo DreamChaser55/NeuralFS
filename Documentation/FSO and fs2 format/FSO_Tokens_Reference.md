@@ -31,7 +31,7 @@ FSO engine theoretically supports a "Neutral" IFF team, but its implementation i
 
 Context: `team`.
 
-### Arrival/Departure Locations
+### Arrival/Departure Methods
 
 #### Arrival and Departure
 - Hyperspace
@@ -243,6 +243,7 @@ These fields are authored in `entities.ships` and `entities.wings`.
 - `departure_method`: Departure method/location token.
   - Values: "Hyperspace", "Docking Bay".
 - `departure_anchor`: Anchor for Docking Bay departure. Must be a docking bay.
+- `departure_delay`: Integer delay before departure (seconds).
 - `departure_condition`: SEXP controlling departure (Boolean expression).
 
 ### Waypoints and Jump Nodes
@@ -522,7 +523,7 @@ Note: If `icons[*].map_position` is omitted, it defaults to `[0, 0]`.
 
 ### Volumetric (full) nebula parameters
 Pattern: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange
-Poofs: PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
+Cloud Sprites: PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
 Lighting Storm: none, s_standard, s_medium, s_active, s_emp
 
 **End of reference**
