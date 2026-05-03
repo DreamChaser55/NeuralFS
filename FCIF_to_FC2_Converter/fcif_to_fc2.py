@@ -11,33 +11,13 @@ _root_dir = Path(__file__).resolve().parent.parent
 if str(_root_dir) not in sys.path:
     sys.path.insert(0, str(_root_dir))
 from common.utils import sanitize_path
+from common.validation_utils import AsciiStr
 from common.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS
 
 SUCCESS_LEVEL = 25
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
 
 logger = logging.getLogger(__name__)
-
-# ---------------------------------------------------------------------------
-# AsciiStr: a Pydantic Annotated type that enforces ASCII-only strings.
-# Applied to every FSO-facing string field so validity is guaranteed at
-# construction time ("Parse, don't validate").
-# ---------------------------------------------------------------------------
-
-def _ascii_check(v: str) -> str:
-    """AfterValidator: raises ValueError if *v* contains any non-ASCII character."""
-    if v.isascii():
-        return v
-    offenders: list[str] = []
-    for index, ch in enumerate(v):
-        if ord(ch) > 127:
-            offenders.append(f"{repr(ch)} (U+{ord(ch):04X}, index {index})")
-    details = ", ".join(offenders[:5])
-    if len(offenders) > 5:
-        details += f", ... (+{len(offenders) - 5} more)"
-    raise ValueError(f"contains non-ASCII character(s): {details}")
-
-AsciiStr = Annotated[str, AfterValidator(_ascii_check)]
 
 # --- FCIF Data Models ---
 

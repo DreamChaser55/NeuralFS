@@ -82,25 +82,17 @@ class FictionViewerValidator:
         FSO only supports the 7-bit ASCII range reliably; non-ASCII bytes will
         appear garbled or cause parsing issues in the engine.
         """
-        offenders = []
-        for index, byte_val in enumerate(data):
-            if byte_val > 127:
-                offenders.append(f"0x{byte_val:02X} (byte offset {index})")
-
-        if not offenders:
-            return
-
-        details = ", ".join(offenders[:5])
-        if len(offenders) > 5:
-            details += f", ... (+{len(offenders) - 5} more)"
-
-        self.log_error(
-            f"Non-ASCII byte(s) found — FSO does not support non-ASCII "
-            f"characters reliably. Replace them with ASCII equivalents "
-            f'(e.g. use \'-\' instead of em-dash, \'"\' instead of curly quotes, '
-            f"'...' instead of the ellipsis character). "
-            f"Offending byte(s): {details}"
-        )
+        from common.validation_utils import find_non_ascii_characters
+        offenders_details = find_non_ascii_characters(data)
+        
+        if offenders_details:
+            self.log_error(
+                f"Non-ASCII byte(s) found — FSO does not support non-ASCII "
+                f"characters reliably. Replace them with ASCII equivalents "
+                f'(e.g. use \'-\' instead of em-dash, \'"\' instead of curly quotes, '
+                f"'...' instead of the ellipsis character). "
+                f"Offending byte(s): {offenders_details}"
+            )
 
     def _check_fiction_viewer_string(self, text: str):
         """

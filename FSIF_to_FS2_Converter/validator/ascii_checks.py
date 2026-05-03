@@ -1,4 +1,5 @@
 from typing import Optional, List
+from common.validation_utils import find_non_ascii_characters
 
 class AsciiChecksMixin:
     def _validate_ascii_text(self, path: str, text: Optional[str]):
@@ -11,23 +12,9 @@ class AsciiChecksMixin:
         if text is None:
             return
 
-        value = str(text)
-        if value.isascii():
-            return
-
-        offenders = []
-        for index, ch in enumerate(value):
-            if ord(ch) > 127:
-                offenders.append(f"{repr(ch)} (U+{ord(ch):04X}, index {index})")
-
-        if not offenders:
-            return
-
-        details = ", ".join(offenders[:5])
-        if len(offenders) > 5:
-            details += f", ... (+{len(offenders) - 5} more)"
-
-        self.log_error(f"{path} contains non-ASCII character(s): {details}")
+        offenders_details = find_non_ascii_characters(str(text))
+        if offenders_details:
+            self.log_error(f"{path} contains non-ASCII character(s): {offenders_details}")
 
     def _validate_xstr_text(self, path: str, text: Optional[str]):
         """
