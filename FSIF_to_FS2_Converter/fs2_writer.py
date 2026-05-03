@@ -373,7 +373,7 @@ class FS2Writer:
         # Track raw calculated demands
         weapon_demand = {}
         
-        # Track max possible capacities to satisfy 'extra_weapons'
+        # Track max possible capacities to satisfy 'additional_weapons'
         total_primary_banks_demand = 0
         all_secondary_bank_capacities = []
         
