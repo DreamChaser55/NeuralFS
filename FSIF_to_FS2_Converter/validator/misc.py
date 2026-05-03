@@ -80,7 +80,7 @@ class MiscChecksMixin:
 
     def validate_goals_and_directives(self):
         """
-        Warn if the number of events with directive_text is less than the number of goals.
+        Warn if the number of events with hud_directive_text is less than the number of goals.
         """
         num_goals = len(self.mission.goals)
         if num_goals == 0:
@@ -90,7 +90,7 @@ class MiscChecksMixin:
 
         if num_directives < num_goals:
             self.log_warning(
-                f"Mission has {num_goals} goal(s) but only {num_directives} event(s) with a directive_text. "
+                f"Mission has {num_goals} goal(s) but only {num_directives} event(s) with hud_directive_text. "
                 f"It is highly recommended that every important mission goal has a corresponding "
-                f"event with a directive_text so that the objective is visible on the player's HUD."
+                f"event with hud_directive_text so that the objective is visible on the player's HUD."
             )

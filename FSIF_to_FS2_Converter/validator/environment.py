@@ -21,20 +21,20 @@ class EnvironmentChecksMixin:
                     f"Unless it's intended, set a non-zero angles value (in radians)."
                 )
 
-        # Starbitmaps
+        # Background bitmaps
         for i, s in enumerate(env.starbitmaps):
             if s.texture not in self.allowed_backgrounds:
-                 self.log_error(f"Invalid starbitmap texture '{s.texture}' in environment.starbitmaps[{i}]")
+                 self.log_error(f"Invalid background bitmap texture '{s.texture}' in environment.background_bitmaps[{i}]")
 
         if env.nebula and env.nebula.enabled and env.starbitmaps:
-            self.log_error(f"environment.starbitmaps must be empty when full nebula is enabled (environment.nebula.enabled: true)")
+            self.log_error(f"environment.background_bitmaps must be empty when full nebula is enabled (environment.nebula.enabled: true)")
 
         mission_flags_lower = {str(flag).strip().lower() for flag in self.mission.mission_info.flags}
         is_subspace_mission = 'subspace' in mission_flags_lower
         is_full_nebula_mission = bool(env.nebula and env.nebula.enabled)
 
         if is_subspace_mission and env.starbitmaps:
-            self.log_error(f"environment.starbitmaps must be empty in subspace missions (they are not visible in subspace)")
+            self.log_error(f"environment.background_bitmaps must be empty in subspace missions (they are not visible in subspace)")
 
         # Sparse normal-space background advisory
         if not is_subspace_mission and not is_full_nebula_mission:
@@ -43,8 +43,8 @@ class EnvironmentChecksMixin:
             )
             if background_nebula_count < 3:
                 self.log_warning(
-                    f"This mission has only {background_nebula_count} background nebula "
-                    f"starbitmap(s). Good-looking missions usually include at least 3. "
+                    f"This mission has only {background_nebula_count} background nebula bitmap(s). "
+                    f"Good-looking missions usually include at least 3. "
                     f"Consider adding more background nebulae so the sky does not look too empty."
                 )
 
@@ -55,14 +55,14 @@ class EnvironmentChecksMixin:
             
             for p in env.nebula.poofs:
                 if p not in self.allowed_nebula_poofs:
-                    self.log_error(f"Invalid nebula poof '{p}'")
+                    self.log_error(f"Invalid nebula cloud_sprites entry '{p}'")
 
         # Asteroid/Debris Field Logic
         af = env.asteroid_field
         if af:
             if af.targets:
                 if not (af.type == 'active' and af.genre == 'asteroid'):
-                    self.log_warning(f"The asteroid field defines targets but they will be ignored (type='{af.type}', genre='{af.genre}'). Targets are only supported for Active Asteroid fields.")
+                    self.log_warning(f"The asteroid field defines target_ships but they will be ignored (behavior='{af.type}', object_type='{af.genre}'). target_ships are only supported for active asteroid fields.")
 
     def validate_asteroid_targets(self):
         af = self.mission.environment.asteroid_field

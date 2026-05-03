@@ -47,7 +47,7 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
 
 The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in the `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.
 
-The converter will automatically verify this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha-Epsilon wings, `start_ship`, `extra_ships`, `extra_weapons`).
+The converter will automatically verify this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha-Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`).
 
 For each item that is used by the player but not previously granted, a `[ERROR]` is printed and the conversion process is aborted.
 

@@ -168,6 +168,27 @@ entities: {}
         self.assertTrue(result)
         self.assertFalse(any("[ERROR]" in m for m in msgs), msgs)
 
+    def test_additional_ship_choices_and_weapons_are_checked(self):
+        """FSIF 4.0 additional loadout fields must be included in the campaign check."""
+        fsif = """
+entities: {}
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices:
+    - { class: "GTF Hercules", count: 1 }
+  additional_weapons:
+    - "Hornet"
+"""
+        result, msgs = self._run_check(
+            {"mission_01.fsif": fsif},
+            fcif_ships=[],
+            fcif_weapons=[],
+        )
+
+        self.assertFalse(result)
+        self.assertTrue(any("[ERROR]" in m and "GTF Hercules" in m for m in msgs), msgs)
+        self.assertTrue(any("[ERROR]" in m and "Hornet" in m for m in msgs), msgs)
+
     # -- Error cases -------------------------------------------------------
 
     def test_missing_ship_emits_error(self):

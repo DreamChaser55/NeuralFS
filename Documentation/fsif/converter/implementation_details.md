@@ -9,20 +9,20 @@ Purpose
 
 ## Current behavior
 
-Environment: backgrounds and full nebula are emitted to .fs2. FSIF uses separate environment.suns and environment.starbitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. When environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background starbitmaps but still emits suns (suns remain visible in full-nebula missions).
+Environment: backgrounds and full nebula are emitted to .fs2. FSIF uses separate environment.suns and environment.background_bitmaps lists. Fog is no longer authored in FSIF; the writer always emits `+Fog Near Mult: 1.000000` and `+Fog Far Mult: 1.000000` in `#Mission Info`. Backgrounds are written in `#Background bitmaps` with `$Bitmap List`, +Flags: ( "corrected angles" ). The writer emits all `$Sun` entries first, then all `$Starbitmap` entries (including planets), each with `+Angles` and appropriate +Scale/+ScaleX/+ScaleY and +DivX/+DivY. Ambient light is authored as an RGB triplet `[red, green, blue]`, normalized internally to that same 3-channel representation, and packed back into the single integer required by `$Ambient light level` when writing `.fs2`. The asteroid_field is also written. When environment.nebula.enabled is true, the writer emits +NebAwacs and +Storm in `#Mission Info`, emits +Neb2 and +Neb2 Poofs List in `#Background bitmaps` (after `$Ambient light level` and before `$Bitmap List`), and suppresses background bitmaps but still emits suns (suns remain visible in full-nebula missions).
 
 Fiction Viewer: if `mission_flow.fiction_viewer` is present, the converter emits `#Fiction Viewer` with `$File: <filename>`.
 
-Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks and +Secondary Banks; +Sbank Ammo is emitted when secondary ammo is provided (weapons.secondary_ammo). Custom subsystem states are emitted as `+Subsystem: <name>` with optional `$Damage: <percent>` (percent damaged = 100 - health). A minimal `+Subsystem: Pilot` is always written.
+Ships: per-ship weapons loadouts are emitted in `#Objects` using +Primary Banks and +Secondary Banks; +Sbank Ammo is emitted when secondary ammo is provided (weapons.secondary_ammo_counts). Custom subsystem states are emitted as `+Subsystem: <name>` with optional `$Damage: <percent>` (percent damaged = 100 - health). A minimal `+Subsystem: Pilot` is always written.
 
 Ship flags: +Flags and +Flags2 are emitted from entities.ships[*].flags (single list; the converter routes tokens to the correct bucket automatically). For a complete list of supported flags and their mapping, see `../../FSO and fs2 format/FSO_Tokens_Reference.md`.
 
-Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_priority; emitted when the `escort` flag is present or `escort_priority > 0`; the validator requires the `escort` flag to be set whenever `escort_priority` is non-zero), and +Destroy At (destroy_before_mission > 0).
+Briefing/loadout lock flags (pre-launch): ship-locked/weapons-locked/primaries-locked/secondaries-locked prevent changing class/weapons for that ship in the loadout screen. Operational locks: afterburners-locked disables afterburner usage; lock-all-turrets disables all turrets until freed at runtime. Note: `no-shields` only affects fighters/bombers; it has no effect on larger ships. Related properties supported: +Respawn priority (respawn_priority), +Escort priority (escort_list_priority; emitted when the `escort` flag is present or `escort_list_priority > 0`; the validator requires the `escort` flag to be set whenever `escort_list_priority` is non-zero), and +Destroy At (destroyed_before_mission_seconds > 0).
 
-AI goals: wing-level and per-ship ai_goals are emitted.
+AI goals: wing-level and per-ship initial_orders are emitted.
 
 Wings placement:
-- Wings carry a single centroid position (entities.wings[*].position). The converter computes individual ship locations during loading by arranging wing members in a straight line along the X axis, centered on the centroid, spaced 50 m apart by default (optionally overridden by a per-wing spacing value).
+- Wings carry a single centroid position (entities.wings[*].position). The converter computes individual ship locations during loading by arranging wing members in a straight line along the X axis, centered on the centroid, spaced 50 m apart by default (optionally overridden by a per-wing `member_spacing` value).
 
 Wings waves: supported. Emits `$Waves`, `$Wave Threshold`, and optional `+Wave Delay Min`/`+Wave Delay Max` and `+Arrival delay`; `$Special Ship` is always 0 (wing leader is the first ship).
 
@@ -30,13 +30,13 @@ Localization: XSTR wrapping is applied to mission name/description, goals $Messa
 
 Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
 
-Validation: If the player's starting ship is standalone (not part of any wing), its arrival_cue must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
+Validation: If the player's starting ship is standalone (not part of any wing), its `arrival_condition` must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
 
 Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list).
 
 Music: when a top-level `audio` mapping is present in FSIF, the converter emits `#Music` with `$Event Music` and `$Briefing Music`. Both values are written verbatim (e.g., `mission_music: "1: Genesis"` -> `$Event Music: 1: Genesis`, `briefing_music: "Brief1"` -> `$Briefing Music: Brief1`). If neither is provided, `#Music` is omitted.
 
-Reinforcements: FSIF uses canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_cue` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `( true )` arrival cues. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
+Reinforcements: FSIF uses canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_condition` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `arrival_condition: ( true )`. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
 
 Reinforcement $Type emission: The converter chooses `$Type` automatically; authors should not specify a type in FSIF. Rules:
 - Wing entry → $Type: Attack/Protect
@@ -44,12 +44,12 @@ Reinforcement $Type emission: The converter chooses `$Type` automatically; autho
 - All other ship entries → $Type: Attack/Protect
 Any authored `type` field in FSIF is ignored; overriding the auto-detected reinforcement type is not supported.
 
-Events: if `mission_flow.events[*].directive_text` is present, the converter emits `+Objective: XSTR("...", -1)` under `#Events`. The directive appears on the HUD when it becomes possible for the player to fulfill the event and is greyed out once the event becomes true.
+Events: if `mission_flow.events[*].hud_directive_text` is present, the converter emits `+Objective: XSTR("...", -1)` under `#Events`. The directive appears on the HUD when it becomes possible for the player to fulfill the event and is greyed out once the event becomes true.
 
 Waypoints/Jump Nodes: waypoint lists are emitted; top-level `jump_nodes` are emitted in `#Waypoints` as `$Jump Node` and `$Jump Node Name` (not counted in "lists total").
 
 Docking: Pre-spawn inter-ship docking pairs are supported. Author docking only on the docker ship via `dock`. The converter:
-- validates the pair and strictly enforces that the dockee (leader) has `arrival_cue: ( true )` and the docker (follower) has `( false )`; any other configuration (both `( true )`, both `( false )`, or docker `( true )` / dockee `( false )`) is a hard error that aborts conversion,
+- validates the pair and strictly enforces that the dockee (leader) has `arrival_condition: ( true )` and the docker (follower) has `arrival_condition: ( false )`; any other configuration (both `( true )`, both `( false )`, or docker `( true )` / dockee `( false )`) is a hard error that aborts conversion,
 - emits `+Docked With`, `$Docker Point` (point on DOCKEE), and `$Dockee Point` (point on DOCKER) per FS2's reversed naming,
 - aborts conversion with an error if either ship in the docking pair is the player start ship; player ships cannot be pre-spawn docked.
 Only pairs (2 ships) are supported; multi-ship docking trees are not supported in this version.
@@ -59,7 +59,7 @@ Subspace missions: Author "subspace" in mission_info.flags to mark a mission as 
 
 Versioning:
 - The converter currently emits `$Version: 23.1` in `#Mission Info`. This is the FSO version NeuralFS was developed against.
-- **FSIF input support:** the converter accepts FSIF version `"3.0"` only.
+- **FSIF input support:** the converter accepts FSIF version `"4.0"` only.
   - Files authored against older FSIF versions must be updated before conversion; see the FSIF Migration Guide.
 
 ---
@@ -162,12 +162,12 @@ The validator checks the following areas:
 *   **Completeness**: Requires both `docker_point` and `dockee_point`.
 *   **Self-Docking**: Checks if a ship tries to dock with itself.
 *   **Conflicts**: Ensures ships aren't involved in multiple pre-spawn docking definitions.
-*   **Arrival Cues**: Strictly enforces that the **Dockee (Leader)** has `arrival_cue: ( true )` and the **Docker (Follower)** has `( false )`. Invalid configurations cause an error.
+*   **Arrival Conditions**: Strictly enforces that the **Dockee (Leader)** has `arrival_condition: ( true )` and the **Docker (Follower)** has `arrival_condition: ( false )`. Invalid configurations cause an error.
 *   **Player Constraints**: Player ships cannot be involved in pre-spawn docking.
 
 #### **Weapon Supply and Demand**:
 *   The converter automatically calculates and generates the required primary and secondary weapon pool for all **Friendly** player starting wings, ensuring adequate supply: it reads secondary weapon bank capacities of all fighters and bombers and secondary weapon sizes, goes over the player wings and determines the weapon supplies needed to fill the banks with specified weapons. Before writing the values into .fs2, they are increased by a 25% safety margin.
-*   If the FSIF author specifies `extra_weapons` under `player_setup`, the converter calculates the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons. For primary extra weapons, the demand is based on the total number of primary banks across all ships in the player wings. For secondary extra weapons, the demand is based on the number of missiles that can fit into all secondary banks across all ships in the player wings (calculated by dividing each bank's capacity by the weapon's cargo size). This demand is merged with the existing demand (using the maximum value to avoid unnecessary double-counting) and also receives the 25% safety margin before emission.
+*   If the FSIF author specifies `additional_weapons` under `player_setup`, the converter calculates the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons. For primary extra weapons, the demand is based on the total number of primary banks across all ships in the player wings. For secondary extra weapons, the demand is based on the number of missiles that can fit into all secondary banks across all ships in the player wings (calculated by dividing each bank's capacity by the weapon's cargo size). This demand is merged with the existing demand (using the maximum value to avoid unnecessary double-counting) and also receives the 25% safety margin before emission.
 
 #### **Detection of Empty Hardpoints**:
 *   Checks all fighters and bombers for primary/secondary hardpoints with unassigned weapons: checks if the number of specified primary/secondary weapons is different than the number of hardpoints on the ship. Empty hardpoints can cause errors in FSO.
@@ -183,12 +183,12 @@ The validator checks the following areas:
 *   Checks for valid team names, message priorities, and mission flags.
 *   Validates background bitmaps and nebula patterns.
 *   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
-*   **Sparse background advisory**: warns when a non-subspace, non-full-nebula mission has fewer than 3 nebula starbitmaps in `environment.starbitmaps`. A sky with very few background nebulae looks unusually empty.
-*   **Starbitmaps forbidden in subspace or full-nebula missions**: emits an error if `environment.starbitmaps` is non-empty when the `subspace` mission flag is set or when `environment.nebula.enabled: true` — starbitmaps are not visible in those contexts.
-*   **Mission scale recommendation**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any authored `arrival_distance` exceeds 20,000 meters, as large mission spaces lead to long travel times. The check is **arrival-location-aware**:
-    *   Objects arriving via `Hyperspace` use their authored `location`/`position` directly.
+*   **Sparse background advisory**: warns when a non-subspace, non-full-nebula mission has fewer than 3 nebula bitmaps in `environment.background_bitmaps`. A sky with very few background nebulae looks unusually empty.
+*   **Background bitmaps forbidden in subspace or full-nebula missions**: emits an error if `environment.background_bitmaps` is non-empty when the `subspace` mission flag is set or when `environment.nebula.enabled: true` — background bitmaps are not visible in those contexts.
+*   **Mission scale recommendation**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any authored `arrival_distance` exceeds 20,000 meters, as large mission spaces lead to long travel times. The check is **arrival-method-aware**:
+    *   Objects arriving via `Hyperspace` use their authored `position` directly.
     *   Objects arriving via `Docking Bay` inherit the effective position of their `arrival_anchor` ship (resolved recursively with cycle detection).
-    *   Objects arriving via any directional location (e.g., `Near Ship`, `In front of ship`) have no fixed initial position and are **excluded** from the distance check.
+    *   Objects arriving via any directional method (e.g., `Near Ship`, `In front of ship`) have no fixed initial position and are **excluded** from the distance check.
 
 #### **ASCII Enforcement for FSO-facing Strings**:
 *   FreeSpace Open only supports ASCII reliably for mission-facing content written into `.fs2`.
@@ -201,7 +201,7 @@ The validator checks the following areas:
 *   The validator strictly forbids double quotes (`"`) in any text field that is emitted into the `.fs2` file wrapped in an `XSTR("...", -1)` macro (such as `mission_info.name`, `mission_info.description`, event/goal/message text, and briefing/debriefing text).
 *   This is because the FSO engine string parser does not properly handle escaped double quotes (`\"`) inside `XSTR` blocks, leading to "malformed string" debug errors.
 *   Authors must use single quotes (`'`) instead of double quotes for quoting text or dialogue.
-*   Note: Double quotes are still allowed (and required) inside S-expression strings (e.g., `arrival_cue`, `formula`).
+*   Note: Double quotes are still allowed (and required) inside S-expression strings (e.g., `arrival_condition`, `formula`).
 
 #### **Text styling tags outside supported contexts**:
 *   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
@@ -222,14 +222,14 @@ The validator checks the following areas:
 *   **Note**: Voice filename length validation has been removed from the validator as it is strictly enforced by the generator logic.
 
 #### **Debriefing Integrity**:
-*   **Trivial `( true )` condition**: Warns if any debriefing stage uses `( true )` as its condition. An always-true condition causes the stage to display regardless of the mission outcome.
+*   **Trivial `( true )` condition**: Warns if any debriefing stage uses `( true )` as its `display_condition`. An always-true condition causes the stage to display regardless of the mission outcome.
 
 #### **Directive Text SEXP Compatibility**:
-*   **Event/goal-referencing SEXPs in directive formulas**: Warns if an event with a `directive_text` uses `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in its formula.
+*   **Event/goal-referencing SEXPs in directive formulas**: Warns if an event with a `hud_directive_text` uses `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in its formula.
 
 #### **Briefing Integrity**:
 *   **Teams**: Validates `icon.team` against allowed factions (Friendly, Hostile, Unknown).
-*   **Classes**: Warns if `icon.class` appears to be a ship class (e.g. starts with "GT", "PV") but is not a known class.
+*   **Classes**: Warns if `icon.display_class` appears to be a ship class (e.g. starts with "GT", "PV") but is not a known class.
 
 #### **Strict Field Validation**:
 *   **Extra Fields Forbidden**: The converter now strictly rejects *any* unknown fields in the FSIF YAML.
@@ -237,7 +237,7 @@ The validator checks the following areas:
 
 #### **Ship Template Authoring Rules**:
 *   `entities.ship_templates` may only contain reusable shared ship properties.
-*   The loader rejects template-level authoring of `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, and `dockee_point`.
+*   The loader rejects template-level authoring of `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_condition`, `departure_method`, `departure_anchor`, `departure_condition`, `initial_orders`, `dock`, `docked_with`, `docker_point`, and `dockee_point`.
 *   This is a hard error because those fields do not work correctly or are not semantically appropriate when inherited by ships that are part of a wing.
 *   Correct authoring locations:
     *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
@@ -255,27 +255,27 @@ The validator checks the following areas:
 
 #### **Waypoint Path Collisions**:
 *   Warns when a standalone ship's `ai-waypoints` or `ai-waypoints-once` path is likely to pass through or very close to the initial position of another large ship or installation.
-*   **Scope**: only standalone ships with waypoint AI goals are checked. Wing-level waypoints are intentionally not checked — wings of fighters/bombers rely on their own AI collision avoidance routines.
+*   **Scope**: only standalone ships with waypoint AI orders are checked. Wing-level waypoints are intentionally not checked — wings of fighters/bombers rely on their own AI collision avoidance routines.
 *   **Collision test**: a segment OBB is constructed for each waypoint leg and tested against the static OBBs of potential obstacles.
 *   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from both the mover and obstacle sets. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
-*   The effective start position of the moving ship is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships with directional arrival locations are excluded (no fixed initial position).
+*   The effective start position of the moving ship is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships with directional arrival methods are excluded (no fixed initial position).
 *   The warning is advisory and does not abort conversion.
 
 #### **Anchor Validation**:
 *   Validates `arrival_anchor` and `departure_anchor` references for all ships and wings. The anchor must refer to a known ship, wing, or a valid special token (e.g., `<no anchor>`).
-*   **Directional arrival locations** (`Near Ship`, `In front of ship`, `In back of ship`, `Above ship`, `Below ship`, `To left of ship`, `To right of ship`) require **both** `arrival_anchor` and `arrival_distance` to be specified — missing either is an error.
+*   **Directional arrival methods** (`Near Ship`, `In front of ship`, `In back of ship`, `Above ship`, `Below ship`, `To left of ship`, `To right of ship`) require **both** `arrival_anchor` and `arrival_distance` to be specified — missing either is an error.
 *   **Docking Bay arrival/departure** requires `arrival_anchor` / `departure_anchor` to be specified.
 *   **Fighterbay requirement**: when a ship or wing uses `Docking Bay` arrival or departure, the validator checks that the referenced anchor ship class has a `fighterbay` subsystem. A fighterbay is required for ships to emerge from or land in a bay; using a class without one is an error.
 
 #### **Wings Without Initial Orders**:
-*   Warns if a wing has no `ai_goals` (empty or missing). AI-controlled ships in such a wing will sit idle.
+*   Warns if a wing has no `initial_orders` (empty or missing). AI-controlled ships in such a wing will sit idle.
 *   The warning is advisory and does not abort conversion.
 
 #### **Escort Priority Requires `escort` Flag**:
-*   Error if `escort_priority > 0` is set on a ship that does not have the `escort` flag. The `+Escort priority` field is only meaningful for escort-flagged ships; setting a non-zero priority without the flag is almost certainly an authoring mistake.
+*   Error if `escort_list_priority > 0` is set on a ship that does not have the `escort` flag. The `+Escort priority` field is only meaningful for escort-flagged ships; setting a non-zero priority without the flag is almost certainly an authoring mistake.
 
 #### **Goals vs. Directives Count**:
-*   Warns when a mission has more `mission_flow.goals` than events with `directive_text`. It is strongly recommended that every important goal has a matching event with a `directive_text` so the player can see the objective on the HUD.
+*   Warns when a mission has more `mission_flow.goals` than events with `hud_directive_text`. It is strongly recommended that every important goal has a matching event with a `hud_directive_text` so the player can see the objective on the HUD.
 *   The warning is advisory and does not abort conversion.
 
 #### **Briefing Icon Proximity**:
@@ -284,10 +284,10 @@ The validator checks the following areas:
 *   The warning is advisory and does not abort conversion.
 
 #### **SEXP YAML Scalar Style**:
-*   All SEXP-bearing FSIF fields (`arrival_cue`, `departure_cue`, `ai_goals`, `formula`, `condition`) **must** be authored using the YAML **literal block scalar style** (`|`). Flow scalars (`"..."`) and folded block style (`>`) are not accepted.
+*   All SEXP-bearing FSIF fields (`arrival_condition`, `departure_condition`, `initial_orders`, `formula`, `display_condition`) **must** be authored using the YAML **literal block scalar style** (`|`). Flow scalars (`"..."`) and folded block style (`>`) are not accepted.
 *   The check is performed by `validate_sexp_scalar_styles.validate_sexp_styles()` which reads the raw YAML AST of the `.fsif` file and inspects the node style for each SEXP field.
 *   A mismatch produces a validation error that aborts conversion.
-*   Example correct usage: `arrival_cue: |` followed by the SEXP on the next line.
+*   Example correct usage: `arrival_condition: |` followed by the SEXP on the next line.
 
 ### Error Reporting
 *   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic, non-ASCII characters in FSO-facing fields) will print an error message and **fail the validation**, aborting the conversion.
@@ -313,50 +313,50 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 - Briefing camera calculation: The converter computes the tightest axis-aligned bounding box for the icons in the XZ plane, expands it if necessary to meet the 2.5 aspect ratio requirement, and positions the camera at XZ equal to the bounding box center and Y equal to the bounding box width with a 15% safety factor (clamped to a minimum of 1000m), looking directly down.
 
 **Icon type normalization:**
-- Authoring: icons[*].type is a canonical string; mission_loader normalizes it to the FS2 numeric `$type` using briefing_icon_types.py.
+- Authoring: `icons[*].icon_type` is a canonical string; mission_loader normalizes it to the FS2 numeric `$type` using briefing_icon_types.py.
 - Writer: emits `$type` from the normalized type_id and does not apply heuristic class/type coercions.
 - Waypoint is 9; Jump Node is 33. The converter warns if older nav-buoy heuristics are detected.
 
 **FS2 `$type` numeric mapping:**
 - Canonical source of truth: `FSIF_to_FS2_Converter/briefing_icon_types.py`.
-- The converter resolves `icons[*].type` strings to numeric IDs using that module and emits the resulting numeric `$type`.
+- The converter resolves `icons[*].icon_type` strings to numeric IDs using that module and emits the resulting numeric `$type`.
 - FSIF authors should provide canonical string names only; they do not author numeric codes directly.
 
 **Class emission:**
-- icons[*].class is emitted as `$class` (defaults to "Terran NavBuoy" when omitted). **If specified, it must be a valid ship class from `spacecraft-classes.md` (strict validation enforced to prevent FSO crashes).** The class value does not affect the icon silhouette; the silhouette is controlled solely by `icons[*].type`.
-- **Important:** Authors should omit the `class` field for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Specifying an arbitrary string will cause validation failure.
+- `icons[*].display_class` is emitted as `$class` (defaults to "Terran NavBuoy" when omitted). **If specified, it must be a valid ship class from `spacecraft-classes.md` (strict validation enforced to prevent FSO crashes).** The class value does not affect the icon silhouette; the silhouette is controlled solely by `icons[*].icon_type`.
+- **Important:** Authors should omit the `display_class` field for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Specifying an arbitrary string will cause validation failure.
 
 Notes
-- If an icon `pos` is omitted, the converter defaults the emitted position to 0.0, 0.0, 0.0.
+- If an icon `map_position` is omitted, the converter defaults the emitted position to 0.0, 0.0, 0.0.
 
 ## Arrival/Departure emission order
 
 Ships (#Objects)
 - Arrival emission order:
-  1) $Arrival Location
+  1) $Arrival Location (from arrival_method)
   2) +Arrival Distance (if any)
   3) $Arrival Anchor (if any)
   4) +Arrival Delay (if provided)
-  5) $Arrival Cue
+  5) $Arrival Cue (from arrival_condition)
 - Departure emission order:
-  1) $Departure Location (Hyperspace | Docking Bay)
+  1) $Departure Location (from departure_method: Hyperspace | Docking Bay)
   2) $Departure Anchor (only when Docking Bay)
-  3) $Departure Cue
+  3) $Departure Cue (from departure_condition)
 
 Wings (#Wings)
 - Arrival emission order:
-  1) $Arrival Location
+  1) $Arrival Location (from arrival_method)
   2) +Arrival Distance (if any)
   3) $Arrival Anchor (if any)
   4) +Arrival delay (if provided)
-  5) $Arrival Cue
+  5) $Arrival Cue (from arrival_condition)
 - Departure emission order mirrors ships:
-  1) $Departure Location
+  1) $Departure Location (from departure_method)
   2) $Departure Anchor (only when Docking Bay)
-  3) $Departure Cue
+  3) $Departure Cue (from departure_condition)
 
 Constraints and guidance
-- Directional $Arrival Location values require both +Arrival Distance and $Arrival Anchor.
+- Directional $Arrival Location values (arrival_method) require both +Arrival Distance and $Arrival Anchor.
 - Docking Bay commonly uses +Arrival Distance: 0.
 
 ## Asteroid/Debris Fields mapping
@@ -364,18 +364,18 @@ Constraints and guidance
 FS2 emission mapping (#Asteroid Fields)
 - Section header remains `#Asteroid Fields` (FSO format requirement).
 - $Density: <int>
-- +Field Type: <0 active | 1 passive>
-- +Debris Genre: <0 asteroid | 1 debris>
-- +Field Debris Type Name: <string> (repeated for each entry)
+- +Field Type: <0 active | 1 passive> (from behavior)
+- +Debris Genre: <0 asteroid | 1 debris> (from object_type)
+- +Field Debris Type Name: <string> (repeated for each entry; from object_variants)
 - $Average Speed: <float>
 - $Minimum: x, y, z
 - $Maximum: x, y, z
-- $Asteroid Targets: ( "Ship1" "Ship2" ... ) (only for active asteroid fields with non-empty targets)
+- $Asteroid Targets: ( "Ship1" "Ship2" ... ) (only for active asteroid fields with non-empty target_ships)
 
 Constraints and normalization (recap)
 - Retail/FRED limitation: one asteroid/debris field per mission. The converter supports authoring as a single Mapping `asteroid_field`.
 - Debris fields cannot be active; if authored as active, they are coerced to passive with a warning.
-- Targets only apply to active asteroid fields; ignored otherwise (warning for debris).
+- target_ships only apply to active asteroid fields; ignored otherwise (warning for debris).
 - Divisors and bounds are normalized; min/max are swapped if authored inverted (warning).
 
 ## Internal Data Architecture

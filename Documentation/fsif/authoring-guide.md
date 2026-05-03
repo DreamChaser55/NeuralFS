@@ -14,7 +14,7 @@ Critical rules
 - These are the minimum fields required for a valid FSIF file.
 
 ```yaml
-fsif_version: "3.0"
+fsif_version: "4.0"
 
 mission_info:
   name: "Minimal Mission"
@@ -30,8 +30,8 @@ entities:
     - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: |
+      position: [0, 0, 0]
+      arrival_condition: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -47,7 +47,7 @@ mission_flow: {}
   - an example non-wing ship (a cruiser).
 
 ```yaml
-fsif_version: "3.0"
+fsif_version: "4.0"
 
 mission_info:
   name: "Mission name string"
@@ -60,16 +60,16 @@ mission_info:
 environment:
   ambient_light_level: [0, 0, 0]
   suns: []
-  starbitmaps: []
+  background_bitmaps: []
   nebula:
     enabled: false
 
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
+  additional_ship_choices:
     - class: "GTF Ulysses"
       count: 4
-  extra_weapons:
+  additional_weapons:
     - "Interceptor"
 
 entities:
@@ -84,15 +84,15 @@ entities:
     - name: "GTC Fenris 1"
       class: "GTC Fenris"
       team: "Friendly"
-      location: [200.0, 0.0, 800.0]
-      arrival_cue: |
+      position: [200.0, 0.0, 800.0]
+      arrival_condition: |
         ( true )
   wings:
     - name: "Alpha"
       template: "alpha_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
   waypoints: {}
   reinforcement_wings: []
@@ -131,7 +131,7 @@ Notes:
   It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
 ## Environment backgrounds and nebulae
-Author background suns and starbitmaps; full nebula is a separate feature and unconditionally suppresses background starbitmaps.
+Author background suns and `background_bitmaps`; full nebula is a separate feature and unconditionally suppresses background bitmaps.
 ```yaml
 environment:
   ambient_light_level: [0, 0, 0]
@@ -142,7 +142,7 @@ environment:
     - texture: SunSiriusA
       angles: [0.087266, 0.000000, 0.226893]
       scale: 2.5
-  starbitmaps:
+  background_bitmaps:
     - texture: dneb03
       angles: [0.000000, 2.321286, 0.000000]
       scale: { x: 4.0, y: 4.0 }
@@ -153,10 +153,10 @@ environment:
 Notes
 - `ambient_light_level` is authored as `[red, green, blue]`, with each channel in range `0..255`.
 - angles are [pitch, bank, heading] in radians.
-- **Background richness advisory:** In normal-space missions, try to include at least **3** `starbitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
+- **Background richness advisory:** In normal-space missions, try to include at least **3** `background_bitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
 - **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view.
-- For full (volumetric) nebula authoring fields, see spec.
-- **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, starbitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
+- For full (volumetric) nebula authoring fields (`sensor_range`, `cloud_sprites`, etc.), see spec.
+- **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, background_bitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
   - Distant nebulae will likely look the same and be in the same positions in the sky.
   - Positions of suns or planet bitmaps could change.
   - Ambient light color will be the same, but intensity will change with distance from the sun.
@@ -177,20 +177,20 @@ entities:
     - name: "GTSC Rosetta"
       class: "GTSC Faustus"
       team: "Friendly"
-      location: [542.6, 699.5, 1305.4]
+      position: [542.6, 699.5, 1305.4]
       flags: ["cargo-known", "escort"]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
-      departure_cue: |
+      departure_condition: |
         ( is-event-true-delay "Omega 2 done docking" 97 )
   wings:
     - name: "Alpha"
       template: "ulysses_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
-      ai_goals: |
+      initial_orders: |
         ( ai-chase-any 50 )
 ```
 
@@ -201,7 +201,7 @@ Wings must define `position: [x, y, z]`, which is interpreted as the centroid of
 - Alpha 3: `[25.0, 0.0, 0.0]`
 - Alpha 4: `[75.0, 0.0, 0.0]`
 
-Wing members are spaced 50 m apart by default and the line is centered on the specified centroid.
+Wing members are spaced 50 m apart by default (`member_spacing: 50.0`) and the line is centered on the specified centroid.
 
 ## Waypoints vs. Nav Buoys
 FSIF `entities.waypoints` are invisible to the player in the actual mission. They do not create a HUD marker, radar contact, targetable object, visible model, or any other in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
@@ -220,23 +220,23 @@ mission_flow:
            ( is-destroyed-delay 0 "SF Dragon 1" ) 
            ( do-nothing ) 
         )
-      directive_text: "Destroy SF Dragon 1"
+      hud_directive_text: "Destroy SF Dragon 1"
   goals:
     - name: "save rosetta"
       type: "Bonus"
-      message: "Protect the Rosetta until it departs"
+      objective_text: "Protect the Rosetta until it departs"
       formula: |
         ( is-event-true-delay "Rosetta departed" 0 )
   messages:
     - name: "Lucifer arrived"
-      message: "That's the Lucifer arriving!"
+      text: "That's the Lucifer arriving!"
       voice_name: "Fenrir"
 ```
 
 Notes:
 - Available mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
-- The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `directive_text`, not just a goal.
-- **Directive text limitation — avoid event/goal references in the formula:** Events intended to display a directive text must use simple, directly-evaluable conditions. If the formula references another event or goal using `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay`, the directive will silently fail: the engine cannot determine at mission start whether such an event could ever become true or false, so the grey "pending" directive is never displayed on the HUD. Use direct object-state SEXPs (e.g., `is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events that have a `directive_text`.
+- The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `hud_directive_text`, not just a goal.
+- **Directive text limitation — avoid event/goal references in the formula:** Events intended to display a directive text must use simple, directly-evaluable conditions. If the formula references another event or goal using `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay`, the directive will silently fail: the engine cannot determine at mission start whether such an event could ever become true or false, so the grey "pending" directive is never displayed on the HUD. Use direct object-state SEXPs (e.g., `is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events that have a `hud_directive_text`.
 - Try to include enough comms chatter (messages) in your missions to make them lively and prevent player boredom.
 
 ## Authoring dialogue (TTS voicing)
@@ -265,7 +265,7 @@ Unvoiced lines (text-only) should omit these fields.
 mission_flow:
   messages:
     - name: "Ambush warning"
-      message: "It looks like an ambush!"
+      text: "It looks like an ambush!"
       voice_style_instructions: "energetic, agitated"  # optional style prompt
       voice_name: "Charon"                             # TTS voice name matching the provider
 ```
@@ -291,22 +291,22 @@ entities:
     - name: "GTC Fenris 1"
       class: "GTC Fenris"
       team: "Friendly"
-      location: [-181.8, 0.0, 275.8]
-      arrival_cue: |
+      position: [-181.8, 0.0, 275.8]
+      arrival_condition: |
         ( true )
     - name: "GTT Elysium 2"
       class: "GTT Elysium"
       team: "Friendly"
-      location: [-230.3, 4.18, 355.34]
-      arrival_cue: |
+      position: [-230.3, 4.18, 355.34]
+      arrival_condition: |
         ( false )
       dock:
-        with: "GTC Fenris 1"
+        dockee: "GTC Fenris 1"
         docker_point: "topside docking"
         dockee_point: "Docking bay 1"
 ```
 Strict Rules:
-- **Arrival Cues**: The Dockee (Leader) must have `( true )`. The Docker (Follower) must have `( false )`.
+- **Arrival Conditions**: The Dockee (Leader) must have `arrival_condition: ( true )`. The Docker (Follower) must have `arrival_condition: ( false )`.
 - **Pairs Only**: Multi-ship docking trees are not supported.
 - **No Player Ships**: Player start ships cannot be pre-docked.
 - **Reference Checks**: You must use only the names for ship dockpoints specified in `../FSO and fs2 format/ship-dockpoint-names.md`. Using unknown or malformed dockpoint names will cause errors.
@@ -333,17 +333,17 @@ Example SEXP referring to a subsystem:
 ```
 
 ## Reinforcements
-Author reinforcements in `entities`. Omit `arrival_cue` on the referenced units so they remain callable (defaults to true). The referenced ships/wings must exist in entities.ships/entities.wings.
+Author reinforcements in `entities`. Omit `arrival_condition` on the referenced units so they remain callable (defaults to true). The referenced ships/wings must exist in entities.ships/entities.wings.
 
 ```yaml
 entities:
   reinforcement_wings:
     - name: "Delta"
-      num_times: 1
+      max_uses: 1
       arrival_delay: 0
   reinforcement_ships:
     - name: "GTC Fenris 10"
-      num_times: 1
+      max_uses: 1
 ```
 
 ## Briefing, debriefing and fiction viewer text styling
@@ -375,18 +375,18 @@ mission_flow:
 
   debriefing:
     stages:
-      - condition: |
+      - display_condition: |
           ( is-destroyed-delay 0 "GTC Fenris 1" )
         text: "The $f{ GTC Fenris $} was destroyed. We failed the escort."
         voice_name: "Gacrux"
-      - condition: |
+      - display_condition: |
           ( has-departed-delay 0 "GTC Fenris 1" )
         text: "Excellent work, $rank $callsign. The convoy withdrew successfully and the $f{ GTC Fenris $} is safe."
         voice_name: "Gacrux"
 ```
 
-**Debriefing stage condition authoring note:**
-Contrary to briefing stages, debriefing stages are **not** simply displayed chronologically as defined. Instead, each debriefing stage will be displayed if its condition SEXP is met. Author should be careful to make the conditions for every stage sufficiently restrictive, so that incorrect text is not displayed when it shouldn't — for example, a stage describing a successful mission outcome should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )` to precisely target the outcome you intend to describe.
+**Debriefing stage display_condition authoring note:**
+Contrary to briefing stages, debriefing stages are **not** simply displayed chronologically as defined. Instead, each debriefing stage will be displayed if its `display_condition` SEXP is met. Author should be careful to make the conditions for every stage sufficiently restrictive, so that incorrect text is not displayed when it shouldn't — for example, a stage describing a successful mission outcome should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )` to precisely target the outcome you intend to describe.
 
 ## Briefing Room Grid View
 
@@ -394,18 +394,18 @@ Unless the mission is very short and trivial, you should always author a briefin
 
 ### Layout
 The briefing room uses a grid on the **XZ plane**.
-- **Intended Usage**: Place your icons on this XZ plane using 2D coordinates `[x, z]` (e.g. `pos: [500, 1000]`).
+- **Intended Usage**: Place your icons on this XZ plane using 2D coordinates `[x, z]` (e.g. `map_position: [500, 1000]`).
 - **Automatic Camera**: The briefing camera is automatically positioned to ensure that all your icons are in view.
 
 ### Icons
-Author briefing icons using the string field `type`.
-- **Type**: Must be a canonical string (e.g., "Fighter", "Jump Node", "Waypoint").
-- **Class**: Optional. The displayed ship class text and picture (e.g. "GTF Ulysses") when clicked when the icon is selected in-game.
+Author briefing icons using the string field `icon_type`.
+- **icon_type**: Must be a canonical string (e.g., "Fighter", "Jump Node", "Waypoint").
+- **display_class**: Optional. The displayed ship class text and picture (e.g. "GTF Ulysses") when clicked when the icon is selected in-game.
   - **If omitted:** Defaults to `"Terran NavBuoy"` (safe default).
   - **If specified:** Must be a valid ship class from `spacecraft-classes.md`.
   - **Best practice:** Omit for non-ship icon types (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Non-ship types must only use the `"Terran NavBuoy"` class, to prevent in-game errors.
-- **Team**: Must be "Friendly" (shown as green), "Hostile" (red) or "Unknown" (purple).
-- **Pos**: List `[x, z]`.
+- **team**: Must be "Friendly" (shown as green), "Hostile" (red) or "Unknown" (purple).
+- **map_position**: List `[x, z]`.
 
 **Example:**
 ```yaml
@@ -415,14 +415,14 @@ mission_flow:
       - text: "Alpha, inspect the cargo at the marked location shown on this briefing schematic."
         voice_name: "Achernar"
         icons:
-          - { type: "Fighter", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha", highlighted: true }
-          - { type: "Cargo", team: "Hostile", pos: [500, 200], label: "Rosetta Cargo" }
-          - { type: "Waypoint", team: "Unknown", pos: [1000, 0], label: "Schematic marker" }
+          - { icon_type: "Fighter", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha", highlighted: true }
+          - { icon_type: "Cargo", team: "Hostile", map_position: [500, 200], label: "Rosetta Cargo" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [1000, 0], label: "Schematic marker" }
 ```
 
 **Notes:**
-- If `pos` is omitted, defaults to `[0, 0]`.
-- A briefing icon with `type: "Waypoint"` is only a briefing-room schematic symbol. It does **not** create a visible in-mission waypoint or player guidance marker.
+- If `map_position` is omitted, defaults to `[0, 0]`.
+- A briefing icon with `icon_type: "Waypoint"` is only a briefing-room schematic symbol. It does **not** create a visible in-mission waypoint or player guidance marker.
 
 ## Message sender and priority literals
 - Allowed sender strings include named ships and special senders like "<any wingman>" and "#Command" (Note: the angle brackets/hash must not be omitted)
@@ -443,26 +443,26 @@ All available primary and secondary weapon banks (hardpoints) in fighters and bo
 If the mission is part of a campaign, then by default, all ships and weapons are unavailable to the player and their wingmen (Alpha, Beta, Gamma, Delta, Epsilon). They need to be explicitly allowed, either in the campaign FCIF file (`starting_loadout` section) or with the `allow-ship` and `allow-weapon` SEXPs (see "/FSO SEXPs/Mission and Campaign.txt"). The enabling SEXPs need to be executed **before** the mission that should have the ship/weapon available is loaded (that is, at the end of the previous mission).
 
 ## Providing alternative player ships
-By default, the player and their wingmen will be restricted to the exact ship classes defined in the mission file for their starting wings. If you want to provide the player with strategic choices before the mission starts, you can use the `extra_ships` field under `player_setup` to provide a pool of alternative ships. The player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon) using the loadout screen.
+By default, the player and their wingmen will be restricted to the exact ship classes defined in the mission file for their starting wings. If you want to provide the player with strategic choices before the mission starts, you can use the `additional_ship_choices` field under `player_setup` to provide a pool of alternative ships. The player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon) using the loadout screen.
 
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
+  additional_ship_choices:
     - { class: "GTF Hercules", count: 4 }
     - { class: "GTB Ursa", count: 2 }
 ```
 
-Note: These extra ships also need to be unlocked for the player in FCIF or in previous missions (see "Introducing new ships and weapons" above).
+Note: These ships also need to be unlocked for the player in FCIF or in previous missions (see "Introducing new ships and weapons" above).
 
 ## Providing the player with extra weapons
-If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `extra_weapons` field under `player_setup`:
+If you want to provide the player with alternative weapons in the loadout screen that are not equipped by default on any starting ships, you can list them in the `additional_weapons` field under `player_setup`:
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
+  additional_ship_choices:
     - { class: "GTF Ulysses", count: 4 }
-  extra_weapons:
+  additional_weapons:
     - "Avenger"
     - "Harbinger"
 ```
@@ -472,7 +472,7 @@ Note: These extra weapons also need to be unlocked for the player in FCIF or in 
 The maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons are automatically calculated and included in the fs2 mission `Weaponry Pool` with an added 25% safety margin.
 
 ## Directional arrivals quick reference
-- Directional arrival_location requires both arrival_anchor and arrival_distance.
+- Directional `arrival_method` requires both `arrival_anchor` and `arrival_distance`.
 - Docking Bay: in this case `arrival_distance` is forced to `0` and should be omitted.
 - For wildcard anchors, use exact literals like "<any friendly player>".
 
@@ -525,19 +525,19 @@ YAML offers two ways to write string values relevant to FSIF:
 - **Flow scalars** — inline quoted strings (e.g., `"( true )"`)
 - **Block scalars** — literal strings introduced by `|` (the pipe character), where content is written on indented lines below the key
 
-**Rule: Always use block scalars (`|`) for all SEXP fields** (`arrival_cue`, `departure_cue`, `formula`, `ai_goals`, debriefing `condition`, etc.), even for single-line SEXPs.
+**Rule: Always use block scalars (`|`) for all SEXP fields** (`arrival_condition`, `departure_condition`, `formula`, `initial_orders`, debriefing `display_condition`, etc.), even for single-line SEXPs.
 
 **Why:** SEXPs frequently contain double quotes around entity names (ship names, message names, wildcards like `"<any wingman>"`). In a flow scalar string, every internal double quote must be escaped with a backslash (`\"`), which is error-prone and hard to read. Block scalars preserve content literally — no escape characters are needed.
 
 **Do (block scalar):**
 ```yaml
-arrival_cue: |
+arrival_condition: |
   ( has-arrived-delay 5 "GTD Bastion" )
 ```
 
 **Don't (flow scalar — requires escaping):**
 ```yaml
-arrival_cue: "( has-arrived-delay 5 \"GTD Bastion\" )"
+arrival_condition: "( has-arrived-delay 5 \"GTD Bastion\" )"
 ```
 
 Both produce the same string value for the converter, but the block scalar is clearer, less error-prone, and is the required style for FSIF authoring.
@@ -547,9 +547,9 @@ Both produce the same string value for the converter, but the block scalar is cl
 - **Correct:** `( ai-waypoints-once "Path" 89 ( false ) 3 )`
 - Note: All booleans in SEXPs must be surrounded by spaces and enclosed in parentheses.
 
-### **Avoid Optional Arguments in Initial AI Goals:**
-- The `ai_goals` field in ship/wing definitions is parsed by a restricted parser that fails if optional SEXP arguments are used.
-- If you need to use optional arguments for an AI goal (e.g., the distance argument in `ai-stay-near-ship`), **do not** put it in the `ai_goals` field.
+### **Avoid Optional Arguments in Initial Orders:**
+- The `initial_orders` field in ship/wing definitions is parsed by a restricted parser that fails if optional SEXP arguments are used.
+- If you need to use optional arguments for an AI goal (e.g., the distance argument in `ai-stay-near-ship`), **do not** put it in the `initial_orders` field.
 - **Workaround:** Create a `when-true` event that runs immediately at mission start and assigns the goal using `add-goal`.
 - **Example:**
 ```lisp
@@ -559,15 +559,15 @@ Both produce the same string value for the converter, but the block scalar is cl
 )
 ```
 
-### Multiple initial AI goals
-To assign multiple initial AI goals, simply list the SEXP operators line-by-line using a YAML block scalar. The orders will be executed consecutively, from first to last.
+### Multiple initial AI orders
+To assign multiple initial AI orders, simply list the SEXP operators line-by-line using a YAML block scalar. The orders will be executed consecutively, from first to last.
 
 **Example:**
 ```yaml
 ships:
   - name: "Beta 1"
     # ... other properties ...
-    ai_goals: |
+    initial_orders: |
       ( ai-chase-any 89 )
       ( ai-guard "GTC Pollux" 60 )
       ( ai-warp-out 50 )
@@ -581,19 +581,19 @@ You should use the `escort` flag for:
 - Important enemy ships whose status the player needs to track (e.g., a fleeing enemy transport or a capital ship that must be destroyed).
 - Any key mission-critical object where constant visibility of its health is beneficial to the player.
 
-*Note: Maintain escort list hygiene. Flag only the most important ships to prevent cluttering the HUD. If you have multiple escorted ships, you can use the `escort_priority` property to control their display order.*
+Note: Maintain escort list hygiene. Flag only the most important ships to prevent cluttering the HUD. If you have multiple escorted ships, you can use the `escort_list_priority` property to control their display order.
 
 ## Creating ship debris
-You can use the optional `destroy_before_mission` field to create ship debris at mission start. The value is the number of seconds before the mission start when the ship will be destroyed. Zero value (default) results in no destruction (normal ship spawning).
+You can use the optional `destroyed_before_mission_seconds` field to create ship debris at mission start. The value is the number of seconds before the mission start when the ship will be destroyed. Zero value (default) results in no destruction (normal ship spawning).
 
 ## Pitfalls, best practices and recommendations
 Use this section as a practical sanity guide: each item describes the preferred authoring pattern and the common mistake or failure it prevents.
 
 ### Spawning, arrivals and authored entities
 - `player_setup.start_ship` must exist in `entities`. It can be a standalone ship in `entities.ships` or a ship created by a starting wing such as `Alpha 1`.
-- If the start ship is standalone, give it `arrival_cue: ( true )`; otherwise the player ship will not spawn at mission start.
-- Do not put `arrival_location`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_location`, `departure_anchor`, `departure_delay`, `departure_cue`, `ai_goals`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
-- Use `arrival_cue` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
+- If the start ship is standalone, give it `arrival_condition: ( true )`; otherwise the player ship will not spawn at mission start.
+- Do not put `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_condition`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_condition`, `initial_orders`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
+- Use `arrival_condition` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
 - Leave enough physical clearance between spawned objects, especially around large ships. Tight placement can cause ships to spawn inside each other; cruisers are roughly 300 m long and destroyers roughly 2000 m long.
 
 ### Templates, names and references
@@ -615,13 +615,13 @@ Use this section as a practical sanity guide: each item describes the preferred 
 - Jump nodes are not interchangeable with ships/wings/waypoints in SEXPs like `distance`. If you need a hidden reference point for internal distance/logic checks, place a waypoint there. If the player needs a visible or targetable reference at that location, place a `Terran NavBuoy` ship there instead.
 - Use exact FSO weapon token strings as defined in the Tokens reference. Make sure to omit the lore prefixes. For example, write `ML-16 Laser`, not `GTW ML-16 Laser`.
 - Check that goal formulas are not already true at mission start unless that is explicitly intended.
-- Events with `directive_text` must use simple, directly-evaluable conditions. Do **not** use `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in the formula of an event that has a `directive_text`. The engine cannot initially evaluate whether such an event could ever become true, so the grey "pending" directive is never shown on the HUD. Use direct object-state checks (e.g., `is-destroyed-delay`, `has-arrived-delay`) instead.
+- Events with `hud_directive_text` must use simple, directly-evaluable conditions. Do **not** use `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in the formula of an event that has a `hud_directive_text`. The engine cannot initially evaluate whether such an event could ever become true, so the grey "pending" directive is never shown on the HUD. Use direct object-state checks (e.g., `is-destroyed-delay`, `has-arrived-delay`) instead.
 
 ### Docking and reinforcements
 - Pre-spawn docking is for pairs only. Author docking only on the docker ship, as described in the dedicated Docking section above.
 - Do not involve the player start ship in pre-spawn docking.
-- Keep docking leadership coherent: the dockee should be the arrival leader with `( true )`, and the docker should use `( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
-- Keep reinforcements callable by not giving them a blocking `arrival_cue`. Reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `( true )`.
+- Keep docking leadership coherent: the dockee should be the arrival leader with `arrival_condition: ( true )`, and the docker should use `arrival_condition: ( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
+- Keep reinforcements callable by not giving them a blocking `arrival_condition`. Reinforcement wings should omit `arrival_condition`; standalone reinforcement ships should use `arrival_condition: ( true )`.
 
 ### Collision checks for waypoint paths
 - The Converter checks for potential collisions between larger ships moving along waypoint paths and **initial positions** of other larger ships. This check can produce spurious warnings because it does not account for the fact that ships may move from their initial positions during the mission. Always consider the planned mission flow movement of the referenced ships when reviewing these collision warnings.

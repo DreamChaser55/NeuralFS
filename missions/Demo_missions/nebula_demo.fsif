@@ -1,4 +1,4 @@
-fsif_version: "3.0"
+fsif_version: "4.0"
 
 mission_info:
   name: "Nebula Patrol"
@@ -11,20 +11,20 @@ mission_info:
 environment:
   ambient_light_level: [5, 5, 5]
   suns: []
-  starbitmaps: []
+  background_bitmaps: []
   nebula:
     enabled: true
     pattern: "nbackblue1"
-    poofs: ["PoofPurp01", "PoofPurp02"]
+    cloud_sprites: ["PoofPurp01", "PoofPurp02"]
     storm: "s_medium"
-    awacs: 2000.0
+    sensor_range: 2000.0
 
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
+  additional_ship_choices:
     - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 4 }
-  extra_weapons:
+  additional_weapons:
     - "Banshee"
     - "Disruptor"
     - "Interceptor"
@@ -51,21 +51,21 @@ entities:
     - name: "Nav Buoy"
       class: "Terran NavBuoy"
       team: "Hostile"
-      location: [0.0, 100.0, 1500.0]
-      arrival_cue: |
+      position: [0.0, 100.0, 1500.0]
+      arrival_condition: |
         ( true )
 
     - name: "SC Dakini"
       class: "SC Cain"
       team: "Hostile"
-      location: [2000.0, 200.0, 2500.0]
+      position: [2000.0, 200.0, 2500.0]
       flags: ["escort"]
       arrival_anchor: "Alpha 1"
-      arrival_location: "In front of ship"
+      arrival_method: "In front of ship"
       arrival_distance: 2500
-      arrival_cue: |
+      arrival_condition: |
         ( < ( distance "Alpha 1" "Nav Buoy" ) 800 )
-      departure_cue: |
+      departure_condition: |
         ( false )
 
   wings:
@@ -73,34 +73,34 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
-      ai_goals: |
+      initial_orders: |
           ( ai-chase-any 89 )
 
     - name: "Cancer"
       template: "hostile_fighter"
       count: 3
-      waves: 2
+      wave_count: 2
       position: [2000.0, 0.0, 2000.0]
       arrival_anchor: "SC Dakini"
-      arrival_location: "Near Ship"
+      arrival_method: "Near Ship"
       arrival_distance: 500
-      arrival_cue: |
+      arrival_condition: |
         ( has-arrived-delay 8 "SC Dakini" )
-      ai_goals: |
+      initial_orders: |
           ( ai-chase-any 80 )
 
     - name: "Beta"
       template: "friendly_fighter"
       count: 4
       position: [-500.0, 0.0, 500.0]
-      ai_goals: |
+      initial_orders: |
         ( ai-chase-any 70 )
 
   reinforcement_wings:
     - name: "Beta"
-      num_times: 1
+      max_uses: 1
 
   waypoints: {}
 
@@ -117,22 +117,22 @@ mission_flow:
         voice_name: "Achernar"
         voice_style_instructions: "Military briefing, directive"
         icons:
-          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
-          - { type: "Waypoint", team: "Hostile", pos: [0, 1500], label: "Nav Buoy" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha" }
+          - { icon_type: "Waypoint", team: "Hostile", map_position: [0, 1500], label: "Nav Buoy" }
       - text: "$R{ Visibility is low. $} Keep your eyes open for $R ambushes."
         voice_name: "Achernar"
         voice_style_instructions: "Cautionary, serious"
         icons:
-          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha" }
 
   debriefing:
     stages:
-      - condition: |
+      - display_condition: |
           ( is-destroyed-delay 0 "SC Dakini" )
         text: "$W{ Excellent work, $}$rank $callsign. The $h{ Shivan cruiser $} has been $G neutralized."
         voice_name: "Achernar"
         voice_style_instructions: "Commendatory, relieved"
-      - condition: |
+      - display_condition: |
           ( not ( is-destroyed-delay 0 "SC Dakini" ) )
         text: "The $h{ Shivan cruiser $} $R escaped. $e{ We will have to deal with it later. $}"
         voice_name: "Achernar"
@@ -160,18 +160,18 @@ mission_flow:
           ( is-destroyed-delay 0 "SC Dakini" )
           ( do-nothing )
         )
-      directive_text: "Destroy the SC Cain"
+      hud_directive_text: "Destroy the SC Cain"
 
   goals:
     - name: "DestroyCain"
       type: "Primary"
-      message: "Destroy the Shivan Cruiser SC Cain."
+      objective_text: "Destroy the Shivan Cruiser SC Cain."
       formula: |
         ( is-destroyed-delay 0 "SC Dakini" )
 
   messages:
     - name: "Ambush"
-      message: "Hostile contacts detected! Engage at will."
+      text: "Hostile contacts detected! Engage at will."
       voice_name: "Charon"
       voice_style_instructions: "Alarmed, combat shout"
 

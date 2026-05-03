@@ -39,7 +39,7 @@ Context: `team`.
   - must have a ship as docking bay anchor (`arrival_anchor` / `departure_anchor`)
   - `arrival_distance` is forced to `0` with Docking Bay and should be omitted.
 
-Context:  `arrival_location`, `departure_location`.
+Context: FSIF `arrival_method`, `departure_method`
 
 #### Arrival-only
 - Near Ship
@@ -50,7 +50,7 @@ Context:  `arrival_location`, `departure_location`.
 - To left of ship
 - To right of ship
 
-Context: `arrival_location`.
+Context: FSIF `arrival_method`.
 Requires `arrival_distance` and a ship `arrival_anchor`.
 
 ### Message priorities
@@ -212,7 +212,7 @@ These tokens specify various ship properties and behaviors.
 *   `no-scanned-cargo` — The cargo will never be revealed, instead always returning "Scanned" or "Not Scanned"
 
 Ancillary per-ship fields frequently seen with flags:
-- `escort_priority` (Integer; used with `escort`)
+- `escort_list_priority` (Integer; used with `escort`)
 
 ### Wing flags (`entities.wings[*].flags`)
 
@@ -232,18 +232,18 @@ Ancillary per-ship fields frequently seen with flags:
 ### Arrival and departure (ships and wings)
 These fields are authored in `entities.ships` and `entities.wings`.
 
-- `arrival_location`: Location token.
+- `arrival_method`: Arrival method/location token.
   - Values: "Hyperspace", "Docking Bay" (requires `arrival_anchor`), "Near Ship", "In front of ship", "In back of ship", "Above ship", "Below ship", "To left of ship", "To right of ship".
   - Directional locations (all except Hyperspace) require `arrival_distance` and `arrival_anchor`.
 - `arrival_distance`: Distance in meters (Integer). Should be 0 for Docking Bay.
 - `arrival_anchor`: Anchor entity literal or wildcard.
   - Examples: "MyShip", "MyWing", "<any friendly player>", "Docking bay 1" (if docking).
 - `arrival_delay`: Integer delay before arrival (seconds).
-- `arrival_cue`: SEXP controlling arrival (Boolean expression).
-- `departure_location`: Location token.
+- `arrival_condition`: SEXP controlling arrival (Boolean expression).
+- `departure_method`: Departure method/location token.
   - Values: "Hyperspace", "Docking Bay".
 - `departure_anchor`: Anchor for Docking Bay departure. Must be a docking bay.
-- `departure_cue`: SEXP controlling departure (Boolean expression).
+- `departure_condition`: SEXP controlling departure (Boolean expression).
 
 ### Waypoints and Jump Nodes
 
@@ -264,7 +264,7 @@ Jump nodes are authored as a list of objects. They are visible to the player.
 ### Messages (`mission_flow.messages`)
 Messages are authored as a list of objects.
 - `name`: Message identifier (referenced by `send-message` SEXP).
-- `message`: Localized text payload (displayed to player).
+- `text`: Localized text payload (displayed to player).
 - `voice_name`: Google TTS voice identifier (e.g. "Wavenet-A").
 
 Note: Message `name` is referenced by `send-message` SEXP; sender strings in SEXPs may be ships, wildcards like "<any wingman>", or "#Command".
@@ -300,9 +300,6 @@ Selected SEXP tokens/literals:
 - `when`
   - Conditional operator. Performs a list of actions when a boolean condition becomes true. Standard top-level operator for Events.
   - Parameters: `Condition` (Boolean expression), `Action` (one or more).
-- `goals`
-  - Container operator. Used within ship/wing definitions (e.g., `ai_goals`) to wrap a list of initial AI goals.
-  - Parameters: List of AI goal SEXPs (e.g., `ai-chase`, `ai-guard`).
 - `ai-chase-any`
   - AI Goal operator. Causes the ship to chase and attack any ship on the opposite team.
   - Parameters: `Priority` (0-89 for AI, 90+ for player orders), `Afterburn` (optional boolean).
@@ -349,10 +346,10 @@ Note: any literal names in SEXPs must be shorter than 30 characters.
 #### Arrival anchored to any friendly player (wing)
 (In `entities.wings`)
 name: Arjuna
-arrival_location: In front of ship
+arrival_method: In front of ship
 arrival_distance: 1500
 arrival_anchor: <any friendly player>
-arrival_cue: ( is-event-true-delay "Cargo is blowin' up" 12 )
+arrival_condition: ( is-event-true-delay "Cargo is blowin' up" 12 )
 
 #### Messaging from wildcard wingman
 (when
@@ -478,7 +475,7 @@ For example (GTSC Faustus): port docking, starboard docking.
 For canonical ship dockpoint names, see: ./ship-dockpoint-names.md.
 
 ### Briefing icon types
-- Authors must use a canonical icon string in icons[*].type.
+- Authors must use a canonical icon string in `icons[*].icon_type`.
 
 **Icon Fields:**
 - **Type**: Must be a canonical string from the allowed list below (e.g., "Fighter", "Jump Node"). Controls the icon's visual silhouette.
@@ -521,7 +518,7 @@ Allowed canonical icon type strings:
 - Sentry Gun
 - Jump Node
 
-Note: If icons[*].pos is omitted, it defaults to 0.0, 0.0, 0.0.
+Note: If `icons[*].map_position` is omitted, it defaults to `[0, 0]`.
 
 ### Volumetric (full) nebula parameters
 Pattern: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange

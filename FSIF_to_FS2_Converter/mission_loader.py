@@ -33,26 +33,35 @@ class MissionLoader:
         self.all_wings: List[Wing] = []
 
     _FORBIDDEN_TEMPLATE_FIELDS = (
-        'arrival_location',
+        # FSIF 4.0 YAML key names (aliases)
+        'arrival_method',
         'arrival_anchor',
         'arrival_distance',
         'arrival_delay',
-        'arrival_cue',
-        'departure_location',
+        'arrival_condition',
+        'departure_method',
         'departure_anchor',
         'departure_delay',
-        'departure_cue',
-        'ai_goals',
+        'departure_condition',
+        'initial_orders',
         'dock',
         'docked_with',
         'docker_point',
         'dockee_point',
+        # FSIF 3.0 names kept so old-name usage in templates also triggers a clear error
+        # NOTE: this is to be removed when breaking change to FSIF 4.0 is fully adopted.
+        'arrival_location',
+        'arrival_cue',
+        'departure_location',
+        'departure_cue',
+        'ai_goals',
     )
         
     def load(self) -> Mission:
         """Main execution method."""
         self._read_yaml()
         self._validate_version()
+        self._validate_no_legacy_fsif_3_keys()
         self._check_required_sections()
         
         # Load sections
@@ -116,22 +125,172 @@ class MissionLoader:
         except Exception:
             self.root_node = None
 
+    def _validate_no_legacy_fsif_3_keys(self):
+        """
+        Reject renamed FSIF 3.0 YAML keys before Pydantic hydration.
+
+        Internally, several Pydantic model attributes still use the old names
+        because they correspond closely to the emitted FS2 fields.  Since FSIF
+        4.0 is intentionally a breaking author-facing schema cleanup, old YAML
+        keys must fail loudly instead of being accepted via populate_by_name.
+        Note: this function should be removed when the FSIF 4.0 breaking change is fully adopted and old keys are no longer expected in external YAML files.
+        """
+        if not isinstance(self.data, dict):
+            raise ValueError("FSIF root document must be a YAML mapping.")
+
+        errors: List[str] = []
+
+        def report(path: str, old_key: str, new_key: str):
+            errors.append(f"{path}.{old_key} is a legacy FSIF 3.0 key; use {path}.{new_key} in FSIF 4.0.")
+
+        def check_mapping(path: str, mapping: Any, replacements: Dict[str, str]):
+            if not isinstance(mapping, dict):
+                return
+            for old_key, new_key in replacements.items():
+                if old_key in mapping:
+                    report(path, old_key, new_key)
+
+        env = self.data.get('environment')
+        if isinstance(env, dict):
+            check_mapping('environment', env, {'starbitmaps': 'background_bitmaps'})
+            check_mapping('environment.nebula', env.get('nebula'), {'awacs': 'sensor_range', 'poofs': 'cloud_sprites'})
+            check_mapping(
+                'environment.asteroid_field',
+                env.get('asteroid_field'),
+                {
+                    'genre': 'object_type',
+                    'type': 'behavior',
+                    'debris_types': 'object_variants',
+                    'targets': 'target_ships',
+                },
+            )
+
+        check_mapping(
+            'player_setup',
+            self.data.get('player_setup'),
+            {'extra_ships': 'additional_ship_choices', 'extra_weapons': 'additional_weapons'},
+        )
+
+        entities = self.data.get('entities')
+        if isinstance(entities, dict):
+            ship_replacements = {
+                'location': 'position',
+                'arrival_location': 'arrival_method',
+                'arrival_cue': 'arrival_condition',
+                'departure_location': 'departure_method',
+                'departure_cue': 'departure_condition',
+                'ai_goals': 'initial_orders',
+                'initial_velocity': 'initial_speed_percent',
+                'initial_hull': 'initial_hull_percent',
+                'escort_priority': 'escort_list_priority',
+                'destroy_before_mission': 'destroyed_before_mission_seconds',
+            }
+            template_replacements = ship_replacements
+            templates = entities.get('ship_templates')
+            if isinstance(templates, dict):
+                for template_name, template in templates.items():
+                    template_path = f"entities.ship_templates.{template_name}"
+                    check_mapping(template_path, template, template_replacements)
+                    if isinstance(template, dict):
+                        check_mapping(f"{template_path}.weapons", template.get('weapons'), {'secondary_ammo': 'secondary_ammo_counts'})
+
+            ships = entities.get('ships')
+            if isinstance(ships, list):
+                for i, ship in enumerate(ships):
+                    ship_path = f"entities.ships[{i}]"
+                    check_mapping(ship_path, ship, ship_replacements)
+                    if isinstance(ship, dict):
+                        check_mapping(f"{ship_path}.weapons", ship.get('weapons'), {'secondary_ammo': 'secondary_ammo_counts'})
+                        check_mapping(f"{ship_path}.dock", ship.get('dock'), {'with': 'dockee'})
+
+            wing_replacements = {
+                'arrival_location': 'arrival_method',
+                'arrival_cue': 'arrival_condition',
+                'departure_location': 'departure_method',
+                'departure_cue': 'departure_condition',
+                'ai_goals': 'initial_orders',
+                'waves': 'wave_count',
+                'wave_threshold': 'next_wave_threshold',
+                'wave_delay_min': 'next_wave_delay_min',
+                'wave_delay_max': 'next_wave_delay_max',
+                'spacing': 'member_spacing',
+            }
+            wings = entities.get('wings')
+            if isinstance(wings, list):
+                for i, wing in enumerate(wings):
+                    check_mapping(f"entities.wings[{i}]", wing, wing_replacements)
+
+            reinforcement_replacements = {
+                'num_times': 'max_uses',
+                'no_messages': 'unavailable_messages',
+                'yes_messages': 'available_messages',
+            }
+            for section_name in ('reinforcement_wings', 'reinforcement_ships'):
+                items = entities.get(section_name)
+                if isinstance(items, list):
+                    for i, item in enumerate(items):
+                        check_mapping(f"entities.{section_name}[{i}]", item, reinforcement_replacements)
+
+        flow = self.data.get('mission_flow')
+        if isinstance(flow, dict):
+            events = flow.get('events')
+            if isinstance(events, list):
+                for i, event in enumerate(events):
+                    check_mapping(f"mission_flow.events[{i}]", event, {'directive_text': 'hud_directive_text'})
+
+            goals = flow.get('goals')
+            if isinstance(goals, list):
+                for i, goal in enumerate(goals):
+                    check_mapping(f"mission_flow.goals[{i}]", goal, {'message': 'objective_text'})
+
+            messages = flow.get('messages')
+            if isinstance(messages, list):
+                for i, message in enumerate(messages):
+                    check_mapping(f"mission_flow.messages[{i}]", message, {'message': 'text'})
+
+            briefing = flow.get('briefing')
+            if isinstance(briefing, dict):
+                stages = briefing.get('stages')
+                if isinstance(stages, list):
+                    for si, stage in enumerate(stages):
+                        if not isinstance(stage, dict):
+                            continue
+                        icons = stage.get('icons')
+                        if isinstance(icons, list):
+                            for ii, icon in enumerate(icons):
+                                check_mapping(
+                                    f"mission_flow.briefing.stages[{si}].icons[{ii}]",
+                                    icon,
+                                    {'type': 'icon_type', 'class': 'display_class', 'pos': 'map_position'},
+                                )
+
+            debriefing = flow.get('debriefing')
+            if isinstance(debriefing, dict):
+                stages = debriefing.get('stages')
+                if isinstance(stages, list):
+                    for i, stage in enumerate(stages):
+                        check_mapping(f"mission_flow.debriefing.stages[{i}]", stage, {'condition': 'display_condition'})
+
+        if errors:
+            joined = "\n".join(f"  - {msg}" for msg in errors)
+            raise ValueError(f"FSIF 4.0 legacy key validation failed:\n{joined}")
+
     def _validate_version(self):
         """
         Validate the 'fsif_version' field.
         
-        Currently accepted FSIF version: '3.0'.
+        Currently accepted FSIF version: '4.0'.
         
         Raises:
             ValueError: If 'fsif_version' is missing, malformed, or unsupported.
         """
         version_str = self.data.get('fsif_version')
         if not isinstance(version_str, str) or not version_str.strip():
-            raise ValueError("fsif_version is required and must be the exact string '3.0'.")
+            raise ValueError("fsif_version is required and must be the exact string '4.0'.")
         version_str = version_str.strip()
-        if version_str != '3.0':
+        if version_str != '4.0':
             raise ValueError(
-                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '3.0' only. "
+                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '4.0' only. "
                 f"Please update your mission file (see Migration Guide)."
             )
         self.fsif_version = version_str
@@ -196,13 +355,15 @@ class MissionLoader:
             env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
+        # FSIF 4.0 uses the clearer alias names below. Legacy external YAML
+        # names are rejected earlier by _validate_no_legacy_fsif_3_keys().
+        #   FSIF key       -> internal field
+        #   object_type    -> genre        ('asteroid' | 'debris')
+        #   behavior       -> type         ('active'   | 'passive')
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
-            # Normalise the two human-readable string keys.
-            # 'genre' -> 'asteroid' | 'debris'
-            # 'type'  -> 'active'   | 'passive'
-            genre = str(af_src.get('genre', 'asteroid')).lower()
-            ftype = str(af_src.get('type', 'passive')).lower()
+            genre = str(af_src.get('object_type', 'asteroid')).lower()
+            ftype = str(af_src.get('behavior', 'passive')).lower()
 
             # Enforce constraint: a debris field cannot be active.
             if genre != 'asteroid' and ftype == 'active':
@@ -215,9 +376,9 @@ class MissionLoader:
                 if 'min' in b: af_src['min_vec'] = b['min']
                 if 'max' in b: af_src['max_vec'] = b['max']
 
-            # Write normalised strings back.
-            af_src['genre'] = genre
-            af_src['type'] = ftype
+            # Write normalised strings back using the FSIF 4.0 alias names.
+            af_src['object_type'] = genre
+            af_src['behavior'] = ftype
 
             # Cleanup source for strict model
             af_src.pop('bounds', None)
@@ -285,14 +446,14 @@ class MissionLoader:
 
     def _normalize_ai_goals(self, entity_name: str, raw_goals_str: str) -> str:
         """
-        Validates and wraps AI goals.
+        Validates and wraps AI goals (initial_orders in FSIF 4.0).
         """
         goals_raw = str(raw_goals_str).strip()
         # FSIF 2.2: Reject explicit ( goals ... ) wrapper
         cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
         if cleaned:
             if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
-                raise ValueError(f"{entity_name} ai_goals must NOT be wrapped in '( goals ... )'.")
+                raise ValueError(f"{entity_name} initial_orders must NOT be wrapped in '( goals ... )'.")
             return f"( goals\n{goals_raw}\n)"
         return raw_goals_str
 
@@ -334,14 +495,15 @@ class MissionLoader:
         except (ValueError, IndexError, TypeError):
              raise ValueError(f"Wing '{wing_data.get('name')}' has invalid position format. Expected [x, y, z].")
 
-        # Validate and wrap ai_goals
-        if 'ai_goals' in wing_data:
-            wing_data['ai_goals'] = self._normalize_ai_goals(
-                f"Wing '{wing_data.get('name')}'", 
-                wing_data['ai_goals']
+        # Validate and wrap initial_orders (FSIF 4.0)
+        orders_key = 'initial_orders' if 'initial_orders' in wing_data else None
+        if orders_key:
+            wing_data[orders_key] = self._normalize_ai_goals(
+                f"Wing '{wing_data.get('name')}'",
+                wing_data[orders_key]
             )
 
-        spacing = float(wing_data.get('spacing', 50.0))
+        spacing = float(wing_data.get('member_spacing', 50.0))
         wing_ships_objs = []
         count = int(wing_data.get('count', 0))
         center_index = (count - 1) / 2.0
@@ -386,8 +548,8 @@ class MissionLoader:
             props.update(t_props)
         props.update(ship_data)
         
-        if 'location' not in props:
-             raise ValueError(f"Ship '{props.get('name')}' missing required 'location'.")
+        if 'location' not in props and 'position' not in props:
+             raise ValueError(f"Ship '{props.get('name')}' missing required 'position'.")
         
         # Normalize custom subsystems
         subs = props.get('subsystems', {})
@@ -403,15 +565,16 @@ class MissionLoader:
         
         dock_src = props.get('dock')
         if isinstance(dock_src, dict):
-            props['docked_with'] = dock_src.get('with')
+            props['docked_with'] = dock_src.get('dockee')
             props['docker_point'] = dock_src.get('docker_point')
             props['dockee_point'] = dock_src.get('dockee_point')
 
-        # Validate and wrap ai_goals
-        if 'ai_goals' in props:
-            props['ai_goals'] = self._normalize_ai_goals(
-                f"Ship '{props.get('name')}'", 
-                props['ai_goals']
+        # Validate and wrap initial_orders (FSIF 4.0)
+        orders_key = 'initial_orders' if 'initial_orders' in props else None
+        if orders_key:
+            props[orders_key] = self._normalize_ai_goals(
+                f"Ship '{props.get('name')}'",
+                props[orders_key]
             )
 
         props.pop('template', None)
@@ -439,23 +602,27 @@ class MissionLoader:
         
         goals = []
         for g in flow.get('goals', []):
-             if 'message' not in g:
-                 raise ValueError(f"Goal '{g.get('name')}' missing required 'message'.")
+             if 'objective_text' not in g:
+                 raise ValueError(f"Goal '{g.get('name')}' missing required 'objective_text'.")
              goals.append(Goal(**g))
         
         messages = [Message(**m) for m in flow.get('messages', [])]
         
         # Briefing
+        # FSIF 4.0 icon fields: icon_type, display_class, map_position.
         briefing_raw = flow.get('briefing', {})
         for st in briefing_raw.get('stages', []):
              new_icons = []
              for ic in st.get('icons', []):
-                 typ_str = ic.get('type')
-                 if not typ_str: raise ValueError("Briefing icon missing type.")
+                 typ_str = ic.get('icon_type')
+                 if not typ_str: raise ValueError("Briefing icon missing icon_type.")
                  rid = brief_types.parse_icon_type(typ_str)
                  ic_data = dict(ic)
                  ic_data['type_id'] = rid
+                 # Normalize to the Python attribute name (alias-bypass via populate_by_name)
                  ic_data['type'] = brief_types.canonical_name_for_id(rid)
+                 # Remove both alias variants so only one survives
+                 ic_data.pop('icon_type', None)
                  new_icons.append(BriefingIcon(**ic_data))
              st['icons'] = new_icons 
              

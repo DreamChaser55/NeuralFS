@@ -682,19 +682,19 @@ class FS2Writer:
         """
         Write the '#Background bitmaps' section.
         
-        Handles suns, starbitmaps (planets/nebulae), and full nebula background
+        Handles suns, background_bitmaps (planets/nebulae), and full nebula background
         configurations. Manages background suppression if full nebula is enabled.
         """
         env = self.mission.environment
         total = len(env.suns) + len(env.starbitmaps)
         
         # Nebula Background Logic
-        # When full nebula is active, starbitmaps are suppressed (the volumetric nebula
+        # When full nebula is active, background_bitmaps are suppressed (the volumetric nebula
         # fills the background), but suns are still emitted and visible.
         neb = env.nebula
-        suppress_starbitmaps = neb.enabled
-        if suppress_starbitmaps:
-            total = len(env.suns)  # Only suns are emitted for fullneb; starbitmaps are suppressed
+        suppress_background_bitmaps = neb.enabled
+        if suppress_background_bitmaps:
+            total = len(env.suns)  # Only suns are emitted for fullneb; background_bitmaps are suppressed
         
         self._write(f'#Background bitmaps\t\t;! {total} total')
         self._write(f'')
@@ -719,7 +719,7 @@ class FS2Writer:
             self._write(f'+Angles: {p:.6f} {b:.6f} {h:.6f}')
             self._write(f'+Scale: {s.scale:.6f}')
 
-        if suppress_starbitmaps:
+        if suppress_background_bitmaps:
             return
 
         for s in env.starbitmaps:

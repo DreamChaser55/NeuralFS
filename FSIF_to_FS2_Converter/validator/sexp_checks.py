@@ -27,16 +27,16 @@ class SexpChecksMixin:
         for g in self.mission.goals:
             if g.formula: sexps.append((f"Goal '{g.name}' formula", g.formula))
             
-        # Ships/Wings cues and ai_goals
+        # Ships/Wings conditions and initial_orders
         for s in self.mission.ships:
-            if s.arrival_cue: sexps.append((f"Ship '{s.name}' arrival_cue", s.arrival_cue))
-            if s.departure_cue: sexps.append((f"Ship '{s.name}' departure_cue", s.departure_cue))
-            if s.ai_goals: sexps.append((f"Ship '{s.name}' ai_goals", s.ai_goals))
+            if s.arrival_cue: sexps.append((f"Ship '{s.name}' arrival_condition", s.arrival_cue))
+            if s.departure_cue: sexps.append((f"Ship '{s.name}' departure_condition", s.departure_cue))
+            if s.ai_goals: sexps.append((f"Ship '{s.name}' initial_orders", s.ai_goals))
             
         for w in self.mission.wings:
-            if w.arrival_cue: sexps.append((f"Wing '{w.name}' arrival_cue", w.arrival_cue))
-            if w.departure_cue: sexps.append((f"Wing '{w.name}' departure_cue", w.departure_cue))
-            if w.ai_goals: sexps.append((f"Wing '{w.name}' ai_goals", w.ai_goals))
+            if w.arrival_cue: sexps.append((f"Wing '{w.name}' arrival_condition", w.arrival_cue))
+            if w.departure_cue: sexps.append((f"Wing '{w.name}' departure_condition", w.departure_cue))
+            if w.ai_goals: sexps.append((f"Wing '{w.name}' initial_orders", w.ai_goals))
             
         for ctx, sexp in sexps:
             self._check_sexp_string(ctx, sexp)
@@ -81,14 +81,14 @@ class SexpChecksMixin:
 
     def validate_directive_text_sexp_compatibility(self):
         """
-        Warn if events with directive_text use is-event-true-delay, is-event-false-delay,
+        Warn if events with hud_directive_text use is-event-true-delay, is-event-false-delay,
         or similar event/goal-referencing SEXPs in their formula.
 
         The FSO engine cannot initially evaluate the possibility of an event becoming
         true/false when its formula references other events or goals via these operators.
         As a result, the grey 'pending' directive is never displayed on the HUD.
 
-        Events with directive_text should use simple, directly-evaluable conditions
+        Events with hud_directive_text should use simple, directly-evaluable conditions
         (e.g., is-destroyed-delay, has-arrived-delay, percent-ships-destroyed).
         """
         DIRECTIVE_INCOMPATIBLE_SEXPS = [
@@ -114,11 +114,11 @@ class SexpChecksMixin:
                 event_name = event.name if event.name else f"(unnamed, index {i})"
                 ops_str = ", ".join(f"'{op}'" for op in found_ops)
                 self.log_warning(
-                    f"Event '{event_name}' has a directive_text but its formula uses "
-                    f"{ops_str}. Directive text does not work correctly when the formula "
+                    f"Event '{event_name}' has hud_directive_text but its formula uses "
+                    f"{ops_str}. HUD directive text does not work correctly when the formula "
                     f"references other events or goals via these SEXPs: the engine cannot "
                     f"initially determine whether the event could become true or false, so "
                     f"the grey directive will never be displayed on the HUD. "
                     f"Use simpler, directly-evaluable conditions (e.g., is-destroyed-delay, "
-                    f"has-arrived-delay, percent-ships-destroyed) in events with directive_text."
+                    f"has-arrived-delay, percent-ships-destroyed) in events with hud_directive_text."
                 )

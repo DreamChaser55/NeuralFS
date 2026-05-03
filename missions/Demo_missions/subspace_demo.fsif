@@ -1,4 +1,4 @@
-fsif_version: "3.0"
+fsif_version: "4.0"
 
 mission_info:
   name: "Subspace Dash"
@@ -11,16 +11,16 @@ mission_info:
 environment:
   ambient_light_level: [20, 20, 20]
   suns: []
-  starbitmaps: []
+  background_bitmaps: []
   nebula:
     enabled: false
 
 player_setup:
   start_ship: "Alpha 1"
-  extra_ships:
+  additional_ship_choices:
     - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 4 }
-  extra_weapons:
+  additional_weapons:
     - "ML-16 Laser"
     - "Flail"
     - "Interceptor"
@@ -47,9 +47,9 @@ entities:
     - name: "GTC Orpheus"
       class: "GTC Fenris"
       team: "Friendly"
-      location: [200.0, 200.0, 100.0]
+      position: [200.0, 200.0, 100.0]
       flags: ["escort"]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
 
   wings:
@@ -57,24 +57,24 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
+      arrival_condition: |
         ( true )
-      ai_goals: |
+      initial_orders: |
           ( ai-guard "GTC Orpheus" 89 )
 
     - name: "Krishna"
       template: "hostile_fighter"
       count: 3
-      waves: 2
-      wave_threshold: 1
+      wave_count: 2
+      next_wave_threshold: 1
       position: [0.0, 0.0, 1500.0]
-      arrival_location: "In front of ship"
+      arrival_method: "In front of ship"
       arrival_anchor: "Alpha 1"
       arrival_distance: 1500
       arrival_delay: 5
-      arrival_cue: |
+      arrival_condition: |
         ( true )
-      ai_goals: |
+      initial_orders: |
           ( ai-chase-any 89 )
 
 mission_flow:
@@ -84,17 +84,17 @@ mission_flow:
         voice_name: "Umbriel"
         voice_style_instructions: "Calm, narrative"
         icons:
-          - { type: "Player Fighter Wing", team: "Friendly", class: "GTF Ulysses", pos: [0, 0], label: "Alpha" }
-          - { type: "Cruiser", team: "Friendly", class: "GTC Fenris", pos: [200, 100], label: "Orpheus" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [200, 100], label: "Orpheus" }
       - text: "$h{ Shivan interceptors $} have been detected in the corridor. $W Eliminate them."
         voice_name: "Umbriel"
         voice_style_instructions: "Directive, slightly urgent"
         icons:
-          - { type: "Fighter Wing", team: "Hostile", class: "SF Scorpion", pos: [0, 1000], label: "Shivans" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [0, 1000], label: "Shivans" }
 
   debriefing:
     stages:
-      - condition: |
+      - display_condition: |
           ( and 
             ( percent-ships-destroyed 100 "Krishna" ) 
             ( not ( is-destroyed-delay 0 "GTC Orpheus" ) ) 
@@ -102,12 +102,12 @@ mission_flow:
         text: "The corridor is $G clear and the $f{ GTC Orpheus $} is safe. $W{ Good work, $}$rank $callsign."
         voice_name: "Umbriel"
         voice_style_instructions: "Relieved, commendatory"
-      - condition: |
+      - display_condition: |
           ( is-destroyed-delay 0 "GTC Orpheus" )
         text: "We lost the $f{ GTC Orpheus $}. $R{ The mission is a failure. $}"
         voice_name: "Umbriel"
         voice_style_instructions: "Somber, disappointed"
-      - condition: |
+      - display_condition: |
           ( and 
             ( not ( percent-ships-destroyed 100 "Krishna" ) ) 
             ( not ( is-destroyed-delay 0 "GTC Orpheus" ) ) 
@@ -123,7 +123,7 @@ mission_flow:
           ( has-arrived-delay 0 "Krishna" )
           ( send-message "Alpha 1" "High" "Contact" )
         )
-      directive_text: "Engage Hostiles"
+      hud_directive_text: "Engage Hostiles"
 
     - name: "MissionComplete"
       formula: |
@@ -135,7 +135,7 @@ mission_flow:
   goals:
     - name: "ProtectOrpheus"
       type: "Primary"
-      message: "Protect the GTC Orpheus and eliminate all hostiles."
+      objective_text: "Protect the GTC Orpheus and eliminate all hostiles."
       formula: |
         ( and
           ( percent-ships-destroyed 100 "Krishna" )
@@ -144,12 +144,12 @@ mission_flow:
 
   messages:
     - name: "Contact"
-      message: "Contact! Shivan fighters ahead!"
+      text: "Contact! Shivan fighters ahead!"
       voice_name: "Iapetus"
       voice_style_instructions: "Alert, combat shout"
 
     - name: "AllClear"
-      message: "All hostiles eliminated. You are clear to jump out of the subspace corridor."
+      text: "All hostiles eliminated. You are clear to jump out of the subspace corridor."
       voice_name: "Alnilam"
       voice_style_instructions: "Authoritative command order"
 

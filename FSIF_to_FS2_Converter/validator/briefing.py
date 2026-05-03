@@ -46,13 +46,13 @@ class BriefingChecksMixin:
         # In-mission text channels where styling tags do not belong.
         for idx, msg in enumerate(self.mission.messages, start=1):
             warn_if_has_tags(
-                f"mission_flow.messages[{idx}] ('{msg.name}') message",
+                f"mission_flow.messages[{idx}] ('{msg.name}') text",
                 msg.message,
             )
 
         for idx, goal in enumerate(self.mission.goals, start=1):
             warn_if_has_tags(
-                f"mission_flow.goals[{idx}] ('{goal.name}') message",
+                f"mission_flow.goals[{idx}] ('{goal.name}') objective_text",
                 goal.message,
             )
 
@@ -60,7 +60,7 @@ class BriefingChecksMixin:
             if event.directive_text:
                 event_name = event.name if event.name else f"Event {idx}"
                 warn_if_has_tags(
-                    f"mission_flow.events[{idx}] ('{event_name}') directive_text",
+                    f"mission_flow.events[{idx}] ('{event_name}') hud_directive_text",
                     event.directive_text,
                 )
 
@@ -168,15 +168,15 @@ class BriefingChecksMixin:
         for i, stage in enumerate(self.mission.debriefing.stages):
             # Validate SEXP condition
             if stage.condition:
-                self._check_sexp_string(f"Debriefing stage {i+1} condition", stage.condition)
+                self._check_sexp_string(f"Debriefing stage {i+1} display_condition", stage.condition)
 
                 # Warn if condition is a bare '( true )' — always-true conditions are
                 # insufficiently restrictive and may cause incorrect text to be shown
                 normalized_cue = "".join(stage.condition.split()).lower()
                 if normalized_cue == '(true)':
                     self.log_warning(
-                        f"Debriefing stage {i+1} uses '( true )' as its condition. "
-                        f"This condition is always true and will cause the stage to display "
+                        f"Debriefing stage {i+1} uses '( true )' as its display_condition. "
+                        f"This display_condition is always true and will cause the stage to display "
                         f"regardless of the mission outcome (e.g., a success message will also "
                         f"appear after a failure). "
                         f"Use a specific SEXP (e.g., '( is-event-true-delay \"...\" 0 )') to "

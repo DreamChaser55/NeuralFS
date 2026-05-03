@@ -93,10 +93,10 @@ The converter iterates through all missions sequentially, parsing the FSIF YAML 
 
 - **Ship classes** from:
   - `player_setup.start_ship` (if it's a standalone ship, resolving its `template` if used)
-  - `player_setup.extra_ships`
+  - `player_setup.additional_ship_choices`
   - Wings named "Alpha", "Beta", "Gamma", "Delta", or "Epsilon" (resolving their `template`)
-- **Primary weapons** from `weapons.primary` lists on the extracted ships and their templates, as well as `player_setup.extra_weapons`.
-- **Secondary weapons** from `weapons.secondary` lists on the extracted ships and their templates, as well as `player_setup.extra_weapons`.
+- **Primary weapons** from `weapons.primary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
+- **Secondary weapons** from `weapons.secondary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
 
 The collected sets are compared against the running "allowed" sets (initialized with `starting_loadout`).
 Finally, the converter regex-scans the `.fsif` file for new `allow-ship` and `allow-weapon` SEXPs and adds those to the running "allowed" sets for the subsequent missions.

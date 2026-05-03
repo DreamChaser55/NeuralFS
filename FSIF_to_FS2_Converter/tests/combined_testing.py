@@ -359,10 +359,10 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("accepts FSIF version '3.0' only", str(ctx.exception))
+        self.assertIn("accepts FSIF version '4.0' only", str(ctx.exception))
 
     def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
-        fsif_text = """fsif_version: \"3.0\"
+        fsif_text = """fsif_version: \"4.0\"
 
 mission_info:
   name: "Invalid Ambient"
@@ -375,8 +375,8 @@ entities:
     - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: |
+      position: [0, 0, 0]
+      arrival_condition: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -399,7 +399,7 @@ environment:
 
     def test_validator_rejects_invalid_ai_orders_and_goals(self):
         fsif_text = """
-fsif_version: "3.0"
+fsif_version: "4.0"
 mission_info:
   name: "Invalid Orders Demo"
 player_setup:
@@ -409,13 +409,15 @@ entities:
     - name: "Player Ship"
       class: "GTF Ulysses"
       team: "Friendly"
-      location: [0, 0, 0]
-      arrival_cue: "( true )"
+      position: [0, 0, 0]
+      arrival_condition: |
+        ( true )
     - name: "Cruiser 1"
       class: "GTC Fenris"
       team: "Hostile"
-      location: [0, 0, 0]
-      ai_goals: '( ai-guard "Player Ship" 89 )'
+      position: [0, 0, 0]
+      initial_orders: |
+        ( ai-guard "Player Ship" 89 )
 mission_flow:
   events:
     - formula: '( set-player-orders "Player Ship" ( true ) "Do a barrel roll" )'
@@ -438,7 +440,7 @@ environment:
             self.assertFalse(is_valid, "Expected advanced SEXP validation to fail due to invalid player order and invalid cruiser goal.")
 
     def test_loader_rejects_arrival_delay_in_ship_template(self):
-        fsif_text = """fsif_version: "3.0"
+        fsif_text = """fsif_version: "4.0"
 
 mission_info:
   name: "Invalid Template Arrival Delay"
@@ -458,8 +460,8 @@ entities:
   ships:
     - name: "Player Ship"
       template: "fighter_template"
-      location: [0, 0, 0]
-      arrival_cue: |
+      position: [0, 0, 0]
+      arrival_condition: |
         ( true )
 
 mission_flow: {}
