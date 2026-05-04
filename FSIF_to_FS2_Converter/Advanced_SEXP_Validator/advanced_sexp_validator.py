@@ -937,7 +937,7 @@ class SexpValidator:
             return []
             
         # Logic for ai-dock: ( ai-dock Dockee DockerPoint DockeePoint Priority )
-        # Note: In initial ai_goals, "docker" is current_subject.
+        # Note: In initial_orders, "docker" is current_subject.
         # Dockee (Arg 1 in SEXP, Index 0 in children)
         # DockerPoint (Arg 2, Index 1) -> Context is docker (current_subject)
         # DockeePoint (Arg 3, Index 2) -> Context is Dockee (Arg 1 / Index 0)

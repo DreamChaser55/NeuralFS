@@ -101,13 +101,16 @@ class MissionLoader:
 
         self.data = yaml.safe_load(raw_yaml) or {}
 
-        # Strict field validation for the raw FSIF document before processing
+        # Deep strict validation of the raw FSIF 4.0 document.
+        # FSIFDocument (and all its nested input models) use extra='forbid',
+        # so legacy FSIF 3.0 field names and any other unknown keys are caught
+        # here before any loader normalization runs.
         from data_models import FSIFDocument
         from pydantic import ValidationError
         try:
             FSIFDocument(**self.data)
         except ValidationError as e:
-            raise ValueError(f"FSIF raw document validation error:\n{e}")
+            raise ValueError(f"FSIF document validation error:\n{e}")
 
         # Compose once from the same in-memory YAML text so downstream
         # validators can inspect scalar styles without re-opening the file.
@@ -196,11 +199,12 @@ class MissionLoader:
             env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
-        # FSIF 4.0 uses the clearer alias names below. Legacy external YAML
-        # names are rejected earlier by _validate_no_legacy_fsif_3_keys().
-        #   FSIF key       -> internal field
-        #   object_type    -> genre        ('asteroid' | 'debris')
-        #   behavior       -> type         ('active'   | 'passive')
+        # FSIF 4.0 uses the authored field names below. Legacy FSIF 3.0 names
+        # (genre, type, debris_types, targets) are rejected by the deep
+        # Pydantic input validation (AsteroidFieldInput) in _read_yaml().
+        #   Authored FSIF key  -> internal AsteroidField field
+        #   object_type        -> object_type  ('asteroid' | 'debris')
+        #   behavior           -> behavior     ('active'   | 'passive')
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
             genre = str(af_src.get('object_type', 'asteroid')).lower()

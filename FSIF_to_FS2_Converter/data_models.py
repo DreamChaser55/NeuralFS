@@ -92,39 +92,344 @@ def pack_ambient_light_rgb(rgb: Any) -> int:
     red, green, blue = _normalize_ambient_light_rgb(rgb)
     return red | (green << 8) | (blue << 16)
 
-# --- Raw Document Models (for initial strict validation) ---
+# =============================================================================
+# --- Authored FSIF 4.0 Input Schema (strict Pydantic pre-validation) ---
+# =============================================================================
+#
+# These models validate the raw YAML content against the FSIF 4.0 authored
+# schema BEFORE any loader normalization (template merging, wing expansion,
+# bounds -> min_vec/max_vec, dock block -> docked_with/etc.).
+#
+# All models use extra='forbid' so that legacy FSIF 3.0 field names and any
+# other unknown keys are rejected before the loader processes the document.
+#
+# Key differences from the runtime models below:
+#   - No internal fields (docked_with / docker_point / dockee_point on ships).
+#   - dock: DockInput uses 'dockee' key, not the internal 'docked_with'.
+#   - AsteroidFieldInput uses authored 'bounds' mapping, not min_vec/max_vec.
+#   - BriefingIconInput accepts [x,z] 2-element map_position authored by author.
+#   - ShipTemplateInput explicitly excludes forbidden template fields.
+# =============================================================================
 
-class EntitiesSection(BaseModel):
+class MissionInfoInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    ship_templates: Optional[Dict[str, Any]] = None
-    ships: Optional[List[Dict[str, Any]]] = None
-    wings: Optional[List[Dict[str, Any]]] = None
-    waypoints: Optional[Dict[str, Any]] = None
-    reinforcement_wings: Optional[List[Dict[str, Any]]] = None
-    reinforcement_ships: Optional[List[Dict[str, Any]]] = None
-    jump_nodes: Optional[List[Dict[str, Any]]] = None
+    name: str
+    author: Optional[str] = None
+    description: Optional[str] = None
+    game_type: Optional[str] = None
+    flags: Optional[List[str]] = None
+    disallow_support_ships: Optional[bool] = None
+    ai_profile: Optional[str] = None
 
-class MissionFlowSection(BaseModel):
+
+class NebulaInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    enabled: Optional[bool] = None
+    pattern: Optional[str] = None
+    sensor_range: Optional[float] = None
+    storm: Optional[str] = None
+    cloud_sprites: Optional[List[str]] = None
+
+
+class BoundsInput(BaseModel):
+    """Authored bounding box for asteroid fields. Loader converts to min_vec/max_vec."""
+    model_config = ConfigDict(extra='forbid')
+    min: Optional[List[float]] = None
+    max: Optional[List[float]] = None
+
+
+class AsteroidFieldInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    object_type: Optional[str] = None
+    behavior: Optional[str] = None
+    density: Optional[int] = None
+    average_speed: Optional[float] = None
+    bounds: Optional[BoundsInput] = None
+    object_variants: Optional[List[str]] = None
+    target_ships: Optional[List[str]] = None
+
+
+class EnvironmentInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    ambient_light_level: Any = None
+    # Reuse existing Sun/BackgroundBitmap runtime models here because they
+    # already have extra='forbid' and correct field-level validators.
+    suns: Optional[List[Any]] = None
+    background_bitmaps: Optional[List[Any]] = None
+    nebula: Optional[NebulaInput] = None
+    asteroid_field: Optional[AsteroidFieldInput] = None
+
+
+class ShipChoiceInput(BaseModel):
+    """Alternative ship pool entry for the loadout screen."""
+    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    ship_class: str = Field(..., alias='class')
+    count: int = Field(..., ge=1)
+
+
+class PlayerSetupInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    start_ship: str
+    additional_ship_choices: Optional[List[ShipChoiceInput]] = None
+    additional_weapons: Optional[List[str]] = None
+
+
+class DockInput(BaseModel):
+    """Authored dock block on the docker ship. Loader normalizes to docked_with/docker_point/dockee_point."""
+    model_config = ConfigDict(extra='forbid')
+    dockee: str
+    docker_point: str
+    dockee_point: str
+
+
+class SubsystemStatusInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    health: Optional[int] = None
+
+
+class SubsystemsInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    status: Optional[str] = None
+    list: Optional[List[SubsystemStatusInput]] = None
+
+
+class WeaponsInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    primary: Optional[List[str]] = None
+    secondary: Optional[List[str]] = None
+    secondary_ammo_counts: Optional[List[int]] = None
+
+
+class ShipTemplateInput(BaseModel):
+    """Allowed ship template properties.
+    
+    Arrival/departure fields, initial_orders, and docking are intentionally
+    absent — they are not permitted in ship_templates and are caught here by
+    extra='forbid' before the loader runs.
+    """
+    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    ship_class: Optional[str] = Field(None, alias='class')
+    team: Optional[str] = None
+    ai_class: Optional[str] = None
+    cargo: Optional[str] = None
+    initial_speed_percent: Optional[int] = None
+    initial_hull_percent: Optional[int] = None
+    flags: Optional[List[str]] = None
+    respawn_priority: Optional[int] = None
+    subsystems: Optional[SubsystemsInput] = None
+    weapons: Optional[WeaponsInput] = None
+    escort_list_priority: Optional[int] = None
+    destroyed_before_mission_seconds: Optional[int] = None
+
+
+class ShipInput(BaseModel):
+    """Authored ship definition. Does not include internal fields such as
+    docked_with/docker_point/dockee_point — those are produced by loader
+    normalization from the 'dock' block.
+    """
+    model_config = ConfigDict(extra='forbid', populate_by_name=True)
+    name: str
+    template: Optional[str] = None
+    ship_class: Optional[str] = Field(None, alias='class')
+    team: Optional[str] = None
+    position: Optional[List[float]] = None
+    orientation: Optional[List[float]] = None
+    ai_class: Optional[str] = None
+    cargo: Optional[str] = None
+    initial_speed_percent: Optional[int] = None
+    initial_hull_percent: Optional[int] = None
+    flags: Optional[List[str]] = None
+    respawn_priority: Optional[int] = None
+    subsystems: Optional[SubsystemsInput] = None
+    weapons: Optional[WeaponsInput] = None
+    dock: Optional[DockInput] = None
+    initial_orders: Optional[str] = None
+    arrival_method: Optional[str] = None
+    arrival_anchor: Optional[str] = None
+    arrival_distance: Optional[int] = None
+    arrival_delay: Optional[int] = None
+    arrival_condition: Optional[str] = None
+    departure_method: Optional[str] = None
+    departure_anchor: Optional[str] = None
+    departure_delay: Optional[int] = None
+    departure_condition: Optional[str] = None
+    escort_list_priority: Optional[int] = None
+    destroyed_before_mission_seconds: Optional[int] = None
+
+
+class WingInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    template: str
+    count: int
+    position: Optional[List[float]] = None
+    wave_count: Optional[int] = None
+    next_wave_threshold: Optional[int] = None
+    next_wave_delay_min: Optional[int] = None
+    next_wave_delay_max: Optional[int] = None
+    member_spacing: Optional[float] = None
+    arrival_method: Optional[str] = None
+    arrival_anchor: Optional[str] = None
+    arrival_distance: Optional[int] = None
+    arrival_delay: Optional[int] = None
+    arrival_condition: Optional[str] = None
+    departure_method: Optional[str] = None
+    departure_anchor: Optional[str] = None
+    departure_delay: Optional[int] = None
+    departure_condition: Optional[str] = None
+    initial_orders: Optional[str] = None
+    flags: Optional[List[str]] = None
+
+
+class JumpNodeInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    position: List[float]
+
+
+class ReinforcementInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    max_uses: Optional[int] = None
+    arrival_delay: Optional[int] = None
+    unavailable_messages: Optional[List[str]] = None
+    available_messages: Optional[List[str]] = None
+
+
+class EntitiesInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    ship_templates: Optional[Dict[str, ShipTemplateInput]] = None
+    ships: Optional[List[ShipInput]] = None
+    wings: Optional[List[WingInput]] = None
+    # Waypoints: mapping of path names to lists of [x,y,z] coordinates.
+    # Values are left as Any because the coordinate lists are validated later
+    # by the loader and runtime models.
+    waypoints: Optional[Dict[str, Any]] = None
+    reinforcement_wings: Optional[List[ReinforcementInput]] = None
+    reinforcement_ships: Optional[List[ReinforcementInput]] = None
+    jump_nodes: Optional[List[JumpNodeInput]] = None
+
+
+class EventInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: Optional[str] = None
+    formula: str
+    hud_directive_text: Optional[str] = None
+
+
+class GoalInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    type: Optional[str] = None
+    objective_text: str
+    formula: str
+
+
+class MessageInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    name: str
+    text: str
+    voice_name: Optional[str] = None
+    voice_style_instructions: Optional[str] = None
+
+
+class BriefingIconInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    icon_type: str
+    team: str
+    # Authors write [x, z] (2 elements). Normalization to [x, 0.0, z] is done
+    # by the runtime BriefingIcon validator, not here.
+    map_position: Optional[List[float]] = None
+    label: Optional[str] = None
+    display_class: Optional[str] = None
+    highlighted: Optional[bool] = None
+
+
+class BriefingStageInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str
+    voice_name: Optional[str] = None
+    voice_style_instructions: Optional[str] = None
+    camera_time: Optional[int] = None
+    icons: Optional[List[BriefingIconInput]] = None
+
+
+class BriefingInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    stages: Optional[List[BriefingStageInput]] = None
+
+
+class DebriefingStageInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str
+    display_condition: Optional[str] = None
+    voice_name: Optional[str] = None
+    voice_style_instructions: Optional[str] = None
+    recommendation: Optional[str] = None
+
+
+class DebriefingInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    stages: Optional[List[DebriefingStageInput]] = None
+
+
+class CommandBriefingStageInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    text: str
+    voice_name: Optional[str] = None
+    voice_style_instructions: Optional[str] = None
+
+
+class CommandBriefingInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    stages: Optional[List[CommandBriefingStageInput]] = None
+
+
+class MissionFlowInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     fiction_viewer: Optional[str] = None
-    events: Optional[List[Dict[str, Any]]] = None
-    goals: Optional[List[Dict[str, Any]]] = None
-    messages: Optional[List[Dict[str, Any]]] = None
-    briefing: Optional[Dict[str, Any]] = None
-    debriefing: Optional[Dict[str, Any]] = None
-    command_briefing: Optional[Dict[str, Any]] = None
+    events: Optional[List[EventInput]] = None
+    goals: Optional[List[GoalInput]] = None
+    messages: Optional[List[MessageInput]] = None
+    briefing: Optional[BriefingInput] = None
+    debriefing: Optional[DebriefingInput] = None
+    command_briefing: Optional[CommandBriefingInput] = None
+
+
+class AudioSettingsInput(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    mission_music: Optional[str] = None
+    briefing_music: Optional[str] = None
+    tts_provider: Optional[str] = None
+
 
 class FSIFDocument(BaseModel):
+    """Deep strict-validation model for the raw FSIF 4.0 document.
+    
+    Used in mission_loader._read_yaml() immediately after YAML parsing.
+    All nested sections use extra='forbid' so unknown/legacy FSIF 3.0 keys
+    are caught before any loader normalization runs.
+    
+    This model is used solely for validation — the loader continues to work
+    with the raw dict. Do not add loader-specific internal fields here.
+    """
     model_config = ConfigDict(extra='forbid')
     fsif_version: str
-    mission_info: Dict[str, Any]
-    environment: Dict[str, Any]
-    player_setup: Dict[str, Any]
-    entities: EntitiesSection
-    mission_flow: MissionFlowSection
-    audio: Optional[Dict[str, Any]] = None
+    mission_info: MissionInfoInput
+    environment: EnvironmentInput
+    player_setup: PlayerSetupInput
+    entities: EntitiesInput
+    mission_flow: MissionFlowInput
+    audio: Optional[AudioSettingsInput] = None
 
-# --- Sub-Component Models ---
+
+# =============================================================================
+# --- Runtime Sub-Component Models ---
+# =============================================================================
+# These models represent the normalized, hydrated mission structure produced
+# by the loader after template merging, wing expansion, and normalization.
+# They are used by the writer, validator, and TTS provider.
 
 class SubsystemStatus(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -182,7 +487,7 @@ class BackgroundBitmap(BaseModel):
 class Nebula(BaseModel):
     model_config = ConfigDict(extra='forbid')
     enabled: bool = False
-    sensor_range: float = Field(3000.0)
+    sensor_range: float = Field(default=3000.0)
     storm: str = 's_standard'
     pattern: Optional[str] = None
     cloud_sprites: List[str] = Field(default_factory=list)
@@ -389,7 +694,8 @@ class Ship(BaseModel):
     escort_list_priority: int = Field(0, ge=0)
     destroyed_before_mission_seconds: int = Field(0, ge=0)
     
-    # Docking (internal storage; authored as a 'dock' block on the docker)
+    # Docking (internal storage; authored as a 'dock' block on the docker,
+    # normalized by the loader from dock.dockee/docker_point/dockee_point)
     docked_with: Optional[str] = None
     docker_point: Optional[str] = None
     dockee_point: Optional[str] = None

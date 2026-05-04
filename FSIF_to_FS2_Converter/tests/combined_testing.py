@@ -478,7 +478,9 @@ environment:
                 load_mission_from_fsif(str(fsif_path))
 
         self.assertIn("arrival_delay", str(ctx.exception))
-        self.assertIn("must not be authored in ship_templates", str(ctx.exception))
+        # Deep Pydantic input validation (ShipTemplateInput extra='forbid') catches
+        # this before the loader's _validate_ship_template_authoring_rules runs.
+        self.assertIn("Extra inputs are not permitted", str(ctx.exception))
 
     def test_environment_rejects_invalid_rgb_channel_range(self):
         with self.assertRaises(ValueError) as ctx:
