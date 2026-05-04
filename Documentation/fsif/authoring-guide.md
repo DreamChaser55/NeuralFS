@@ -130,6 +130,76 @@ Notes:
   ```
   It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
+## Asteroid and debris fields
+
+FSO supports two mutually exclusive field genres, selected by `object_type`.
+
+### Asteroid field
+
+Spawns visual asteroid objects. Active asteroid fields will track and strike ships.
+
+```yaml
+environment:
+  asteroid_field:
+    object_type: "asteroid"     # selects the asteroid genre
+    behavior: "active"          # "active" = pursues ships; "passive" = drifts
+    density: 10
+    average_speed: 5.0
+    bounds:
+      min: [-2500.0, -1500.0, -2500.0]
+      max: [2500.0, 1500.0, 2500.0]
+    object_variants: ["Brown", "Blue", "Orange"]   # can be any subset; omit for all three
+    target_ships: ["GTC Fenris 1", "GTFr Poseidon 1"]   # active fields only
+```
+
+Valid `object_variants` for asteroid fields:
+- `"Brown"` — brown asteroid visuals
+- `"Blue"` — blue asteroid visuals
+- `"Orange"` — orange asteroid visuals
+
+Default: all three.
+
+### Debris field
+
+Spawns ship-debris objects. Debris fields are always passive.
+
+```yaml
+environment:
+  asteroid_field:
+    object_type: "debris"       # selects the debris genre
+    behavior: "passive"         # debris fields are always passive; active is coerced to passive
+    density: 10
+    average_speed: 0.0
+    bounds:
+      min: [-1000.0, -1000.0, -1000.0]
+      max: [1000.0, 1000.0, 1000.0]
+    object_variants:            # any subset of the nine canonical debris names; omit for all nine
+      - "Terran Debris 1"
+      - "Terran Debris 2"
+      - "Terran Debris 3"
+      - "Vasudan Debris 1"
+      - "Vasudan Debris 2"
+      - "Vasudan Debris 3"
+      - "Shivan Debris 1"
+      - "Shivan Debris 2"
+      - "Shivan Debris 3"
+```
+
+Valid `object_variants` for debris fields:
+- `"Terran Debris 1"`, `"Terran Debris 2"`, `"Terran Debris 3"`
+- `"Vasudan Debris 1"`, `"Vasudan Debris 2"`, `"Vasudan Debris 3"`
+- `"Shivan Debris 1"`, `"Shivan Debris 2"`, `"Shivan Debris 3"`
+
+Default: all nine.
+
+### Authoring rules
+
+- Asteroid and debris variant names are **mutually incompatible**. Do not mix names from the two lists (e.g. putting `"Terran Debris 1"` in an asteroid field, or `"Brown"` in a debris field) — the converter will reject this with an error.
+- `object_variants: []` (an explicit empty list) is not allowed and will cause a validation error. To use the defaults, omit the `object_variants` key entirely.
+- `target_ships` only applies to **active asteroid** fields. It has no effect (and generates a warning) for any other combination of `behavior` and `object_type`.
+- Debris fields authored with `behavior: "active"` are automatically coerced to `"passive"` with a warning.
+- Only one `asteroid_field` is allowed per mission. The converter supports authoring it as a single YAML mapping.
+
 ## Environment backgrounds and nebulae
 Author background suns and `background_bitmaps`; full nebula is a separate feature and unconditionally suppresses background bitmaps.
 ```yaml

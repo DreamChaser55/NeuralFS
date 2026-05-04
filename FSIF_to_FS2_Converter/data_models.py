@@ -564,7 +564,8 @@ class AsteroidField(BaseModel):
     behavior: Literal['active', 'passive'] = Field('passive')
     object_type: Literal['asteroid', 'debris'] = Field('asteroid')
     object_variants: List[str] = Field(
-        default_factory=lambda: ["Brown", "Blue", "Orange"]
+        # Default is asteroid variants; mission_loader overrides per object_type.
+        default_factory=lambda: list(fs_data.ASTEROID_FIELD_VARIANTS)
     )
     average_speed: float = 20.0
     min_vec: List[float] = Field(default_factory=lambda: [-1000.0, -1000.0, -1000.0])

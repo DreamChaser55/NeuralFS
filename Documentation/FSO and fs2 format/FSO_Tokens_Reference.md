@@ -526,4 +526,25 @@ Pattern: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, 
 Cloud Sprites: PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
 Lighting Storm: none, s_standard, s_medium, s_active, s_emp
 
+### Asteroid and debris field object variants
+
+Context: `environment.asteroid_field.object_variants`.
+The valid set depends on `environment.asteroid_field.object_type`. Asteroid and debris variant names are **mutually incompatible** — mixing them in the same field is an error.
+
+**Asteroid field variants** (`object_type: "asteroid"`):
+- Brown
+- Blue
+- Orange
+
+**Debris field variants** (`object_type: "debris"`):
+- Terran Debris 1
+- Terran Debris 2
+- Terran Debris 3
+- Vasudan Debris 1
+- Vasudan Debris 2
+- Vasudan Debris 3
+- Shivan Debris 1
+- Shivan Debris 2
+- Shivan Debris 3
+
 **End of reference**

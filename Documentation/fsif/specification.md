@@ -43,7 +43,7 @@
     - `density` (Integer, optional, default: `50`)
     - `average_speed` (Float, optional, default: `20.0`)
     - `bounds` (Mapping, optional). Keys: `min`, `max` (Vectors). Default: `min: [-1000, -1000, -1000]`, `max: [1000, 1000, 1000]`.
-    - `object_variants` (List[String], optional). Visual variant names. Defaults depend on `object_type`.
+    - `object_variants` (List[String], optional). Visual variant names. Defaults depend on `object_type`. Must not be empty — omit to get the full default set for the selected `object_type`. Allowed values are mutually incompatible between the two field types.
     - `target_ships` (List[String], optional, default: `[]`). Ship names the field will actively pursue. Active fields only.
 - `player_setup` (Mapping, required):
   - `start_ship` (String, required)

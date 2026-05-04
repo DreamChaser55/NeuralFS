@@ -361,21 +361,83 @@ Constraints and guidance
 
 ## Asteroid/Debris Fields mapping
 
-FS2 emission mapping (#Asteroid Fields)
-- Section header remains `#Asteroid Fields` (FSO format requirement).
-- $Density: <int>
-- +Field Type: <0 active | 1 passive> (from behavior)
-- +Debris Genre: <0 asteroid | 1 debris> (from object_type)
-- +Field Debris Type Name: <string> (repeated for each entry; from object_variants)
-- $Average Speed: <float>
-- $Minimum: x, y, z
-- $Maximum: x, y, z
-- $Asteroid Targets: ( "Ship1" "Ship2" ... ) (only for active asteroid fields with non-empty target_ships)
+The `environment.asteroid_field` FSIF mapping is converted to the `#Asteroid Fields` section in `.fs2`.
 
-Constraints and normalization (recap)
-- Retail/FRED limitation: one asteroid/debris field per mission. The converter supports authoring as a single Mapping `asteroid_field`.
-- Debris fields cannot be active; if authored as active, they are coerced to passive with a warning.
-- target_ships only apply to active asteroid fields; ignored otherwise (warning for debris).
+### FS2 emission (both field types)
+
+```
+#Asteroid Fields
+
+$Density: <int>
++Field Type: <0 = active | 1 = passive>           (from behavior)
++Debris Genre: <0 = asteroid | 1 = debris>         (from object_type)
++Field Debris Type Name: <name>                    (repeated for each entry in object_variants)
+...
+$Average Speed: <float>
+$Minimum: <x>, <y>, <z>
+$Maximum: <x>, <y>, <z>
+$Asteroid Targets: ( "Ship1" "Ship2" ... )         (only for active asteroid fields with target_ships)
+```
+
+### Example: asteroid field output
+
+```
+#Asteroid Fields
+
+$Density: 10
++Field Type: 0
++Debris Genre: 0
++Field Debris Type Name: Brown
++Field Debris Type Name: Blue
++Field Debris Type Name: Orange
+$Average Speed: 5.000000
+$Minimum: -2500.000000, -1500.000000, -2500.000000
+$Maximum: 2500.000000, 1500.000000, 2500.000000
+$Asteroid Targets: ( "GTC Fenris 1" "GTFr Poseidon 1" )
+```
+
+### Example: debris field output
+
+```
+#Asteroid Fields
+
+$Density: 10
++Field Type: 1
++Debris Genre: 1
++Field Debris Type Name: Terran Debris 1
++Field Debris Type Name: Terran Debris 2
++Field Debris Type Name: Terran Debris 3
++Field Debris Type Name: Vasudan Debris 1
++Field Debris Type Name: Vasudan Debris 2
++Field Debris Type Name: Vasudan Debris 3
++Field Debris Type Name: Shivan Debris 1
++Field Debris Type Name: Shivan Debris 2
++Field Debris Type Name: Shivan Debris 3
+$Average Speed: 0.000000
+$Minimum: -1000.000000, -1000.000000, -1000.000000
+$Maximum: 1000.000000, 1000.000000, 1000.000000
+```
+
+### object_variants defaults and validation
+
+**Defaults:** When `object_variants` is omitted from FSIF, the loader injects the full default set for the selected `object_type`:
+- `object_type: "asteroid"` → `["Brown", "Blue", "Orange"]`
+- `object_type: "debris"` → `["Terran Debris 1", "Terran Debris 2", "Terran Debris 3", "Vasudan Debris 1", "Vasudan Debris 2", "Vasudan Debris 3", "Shivan Debris 1", "Shivan Debris 2", "Shivan Debris 3"]`
+
+An explicitly authored empty list (`object_variants: []`) is NOT automatically replaced with defaults — the validator will reject it with an error.
+
+**Validation errors (abort conversion):**
+- Empty `object_variants` list.
+- Cross-genre mixing: asteroid variant name (`Brown`, `Blue`, `Orange`) in a debris field, or debris variant name in an asteroid field.
+- Unknown variant name that belongs to neither genre.
+
+**Validation warnings (non-fatal):**
+- Duplicate entries in `object_variants` (FSO ignores them at runtime).
+
+**Constraints and coercion:**
+- Retail/FRED limitation: one asteroid/debris field per mission. The converter supports authoring as a single YAML mapping `asteroid_field`.
+- Debris fields cannot be active; if authored with `behavior: "active"`, the loader coerces `behavior` to `"passive"` and logs a warning.
+- `target_ships` only applies to active asteroid fields; for any other combination of `behavior` and `object_type`, the field is ignored with a warning.
 - Divisors and bounds are normalized; min/max are swapped if authored inverted (warning).
 
 ## Internal Data Architecture

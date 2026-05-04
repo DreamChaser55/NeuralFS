@@ -75,7 +75,7 @@ environment:
   asteroid_field:
     genre: "asteroid"
     type: "passive"
-    debris_types: ["Asteroid Small", "Asteroid Medium"]
+    debris_types: ["Brown", "Blue", "Orange"]
     targets: []
 
 player_setup:
@@ -170,7 +170,7 @@ environment:
   asteroid_field:
     object_type: "asteroid"
     behavior: "passive"
-    object_variants: ["Asteroid Small", "Asteroid Medium"]
+    object_variants: ["Brown", "Blue", "Orange"]
     target_ships: []
 
 player_setup:

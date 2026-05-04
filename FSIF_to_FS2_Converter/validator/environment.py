@@ -64,6 +64,74 @@ class EnvironmentChecksMixin:
                 if not (af.behavior == 'active' and af.object_type == 'asteroid'):
                     self.log_warning(f"The asteroid field defines target_ships but they will be ignored (behavior='{af.behavior}', object_type='{af.object_type}'). target_ships are only supported for active asteroid fields.")
 
+    def validate_asteroid_field_object_variants(self):
+        """
+        Validate that object_variants contains only canonical names for the
+        selected object_type, and that the two variant genres are not mixed.
+
+        Rules:
+        - object_variants must not be empty (omit the field to get defaults).
+        - For object_type 'asteroid': only 'Brown', 'Blue', 'Orange'.
+        - For object_type 'debris': only the canonical 'Terran/Vasudan/Shivan Debris N' names.
+        - No cross-genre mixing (asteroid name in a debris field, or vice versa).
+        - Duplicate entries are warned, not errored.
+        """
+        af = self.mission.environment.asteroid_field
+        if not af:
+            return
+
+        if not af.object_variants:
+            self.log_error(
+                "environment.asteroid_field.object_variants is empty. "
+                "An asteroid/debris field must have at least one object variant. "
+                "Omit the field entirely to use the full default set for the selected object_type."
+            )
+            return
+
+        if af.object_type == 'asteroid':
+            allowed = self.allowed_asteroid_field_variants
+            genre_label = 'asteroid'
+            wrong_allowed = self.allowed_debris_field_variants
+            wrong_genre_label = 'debris'
+        else:
+            allowed = self.allowed_debris_field_variants
+            genre_label = 'debris'
+            wrong_allowed = self.allowed_asteroid_field_variants
+            wrong_genre_label = 'asteroid'
+
+        # Split values into three buckets: correct-genre, wrong-genre, and unknown
+        cross_genre = [v for v in af.object_variants if v in wrong_allowed]
+        unknown = [v for v in af.object_variants if v not in allowed and v not in wrong_allowed]
+        invalid = cross_genre + unknown
+
+        if cross_genre:
+            self.log_error(
+                f"environment.asteroid_field.object_variants contains "
+                f"{wrong_genre_label} field variant(s) but object_type is '{genre_label}': "
+                f"{cross_genre}. "
+                f"Asteroid and debris field variant names are mutually incompatible. "
+                f"Allowed {genre_label} variants: {sorted(allowed)}."
+            )
+        if unknown:
+            self.log_error(
+                f"environment.asteroid_field.object_variants contains unrecognised variant name(s): "
+                f"{unknown}. "
+                f"Allowed {genre_label} variants: {sorted(allowed)}."
+            )
+
+        # Warn on duplicates (not an error — FSO ignores them, but they are pointless)
+        seen = set()
+        duplicates = []
+        for v in af.object_variants:
+            if v in seen and v not in duplicates:
+                duplicates.append(v)
+            seen.add(v)
+        if duplicates:
+            self.log_warning(
+                f"environment.asteroid_field.object_variants contains duplicate entries "
+                f"(ignored by FSO but redundant): {duplicates}"
+            )
+
     def validate_asteroid_targets(self):
         af = self.mission.environment.asteroid_field
         if not af or not af.target_ships:

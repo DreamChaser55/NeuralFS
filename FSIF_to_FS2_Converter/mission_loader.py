@@ -237,6 +237,18 @@ class MissionLoader:
             af_src['object_type'] = genre
             af_src['behavior'] = ftype
 
+            # Apply genre-specific defaults for object_variants when the author
+            # omitted the field (None) or did not provide it at all (key absent).
+            # An explicitly authored empty list is preserved so the validator can
+            # produce an actionable error message for it.
+            authored_variants = af_src.get('object_variants')
+            if authored_variants is None:
+                from common import fs_data as _fs_data
+                if genre == 'debris':
+                    af_src['object_variants'] = list(_fs_data.DEBRIS_FIELD_VARIANTS)
+                else:
+                    af_src['object_variants'] = list(_fs_data.ASTEROID_FIELD_VARIANTS)
+
             # Cleanup source for strict model
             af_src.pop('bounds', None)
 

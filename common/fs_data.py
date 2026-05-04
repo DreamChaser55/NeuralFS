@@ -378,3 +378,10 @@ SHIP_BOUNDING_BOXES = {
 # --- 10. Player Wing Names ---
 PLAYER_WING_NAMES = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
 
+# --- 11. Asteroid/Debris Field Object Variants ---
+# Ordered lists preserve canonical display order; sets are used for fast membership checks.
+ASTEROID_FIELD_VARIANTS = ['Blue', 'Brown', 'Orange']
+DEBRIS_FIELD_VARIANTS = ['Shivan Debris 1', 'Shivan Debris 2', 'Shivan Debris 3', 'Terran Debris 1', 'Terran Debris 2', 'Terran Debris 3', 'Vasudan Debris 1', 'Vasudan Debris 2', 'Vasudan Debris 3']
+ALLOWED_ASTEROID_FIELD_VARIANTS = set(ASTEROID_FIELD_VARIANTS)
+ALLOWED_DEBRIS_FIELD_VARIANTS = set(DEBRIS_FIELD_VARIANTS)
+

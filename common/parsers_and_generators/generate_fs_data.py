@@ -33,6 +33,8 @@ def parse_tokens_reference():
         "anchors": set(),
         "arrival_methods": set(),
         "departure_methods": set(),
+        "asteroid_field_variants": set(),
+        "debris_field_variants": set(),
     }
 
     # Helper regexes
@@ -115,6 +117,26 @@ def parse_tokens_reference():
             if line.strip().startswith("-"):
                 val = line.strip()[2:].strip().strip('"')
                 data["anchors"].add(val)
+
+    # Asteroid / Debris field variants
+    # We parse both sub-sections inside "### Asteroid and debris field object variants"
+    ast_match = re.search(
+        r"\*\*Asteroid field variants\*\* .*?\n(.*?)\n\*\*Debris field variants\*\*",
+        content, re.DOTALL
+    )
+    if ast_match:
+        for line in ast_match.group(1).splitlines():
+            if line.strip().startswith("- "):
+                data["asteroid_field_variants"].add(line.strip()[2:].strip())
+
+    deb_match = re.search(
+        r"\*\*Debris field variants\*\* .*?\n(.*?)\n\nNotes:",
+        content, re.DOTALL
+    )
+    if deb_match:
+        for line in deb_match.group(1).splitlines():
+            if line.strip().startswith("- "):
+                data["debris_field_variants"].add(line.strip()[2:].strip())
 
     # Arrival / Departure Methods
     # Parse shared (both arrival and departure) methods first.
@@ -497,6 +519,21 @@ def generate_file():
         # Player Wing Names
         f.write("# --- 10. Player Wing Names ---\n")
         f.write("PLAYER_WING_NAMES = {\"Alpha\", \"Beta\", \"Gamma\", \"Delta\", \"Epsilon\"}\n\n")
+
+        # Asteroid / Debris Field Variants
+        # Emit ordered lists (used for defaults) and sets (used for validation).
+        f.write("# --- 11. Asteroid/Debris Field Object Variants ---\n")
+        f.write("# Ordered lists preserve canonical display order; sets are used for fast membership checks.\n")
+        ast_vars = sorted(tokens['asteroid_field_variants']) if tokens['asteroid_field_variants'] else ['Blue', 'Brown', 'Orange']
+        deb_vars = sorted(tokens['debris_field_variants']) if tokens['debris_field_variants'] else [
+            'Shivan Debris 1', 'Shivan Debris 2', 'Shivan Debris 3',
+            'Terran Debris 1', 'Terran Debris 2', 'Terran Debris 3',
+            'Vasudan Debris 1', 'Vasudan Debris 2', 'Vasudan Debris 3',
+        ]
+        f.write(f"ASTEROID_FIELD_VARIANTS = {ast_vars!r}\n")
+        f.write(f"DEBRIS_FIELD_VARIANTS = {deb_vars!r}\n")
+        f.write("ALLOWED_ASTEROID_FIELD_VARIANTS = set(ASTEROID_FIELD_VARIANTS)\n")
+        f.write("ALLOWED_DEBRIS_FIELD_VARIANTS = set(DEBRIS_FIELD_VARIANTS)\n\n")
     
     print(f"Successfully generated {OUTPUT_FILE}")
 

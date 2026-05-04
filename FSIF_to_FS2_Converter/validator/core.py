@@ -78,6 +78,10 @@ class Validator(
         
         # Merge all background bitmaps
         self.allowed_backgrounds = fs_data.ALLOWED_BACKGROUNDS
+
+        # Asteroid / Debris field object variant token sets
+        self.allowed_asteroid_field_variants = fs_data.ALLOWED_ASTEROID_FIELD_VARIANTS
+        self.allowed_debris_field_variants = fs_data.ALLOWED_DEBRIS_FIELD_VARIANTS
         
         self.allowed_anchors_tokens = fs_data.ALLOWED_ANCHORS_TOKENS
 
@@ -142,6 +146,7 @@ class Validator(
         self.validate_docking()
         self.validate_reinforcements()
         self.validate_anchors()
+        self.validate_asteroid_field_object_variants()
         self.validate_asteroid_targets()
         self.validate_messages()
         self.validate_briefing()
