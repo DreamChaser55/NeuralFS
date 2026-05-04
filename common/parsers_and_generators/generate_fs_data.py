@@ -30,7 +30,9 @@ def parse_tokens_reference():
         "nebulae_bitmaps": set(),
         "primary_weapons": set(),
         "secondary_weapons": set(),
-        "anchors": set()
+        "anchors": set(),
+        "arrival_methods": set(),
+        "departure_methods": set(),
     }
 
     # Helper regexes
@@ -113,6 +115,24 @@ def parse_tokens_reference():
             if line.strip().startswith("-"):
                 val = line.strip()[2:].strip().strip('"')
                 data["anchors"].add(val)
+
+    # Arrival / Departure Methods
+    # Parse shared (both arrival and departure) methods first.
+    # Only collect top-level list entries (exactly "- <token>"), not indented sub-bullets.
+    if match := re.search(r"#### Arrival and Departure\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
+        for line in match.group(1).splitlines():
+            # Top-level list entry: exactly two chars "- " at start (not indented)
+            if re.match(r'^- \S', line):
+                token = line[2:].strip()
+                data["arrival_methods"].add(token)
+                data["departure_methods"].add(token)
+
+    # Arrival-only methods
+    if match := re.search(r"#### Arrival-only\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
+        for line in match.group(1).splitlines():
+            if re.match(r'^- \S', line):
+                token = line[2:].strip()
+                data["arrival_methods"].add(token)
 
     return data
 
@@ -394,7 +414,13 @@ def generate_file():
         # Anchors
         f.write("# Anchor Tokens (Wildcards)\n")
         f.write(f"ALLOWED_ANCHORS_TOKENS = {fmt_set(tokens['anchors'])}\n\n")
-        
+
+        # Arrival / Departure Methods
+        f.write("# Arrival Methods (arrival_method field on ships and wings)\n")
+        f.write(f"ALLOWED_ARRIVAL_METHODS = {fmt_set(tokens['arrival_methods'])}\n\n")
+        f.write("# Departure Methods (departure_method field on ships and wings)\n")
+        f.write(f"ALLOWED_DEPARTURE_METHODS = {fmt_set(tokens['departure_methods'])}\n\n")
+
         # Weapons
         f.write("# Weapons - Primary\n")
         f.write(f"ALLOWED_PRIMARY_WEAPONS = {fmt_set(tokens['primary_weapons'])}\n\n")

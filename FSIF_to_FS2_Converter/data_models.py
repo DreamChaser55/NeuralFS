@@ -4,6 +4,7 @@
 from __future__ import annotations
 from typing import List, Dict, Any, Literal, Optional, Union
 from pydantic import BaseModel, Field, ConfigDict, field_validator
+from common import fs_data
 
 # --- Constants ---
 
@@ -91,6 +92,41 @@ def pack_ambient_light_rgb(rgb: Any) -> int:
     """Convert [red, green, blue] into the packed FS2 ambient-light integer."""
     red, green, blue = _normalize_ambient_light_rgb(rgb)
     return red | (green << 8) | (blue << 16)
+
+
+def _validate_arrival_method_token(v: Any) -> str:
+    """Validate that v is a canonical FSIF arrival_method token.
+
+    Returns the validated string value unchanged.
+    Raises ValueError if the value is not in ALLOWED_ARRIVAL_METHODS.
+    """
+    if not isinstance(v, str):
+        raise ValueError(f"arrival_method must be a string, got {type(v).__name__!r}.")
+    if v not in fs_data.ALLOWED_ARRIVAL_METHODS:
+        allowed = ', '.join(f"'{m}'" for m in sorted(fs_data.ALLOWED_ARRIVAL_METHODS))
+        raise ValueError(
+            f"Invalid arrival_method '{v}'. "
+            f"Allowed values: {allowed}."
+        )
+    return v
+
+
+def _validate_departure_method_token(v: Any) -> str:
+    """Validate that v is a canonical FSIF departure_method token.
+
+    Returns the validated string value unchanged.
+    Raises ValueError if the value is not in ALLOWED_DEPARTURE_METHODS.
+    """
+    if not isinstance(v, str):
+        raise ValueError(f"departure_method must be a string, got {type(v).__name__!r}.")
+    if v not in fs_data.ALLOWED_DEPARTURE_METHODS:
+        allowed = ', '.join(f"'{m}'" for m in sorted(fs_data.ALLOWED_DEPARTURE_METHODS))
+        raise ValueError(
+            f"Invalid departure_method '{v}'. "
+            f"Allowed values: {allowed}."
+        )
+    return v
+
 
 # =============================================================================
 # --- Authored FSIF 4.0 Input Schema (strict Pydantic pre-validation) ---
@@ -257,6 +293,20 @@ class ShipInput(BaseModel):
     escort_list_priority: Optional[int] = None
     destroyed_before_mission_seconds: Optional[int] = None
 
+    @field_validator('arrival_method', mode='before')
+    @classmethod
+    def validate_arrival_method(cls, v):
+        if v is None:
+            return v
+        return _validate_arrival_method_token(v)
+
+    @field_validator('departure_method', mode='before')
+    @classmethod
+    def validate_departure_method(cls, v):
+        if v is None:
+            return v
+        return _validate_departure_method_token(v)
+
 
 class WingInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -280,6 +330,20 @@ class WingInput(BaseModel):
     departure_condition: Optional[str] = None
     initial_orders: Optional[str] = None
     flags: Optional[List[str]] = None
+
+    @field_validator('arrival_method', mode='before')
+    @classmethod
+    def validate_arrival_method(cls, v):
+        if v is None:
+            return v
+        return _validate_arrival_method_token(v)
+
+    @field_validator('departure_method', mode='before')
+    @classmethod
+    def validate_departure_method(cls, v):
+        if v is None:
+            return v
+        return _validate_departure_method_token(v)
 
 
 class JumpNodeInput(BaseModel):
@@ -671,35 +735,35 @@ class Ship(BaseModel):
     initial_speed_percent: int = Field(33, ge=0, le=100)
     initial_hull_percent: int = Field(100, ge=0, le=100)
     
-    arrival_method: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace')
+    arrival_method: str = Field('Hyperspace')
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
     arrival_condition: str = Field('( false )')
-    
-    departure_method: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace')
+
+    departure_method: str = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
     departure_condition: str = Field('( false )')
-    
+
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
-    
+
     respawn_priority: int = Field(0, ge=0)
-    
+
     subsystems: Subsystems = Field(default_factory=Subsystems)
     weapons: Weapons = Field(default_factory=Weapons)
-    
+
     initial_orders: Optional[str] = Field(None)
-    
+
     escort_list_priority: int = Field(0, ge=0)
     destroyed_before_mission_seconds: int = Field(0, ge=0)
-    
+
     # Docking (internal storage; authored as a 'dock' block on the docker,
     # normalized by the loader from dock.dockee/docker_point/dockee_point)
     docked_with: Optional[str] = None
     docker_point: Optional[str] = None
     dockee_point: Optional[str] = None
-    
+
     @field_validator('position', mode='before')
     @classmethod
     def validate_position(cls, v):
@@ -709,6 +773,16 @@ class Ship(BaseModel):
     @classmethod
     def validate_orient(cls, v):
         return _normalize_orientation(v)
+
+    @field_validator('arrival_method', mode='before')
+    @classmethod
+    def validate_arrival_method(cls, v):
+        return _validate_arrival_method_token(v)
+
+    @field_validator('departure_method', mode='before')
+    @classmethod
+    def validate_departure_method(cls, v):
+        return _validate_departure_method_token(v)
 
 class Wing(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -722,24 +796,24 @@ class Wing(BaseModel):
     next_wave_delay_min: Optional[int] = Field(None, ge=0)
     next_wave_delay_max: Optional[int] = Field(None, ge=0)
     
-    arrival_method: Literal['Hyperspace', 'Docking Bay', 'Near Ship', 'In front of ship', 'In back of ship', 'Above ship', 'Below ship', 'To left of ship', 'To right of ship'] = Field('Hyperspace')
+    arrival_method: str = Field('Hyperspace')
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
     arrival_condition: str = Field('( true )')
-    
-    departure_method: Literal['Hyperspace', 'Docking Bay'] = Field('Hyperspace')
+
+    departure_method: str = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
     departure_condition: str = Field('( false )')
-    
+
     flags: List[str] = Field(default_factory=list)
     initial_orders: Optional[str] = Field(None)
-    
+
     # Wing centroid position
     position: Optional[List[float]] = None
     member_spacing: float = Field(50.0, gt=0)
-    
+
     # Template reference (used during expansion, kept for record)
     template: Optional[str] = None
 
@@ -748,6 +822,16 @@ class Wing(BaseModel):
     def validate_pos(cls, v):
         if v is None: return None
         return _normalize_vector(v)
+
+    @field_validator('arrival_method', mode='before')
+    @classmethod
+    def validate_arrival_method(cls, v):
+        return _validate_arrival_method_token(v)
+
+    @field_validator('departure_method', mode='before')
+    @classmethod
+    def validate_departure_method(cls, v):
+        return _validate_departure_method_token(v)
 
 class AudioSettings(BaseModel):
     model_config = ConfigDict(extra='forbid')

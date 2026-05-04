@@ -39,6 +39,12 @@ ALLOWED_BACKGROUNDS = ALLOWED_SUNS | ALLOWED_PLANETS | ALLOWED_NEBULAE_BITMAPS
 # Anchor Tokens (Wildcards)
 ALLOWED_ANCHORS_TOKENS = {'#Command', '<any friendly player>', '<any friendly>', '<any hostile>', '<any unknown>', '<any wingman>'}
 
+# Arrival Methods (arrival_method field on ships and wings)
+ALLOWED_ARRIVAL_METHODS = {'Above ship', 'Below ship', 'Docking Bay', 'Hyperspace', 'In back of ship', 'In front of ship', 'Near Ship', 'To left of ship', 'To right of ship'}
+
+# Departure Methods (departure_method field on ships and wings)
+ALLOWED_DEPARTURE_METHODS = {'Docking Bay', 'Hyperspace'}
+
 # Weapons - Primary
 ALLOWED_PRIMARY_WEAPONS = {'Avenger', 'Banshee', 'D-Advanced', 'Disruptor', 'Flail', 'ML-16 Laser', 'Prometheus', 'Shivan Heavy Laser', 'Shivan Light Laser', 'Shivan Mega Laser', 'Shivan Uber Laser', 'Training', 'Vasudan Light Laser'}
 
