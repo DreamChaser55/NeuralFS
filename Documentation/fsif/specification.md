@@ -52,27 +52,7 @@
 - `entities` (Mapping, required):
   - `ship_templates` (Mapping, optional). Keys are template names, values are ship properties mappings.
   - `ships` (List[Mapping], optional). See Ship Properties below.
-  - `wings` (List[Mapping], optional):
-    - `name` (String, required)
-    - `template` (String, required)
-    - `count` (Integer, required)
-    - `position` (List[Float], required). Format: `[x, y, z]`. Centroid of the wing's spawn line.
-    - `wave_count` (Integer, optional, default: `1`). Number of waves for this wing.
-    - `next_wave_threshold` (Integer, optional, default: `0`). Minimum surviving ships before the next wave spawns.
-    - `next_wave_delay_min` (Integer, optional). Minimum delay in seconds before next wave.
-    - `next_wave_delay_max` (Integer, optional). Maximum delay in seconds before next wave.
-    - `arrival_delay` (Integer, optional, default: `0`). Starts to tick after the arrival condition becomes true.
-    - `arrival_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`, `"Near Ship"`, `"In front of ship"`, `"In back of ship"`, `"Above ship"`, `"Below ship"`, `"To left of ship"`, `"To right of ship"`.
-    - `arrival_anchor` (String, optional)
-    - `arrival_distance` (Integer, optional)
-    - `arrival_condition` (String, optional, default: `"( true )"`). SEXP. Boolean condition that triggers arrival.
-    - `departure_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`.
-    - `departure_anchor` (String, optional)
-    - `departure_delay` (Integer, optional, default: `0`). Starts to tick after the departure condition becomes true.
-    - `departure_condition` (String, optional, default: `"( false )"`). SEXP.
-    - `initial_orders` (String, optional). SEXP. Initial AI orders for wing members.
-    - `flags` (List[String], optional, default: `[]`).
-    - `member_spacing` (Float, optional, default: `50.0`). Distance in meters between adjacent wing members.
+  - `wings` (List[Mapping], optional). See Wing Properties below.
   - `waypoints` (Mapping, optional). Keys are path names, values are Lists of `[x,y,z]`.
   - `reinforcement_wings` (List[Mapping], optional):
     - `name` (String, required)
@@ -150,6 +130,28 @@
 - `initial_orders` (String, optional). SEXP. Initial AI orders assigned at mission start.
 - `escort_list_priority` (Integer, optional, default: `0`). Controls ordering/importance in the HUD escort list. Requires the `escort` flag.
 - `destroyed_before_mission_seconds` (Integer, optional, default: `0`). Seconds before mission start when the ship is destroyed to create pre-placed wreckage. `0` means normal spawning.
+
+**Wing Properties:**
+- `name` (String, required)
+- `template` (String, required). Name of a template defined in `ship_templates`.
+- `count` (Integer, required). Number of ships in the wing.
+- `position` (List[Float], required). Format: `[x, y, z]`. Centroid of the wing's spawn line.
+- `wave_count` (Integer, optional, default: `1`). Number of waves for this wing.
+- `next_wave_threshold` (Integer, optional, default: `0`). Minimum surviving ships before the next wave spawns.
+- `next_wave_delay_min` (Integer, optional). Minimum delay in seconds before next wave.
+- `next_wave_delay_max` (Integer, optional). Maximum delay in seconds before next wave.
+- `arrival_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`, `"Near Ship"`, `"In front of ship"`, `"In back of ship"`, `"Above ship"`, `"Below ship"`, `"To left of ship"`, `"To right of ship"`.
+- `arrival_anchor` (String, optional)
+- `arrival_distance` (Integer, optional)
+- `arrival_condition` (String, optional, default: `"( true )"`). SEXP. Boolean condition that triggers arrival.
+- `arrival_delay` (Integer, optional, default: `0`). Starts to tick after the arrival condition becomes true.
+- `departure_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`.
+- `departure_anchor` (String, optional)
+- `departure_condition` (String, optional, default: `"( false )"`). SEXP.
+- `departure_delay` (Integer, optional, default: `0`). Starts to tick after the departure condition becomes true.
+- `initial_orders` (String, optional). SEXP. Initial AI orders for wing members.
+- `flags` (List[String], optional, default: `[]`).
+- `member_spacing` (Float, optional, default: `50.0`). Distance in meters between adjacent wing members.
 
 ## Minimal FSIF skeleton
 - A minimal and a standard FSIF skeletons are provided in the Authoring Guide.
