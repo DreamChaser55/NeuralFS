@@ -53,6 +53,7 @@ class MissionLoader:
         """Main execution method."""
         self._read_yaml()
         self._validate_version()
+        self._validate_fsif_schema()
         self._check_required_sections()
         
         # Load sections
@@ -101,17 +102,6 @@ class MissionLoader:
 
         self.data = yaml.safe_load(raw_yaml) or {}
 
-        # Deep strict validation of the raw FSIF 4.0 document.
-        # FSIFDocument (and all its nested input models) use extra='forbid',
-        # so legacy FSIF 3.0 field names and any other unknown keys are caught
-        # here before any loader normalization runs.
-        from data_models import FSIFDocument
-        from pydantic import ValidationError
-        try:
-            FSIFDocument(**self.data)
-        except ValidationError as e:
-            raise ValueError(f"FSIF document validation error:\n{e}")
-
         # Compose once from the same in-memory YAML text so downstream
         # validators can inspect scalar styles without re-opening the file.
         try:
@@ -138,6 +128,28 @@ class MissionLoader:
                 f"Please update your mission file (see Migration Guide)."
             )
         self.fsif_version = version_str
+
+    def _validate_fsif_schema(self):
+        """
+        Deep strict validation of the raw FSIF document against the current
+        supported schema (FSIFDocument Pydantic model).
+
+        All nested input models use extra='forbid', so any unknown or renamed
+        keys are caught here and reported as schema errors.
+
+        Must be called AFTER _validate_version() so that unsupported FSIF
+        versions fail fast with a simple version error rather than a wall of
+        Pydantic field errors caused by incompatible field names.
+
+        Raises:
+            ValueError: If any field in the document violates the schema.
+        """
+        from data_models import FSIFDocument
+        from pydantic import ValidationError
+        try:
+            FSIFDocument(**self.data)
+        except ValidationError as e:
+            raise ValueError(f"FSIF document validation error:\n{e}")
 
     def _check_required_sections(self):
         required = ['mission_info', 'environment', 'player_setup', 'entities', 'mission_flow']

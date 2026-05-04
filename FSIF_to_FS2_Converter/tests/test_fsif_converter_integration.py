@@ -361,6 +361,77 @@ environment:
 
         self.assertIn("accepts FSIF version '4.0' only", str(ctx.exception))
 
+    def test_old_version_fsif_fails_with_version_error_not_pydantic_wall(self):
+        """
+        Regression test: a FSIF file with an old version number AND many
+        renamed/legacy field names must fail with a clean unsupported-version
+        error, NOT with a wall of Pydantic 'Extra inputs are not permitted'
+        errors caused by incompatible field names.
+
+        This verifies that _validate_version() runs before _validate_fsif_schema()
+        in MissionLoader.load().
+        """
+        # Combine old fsif_version with several legacy FSIF 3.0 field names
+        # that would each generate a Pydantic error if schema validation ran first.
+        fsif_text = """fsif_version: "3.0"
+
+mission_info:
+  name: "Old Legacy Mission"
+
+environment:
+  ambient_light_level: [0, 0, 0]
+  starbitmaps: []
+
+player_setup:
+  start_ship: "Player Ship"
+  extra_weapons:
+    - "Hornet"
+  extra_ships:
+    - {class: "GTF Ulysses", count: 4}
+
+entities:
+  ships:
+    - name: "Player Ship"
+      class: "GTF Ulysses"
+      team: "Friendly"
+      location: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+      ai_goals: |
+        ( ai-chase-any 89 )
+
+mission_flow:
+  events:
+    - formula: |
+        ( when ( true ) ( do-nothing ) )
+      directive_text: "Old directive text field"
+  goals:
+    - name: "Old Goal"
+      message: "Old goal text field"
+      formula: |
+        ( true )
+"""
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            fsif_path = Path(tmpdir) / "old_version.fsif"
+            fsif_path.write_text(fsif_text, encoding="utf-8")
+
+            with self.assertRaises(ValueError) as ctx:
+                load_mission_from_fsif(str(fsif_path))
+
+        error_msg = str(ctx.exception)
+
+        # Must contain the simple version mismatch message
+        self.assertIn("Unsupported fsif_version '3.0'", error_msg)
+        self.assertIn("accepts FSIF version '4.0' only", error_msg)
+
+        # Must NOT contain Pydantic schema error markers — version check must
+        # have fired before the schema validator had a chance to run.
+        self.assertNotIn("FSIF document validation error", error_msg,
+                         "Schema validation ran before version check — Pydantic error wall was not suppressed.")
+        self.assertNotIn("Extra inputs are not permitted", error_msg,
+                         "Schema validation ran before version check — legacy field names triggered Pydantic errors.")
+
     def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
         fsif_text = """fsif_version: \"4.0\"
 
