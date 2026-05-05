@@ -237,5 +237,247 @@ class TestAdvancedSexpValidator(unittest.TestCase):
         result = self.parser.parse('(when (true) (do-nothing))')
         self.assertTrue(result)
 
+# =============================================================================
+# Tests for validate_mission diagnostic label naming (FSIF 4.0 field names)
+# =============================================================================
+
+import logging
+from types import SimpleNamespace
+from advanced_sexp_validator import validate_mission, SexpReturnType as _SRT
+
+
+def _make_ship(name, arrival_condition=None, departure_condition=None,
+               initial_orders=None, ship_class="GTF Ulysses", team="Friendly"):
+    """Build a minimal ship-like namespace for validate_mission tests."""
+    s = SimpleNamespace()
+    s.name = name
+    s.ship_class = ship_class
+    s.team = team
+    s.arrival_condition = arrival_condition
+    s.departure_condition = departure_condition
+    s.initial_orders = initial_orders
+    return s
+
+
+def _make_wing(name, arrival_condition=None, departure_condition=None,
+               initial_orders=None, ship_class="GTF Ulysses", team="Friendly"):
+    """Build a minimal wing-like namespace for validate_mission tests."""
+    ship = _make_ship(f"{name} 1", ship_class=ship_class, team=team)
+    w = SimpleNamespace()
+    w.name = name
+    w.arrival_condition = arrival_condition
+    w.departure_condition = departure_condition
+    w.initial_orders = initial_orders
+    w.ships = [ship]
+    return w
+
+
+def _make_minimal_mission(ships=None, wings=None):
+    """Build a minimal Mission-like namespace with the attrs validate_mission needs."""
+    m = SimpleNamespace()
+    m.ships = ships or []
+    m.wings = wings or []
+    m.events = []
+    m.goals = []
+    m.messages = []
+    m.waypoints = {}
+    m.jump_nodes = []
+    m.debriefing = SimpleNamespace(stages=[])
+    return m
+
+
+class TestValidateMissionDiagnosticLabels(unittest.TestCase):
+    """
+    Verify that validate_mission() emits FSIF 4.0 field names in its diagnostics,
+    not the old FSO/FS2 labels (Arrival Cue, Departure Cue, AI Goals).
+    """
+
+    def _capture_logs(self, mission):
+        """Run validate_mission and capture all logged messages."""
+        log_records = []
+        handler = logging.handlers.MemoryHandler(capacity=10000, flushLevel=logging.CRITICAL)
+        handler.buffer = []
+
+        class ListHandler(logging.Handler):
+            def emit(self, record):
+                log_records.append(self.format(record))
+
+        list_handler = ListHandler()
+        # Attach to the advanced_sexp_validator logger
+        import advanced_sexp_validator as _mod
+        logger = logging.getLogger(_mod.__name__)
+        logger.addHandler(list_handler)
+        original_level = logger.level
+        logger.setLevel(logging.DEBUG)
+        try:
+            validate_mission(mission)
+        finally:
+            logger.removeHandler(list_handler)
+            logger.setLevel(original_level)
+        return log_records
+
+    def test_arrival_condition_label_not_arrival_cue(self):
+        """
+        When a ship has an invalid arrival_condition SEXP, the diagnostic must
+        reference 'arrival_condition', not 'Arrival Cue'.
+        """
+        ship = _make_ship("Alpha 1", arrival_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+        mission = _make_minimal_mission(ships=[ship])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("arrival_condition", combined,
+                      "Expected 'arrival_condition' in validator output")
+        self.assertNotIn("Arrival Cue", combined,
+                         "Old FSO label 'Arrival Cue' should NOT appear in validator output")
+
+    def test_departure_condition_label_not_departure_cue(self):
+        """
+        When a ship has an invalid departure_condition SEXP, the diagnostic must
+        reference 'departure_condition', not 'Departure Cue'.
+        """
+        ship = _make_ship("Alpha 1",
+                          arrival_condition="( true )",
+                          departure_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+        mission = _make_minimal_mission(ships=[ship])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("departure_condition", combined,
+                      "Expected 'departure_condition' in validator output")
+        self.assertNotIn("Departure Cue", combined,
+                         "Old FSO label 'Departure Cue' should NOT appear in validator output")
+
+    def test_initial_orders_label_not_ai_goals(self):
+        """
+        When a ship has initial_orders with a detectable issue, the diagnostic must
+        reference 'initial_orders', not 'AI Goals'.
+        """
+        # Use a fighter-only AI goal on a non-fighter ship (GTC Fenris) — this
+        # triggers an applicability error and will appear in the logs.
+        ship = _make_ship(
+            "GTC Fenris 1",
+            arrival_condition="( true )",
+            initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
+            ship_class="GTC Fenris",
+            team="Friendly",
+        )
+        ship2 = _make_ship("Alpha 1", arrival_condition="( true )", ship_class="GTF Ulysses", team="Friendly")
+        mission = _make_minimal_mission(ships=[ship, ship2])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("initial_orders", combined,
+                      "Expected 'initial_orders' in validator output")
+        self.assertNotIn("AI Goals", combined,
+                         "Old FSO label 'AI Goals' should NOT appear in validator output")
+
+    def test_wing_arrival_condition_label(self):
+        """Wing diagnostic labels must use 'arrival_condition', not 'Arrival Cue'."""
+        wing = _make_wing("Beta",
+                          arrival_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+        mission = _make_minimal_mission(wings=[wing])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("arrival_condition", combined,
+                      "Expected 'arrival_condition' in wing validator output")
+        self.assertNotIn("Arrival Cue", combined,
+                         "Old FSO label 'Arrival Cue' should NOT appear in wing validator output")
+
+    def test_wing_initial_orders_label(self):
+        """Wing initial_orders diagnostic must reference 'initial_orders', not 'AI Goals'."""
+        wing = _make_wing(
+            "Gamma",
+            arrival_condition="( true )",
+            initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
+            ship_class="GTC Fenris",
+            team="Friendly",
+        )
+        player = _make_ship("Alpha 1", arrival_condition="( true )")
+        mission = _make_minimal_mission(ships=[player], wings=[wing])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("initial_orders", combined,
+                      "Expected 'initial_orders' in wing validator output")
+        self.assertNotIn("AI Goals", combined,
+                         "Old FSO label 'AI Goals' should NOT appear in wing validator output")
+
+    def test_ai_goal_applicability_still_checked_via_initial_orders(self):
+        """
+        After refactoring subject tracking away from string parsing,
+        AI-goal applicability checks must still fire correctly when a
+        non-fighter ship has a fighter-only initial_orders goal.
+        """
+        ship = _make_ship(
+            "GTC Fenris 1",
+            arrival_condition="( true )",
+            initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
+            ship_class="GTC Fenris",
+            team="Friendly",
+        )
+        target = _make_ship("Alpha 1", arrival_condition="( true )")
+        mission = _make_minimal_mission(ships=[ship, target])
+        logs = self._capture_logs(mission)
+
+        combined = "\n".join(logs)
+        self.assertIn("invalid for non-fighter/non-bomber ship", combined,
+                      "AI-goal applicability check must still fire after subject tracking refactor")
+
+
+class TestAtomValidatorWording(unittest.TestCase):
+    """
+    Verify that atom validator error messages use the improved wording
+    introduced in Phase 2 of the naming cleanup.
+    """
+
+    def setUp(self):
+        self.ctx = MissionContext()
+        self.parser = SexpParser()
+        self.validator = SexpValidator(self.ctx)
+
+    def _errors(self, sexp_str, expected_type=SexpReturnType.NULL):
+        roots = self.parser.parse(sexp_str)
+        errors = []
+        for root in roots:
+            errors.extend(self.validator.validate(root, expected_type=expected_type))
+        return errors
+
+    def test_invalid_background_bitmap_wording(self):
+        """Invalid background bitmap token message must say 'background bitmap token'."""
+        errors = self._errors('(add-background-bitmap-new "bad_bitmap" 0 0 0 100 100 4 4)',
+                              SexpReturnType.NULL)
+        # There may be multiple errors (argument count / type issues); look for the bitmap one.
+        bitmap_errors = [e for e in errors if "bitmap" in e.lower() or "background" in e.lower()]
+        self.assertTrue(bitmap_errors,
+                        f"Expected a background bitmap error, got: {errors}")
+        # None of the bitmap errors should contain the old title-case "Background Bitmap"
+        # (the new message uses lowercase "background bitmap token")
+        self.assertFalse(
+            any("Background Bitmap:" in e for e in bitmap_errors),
+            f"Old 'Background Bitmap:' wording found in: {bitmap_errors}"
+        )
+
+    def test_invalid_nebula_poof_wording(self):
+        """Invalid cloud sprite error must mention 'cloud sprite' and 'nebula poof'."""
+        errors = self._errors('(nebula-toggle-poof "bad_poof" (true))', SexpReturnType.NULL)
+        self.assertTrue(errors, f"Expected errors, got none")
+        poof_errors = [e for e in errors if "poof" in e.lower() or "cloud" in e.lower() or "sprite" in e.lower()]
+        self.assertTrue(poof_errors, f"Expected a cloud sprite/nebula poof error, got: {errors}")
+        # The new wording must include both "cloud sprite" and "nebula poof"
+        self.assertTrue(
+            any("cloud sprite" in e.lower() for e in poof_errors),
+            f"Expected 'cloud sprite' in error, got: {poof_errors}"
+        )
+        self.assertTrue(
+            any("nebula poof" in e.lower() for e in poof_errors),
+            f"Expected 'nebula poof' in error, got: {poof_errors}"
+        )
+
+
+import logging.handlers  # needed by _capture_logs above
+
+
 if __name__ == '__main__':
     unittest.main()

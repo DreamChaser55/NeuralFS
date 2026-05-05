@@ -1023,22 +1023,28 @@ class SexpValidator:
 
     def _validate_background_bitmap(self, text: str, context: str, node: SexpNode) -> List[str]:
         if text not in fs_data.ALLOWED_BACKGROUNDS:
-            return [self._format_error(f"Invalid Background Bitmap: '{text}'", context)]
+            return [self._format_error(f"Invalid background bitmap token: '{text}'", context)]
         return []
 
     def _validate_sun_bitmap(self, text: str, context: str, node: SexpNode) -> List[str]:
         if text not in fs_data.ALLOWED_SUNS:
-            return [self._format_error(f"Invalid Sun Bitmap: '{text}'", context)]
+            return [self._format_error(f"Invalid sun bitmap token: '{text}'", context)]
         return []
 
     def _validate_nebula_pattern(self, text: str, context: str, node: SexpNode) -> List[str]:
         if text not in fs_data.ALLOWED_NEBULA_PATTERNS:
-            return [self._format_error(f"Invalid Nebula Pattern: '{text}'", context)]
+            return [self._format_error(f"Invalid nebula background pattern token: '{text}'", context)]
         return []
 
     def _validate_nebula_poof(self, text: str, context: str, node: SexpNode) -> List[str]:
+        # FSO refers to these as "nebula poofs"; in FSIF they are authored as
+        # environment.nebula.cloud_sprites. The SEXP OPF type is OPF_NEBULA_POOF.
         if text not in fs_data.ALLOWED_NEBULA_POOFS:
-            return [self._format_error(f"Invalid Nebula Poof: '{text}'", context)]
+            return [self._format_error(
+                f"Invalid cloud sprite token (FSO nebula poof): '{text}'. "
+                f"Use a canonical name from environment.nebula.cloud_sprites.",
+                context,
+            )]
         return []
 
     def _validate_soundtrack_name(self, text: str, context: str, node: SexpNode) -> List[str]:
@@ -1081,62 +1087,100 @@ def validate_mission(mission) -> bool:
     
     total_errors = 0
     
-    # Task List: (Context Description, SEXP String, Expected Return Type)
+    # Task list: (description, sexp, expected_type, current_subject)
+    #   description    — Human-readable label using FSIF 4.0 field names for user-facing errors.
+    #   sexp           — The raw SEXP string to validate.
+    #   expected_type  — Expected SexpReturnType for the root expression.
+    #   current_subject — Ship/wing name to use for AI-goal applicability checks (None if N/A).
     tasks = []
-    
+
     # Events
     for e in mission.events:
         if e.formula:
-            tasks.append((f"Event '{e.name or '<unnamed>'}'", e.formula, SexpReturnType.NULL))
-            
+            tasks.append((
+                f"Event '{e.name or '<unnamed>'}' formula",
+                e.formula,
+                SexpReturnType.NULL,
+                None,
+            ))
+
     # Goals
     for g in mission.goals:
         if g.formula:
-            tasks.append((f"Goal '{g.name}'", g.formula, SexpReturnType.BOOL))
-            
-    # Ships
+            tasks.append((
+                f"Goal '{g.name}' formula",
+                g.formula,
+                SexpReturnType.BOOL,
+                None,
+            ))
+
+    # Ships — use FSIF 4.0 field names (arrival_condition / departure_condition / initial_orders)
     for s in mission.ships:
         if s.arrival_condition:
-            tasks.append((f"Ship '{s.name}' Arrival Cue", s.arrival_condition, SexpReturnType.BOOL))
+            tasks.append((
+                f"Ship '{s.name}' arrival_condition",
+                s.arrival_condition,
+                SexpReturnType.BOOL,
+                None,
+            ))
         if s.departure_condition:
-            tasks.append((f"Ship '{s.name}' Departure Cue", s.departure_condition, SexpReturnType.BOOL))
+            tasks.append((
+                f"Ship '{s.name}' departure_condition",
+                s.departure_condition,
+                SexpReturnType.BOOL,
+                None,
+            ))
         if s.initial_orders:
-            # initial_orders field usually contains "( goals ... )"
-            # 'goals' operator returns SexpReturnType.NULL (Action), but contains AI Goals.
-            tasks.append((f"Ship '{s.name}' AI Goals", s.initial_orders, SexpReturnType.NULL))
-            
-    # Wings
+            # initial_orders wraps AI-goal operators inside "( goals ... )".
+            # 'goals' returns SexpReturnType.NULL (Action).
+            # current_subject is set so the validator can check AI-goal applicability.
+            tasks.append((
+                f"Ship '{s.name}' initial_orders",
+                s.initial_orders,
+                SexpReturnType.NULL,
+                s.name,
+            ))
+
+    # Wings — same FSIF 4.0 field names
     for w in mission.wings:
         if w.arrival_condition:
-            tasks.append((f"Wing '{w.name}' Arrival Cue", w.arrival_condition, SexpReturnType.BOOL))
+            tasks.append((
+                f"Wing '{w.name}' arrival_condition",
+                w.arrival_condition,
+                SexpReturnType.BOOL,
+                None,
+            ))
         if w.departure_condition:
-            tasks.append((f"Wing '{w.name}' Departure Cue", w.departure_condition, SexpReturnType.BOOL))
+            tasks.append((
+                f"Wing '{w.name}' departure_condition",
+                w.departure_condition,
+                SexpReturnType.BOOL,
+                None,
+            ))
         if w.initial_orders:
-            tasks.append((f"Wing '{w.name}' AI Goals", w.initial_orders, SexpReturnType.NULL))
-            
-    # Debriefing
+            tasks.append((
+                f"Wing '{w.name}' initial_orders",
+                w.initial_orders,
+                SexpReturnType.NULL,
+                w.name,
+            ))
+
+    # Debriefing stages — display_condition (FSIF 4.0 field name)
     for i, stage in enumerate(mission.debriefing.stages):
         if stage.display_condition:
-            tasks.append((f"Debriefing Stage {i+1}", stage.display_condition, SexpReturnType.BOOL))
+            tasks.append((
+                f"Debriefing stage {i+1} display_condition",
+                stage.display_condition,
+                SexpReturnType.BOOL,
+                None,
+            ))
 
-    # Briefing (if any conditions exist - usually not in standard briefing, but check spec)
-    # Standard briefing uses $Formula but usually ( true ). 
-    # FSIF doesn't seem to expose Briefing formula in stages? 
-    # Checking data_models.BriefingStage... no formula field.
-    # checking fs2_writer: writes ( true ).
-    # So we skip briefing.
+    # Note: standard briefing stages have no author-supplied formula in FSIF;
+    # the writer emits "( true )" automatically, so briefing stages are not validated here.
 
-    # Execution
-    for desc, sexp, expected_type in tasks:
-        # logger.info(f"Validating {desc}...")
-        
-        # Extract subject from description if it's an AI Goals task
-        # Format: "Ship 'Name' AI Goals" or "Wing 'Name' AI Goals"
-        validator.current_subject = None
-        if "AI Goals" in desc:
-            match = re.search(r"(?:Ship|Wing) '(.+?)'", desc)
-            if match:
-                validator.current_subject = match.group(1)
+    # Execution — current_subject is passed directly in the tuple; no string parsing needed.
+    for desc, sexp, expected_type, current_subject in tasks:
+        validator.current_subject = current_subject
 
         try:
             roots = parser.parse(sexp)

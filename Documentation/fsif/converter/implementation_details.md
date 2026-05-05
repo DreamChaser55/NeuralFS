@@ -331,6 +331,8 @@ Notes
 
 ## Arrival/Departure emission order
 
+> **Label note:** The labels used in this section (e.g. `$Arrival Cue`, `$Departure Cue`, `$AI Goals`) are the literal `.fs2` output labels. The parenthesised names are the corresponding FSIF 4.0 authoring fields. Authors edit FSIF fields; the converter translates them to FS2 labels.
+
 Ships (#Objects)
 - Arrival emission order:
   1) $Arrival Location (from arrival_method)

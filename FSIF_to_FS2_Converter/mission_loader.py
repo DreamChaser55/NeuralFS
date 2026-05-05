@@ -211,21 +211,21 @@ class MissionLoader:
             env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
-        # FSIF 4.0 uses the authored field names below. Legacy FSIF 3.0 names
-        # (genre, type, debris_types, targets) are rejected by the deep
-        # Pydantic input validation (AsteroidFieldInput) in _read_yaml().
+        # FSIF 4.0 uses the authored field names object_type and behavior.
+        # Legacy FSIF 3.0 names (genre, type, debris_types, targets) are rejected
+        # by deep Pydantic validation (AsteroidFieldInput) in _read_yaml().
         #   Authored FSIF key  -> internal AsteroidField field
         #   object_type        -> object_type  ('asteroid' | 'debris')
         #   behavior           -> behavior     ('active'   | 'passive')
         af_src = env_data.get('asteroid_field')
         if af_src and isinstance(af_src, dict):
-            genre = str(af_src.get('object_type', 'asteroid')).lower()
-            ftype = str(af_src.get('behavior', 'passive')).lower()
+            object_type = str(af_src.get('object_type', 'asteroid')).lower()
+            behavior = str(af_src.get('behavior', 'passive')).lower()
 
             # Enforce constraint: a debris field cannot be active.
-            if genre != 'asteroid' and ftype == 'active':
+            if object_type != 'asteroid' and behavior == 'active':
                 logger.warning(f"[WARNING] Debris field cannot be active; coercing to passive.")
-                ftype = 'passive'
+                behavior = 'passive'
 
             # Map bounds to min_vec/max_vec
             if 'bounds' in af_src and isinstance(af_src['bounds'], dict):
@@ -233,18 +233,18 @@ class MissionLoader:
                 if 'min' in b: af_src['min_vec'] = b['min']
                 if 'max' in b: af_src['max_vec'] = b['max']
 
-            # Write normalised strings back using the FSIF 4.0 alias names.
-            af_src['object_type'] = genre
-            af_src['behavior'] = ftype
+            # Write normalised strings back using the FSIF 4.0 field names.
+            af_src['object_type'] = object_type
+            af_src['behavior'] = behavior
 
-            # Apply genre-specific defaults for object_variants when the author
+            # Apply object_type-specific defaults for object_variants when the author
             # omitted the field (None) or did not provide it at all (key absent).
             # An explicitly authored empty list is preserved so the validator can
             # produce an actionable error message for it.
             authored_variants = af_src.get('object_variants')
             if authored_variants is None:
                 from common import fs_data as _fs_data
-                if genre == 'debris':
+                if object_type == 'debris':
                     af_src['object_variants'] = list(_fs_data.DEBRIS_FIELD_VARIANTS)
                 else:
                     af_src['object_variants'] = list(_fs_data.ASTEROID_FIELD_VARIANTS)
@@ -291,8 +291,9 @@ class MissionLoader:
         """
         Reject ship-template fields that must be authored on the concrete ship/wing.
 
-        Arrival/departure locations, anchors, distances and cues do not work when
-        inherited by ships that are part of a wing, so FSIF forbids authoring these
+        Arrival/departure methods, anchors, distances, delays, conditions (arrival_condition,
+        departure_condition), initial_orders, and docking fields do not work correctly
+        when inherited by ships that are part of a wing, so FSIF forbids authoring these
         fields in ship_templates entirely. Standalone ships must author them directly
         on the ship, while wing members must author them on the wing.
         """

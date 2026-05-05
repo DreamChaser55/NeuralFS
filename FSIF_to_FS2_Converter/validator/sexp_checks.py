@@ -4,17 +4,17 @@ class SexpChecksMixin:
     def validate_sexps(self):
         """
         Perform structural validation of all SEXP formulas in the mission.
-        
+
         Checks:
-        - Events, Goals, Arrival/Departure cues, AI Goals.
+        - Event formulas, goal formulas, ship/wing arrival_condition and
+          departure_condition fields, and initial_orders.
         - Parenthesis balance.
         - YAML comment leakage.
         - Token length limits.
-        - Basic operator validity.
-        
-        Note: The basic validation only checks the validity of the outermost operator.
-        Nested operators inside compound SEXPs are not checked here. Deep semantic
-        validation of operator validity at depth is delegated to the Advanced SEXP Validator.
+        - Basic operator validity (outermost operator only).
+
+        Note: Deep semantic analysis of nested operators, argument types, and
+        entity references is delegated to the Advanced SEXP Validator.
         """
         # Gather all SEXP strings with context
         sexps = []
