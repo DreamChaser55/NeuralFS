@@ -4,7 +4,7 @@
   <img src="neuralfslogo.png" alt="NeuralFS Logo" />
 </p>
 
-NeuralFS is an agentic AI framework that can write fully playable original campaigns for the Freespace Open (FSO) engine. It consists of three AI agents (LLMs with a custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
+NeuralFS is an agentic AI framework that can write fully playable original campaigns for the Freespace Open (FSO) engine. It consists of three AI agents (LLMs with tool-calling and custom system prompt) and two specialized Python conversion scripts. NeuralFS supports two agentic AI engines:
 - Visual Studio Code (by using the Roo Code extension)
 - OpenCode
 
@@ -18,13 +18,15 @@ This agent brainstorms and iteratively writes the campaign description in natura
 
 #### FSIF+FCIF Writing Agent
 
-This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: *Freespace Intermediate Format (FSIF)*. This format is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with lots of redundant fields and boilerplate. An AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window. Also, YAML is much more common in the LLM training data than `.fs2` files. This is why it is better to use a more concise and compact intermediate format.
+This agent takes the detailed mission plans written by the previous agent and converts them into an exact mission specification in a custom YAML-based intermediate mission format: *Freespace Intermediate Format (FSIF)*. Why do we need an intermediate format?
+- FSIF is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with lots of redundant fields and boilerplate; an AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window.
+- YAML files are much more common in LLM training data than `.fs2` files.
 
-The agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
+This agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
 
-This agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script (Fiction Viewer Validator).
+The agent also adds FSO text coloring tags into the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script (Fiction Viewer Validator).
 
-After writing each `.fsif` or `.fcif` file, this agent immediately runs it through the respective Python converter script to validate it. If the converter reports any errors or warnings, the agent autonomously analyzes the file, applies the necessary fixes, and retries the conversion until the file is valid and successfully converted to game-ready `.fs2` or `.fc2` formats.
+After writing each `.fsif` or `.fcif` file, FSIF+FCIF Writing Agent runs it through the respective Python converter script to validate it. If the converter reports any errors or warnings, the agent autonomously analyzes the file, applies the necessary fixes, and retries the conversion until the file is valid and successfully converted to game-ready `.fs2` or `.fc2` formats.
 
 #### Single FSIF Mission Editing Agent
 
@@ -38,7 +40,7 @@ A Python script that takes the intermediate FSIF representation of the mission a
 
 The Converter script has both command line interface suitable for use by AI agents, and GUI for use by humans.
 
-If provided with Google Gemini, ElevenLabs, or Inworld API key, the Converter script can optionally generate voice files for briefings/messages/debriefings, using their respective TTS API.
+If provided with Google Gemini, ElevenLabs, or Inworld API key, the Converter script can optionally generate voice files for briefings/messages/debriefings using their respective TTS API.
 
 For details, see `\FSIF_to_FS2_Converter\README.md`.
 
