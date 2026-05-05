@@ -74,8 +74,8 @@ def parse_tokens_reference():
     if match := re.search(r"### Volumetric \(full\) nebula parameters\n(.*?)\n\n", content, re.DOTALL):
         block = match.group(1)
         for line in block.splitlines():
-            if line.startswith("Background Color Pattern:"):
-                parts = line.replace("Background Color Pattern:", "").split(",")
+            if line.startswith("Background Color Patterns:"):
+                parts = line.replace("Background Color Patterns:", "").split(",")
                 data["nebula_patterns"].update(p.strip() for p in parts if p.strip())
             if line.startswith("Cloud Sprites (Poofs):"):
                 parts = line.replace("Cloud Sprites (Poofs):", "").split(",")
