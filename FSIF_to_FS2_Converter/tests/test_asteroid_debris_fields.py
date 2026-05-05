@@ -46,7 +46,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
@@ -75,7 +75,7 @@ def _mission_with_asteroid_field(af: AsteroidField) -> Mission:
         "class": "GTF Ulysses",
         "team": "Friendly",
         "position": [0.0, 0.0, 0.0],
-        "arrival_condition": "( true )",
+        "arrival_cue": "( true )",
         "weapons": Weapons(primary=["Avenger", "Avenger"], secondary=["MX-50"]),
     })
     env = Environment(asteroid_field=af)

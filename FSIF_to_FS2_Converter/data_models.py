@@ -285,11 +285,11 @@ class ShipInput(BaseModel):
     arrival_anchor: Optional[str] = None
     arrival_distance: Optional[int] = None
     arrival_delay: Optional[int] = None
-    arrival_condition: Optional[str] = None
+    arrival_cue: Optional[str] = None
     departure_method: Optional[str] = None
     departure_anchor: Optional[str] = None
     departure_delay: Optional[int] = None
-    departure_condition: Optional[str] = None
+    departure_cue: Optional[str] = None
     escort_list_priority: Optional[int] = None
     destroyed_before_mission_seconds: Optional[int] = None
 
@@ -323,11 +323,11 @@ class WingInput(BaseModel):
     arrival_anchor: Optional[str] = None
     arrival_distance: Optional[int] = None
     arrival_delay: Optional[int] = None
-    arrival_condition: Optional[str] = None
+    arrival_cue: Optional[str] = None
     departure_method: Optional[str] = None
     departure_anchor: Optional[str] = None
     departure_delay: Optional[int] = None
-    departure_condition: Optional[str] = None
+    departure_cue: Optional[str] = None
     initial_orders: Optional[str] = None
     flags: Optional[List[str]] = None
 
@@ -740,12 +740,12 @@ class Ship(BaseModel):
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
-    arrival_condition: str = Field('( false )')
+    arrival_cue: str = Field('( false )')
 
     departure_method: str = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
-    departure_condition: str = Field('( false )')
+    departure_cue: str = Field('( false )')
 
     flags: List[str] = Field(default_factory=lambda: ['cargo-known'])
 
@@ -801,12 +801,12 @@ class Wing(BaseModel):
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
-    arrival_condition: str = Field('( true )')
+    arrival_cue: str = Field('( true )')
 
     departure_method: str = Field('Hyperspace')
     departure_anchor: Optional[str] = None
     departure_delay: int = Field(0, ge=0)
-    departure_condition: str = Field('( false )')
+    departure_cue: str = Field('( false )')
 
     flags: List[str] = Field(default_factory=list)
     initial_orders: Optional[str] = Field(None)

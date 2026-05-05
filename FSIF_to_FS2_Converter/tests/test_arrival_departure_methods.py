@@ -62,7 +62,7 @@ entities:
       position: [0, 0, 0]
       arrival_method: {ship_arrival_method}
       departure_method: {ship_departure_method}
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
 mission_flow: {{}}
@@ -96,7 +96,7 @@ entities:
       position: [0, 0, 0]
       arrival_method: {wing_arrival_method}
       departure_method: {wing_departure_method}
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
 mission_flow: {{}}
@@ -239,7 +239,7 @@ class TestShipRuntimeModelMethodValidation(unittest.TestCase):
             "class": "GTF Ulysses",
             "team": "Friendly",
             "position": [0.0, 0.0, 0.0],
-            "arrival_condition": "( true )",
+            "arrival_cue": "( true )",
             "weapons": Weapons(primary=["Avenger", "Avenger"], secondary=["MX-50"]),
         }
         data.update(overrides)
@@ -290,7 +290,7 @@ class TestWingRuntimeModelMethodValidation(unittest.TestCase):
             "class": "GTF Ulysses",
             "team": "Friendly",
             "position": [0.0, 0.0, 0.0],
-            "arrival_condition": "( true )",
+            "arrival_cue": "( true )",
             "weapons": Weapons(primary=["Avenger", "Avenger"], secondary=["MX-50"]),
         })
         data = {
@@ -298,7 +298,7 @@ class TestWingRuntimeModelMethodValidation(unittest.TestCase):
             "count": 1,
             "ships": [ship],
             "position": [0.0, 0.0, 0.0],
-            "arrival_condition": "( true )",
+            "arrival_cue": "( true )",
         }
         data.update(overrides)
         return data

@@ -30,9 +30,7 @@ Full rename table
 | `player_setup` | `extra_weapons` | `additional_weapons` | More accurately describes loadout-screen weapons. |
 | Ship properties | `location` | `position` | Consistent with wings/jump nodes; more natural. |
 | Ship/Wing properties | `arrival_location` | `arrival_method` | Values describe how arrival occurs, not a coordinate. |
-| Ship/Wing properties | `arrival_cue` | `arrival_condition` | It is a Boolean SEXP condition, not a "cue". |
 | Ship/Wing properties | `departure_location` | `departure_method` | Same rationale as `arrival_method`. |
-| Ship/Wing properties | `departure_cue` | `departure_condition` | It is a Boolean SEXP condition, not a "cue". |
 | Ship/Wing properties | `ai_goals` | `initial_orders` | Avoids confusion with mission goals. |
 | Ship properties | `initial_velocity` | `initial_speed_percent` | Makes units explicit (0–100, not m/s). |
 | Ship properties | `initial_hull` | `initial_hull_percent` | Makes units explicit (0–100). |
@@ -194,7 +192,7 @@ entities:
       arrival_method: "In front of ship"
       arrival_anchor: "GTC Fenris 1"
       arrival_distance: 1500
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-chase-any 60 )
@@ -212,10 +210,10 @@ entities:
       initial_hull_percent: 85
       destroyed_before_mission_seconds: 0
       arrival_method: "Hyperspace"
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( has-departed-delay 0 "GTC Fenris 1" )
       escort_list_priority: 90
       initial_orders: |

@@ -246,27 +246,27 @@ from types import SimpleNamespace
 from advanced_sexp_validator import validate_mission, SexpReturnType as _SRT
 
 
-def _make_ship(name, arrival_condition=None, departure_condition=None,
+def _make_ship(name, arrival_cue=None, departure_cue=None,
                initial_orders=None, ship_class="GTF Ulysses", team="Friendly"):
     """Build a minimal ship-like namespace for validate_mission tests."""
     s = SimpleNamespace()
     s.name = name
     s.ship_class = ship_class
     s.team = team
-    s.arrival_condition = arrival_condition
-    s.departure_condition = departure_condition
+    s.arrival_cue = arrival_cue
+    s.departure_cue = departure_cue
     s.initial_orders = initial_orders
     return s
 
 
-def _make_wing(name, arrival_condition=None, departure_condition=None,
+def _make_wing(name, arrival_cue=None, departure_cue=None,
                initial_orders=None, ship_class="GTF Ulysses", team="Friendly"):
     """Build a minimal wing-like namespace for validate_mission tests."""
     ship = _make_ship(f"{name} 1", ship_class=ship_class, team=team)
     w = SimpleNamespace()
     w.name = name
-    w.arrival_condition = arrival_condition
-    w.departure_condition = departure_condition
+    w.arrival_cue = arrival_cue
+    w.departure_cue = departure_cue
     w.initial_orders = initial_orders
     w.ships = [ship]
     return w
@@ -316,35 +316,35 @@ class TestValidateMissionDiagnosticLabels(unittest.TestCase):
             logger.setLevel(original_level)
         return log_records
 
-    def test_arrival_condition_label_not_arrival_cue(self):
+    def test_arrival_cue_label_not_arrival_cue(self):
         """
-        When a ship has an invalid arrival_condition SEXP, the diagnostic must
-        reference 'arrival_condition', not 'Arrival Cue'.
+        When a ship has an invalid arrival_cue SEXP, the diagnostic must
+        reference 'arrival_cue', not 'Arrival Cue'.
         """
-        ship = _make_ship("Alpha 1", arrival_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+        ship = _make_ship("Alpha 1", arrival_cue="( has-arrived-delay 0 \"NonExistentShip\" )")
         mission = _make_minimal_mission(ships=[ship])
         logs = self._capture_logs(mission)
 
         combined = "\n".join(logs)
-        self.assertIn("arrival_condition", combined,
-                      "Expected 'arrival_condition' in validator output")
+        self.assertIn("arrival_cue", combined,
+                      "Expected 'arrival_cue' in validator output")
         self.assertNotIn("Arrival Cue", combined,
                          "Old FSO label 'Arrival Cue' should NOT appear in validator output")
 
-    def test_departure_condition_label_not_departure_cue(self):
+    def test_departure_cue_label_not_departure_cue(self):
         """
-        When a ship has an invalid departure_condition SEXP, the diagnostic must
-        reference 'departure_condition', not 'Departure Cue'.
+        When a ship has an invalid departure_cue SEXP, the diagnostic must
+        reference 'departure_cue', not 'Departure Cue'.
         """
         ship = _make_ship("Alpha 1",
-                          arrival_condition="( true )",
-                          departure_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+                          arrival_cue="( true )",
+                          departure_cue="( has-arrived-delay 0 \"NonExistentShip\" )")
         mission = _make_minimal_mission(ships=[ship])
         logs = self._capture_logs(mission)
 
         combined = "\n".join(logs)
-        self.assertIn("departure_condition", combined,
-                      "Expected 'departure_condition' in validator output")
+        self.assertIn("departure_cue", combined,
+                      "Expected 'departure_cue' in validator output")
         self.assertNotIn("Departure Cue", combined,
                          "Old FSO label 'Departure Cue' should NOT appear in validator output")
 
@@ -357,12 +357,12 @@ class TestValidateMissionDiagnosticLabels(unittest.TestCase):
         # triggers an applicability error and will appear in the logs.
         ship = _make_ship(
             "GTC Fenris 1",
-            arrival_condition="( true )",
+            arrival_cue="( true )",
             initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
             ship_class="GTC Fenris",
             team="Friendly",
         )
-        ship2 = _make_ship("Alpha 1", arrival_condition="( true )", ship_class="GTF Ulysses", team="Friendly")
+        ship2 = _make_ship("Alpha 1", arrival_cue="( true )", ship_class="GTF Ulysses", team="Friendly")
         mission = _make_minimal_mission(ships=[ship, ship2])
         logs = self._capture_logs(mission)
 
@@ -372,16 +372,16 @@ class TestValidateMissionDiagnosticLabels(unittest.TestCase):
         self.assertNotIn("AI Goals", combined,
                          "Old FSO label 'AI Goals' should NOT appear in validator output")
 
-    def test_wing_arrival_condition_label(self):
-        """Wing diagnostic labels must use 'arrival_condition', not 'Arrival Cue'."""
+    def test_wing_arrival_cue_label(self):
+        """Wing diagnostic labels must use 'arrival_cue', not 'Arrival Cue'."""
         wing = _make_wing("Beta",
-                          arrival_condition="( has-arrived-delay 0 \"NonExistentShip\" )")
+                          arrival_cue="( has-arrived-delay 0 \"NonExistentShip\" )")
         mission = _make_minimal_mission(wings=[wing])
         logs = self._capture_logs(mission)
 
         combined = "\n".join(logs)
-        self.assertIn("arrival_condition", combined,
-                      "Expected 'arrival_condition' in wing validator output")
+        self.assertIn("arrival_cue", combined,
+                      "Expected 'arrival_cue' in wing validator output")
         self.assertNotIn("Arrival Cue", combined,
                          "Old FSO label 'Arrival Cue' should NOT appear in wing validator output")
 
@@ -389,12 +389,12 @@ class TestValidateMissionDiagnosticLabels(unittest.TestCase):
         """Wing initial_orders diagnostic must reference 'initial_orders', not 'AI Goals'."""
         wing = _make_wing(
             "Gamma",
-            arrival_condition="( true )",
+            arrival_cue="( true )",
             initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
             ship_class="GTC Fenris",
             team="Friendly",
         )
-        player = _make_ship("Alpha 1", arrival_condition="( true )")
+        player = _make_ship("Alpha 1", arrival_cue="( true )")
         mission = _make_minimal_mission(ships=[player], wings=[wing])
         logs = self._capture_logs(mission)
 
@@ -412,12 +412,12 @@ class TestValidateMissionDiagnosticLabels(unittest.TestCase):
         """
         ship = _make_ship(
             "GTC Fenris 1",
-            arrival_condition="( true )",
+            arrival_cue="( true )",
             initial_orders="( goals\n( ai-guard \"Alpha 1\" 89 )\n)",
             ship_class="GTC Fenris",
             team="Friendly",
         )
-        target = _make_ship("Alpha 1", arrival_condition="( true )")
+        target = _make_ship("Alpha 1", arrival_cue="( true )")
         mission = _make_minimal_mission(ships=[ship, target])
         logs = self._capture_logs(mission)
 

@@ -57,7 +57,7 @@ class CombinedTesting(unittest.TestCase):
                         "class": "GTF Ulysses",
                         "team": "Friendly",
                         "position": [0.0, 0.0, 0.0],
-                        "arrival_condition": "( true )",
+                        "arrival_cue": "( true )",
                         "weapons": Weapons(
                             primary=["Avenger", "Avenger"],
                             secondary=["MX-50"],
@@ -141,7 +141,7 @@ class CombinedTesting(unittest.TestCase):
                     "arrival_method": "In front of ship",
                     "arrival_anchor": "Player Ship",
                     "arrival_distance": 25001,
-                    "arrival_condition": "( true )",
+                    "arrival_cue": "( true )",
                 }
             )
         )
@@ -156,7 +156,7 @@ class CombinedTesting(unittest.TestCase):
                             "class": "GTF Ulysses",
                             "team": "Friendly",
                             "position": [1000.0, 0.0, 0.0],
-                            "arrival_condition": "( true )",
+                            "arrival_cue": "( true )",
                             "weapons": Weapons(
                                 primary=["Avenger", "Avenger"],
                                 secondary=["MX-50"],
@@ -168,7 +168,7 @@ class CombinedTesting(unittest.TestCase):
                 arrival_method="In front of ship",
                 arrival_anchor="Player Ship",
                 arrival_distance=22000,
-                arrival_condition="( true )",
+                arrival_cue="( true )",
             )
         ]
 
@@ -205,7 +205,7 @@ class CombinedTesting(unittest.TestCase):
                     "arrival_method": "In front of ship",
                     "arrival_anchor": "Player Ship",
                     "arrival_distance": 20000,
-                    "arrival_condition": "( true )",
+                    "arrival_cue": "( true )",
                 }
             )
         )
@@ -255,7 +255,7 @@ class CombinedTesting(unittest.TestCase):
                 "class": "GTF Ulysses",
                 "team": "Friendly",
                 "position": [0.0, 0.0, 0.0],
-                "arrival_condition": "( true )",
+                "arrival_cue": "( true )",
                 "weapons": Weapons(
                     primary=["Avenger", "Avenger"],
                     secondary=["Harbinger"],
@@ -268,7 +268,7 @@ class CombinedTesting(unittest.TestCase):
                 "class": "GTF Ulysses",
                 "team": "Friendly",
                 "position": [0.0, 0.0, 0.0],
-                "arrival_condition": "( true )",
+                "arrival_cue": "( true )",
                 "weapons": Weapons(
                     primary=["Avenger", "Avenger"],
                     secondary=["Harbinger"],
@@ -282,7 +282,7 @@ class CombinedTesting(unittest.TestCase):
                 count=2,
                 ships=[ship1, ship2],
                 position=[0.0, 0.0, 0.0],
-                arrival_condition="( true )",
+                arrival_cue="( true )",
             )
         ]
         mission.player_setup.additional_weapons = ["Tsunami"]
@@ -340,7 +340,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -447,7 +447,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -481,7 +481,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
     - name: "Cruiser 1"
       class: "GTC Fenris"
@@ -532,7 +532,7 @@ entities:
     - name: "Player Ship"
       template: "fighter_template"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
 mission_flow: {}

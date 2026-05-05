@@ -20,7 +20,7 @@ def _validate_sexp_styles_from_root(root_node: yaml.Node) -> List[str]:
                 current_path = f"{path}.{key}" if path else key
 
                 # Check for SEXP fields — FSIF 4.0 names only.
-                if key in ['arrival_condition', 'departure_condition', 'initial_orders',
+                if key in ['arrival_cue', 'departure_cue', 'initial_orders',
                            'formula', 'display_condition']:
                     # These fields must be block scalars if they are strings
                     if isinstance(value_node, yaml.ScalarNode):

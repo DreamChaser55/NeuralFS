@@ -142,7 +142,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: ["ML-16 Laser"]
         secondary: ["MX-50"]
@@ -200,7 +200,7 @@ entities:
       class: "GTF Hercules"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
 player_setup:
   start_ship: "Alpha 1"
 """
@@ -220,7 +220,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: ["Prometheus"]
         secondary: []
@@ -247,7 +247,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: []
         secondary: ["Hornet"]
@@ -274,7 +274,7 @@ entities:
       class: "GTF Hercules"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: ["Banshee"]
         secondary: []
@@ -371,7 +371,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: ["ML-16 Laser"]
         secondary: ["MX-50"]
@@ -406,7 +406,7 @@ entities:
       class: "GTF Hercules"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: "( true )"
+      arrival_cue: "( true )"
       weapons:
         primary: ["Banshee"]
         secondary: []

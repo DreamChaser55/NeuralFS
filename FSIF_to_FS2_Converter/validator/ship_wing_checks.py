@@ -206,7 +206,7 @@ class ShipWingChecksMixin:
         - Conflict detection (ships involved in multiple pairs).
         - Player constraints (player cannot start docked).
         - Dockpoint validity for specific ship classes.
-        - Arrival logic (exactly one leader with arrival_condition true).
+        - Arrival logic (exactly one leader with arrival_cue true).
         """
         # References, Constraints, and Logic
         
@@ -269,15 +269,15 @@ class ShipWingChecksMixin:
                          self.log_error(f"Ship '{ship.name}' references invalid dockee_point '{ship.dockee_point}' for class '{other.ship_class}' (ship '{other.name}')")
 
             # 7. Arrival Logic (Strict)
-            docker_true = ("".join(ship.arrival_condition.split()).lower() == '(true)')
-            dockee_true = ("".join(other.arrival_condition.split()).lower() == '(true)')
+            docker_true = ("".join(ship.arrival_cue.split()).lower() == '(true)')
+            dockee_true = ("".join(other.arrival_cue.split()).lower() == '(true)')
             
             if docker_true and dockee_true:
-                self.log_error(f"Docking pair '{ship.name}'/'{dw}': Both have arrival_condition '( true )'. Only the dockee (leader) should be true.")
+                self.log_error(f"Docking pair '{ship.name}'/'{dw}': Both have arrival_cue '( true )'. Only the dockee (leader) should be true.")
             elif not docker_true and not dockee_true:
-                self.log_error(f"Docking pair '{ship.name}'/'{dw}': Both have arrival_condition '( false )'. The dockee (leader) must be '( true )'.")
+                self.log_error(f"Docking pair '{ship.name}'/'{dw}': Both have arrival_cue '( false )'. The dockee (leader) must be '( true )'.")
             elif docker_true and not dockee_true:
-                 self.log_error(f"Docking pair '{ship.name}'/'{dw}': Docker has arrival_condition '( true )' but Dockee has '( false )'. The Dockee must be the arrival leader.")
+                 self.log_error(f"Docking pair '{ship.name}'/'{dw}': Docker has arrival_cue '( true )' but Dockee has '( false )'. The Dockee must be the arrival leader.")
 
     def validate_reinforcements(self):
         """
@@ -412,7 +412,7 @@ class ShipWingChecksMixin:
         
         Ensures:
         - Start ship exists.
-        - If standalone, it has arrival_condition '( true )'.
+        - If standalone, it has arrival_cue '( true )'.
         """
         start_name = self.mission.player_setup.start_ship
         if not start_name:
@@ -433,7 +433,7 @@ class ShipWingChecksMixin:
                 break
         
         if not in_wing:
-            # Standalone must have arrival_condition true
-            cue = "".join(ship.arrival_condition.split()).lower()
+            # Standalone must have arrival_cue true
+            cue = "".join(ship.arrival_cue.split()).lower()
             if cue != '(true)':
-                self.log_error(f"Player start ship '{start_name}' (standalone) must have arrival_condition '( true )'.")
+                self.log_error(f"Player start ship '{start_name}' (standalone) must have arrival_cue '( true )'.")

@@ -116,12 +116,12 @@
 - `arrival_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`, `"Near Ship"`, `"In front of ship"`, `"In back of ship"`, `"Above ship"`, `"Below ship"`, `"To left of ship"`, `"To right of ship"`.
 - `arrival_anchor` (String, optional)
 - `arrival_distance` (Integer, optional)
-- `arrival_condition` (String, optional, default: `"( false )"`). SEXP. Boolean condition that triggers arrival.
+- `arrival_cue` (String, optional, default: `"( false )"`). SEXP. Boolean condition that triggers arrival.
 - `arrival_delay` (Integer, optional, default: `0`)
 - `departure_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`.
 - `departure_anchor` (String, optional)
 - `departure_delay` (Integer, optional, default: `0`)
-- `departure_condition` (String, optional, default: `"( false )"`). SEXP.
+- `departure_cue` (String, optional, default: `"( false )"`). SEXP.
 - `flags` (List[String], optional, default: `["cargo-known"]`)
 - `respawn_priority` (Integer, optional, default: `0`)
 - `subsystems` (Mapping, optional). Keys: `status` (`"all_ok"` or `"custom"`), `list` (List of `{name, health}`).
@@ -143,11 +143,11 @@
 - `arrival_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`, `"Near Ship"`, `"In front of ship"`, `"In back of ship"`, `"Above ship"`, `"Below ship"`, `"To left of ship"`, `"To right of ship"`.
 - `arrival_anchor` (String, optional)
 - `arrival_distance` (Integer, optional)
-- `arrival_condition` (String, optional, default: `"( true )"`). SEXP. Boolean condition that triggers arrival.
+- `arrival_cue` (String, optional, default: `"( true )"`). SEXP. Boolean condition that triggers arrival.
 - `arrival_delay` (Integer, optional, default: `0`). Starts to tick after the arrival condition becomes true.
 - `departure_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`.
 - `departure_anchor` (String, optional)
-- `departure_condition` (String, optional, default: `"( false )"`). SEXP.
+- `departure_cue` (String, optional, default: `"( false )"`). SEXP.
 - `departure_delay` (Integer, optional, default: `0`). Starts to tick after the departure condition becomes true.
 - `initial_orders` (String, optional). SEXP. Initial AI orders for wing members.
 - `flags` (List[String], optional, default: `[]`).
@@ -165,22 +165,22 @@
   - Angles order is [pitch, bank, heading] in radians.
   - Only one asteroid/debris field is allowed.
 3. player_setup
-  - If the start_ship is standalone (not in a wing), its `arrival_condition` must be `"( true )"`.
+  - If the start_ship is standalone (not in a wing), its `arrival_cue` must be `"( true )"`.
 4. entities
   - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Override semantics are **shallow**: a top-level key on the ship replaces the entire value from the template, so nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary`, you must re-specify the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
-    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_condition`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_condition`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
+    - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
   - ships:
     - subsystems: Names must match the per-ship canonical lists.
     - docking: Author only on the docker under `dock.dockee`, `dock.docker_point`, `dock.dockee_point`; pairs only; player ships cannot be pre-spawn docked.
   - wings:
-    - Reinforcement wings should omit `arrival_condition` (defaults to true) to remain callable.
+    - Reinforcement wings should omit `arrival_cue` (defaults to true) to remain callable.
     - wings must define `position` ([x,y,z]) as the centroid of the wing. Individual ship locations are computed as a straight line along the X axis centered on `position`, spaced `member_spacing` meters apart (default 50 m).
 5. mission_flow
   - SEXPs are embedded verbatim.
   - `events[*].hud_directive_text` maps to an in-HUD directive.
 
 ## Constraints quicklist
-- Player start spawning: standalone start_ship requires `arrival_condition: "( true )"`
+- Player start spawning: standalone start_ship requires `arrival_cue: "( true )"`
 - Docking: pairs only; not allowed for player start; author on docker only; ensure arrival leadership is coherent
 - Author only canonical per-ship subsystem and dockpoint names (see references)
 - Reinforcements: author in entities.reinforcement_wings / entities.reinforcement_ships. The reinforcement type is determined automatically (support ships with classes starting "GTS "/"PVS " → "Repair/Rearm"; all other ships and wings → "Attack/Protect").

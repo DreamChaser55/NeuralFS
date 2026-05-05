@@ -239,12 +239,12 @@ These fields are authored in `entities.ships` and `entities.wings`.
 - `arrival_anchor`: Anchor entity literal or wildcard.
   - Examples: "MyShip", "MyWing", "<any friendly player>", "Docking bay 1" (if docking).
 - `arrival_delay`: Integer delay before arrival (seconds).
-- `arrival_condition`: SEXP controlling arrival (Boolean expression).
+- `arrival_cue`: SEXP controlling arrival (Boolean expression).
 - `departure_method`: Departure method/location token.
   - Values: "Hyperspace", "Docking Bay".
 - `departure_anchor`: Anchor for Docking Bay departure. Must be a docking bay.
 - `departure_delay`: Integer delay before departure (seconds).
-- `departure_condition`: SEXP controlling departure (Boolean expression).
+- `departure_cue`: SEXP controlling departure (Boolean expression).
 
 ### Waypoints and Jump Nodes
 
@@ -350,7 +350,7 @@ name: Arjuna
 arrival_method: In front of ship
 arrival_distance: 1500
 arrival_anchor: <any friendly player>
-arrival_condition: ( is-event-true-delay "Cargo is blowin' up" 12 )
+arrival_cue: ( is-event-true-delay "Cargo is blowin' up" 12 )
 
 #### Messaging from wildcard wingman
 (when

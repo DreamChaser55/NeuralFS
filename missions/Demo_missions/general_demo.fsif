@@ -87,7 +87,7 @@ entities:
       class: "Terran NavBuoy"
       team: "Friendly"
       position: [900.0, 0.0, 0.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
     - name: "GTC Fenris 1"
@@ -99,10 +99,10 @@ entities:
         list:
           - { name: "sensors", health: 80 }
           - { name: "engine", health: 60 }
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( < ( distance "GTC Fenris 1" "JumpNodeLoc:1" ) 600 )
 
     - name: "GTT Elysium 1"
@@ -112,10 +112,10 @@ entities:
         dockee: "GTC Fenris 1"
         docker_point: "topside docking"
         dockee_point: "Docking bay 1"
-      arrival_condition: |
+      arrival_cue: |
         ( false )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 5 )
 
     - name: "GTFr Poseidon 1"
@@ -123,7 +123,7 @@ entities:
       position: [1080.0, 0.0, 220.0]
       flags: ["hidden-from-sensors"]
       arrival_delay: 10
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
     - name: "TSC 2 Cargo"
@@ -131,7 +131,7 @@ entities:
       team: "Hostile"
       position: [1160.0, 0.0, 240.0]
       flags: ["scannable"]
-      arrival_condition: |
+      arrival_cue: |
         ( false )
       dock:
         dockee: "GTFr Poseidon 1"
@@ -143,7 +143,7 @@ entities:
       team: "Friendly"
       position: [-1500.0, 100.0, -1200.0]
       flags: ["weapons-locked"]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
   wings:
@@ -151,7 +151,7 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [300.0, 0.0, -250.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-guard "GTC Fenris 1" 95 )
@@ -164,7 +164,7 @@ entities:
       arrival_anchor: "<any friendly player>"
       arrival_distance: 1500
       arrival_delay: 8
-      arrival_condition: |
+      arrival_cue: |
         ( is-cargo-known-delay 0 "TSC 2 Cargo" )
       initial_orders: |
         ( ai-chase-any 70 )
@@ -181,7 +181,7 @@ entities:
       arrival_anchor: "<any friendly player>"
       arrival_distance: 1800
       arrival_delay: 4
-      arrival_condition: |
+      arrival_cue: |
         ( is-cargo-known-delay 0 "TSC 2 Cargo" )
       initial_orders: |
         ( ai-chase-any 60 )
@@ -195,7 +195,7 @@ entities:
       arrival_anchor: "GTC Fenris 1"
       arrival_distance: 1500
       arrival_delay: 8
-      arrival_condition: |
+      arrival_cue: |
         ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 0 )
       initial_orders: |
         ( ai-chase "GTC Fenris 1" 90 )

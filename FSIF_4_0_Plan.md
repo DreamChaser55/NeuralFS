@@ -36,8 +36,6 @@ The guiding rule should be:
 | `ships[*].location` | `ships[*].position` | Consistent with wings/jump nodes and more natural for authors. |
 | `ships[*].arrival_location` / `wings[*].arrival_location` | `arrival_method` | Values like `Hyperspace`, `Docking Bay`, `In front of ship` describe how/where arrival occurs, not a coordinate location. |
 | `ships[*].departure_location` / `wings[*].departure_location` | `departure_method` | Same rationale. |
-| `arrival_cue` | `arrival_condition` | It is a Boolean SEXP condition controlling arrival. |
-| `departure_cue` | `departure_condition` | It is a Boolean SEXP condition controlling departure. |
 | `ai_goals` | `initial_orders` | Avoids confusion with mission goals; describes initial AI orders. |
 | `initial_velocity` | `initial_speed_percent` | Converter model constrains this to `0..100`; this is not meters/second. |
 | `initial_hull` | `initial_hull_percent` | Makes units explicit. |

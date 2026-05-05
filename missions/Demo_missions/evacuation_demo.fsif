@@ -73,7 +73,7 @@ entities:
       class: "Terran NavBuoy"
       team: "Friendly"
       position: [800.0, 0.0, 800.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
     - name: "GTC Dauntless"
@@ -88,10 +88,10 @@ entities:
         list:
           - { name: "sensors", health: 70 }
           - { name: "engine", health: 80 }
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 500 )
       initial_orders: |
         ( ai-waypoints-once "ConvoyPath" 89 )
@@ -101,10 +101,10 @@ entities:
       team: "Friendly"
       position: [-500.0, -300.0, -500.0]
       flags: ["hidden-from-sensors", "escort"]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( < ( distance "GTFr Trent" "JumpNodeWaypoint:1" ) 500 )
       initial_orders: |
         ( ai-waypoints-once "ConvoyPath" 89 )
@@ -113,7 +113,7 @@ entities:
       class: "TSC 2"
       team: "Friendly"
       position: [-500.0, -350.0, -500.0]
-      arrival_condition: |
+      arrival_cue: |
         ( false )
       dock:
         dockee: "GTFr Trent"
@@ -124,7 +124,7 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [-1000.0, 500.0, -1000.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
     - name: "SFr Mahishi"
@@ -136,10 +136,10 @@ entities:
       cargo: "Shivan Logistics Data"
       arrival_delay: 20
       arrival_method: "Hyperspace"
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
-      departure_condition: |
+      departure_cue: |
         ( is-event-true-delay "MephistoWarpingOut" 0 )
       initial_orders: |
         ( ai-play-dead 89 )
@@ -150,7 +150,7 @@ entities:
       position: [2500.0, 0.0, 3000.0]
       flags: ["escort"]
       arrival_method: "Hyperspace"
-      arrival_condition: |
+      arrival_cue: |
         ( is-event-true-delay "BlockadeArrival" 0 )
       initial_orders: |
         ( ai-stay-still "Nav Buoy" 89 )
@@ -166,7 +166,7 @@ entities:
         secondary: ["MX-50#Shivan", "MX-50#Shivan"]
       arrival_delay: 3
       arrival_method: "Hyperspace"
-      arrival_condition: |
+      arrival_cue: |
         ( is-event-true-delay "BlockadeArrival" 0 )
       initial_orders: |
         ( ai-chase "GTC Dauntless" 89 )
@@ -176,7 +176,7 @@ entities:
       template: "alpha_fighter"
       count: 4
       position: [500.0, 0.0, 500.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-guard "GTC Dauntless" 95 )
@@ -200,7 +200,7 @@ entities:
       arrival_anchor: "GTC Dauntless"
       arrival_distance: 1500
       arrival_delay: 10
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-chase-any 60 )
@@ -217,7 +217,7 @@ entities:
       arrival_anchor: "GTC Dauntless"
       arrival_distance: 1800
       arrival_delay: 30
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-chase "GTC Dauntless" 90 )

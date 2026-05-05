@@ -31,7 +31,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
@@ -85,14 +85,14 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [200.0, 0.0, 800.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
   wings:
     - name: "Alpha"
       template: "alpha_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
   waypoints: {}
   reinforcement_wings: []
@@ -249,16 +249,16 @@ entities:
       team: "Friendly"
       position: [542.6, 699.5, 1305.4]
       flags: ["cargo-known", "escort"]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
-      departure_condition: |
+      departure_cue: |
         ( is-event-true-delay "Omega 2 done docking" 97 )
   wings:
     - name: "Alpha"
       template: "ulysses_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
         ( ai-chase-any 50 )
@@ -362,13 +362,13 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [-181.8, 0.0, 275.8]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
     - name: "GTT Elysium 2"
       class: "GTT Elysium"
       team: "Friendly"
       position: [-230.3, 4.18, 355.34]
-      arrival_condition: |
+      arrival_cue: |
         ( false )
       dock:
         dockee: "GTC Fenris 1"
@@ -376,7 +376,7 @@ entities:
         dockee_point: "Docking bay 1"
 ```
 Strict Rules:
-- **Arrival Conditions**: The Dockee (Leader) must have `arrival_condition: ( true )`. The Docker (Follower) must have `arrival_condition: ( false )`.
+- **Arrival Conditions**: The Dockee (Leader) must have `arrival_cue: ( true )`. The Docker (Follower) must have `arrival_cue: ( false )`.
 - **Pairs Only**: Multi-ship docking trees are not supported.
 - **No Player Ships**: Player start ships cannot be pre-docked.
 - **Reference Checks**: You must use only the names for ship dockpoints specified in `../FSO and fs2 format/ship-dockpoint-names.md`. Using unknown or malformed dockpoint names will cause errors.
@@ -403,7 +403,7 @@ Example SEXP referring to a subsystem:
 ```
 
 ## Reinforcements
-Author reinforcements in `entities`. Omit `arrival_condition` on the referenced units so they remain callable (defaults to true). The referenced ships/wings must exist in entities.ships/entities.wings.
+Author reinforcements in `entities`. Omit `arrival_cue` on the referenced units so they remain callable (defaults to true). The referenced ships/wings must exist in entities.ships/entities.wings.
 
 ```yaml
 entities:
@@ -595,19 +595,19 @@ YAML offers two ways to write string values relevant to FSIF:
 - **Flow scalars** — inline quoted strings (e.g., `"( true )"`)
 - **Block scalars** — literal strings introduced by `|` (the pipe character), where content is written on indented lines below the key
 
-**Rule: Always use block scalars (`|`) for all SEXP fields** (`arrival_condition`, `departure_condition`, `formula`, `initial_orders`, debriefing `display_condition`, etc.), even for single-line SEXPs.
+**Rule: Always use block scalars (`|`) for all SEXP fields** (`arrival_cue`, `departure_cue`, `formula`, `initial_orders`, debriefing `display_condition`, etc.), even for single-line SEXPs.
 
 **Why:** SEXPs frequently contain double quotes around entity names (ship names, message names, wildcards like `"<any wingman>"`). In a flow scalar string, every internal double quote must be escaped with a backslash (`\"`), which is error-prone and hard to read. Block scalars preserve content literally — no escape characters are needed.
 
 **Do (block scalar):**
 ```yaml
-arrival_condition: |
+arrival_cue: |
   ( has-arrived-delay 5 "GTD Bastion" )
 ```
 
 **Don't (flow scalar — requires escaping):**
 ```yaml
-arrival_condition: "( has-arrived-delay 5 \"GTD Bastion\" )"
+arrival_cue: "( has-arrived-delay 5 \"GTD Bastion\" )"
 ```
 
 Both produce the same string value for the converter, but the block scalar is clearer, less error-prone, and is the required style for FSIF authoring.
@@ -661,9 +661,9 @@ Use this section as a practical sanity guide: each item describes the preferred 
 
 ### Spawning, arrivals and authored entities
 - `player_setup.start_ship` must exist in `entities`. It can be a standalone ship in `entities.ships` or a ship created by a starting wing such as `Alpha 1`.
-- If the start ship is standalone, give it `arrival_condition: ( true )`; otherwise the player ship will not spawn at mission start.
-- Do not put `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_condition`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_condition`, `initial_orders`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
-- Use `arrival_condition` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
+- If the start ship is standalone, give it `arrival_cue: ( true )`; otherwise the player ship will not spawn at mission start.
+- Do not put `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, or `dockee_point` into `entities.ship_templates`. For standalone ships, author them on the ship; for wing members, author them on the wing.
+- Use `arrival_cue` to control when an authored ship or wing appears. Do not use `ship-create` to spawn a ship or wing that already exists in YAML; `ship-create` is for creating brand-new dynamic objects.
 - Leave enough physical clearance between spawned objects, especially around large ships. Tight placement can cause ships to spawn inside each other; cruisers are roughly 300 m long and destroyers roughly 2000 m long.
 
 ### Templates, names and references
@@ -690,8 +690,8 @@ Use this section as a practical sanity guide: each item describes the preferred 
 ### Docking and reinforcements
 - Pre-spawn docking is for pairs only. Author docking only on the docker ship, as described in the dedicated Docking section above.
 - Do not involve the player start ship in pre-spawn docking.
-- Keep docking leadership coherent: the dockee should be the arrival leader with `arrival_condition: ( true )`, and the docker should use `arrival_condition: ( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
-- Keep reinforcements callable by not giving them a blocking `arrival_condition`. Reinforcement wings should omit `arrival_condition`; standalone reinforcement ships should use `arrival_condition: ( true )`.
+- Keep docking leadership coherent: the dockee should be the arrival leader with `arrival_cue: ( true )`, and the docker should use `arrival_cue: ( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
+- Keep reinforcements callable by not giving them a blocking `arrival_cue`. Reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `arrival_cue: ( true )`.
 
 ### Collision checks for waypoint paths
 - The Converter checks for potential collisions between larger ships moving along waypoint paths and **initial positions** of other larger ships. This check can produce spurious warnings because it does not account for the fact that ships may move from their initial positions during the mission. Always consider the planned mission flow movement of the referenced ships when reviewing these collision warnings.

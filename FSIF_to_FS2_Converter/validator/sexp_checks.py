@@ -6,8 +6,8 @@ class SexpChecksMixin:
         Perform structural validation of all SEXP formulas in the mission.
 
         Checks:
-        - Event formulas, goal formulas, ship/wing arrival_condition and
-          departure_condition fields, and initial_orders.
+        - Event formulas, goal formulas, ship/wing arrival_cue and
+          departure_cue fields, and initial_orders.
         - Parenthesis balance.
         - YAML comment leakage.
         - Token length limits.
@@ -29,13 +29,13 @@ class SexpChecksMixin:
             
         # Ships/Wings conditions and initial_orders
         for s in self.mission.ships:
-            if s.arrival_condition: sexps.append((f"Ship '{s.name}' arrival_condition", s.arrival_condition))
-            if s.departure_condition: sexps.append((f"Ship '{s.name}' departure_condition", s.departure_condition))
+            if s.arrival_cue: sexps.append((f"Ship '{s.name}' arrival_cue", s.arrival_cue))
+            if s.departure_cue: sexps.append((f"Ship '{s.name}' departure_cue", s.departure_cue))
             if s.initial_orders: sexps.append((f"Ship '{s.name}' initial_orders", s.initial_orders))
             
         for w in self.mission.wings:
-            if w.arrival_condition: sexps.append((f"Wing '{w.name}' arrival_condition", w.arrival_condition))
-            if w.departure_condition: sexps.append((f"Wing '{w.name}' departure_condition", w.departure_condition))
+            if w.arrival_cue: sexps.append((f"Wing '{w.name}' arrival_cue", w.arrival_cue))
+            if w.departure_cue: sexps.append((f"Wing '{w.name}' departure_cue", w.departure_cue))
             if w.initial_orders: sexps.append((f"Wing '{w.name}' initial_orders", w.initial_orders))
             
         for ctx, sexp in sexps:

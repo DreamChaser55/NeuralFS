@@ -1114,19 +1114,19 @@ def validate_mission(mission) -> bool:
                 None,
             ))
 
-    # Ships — use FSIF 4.0 field names (arrival_condition / departure_condition / initial_orders)
+    # Ships — use FSIF 4.0 field names (arrival_cue / departure_cue / initial_orders)
     for s in mission.ships:
-        if s.arrival_condition:
+        if s.arrival_cue:
             tasks.append((
-                f"Ship '{s.name}' arrival_condition",
-                s.arrival_condition,
+                f"Ship '{s.name}' arrival_cue",
+                s.arrival_cue,
                 SexpReturnType.BOOL,
                 None,
             ))
-        if s.departure_condition:
+        if s.departure_cue:
             tasks.append((
-                f"Ship '{s.name}' departure_condition",
-                s.departure_condition,
+                f"Ship '{s.name}' departure_cue",
+                s.departure_cue,
                 SexpReturnType.BOOL,
                 None,
             ))
@@ -1143,17 +1143,17 @@ def validate_mission(mission) -> bool:
 
     # Wings — same FSIF 4.0 field names
     for w in mission.wings:
-        if w.arrival_condition:
+        if w.arrival_cue:
             tasks.append((
-                f"Wing '{w.name}' arrival_condition",
-                w.arrival_condition,
+                f"Wing '{w.name}' arrival_cue",
+                w.arrival_cue,
                 SexpReturnType.BOOL,
                 None,
             ))
-        if w.departure_condition:
+        if w.departure_cue:
             tasks.append((
-                f"Wing '{w.name}' departure_condition",
-                w.departure_condition,
+                f"Wing '{w.name}' departure_cue",
+                w.departure_cue,
                 SexpReturnType.BOOL,
                 None,
             ))

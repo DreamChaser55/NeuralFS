@@ -30,13 +30,13 @@ Localization: XSTR wrapping is applied to mission name/description, goals $Messa
 
 Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
 
-Validation: If the player's starting ship is standalone (not part of any wing), its `arrival_condition` must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
+Validation: If the player's starting ship is standalone (not part of any wing), its `arrival_cue` must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
 
 Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list).
 
 Music: when a top-level `audio` mapping is present in FSIF, the converter emits `#Music` with `$Event Music` and `$Briefing Music`. Both values are written verbatim (e.g., `mission_music: "1: Genesis"` -> `$Event Music: 1: Genesis`, `briefing_music: "Brief1"` -> `$Briefing Music: Brief1`). If neither is provided, `#Music` is omitted.
 
-Reinforcements: FSIF uses canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_condition` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `arrival_condition: ( true )`. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
+Reinforcements: FSIF uses canonical, entities-level authoring via `entities.reinforcement_wings` and `entities.reinforcement_ships`. The loader validates names, injects the "reinforcement" flag into the referenced wing/ship, and builds `#Reinforcements` entries. Guidance: reinforcement wings should omit `arrival_cue` so they are callable (defaults to `( true )`); standalone reinforcement ships should have `arrival_cue: ( true )`. Member ships of a reinforcement wing do not need per-ship reinforcement flags. `mission_flow.reinforcements` is no longer supported.
 
 Reinforcement $Type emission: The converter chooses `$Type` automatically; authors should not specify a type in FSIF. Rules:
 - Wing entry → $Type: Attack/Protect
@@ -49,7 +49,7 @@ Events: if `mission_flow.events[*].hud_directive_text` is present, the converter
 Waypoints/Jump Nodes: waypoint lists are emitted; top-level `jump_nodes` are emitted in `#Waypoints` as `$Jump Node` and `$Jump Node Name` (not counted in "lists total").
 
 Docking: Pre-spawn inter-ship docking pairs are supported. Author docking only on the docker ship via `dock`. The converter:
-- validates the pair and strictly enforces that the dockee (leader) has `arrival_condition: ( true )` and the docker (follower) has `arrival_condition: ( false )`; any other configuration (both `( true )`, both `( false )`, or docker `( true )` / dockee `( false )`) is a hard error that aborts conversion,
+- validates the pair and strictly enforces that the dockee (leader) has `arrival_cue: ( true )` and the docker (follower) has `arrival_cue: ( false )`; any other configuration (both `( true )`, both `( false )`, or docker `( true )` / dockee `( false )`) is a hard error that aborts conversion,
 - emits `+Docked With`, `$Docker Point` (point on DOCKEE), and `$Dockee Point` (point on DOCKER) per FS2's reversed naming,
 - aborts conversion with an error if either ship in the docking pair is the player start ship; player ships cannot be pre-spawn docked.
 Only pairs (2 ships) are supported; multi-ship docking trees are not supported in this version.
@@ -162,7 +162,7 @@ The validator checks the following areas:
 *   **Completeness**: Requires both `docker_point` and `dockee_point`.
 *   **Self-Docking**: Checks if a ship tries to dock with itself.
 *   **Conflicts**: Ensures ships aren't involved in multiple pre-spawn docking definitions.
-*   **Arrival Conditions**: Strictly enforces that the **Dockee (Leader)** has `arrival_condition: ( true )` and the **Docker (Follower)** has `arrival_condition: ( false )`. Invalid configurations cause an error.
+*   **Arrival Conditions**: Strictly enforces that the **Dockee (Leader)** has `arrival_cue: ( true )` and the **Docker (Follower)** has `arrival_cue: ( false )`. Invalid configurations cause an error.
 *   **Player Constraints**: Player ships cannot be involved in pre-spawn docking.
 
 #### **Weapon Supply and Demand**:
@@ -201,7 +201,7 @@ The validator checks the following areas:
 *   The validator strictly forbids double quotes (`"`) in any text field that is emitted into the `.fs2` file wrapped in an `XSTR("...", -1)` macro (such as `mission_info.name`, `mission_info.description`, event/goal/message text, and briefing/debriefing text).
 *   This is because the FSO engine string parser does not properly handle escaped double quotes (`\"`) inside `XSTR` blocks, leading to "malformed string" debug errors.
 *   Authors must use single quotes (`'`) instead of double quotes for quoting text or dialogue.
-*   Note: Double quotes are still allowed (and required) inside S-expression strings (e.g., `arrival_condition`, `formula`).
+*   Note: Double quotes are still allowed (and required) inside S-expression strings (e.g., `arrival_cue`, `formula`).
 
 #### **Text styling tags outside supported contexts**:
 *   Warns if text styling tags are used outside supported contexts. These tags are intended only for fiction viewer, command briefing, mission briefing, and debriefing text. Usage in in-mission messages, goal text, directive text, or mission metadata fields triggers validator warnings.
@@ -237,7 +237,7 @@ The validator checks the following areas:
 
 #### **Ship Template Authoring Rules**:
 *   `entities.ship_templates` may only contain reusable shared ship properties.
-*   The loader rejects template-level authoring of `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_condition`, `departure_method`, `departure_anchor`, `departure_condition`, `initial_orders`, `dock`, `docked_with`, `docker_point`, and `dockee_point`.
+*   The loader rejects template-level authoring of `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, and `dockee_point`.
 *   This is a hard error because those fields do not work correctly or are not semantically appropriate when inherited by ships that are part of a wing.
 *   Correct authoring locations:
     *   Standalone ship: author the fields directly on the `entities.ships[*]` entry.
@@ -284,10 +284,10 @@ The validator checks the following areas:
 *   The warning is advisory and does not abort conversion.
 
 #### **SEXP YAML Scalar Style**:
-*   All SEXP-bearing FSIF fields (`arrival_condition`, `departure_condition`, `initial_orders`, `formula`, `display_condition`) **must** be authored using the YAML **literal block scalar style** (`|`). Flow scalars (`"..."`) and folded block style (`>`) are not accepted.
+*   All SEXP-bearing FSIF fields (`arrival_cue`, `departure_cue`, `initial_orders`, `formula`, `display_condition`) **must** be authored using the YAML **literal block scalar style** (`|`). Flow scalars (`"..."`) and folded block style (`>`) are not accepted.
 *   The check is performed by `validate_sexp_scalar_styles.validate_sexp_styles()` which reads the raw YAML AST of the `.fsif` file and inspects the node style for each SEXP field.
 *   A mismatch produces a validation error that aborts conversion.
-*   Example correct usage: `arrival_condition: |` followed by the SEXP on the next line.
+*   Example correct usage: `arrival_cue: |` followed by the SEXP on the next line.
 
 ### Error Reporting
 *   **Errors**: Critical issues (e.g., invalid ship class, broken docking logic, non-ASCII characters in FSO-facing fields) will print an error message and **fail the validation**, aborting the conversion.
@@ -339,11 +339,11 @@ Ships (#Objects)
   2) +Arrival Distance (if any)
   3) $Arrival Anchor (if any)
   4) +Arrival Delay (if provided)
-  5) $Arrival Cue (from arrival_condition)
+  5) $Arrival Cue (from arrival_cue)
 - Departure emission order:
   1) $Departure Location (from departure_method: Hyperspace | Docking Bay)
   2) $Departure Anchor (only when Docking Bay)
-  3) $Departure Cue (from departure_condition)
+  3) $Departure Cue (from departure_cue)
 
 Wings (#Wings)
 - Arrival emission order:
@@ -351,11 +351,11 @@ Wings (#Wings)
   2) +Arrival Distance (if any)
   3) $Arrival Anchor (if any)
   4) +Arrival delay (if provided)
-  5) $Arrival Cue (from arrival_condition)
+  5) $Arrival Cue (from arrival_cue)
 - Departure emission order mirrors ships:
   1) $Departure Location (from departure_method)
   2) $Departure Anchor (only when Docking Bay)
-  3) $Departure Cue (from departure_condition)
+  3) $Departure Cue (from departure_cue)
 
 Constraints and guidance
 - Directional $Arrival Location values (arrival_method) require both +Arrival Distance and $Arrival Anchor.

@@ -33,7 +33,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
@@ -54,7 +54,7 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
@@ -63,13 +63,13 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [600, 0, 0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
     - name: "GTT Elysium 1"
       class: "GTT Elysium"
       team: "Friendly"
       position: [540, 0, 20]
-      arrival_condition: |
+      arrival_cue: |
         ( false )
       dock:
         dockee: "GTC Fenris 1"
@@ -139,24 +139,6 @@ class FSIF40LegacyKeyTests(unittest.TestCase):
     # -------------------------------------------------------------------------
     # Ship arrival/departure renames
     # -------------------------------------------------------------------------
-
-    def test_rejects_legacy_ship_arrival_cue(self):
-        """arrival_cue (FSIF 3.0) must be rejected; use arrival_condition (4.0)."""
-        fsif_text = MINIMAL_FSIF_4.replace("arrival_condition", "arrival_cue")
-        self.assert_legacy_key_rejected(fsif_text, "arrival_cue", "arrival_condition")
-
-    def test_rejects_legacy_ship_departure_cue(self):
-        """departure_cue (FSIF 3.0) must be rejected; use departure_condition (4.0)."""
-        fsif_text = MINIMAL_FSIF_4.replace(
-            "mission_flow: {}",
-            "mission_flow: {}",
-        )
-        # Insert departure_cue on the player ship
-        fsif_text = MINIMAL_FSIF_4.replace(
-            "      weapons:",
-            "      departure_cue: |\n        ( false )\n      weapons:",
-        )
-        self.assert_legacy_key_rejected(fsif_text, "departure_cue", "departure_condition")
 
     def test_rejects_legacy_ship_arrival_location(self):
         """arrival_location (FSIF 3.0) must be rejected; use arrival_method (4.0)."""

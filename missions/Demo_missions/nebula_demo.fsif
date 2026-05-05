@@ -52,7 +52,7 @@ entities:
       class: "Terran NavBuoy"
       team: "Hostile"
       position: [0.0, 100.0, 1500.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
 
     - name: "SC Dakini"
@@ -63,9 +63,9 @@ entities:
       arrival_anchor: "Alpha 1"
       arrival_method: "In front of ship"
       arrival_distance: 2500
-      arrival_condition: |
+      arrival_cue: |
         ( < ( distance "Alpha 1" "Nav Buoy" ) 800 )
-      departure_condition: |
+      departure_cue: |
         ( false )
 
   wings:
@@ -73,7 +73,7 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_condition: |
+      arrival_cue: |
         ( true )
       initial_orders: |
           ( ai-chase-any 89 )
@@ -86,7 +86,7 @@ entities:
       arrival_anchor: "SC Dakini"
       arrival_method: "Near Ship"
       arrival_distance: 500
-      arrival_condition: |
+      arrival_cue: |
         ( has-arrived-delay 8 "SC Dakini" )
       initial_orders: |
           ( ai-chase-any 80 )

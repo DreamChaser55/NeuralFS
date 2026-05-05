@@ -93,7 +93,7 @@ class FS2Writer:
             else:
                 self._write(f'+Arrival Delay: {entity.arrival_delay}')
 
-        self._write(f'$Arrival Cue: {entity.arrival_condition}')
+        self._write(f'$Arrival Cue: {entity.arrival_cue}')
 
     def _write_departure_block(self, entity):
         self._write(f'$Departure Location: {entity.departure_method}')
@@ -105,7 +105,7 @@ class FS2Writer:
         if entity.departure_delay > 0:
             self._write(f'+Departure delay: {entity.departure_delay}')
             
-        self._write(f'$Departure Cue: {entity.departure_condition}')
+        self._write(f'$Departure Cue: {entity.departure_cue}')
 
     def write_mission(self):
         """

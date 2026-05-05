@@ -37,11 +37,11 @@ class MissionLoader:
         'arrival_anchor',
         'arrival_distance',
         'arrival_delay',
-        'arrival_condition',
+        'arrival_cue',
         'departure_method',
         'departure_anchor',
         'departure_delay',
-        'departure_condition',
+        'departure_cue',
         'initial_orders',
         'dock',
         'docked_with',
@@ -291,8 +291,8 @@ class MissionLoader:
         """
         Reject ship-template fields that must be authored on the concrete ship/wing.
 
-        Arrival/departure methods, anchors, distances, delays, conditions (arrival_condition,
-        departure_condition), initial_orders, and docking fields do not work correctly
+        Arrival/departure methods, anchors, distances, delays, conditions (arrival_cue,
+        departure_cue), initial_orders, and docking fields do not work correctly
         when inherited by ships that are part of a wing, so FSIF forbids authoring these
         fields in ship_templates entirely. Standalone ships must author them directly
         on the ship, while wing members must author them on the wing.
