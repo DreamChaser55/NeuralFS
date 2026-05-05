@@ -80,7 +80,7 @@ Read the manual based on your chosen agentic AI engine:
 
 ## Limitations
 - Currently, only FreeSpace Port (FS1 mod for FSO) is supported.
-- Some FS mission features are unsupported, simplified or abstracted away:
+- Some Freespace mission features are unsupported, simplified or abstracted away:
   - Wings are defined using a single position argument; wing formation is fixed.
   - Turret weapons cannot be changed.
   - Briefing icon placement is simplified and uses top-down 2D grid and automatic camera placement.
