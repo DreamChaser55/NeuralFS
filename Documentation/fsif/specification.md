@@ -127,7 +127,7 @@
 - `subsystems` (Mapping, optional). Keys: `status` (`"all_ok"` or `"custom"`), `list` (List of `{name, health}`).
 - `weapons` (Mapping, optional). Keys: `primary` (List), `secondary` (List), `secondary_ammo_counts` (List[Integer]). `secondary_ammo_counts` gives per-bank ammo overrides, ordered to match the `secondary` list.
 - `dock` (Mapping, optional). Keys: `dockee` (name of the ship being docked to), `docker_point`, `dockee_point`.
-- `initial_orders` (String, optional). SEXP. Initial AI orders assigned at mission start.
+- `initial_orders` (String, optional). SEXP. Initial AI orders assigned at mission start. FSO SEXP docs commonly refer to these as "AI goals".
 - `escort_list_priority` (Integer, optional, default: `0`). Controls ordering/importance in the HUD escort list. Requires the `escort` flag.
 - `destroyed_before_mission_seconds` (Integer, optional, default: `0`). Seconds before mission start when the ship is destroyed to create pre-placed wreckage. `0` means normal spawning.
 
@@ -149,7 +149,7 @@
 - `departure_anchor` (String, optional)
 - `departure_cue` (String, optional, default: `"( false )"`). SEXP.
 - `departure_delay` (Integer, optional, default: `0`). Starts to tick after the departure condition becomes true.
-- `initial_orders` (String, optional). SEXP. Initial AI orders for wing members.
+- `initial_orders` (String, optional). SEXP. Initial AI orders for wing members. FSO SEXP docs commonly refer to these as "AI goals".
 - `flags` (List[String], optional, default: `[]`).
 - `member_spacing` (Float, optional, default: `50.0`). Distance in meters between adjacent wing members.
 

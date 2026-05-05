@@ -524,6 +524,7 @@ Note: If `icons[*].map_position` is omitted, it defaults to `[0, 0]`.
 ### Volumetric (full) nebula parameters
 Background Color Patterns: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange
 Cloud Sprites (Poofs): PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
+Note: FSO SEXP docs refer to Cloud Sprites as "nebula poofs".
 Lighting Storm: none, s_standard, s_medium, s_active, s_emp
 
 ### Asteroid and debris field object variants

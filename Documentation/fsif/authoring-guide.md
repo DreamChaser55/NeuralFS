@@ -545,6 +545,7 @@ The maximum possible quantities needed to fully equip all available banks of all
 - Directional `arrival_method` requires both `arrival_anchor` and `arrival_distance`.
 - Docking Bay: in this case `arrival_distance` is forced to `0` and should be omitted.
 - For wildcard anchors, use exact literals like "<any friendly player>".
+- FSO SEXP docs refer to `arrival_method` as "arrival location" and `departure_method` as "departure location".
 
 ## Maximum mission scale recommendation
 - Keep distances between all points of interest (ships, wings, waypoints, jump nodes) **below 20 km** whenever possible.
