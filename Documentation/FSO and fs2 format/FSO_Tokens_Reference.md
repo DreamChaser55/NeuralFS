@@ -548,4 +548,6 @@ The valid set depends on `environment.asteroid_field.object_type`. Asteroid and 
 - Shivan Debris 2
 - Shivan Debris 3
 
+Note: Species debris variants are ordered from smallest to largest (`Terran Debris 1` is small, `Terran Debris 2` is medium-sized, `Terran Debris 3` is large).
+
 **End of reference**
