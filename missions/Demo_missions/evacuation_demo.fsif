@@ -140,7 +140,7 @@ entities:
         ( true )
       departure_method: "Hyperspace"
       departure_cue: |
-        ( is-event-true-delay "MephistoWarpingOut" 0 )
+        ( has-arrived-delay 60 "SFr Mahishi" )
       initial_orders: |
         ( ai-play-dead 89 )
 
@@ -343,12 +343,6 @@ mission_flow:
           ( send-message "#Command" "Normal" "MephistoScannedMsg" )
         )
       hud_directive_text: "Scan the Shivan transport SFr Mahishi"
-    - name: "MephistoWarpingOut"
-      formula: |
-        ( when
-          ( has-arrived-delay 60 "SFr Mahishi" )
-          ( do-nothing )
-        )
     - name: "MephistoSpooling"
       formula: |
         ( when
