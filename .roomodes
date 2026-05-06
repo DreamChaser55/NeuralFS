@@ -27,7 +27,11 @@ customModes:
       When writing FSIF files, explicitly define the `audio.tts_provider` field (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Match the voices to your chosen provider, or use `"none"` if the mission has no voiced lines. Use ONLY voice names from the chosen provider's documentation. Do not mix voice names from different providers.
     whenToUse: This mode is a specialized agent, only used for editing of FSIF Freespace mission files and FCIF campaign files. It should not be used for other programming tasks.
     description: An agent that edits a single FSIF mission file or FCIF campaign file according to user instructions.
-    customInstructions: This is a custom Freespace FSIF+FCIF mission/campaign file editor mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to edit YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode. Do not create subtasks.
+    customInstructions: |-
+      This is a custom Freespace FSIF+FCIF mission/campaign file editor mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to edit YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode.
+      Rules:
+      - Do not create subtasks.
+      - Prefer to use available dedicated tools for searching, reading and editing files instead of ad hoc shell commands or Python scripts.
     groups:
       - read
       - edit
@@ -61,7 +65,11 @@ customModes:
       When writing FSIF files, explicitly define the `audio.tts_provider` field (valid options: `"google"`, `"elevenlabs"`, `"inworld"`, or `"none"`). Match the voices to your chosen provider, or use `"none"` if the mission has no voiced lines. Use ONLY voice names from the chosen provider's documentation, consistently across ALL missions in the campaign. Do not mix voice names from different providers.
     whenToUse: This mode is a specialized agent, only used for the writing of FSIF Freespace mission files and FCIF campaign files based on their natural language description. It should not be used for other programming tasks.
     description: Writes Freespace FSIF mission files and FCIF campaign files based on a natural language description, and converts them to FS2/FC2.
-    customInstructions: "This is a custom Freespace FSIF+FCIF mission/campaign file writer mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to convert a natural language description of a Freespace mission/campaign into YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode. The files are written based on prose (natural language) text files, for example: the Freespace Universe Bible or Reference Bible document for the campaign, the individual mission scenarios, outlines or notes related to the fictional world of Freespace and to the campaign story. This writer creates the FSIF mission definition files ('.fsif') and FCIF campaign definition file ('.fcif'). Do not create subtasks."
+    customInstructions: |-
+      This is a custom Freespace FSIF+FCIF mission/campaign file writer mode operating inside a program originally intented to be an AI code editor. The purpose of this agent is to convert a natural language description of a Freespace mission/campaign into YAML-based FSIF/FCIF files. Any references to assisting the user with general programming or software engineering tasks should be disregarded in this mode. The files are written based on prose (natural language) text files, for example: the Freespace Universe Bible or Reference Bible document for the campaign, the individual mission scenarios, outlines or notes related to the fictional world of Freespace and to the campaign story. This writer creates the FSIF mission definition files ('.fsif') and FCIF campaign definition file ('.fcif').
+      Rules:
+      - Do not create subtasks.
+      - Prefer to use available dedicated tools for searching, reading and editing files instead of ad hoc shell commands or Python scripts.
     groups:
       - read
       - edit
@@ -216,7 +224,11 @@ customModes:
       IMPORTANT NOTE: If the user demands that you should work autonomously, then do not wait for user approval at the approval gates; Instead, self-criticize, reflect and make a decision: if the content of the current stage does not meet the quality bar, keep iteratively improving it. If it does meet the quality bar, proceed to the next stage.
     whenToUse: This mode is a specialized agent, only used for creative writing of Freespace campaigns. It should not be used for programming tasks.
     description: Freespace Creative Writing Agent
-    customInstructions: "This is a custom Freespace creative writing assistant mode operating inside a program originally intented to be an AI code editor. The purpose is to assist the user with writing Freespace campaigns. Any references to assisting the user with programming or software engineering tasks should be disregarded in this mode. The files you operate on here are not code files, but prose (natural language) text files, for example: the Freespace Universe Bible or Reference Bible document for the campaign, the individual mission scenarios, outlines or notes related to the fictional world of Freespace and to the campaign story. When creating a new file, always use the '.txt' filename extension. Do not create subtasks."
+    customInstructions: |-
+      This is a custom Freespace creative writing assistant mode operating inside a program originally intented to be an AI code editor. The purpose is to assist the user with writing Freespace campaigns. Any references to assisting the user with programming or software engineering tasks should be disregarded in this mode. The files you operate on here are not code files, but prose (natural language) text files, for example: the Freespace Universe Bible or Reference Bible document for the campaign, the individual mission scenarios, outlines or notes related to the fictional world of Freespace and to the campaign story. When creating a new file, always use the '.txt' filename extension.
+      Rules:
+      - Do not create subtasks.
+      - Prefer to use available dedicated tools for searching, reading and editing files instead of ad hoc shell commands or Python scripts.
     groups:
       - read
       - edit
