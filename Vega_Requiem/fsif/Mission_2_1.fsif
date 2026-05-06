@@ -17,7 +17,7 @@ environment:
   asteroid_field:
     genre: "asteroid"
     type: "active"
-    density: 15
+    num_objects: 15
     average_speed: 15.0
     bounds:
       min: [-4000.0, -4000.0, -4000.0]

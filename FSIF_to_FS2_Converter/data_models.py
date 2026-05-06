@@ -178,7 +178,7 @@ class AsteroidFieldInput(BaseModel):
     model_config = ConfigDict(extra='forbid')
     object_type: Optional[str] = None
     behavior: Optional[str] = None
-    density: Optional[int] = None
+    num_objects: Optional[int] = None
     average_speed: Optional[float] = None
     bounds: Optional[BoundsInput] = None
     object_variants: Optional[List[str]] = None
@@ -560,7 +560,7 @@ class AsteroidField(BaseModel):
     # 'min_vec'/'max_vec' are an internal representation produced by the
     # mission_loader from the authored 'bounds.min'/'bounds.max' mapping.
     model_config = ConfigDict(extra='forbid')
-    density: int = Field(50, ge=0)
+    num_objects: int = Field(50, ge=0)
     behavior: Literal['active', 'passive'] = Field('passive')
     object_type: Literal['asteroid', 'debris'] = Field('asteroid')
     object_variants: List[str] = Field(

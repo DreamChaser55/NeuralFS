@@ -601,14 +601,14 @@ Before (1.x legacy)
 environment:
   asteroid_fields:
     - name: "Field_Main"
-      density: 50
+      num_objects: 50
 ```
 
 After (2.0)
 ```yaml
 environment:
   asteroid_field:
-    density: 50
+    num_objects: 50
 ```
 
 Migration guidance

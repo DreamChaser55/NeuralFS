@@ -22,7 +22,7 @@ environment:
   asteroid_field:
     object_type: "asteroid"
     behavior: "active"
-    density: 10
+    num_objects: 10
     average_speed: 5.0
     bounds:
       min: [-2500.0, -1500.0, -2500.0]

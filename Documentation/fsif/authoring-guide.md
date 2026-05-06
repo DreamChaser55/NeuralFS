@@ -143,7 +143,7 @@ environment:
   asteroid_field:
     object_type: "asteroid"     # selects the asteroid genre
     behavior: "active"          # "active" = pursues ships; "passive" = drifts
-    density: 10
+    num_objects: 10
     average_speed: 5.0
     bounds:
       min: [-2500.0, -1500.0, -2500.0]
@@ -168,7 +168,7 @@ environment:
   asteroid_field:
     object_type: "debris"       # selects the debris genre
     behavior: "passive"         # debris fields are always passive; active is coerced to passive
-    density: 10
+    num_objects: 10
     average_speed: 0.0
     bounds:
       min: [-1000.0, -1000.0, -1000.0]

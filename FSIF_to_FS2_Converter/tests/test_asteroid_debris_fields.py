@@ -110,7 +110,7 @@ class TestAsteroidFieldDefaults(unittest.TestCase):
   asteroid_field:
     object_type: "asteroid"
     behavior: "passive"
-    density: 10
+    num_objects: 10
 """)
         mission = _write_and_load(fsif_text)
         af = mission.environment.asteroid_field
@@ -124,7 +124,7 @@ class TestAsteroidFieldDefaults(unittest.TestCase):
   asteroid_field:
     object_type: "debris"
     behavior: "passive"
-    density: 10
+    num_objects: 10
 """)
         mission = _write_and_load(fsif_text)
         af = mission.environment.asteroid_field

@@ -40,7 +40,7 @@
   - `asteroid_field` (Mapping, optional):
     - `object_type` (String, optional, default: `"asteroid"`). Enum: `"asteroid"`, `"debris"`. Selects the visual object genre of the field.
     - `behavior` (String, optional, default: `"passive"`). Enum: `"active"`, `"passive"`. Active fields track and strike ships; passive fields drift freely.
-    - `density` (Integer, optional, default: `50`)
+    - `num_objects` (Integer, optional, default: `50`)
     - `average_speed` (Float, optional, default: `20.0`)
     - `bounds` (Mapping, optional). Keys: `min`, `max` (Vectors). Default: `min: [-1000, -1000, -1000]`, `max: [1000, 1000, 1000]`.
     - `object_variants` (List[String], optional). Visual variant names. Defaults depend on `object_type`. Must not be empty — omit to get the full default set for the selected `object_type`. Allowed values are mutually incompatible between the two field types.
