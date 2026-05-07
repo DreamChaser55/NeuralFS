@@ -49,6 +49,13 @@ class EnvironmentChecksMixin:
                 )
 
         # Nebula
+        if env.nebula.storm and env.nebula.storm not in self.allowed_nebula_storms:
+            allowed_sorted = sorted(self.allowed_nebula_storms)
+            self.log_error(
+                f"Invalid nebula storm token '{env.nebula.storm}'. "
+                f"Allowed values: {allowed_sorted}."
+            )
+
         if env.nebula.enabled:
             if env.nebula.pattern and env.nebula.pattern not in self.allowed_nebula_patterns:
                 self.log_error(f"Invalid nebula pattern '{env.nebula.pattern}'")

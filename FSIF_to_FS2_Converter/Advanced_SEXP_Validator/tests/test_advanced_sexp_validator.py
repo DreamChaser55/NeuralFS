@@ -475,6 +475,29 @@ class TestAtomValidatorWording(unittest.TestCase):
             f"Expected 'nebula poof' in error, got: {poof_errors}"
         )
 
+    def test_invalid_nebula_storm_token_is_rejected(self):
+        """An invalid nebula-change-storm token must produce an error mentioning 'storm'."""
+        errors = self._errors('(nebula-change-storm "s_heavy")', SexpReturnType.NULL)
+        self.assertTrue(errors, f"Expected errors for invalid storm token, got none")
+        storm_errors = [e for e in errors if "storm" in e.lower()]
+        self.assertTrue(storm_errors, f"Expected an error mentioning 'storm', got: {errors}")
+        # Error must identify the bad token
+        self.assertTrue(
+            any("s_heavy" in e for e in storm_errors),
+            f"Expected 's_heavy' mentioned in storm error, got: {storm_errors}"
+        )
+
+    def test_valid_nebula_storm_tokens_are_accepted(self):
+        """Every canonical nebula-change-storm token must pass validation."""
+        for token in ("none", "s_standard", "s_medium", "s_active", "s_emp"):
+            with self.subTest(storm=token):
+                errors = self._errors(f'(nebula-change-storm "{token}")', SexpReturnType.NULL)
+                storm_errors = [e for e in errors if "storm" in e.lower()]
+                self.assertFalse(
+                    storm_errors,
+                    f"Token '{token}' should be valid, but got storm error(s): {storm_errors}"
+                )
+
 
 import logging.handlers  # needed by _capture_logs above
 

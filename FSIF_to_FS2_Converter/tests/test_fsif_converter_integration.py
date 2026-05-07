@@ -757,6 +757,16 @@ class NebulaPatternTesting(unittest.TestCase):
             path.write_text(fsif_text, encoding="utf-8")
             return load_mission_from_fsif(str(path))
 
+    def _write_and_load_disabled(self, extra_fields: str):
+        """Variant that loads a mission where nebula.enabled is false."""
+        fsif_text = _MINIMAL_NEBULA_FSIF_TEMPLATE.format(extra_fields=extra_fields).replace(
+            "enabled: true", "enabled: false"
+        )
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "nebula_disabled_test.fsif"
+            path.write_text(fsif_text, encoding="utf-8")
+            return load_mission_from_fsif(str(path))
+
     def _write_fs2(self, mission: Mission) -> str:
         with tempfile.TemporaryDirectory() as tmpdir:
             out = Path(tmpdir) / "out.fs2"
@@ -891,6 +901,38 @@ mission_flow: {}
         content = self._write_fs2(mission)
         self.assertIn("+Storm: s_medium", content,
                       "Expected '+Storm: s_medium' in fs2 output when storm: s_medium is authored")
+
+    def test_validator_rejects_invalid_storm_token(self):
+        """An unrecognised storm token must fail validation with a clear error message."""
+        mission = self._write_and_load('storm: "s_heavy"')
+        validator = Validator(mission, _repo_root)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("storm" in e.lower() and "s_heavy" in e for e in validator.errors),
+            f"Expected invalid storm token error mentioning 's_heavy', got: {validator.errors}",
+        )
+
+    def test_validator_accepts_all_valid_storm_tokens(self):
+        """Every canonical storm token must pass validation."""
+        for token in ("none", "s_standard", "s_medium", "s_active", "s_emp"):
+            with self.subTest(storm=token):
+                mission = self._write_and_load(f'storm: "{token}"')
+                validator = Validator(mission, _repo_root)
+                self.assertTrue(
+                    validator.validate(),
+                    f"Expected storm token '{token}' to pass validation, got errors: {validator.errors}",
+                )
+
+    def test_validator_rejects_invalid_storm_token_when_nebula_disabled(self):
+        """An invalid storm token must be rejected even when nebula.enabled is false."""
+        # nebula.enabled defaults to false; storm should still be validated for token fidelity
+        mission = self._write_and_load_disabled('storm: "bogus_storm"')
+        validator = Validator(mission, _repo_root)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("storm" in e.lower() for e in validator.errors),
+            f"Expected storm validation error for disabled nebula, got: {validator.errors}",
+        )
 
 
 class DemoConversionTesting(unittest.TestCase):

@@ -481,6 +481,7 @@ class SexpValidator:
             OPF_SUN_BITMAP: self._validate_sun_bitmap,
             OPF_NEBULA_PATTERN: self._validate_nebula_pattern,
             OPF_NEBULA_POOF: self._validate_nebula_poof,
+            OPF_NEBULA_STORM_TYPE: self._validate_nebula_storm,
             OPF_SOUNDTRACK_NAME: self._validate_soundtrack_name,
             OPF_AI_ORDER: self._validate_ai_order,
         }
@@ -1043,6 +1044,15 @@ class SexpValidator:
             return [self._format_error(
                 f"Invalid cloud sprite token (FSO nebula poof): '{text}'. "
                 f"Use a canonical name from environment.nebula.cloud_sprites.",
+                context,
+            )]
+        return []
+
+    def _validate_nebula_storm(self, text: str, context: str, node: SexpNode) -> List[str]:
+        if text not in fs_data.ALLOWED_NEBULA_STORMS:
+            return [self._format_error(
+                f"Invalid nebula lightning storm token: '{text}'. "
+                f"Allowed values: {sorted(fs_data.ALLOWED_NEBULA_STORMS)}.",
                 context,
             )]
         return []

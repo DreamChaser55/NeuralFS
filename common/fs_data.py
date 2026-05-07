@@ -24,6 +24,9 @@ ALLOWED_NEBULA_PATTERNS = {'nbackblue', 'nbackblue1', 'nbackblue2', 'nbackcyan',
 # Nebula Poofs (Full Nebula)
 ALLOWED_NEBULA_POOFS = {'PoofGreen01', 'PoofGreen02', 'PoofPurp01', 'PoofPurp02', 'PoofRed01', 'PoofRed02'}
 
+# Nebula Lightning Storm tokens (Full Nebula)
+ALLOWED_NEBULA_STORMS = {'none', 's_active', 's_emp', 's_medium', 's_standard'}
+
 # Background Bitmaps - Suns
 ALLOWED_SUNS = {'SunAdharaA', 'SunAdharaB', 'SunAlbireoAa', 'SunAlbireoAb', 'SunAlbireoB', 'SunAldebaranA', 'SunAldebaranB', 'SunAlphaAquilae', 'SunAlphaCentauriA', 'SunAlphaCentauriB', 'SunAlphaCrucisAa', 'SunAlphaCrucisAb', 'SunAlphardA', 'SunAlphardB', 'SunAntaresB', 'SunBetaAquilaeA', 'SunBetaAquilaeBa', 'SunBetaAquilaeBb', 'SunBetaHydri', 'SunBetelgeuse', 'SunBlue', 'SunCapellaA', 'SunCapellaB', 'SunCapellaC', 'SunDeltaSerpentis', 'SunGammaDraconis', 'SunGold', 'SunGreen', 'SunMintakaB', 'SunMintakaCa', 'SunMintakaCb', 'SunMirfak', 'SunNaos', 'SunPhiEridaniA', 'SunPhiEridaniB', 'SunPolarisAa', 'SunPolarisAb', 'SunPolarisB', 'SunProcyonA', 'SunProcyonB', 'SunRed', 'SunSiriusA', 'SunSiriusB', 'SunSol', 'SunVega', 'SunViolet', 'SunWhite'}
 

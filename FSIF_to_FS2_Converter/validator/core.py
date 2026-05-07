@@ -71,6 +71,7 @@ class Validator(
         
         self.allowed_nebula_patterns = fs_data.ALLOWED_NEBULA_PATTERNS
         self.allowed_nebula_poofs = fs_data.ALLOWED_NEBULA_POOFS
+        self.allowed_nebula_storms = fs_data.ALLOWED_NEBULA_STORMS
         
         self.allowed_suns = fs_data.ALLOWED_SUNS
         self.allowed_planets = fs_data.ALLOWED_PLANETS

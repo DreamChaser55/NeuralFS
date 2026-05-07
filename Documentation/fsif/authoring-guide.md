@@ -247,7 +247,7 @@ environment:
 ```
 
 **Field notes:**
-- `pattern` is the background sky color. It is **optional**. If omitted while `enabled: true`, the result is a completely black background with no stars (the optional cloud sprites and lighting are still active). Use this only when a featureless pitch black sky is intentional.
+- `pattern` is the background sky color. It is **optional**. If omitted while `enabled: true`, the result is a completely black background with no stars (the optional cloud sprites and lightning are still active). Use this only when a featureless pitch black sky is intentional.
 - `sensor_range` (Float, default `3000.0`) controls the AWACS/sensor radius. Ships beyond this range are invisible on radar.
 - `storm` (String, default `"none"`) sets the lightning-storm intensity. Omitting `storm` (or setting it to `none`) suppresses all storm effects. Set it to `s_standard`, `s_medium`, `s_active`, or `s_emp` to enable progressively more intense lightning.
 - `cloud_sprites` is an optional list of FSO nebula poof sprite tokens that fill the space. Omit the list to suppress the moving cloud layer entirely.

@@ -25,6 +25,7 @@ def parse_tokens_reference():
         "briefing_music": set(),
         "nebula_patterns": set(),
         "nebula_poofs": set(),
+        "nebula_storms": set(),
         "suns": set(),
         "planets": set(),
         "nebulae_bitmaps": set(),
@@ -80,6 +81,9 @@ def parse_tokens_reference():
             if line.startswith("Cloud Sprites (Poofs):"):
                 parts = line.replace("Cloud Sprites (Poofs):", "").split(",")
                 data["nebula_poofs"].update(p.strip() for p in parts if p.strip())
+            if line.startswith("Lightning Storm:"):
+                parts = line.replace("Lightning Storm:", "").split(",")
+                data["nebula_storms"].update(p.strip() for p in parts if p.strip())
                 
     # Weapons
     # Primary
@@ -422,7 +426,9 @@ def generate_file():
         f.write(f"ALLOWED_NEBULA_PATTERNS = {fmt_set(tokens['nebula_patterns'])}\n\n")
         f.write("# Nebula Poofs (Full Nebula)\n")
         f.write(f"ALLOWED_NEBULA_POOFS = {fmt_set(tokens['nebula_poofs'])}\n\n")
-        
+        f.write("# Nebula Lightning Storm tokens (Full Nebula)\n")
+        f.write(f"ALLOWED_NEBULA_STORMS = {fmt_set(tokens['nebula_storms'])}\n\n")
+
         # Backgrounds
         f.write("# Background Bitmaps - Suns\n")
         f.write(f"ALLOWED_SUNS = {fmt_set(tokens['suns'])}\n\n")

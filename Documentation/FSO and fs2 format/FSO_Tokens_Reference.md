@@ -525,8 +525,8 @@ Note: If `icons[*].map_position` is omitted, it defaults to `[0, 0]`.
 Background Color Patterns: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange
 Cloud Sprites (Poofs): PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
 Note: FSO SEXP docs refer to Cloud Sprites as "nebula poofs".
-Lighting Storm: none, s_standard, s_medium, s_active, s_emp
-Note: Lighting Storm variants are ordered from least active to most active. `s_emp` messes with player's HUD.
+Lightning Storm: none, s_standard, s_medium, s_active, s_emp
+Note: Lightning Storm variants are ordered from least active to most active. `s_emp` messes with player's HUD.
 
 ### Asteroid and debris field object variants
 
