@@ -864,6 +864,34 @@ mission_flow: {}
             f"Expected pattern validation error, got: {validator.errors}",
         )
 
+    # ------------------------------------------------------------------
+    # Storm default tests
+    # ------------------------------------------------------------------
+
+    def test_storm_default_is_none_when_omitted(self):
+        """Omitting storm in a full-nebula mission must default to 'none'."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        self.assertEqual(
+            mission.environment.nebula.storm,
+            "none",
+            "Expected default storm to be 'none' when not authored",
+        )
+
+    def test_writer_emits_storm_none_by_default(self):
+        """Writer must emit '+Storm: none' when storm is not explicitly set."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        content = self._write_fs2(mission)
+        self.assertIn("+Storm: none", content,
+                      "Expected '+Storm: none' in fs2 output when storm not authored")
+
+    def test_explicit_storm_value_is_preserved(self):
+        """An explicitly authored storm token must be preserved and emitted verbatim."""
+        mission = self._write_and_load('storm: "s_medium"')
+        self.assertEqual(mission.environment.nebula.storm, "s_medium")
+        content = self._write_fs2(mission)
+        self.assertIn("+Storm: s_medium", content,
+                      "Expected '+Storm: s_medium' in fs2 output when storm: s_medium is authored")
+
 
 class DemoConversionTesting(unittest.TestCase):
     @classmethod

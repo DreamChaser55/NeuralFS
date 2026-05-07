@@ -35,7 +35,7 @@
     - `enabled` (Boolean, optional, default: `false`)
     - `pattern` (String, optional). Background color pattern. If omitted while `enabled` is `true`, FSO displays a completely black background with no stars.
     - `sensor_range` (Float, optional, default: `3000.0`). AWACS/sensor radius in meters for full-nebula missions.
-    - `storm` (String, optional, default: `"s_standard"`)
+    - `storm` (String, optional, default: `"none"`)
     - `cloud_sprites` (List[String], optional, default: `[]`). FSO nebula poof sprite names.
   - `asteroid_field` (Mapping, optional):
     - `object_type` (String, optional, default: `"asteroid"`). Enum: `"asteroid"`, `"debris"`. Selects the visual object genre of the field.

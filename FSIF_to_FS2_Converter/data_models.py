@@ -552,7 +552,7 @@ class Nebula(BaseModel):
     model_config = ConfigDict(extra='forbid')
     enabled: bool = False
     sensor_range: float = Field(default=3000.0)
-    storm: str = 's_standard'
+    storm: str = 'none'
     pattern: Optional[str] = None
     cloud_sprites: List[str] = Field(default_factory=list)
 
