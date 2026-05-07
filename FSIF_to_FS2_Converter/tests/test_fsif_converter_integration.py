@@ -697,6 +697,174 @@ class VoiceManagerTesting(unittest.TestCase):
             self.assertTrue(len(fn) <= 29, f"Filename '{fn}' exceeds 29 chars")
 
 
+# ---------------------------------------------------------------------------
+# Nebula pattern optionality tests
+# ---------------------------------------------------------------------------
+
+_MINIMAL_NEBULA_FSIF_TEMPLATE = """\
+fsif_version: "4.0"
+mission_info:
+  name: "Nebula Pattern Test"
+environment:
+  ambient_light_level: [5, 5, 5]
+  background_bitmaps: []
+  nebula:
+    enabled: true
+    {extra_fields}
+player_setup:
+  start_ship: "Alpha 1"
+entities:
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+  ship_templates:
+    alpha_t:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      weapons:
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50"]
+mission_flow: {{}}
+"""
+
+
+class NebulaPatternTesting(unittest.TestCase):
+    """Tests for the optional nebula.pattern field.
+
+    Authoring `nebula.enabled: true` without a `pattern` must succeed.
+    The FS2 writer should emit `+Neb2: ` (empty value) in that case.
+    Providing an explicit pattern must still emit the pattern token.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    @classmethod
+    def tearDownClass(cls):
+        import logging
+        logging.disable(logging.NOTSET)
+
+    def _write_and_load(self, extra_fields: str):
+        fsif_text = _MINIMAL_NEBULA_FSIF_TEMPLATE.format(extra_fields=extra_fields)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "nebula_test.fsif"
+            path.write_text(fsif_text, encoding="utf-8")
+            return load_mission_from_fsif(str(path))
+
+    def _write_fs2(self, mission: Mission) -> str:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out = Path(tmpdir) / "out.fs2"
+            FS2Writer(mission, str(out)).write_mission()
+            return out.read_text(encoding="utf-8")
+
+    # ------------------------------------------------------------------
+    # Loading tests
+    # ------------------------------------------------------------------
+
+    def test_load_succeeds_without_pattern(self):
+        """enabled: true with no pattern must load without error."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        self.assertIsNone(mission.environment.nebula.pattern)
+        self.assertTrue(mission.environment.nebula.enabled)
+
+    def test_load_succeeds_with_explicit_pattern(self):
+        """enabled: true with an explicit pattern must load and preserve it."""
+        mission = self._write_and_load('pattern: "nbackblue1"')
+        self.assertEqual(mission.environment.nebula.pattern, "nbackblue1")
+
+    def test_fullneb_flag_injected_without_pattern(self):
+        """The fullneb flag must be auto-injected even when pattern is omitted."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        flags_lower = [f.strip().lower() for f in mission.mission_info.flags]
+        self.assertIn("fullneb", flags_lower)
+
+    # ------------------------------------------------------------------
+    # Writer emission tests
+    # ------------------------------------------------------------------
+
+    def test_writer_emits_empty_neb2_without_pattern(self):
+        """Writer must emit '+Neb2: ' (with empty value) when pattern is None."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        content = self._write_fs2(mission)
+        self.assertIn("+Neb2: ", content,
+                      "Expected '+Neb2: ' (empty value) in fs2 output when no pattern authored")
+
+    def test_writer_emits_pattern_token_when_provided(self):
+        """Writer must emit '+Neb2: nbackblue1' when pattern is explicitly set."""
+        mission = self._write_and_load('pattern: "nbackblue1"')
+        content = self._write_fs2(mission)
+        self.assertIn("+Neb2: nbackblue1", content)
+
+    def test_writer_emits_poofs_list_without_pattern(self):
+        """cloud_sprites should still produce +Neb2 Poofs List even if pattern is absent."""
+        mission = self._write_and_load('cloud_sprites: ["PoofPurp01", "PoofPurp02"]')
+        content = self._write_fs2(mission)
+        self.assertIn("+Neb2 Poofs List:", content)
+        self.assertIn('"PoofPurp01"', content)
+
+    def test_writer_neb2_absent_when_nebula_disabled(self):
+        """When nebula.enabled is false, +Neb2 must not appear in the output."""
+        fsif_text = """\
+fsif_version: "4.0"
+mission_info:
+  name: "No Nebula"
+environment:
+  ambient_light_level: [0, 0, 0]
+  nebula:
+    enabled: false
+player_setup:
+  start_ship: "Alpha 1"
+entities:
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
+      arrival_cue: |
+        ( true )
+  ship_templates:
+    alpha_t:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      weapons:
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50"]
+mission_flow: {}
+"""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "no_nebula.fsif"
+            path.write_text(fsif_text, encoding="utf-8")
+            mission = load_mission_from_fsif(str(path))
+        content = self._write_fs2(mission)
+        self.assertNotIn("+Neb2", content)
+
+    # ------------------------------------------------------------------
+    # Validator tests
+    # ------------------------------------------------------------------
+
+    def test_validator_passes_enabled_nebula_without_pattern(self):
+        """Validator must accept enabled nebula with no pattern authored."""
+        mission = self._write_and_load("sensor_range: 2000.0")
+        validator = Validator(mission, _repo_root)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_validator_rejects_invalid_explicit_pattern(self):
+        """An unrecognised pattern token must still fail validation."""
+        mission = self._write_and_load('pattern: "NOT_A_REAL_PATTERN"')
+        validator = Validator(mission, _repo_root)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("nebula pattern" in e.lower() for e in validator.errors),
+            f"Expected pattern validation error, got: {validator.errors}",
+        )
+
+
 class DemoConversionTesting(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

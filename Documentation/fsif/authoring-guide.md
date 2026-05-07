@@ -240,14 +240,14 @@ environment:
   background_bitmaps: []    # must be empty in full nebula missions
   nebula:
     enabled: true
-    pattern: "nbackblue1"                        # required
+    pattern: "nbackblue1"                        # optional; omit for a completely black background with no stars
     cloud_sprites: ["PoofPurp01", "PoofPurp02"]  # optional
     storm: "s_medium"                            # optional; default: s_standard
     sensor_range: 2000.0                         # optional; default: 3000.0
 ```
 
 **Field notes:**
-- `pattern` is the background sky color. It is **required** when `enabled: true`.
+- `pattern` is the background sky color. It is **optional**. If omitted while `enabled: true`, the result is a completely black background with no stars (the optional cloud sprites and lighting are still active). Use this only when a featureless pitch black sky is intentional.
 - `sensor_range` (Float, default `3000.0`) controls the AWACS/sensor radius. Ships beyond this range are invisible on radar.
 - `storm` (String, default `"s_standard"`) sets the lightning-storm intensity. Use `none` to suppress any storm effects.
 - `cloud_sprites` is an optional list of FSO nebula poof sprite tokens that fill the space. Omit the list to suppress the moving cloud layer entirely.

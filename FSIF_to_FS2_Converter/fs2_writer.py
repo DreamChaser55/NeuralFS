@@ -702,9 +702,9 @@ class FS2Writer:
         packed_ambient_light = pack_ambient_light_rgb(env.ambient_light_level)
         self._write(f'$Ambient light level: {packed_ambient_light}')
 
-        if neb.enabled and neb.pattern:
+        if neb.enabled:
             self._write('')
-            self._write(f'+Neb2: {neb.pattern}')
+            self._write(f'+Neb2: {neb.pattern or ""}')
             if neb.cloud_sprites:
                 poofs_joined = " ".join([f'"{str(p)}"' for p in neb.cloud_sprites])
                 self._write(f'+Neb2 Poofs List: ( {poofs_joined} )')

@@ -198,9 +198,6 @@ class MissionLoader:
         if neb_src and isinstance(neb_src, dict):
 
             if neb_src.get('enabled'):
-                 if not neb_src.get('pattern'):
-                     raise ValueError("environment.nebula.pattern is required when environment.nebula.enabled is true.")
-                 
                  # Flags injection
                  flags = mission_info.flags
                  if not any(str(x).strip().lower() == 'fullneb' for x in flags):
