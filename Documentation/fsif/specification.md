@@ -33,7 +33,7 @@
     - `scale` (Float or Mapping `{x, y}`, optional, default: `1.0`)
   - `nebula` (Mapping, optional):
     - `enabled` (Boolean, optional, default: `false`)
-    - `pattern` (String, required if `enabled` is `true`)
+    - `pattern` (String, required if `enabled` is `true`). Background color pattern.
     - `sensor_range` (Float, optional, default: `3000.0`). AWACS/sensor radius in meters for full-nebula missions.
     - `storm` (String, optional, default: `"s_standard"`)
     - `cloud_sprites` (List[String], optional, default: `[]`). FSO nebula poof sprite names.
