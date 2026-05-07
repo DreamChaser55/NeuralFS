@@ -154,18 +154,18 @@
 - `member_spacing` (Float, optional, default: `50.0`). Distance in meters between adjacent wing members.
 
 ## Minimal FSIF skeleton
-- A minimal and a standard FSIF skeletons are provided in the Authoring Guide.
+- Minimal and standard FSIF skeletons are provided in the Authoring Guide.
 
 ## Section details
 1. mission_info
   - Flags are authored as names; unknown flags are ignored.
-  - Subspace missions: use the "subspace" flag.
+  - Subspace missions: use the `"subspace"` flag.
 2. environment
-  - ambient_light_level is authored as `[red, green, blue]` with integer channels in range `0..255`.
-  - Angles order is [pitch, bank, heading] in radians.
-  - Only one asteroid/debris field is allowed.
+  - `ambient_light_level` is authored as `[red, green, blue]` with integer channels in range `0..255`.
+  - Angles are ordered as `[pitch, bank, heading]` in radians.
+  - Only one asteroid/debris field is allowed per mission.
 3. player_setup
-  - If the start_ship is standalone (not in a wing), its `arrival_cue` must be `"( true )"`.
+  - If the `start_ship` is standalone (not in a wing), its `arrival_cue` must be `"( true )"`.
 4. entities
   - ship_templates: Any allowed shared property present in a template can be overridden on ships referencing it. Override semantics are **shallow**: a top-level key on the ship replaces the entire value from the template, so nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary`, you must re-specify the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions).
     - **Important Note:** The following fields are **not allowed** in ship templates and must be authored elsewhere (in the ships themselves or in wings referencing the template): `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
@@ -183,10 +183,10 @@
 - Player start spawning: standalone start_ship requires `arrival_cue: "( true )"`
 - Docking: pairs only; not allowed for player start; author on docker only; ensure arrival leadership is coherent
 - Author only canonical per-ship subsystem and dockpoint names (see references)
-- Reinforcements: author in entities.reinforcement_wings / entities.reinforcement_ships. The reinforcement type is determined automatically (support ships with classes starting "GTS "/"PVS " → "Repair/Rearm"; all other ships and wings → "Attack/Protect").
-- Message priorities: "Low", "Normal", "High" (canonical spellings)
-- Names used inside SEXPs must remain under engine token length limits (less than 30 chars)
-- avoid YAML "#" inside SEXP blocks
+- Reinforcements: author them in `entities.reinforcement_wings` / `entities.reinforcement_ships`. The reinforcement type is determined automatically: support ships whose class starts with `"GTS "` or `"PVS "` become "Repair/Rearm" reinforcements; all other ships and wings become "Attack/Protect" reinforcements.
+- Message priorities: `"Low"`, `"Normal"`, `"High"` (canonical spellings)
+- Names used inside SEXPs must stay under the engine token length limit (fewer than 30 characters).
+- Avoid YAML `#` comments inside SEXP blocks.
 
 ## Tokens and SEXPs:
 - This spec intentionally does not replicate exhaustive FSO operator/token catalogs.
@@ -195,8 +195,8 @@
 
 ### Notes about selected SEXPs:
 - Applicability of AI Goals SEXPs:
-  - Larger ships (cruisers, destroyers, utility) can only use: ai-chase, ai-dock, ai-undock, ai-warp-out, ai-stay-near-ship, ai-stay-still, ai-play-dead.
-  - All other goals (Fighter/bomber-only goals like ai-guard) are invalid on larger ships and will cause FRED validation errors. Prefer waypoint/warp orders for capitals, or give them no orders (turrets fire automatically).
-  - Wing-target goal variants exist for common behaviors (e.g., ai-guard-wing, ai-chase-wing).
-- send-message-list argument signature: ( "<sender>", "<priority>", "<msg>", <delay_ms>, ... repeated 4-tuples ... )
-  - Arguments are provided in groups of four and the total argument count MUST be a multiple of four. Each 4-tuple is one message.
+  - Larger ships (cruisers, destroyers, utility) can only use: `ai-chase`, `ai-dock`, `ai-undock`, `ai-warp-out`, `ai-stay-near-ship`, `ai-stay-still`, `ai-play-dead`.
+  - All other goals (fighter/bomber-only goals such as `ai-guard`) are invalid on larger ships and will cause FRED validation errors. Prefer waypoint/warp orders for capital ships, or give them no orders (turrets fire automatically).
+  - Wing-target goal variants exist for common behaviors (e.g., `ai-guard-wing`, `ai-chase-wing`).
+- `send-message-list` argument signature: `( "<sender>", "<priority>", "<msg>", <delay_ms>, ... repeated 4-tuples ... )`
+  - Arguments are provided in groups of four; the total argument count **must** be a multiple of four. Each 4-tuple is one message.

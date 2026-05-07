@@ -1,36 +1,36 @@
 # FCIF Converter CLI
 
 ## Purpose
-- Document how to invoke the FCIF → FC2 converter, expected inputs/outputs, and common usage patterns.
+Document how to invoke the FCIF → FC2 converter, expected inputs/outputs, and common usage patterns.
 
 ## Prerequisites
 - Python 3.9+ installed and on PATH
-- PyYAML and pydantic installed
+- PyYAML and pydantic installed:
   ```bash
   pip install PyYAML pydantic
   ```
 
-## Entry point
-- Script: FCIF_to_FC2_Converter/fcif_to_fc2.py
+## Entry Point
+- Script: `FCIF_to_FC2_Converter/fcif_to_fc2.py`
 
-## Basic usage
+## Basic Usage
 ```bash
 python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
 ```
 
 ## Arguments
 
-### Positional arguments
+### Positional Arguments
 | Argument | Description |
 |---|---|
 | `input` | Path to the input `.fcif` file. |
 
-### Optional arguments
+### Optional Arguments
 | Flag | Description |
 |---|---|
 | `-o`, `--output` | Path to the output `.fc2` file. If omitted, defaults to the input path with the extension changed to `.fc2`. |
 
-## Path quoting
+## Path Quoting
 - The input and output paths may be provided with or without surrounding quotes. All of the following work:
   ```bash
   python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/my_campaign.fcif -o campaigns/my_campaign.fc2
@@ -41,30 +41,30 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
   - To avoid these errors:
     - Keep the path wrapped in quotes exactly as shown above.
     - Avoid spaces in directory and file names; use underscores instead.
-    - When batching (cmd.exe example), ensure each `%%F` is quoted.
+    - When batching in `cmd.exe`, ensure each `%%F` is quoted.
 
 ## Campaign-Wide Player Loadout Check
 
-The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in the `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.
+The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.
 
-The converter will automatically verify this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha-Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`).
+The converter automatically verifies this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha–Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`).
 
-For each item that is used by the player but not previously granted, a `[ERROR]` is printed and the conversion process is aborted.
+For each item that is used by the player but not previously granted, an `[ERROR]` is printed and the conversion is aborted.
 
 ## Output
-- The converter writes the `.fc2` file to the specified (or derived) output path.
+The converter writes the `.fc2` file to the specified (or derived) output path.
 
-## Version and implementation details
+## Version and Implementation Details
 - FCIF specification and field details: see `../specification.md`
 - Converter emission details and SEXP logic generation: see `implementation_details.md`
 
-## Exit status and logs
+## Exit Status and Logs
 - Non-zero exit (`sys.exit(1)`) on fatal errors:
   - Invalid YAML syntax
   - Pydantic validation errors (missing required fields, unrecognized fields, wrong types)
   - Input file not found
   - Error writing the output file
-- All progress messages (successes, warnings and errors) are printed to stderr (`logging.basicConfig` default output):
+- All progress messages (successes, warnings, and errors) are printed to stderr (`logging.basicConfig` default output):
   - `Loading FCIF: <path>`
   - `Converting '<campaign_name>' (<N> missions)...`
   - `Successfully wrote: <output_path>`

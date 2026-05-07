@@ -2,7 +2,7 @@
 
 ## Overview
 This tool converts mission files from the concise FreeSpace Intermediate Format (.fsif) into the standard, engine-readable FreeSpace Open mission format (.fs2).
-FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstracts .fs2 boilerplate for rapid mission prototyping and AI-driven content creation.
+FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstracts `.fs2` boilerplate, enabling rapid mission prototyping and AI-driven content creation.
 
 ## Features (high level)
 - Concise YAML syntax
@@ -16,17 +16,17 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Jump nodes
 - Reinforcements
 - Automatic TTS voice generation during conversion
-  - **Google Gemini 3.1 Flash TTS** (Default)
+  - **Google Gemini Flash TTS** (default)
   - **ElevenLabs TTS**
   - **Inworld TTS**
 - Validation of FSIF files with actionable warning/error reports
   - Reported errors must be fixed for the conversion to succeed
   - Reported warnings are non-fatal, but should be addressed for best results
-- Advanced SEXP Validation
+- Advanced SEXP validation
 
 ## Versions
 - **Current FSIF version**: 4.0
-- **FSIF version support**: converter accepts FSIF **4.0** only.
+- **FSIF version support**: the converter accepts FSIF **4.0** only.
 
 ## Requirements
 - Python 3.9+
@@ -35,15 +35,15 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 
 Optional (for Google TTS):
 - `google-genai`
-- A configured Google Cloud project (API Key or Vertex AI credentials)
+- A configured Google Cloud project (API key or Vertex AI credentials)
 
 Optional (for ElevenLabs TTS):
-- `elevenlabs` (for ElevenLabs API)
-- An ElevenLabs account and API Key
+- `elevenlabs`
+- An ElevenLabs account and API key
 
 Optional (for Inworld TTS):
 - `requests` (for REST API)
-- An Inworld account and API Key
+- An Inworld account and API key
 
 ## Installation
 Install the required libraries:
@@ -79,9 +79,9 @@ This tool allows you to:
 - View real-time conversion logs.
 
 ## Project Structure
-- `fsif_to_fs2.py` — CLI entry: imports the other components and orchestrates the conversion process.
-- `fsif_converter_gui.py` — Graphical User Interface (GUI) for the converter.
-- `mission_loader.py` — Loads FSIF, applies templates, expands wings.
+- `fsif_to_fs2.py` — CLI entry point: imports the other components and orchestrates the conversion process.
+- `fsif_converter_gui.py` — Graphical user interface (GUI) for the converter.
+- `mission_loader.py` — Loads FSIF, applies templates, and expands wings.
 - `fs2_writer.py` — Emits FS2 sections.
 - `validator/` — This package performs strict validation of logic, references, and constraints.
 - `data_models.py` — Pydantic models for in-memory mission structures and schema validation.
@@ -89,8 +89,8 @@ This tool allows you to:
 - `fs_data.py` — Auto-generated static reference data and token lists (teams, weapons, backgrounds, etc.) for validation. Do not edit manually.
 - `briefing_icon_types.py` — Canonical mappings for briefing icon types.
 - `tts_provider_base.py` — Abstract base class and common orchestration logic for TTS providers.
-- `tts_google.py` — Google GenAI TTS Provider Implementation.
-- `tts_elevenlabs.py` — ElevenLabs TTS Provider Implementation.
-- `voice_manager.py` — Manages voice filename generation and normalization. It assigns unique filenames to voiced lines, handling collision resolution based on the selected TTS strategy.
+- `tts_google.py` — Google GenAI TTS provider implementation.
+- `tts_elevenlabs.py` — ElevenLabs TTS provider implementation.
+- `voice_manager.py` — Manages voice filename generation and normalization. Assigns unique filenames to voiced lines and handles collision resolution based on the selected TTS strategy.
 - `utils.py` — Shared utility functions.
 - `Advanced_SEXP_Validator/` — A Python implementation of the SEXP parser and validator used in the FSO engine.

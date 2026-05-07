@@ -1,11 +1,11 @@
 # FSIF Authoring Guide
 
-Purpose
+## Purpose
 - Help mission authors write correct, concise FSIF quickly.
 - Provide best practices, common patterns, pitfalls, and curated examples.
 
 
-Critical rules
+## Critical Rules
 - **Token fidelity**: Use exact canonical tokens only. Do not invent synonyms, alternative casing, or punctuation variants. SEXP names, wildcard literals, message priority strings, subsystem and dockpoint names must match exactly.
 - **Token length limit**: All names (ships, wings, events, messages, etc.) must be < 30 characters.
 - **SEXP fidelity**: FSIF embeds SEXP verbatim. The converter does not "fix" invalid SEXP.
@@ -114,7 +114,7 @@ audio:
 ```
 
 ## Fiction Viewer
-The Fiction Viewer allows you to display a text file before the mission starts. This is useful for lengthy narrative text or logs. If your mission design document contains cutscene descriptions but the cutscenes were not created, you can write their narrative content here.
+The Fiction Viewer allows you to display a text file before the mission starts. This is useful for lengthy narrative text or logs. If your mission design document contains cutscene descriptions but no cutscenes were actually created, you can write their narrative content here.
 ```yaml
 mission_flow:
   fiction_viewer: "missionname_story.txt"
@@ -122,8 +122,8 @@ mission_flow:
 The file `missionname_story.txt` must exist in your mod's data/fiction folder.
 
 Notes:
-- The referenced Fiction Viewer content is shown to the player as the **very first** thing in the course of the mission (before the Command Briefing).
-- The entire referenced file is shown to the player as is; Ensure that any internal or development notes are removed before release.
+- The referenced Fiction Viewer content is shown to the player as the **very first** thing before the mission begins (before the Command Briefing).
+- The entire referenced file is shown to the player as is. Ensure that any internal or development notes are removed before release.
 - Use the **Fiction Viewer Validator** to check the file before release:
   ```
   python Fiction_Viewer_Validator/fiction_viewer_validator.py <path_to_story_txt>
@@ -336,8 +336,8 @@ mission_flow:
 ```
 
 Notes:
-- Available mission goal (objective) is marked with grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
-- The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should thus always have a corresponding event with a `hud_directive_text`, not just a goal.
+- An available mission goal (objective) is marked with a grey TO-DO in the Goals menu. It turns completed (green) when the SEXP formula for it becomes true. It turns failed (red) when the SEXP formula can no longer logically become true (e.g., a ship that should be protected until departure is destroyed).
+- The same available/completed/failed coloring rules apply to directive texts for events, but these are always visible in the "Directives" section on the HUD, not hidden in a menu. Important objectives should therefore always have a corresponding event with a `hud_directive_text`, not just a goal.
 - **Directive text limitation — avoid event/goal references in the formula:** Events intended to display a directive text must use simple, directly-evaluable conditions. If the formula references another event or goal using `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay`, the directive will silently fail: the engine cannot determine at mission start whether such an event could ever become true or false, so the grey "pending" directive is never displayed on the HUD. Use direct object-state SEXPs (e.g., `is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events that have a `hud_directive_text`.
 - Try to include enough comms chatter (messages) in your missions to make them lively and prevent player boredom.
 
@@ -488,11 +488,11 @@ mission_flow:
 ```
 
 **Debriefing stage display_condition authoring note:**
-Contrary to briefing stages, debriefing stages are **not** simply displayed chronologically as defined. Instead, each debriefing stage will be displayed if its `display_condition` SEXP is met. Author should be careful to make the conditions for every stage sufficiently restrictive, so that incorrect text is not displayed when it shouldn't — for example, a stage describing a successful mission outcome should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )` to precisely target the outcome you intend to describe.
+Unlike briefing stages, debriefing stages are **not** simply displayed in the order they are defined. Instead, each debriefing stage is displayed if its `display_condition` SEXP is met. Authors should be careful to make the conditions for every stage sufficiently restrictive, so that incorrect text is never shown at the wrong time — for example, a stage describing a successful outcome should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )` to precisely target the intended outcome.
 
 ## Briefing Room Grid View
 
-Unless the mission is very short and trivial, you should always author a briefing schematic view with relevant icons for every briefing stage. Note that briefings are authored from the commanding officer's POV and are depicting his prediction of the mission events. They should not reveal any surprises or show things that the commander has no way of knowing in advance.
+Unless the mission is very short and trivial, you should always author a briefing schematic view with relevant icons for every briefing stage. Note that briefings are authored from the commanding officer's point of view and depict a prediction of the mission events. They should not reveal any surprises or show things that the commander has no way of knowing in advance.
 
 ### Layout
 The briefing room uses a grid on the **XZ plane**.
@@ -527,8 +527,8 @@ mission_flow:
 - A briefing icon with `icon_type: "Waypoint"` is only a briefing-room schematic symbol. It does **not** create a visible in-mission waypoint or player guidance marker.
 
 ## Message sender and priority literals
-- Allowed sender strings include named ships and special senders like "<any wingman>" and "#Command" (Note: the angle brackets/hash must not be omitted)
-- Priorities must be authored exactly: "Low", "Normal", "High"
+- Allowed sender strings include named ships and special senders like `"<any wingman>"` and `"#Command"` (Note: the angle brackets and hash character must not be omitted).
+- Priorities must be authored exactly: `"Low"`, `"Normal"`, `"High"`.
 
 Example
 ```lisp

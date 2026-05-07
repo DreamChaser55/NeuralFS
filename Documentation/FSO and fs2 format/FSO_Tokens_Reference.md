@@ -3,15 +3,15 @@
 ## Scope
 - Single source of truth for valid FSO tokens: flags, enumerations, literals, and canonical spellings.
 
-## Guidance on token usage
-- Exact token spelling is required when authoring FSIF missions. All tokens (enums, flags, AI class names, goal types, SEXP operator names, wildcard literals like "<any friendly player>", music file names, background/sun/planet textures...) must be authored exactly as shown. Unknown/misspelled tokens will cause errors.
+## Guidance on Token Usage
+- Exact token spelling is required when authoring FSIF missions. All tokens (enums, flags, AI class names, goal types, SEXP operator names, wildcard literals like `"<any friendly player>"`, music file names, background/sun/planet textures, etc.) must be authored exactly as shown. Unknown or misspelled tokens will cause errors.
 - Always use canonical tokens as listed here and in the FSIF spec. Do not vary case.
-- Do / Don’t (examples):
-  - Do: "<any friendly player>"   Don’t: "<any player>", "<any Friendly Player>"
-  - Do: "High"                    Don’t: "high"
-  - Do: "ai-guard-wing"           Don’t: "ai_guard_wing"
-- Token length limit: Custom tokens used inside SEXPs (like ship, message or event names) must be shorter than 30 characters to avoid errors. To keep custom names short and minimize the risk of hitting the length limit, we recommend using CamelCase for custom token strings like event, goal, and message names (e.g., `AmbushWarning`, `ScanComplete`) instead of using spaces or underscores.
-- Strings/literals: Treat special selectors like "<any wingman>" and "<any friendly player>" as ordinary quoted strings in SEXPs; do not escape the angle brackets specially.
+- Do / Don't (examples):
+  - Do: `"<any friendly player>"`   Don't: `"<any player>"`, `"<any Friendly Player>"`
+  - Do: `"High"`                    Don't: `"high"`
+  - Do: `"ai-guard-wing"`           Don't: `"ai_guard_wing"`
+- Token length limit: Custom tokens used inside SEXPs (such as ship, message, or event names) must be shorter than 30 characters to avoid errors. To keep custom names short and minimize the risk of hitting the length limit, we recommend using CamelCase for custom token strings such as event, goal, and message names (e.g., `AmbushWarning`, `ScanComplete`) instead of using spaces or underscores.
+- Special selectors like `"<any wingman>"` and `"<any friendly player>"` should be treated as ordinary quoted strings in SEXPs; do not escape the angle brackets specially.
 
 ## Related reference files
 - Ship classes: ./spacecraft-classes.md
@@ -27,7 +27,7 @@
 - Unknown
 
 **Note on "Neutral" IFF team:**
-FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second Hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team. Use "Friendly", "Hostile" or "Unknown" for all ships, objects or briefing icons.
+The FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team. Use `"Friendly"`, `"Hostile"`, or `"Unknown"` for all ships, objects, and briefing icons.
 
 Context: `team`.
 
@@ -104,7 +104,7 @@ Examples:
 
 ## Flags catalog
 
-This section lists a subset of canonical flags which is generally useful for mission authors. A complete catalog of flags, including the less useful, debug or special ones is available in the converter documentation.
+This section lists a subset of canonical flags that are generally useful for mission authors. A complete catalog of flags, including less commonly used, debug, and special flags, is available in the converter documentation.
 
 ### Mission flags (`mission_info.flags`)
 These tokens specify various mission properties and behaviors.

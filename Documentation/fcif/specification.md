@@ -1,9 +1,9 @@
-# Freespace Campaign Intermediate Format (FCIF) Specification
+# FreeSpace Campaign Intermediate Format (FCIF) Specification
 
-FCIF is a simplified, YAML-based format for defining Freespace 2 campaigns. It is designed to be human-readable and easily writable by AI agents, abstracting away the verbose syntax of the legacy `.fc2` format.
+FCIF is a simplified, YAML-based format for defining FreeSpace 2 campaigns. It is designed to be human-readable and easily writable by AI agents, abstracting away the verbose syntax of the legacy `.fc2` format.
 
 ## Version
-Current Version: "1.1"
+Current version: "1.1"
 
 ## File Structure
 
@@ -37,7 +37,7 @@ missions:
 
 ### Campaign Section
 - **name**: The display name of the campaign.
-- **description**: A description of the campaign. **Must not contain double quotes (`"`).** Any `"` inside the string would break the syntax of the generated `.fc2` file. Converter checks for this and raises an error if any double quotes are found.
+- **description**: A description of the campaign. **Must not contain double quotes (`"`).** Any `"` inside the string would break the syntax of the generated `.fc2` file. The converter checks for this and raises an error if any double quotes are found.
 
 The campaign type is always `single` (hardcoded by the converter).
 
@@ -45,12 +45,12 @@ The campaign type is always `single` (hardcoded by the converter).
 - **ships**: A list of ship classes available to the player at the start of the campaign (e.g., `GTF Apollo`).
 - **weapons**: A list of weapons available to the player at the start (e.g., `ML-16 Laser`).
 
-Important: any ship or weapon used in the campaign must be either listed here, or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign, otherwise it will not appear in the game even if defined in the mission files! By default, all ships and weapons are unavailable at the start.
+Important: any ship or weapon used in the campaign must be either listed here or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign; otherwise it will not appear in the game even if it is defined in the mission files. By default, all ships and weapons are unavailable at campaign start.
 
-**Campaign-wide player loadout constraint**: For the campaign, the converter checks every mission in sequence to ensure that all player-usable ships and weapons (Alpha-Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`) are either in `starting_loadout` or granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The FCIF converter will verify this automatically: it infers the `.fsif` path for each mission from its filename, parses it, tracks the granted items, and throws a fatal error if any ship class or weapon is used by the player without being unlocked.
+**Campaign-wide player loadout constraint**: The converter checks every mission in sequence to ensure that all player-usable ships and weapons (Alpha–Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`) are either in `starting_loadout` or granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The converter verifies this automatically: it infers the `.fsif` path for each mission from its filename, parses it, tracks the granted items, and throws a fatal error if any ship class or weapon is used by the player without being unlocked.
 
 ### Missions Section
-An ordered list of missions. The order in the list determines the campaign progression.
+An ordered list of missions. The order of entries determines campaign progression.
 
 - **filename**: The filename of the mission (e.g., `m01.fs2`). Must include the extension.
 
@@ -76,14 +76,14 @@ Each mission may optionally specify **one** advance condition that determines wh
   - Emits `is-previous-event-false` in the fc2 formula.
   - Example: `failure_event: "Arjuna destroyed"` — advance if the "Arjuna destroyed" event did not occur (i.e., the Arjuna survived).
 
-If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement). **Note:** While this is perfectly valid, the converter will emit a warning for each mission that lacks an advance condition to help catch potential oversights by campaign authors.
+If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement). **Note:** While this is perfectly valid, the converter will emit a warning for each mission that lacks an advance condition, to help catch potential oversights.
 
 ### Goals vs. Events
 
 In FreeSpace missions, **goals** and **events** are distinct concepts:
 
-- **Goals** are objectives visible to the player (primary, secondary, bonus). They appear in the mission objectives list. Use `success_goal` / `failure_goal` when the advance condition depends on mission objectives.
-- **Events** are internal mission triggers that control scripted sequences (e.g., enemy arrivals, message sending, AI goal changes). They are not directly visible to the player as objectives. Use `success_event` / `failure_event` when the advance condition depends on an internal mission event rather than a player-facing objective.
+- **Goals** are objectives visible to the player (primary, secondary, bonus). They appear in the mission objectives list. Use `success_goal` / `failure_goal` when the advance condition depends on a mission objective.
+- **Events** are internal mission triggers that control scripted sequences (e.g., enemy arrivals, message sending, AI goal changes). They are not directly visible to the player as objectives. Use `success_event` / `failure_event` when the advance condition depends on an internal event rather than a player-facing objective.
 
 ### Example
 
