@@ -527,6 +527,8 @@ Cloud Sprites (Poofs): PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp0
 Note: FSO SEXP docs refer to Cloud Sprites as "nebula poofs".
 Lighting Storm: none, s_standard, s_medium, s_active, s_emp
 
+Note: Lighting Storm variants are ordered from least active to most active. `s_emp` messes with player's HUD.
+
 ### Asteroid and debris field object variants
 
 Context: `environment.asteroid_field.object_variants`.

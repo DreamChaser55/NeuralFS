@@ -200,7 +200,7 @@ Default: all nine.
 - Debris fields authored with `behavior: "active"` are automatically coerced to `"passive"` with a warning.
 - Only one `asteroid_field` is allowed per mission. The converter supports authoring it as a single YAML mapping.
 
-## Environment backgrounds and nebulae
+## Environment: background suns and bitmaps
 Author background suns and `background_bitmaps`; full nebula is a separate feature and unconditionally suppresses background bitmaps.
 ```yaml
 environment:
@@ -225,11 +225,43 @@ Notes
 - angles are [pitch, bank, heading] in radians.
 - **Background richness advisory:** In normal-space missions, try to include at least **3** `background_bitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
 - **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view.
-- For full (volumetric) nebula authoring fields (`sensor_range`, `cloud_sprites`, etc.), see spec.
 - **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, background_bitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
   - Distant nebulae will likely look the same and be in the same positions in the sky.
   - Positions of suns or planet bitmaps could change.
   - Ambient light color will be the same, but intensity will change with distance from the sun.
+
+## Environment: full (volumetric) nebula
+Full nebula (also called volumetric nebula) fills the entire mission with volumetric fog and cloud sprites, reduces sensor/AWACS range, and replaces normal-space background bitmaps and stars with a colored sky pattern. Enable it with `environment.nebula.enabled: true`.
+
+```yaml
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns: []             # optional; suns are still rendered inside the nebula
+  background_bitmaps: []    # must be empty in full nebula missions
+  nebula:
+    enabled: true
+    pattern: "nbackblue1"                        # required
+    cloud_sprites: ["PoofPurp01", "PoofPurp02"]  # optional
+    storm: "s_medium"                            # optional; default: s_standard
+    sensor_range: 2000.0                         # optional; default: 3000.0
+```
+
+**Field notes:**
+- `pattern` is the background sky color. It is **required** when `enabled: true`.
+- `sensor_range` (Float, default `3000.0`) controls the AWACS/sensor radius. Ships beyond this range are invisible on radar.
+- `storm` (String, default `"s_standard"`) sets the lightning-storm intensity. Use `none` to suppress any storm effects.
+- `cloud_sprites` is an optional list of FSO nebula poof sprite tokens that fill the space. Omit the list to suppress the moving cloud layer entirely.
+
+**Authoring rules:**
+- **Do not add `fullneb` to `mission_info.flags` manually.** The converter injects this flag automatically when `environment.nebula.enabled: true`.
+- **`background_bitmaps` must be empty.** The validator treats any authored background bitmaps as an error when full nebula is enabled, since they are not visible.
+- **Suns are still allowed.** Background suns are visible inside the nebula and can be authored normally. They can be omitted for dense, dark nebula scenes, but a distant sun can add atmosphere.
+- **The "at least 3 background nebula bitmaps" richness advisory does not apply** to full nebula missions. That warning is suppressed for missions with `environment.nebula.enabled: true`.
+- **Increase visibility via design.** With reduced sensor range, players cannot easily navigate. Use visible `Terran NavBuoy` ships, clear HUD directives, and in-mission comms messages to guide the player, or create more compact missions. Do not rely on distant ships being visible or targetable.
+- Volumetric nebula is often used to simulate gas giant atmospheres or supernova remnant systems.
+
+**Dynamic nebula changes via SEXPs:**
+You can modify the nebula at runtime using SEXPs — for example, `nebula-change-pattern`, `nebula-change-storm`, `nebula-toggle-poof`, `nebula-change-fog-color`. Consult `Documentation/FSO SEXPs/Backgrounds and Nebulae.txt` for the exact arguments before using them.
 
 ## Templates, ships and wings
 ```yaml
