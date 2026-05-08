@@ -244,7 +244,7 @@ entities:
       position: [3000.0, 0.0, 4000.0]
 
 mission_flow:
-  fiction_viewer: "evacuation_story.txt"
+  fiction_viewer: "general_demo_story.txt"
   command_briefing:
     stages:
       - text: "The Shivan offensive has bypassed our outer blockades. We are evacuating the system."
