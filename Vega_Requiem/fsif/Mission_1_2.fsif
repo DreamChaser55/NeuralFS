@@ -1,0 +1,502 @@
+fsif_version: "4.0"
+
+mission_info:
+  name: "Breakwater"
+  author: "NeuralFS"
+  description: "Protect the civilian evacuation from Vega Prime."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  ambient_light_level: [10, 5, 2]
+  suns:
+    - { texture: SunVega, angles: [0.5, 0.0, 1.0], scale: 2.0 }
+  background_bitmaps:
+    - { texture: neb02, angles: [0.0, 1.0, 0.0], scale: { x: 3.0, y: 3.0 } }
+    - { texture: neb01, angles: [0.3, 0.5, 1.2], scale: { x: 4.0, y: 4.0 } }
+    - { texture: dneb01, angles: [1.2, 0.2, 2.0], scale: { x: 2.5, y: 2.5 } }
+  nebula: { enabled: false }
+
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices:
+    - { class: "GTF Apollo", count: 4 }
+  additional_weapons:
+    - "MX-50"
+    - "Fury"
+
+entities:
+  ship_templates:
+    alpha_fighter:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50"]
+    scorpion_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    basilisk_fighter:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
+        secondary: ["Hornet#Shivan", "Interceptor#Shivan"]
+
+  ships:
+    - name: "GTI Vega Prime"
+      class: "GTI Arcadia"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+    - name: "GTC Stentor"
+      class: "GTC Fenris"
+      team: "Friendly"
+      position: [0.0, 0.0, 3000.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-stay-near-ship "GTI Vega Prime" 89 1000 )
+    - name: "Nav Alpha"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [-2000.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+    - name: "Nav Bravo"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [-9000.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+    - name: "Sentry 1"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [-1800.0, 200.0, 200.0]
+      arrival_cue: |
+        ( true )
+    - name: "Sentry 2"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [-1800.0, -200.0, -200.0]
+      arrival_cue: |
+        ( true )
+    - name: "GTFr Chronos 1"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      position: [-1800.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( has-time-elapsed 15 )
+    - name: "TAC-1 Cargo 1"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [1000.0, -500.0, 0.0]
+      cargo: "Civilian Equipment"
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"]
+    - name: "TAC-1 Cargo 2"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [1200.0, -500.0, 0.0]
+      cargo: "Civilian Equipment"
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"]
+    - name: "TAC-1 Cargo 3"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [1400.0, -500.0, 0.0]
+      cargo: "Civilian Equipment"
+      arrival_cue: |
+        ( true )
+      flags: ["scannable"]
+    - name: "Epsilon One"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [-100.0, 0.0, 0.0]
+      arrival_method: "Docking Bay"
+      arrival_anchor: "GTI Vega Prime"
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon One" "Nav Bravo" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "EscapePath" 89 )
+    - name: "Epsilon Two"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [-100.0, 0.0, 0.0]
+      arrival_method: "Docking Bay"
+      arrival_anchor: "GTI Vega Prime"
+      arrival_cue: |
+        ( has-time-elapsed 120 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon Two" "Nav Bravo" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "EscapePath" 89 )
+    - name: "Epsilon Three"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [-100.0, 0.0, 0.0]
+      arrival_method: "Docking Bay"
+      arrival_anchor: "GTI Vega Prime"
+      arrival_cue: |
+        ( has-time-elapsed 165 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon Three" "Nav Bravo" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "EscapePath" 89 )
+    - name: "Epsilon Four"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [-100.0, 0.0, 0.0]
+      arrival_method: "Docking Bay"
+      arrival_anchor: "GTI Vega Prime"
+      arrival_cue: |
+        ( has-time-elapsed 210 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Epsilon Four" "Nav Bravo" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "EscapePath" 89 )
+    - name: "GTS Casca"
+      class: "GTS Centaur"
+      team: "Friendly"
+      position: [500.0, 0.0, -1000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 240 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( or 
+          ( and
+            ( has-departed-delay 0 "Epsilon One" )
+            ( has-departed-delay 0 "Epsilon Two" )
+            ( has-departed-delay 0 "Epsilon Three" )
+            ( has-departed-delay 0 "Epsilon Four" )
+          )
+          ( is-destroyed-delay 0 "GTI Vega Prime" )
+        )
+      initial_orders: |
+        ( ai-stay-near-ship "GTI Vega Prime" 89 1000 )
+    - name: "SC Malgor"
+      class: "SC Cain"
+      team: "Hostile"
+      position: [0.0, 0.0, 12000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 390 )
+      initial_orders: |
+        ( ai-stay-near-ship "GTI Vega Prime" 89 2000 )
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_fighter"
+      count: 4
+      position: [0.0, 500.0, 2000.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-guard "GTI Vega Prime" 89 )
+    - name: "Durga"
+      template: "scorpion_fighter"
+      count: 4
+      position: [0.0, 0.0, 2500.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-chase-any 89 )
+    - name: "Arjuna"
+      template: "basilisk_fighter"
+      count: 3
+      position: [500.0, 500.0, 12000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 150 )
+      initial_orders: |
+        ( ai-chase-any 89 )
+    - name: "Krishna"
+      template: "scorpion_fighter"
+      count: 3
+      position: [0.0, 0.0, 10000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 270 )
+      initial_orders: |
+        ( ai-chase-wing "Alpha" 89 )
+    - name: "Arjuna B"
+      template: "basilisk_fighter"
+      count: 3
+      position: [-500.0, 500.0, 12000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( or 
+          ( has-time-elapsed 330 )
+          ( and 
+             ( has-arrived-delay 0 "Arjuna" )
+             ( < ( num-ships-in-wing "Arjuna" ) 2 )
+          )
+        )
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+  waypoints:
+    EscapePath:
+      - [-2000.0, 0.0, 0.0]
+      - [-9000.0, 0.0, 0.0]
+    MalgorPath:
+      - [-9000.0, 0.0, 0.0]
+      
+  jump_nodes:
+    - name: "Antares Jump Node"
+      position: [-10000.0, 0.0, 0.0]
+
+mission_flow:
+  fiction_viewer: "Mission_1_2_story.txt"
+  briefing:
+    stages:
+      - text: "Alpha wing, listen up. The situation has changed overnight. What Alpha Lead brought back from the Capella corridor wasn't Vasudan, wasn't anything Command could identify - and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter. We have four Epsilon transports at Vega Prime right now - civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now. $f{ GTC Stentor $} is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the Antares node."
+        voice_name: "Kore"
+        voice_style_instructions: "Commanding"
+        icons:
+          - { icon_type: "Installation", team: "Friendly", map_position: [0, 0], label: "Vega Prime" }
+          - { icon_type: "Cruiser", team: "Friendly", map_position: [150, 0], label: "Stentor" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [100, 100], label: "Alpha", highlighted: true }
+          - { icon_type: "Transport Wing", team: "Friendly", map_position: [-50, 0], label: "Epsilon" }
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [-500, 0], label: "Antares Node" }
+      - text: "You'll be flying Valkyries today. They just came in from the Amadeus complement - fast interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. The people on those transports are your mission. Nav Alpha is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to Nav Bravo. Get them through."
+        voice_name: "Kore"
+        voice_style_instructions: "Directing"
+        icons:
+          - { icon_type: "Installation", team: "Friendly", map_position: [0, 0], label: "Vega Prime" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [-200, 0], label: "Nav Alpha" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [-450, 0], label: "Nav Bravo" }
+          - { icon_type: "Transport Wing", team: "Friendly", map_position: [-250, 0], label: "Epsilon", highlighted: true }
+      - text: "One more thing. We're sending the $f{ Casca $} out behind you for rearming support. She's fragile - don't let her become a target. Call her in when you need her, not before. The $f{ Stentor $} will hold as long as she can. Commander Okafor knows her job. Good luck. GTA Amadeus CAG out."
+        voice_name: "Kore"
+        voice_style_instructions: "Stern"
+        icons:
+          - { icon_type: "Support Ship", team: "Friendly", map_position: [50, -100], label: "Casca", highlighted: true }
+          - { icon_type: "Cruiser", team: "Friendly", map_position: [150, 0], label: "Stentor", highlighted: true }
+  
+  debriefing:
+    stages:
+      - display_condition: |
+          ( and
+            ( percent-ships-departed 75 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" )
+            ( > ( hits-left "GTC Stentor" ) 50 )
+          )
+        text: "All four Epsilon transports are safely through the Antares node. The station is gone - but the people are not. That matters. Commander Okafor sends her thanks. The Stentor took some damage, but she held together, and her crew held together with her. She says you covered her exactly when she needed it. Vega Prime is lost. We knew it was coming, but knowing doesn't make it easier. I want you to understand that everything you defended out there had a name and a family. You did right by them today. The Malgor is still in the system. We're keeping track of her."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and
+            ( percent-ships-departed 50 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" )
+            ( or 
+              ( not ( percent-ships-departed 75 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" ) )
+              ( < ( hits-left "GTC Stentor" ) 51 )
+            )
+          )
+        text: "Three transports made it. That's people alive who would otherwise be dead, and I'm not going to diminish that. But we took heavy losses, and I want you to think about what you could have done differently. Arjuna wave - that second bomber group - came in fast. The Valkyrie was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time. Vega Prime is gone. The Malgor is still in the system. The situation is deteriorating."
+        voice_name: "Kore"
+      - display_condition: |
+          ( not ( percent-ships-departed 50 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" ) )
+        text: "This is hard to report. Most of the Epsilon transports were destroyed before they could reach the jump node. Those were civilian evacuation ships. I have to be direct with you: the Arjuna bombers were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing - those shields, that SC Malgor arriving - but our job was the transports. We will not have another chance in Vega. What we do from here is damage limitation. Regroup."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and 
+            ( is-cargo-known-delay 0 "TAC-1 Cargo 1" )
+            ( is-cargo-known-delay 0 "TAC-1 Cargo 2" )
+            ( is-cargo-known-delay 0 "TAC-1 Cargo 3" )
+          )
+        text: "Your sensor logs confirm the civilian nature of the equipment abandoned at Vega Prime. It's a small detail, but your thoroughness is commended."
+        voice_name: "Kore"
+
+  events:
+    - name: "MissionStartMsg"
+      formula: |
+        ( when
+          ( true )
+          ( send-message "GTC Stentor" "High" "Msg1" )
+        )
+    - name: "Epsilon1UndockMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Epsilon One" )
+          ( send-message-list 
+             "Epsilon One" "Normal" "Msg2a" 0
+             "#Command" "Normal" "Msg2b" 2000
+          )
+        )
+    - name: "Arjuna1Arrives"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Arjuna" )
+          ( send-message "Alpha 2" "High" "Msg3" )
+        )
+    - name: "StationDyingMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTI Vega Prime" ) 60 )
+          ( send-message "#Command" "High" "Msg4" )
+        )
+    - name: "Epsilon3Attacked"
+      formula: |
+        ( when
+          ( and 
+             ( has-arrived-delay 0 "Arjuna B" )
+             ( < ( distance "Arjuna B" "Epsilon Three" ) 2500 )
+          )
+          ( send-message "Epsilon Three" "High" "Msg5" )
+        )
+    - name: "MalgorArrives"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "SC Malgor" )
+          ( send-message "#Command" "High" "Msg6" )
+        )
+    - name: "MalgorTurns"
+      formula: |
+        ( when
+          ( has-time-elapsed 480 )
+          ( clear-goals "SC Malgor" )
+          ( add-goal "SC Malgor" ( ai-waypoints-once "MalgorPath" 89 ) )
+          ( send-message "GTC Stentor" "High" "Msg7" )
+        )
+    - name: "StationCriticalMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTI Vega Prime" ) 15 )
+          ( send-message-list 
+             "#Command" "High" "Msg8a" 0
+             "#Command" "High" "Msg8b" 4000
+          )
+        )
+    - name: "StationDestroyed"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTI Vega Prime" )
+          ( send-message "Alpha 2" "Normal" "Msg9" )
+        )
+    - name: "EpsilonLost"
+      formula: |
+        ( when
+          ( or
+            ( is-destroyed-delay 0 "Epsilon Three" )
+            ( is-destroyed-delay 0 "Epsilon Four" )
+          )
+          ( send-message "#Command" "High" "Msg10" )
+        )
+    - name: "AllEpsilonsJumped"
+      formula: |
+        ( when
+          ( and
+            ( or ( has-departed-delay 0 "Epsilon One" ) ( is-destroyed-delay 0 "Epsilon One" ) )
+            ( or ( has-departed-delay 0 "Epsilon Two" ) ( is-destroyed-delay 0 "Epsilon Two" ) )
+            ( or ( has-departed-delay 0 "Epsilon Three" ) ( is-destroyed-delay 0 "Epsilon Three" ) )
+            ( or ( has-departed-delay 0 "Epsilon Four" ) ( is-destroyed-delay 0 "Epsilon Four" ) )
+          )
+          ( send-message "#Command" "High" "Msg11" )
+        )
+    - name: "PrimaryObjective"
+      formula: |
+        ( when
+          ( percent-ships-departed 50 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" )
+          ( allow-weapon "Avenger" )
+        )
+      hud_directive_text: "Ensure Epsilon transports escape"
+    - name: "StentorSurvival"
+      formula: |
+        ( when
+          ( > ( hits-left "GTC Stentor" ) 50 )
+          ( do-nothing )
+        )
+      hud_directive_text: "Protect GTC Stentor"
+
+  goals:
+    - name: "Evacuate"
+      type: "Primary"
+      objective_text: "At least 3 of 4 Epsilon transports escape."
+      formula: |
+        ( percent-ships-departed 50 "Epsilon One" "Epsilon Two" "Epsilon Three" "Epsilon Four" )
+    - name: "Stentor Survive"
+      type: "Secondary"
+      objective_text: "GTC Stentor hull remains above 50%."
+      formula: |
+        ( > ( hits-left "GTC Stentor" ) 50 )
+    - name: "Sentry Setup"
+      type: "Secondary"
+      objective_text: "Sentry guns deployed at Nav Alpha."
+      formula: |
+        ( has-departed-delay 0 "GTFr Chronos 1" )
+
+  messages:
+    - name: "Msg1"
+      text: "Alpha Lead, Stentor. We have four Scorpions on us already. Get in here."
+      voice_name: "Despina"
+      voice_style_instructions: "Professional naval officer, under fire"
+    - name: "Msg2a"
+      text: "GTD Amadeus control, this is Epsilon One. We are... we're undocking. Please advise on our route."
+      voice_name: "Algenib"
+      voice_style_instructions: "Civilian transport pilot, anxious"
+    - name: "Msg2b"
+      text: "Epsilon One, proceed to Nav Alpha and hold for the others. Alpha wing is covering you."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, professional"
+    - name: "Msg3"
+      text: "Bombers. Capella vector. They're going for the station directly - cut them off."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, urgent"
+    - name: "Msg4"
+      text: "All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two, Three, Four - accelerate undocking sequence. Repeat, accelerate."
+      voice_name: "Iapetus"
+      voice_style_instructions: "Station controller, calm professional"
+    - name: "Msg5"
+      text: "Alpha wing - something's on me! On me - please-"
+      voice_name: "Enceladus"
+      voice_style_instructions: "Civilian transport pilot, terrified"
+    - name: "Msg6"
+      text: "Alpha Lead, Command. We're reading a cruiser-class contact inbound from the Capella node. Class designation - Cain. Do not engage. I repeat, do not engage the cruiser. Get those transports out."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, urgent"
+    - name: "Msg7"
+      text: "Alpha Lead, Stentor is engaging the Malgor. We'll keep her busy as long as we can. You cover those transports. That's an order."
+      voice_name: "Despina"
+      voice_style_instructions: "Naval officer, resolute"
+    - name: "Msg8a"
+      text: "This is Vega Prime Control. Station integrity is failing. All personnel have evacuated or are... recommend all ships clear the station perimeter. Clear the station perimeter now."
+      voice_name: "Iapetus"
+      voice_style_instructions: "Station controller, accepting fate"
+    - name: "Msg8b"
+      text: "It's been an honor serving in Vega system. God-"
+      voice_name: "Iapetus"
+      voice_style_instructions: "Station controller, final words"
+    - name: "Msg9"
+      text: "She's gone. Just... keep moving. Keep them moving."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, grim"
+    - name: "Msg10"
+      text: "We've lost one of the transports. Push the others through. Don't stop."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, grave"
+    - name: "Msg11"
+      text: "Remaining Epsilon transports are through. Alpha wing, disengage and return to base. Good work. Come home."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, relieved"
+
+audio:
+  tts_provider: "google"

@@ -1,0 +1,394 @@
+fsif_version: "4.0"
+
+mission_info:
+  name: "No Truce With the Tide"
+  author: "NeuralFS"
+  description: "Assist a Vasudan convoy ambushed at the Capella node."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns:
+    - { texture: SunVega, angles: [0.0, 3.14, 0.0], scale: 1.0 }
+  background_bitmaps:
+    - { texture: neb11, angles: [0.0, 0.0, 0.0], scale: { x: 3.0, y: 3.0 } }
+    - { texture: neb17, angles: [0.4, 0.6, 0.1], scale: { x: 2.0, y: 4.0 } }
+    - { texture: planetb, angles: [1.2, 0.4, 0.0], scale: { x: 5.0, y: 5.0 } }
+  nebula: { enabled: false }
+  asteroid_field:
+    object_type: "debris"
+    behavior: "passive"
+    num_objects: 40
+    average_speed: 1.0
+    bounds:
+      min: [-2000.0, -2000.0, -2000.0]
+      max: [2000.0, 2000.0, 2000.0]
+
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices:
+    - { class: "GTF Apollo", count: 4 }
+  additional_weapons:
+    - "Avenger"
+
+entities:
+  ship_templates:
+    alpha_fighter:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Avenger", "ML-16 Laser"]
+        secondary: ["MX-50"]
+    scorpion_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    basilisk_fighter:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
+        secondary: ["Hornet#Shivan", "Interceptor#Shivan"]
+    horus_fighter:
+      class: "PVF Horus"
+      team: "Unknown"
+      ai_class: "Captain"
+      weapons:
+        primary: ["VLL-9 Laser", "VLL-9 Laser"]
+        secondary: ["Fang", "Fang"]
+    seth_fighter:
+      class: "PVF Seth"
+      team: "Unknown"
+      ai_class: "Captain"
+      weapons:
+        primary: ["VLL-9 Laser", "VLL-9 Laser"]
+        secondary: ["Fang", "Fang"]
+
+  ships:
+    - name: "Nav Alpha"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [-10000.0, 0.0, -5000.0]
+      arrival_cue: |
+        ( true )
+    - name: "NavBuoy 1"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [-5000.0, 0.0, -2500.0]
+      arrival_cue: |
+        ( true )
+    - name: "GTS Casca"
+      class: "GTS Centaur"
+      team: "Friendly"
+      position: [1000.0, 0.0, -1000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 360 )
+      initial_orders: |
+        ( ai-stay-near-ship "Alpha 1" 89 2000 )
+    - name: "PVD Vigil"
+      class: "PVD Typhon"
+      team: "Unknown"
+      position: [0.0, 0.0, 5000.0]
+      initial_hull_percent: 35
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      initial_orders: |
+        ( ai-stay-still "VigilPath:1" 89 )
+    - name: "Theta 1"
+      class: "PVT Isis"
+      team: "Unknown"
+      position: [1000.0, 0.0, 5000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 1" "Nav Alpha" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "ThetaPath" 89 )
+    - name: "Theta 2"
+      class: "PVT Isis"
+      team: "Unknown"
+      position: [2000.0, 0.0, 5000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 2" "Nav Alpha" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "ThetaPath" 89 )
+    - name: "Theta 3"
+      class: "PVT Isis"
+      team: "Unknown"
+      position: [3000.0, 0.0, 5000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( has-time-elapsed 20 )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "Theta 3" "Nav Alpha" ) 600 )
+      initial_orders: |
+        ( ai-waypoints-once "ThetaPath" 89 )
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_fighter"
+      count: 4
+      position: [0.0, 0.0, 0.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-guard "Theta 1" 89 )
+    - name: "Brahma"
+      template: "scorpion_fighter"
+      count: 4
+      position: [-3000.0, 500.0, 5000.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-chase "PVD Vigil" 89 )
+    - name: "Aquarius"
+      template: "horus_fighter"
+      count: 4
+      position: [0.0, 0.0, 12000.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-chase-any 89 )
+    - name: "Pisces"
+      template: "seth_fighter"
+      count: 3
+      position: [-9000.0, 0.0, -4000.0]
+      arrival_cue: |
+        ( true )
+      initial_orders: |
+        ( ai-guard "Nav Alpha" 89 )
+    - name: "Rama"
+      template: "basilisk_fighter"
+      count: 3
+      position: [0.0, 0.0, 8000.0]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( or
+          ( has-time-elapsed 300 )
+          ( is-destroyed-delay 0 "PVD Vigil" )
+        )
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+  waypoints:
+    ThetaPath:
+      - [-10000.0, 0.0, -5000.0]
+    VigilPath:
+      - [0.0, 0.0, 5000.0]
+
+  jump_nodes:
+    - name: "Capella Jump Node"
+      position: [0.0, 0.0, 5500.0]
+
+mission_flow:
+  fiction_viewer: "Mission_1_3_story.txt"
+  command_briefing:
+    stages:
+      - text: "Attention, pilots. This is Rear Admiral Chen Wei. Terran Command has now officially confirmed what Alpha wing brought back from the Capella corridor three days ago. The unidentified contacts are not Vasudan. They are not any species or faction in the GTA database. Command has designated them 'Shivans,' pending further data. That designation comes from their apparent intent, which is the destruction of everything that encounters them. The GTI Vega Prime installation was destroyed this morning. We hold this system by the barest margins. The GTC Stentor is conducting running repairs. We lost four pilots in the last forty-eight hours. Their names are on the board in the corridor outside the briefing room. I expect you to read them."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Serious, authoritative commander"
+      - text: "The GTW-15 Avenger cannon prototypes began arriving on the Amadeus this morning. R&D has modified the Avenger specifically based on your sensor data - the weapon is calibrated to suppress Shivan shield harmonics. It is not a miracle. But it is a significant improvement over the ML-16 against their shields. We have enough units for one field-test assignment right now. Additional units are expected within three days. The pilot who draws the Avenger assignment today will be leading Alpha wing, and I expect a full sensor report on its combat effectiveness."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Directive"
+      - text: "You will have questions about what I'm about to say. I ask that you hold them until the end. We have received a priority signal from a Vasudan warship - the PVD Vigil, commanding a 9th Fleet advance element - indicating they are transiting into Vega system from the Capella node. Their stated mission: engage the Shivan presence in Vega. They report three refugee transports under escort - Vasudan civilians from an outpost that was overrun. The Vasudans have recently proposed a ceasefire, but Terran Command has not yet signed it. We are NOT at peace with the Vasudans. What we are, today, in this system, is outgunned by something that is killing both of us with equal commitment. I have received no orders from Terran Command on how to handle Vasudan forces that are fighting the same enemy we are. I am therefore operating on my own initiative. The Vega-Antares jump node is open. If those refugee transports need to use it, I see no reason to prevent them. I have not asked any of you to like the Vasudans. I'm asking you to stay focused on what matters."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Commanding, grave"
+      - text: "One more element. Intelligence has flagged activity in Vega from a faction calling themselves the Hammer of Light - a Vasudan splinter group that appears to be actively aiding the Shivans. They have been reported attacking Vasudan assets. If you encounter ships broadcasting HoL transponders, treat them as hostile. They have given us no reason to do otherwise. Report to your wing stations in twenty minutes."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Stern"
+
+  briefing:
+    stages:
+      - text: "Alpha wing, stand by for priority orders. The Vasudan destroyer $V{ Vigil $} is entering Vega through the Capella node right now, along with three refugee transports - $V{ Theta wing $}. They're running straight into the Shivans. Sub-Imperator Hethor is ordering her transports toward the Antares node. I've cleared that route. Your assignment is Theta wing. Get them to Nav Alpha. From there, they can jump on their own. You're not here to save the Vigil - she knows what she's doing. Get between those transports and everything that wants to kill them."
+        voice_name: "Kore"
+        voice_style_instructions: "Commanding"
+        icons:
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 600], label: "Capella Node" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [-400, -200], label: "Nav Alpha" }
+          - { icon_type: "Supercapital Ship", team: "Unknown", map_position: [0, 400], label: "Vigil" }
+          - { icon_type: "Transport Wing", team: "Unknown", map_position: [-150, 400], label: "Theta", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [0, 0], label: "Alpha" }
+      - text: "Alpha 1, you're carrying the only field Avenger in the wing today. The briefing notes will tell you what to expect performance-wise, but the short version is this: it works against their shields in a way the ML-16 doesn't. Use it aggressively. We need data as much as we need kills. Watch the left flank. Hammer of Light is operating in this area. HoL transponders are yellow diamond - fire on sight if they're between you and Theta wing. Nav Alpha is your objective. Get them there. GTD Amadeus out."
+        voice_name: "Kore"
+        voice_style_instructions: "Directing"
+        icons:
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 600], label: "Capella Node" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [-400, -200], label: "Nav Alpha", highlighted: true }
+          - { icon_type: "Transport Wing", team: "Unknown", map_position: [-150, 400], label: "Theta" }
+          - { icon_type: "Fighter Wing", team: "Hostile", map_position: [200, 400], label: "Brahma" }
+          - { icon_type: "Fighter Wing", team: "Unknown", map_position: [0, 900], label: "Aquarius (HoL)", highlighted: true }
+          - { icon_type: "Fighter Wing", team: "Unknown", map_position: [-200, -100], label: "Pisces (HoL)" }
+
+  debriefing:
+    stages:
+      - display_condition: |
+          ( and
+            ( percent-ships-departed 99 "Theta 1" "Theta 2" "Theta 3" )
+            ( is-destroyed-delay 0 "Pisces" )
+          )
+        text: "Theta wing made it through. Two of three of those transports are carrying civilian Vasudans from what used to be a PVN forward outpost. They'll reach Antares. The Vigil is gone. Sub-Imperator Hethor ordered her transports to break formation before she made her stand at the Capella node. She didn't have to do that. She knew the odds. She did it anyway. There's no alliance in the books yet. No ceasefire. But today, Alpha wing and the crew of Theta wing were working toward the same thing. I'm noting that in my report to Command. The Avenger performance data has been forwarded to R&D. We'll have more units within three days."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and
+            ( percent-ships-departed 60 "Theta 1" "Theta 2" "Theta 3" )
+            ( not ( and ( percent-ships-departed 99 "Theta 1" "Theta 2" "Theta 3" ) ( is-destroyed-delay 0 "Pisces" ) ) )
+          )
+        text: "Two transports made it to Antares. We lost one. The Vigil held as long as she could. Her commander understood what she was giving and gave it. I don't have a better summary of what happened today than that. The Avenger data is useful. More weapons are coming. I want you thinking about what that means for how we fly - faster engagement, cleaner kills, less time at risk. Study the recordings."
+        voice_name: "Kore"
+      - display_condition: |
+          ( not ( percent-ships-departed 60 "Theta 1" "Theta 2" "Theta 3" ) )
+        text: "The Theta wing transports didn't make it. Sub-Imperator Hethor gave everything her ship had to buy them time, and it wasn't enough. We can account for the tactical situation - HoL blocking force at Nav Alpha, Rama wing timing - but accounting for it doesn't change what happened. Those were civilian ships. R&D has the Avenger data. We'll continue the withdrawal planning. Right now there's nothing else to say."
+        voice_name: "Kore"
+
+  events:
+    - name: "Msg1"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "PVD Vigil" )
+          ( send-message "#Command" "High" "M1" )
+        )
+    - name: "Msg2"
+      formula: |
+        ( when
+          ( < ( distance "Aquarius" "Theta 1" ) 2500 )
+          ( send-message "Alpha 2" "Normal" "M2" )
+        )
+    - name: "Msg4"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "PVD Vigil" )
+          ( send-message "Theta 1" "High" "M4" )
+        )
+    - name: "Msg5"
+      formula: |
+        ( when
+          ( < ( hits-left "PVD Vigil" ) 15 )
+          ( send-message "#Command" "High" "M5" )
+        )
+    - name: "Msg6"
+      formula: |
+        ( when
+          ( is-destroyed-delay 5 "PVD Vigil" )
+          ( send-message "#Command" "High" "M6" )
+        )
+    - name: "Msg7"
+      formula: |
+        ( when
+          ( or
+            ( < ( distance "Alpha 1" "Nav Alpha" ) 5000 )
+            ( has-time-elapsed 210 )
+          )
+          ( send-message "Alpha 3" "Normal" "M7" )
+        )
+    - name: "Msg8"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Rama" )
+          ( send-message "Alpha 2" "Normal" "M8" )
+        )
+    - name: "Msg9"
+      formula: |
+        ( when
+          ( < ( distance "Theta 1" "Nav Alpha" ) 1500 )
+          ( send-message "Theta 1" "Normal" "M9" )
+        )
+    - name: "Msg10"
+      formula: |
+        ( when
+          ( and
+            ( or ( has-departed-delay 0 "Theta 1" ) ( is-destroyed-delay 0 "Theta 1" ) )
+            ( or ( has-departed-delay 0 "Theta 2" ) ( is-destroyed-delay 0 "Theta 2" ) )
+            ( or ( has-departed-delay 0 "Theta 3" ) ( is-destroyed-delay 0 "Theta 3" ) )
+          )
+          ( send-message "#Command" "Normal" "M10" )
+        )
+    - name: "BrahmaRedirect"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "PVD Vigil" )
+          ( clear-goals "Brahma" )
+          ( add-goal "Brahma" ( ai-chase "Theta 1" 89 ) )
+        )
+    - name: "PrimaryObjective"
+      formula: |
+        ( when
+          ( percent-ships-departed 60 "Theta 1" "Theta 2" "Theta 3" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Ensure Theta transports reach Nav Alpha"
+    - name: "ClearPathMsgEvent"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "Pisces" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Destroy Pisces wing"
+
+  goals:
+    - name: "Save Transports"
+      type: "Primary"
+      objective_text: "At least 2 of 3 Theta transports reach Nav Alpha."
+      formula: |
+        ( percent-ships-departed 60 "Theta 1" "Theta 2" "Theta 3" )
+    - name: "Clear Path"
+      type: "Secondary"
+      objective_text: "Destroy Pisces wing before Theta reaches Nav Alpha."
+      formula: |
+        ( is-destroyed-delay 0 "Pisces" )
+
+  messages:
+    - name: "M1"
+      text: "This is Sub-Imperator Hethor of the Vasudan Navy destroyer Vigil. Theta wing - execute dispersal to Antares bearing. Do not deviate. To any Terran ships in system: the transports carry civilians. They are your responsibility now."
+      voice_name: "Callirrhoe"
+      voice_style_instructions: "Vasudan naval commander, stoic"
+    - name: "M2"
+      text: "HoL contacts - yellow diamonds, Vasudan hulls. Those are the Hammer. Engaging."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, engaged in combat"
+    - name: "M4"
+      text: "Terran Alpha wing. This is Theta One. We are under attack. Request... assistance."
+      voice_name: "Zubenelgenubi"
+      voice_style_instructions: "Vasudan pilot, calm but strained"
+    - name: "M5"
+      text: "Alpha Lead, Command. Vigil is going critical. Don't look back. Keep Theta moving."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, urgent"
+    - name: "M6"
+      text: "The Vigil is gone. Four billion Vasudans lost their homeworld and this ship came anyway. Mark her. Move on."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, grave"
+    - name: "M7"
+      text: "Contacts at Nav Alpha bearing. More HoL - they've seeded the approach."
+      voice_name: "Puck"
+      voice_style_instructions: "Young pilot, tense"
+    - name: "M8"
+      text: "Another wave from Capella. Basilisks. Keep them off Theta Three - she's the slowest."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, steady"
+    - name: "M9"
+      text: "Alpha wing. We are at Nav Alpha. Initiating jump to Antares. The Vigil fought well. Her crew chose this. You... you did not have to choose. Sub-Imperator Hethor asked me to relay her compliments, if any Terran was present. I have done so."
+      voice_name: "Zubenelgenubi"
+      voice_style_instructions: "Vasudan pilot, solemn"
+    - name: "M10"
+      text: "Theta wing is through. Return to base, Alpha. And - well done."
+      voice_name: "Kore"
+      voice_style_instructions: "Commanding, relieved"
+
+audio:
+  tts_provider: "google"
