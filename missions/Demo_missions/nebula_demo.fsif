@@ -144,6 +144,7 @@ mission_flow:
         ( when
           ( true )
           ( invalidate-goal "DestroyCain" )
+          ( send-message "#Command" "High" "FindNavBuoy" )
         )
 
     - name: "AmbushWarning"
@@ -158,9 +159,16 @@ mission_flow:
       formula: |
         ( when
           ( is-destroyed-delay 0 "SC Dakini" )
-          ( do-nothing )
+          ( send-message "#Command" "High" "DakiniDestroyed" )
         )
       hud_directive_text: "Destroy the SC Cain"
+
+    - name: "AllHostilesClear"
+      formula: |
+        ( when
+          ( percent-ships-destroyed 100 "SC Dakini" "Cancer" )
+          ( send-message "#Command" "High" "AllClearRtb" )
+        )
 
   goals:
     - name: "DestroyCain"
@@ -170,10 +178,22 @@ mission_flow:
         ( is-destroyed-delay 0 "SC Dakini" )
 
   messages:
+    - name: "FindNavBuoy"
+      text: "Alpha, sensor conditions are poor in this sector. Locate the Nav Buoy and use it as your patrol reference."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Authoritative command guidance"
     - name: "Ambush"
       text: "Hostile contacts detected! Engage at will."
       voice_name: "Charon"
       voice_style_instructions: "Alarmed, combat shout"
+    - name: "DakiniDestroyed"
+      text: "SC Dakini is down. Good work, Alpha. Sweep the area for remaining Shivan fighters."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Relieved but still tactical"
+    - name: "AllClearRtb"
+      text: "All hostiles eliminated. Alpha and any supporting units, jump back to base."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Clear authoritative return-to-base order"
 
 audio:
   mission_music: "1: Genesis"
