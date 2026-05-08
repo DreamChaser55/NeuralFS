@@ -233,7 +233,8 @@ The validator checks the following areas:
 
 #### **Briefing Integrity**:
 *   **Teams**: Validates `icon.team` against allowed factions (Friendly, Hostile, Unknown).
-*   **Classes**: Warns if `icon.display_class` appears to be a ship class (e.g. starts with "GT", "PV") but is not a known class.
+*   **display_class — ship icon types** (`"Fighter"`, `"Fighter Wing"`, `"Bomber"`, `"Bomber Wing"`, `"Cruiser"`, `"Cruiser Wing"`, `"Capital Ship"`, `"Supercapital Ship"`, `"Transport"`, `"Transport Wing"`, `"Freighter (no cargo)"`, `"Freighter (has cargo)"`, `"Freighter Wing (no cargo)"`, `"Freighter Wing (has cargo)"`, `"Cargo"`, `"Cargo Wing"`, `"Science Cruiser"`, `"Science Cruiser Wing"`, `"Support Ship"`, `"Installation"`, `"Sentry Gun"`, `"Player Fighter"`, `"Player Fighter Wing"`, `"Player Bomber"`, `"Player Bomber Wing"`): `display_class` is **required** and must be a valid ship class from `spacecraft-classes.md`. Using `"Terran NavBuoy"` on a ship icon type is also an error (it must be the actual ship class the icon represents).
+*   **display_class — non-ship icon types** (`"Waypoint"`, `"Jump Node"`, `"Planet"`, `"Small Planet"`, `"Asteroid Field"`, `"Unknown"`, `"Unknown Wing"`): `display_class` must **not** be authored. The converter automatically emits `$class: Terran NavBuoy` for these icon types. Authoring `display_class` on a non-ship icon is an error.
 
 #### **Strict Field Validation**:
 *   **Extra Fields Forbidden**: The converter now strictly rejects *any* unknown fields in the FSIF YAML.
@@ -327,8 +328,9 @@ Unlike the standard validation which primarily checks structure (parentheses bal
 - FSIF authors should provide canonical string names only; they do not author numeric codes directly.
 
 **Class emission:**
-- `icons[*].display_class` is emitted as `$class` (defaults to "Terran NavBuoy" when omitted). **If specified, it must be a valid ship class from `spacecraft-classes.md` (strict validation enforced to prevent FSO crashes).** The class value does not affect the icon silhouette; the silhouette is controlled solely by `icons[*].icon_type`.
-- **Important:** Authors should omit the `display_class` field for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Specifying an arbitrary string will cause validation failure.
+- `icons[*].display_class` is emitted as `$class`. The class value does not affect the icon silhouette; the silhouette is controlled solely by `icons[*].icon_type`.
+- **Ship icon types**: `display_class` is **required** and must be a valid, non-`Terran NavBuoy` ship class from `spacecraft-classes.md`. Omitting it or setting it to `"Terran NavBuoy"` is a validation error.
+- **Non-ship icon types** (Waypoints, Jump Nodes, Planets, Small Planets, Asteroid Fields): `display_class` **must be omitted** in FSIF. Authoring it is a validation error. The converter always emits `$class: Terran NavBuoy` for these types internally.
 
 Notes
 - If an icon `map_position` is omitted, the converter defaults the emitted position to 0.0, 0.0, 0.0.

@@ -487,6 +487,8 @@ class MissionLoader:
                  ic_data = dict(ic)
                  ic_data['type_id'] = rid
                  ic_data['icon_type'] = brief_types.canonical_name_for_id(rid)
+                 # Preserve whether the author explicitly wrote display_class.
+                 ic_data['display_class_authored'] = 'display_class' in ic
                  new_icons.append(BriefingIcon(**ic_data))
              st['icons'] = new_icons 
              

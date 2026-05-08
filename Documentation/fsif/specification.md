@@ -91,7 +91,9 @@
         - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`, `"Unknown"`.
         - `map_position` (List[Float], optional, default: `[0, 0]`). Format: `[x, z]` on the briefing map.
         - `label` (String, optional)
-        - `display_class` (String, optional, default: `"Terran NavBuoy"`). Ship class shown when icon is selected in-game.
+        - `display_class` (String, conditionally required). Ship class shown when icon is selected in-game.
+          - **Ship icon types** (e.g., `"Fighter"`, `"Cruiser"`, `"Capital Ship"`, `"Transport"`, etc.): **required**. Must be a valid ship class from `spacecraft-classes.md`. Must not be `"Terran NavBuoy"`.
+          - **Non-ship icon types** (`"Waypoint"`, `"Jump Node"`, `"Planet"`, `"Small Planet"`, `"Asteroid Field"`, `"Unknown"`, `"Unknown Wing"`): **must be omitted**. The converter automatically uses the safe default `"Terran NavBuoy"` for these icon types.
         - `highlighted` (Boolean, optional, default: `false`)
   - `debriefing` (Mapping, optional):
     - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`, `display_condition` (SEXP, required), `recommendation`.

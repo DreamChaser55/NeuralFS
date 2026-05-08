@@ -45,13 +45,8 @@ class Validator(
         self.warnings: List[str] = []
         
         # Reference Data Containers (Dynamic)
-        self.non_ship_icon_types = {
-            "Waypoint",
-            "Jump Node",
-            "Planet",
-            "Small Planet",
-            "Asteroid Field"
-        }
+        self.non_ship_icon_types = briefing_icon_types.NON_SHIP_ICON_TYPES
+        self.ship_icon_types = briefing_icon_types.SHIP_ICON_TYPES
         self.ship_classes: Set[str] = set()
         self.dockpoints: Dict[str, Set[str]] = {} # class -> set of dockpoints
         self.subsystems: Dict[str, Set[str]] = {} # class -> set of subsystems

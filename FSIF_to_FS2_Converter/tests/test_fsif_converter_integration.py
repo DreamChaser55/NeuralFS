@@ -1282,5 +1282,199 @@ class DemoConversionTesting(unittest.TestCase):
                 self.assertTrue(output_path.exists(), f"Output file not generated for: {fcif_path.name}")
 
 
+class BriefingIconDisplayClassValidation(unittest.TestCase):
+    """Tests for the stricter display_class validation on briefing icons.
+
+    Rules:
+    - Ship icon types MUST author display_class with a valid, non-NavBuoy ship class.
+    - Non-ship icon types MUST NOT author display_class (omit it entirely).
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import logging
+        logging.disable(logging.CRITICAL)
+
+    @classmethod
+    def tearDownClass(cls):
+        import logging
+        logging.disable(logging.NOTSET)
+
+    def make_valid_mission(self) -> Mission:
+        return Mission(
+            mission_info=MissionInfo(name="Test Mission"),
+            player_setup=PlayerSetup(start_ship="Player Ship", additional_ship_choices=[]),
+            environment=Environment(),
+            ships=[
+                Ship.model_validate(
+                    {
+                        "name": "Player Ship",
+                        "class": "GTF Ulysses",
+                        "team": "Friendly",
+                        "position": [0.0, 0.0, 0.0],
+                        "arrival_cue": "( true )",
+                        "weapons": Weapons(
+                            primary=["Avenger", "Avenger"],
+                            secondary=["MX-50"],
+                        ),
+                    }
+                )
+            ],
+        )
+
+    def make_validator(self, mission: Mission) -> Validator:
+        return Validator(mission, _repo_root)
+
+    def _make_briefing_with_icon(self, icon_type: str, display_class=None, display_class_authored: bool = False):
+        """Helper: wrap a single briefing icon in a stage and a Briefing."""
+        from data_models import BriefingIcon, BriefingStage, Briefing
+        import briefing_icon_types as bit
+        type_id = bit.parse_icon_type(icon_type)
+        icon = BriefingIcon(
+            type_id=type_id,
+            icon_type=icon_type,
+            team="Friendly",
+            # Pass 2-element [x, z] — the validator normalizes to [x, 0, z] internally.
+            map_position=[0, 0],
+            display_class=display_class if display_class is not None else "Terran NavBuoy",
+            display_class_authored=display_class_authored,
+        )
+        stage = BriefingStage(
+            text="Test briefing stage.",
+            icons=[icon],
+            camera_pos=[0.0, 2000.0, 0.0],
+            camera_orient=[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0],
+        )
+        return Briefing(stages=[stage])
+
+    # -------------------------------------------------------------------------
+    # Ship icon type tests
+    # -------------------------------------------------------------------------
+
+    def test_ship_icon_with_valid_display_class_passes(self):
+        """Fighter icon with a valid, non-NavBuoy display_class should pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Fighter", display_class="GTF Ulysses", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_ship_icon_missing_display_class_fails(self):
+        """Fighter icon without display_class authored must fail."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Fighter", display_class_authored=False
+        )
+        validator = self.make_validator(mission)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("is missing display_class" in e for e in validator.errors),
+            validator.errors,
+        )
+
+    def test_ship_icon_with_navbuoy_display_class_fails(self):
+        """Fighter icon explicitly using 'Terran NavBuoy' must fail."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Fighter", display_class="Terran NavBuoy", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("Terran NavBuoy" in e for e in validator.errors),
+            validator.errors,
+        )
+
+    def test_ship_icon_with_invalid_ship_class_fails(self):
+        """Fighter icon with a non-existent ship class must fail."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Fighter", display_class="GTF NonExistentShip", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("not a valid FSO ship class" in e for e in validator.errors),
+            validator.errors,
+        )
+
+    def test_capital_ship_icon_with_valid_display_class_passes(self):
+        """Capital Ship icon with GTD Orion should pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Capital Ship", display_class="GTD Orion", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    # -------------------------------------------------------------------------
+    # Non-ship icon type tests
+    # -------------------------------------------------------------------------
+
+    def test_nonship_icon_without_display_class_passes(self):
+        """Waypoint icon without display_class authored must pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Waypoint", display_class_authored=False
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_jump_node_icon_without_display_class_passes(self):
+        """Jump Node icon without display_class authored must pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Jump Node", display_class_authored=False
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_nonship_icon_with_display_class_authored_fails(self):
+        """Waypoint icon with any display_class authored must fail."""
+        mission = self.make_valid_mission()
+        # Authoring display_class on a Waypoint is forbidden, even if the value is the default.
+        mission.briefing = self._make_briefing_with_icon(
+            "Waypoint", display_class="Terran NavBuoy", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("must not author display_class" in e for e in validator.errors),
+            validator.errors,
+        )
+
+    def test_planet_icon_without_display_class_passes(self):
+        """Planet icon without display_class authored must pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Planet", display_class_authored=False
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_asteroid_field_icon_without_display_class_passes(self):
+        """Asteroid Field icon without display_class authored must pass."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Asteroid Field", display_class_authored=False
+        )
+        validator = self.make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+
+    def test_nonship_icon_with_ship_class_authored_fails(self):
+        """Jump Node icon with a valid ship class still fails (must omit display_class)."""
+        mission = self.make_valid_mission()
+        mission.briefing = self._make_briefing_with_icon(
+            "Jump Node", display_class="GTF Ulysses", display_class_authored=True
+        )
+        validator = self.make_validator(mission)
+        self.assertFalse(validator.validate())
+        self.assertTrue(
+            any("must not author display_class" in e for e in validator.errors),
+            validator.errors,
+        )
+
+
 if __name__ == '__main__':
     unittest.main()

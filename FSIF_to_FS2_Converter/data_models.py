@@ -671,6 +671,9 @@ class BriefingIcon(BaseModel):
     label: str = ''
     highlighted: bool = False
     display_class: str = Field("Terran NavBuoy")
+    # Internal flag: True when the author explicitly wrote display_class in FSIF.
+    # Preserved by the loader; never authored directly and never emitted to .fs2.
+    display_class_authored: bool = Field(default=False, exclude=True, repr=False)
 
     @field_validator('map_position', mode='before')
     @classmethod

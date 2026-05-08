@@ -503,10 +503,10 @@ The briefing room uses a grid on the **XZ plane**.
 ### Icons
 Author briefing icons using the string field `icon_type`.
 - **icon_type**: Must be a canonical string (e.g., "Fighter", "Jump Node", "Waypoint").
-- **display_class**: Optional. The displayed ship class text and picture (e.g. "GTF Ulysses") when clicked when the icon is selected in-game.
-  - **If omitted:** Defaults to `"Terran NavBuoy"` (safe default).
+- **display_class**: Conditionally required. The displayed ship class text and picture (e.g. "GTF Ulysses") when the icon is selected in-game.
+  - **Ship icon types** (e.g., `"Fighter"`, `"Fighter Wing"`, `"Cruiser"`, `"Capital Ship"`, `"Transport"`, `"Support Ship"`, `"Bomber"`, `"Installation"`, `"Cargo"`, etc.): **must** author `display_class` with the actual ship class. Using `"Terran NavBuoy"` for a ship icon type is also an error.
+  - **Non-ship icon types** (`"Waypoint"`, `"Jump Node"`, `"Planet"`, `"Small Planet"`, `"Asteroid Field"`, `"Unknown"`, `"Unknown Wing"`): **must omit** `display_class`. The converter automatically emits the safe default `"Terran NavBuoy"` for these icon types. Authoring `display_class` on a non-ship icon is an error.
   - **If specified:** Must be a valid ship class from `spacecraft-classes.md`.
-  - **Best practice:** Omit for non-ship icon types (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default. Non-ship types must only use the `"Terran NavBuoy"` class, to prevent in-game errors.
 - **team**: Must be "Friendly" (shown as green), "Hostile" (red) or "Unknown" (purple).
 - **map_position**: List `[x, z]`.
 
@@ -519,7 +519,7 @@ mission_flow:
         voice_name: "Achernar"
         icons:
           - { icon_type: "Fighter", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha", highlighted: true }
-          - { icon_type: "Cargo", team: "Hostile", map_position: [500, 200], label: "Rosetta Cargo" }
+          - { icon_type: "Cargo", team: "Hostile", display_class: "GTFr Poseidon", map_position: [500, 200], label: "Rosetta Cargo" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [1000, 0], label: "Schematic marker" }
 ```
 

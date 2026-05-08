@@ -120,20 +120,42 @@ class BriefingChecksMixin:
                 for icon in stage.icons:
                     if icon.icon_type not in self.allowed_icons:
                         self.log_error(f"Briefing icon has invalid type '{icon.icon_type}'")
-                    
+
                     # Team check
                     if icon.team and icon.team not in self.allowed_teams:
                         self.log_error(f"Briefing icon has invalid team '{icon.team}'")
-                        
-                    # Class check
-                    if icon.display_class and icon.display_class not in self.ship_classes:
-                        self.log_error(f"Briefing icon class '{icon.display_class}' is not a valid ship class.")
 
-                    # Non-ship icon class check
+                    # Validate display_class based on icon type classification.
                     if icon.icon_type in self.non_ship_icon_types:
-                        # Default is "Terran NavBuoy". If it's anything else, it's an error.
-                        if icon.display_class != "Terran NavBuoy":
-                            self.log_error(f"Briefing icon of type '{icon.icon_type}' uses class '{icon.display_class}'. Non-ship icons must use the safe default class 'Terran NavBuoy' (or omit the class field).")
+                        # Non-ship icons (Waypoint, Jump Node, Planet, Small Planet,
+                        # Asteroid Field) must OMIT display_class in FSIF. Authors
+                        # should not try to show a ship class for a landmark icon.
+                        if icon.display_class_authored:
+                            self.log_error(
+                                f"Briefing icon of non-ship type '{icon.icon_type}' must not author display_class. "
+                                f"Omit the display_class field — the converter will use the safe default "
+                                f"'Terran NavBuoy' automatically."
+                            )
+                    else:
+                        # Ship icon types MUST explicitly author display_class with a
+                        # valid, non-NavBuoy ship class so the selected icon shows the
+                        # correct ship in-game instead of a navigation buoy.
+                        if not icon.display_class_authored:
+                            self.log_error(
+                                f"Briefing icon of ship type '{icon.icon_type}' is missing display_class. "
+                                f"Author display_class with the ship class this icon represents "
+                                f"(e.g., display_class: \"GTF Ulysses\")."
+                            )
+                        elif icon.display_class == "Terran NavBuoy":
+                            self.log_error(
+                                f"Briefing icon of ship type '{icon.icon_type}' uses display_class 'Terran NavBuoy'. "
+                                f"Replace with the actual ship class this icon represents."
+                            )
+                        elif icon.display_class not in self.ship_classes:
+                            self.log_error(
+                                f"Briefing icon of ship type '{icon.icon_type}' uses display_class "
+                                f"'{icon.display_class}' which is not a valid FSO ship class."
+                            )
 
             # Icon proximity check: warn if any two icons are closer than 5% of the camera width.
             # Camera width calcutated here mirrors the calculation in MissionLoader._calculate_briefing_camera.

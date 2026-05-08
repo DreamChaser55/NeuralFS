@@ -5,6 +5,15 @@
 # documented here for icons[*].type. No aliases, case variations, or
 # punctuation/spacing variants are accepted. Any non-canonical value
 # should be treated as an error by callers.
+#
+# Icon types are split into two mutually-exclusive classifications:
+#
+#   NON_SHIP_ICON_TYPES  — landmarks/navigation markers that have no meaningful
+#       ship class association. Authors must OMIT display_class for these.
+#       The converter will emit the safe default $class: Terran NavBuoy.
+#
+#   SHIP_ICON_TYPES      — all other icon types that represent actual spacecraft.
+#       Authors MUST author display_class with a valid, non-NavBuoy ship class.
 
 from typing import Dict
 
@@ -71,3 +80,27 @@ def canonical_name_for_id(type_id: int) -> str:
     string so the writer can still emit something meaningful.
     """
     return ICON_TYPE_NAME_BY_ID.get(int(type_id), str(type_id))
+
+
+# ---------------------------------------------------------------------------
+# Icon type classification sets
+# ---------------------------------------------------------------------------
+
+# Non-ship icon types: represent landmarks, navigation points, or celestial
+# objects. These icons have no meaningful ship class display.
+# Authors MUST omit display_class for these icon types.
+NON_SHIP_ICON_TYPES: frozenset = frozenset({
+    "Waypoint",
+    "Jump Node",
+    "Planet",
+    "Small Planet",
+    "Asteroid Field",
+    "Unknown",
+    "Unknown Wing",
+})
+
+# Ship icon types: all canonical icon types that represent actual spacecraft.
+# Authors MUST explicitly author display_class with a valid, non-NavBuoy ship class.
+SHIP_ICON_TYPES: frozenset = frozenset(
+    set(ICON_TYPE_ID_BY_NAME.keys()) - NON_SHIP_ICON_TYPES
+)
