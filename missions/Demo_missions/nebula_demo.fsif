@@ -2,7 +2,7 @@ fsif_version: "4.0"
 
 mission_info:
   name: "Nebula Patrol"
-  author: "NeuralFS Demo"
+  author: "NeuralFS"
   description: "A demo mission showcasing FSIF's full nebula support. Patrol the sector and survive the ambush."
   game_type: "single"
   ai_profile: "FS1 RETAIL"

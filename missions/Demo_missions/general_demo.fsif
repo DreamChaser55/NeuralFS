@@ -1,500 +1,473 @@
 fsif_version: "4.0"
 
 mission_info:
-  name: "FSIF All Features Showcase"
-  author: "NeuralFS Demo"
-  description: "FSIF Demo Mission"
+  name: "Evacuation from Vega"
+  author: "NeuralFS"
+  description: "Demo mission: protect the evacuation convoy from Shivan attack."
   game_type: "single"
   ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:
-  ambient_light_level: [10, 10, 10]
+  ambient_light_level: [5, 5, 5]
   suns:
-    - { texture: SunWhite, angles: [0.000000, 0.000000, 0.523599], scale: 1.5 }
-    - { texture: SunSiriusA, angles: [0.087266, 0.000000, 2.356194], scale: 2.0 }
+    - { texture: SunVega, angles: [0.087266, 0.000000, 2.356194], scale: 1.5 }
   background_bitmaps:
-    - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
-    - { texture: neb11,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 } }
-    - { texture: neb01,  angles: [1.000000, 1.000000, 1.000000], scale: { x: 2.0, y: 2.0 } }
+    - { texture: neb02, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
+    - { texture: neb12,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 } }
+    - { texture: neb11,  angles: [0.800000, 1.200000, 0.500000], scale: { x: 3.0, y: 3.0 } }
     - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 6.0, y: 6.0 } }
   nebula: { enabled: false }
   asteroid_field:
     object_type: "asteroid"
     behavior: "active"
-    num_objects: 10
-    average_speed: 5.0
+    num_objects: 15
+    average_speed: 15.0
     bounds:
-      min: [-2500.0, -1500.0, -2500.0]
-      max: [2500.0, 1500.0, 2500.0]
-    target_ships: ["GTC Fenris 1", "GTFr Poseidon 1"]
+      min: [-3000.0, -2000.0, -3000.0]
+      max: [4000.0, 2000.0, 5000.0]
+    target_ships: ["GTC Dauntless", "GTFr Trent"]
 
 player_setup:
   start_ship: "Alpha 1"
   additional_ship_choices:
-    - { class: "GTF Ulysses", count: 4 }
     - { class: "GTF Hercules", count: 2 }
-    - { class: "GTB Ursa", count: 2 }
+    - { class: "GTF Valkyrie", count: 2 }
   additional_weapons:
-    - "ML-16 Laser"
-    - "Flail"
     - "Banshee"
-    - "Interceptor"
-    - "Phoenix V"
-    - "Stiletto"
+    - "Hornet"
 
 entities:
   ship_templates:
-    friendly_fighter:
+    alpha_fighter:
       class: "GTF Ulysses"
       team: "Friendly"
-      ai_class: "General"
-      flags: ["cargo-known"]
+      ai_class: "Captain"
       weapons:
         primary: ["Prometheus", "Avenger"]
-        secondary: ["Hornet"]
-    enemy_fighter:
-      class: "SF Basilisk"
+        secondary: ["MX-50"]
+    delta_fighter:
+      class: "GTF Apollo"
+      team: "Friendly"
+      ai_class: "Lieutenant"
+      weapons:
+        primary: ["Prometheus", "Avenger"]
+        secondary: ["Hornet", "Interceptor"]
+    shivan_fighter:
+      class: "SF Scorpion"
       team: "Hostile"
-      ai_class: "Captain"
+      ai_class: "Lieutenant"
       weapons:
         primary: ["Shivan Light Laser", "Shivan Light Laser"]
-        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
-    enemy_bomber:
+        secondary: ["MX-50#Shivan"]
+    shivan_bomber:
       class: "SB Nephilim"
       team: "Hostile"
-      ai_class: "Captain"
+      ai_class: "Lieutenant"
       weapons:
         primary: ["Shivan Heavy Laser"]
         secondary: ["Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan"]
-    transport:
-      class: "GTT Elysium"
-      team: "Friendly"
-      ai_class: "Lieutenant"
-      flags: ["primaries-locked", "secondaries-locked"]
-    cruiser:
-      class: "GTC Fenris"
-      team: "Friendly"
-      ai_class: "Captain"
-      flags: ["escort"]
-    freighter:
-      class: "GTFr Poseidon"
-      team: "Friendly"
-      ai_class: "Lieutenant"
 
   ships:
     - name: "Nav Buoy"
       class: "Terran NavBuoy"
       team: "Friendly"
-      position: [900.0, 0.0, 0.0]
+      position: [800.0, 0.0, 800.0]
       arrival_cue: |
         ( true )
 
-    - name: "GTC Fenris 1"
-      template: "cruiser"
-      position: [600.0, 0.0, -100.0]
+    - name: "GTC Dauntless"
+      class: "GTC Leviathan"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
       escort_list_priority: 90
+      initial_hull_percent: 60
+      flags: ["escort"]
       subsystems:
         status: custom
         list:
-          - { name: "sensors", health: 80 }
-          - { name: "engine", health: 60 }
+          - { name: "sensors", health: 70 }
+          - { name: "engine", health: 80 }
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
       departure_cue: |
-        ( < ( distance "GTC Fenris 1" "JumpNodeLoc:1" ) 600 )
+        ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 500 )
+      initial_orders: |
+        ( ai-waypoints-once "ConvoyPath" 89 )
 
-    - name: "GTT Elysium 1"
-      template: "transport"
-      position: [540.0, 0.0, 20.0]
-      dock:
-        dockee: "GTC Fenris 1"
-        docker_point: "topside docking"
-        dockee_point: "Docking bay 1"
-      arrival_cue: |
-        ( false )
-      departure_method: "Hyperspace"
-      departure_cue: |
-        ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 5 )
-
-    - name: "GTFr Poseidon 1"
-      template: "freighter"
-      position: [1080.0, 0.0, 220.0]
-      flags: ["hidden-from-sensors"]
-      arrival_delay: 10
+    - name: "GTFr Trent"
+      class: "GTFr Poseidon"
+      team: "Friendly"
+      position: [-500.0, -300.0, -500.0]
+      flags: ["hidden-from-sensors", "escort"]
       arrival_cue: |
         ( true )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( < ( distance "GTFr Trent" "JumpNodeWaypoint:1" ) 500 )
+      initial_orders: |
+        ( ai-waypoints-once "ConvoyPath" 89 )
 
     - name: "TSC 2 Cargo"
       class: "TSC 2"
-      team: "Hostile"
-      position: [1160.0, 0.0, 240.0]
-      flags: ["scannable"]
+      team: "Friendly"
+      position: [-500.0, -350.0, -500.0]
       arrival_cue: |
         ( false )
       dock:
-        dockee: "GTFr Poseidon 1"
+        dockee: "GTFr Trent"
         docker_point: "cargo dock"
         dockee_point: "cargo dock"
 
-    - name: "GTS Centaur 1"
-      class: "GTS Centaur"
+    - name: "GTC Somerset"
+      class: "GTC Fenris"
       team: "Friendly"
-      position: [-1500.0, 100.0, -1200.0]
-      flags: ["weapons-locked"]
+      position: [-1000.0, 500.0, -1000.0]
       arrival_cue: |
         ( true )
+
+    - name: "SFr Mahishi"
+      class: "SFr Mephisto"
+      team: "Hostile"
+      position: [1500.0, 500.0, -1000.0]
+      flags: ["scannable", "escort"]
+      escort_list_priority: 50
+      cargo: "Shivan Logistics Data"
+      arrival_delay: 20
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( true )
+      departure_method: "Hyperspace"
+      departure_cue: |
+        ( has-arrived-delay 60 "SFr Mahishi" )
+      initial_orders: |
+        ( ai-play-dead 89 )
+
+    - name: "SC Vinayaka"
+      class: "SC Cain"
+      team: "Hostile"
+      position: [2500.0, 0.0, 3000.0]
+      flags: ["escort"]
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( is-event-true-delay "BlockadeArrival" 0 )
+      initial_orders: |
+        ( ai-stay-still "Nav Buoy" 89 )
+
+    - name: "Zealot 1"
+      class: "SF Manticore"
+      team: "Hostile"
+      position: [2000.0, 500.0, 2500.0]
+      flags: ["kamikaze", "escort"]
+      escort_list_priority: 80
+      weapons:
+        primary: ["Shivan Light Laser"]
+        secondary: ["MX-50#Shivan", "MX-50#Shivan"]
+      arrival_delay: 3
+      arrival_method: "Hyperspace"
+      arrival_cue: |
+        ( is-event-true-delay "BlockadeArrival" 0 )
+      initial_orders: |
+        ( ai-chase "GTC Dauntless" 89 )
 
   wings:
     - name: "Alpha"
-      template: "friendly_fighter"
+      template: "alpha_fighter"
       count: 4
-      position: [300.0, 0.0, -250.0]
+      position: [500.0, 0.0, 500.0]
       arrival_cue: |
         ( true )
       initial_orders: |
-        ( ai-guard "GTC Fenris 1" 95 )
+        ( ai-guard "GTC Dauntless" 95 )
 
-    - name: "Beta"
-      template: "friendly_fighter"
-      count: 3
-      position: [150.0, 0.0, -150.0]
-      arrival_method: "In front of ship"
-      arrival_anchor: "<any friendly player>"
-      arrival_distance: 1500
-      arrival_delay: 8
-      arrival_cue: |
-        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
+    - name: "Delta"
+      template: "delta_fighter"
+      count: 4
+      position: [-500.0, 0.0, -500.0]
       initial_orders: |
-        ( ai-chase-any 70 )
+        ( ai-guard "GTC Dauntless" 80 )
 
     - name: "Rama"
-      template: "enemy_fighter"
+      template: "shivan_fighter"
       count: 4
-      position: [0.0, 0.0, 1800.0]
+      position: [0.0, 0.0, 1500.0]
       wave_count: 2
       next_wave_threshold: 1
-      next_wave_delay_min: 8
-      next_wave_delay_max: 14
+      next_wave_delay_min: 5
+      next_wave_delay_max: 10
       arrival_method: "In front of ship"
-      arrival_anchor: "<any friendly player>"
-      arrival_distance: 1800
-      arrival_delay: 4
+      arrival_anchor: "GTC Dauntless"
+      arrival_distance: 1500
+      arrival_delay: 10
       arrival_cue: |
-        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
+        ( true )
       initial_orders: |
         ( ai-chase-any 60 )
 
-    - name: "Chi"
-      template: "enemy_bomber"
-      count: 3
-      position: [0.0, 0.0, 1500.0]
-      wave_count: 1
+    - name: "Krishna"
+      template: "shivan_bomber"
+      count: 4
+      position: [0.0, 0.0, 2000.0]
+      wave_count: 2
+      next_wave_threshold: 1
+      next_wave_delay_min: 15
+      next_wave_delay_max: 20
       arrival_method: "Above ship"
-      arrival_anchor: "GTC Fenris 1"
-      arrival_distance: 1500
-      arrival_delay: 8
+      arrival_anchor: "GTC Dauntless"
+      arrival_distance: 1800
+      arrival_delay: 30
       arrival_cue: |
-        ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 0 )
+        ( true )
       initial_orders: |
-        ( ai-chase "GTC Fenris 1" 90 )
-
-    - name: "Delta"
-      template: "friendly_fighter"
-      count: 3
-      position: [-650.0, 0.0, -500.0]
-      initial_orders: |
-        ( ai-guard "GTC Fenris 1" 80 )
+        ( ai-chase "GTC Dauntless" 90 )
 
   waypoints:
-    # Hidden AI/SEXP reference paths only. Player-facing navigation uses the visible Terran NavBuoy ship named "Nav Buoy" above.
-    DeparturePath:
-      - [1600.0, 0.0, 0.0]
-      - [2400.0, 0.0, 0.0]
-      - [3050.0, 0.0, 0.0]
-    JumpNodeLoc:
-      - [3200.0, 0.0, 0.0]
+    ConvoyPath:
+      - [0.0, 0.0, 1000.0]
+      - [500.0, 0.0, 2000.0]
+      - [2000.0, 0.0, 3000.0]
+      - [3000.0, 0.0, 4000.0]
+    JumpNodeWaypoint:
+      - [3000.0, 0.0, 4000.0]
 
   reinforcement_wings:
     - name: "Delta"
       max_uses: 1
+
   reinforcement_ships:
-    - name: "GTS Centaur 1"
+    - name: "GTC Somerset"
       max_uses: 1
 
   jump_nodes:
-    - { name: "Delta Serpentis Jump Node", position: [3200.0, 0.0, 0.0] }
+    - name: "Delta Serpentis Jump Node"
+      position: [3000.0, 0.0, 4000.0]
 
 mission_flow:
-  fiction_viewer: "story.txt"
+  fiction_viewer: "evacuation_story.txt"
   command_briefing:
     stages:
-      - text: "The $f{ GTC Fenris $} and docked $f{ GTT Elysium $} are holding at the Nav Buoy, one short burn from the $y{ Delta Serpentis jump node $}."
-        voice_style_instructions: "officer speaking, authoritative"
-        voice_name: "Gacrux"
-      - text: "GTI freighter $f{ GTFr Poseidon $} with reduced sensor signature is inbound with a sealed cargo pod recovered near Shivan patrol routes. $f{ Alpha Wing $} will inspect the pod the moment it reaches the buoy."
-        voice_style_instructions: "military briefing, directive"
-        voice_name: "Gacrux"
-      - text: "Once the scan confirms the cargo, the convoy will withdraw immediately. Expect a Shivan reaction and keep the $f{ Fenris $} alive until it clears the node."
-        voice_style_instructions: "military briefing, urgent"
-        voice_name: "Gacrux"
-
+      - text: "The Shivan offensive has bypassed our outer blockades. We are evacuating the system."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Serious, authoritative commander"
+      - text: "The $f{ GTC Dauntless $} and $f{ GTFr Trent $} are part of the last convoy making a run for the $y{ Delta Serpentis jump node $}. You will provide rearguard escort."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Clear directive"
+      - text: "Expect heavy Shivan resistance. The enemy is hunting down stragglers. Do whatever it takes to ensure the convoy survives."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Determined"
   briefing:
     stages:
-      - text: "Rendezvous with the inspection group at the Nav Buoy. The $f{ GTFr Poseidon $} will bring the marked cargo pod in close; scan it as soon as it arrives."
-        voice_style_instructions: "military briefing, directive"
+      - text: "Alpha Wing, you will escort the $f{ GTC Dauntless $} and the $f{ GTFr Trent $} to the jump node."
         voice_name: "Gacrux"
+        voice_style_instructions: "Military briefing officer"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha", highlighted: true }
-          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [300, 0], label: "Fenris" }
-          - { icon_type: "Transport", team: "Friendly", display_class: "GTT Elysium", map_position: [300, 140], label: "Elysium" }
-          - { icon_type: "Waypoint", team: "Unknown", map_position: [700, 0], label: "Nav Buoy" }
-          - { icon_type: "Freighter (has cargo)", team: "Friendly", display_class: "GTFr Poseidon", map_position: [860, 240], label: "Poseidon" }
-          - { icon_type: "Cargo", team: "Hostile", display_class: "TSC 2", map_position: [940, 320], label: "Cargo Pod" }
-      - text: "Once the scan is complete, the $f{ Elysium $} will break away and the $f{ Fenris $} will run for the jump node. $f{ Beta Wing $} will reinforce the inspection force after the scan."
-        voice_style_instructions: "military briefing, directive"
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha Wing", highlighted: true }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-100, 200], label: "Dauntless" }
+          - { icon_type: "Freighter (has cargo)", team: "Friendly", display_class: "GTFr Poseidon", map_position: [100, 200], label: "Trent" }
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 800], label: "Jump Node" }
+      - text: "We anticipate intercepts by $h Rama wing fighters and $h Krishna wing bombers. Keep them off the convoy."
         voice_name: "Gacrux"
+        voice_style_instructions: "Tactical warning"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha" }
-          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [650, 650], label: "Beta" }
-          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Basilisk", map_position: [220, 1200], label: "Rama" }
-          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [350, 0], label: "Fenris" }
-          - { icon_type: "Jump Node", team: "Unknown", map_position: [1300, 0], label: "Delta Serpentis Jump Node" }
-      - text: "$h Rama fighters will hit first, followed by $h Chi bombers dropping in above the $f{ Fenris $}. If the escort starts to fail, call $f{ Delta Wing $} or the $f{ GTS Centaur $} for support."
-        voice_style_instructions: "directive, summarizing"
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-100, 200], label: "Dauntless" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [-300, 500], label: "Rama" }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Nephilim", map_position: [300, 600], label: "Krishna" }
+      - text: "If things get hot, you are authorized to call in $f{ Delta Wing $} for reinforcements."
         voice_name: "Gacrux"
+        voice_style_instructions: "Supportive"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha" }
-          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [400, 0], label: "Fenris" }
-          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Nephilim", map_position: [760, 1200], label: "Chi" }
-          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [-250, 750], label: "Delta Reserve" }
-          - { icon_type: "Support Ship", team: "Friendly", display_class: "GTS Centaur", map_position: [-650, 450], label: "Centaur" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, -300], label: "Delta Wing" }
 
   debriefing:
     stages:
       - display_condition: |
-          ( is-destroyed-delay 0 "GTC Fenris 1" )
-        text: "The $f{ GTC Fenris $} was destroyed during the withdrawal. We lost the cruiser and the operation collapsed."
+          ( is-destroyed-delay 0 "GTC Dauntless" )
+        text: "We lost the $f{ Dauntless $}. This is a heavy blow to the evacuation effort."
         voice_name: "Gacrux"
       - display_condition: |
-          ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
-        text: "You never completed the inspection of the marked cargo pod. Without that scan, Command could not confirm the intelligence package."
+          ( is-destroyed-delay 0 "GTFr Trent" )
+        text: "The $f{ Trent $} was destroyed. Dozens of refugees were lost."
         voice_name: "Gacrux"
       - display_condition: |
           ( and
-            ( is-event-true-delay "FenrisClear" 0 )
-            ( is-cargo-known-delay 0 "TSC 2 Cargo" )
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
           )
-        text: "Excellent work, $rank $callsign. You identified the cargo, held off the ambush, and escorted the $f{ Fenris $} to a safe jump."
+        text: "Outstanding work, pilot. Both the $f{ Dauntless $} and the $f{ Trent $} made it to the jump node safely."
+        voice_name: "Gacrux"
+      - display_condition: |
+          ( is-cargo-known-delay 0 "SFr Mahishi" )
+        text: "Your scan of the Shivan transport provided us with valuable intelligence on their supply routes."
+        voice_name: "Gacrux"
+      - display_condition: |
+          ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
+        text: "Disarming that Shivan cruiser was a brilliant tactical move. It saved the convoy from taking heavy fire."
         voice_name: "Gacrux"
 
   events:
-    - name: "MissionStart"
+    - name: "MissionStartMsg"
       formula: |
         ( when
           ( true )
-          ( send-message "#Command" "High" "HoldAtBuoy" )
+          ( send-message "#Command" "High" "StartMsg" )
         )
-
-    - name: "InspectCargoDir"
-      formula: |
-        ( when
-          ( is-cargo-known-delay 0 "TSC 2 Cargo" )
-          ( do-nothing )
-        )
-      hud_directive_text: "Rendezvous at Nav Buoy and scan the marked cargo"
-
-    - name: "EscortFenrisDir"
-      formula: |
-        ( when
-          ( has-departed-delay 0 "GTC Fenris 1" )
-          ( do-nothing )
-        )
-      hud_directive_text: "Protect the Fenris until it jumps"
-
-    - name: "HitChiBonusDir"
-      formula: |
-        ( when
-          ( percent-ships-destroyed 33 "Chi 1" "Chi 2" "Chi 3" )
-          ( do-nothing )
-        )
-      hud_directive_text: "Destroy at least one Chi bomber"
-
-    - name: "PoseidonArrived"
-      formula: |
-        ( when
-          ( has-arrived-delay 0 "GTFr Poseidon 1" )
-          ( send-message "GTFr Poseidon 1" "Normal" "PoseidonArrived" )
-        )
-
-    - name: "InspectReminder"
+    - name: "EscortDirective"
       formula: |
         ( when
           ( and
-            ( has-time-elapsed 45 )
-            ( not ( is-cargo-known-delay 0 "TSC 2 Cargo" ) )
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
           )
-          ( send-message "#Command" "High" "InspectReminder" )
+          ( do-nothing )
         )
-
-    - name: "ScanComplete"
-      formula: |
-        ( when
-          ( is-cargo-known-delay 0 "TSC 2 Cargo" )
-          ( send-message "#Command" "High" "ScanComplete" )
-        )
-
-    - name: "WithdrawalOrdered"
-      formula: |
-        ( when
-          ( is-event-true-delay "ScanComplete" 3 )
-          ( send-message-list
-            "#Command" "High" "WithdrawNow" 0
-            "#Command" "Normal" "DeltaAvailable" 3500
-          )
-          ( add-goal "GTT Elysium 1" ( ai-undock 89 ) )
-          ( add-goal "GTFr Poseidon 1" ( ai-warp-out 89 ) )
-        )
-
-    - name: "FenrisBreakaway"
-      formula: |
-        ( when
-          ( has-undocked-delay "GTT Elysium 1" "GTC Fenris 1" 1 0 )
-          ( send-message "GTC Fenris 1" "High" "FenrisBreakaway" )
-          ( add-goal "GTC Fenris 1" ( ai-waypoints-once "DeparturePath" 89 ) )
-        )
-
-    - name: "BetaArrived"
-      formula: |
-        ( when
-          ( has-arrived-delay 0 "Beta" )
-          ( send-message "Beta" "Normal" "BetaArrived" )
-        )
-
-    - name: "RamaInbound"
+      hud_directive_text: "Escort the convoy to the jump node"
+    - name: "RamaWarning"
       formula: |
         ( when
           ( has-arrived-delay 0 "Rama" )
-          ( send-message "#Command" "High" "RamaInbound" )
+          ( send-message "GTC Dauntless" "Normal" "RamaArrivedMsg" )
         )
-
-    - name: "ChiInbound"
+    - name: "MephistoArrivedMsg"
       formula: |
         ( when
-          ( has-arrived-delay 0 "Chi" )
-          ( send-message "#Command" "High" "ChiInbound" )
+          ( has-arrived-delay 0 "SFr Mahishi" )
+          ( send-message "#Command" "Normal" "MephistoMsg" )
         )
-
-    - name: "FenrisJumping"
+    - name: "MephistoScanDirective"
       formula: |
         ( when
-          ( < ( distance "GTC Fenris 1" "JumpNodeLoc:1" ) 900 )
-          ( send-message "#Command" "Normal" "FenrisJumping" )
+          ( is-cargo-known-delay 0 "SFr Mahishi" )
+          ( send-message "#Command" "Normal" "MephistoScannedMsg" )
         )
-
-    - name: "FenrisClear"
+      hud_directive_text: "Scan the Shivan transport SFr Mahishi"
+    - name: "MephistoSpooling"
       formula: |
         ( when
-          ( has-departed-delay 0 "GTC Fenris 1" )
-          ( send-message "#Command" "High" "FenrisClear" )
+          ( has-arrived-delay 55 "SFr Mahishi" )
+          ( send-message "GTC Dauntless" "Normal" "MephistoSpoolingMsg" )
         )
-
-    - name: "FenrisLost"
+    - name: "KrishnaWarning"
       formula: |
         ( when
-          ( is-destroyed-delay 0 "GTC Fenris 1" )
-          ( send-message "#Command" "High" "FenrisLost" )
+          ( has-arrived-delay 0 "Krishna" )
+          ( send-message "#Command" "High" "KrishnaArrivedMsg" )
         )
-
-    - name: "MissionComplete"
+    - name: "BlockadeArrival"
       formula: |
         ( when
-          ( is-event-true-delay "FenrisClear" 5 )
-          ( send-message "#Command" "High" "JumpOutOrder" )
+          ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 2500 )
+          ( send-message-list
+            "#Command" "High" "CainArrivedMsg" 0
+            "#Command" "High" "ZealotWarningMsg" 3500
+          )
         )
-
-    - name: "MissionFailed"
+    - name: "DisarmCain"
       formula: |
         ( when
-          ( is-event-true-delay "FenrisLost" 5 )
-          ( send-message "#Command" "High" "JumpOutOrder" )
+          ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
+          ( send-message "#Command" "Normal" "CainDisarmedMsg" )
+        )
+      hud_directive_text: "Destroy the weapons subsystem on SC Vinayaka"
+    - name: "ConvoySafe"
+      formula: |
+        ( when
+          ( and
+            ( has-departed-delay 0 "GTC Dauntless" )
+            ( has-departed-delay 0 "GTFr Trent" )
+          )
+          ( send-message "#Command" "High" "ConvoySafeMsg" )
+        )
+    - name: "ConvoyDestroyed"
+      formula: |
+        ( when
+          ( or
+            ( is-destroyed-delay 0 "GTC Dauntless" )
+            ( is-destroyed-delay 0 "GTFr Trent" )
+          )
+          ( send-message "#Command" "High" "ConvoyDestroyedMsg" )
+        )
+    - name: "ReturnToBase"
+      formula: |
+        ( when
+          ( or
+            ( is-event-true-delay "ConvoySafe" 5 )
+            ( is-event-true-delay "ConvoyDestroyed" 5 )
+          )
+          ( send-message "#Command" "High" "RtbMsg" )
         )
 
   goals:
-    - name: "ProtectFenris"
+    - name: "EscortConvoy"
       type: "Primary"
-      objective_text: "Escort the GTC Fenris 1 until it departs."
+      objective_text: "Protect the GTC Dauntless and GTFr Trent."
       formula: |
-        ( has-departed-delay 0 "GTC Fenris 1" )
-    - name: "ScanCargo"
-      type: "Secondary"
-      objective_text: "Scan the marked cargo pod carried in by the Poseidon."
-      formula: |
-        ( is-cargo-known-delay 0 "TSC 2 Cargo" )
-    - name: "EliminateBomberAce"
+        ( and
+          ( has-departed-delay 0 "GTC Dauntless" )
+          ( has-departed-delay 0 "GTFr Trent" )
+        )
+    - name: "ScanMephisto"
       type: "Bonus"
-      objective_text: "Destroy at least one of the Chi bombers."
+      objective_text: "Scan the Shivan transport."
       formula: |
-        ( percent-ships-destroyed 33 "Chi 1" "Chi 2" "Chi 3" )
+        ( is-cargo-known-delay 0 "SFr Mahishi" )
+    - name: "DisarmBlockade"
+      type: "Secondary"
+      objective_text: "Destroy the weapons subsystem of the Shivan cruiser."
+      formula: |
+        ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
 
   messages:
-    - name: "HoldAtBuoy"
-      text: "Alpha, hold with the Fenris at Nav Buoy and be ready to inspect the Poseidon's cargo pod."
+    - name: "StartMsg"
+      text: "Alpha, the convoy is moving. Keep your eyes open, Shivans are everywhere."
       voice_name: "Alnilam"
-      voice_style_instructions: "Commanding, clear directive"
-    - name: "PoseidonArrived"
-      text: "Poseidon at the buoy. The cargo pod is stable and ready for inspection."
+      voice_style_instructions: "Commanding"
+    - name: "RamaArrivedMsg"
+      text: "Command, we have Shivan fighters dropping in. Rama wing is engaging."
+      voice_name: "Achird"
+      voice_style_instructions: "Cruiser captain under fire"
+    - name: "MephistoMsg"
+      text: "Alpha, a Shivan transport just warped in, likely suffering from drive failure. Scan it if you can."
       voice_name: "Alnilam"
-      voice_style_instructions: "Calm transport pilot, professional"
-    - name: "InspectReminder"
-      text: "Alpha, close on the marked pod and finish that scan."
+      voice_style_instructions: "Tactical update"
+    - name: "MephistoScannedMsg"
+      text: "Good job. We have the data."
       voice_name: "Alnilam"
-      voice_style_instructions: "Firm reminder from command"
-    - name: "ScanComplete"
-      text: "Scan complete. The pod matches the Shivan recovery manifests."
+      voice_style_instructions: "Approving"
+    - name: "MephistoSpoolingMsg"
+      text: "The Shivan transport's drives are active! It's spooling up to jump!"
+      voice_name: "Achird"
+      voice_style_instructions: "Urgent update"
+    - name: "KrishnaArrivedMsg"
+      text: "Warning, Shivan bombers inbound. Krishna wing is targeting the Dauntless."
       voice_name: "Alnilam"
-      voice_style_instructions: "Informative, professional"
-    - name: "WithdrawNow"
-      text: "Confirmed. Elysium, clear the Fenris. Fenris, withdraw to the jump node."
+      voice_style_instructions: "Urgent warning"
+    - name: "CainArrivedMsg"
+      text: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to cover the convoy!"
       voice_name: "Alnilam"
-      voice_style_instructions: "Urgent command order"
-    - name: "DeltaAvailable"
-      text: "Delta wing and the Centaur are on standby. Call them if the escort starts to break."
+      voice_style_instructions: "Panicked command"
+    - name: "ZealotWarningMsg"
+      text: "Warning, a Shivan fighter has locked on a collision course with the Dauntless! Stop that kamikaze!"
       voice_name: "Alnilam"
-      voice_style_instructions: "Helpful, tactical"
-    - name: "FenrisBreakaway"
-      text: "Fenris breaking away now. Stay with us and keep those bombers off the hull."
+      voice_style_instructions: "Panicked warning"
+    - name: "CainDisarmedMsg"
+      text: "The Cain's weapons are down! Excellent work!"
       voice_name: "Alnilam"
-      voice_style_instructions: "Cruiser captain under pressure"
-    - name: "BetaArrived"
-      text: "Beta wing on station. We're moving to engage the hostiles threatening the Fenris."
+      voice_style_instructions: "Relieved"
+    - name: "ConvoySafeMsg"
+      text: "The convoy has successfully jumped out."
       voice_name: "Alnilam"
-      voice_style_instructions: "Confident fighter pilot"
-    - name: "RamaInbound"
-      text: "Hostile fighters inbound. Rama wing is dropping in ahead of the convoy."
+      voice_style_instructions: "Relieved"
+    - name: "ConvoyDestroyedMsg"
+      text: "The convoy has been destroyed. We failed."
       voice_name: "Alnilam"
-      voice_style_instructions: "Alert, tactical"
-    - name: "ChiInbound"
-      text: "Chi wing is above the Fenris. Bombers are making their run."
+      voice_style_instructions: "Somber"
+    - name: "RtbMsg"
+      text: "Alpha, return to base immediately."
       voice_name: "Alnilam"
-      voice_style_instructions: "Urgent tactical warning"
-    - name: "FenrisJumping"
-      text: "Fenris is on final approach to the node. Hold the line for a few more seconds."
-      voice_name: "Alnilam"
-      voice_style_instructions: "Controlled urgency"
-    - name: "FenrisClear"
-      text: "Fenris has cleared the node. Good work, Alpha."
-      voice_name: "Alnilam"
-      voice_style_instructions: "Relieved but professional"
-    - name: "FenrisLost"
-      text: "The Fenris is gone. Break off and return to base."
-      voice_name: "Alnilam"
-      voice_style_instructions: "Somber command order"
-    - name: "JumpOutOrder"
-      text: "All pilots, jump out now."
-      voice_name: "Alnilam"
-      voice_style_instructions: "Authoritative command order"
+      voice_style_instructions: "Commanding"
 
 audio:
   mission_music: "1: Genesis"

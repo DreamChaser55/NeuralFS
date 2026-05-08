@@ -2,7 +2,7 @@ fsif_version: "4.0"
 
 mission_info:
   name: "Subspace Dash"
-  author: "NeuralFS Demo"
+  author: "NeuralFS"
   description: "A demo mission taking place entirely in subspace. Survive the transit."
   game_type: "single"
   ai_profile: "FS1 RETAIL"
