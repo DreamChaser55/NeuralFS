@@ -266,7 +266,7 @@ ACT STRUCTURE
 
 ACT 1: THE SHIVAN TIDE (3 missions, January 15–20, 2335)
   Beat arc: Denial → shock → grim recognition
-  Opening state: Routine garrison assignment, Terran-Vasudan War winding down
+  Opening state: Routine garrison assignment, Terran-Vasudan War in its fourteenth grinding year
   Closing state: Station lost, Vasudan fleet ambushed, retreat now inevitable
   Emotional register: Horror, disbelief, improvisation
 

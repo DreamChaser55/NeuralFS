@@ -11,15 +11,13 @@ Date: January 15, 2335
 Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the Amadeus
 and the 3rd Fleet detachment in the Vega system.
 
-We have now held this system for eleven months. The Terran-Vasudan armistice negotiations are
-ongoing. Our job here is unchanged: patrol the four jump node approaches, maintain system
+We have now held this system for eleven months. The Terran-Vasudan War is grinding on in its fourteenth year. Our job here is unchanged: patrol the four jump node approaches, maintain system
 integrity, and protect GTA assets. The GTI Vega Prime installation remains operational and is
 currently handling the last civilian evacuation shuttles from the Vega colony platforms — routine
 administrative work that I want completed without incident.
 
-The war is not formally over. Until it is, standard rules of engagement remain in effect.
-Vasudan contacts inside Vega are to be treated as hostile unless they're broadcasting a
-recognized ceasefire transponder.
+The war is still raging. Until Terran Command says otherwise, standard rules of engagement remain in effect.
+Vasudan contacts inside Vega are to be treated as hostile. No exceptions.
 
 --- STAGE 2: PATROL ASSIGNMENT ---
 We lost contact with the patrol transport GTT Meridian at 0340 this morning. She was running a
