@@ -224,7 +224,7 @@ Message 5 — Alpha 2, trigger: player/Alpha wing within 6,000m of SC Malgor (en
 
 Message 6 — Krishna wing harassment, trigger: GTFr Aldrin 1 takes hull damage from Krishna
 "Aldrin One, taking fire — report your status."
-Aldrin 1: "Aldrin One, shields down, taking hull hits. Please assist."
+Aldrin 1: "Aldrin One, armor failing, taking hull hits. Please assist."
 [This creates a second pull on the player — the freighters vs. Malgor suppression.]
 
 Message 7 — Theta 3 pilot (Vasudan, steady), trigger: Arjuna wing (Dragons) activates near node
