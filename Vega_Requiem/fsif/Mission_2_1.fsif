@@ -11,7 +11,7 @@ mission_info:
 environment:
   ambient_light_level: [3, 2, 2]
   suns:
-    - { texture: SunVega, angles: [0.2, 0.0, 1.0], scale: 1.0 }
+    - { texture: SunVega, angles: [0.2, 1.0], scale: 1.0 }
   background_bitmaps:
     - { texture: dneb03, angles: [0.0, 0.0, 0.0], scale: { x: 3.0, y: 3.0 } }
     - { texture: dneb01, angles: [0.4, 0.6, 0.1], scale: { x: 2.0, y: 2.0 } }
@@ -182,7 +182,7 @@ entities:
     - name: "Indra"
       template: "scorpion_fighter"
       count: 4
-      position: [2000.0, 2000.0, 12000.0]
+      position: [1000.0, 1000.0, 10000.0]
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( has-time-elapsed 90 )
@@ -191,7 +191,7 @@ entities:
     - name: "Kali"
       template: "shaitan_bomber"
       count: 3
-      position: [0.0, 0.0, -12000.0]
+      position: [0.0, 0.0, -6000.0]
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( has-time-elapsed 150 )
@@ -200,7 +200,7 @@ entities:
     - name: "Deva"
       template: "basilisk_fighter"
       count: 3
-      position: [0.0, 500.0, -12000.0]
+      position: [0.0, 500.0, -6000.0]
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( has-time-elapsed 150 )
@@ -209,7 +209,7 @@ entities:
     - name: "Genma"
       template: "shaitan_bomber"
       count: 3
-      position: [2000.0, -2000.0, -12000.0]
+      position: [2000.0, -2000.0, -6000.0]
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( and
@@ -231,7 +231,7 @@ entities:
       - [1500.0, 0.0, 10000.0]
     Aldrin1Path:
       - [0.0, 0.0, 7000.0]
-      - [0.0, 0.0, 12000.0]
+      - [0.0, 0.0, 10000.0]
     Aldrin2Path:
       - [500.0, 0.0, 6500.0]
       - [500.0, 0.0, 11500.0]
@@ -268,24 +268,24 @@ mission_flow:
         voice_name: "Kore"
         voice_style_instructions: "Commanding"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", map_position: [0, 0], label: "Amadeus" }
-          - { icon_type: "Cruiser", team: "Friendly", map_position: [200, 0], label: "Stentor" }
-          - { icon_type: "Transport Wing", team: "Friendly", map_position: [0, 250], label: "Aldrin Freighters" }
-          - { icon_type: "Transport", team: "Friendly", map_position: [0, -150], label: "Rescue" }
-          - { icon_type: "Transport", team: "Friendly", map_position: [0, -300], label: "Theta 3" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 0], label: "Amadeus" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [250, 0], label: "Stentor" }
+          - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTFr Chronos", map_position: [0, 250], label: "Aldrin Freighters" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTT Elysium", map_position: [0, -250], label: "Rescue" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "PVT Isis", map_position: [0, -500], label: "Theta 3" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 500], label: "Nav Alpha" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 1000], label: "Nav Bravo" }
-          - { icon_type: "Cruiser", team: "Hostile", map_position: [400, 0], label: "Ahriman" }
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [-200, 200], label: "Alpha", highlighted: true }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [500, 0], label: "Ahriman" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [-300, 200], label: "Alpha", highlighted: true }
       - text: "Intelligence expects bomber contact. Shaitans - they've been the primary capital ship threat in this system and I don't see why they'd change tactics now. Your engagement priority is bombers before fighters. If you have to let a Scorpion wing get past you to intercept a Shaitan wing, that's the correct choice. The Amadeus's turrets can handle close fighters. They cannot shoot down bombs fast enough to compensate for a full Shaitan attack run. $f{ Casca $} is with the convoy. Rearm when you need to - don't wait until you're empty. Go. We need to move."
         voice_name: "Kore"
         voice_style_instructions: "Directing"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", map_position: [0, 0], label: "Amadeus" }
-          - { icon_type: "Transport Wing", team: "Friendly", map_position: [0, 200], label: "Convoy" }
-          - { icon_type: "Fighter Wing", team: "Hostile", map_position: [0, 500], label: "Indra", highlighted: true }
-          - { icon_type: "Bomber Wing", team: "Hostile", map_position: [0, -400], label: "Kali/Deva", highlighted: true }
-          - { icon_type: "Support Ship", team: "Friendly", map_position: [150, -100], label: "Casca" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 0], label: "Amadeus" }
+          - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTFr Chronos", map_position: [0, 200], label: "Convoy" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [0, 500], label: "Indra", highlighted: true }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Shaitan", map_position: [0, -400], label: "Kali/Deva", highlighted: true }
+          - { icon_type: "Support Ship", team: "Friendly", display_class: "GTS Centaur", map_position: [150, -100], label: "Casca" }
 
   debriefing:
     stages:

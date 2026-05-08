@@ -11,7 +11,7 @@ mission_info:
 environment:
   ambient_light_level: [5, 2, 2]
   suns:
-    - { texture: SunVega, angles: [0.0, 3.14, 0.0], scale: 1.0 }
+    - { texture: SunVega, angles: [0.0, 3.14], scale: 1.0 }
   background_bitmaps:
     - { texture: dneb02, angles: [0.0, 0.0, 0.0], scale: { x: 3.0, y: 3.0 } }
     - { texture: dneb03, angles: [0.4, 0.6, 0.1], scale: { x: 2.0, y: 2.0 } }
@@ -310,23 +310,23 @@ mission_flow:
         voice_name: "Alnilam"
         voice_style_instructions: "Calm, final, Rear Admiral"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", map_position: [0, 0], label: "Amadeus" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 0], label: "Amadeus" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [-200, 0], label: "Nav Charlie", highlighted: true }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 800], label: "Nav Bravo" }
       - text: "$f{ Alpha $} wing, your assignment is the pods. Nine of them, three groups. They come out in sequence over the next two minutes. You get them to Nav Bravo. The $h{ Ahriman $} is closing. We'll use the Amadeus's position and turrets to cover the pod corridor for as long as we can. I would appreciate it if you did not waste time trying to protect this ship. The $f{ Amadeus $} has served her purpose. The people in those pods have not."
         voice_name: "Alnilam"
         voice_style_instructions: "Directive, unyielding"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", map_position: [0, 0], label: "Amadeus" }
-          - { icon_type: "Transport Wing", team: "Friendly", map_position: [0, 200], label: "Escape Pods", highlighted: true }
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [150, 150], label: "Alpha" }
-          - { icon_type: "Cruiser", team: "Hostile", map_position: [-300, -300], label: "NOT A TARGET" }
-          - { icon_type: "Fighter Wing", team: "Hostile", map_position: [0, 500], label: "Asura" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 0], label: "Amadeus" }
+          - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTEP Hermes", map_position: [0, 200], label: "Escape Pods", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [150, 150], label: "Alpha" }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [-300, -300], label: "NOT A TARGET" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [0, 500], label: "Asura" }
       - text: "One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the correct decision and that I made it freely. Command will review the documentation. Good luck. Amadeus out."
         voice_name: "Alnilam"
         voice_style_instructions: "Resolute, at peace"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", map_position: [0, 0], label: "Amadeus", highlighted: true }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 0], label: "Amadeus", highlighted: true }
 
   debriefing:
     stages:
@@ -461,6 +461,13 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "Ensure at least 6 pods reach Nav Bravo"
+    - name: "DataSurvivalDirEvent"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "Aldrin 4" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Ensure Aldrin 4 reaches Nav Bravo"
 
   goals:
     - name: "Save Pods"

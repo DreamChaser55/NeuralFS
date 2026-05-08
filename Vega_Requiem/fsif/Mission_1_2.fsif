@@ -11,7 +11,7 @@ mission_info:
 environment:
   ambient_light_level: [10, 5, 2]
   suns:
-    - { texture: SunVega, angles: [0.5, 0.0, 1.0], scale: 2.0 }
+    - { texture: SunVega, angles: [0.5, 1.0], scale: 2.0 }
   background_bitmaps:
     - { texture: neb02, angles: [0.0, 1.0, 0.0], scale: { x: 3.0, y: 3.0 } }
     - { texture: neb01, angles: [0.3, 0.5, 1.2], scale: { x: 4.0, y: 4.0 } }
@@ -32,6 +32,7 @@ entities:
       class: "GTF Valkyrie"
       team: "Friendly"
       ai_class: "Captain"
+      flags: ["no-shields"]
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
         secondary: ["MX-50"]
@@ -101,7 +102,7 @@ entities:
     - name: "TAC-1 Cargo 1"
       class: "TAC 1"
       team: "Friendly"
-      position: [1000.0, -500.0, 0.0]
+      position: [3000.0, -1000.0, 0.0]
       cargo: "Civilian Equipment"
       arrival_cue: |
         ( true )
@@ -109,7 +110,7 @@ entities:
     - name: "TAC-1 Cargo 2"
       class: "TAC 1"
       team: "Friendly"
-      position: [1200.0, -500.0, 0.0]
+      position: [3200.0, -1000.0, 0.0]
       cargo: "Civilian Equipment"
       arrival_cue: |
         ( true )
@@ -117,7 +118,7 @@ entities:
     - name: "TAC-1 Cargo 3"
       class: "TAC 1"
       team: "Friendly"
-      position: [1400.0, -500.0, 0.0]
+      position: [3400.0, -1000.0, 0.0]
       cargo: "Civilian Equipment"
       arrival_cue: |
         ( true )
@@ -274,25 +275,25 @@ mission_flow:
         voice_name: "Kore"
         voice_style_instructions: "Commanding"
         icons:
-          - { icon_type: "Installation", team: "Friendly", map_position: [0, 0], label: "Vega Prime" }
-          - { icon_type: "Cruiser", team: "Friendly", map_position: [150, 0], label: "Stentor" }
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [100, 100], label: "Alpha", highlighted: true }
-          - { icon_type: "Transport Wing", team: "Friendly", map_position: [-50, 0], label: "Epsilon" }
+          - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [0, 0], label: "Vega Prime" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [150, 0], label: "Stentor" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [100, 100], label: "Alpha", highlighted: true }
+          - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTT Elysium", map_position: [-50, 0], label: "Epsilon" }
           - { icon_type: "Jump Node", team: "Unknown", map_position: [-500, 0], label: "Antares Node" }
       - text: "You'll be flying Valkyries today. They just came in from the Amadeus complement - fast interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. The people on those transports are your mission. Nav Alpha is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to Nav Bravo. Get them through."
         voice_name: "Kore"
         voice_style_instructions: "Directing"
         icons:
-          - { icon_type: "Installation", team: "Friendly", map_position: [0, 0], label: "Vega Prime" }
+          - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [0, 0], label: "Vega Prime" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [-200, 0], label: "Nav Alpha" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [-450, 0], label: "Nav Bravo" }
-          - { icon_type: "Transport Wing", team: "Friendly", map_position: [-250, 0], label: "Epsilon", highlighted: true }
+          - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTT Elysium", map_position: [-250, 0], label: "Epsilon", highlighted: true }
       - text: "One more thing. We're sending the $f{ Casca $} out behind you for rearming support. She's fragile - don't let her become a target. Call her in when you need her, not before. The $f{ Stentor $} will hold as long as she can. Commander Okafor knows her job. Good luck. GTA Amadeus CAG out."
         voice_name: "Kore"
         voice_style_instructions: "Stern"
         icons:
-          - { icon_type: "Support Ship", team: "Friendly", map_position: [50, -100], label: "Casca", highlighted: true }
-          - { icon_type: "Cruiser", team: "Friendly", map_position: [150, 0], label: "Stentor", highlighted: true }
+          - { icon_type: "Support Ship", team: "Friendly", display_class: "GTS Centaur", map_position: [50, -100], label: "Casca", highlighted: true }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [150, 0], label: "Stentor", highlighted: true }
   
   debriefing:
     stages:
@@ -426,6 +427,13 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "Protect GTC Stentor"
+    - name: "SentrySetupDirective"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTFr Chronos 1" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Cover Chronos 1 while it deploys sentries"
 
   goals:
     - name: "Evacuate"

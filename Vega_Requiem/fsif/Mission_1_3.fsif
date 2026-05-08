@@ -11,10 +11,11 @@ mission_info:
 environment:
   ambient_light_level: [5, 5, 5]
   suns:
-    - { texture: SunVega, angles: [0.0, 3.14, 0.0], scale: 1.0 }
+    - { texture: SunVega, angles: [0.0, 3.14], scale: 1.0 }
   background_bitmaps:
     - { texture: neb11, angles: [0.0, 0.0, 0.0], scale: { x: 3.0, y: 3.0 } }
     - { texture: neb17, angles: [0.4, 0.6, 0.1], scale: { x: 2.0, y: 4.0 } }
+    - { texture: dneb03, angles: [1.0, 1.0, 1.0], scale: { x: 3.0, y: 3.0 } }
     - { texture: planetb, angles: [1.2, 0.4, 0.0], scale: { x: 5.0, y: 5.0 } }
   nebula: { enabled: false }
   asteroid_field:
@@ -221,19 +222,19 @@ mission_flow:
         icons:
           - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 600], label: "Capella Node" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [-400, -200], label: "Nav Alpha" }
-          - { icon_type: "Supercapital Ship", team: "Unknown", map_position: [0, 400], label: "Vigil" }
-          - { icon_type: "Transport Wing", team: "Unknown", map_position: [-150, 400], label: "Theta", highlighted: true }
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [0, 0], label: "Alpha" }
+          - { icon_type: "Supercapital Ship", team: "Unknown", display_class: "PVD Typhon", map_position: [0, 400], label: "Vigil" }
+          - { icon_type: "Transport Wing", team: "Unknown", display_class: "PVT Isis", map_position: [-150, 400], label: "Theta", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [0, 0], label: "Alpha" }
       - text: "Alpha 1, you're carrying the only field Avenger in the wing today. The briefing notes will tell you what to expect performance-wise, but the short version is this: it works against their shields in a way the ML-16 doesn't. Use it aggressively. We need data as much as we need kills. Watch the left flank. Hammer of Light is operating in this area. HoL transponders are yellow diamond - fire on sight if they're between you and Theta wing. Nav Alpha is your objective. Get them there. GTD Amadeus out."
         voice_name: "Kore"
         voice_style_instructions: "Directing"
         icons:
           - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 600], label: "Capella Node" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [-400, -200], label: "Nav Alpha", highlighted: true }
-          - { icon_type: "Transport Wing", team: "Unknown", map_position: [-150, 400], label: "Theta" }
-          - { icon_type: "Fighter Wing", team: "Hostile", map_position: [200, 400], label: "Brahma" }
-          - { icon_type: "Fighter Wing", team: "Unknown", map_position: [0, 900], label: "Aquarius (HoL)", highlighted: true }
-          - { icon_type: "Fighter Wing", team: "Unknown", map_position: [-200, -100], label: "Pisces (HoL)" }
+          - { icon_type: "Transport Wing", team: "Unknown", display_class: "PVT Isis", map_position: [-150, 400], label: "Theta" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [200, 400], label: "Brahma" }
+          - { icon_type: "Fighter Wing", team: "Unknown", display_class: "PVF Horus", map_position: [0, 900], label: "Aquarius (HoL)", highlighted: true }
+          - { icon_type: "Fighter Wing", team: "Unknown", display_class: "PVF Seth", map_position: [-200, -100], label: "Pisces (HoL)" }
 
   debriefing:
     stages:

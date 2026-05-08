@@ -11,7 +11,7 @@ mission_info:
 environment:
   ambient_light_level: [5, 5, 5]
   suns:
-    - { texture: SunVega, angles: [0.087266, 0.000000, 2.356194], scale: 1.5 }
+    - { texture: SunVega, angles: [0.087266, 2.356194], scale: 1.5 }
   background_bitmaps:
     - { texture: dneb03, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
     - { texture: neb11, angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 } }
@@ -36,6 +36,7 @@ entities:
       class: "GTF Apollo"
       team: "Friendly"
       ai_class: "Captain"
+      flags: ["no-shields"]
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
         secondary: ["MX-50", "Fury"]
@@ -64,7 +65,7 @@ entities:
     - name: "Nav Alpha"
       class: "Terran NavBuoy"
       team: "Friendly"
-      position: [0.0, 0.0, 3000.0]
+      position: [0.0, 0.0, 3500.0]
       arrival_cue: |
         ( true )
     - name: "GTT Meridian"
@@ -95,7 +96,7 @@ entities:
     - name: "Alpha"
       template: "alpha_fighter"
       count: 4
-      position: [0.0, 0.0, 50.0]
+      position: [0.0, 0.0, 200.0]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -150,19 +151,19 @@ mission_flow:
         voice_name: "Kore"
         voice_style_instructions: "Professional"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [0, 0], label: "Alpha Wing", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing", highlighted: true }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha" }
       - text: "We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard rules of engagement. Expected duration: thirty minutes. Come home clean."
         voice_name: "Kore"
         voice_style_instructions: "Professional"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha", highlighted: true }
       - text: "Alpha wing, you're cleared to the Capella corridor. Nav Alpha marks the Meridian's last position. Proceed there, assess the situation, and return when complete. Don't get ambitious out there."
         voice_name: "Kore"
         voice_style_instructions: "Commanding"
         icons:
-          - { icon_type: "Player Fighter Wing", team: "Friendly", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha", highlighted: true }
 
   debriefing:
