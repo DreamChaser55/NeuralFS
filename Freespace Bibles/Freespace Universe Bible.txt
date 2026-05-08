@@ -1831,9 +1831,16 @@ Useful tips:
 FSO engine capabilities:
 - FSO supported mission environments:
   - normal space
-  - dense nebula (reduced visibility and sensor range, can simulate supernova remnant nebula or gas giant atmosphere)
+  - dense nebula
+    - reduced visibility and sensor range
+    - can simulate supernova remnant nebula or gas giant atmosphere
+    - nebula colors (can be combined): blue, cyan, green, red, purple, yellow, orange, black
   - subspace tunnel (space inside inter-system connection)
-  - asteroid or debris field (asteroid fields can be set to actively harass a specific ship, causing damaging impacts unless the incoming rocks are destroyed)
+  - asteroid field
+    - asteroid fields can be set to actively harass a specific ship, causing damaging impacts unless the incoming rocks are destroyed
+  - debris field
+    - types: Terran, Vasudan, Shivan
+    - debris sizes: small, medium, large
 - All ships should be Friendly, Hostile, or Unknown to the player. "Neutral" is not supported in FSO.
 
 Adherence to FreeSpace canon lore:
@@ -1845,7 +1852,7 @@ Adherence to FreeSpace canon lore:
     - shields or lack of them
     - do they have sensors that can target the Shivans or not?
   - Keep in mind important canon events and political changes:
-    - stance towards Vasudans should be different before the arrival of the Shivans, after their arrival and after the official ceasefire
+    - Terran stance towards Vasudans should be different before the arrival of the Shivans, after their arrival and after the official ceasefire
     - at first, the Shivans are just "Unknowns"; they are named and characterized only after the GTA learns more about them
     - Avenger cannon is only issued fleet-wide some time after the arrival of the Shivans; shields are developed and issued even later, after the technology is captured from the Shivans
     - After the Shivan arrival: initial panic, cautious optimism after getting the Avenger, signing the ceasefire and capturing the shield tech, renewed panic and pessimism after encountering the Lucifer
