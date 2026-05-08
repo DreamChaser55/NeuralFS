@@ -67,6 +67,27 @@ class ShipWingChecksMixin:
                 "Depending on the timeline, consider adding the 'Avenger' to the loadout or adding the 'no-shields' flag to all friendly fighters/bombers."
             )
 
+    def _player_starting_wing_ship_names(self) -> Set[str]:
+        """
+        Return the set of ship names that belong to Friendly player starting wings.
+
+        Player starting wings are the wings whose names are in
+        ``fs_data.PLAYER_WING_NAMES`` (Alpha, Beta, Gamma, Delta, Epsilon) and
+        whose first ship has team "Friendly".  These are the only ships for
+        which weapon-compatibility must be checked.
+        """
+        names: Set[str] = set()
+        for wing in self.mission.wings:
+            if wing.name not in fs_data.PLAYER_WING_NAMES:
+                continue
+            if not wing.ships:
+                continue
+            if wing.ships[0].team != 'Friendly':
+                continue
+            for ship in wing.ships:
+                names.add(ship.name)
+        return names
+
     def validate_ships(self):
         """
         Validate ship properties.
@@ -74,11 +95,15 @@ class ShipWingChecksMixin:
         Checks:
         - Validity of ship class and team.
         - Known flags and AI class.
-        - Weapon compatibility (if data available).
+        - Weapon compatibility for Friendly player starting wing ships only
+          (Alpha, Beta, Gamma, Delta, Epsilon).
         - Subsystem validity (if data available).
         - FS1 shield/weapon canon timeline consistency.
         """
         self.validate_fs1_shield_weapon_canon()
+
+        # Collect names of ships that belong to Friendly player starting wings.
+        player_starting_ship_names = self._player_starting_wing_ship_names()
         
         for i, ship in enumerate(self.mission.ships):
             # 1. Class
@@ -114,19 +139,23 @@ class ShipWingChecksMixin:
                 self.log_error(f"Ship '{ship.name}' initial_hull_percent {ship.initial_hull_percent} out of range [0, 100]")
 
             # 4. Weapon Compatibility
-            # Only validate if we have data for this class
+            # Only validate class-level compatibility for ships in Friendly player
+            # starting wings (Alpha, Beta, Gamma, Delta, Epsilon).  FSO only
+            # enforces compatible weapons in the context of the player loadout
+            # screen; incompatible weapons on NPC/non-starting ships are harmless.
             if ship.ship_class in WEAPON_COMPATIBILITY:
                 allowed = WEAPON_COMPATIBILITY[ship.ship_class]
-                
-                # Primary weapons
-                for w_name in ship.weapons.primary:
-                    if w_name and w_name not in allowed['primary']:
-                        self.log_error(f"Ship '{ship.name}' (class {ship.ship_class}) has incompatible primary weapon '{w_name}'. Allowed: {sorted(list(allowed['primary']))}")
-                
-                # Secondary weapons
-                for w_name in ship.weapons.secondary:
-                    if w_name and w_name not in allowed['secondary']:
-                        self.log_error(f"Ship '{ship.name}' (class {ship.ship_class}) has incompatible secondary weapon '{w_name}'. Allowed: {sorted(list(allowed['secondary']))}")
+                is_player_starting_ship = ship.name in player_starting_ship_names
+
+                if is_player_starting_ship:
+                    # Hard error: incompatible weapon in a player-accessible loadout.
+                    for w_name in ship.weapons.primary:
+                        if w_name and w_name not in allowed['primary']:
+                            self.log_error(f"Ship '{ship.name}' (class {ship.ship_class}) has incompatible primary weapon '{w_name}'. Allowed: {sorted(list(allowed['primary']))}")
+
+                    for w_name in ship.weapons.secondary:
+                        if w_name and w_name not in allowed['secondary']:
+                            self.log_error(f"Ship '{ship.name}' (class {ship.ship_class}) has incompatible secondary weapon '{w_name}'. Allowed: {sorted(list(allowed['secondary']))}")
 
             # 5. Subsystems
             # Only validate if we have data for this class

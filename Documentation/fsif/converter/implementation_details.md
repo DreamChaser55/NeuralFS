@@ -172,6 +172,10 @@ The validator checks the following areas:
 #### **Detection of Empty Hardpoints**:
 *   Checks all fighters and bombers for primary/secondary hardpoints with unassigned weapons: checks if the number of specified primary/secondary weapons is different than the number of hardpoints on the ship. Empty hardpoints can cause errors in FSO.
 
+#### **Ship-Weapon Class Compatibility**:
+*   Validates whether each weapon assigned to a player starting wing fighter or bomber is allowed on that ship class, using data extracted directly from the FSO ship tables (`WEAPON_COMPATIBILITY`).
+*   **Scope**: Compatibility is enforced as a **hard error** only for ships that belong to Friendly **player starting wings** — wings named `Alpha`, `Beta`, `Gamma`, `Delta`, or `Epsilon`. These are the only ships whose loadout is exposed to the player via the loadout screen, where FSO enforces compatibility. For all other ships (ships in non-player/NPC wings, standalone NPC ships, or enemy ships), an incompatible weapon assignment is not a problem and is ignored.
+
 #### **Standalone Ship Wing-Name Pattern**:
 *   Warns if a standalone ship (defined in `entities.ships`, not part of any wing) has a name that matches the common Terran wing-member pattern: `<Prefix> <Number>` where *Prefix* is one of **Alpha, Beta, Gamma, Delta, Epsilon** (e.g. `Alpha 1`, `Beta 3`).
 *   This is almost always an authoring mistake — the intended approach is to define a wing via `entities.wings`. The warning is advisory and does not abort conversion.
