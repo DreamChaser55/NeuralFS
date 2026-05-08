@@ -715,8 +715,9 @@ class FS2Writer:
 
         for s in env.suns:
             self._write(f'$Sun: {s.texture}')
-            p, b, h = s.angles
-            self._write(f'+Angles: {p:.6f} {b:.6f} {h:.6f}')
+            p, h = s.angles
+            # Sun sprites are rotationally symmetric; bank is always 0.
+            self._write(f'+Angles: {p:.6f} 0.000000 {h:.6f}')
             self._write(f'+Scale: {s.scale:.6f}')
 
         if suppress_background_bitmaps:

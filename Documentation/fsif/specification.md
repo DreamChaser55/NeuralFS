@@ -25,7 +25,7 @@
   - `ambient_light_level` (List[Integer], required). Format: `[red, green, blue]`, each channel `0..255`.
   - `suns` (List[Mapping], optional, default: `[]`):
     - `texture` (String, required)
-    - `angles` (List[Float], required). Format: `[pitch, bank, heading]`.
+    - `angles` (List[Float], required). Format: `[pitch, heading]`. Bank is omitted because sun sprites are rotationally symmetric.
     - `scale` (Float, optional, default: `1.0`)
   - `background_bitmaps` (List[Mapping], optional, default: `[]`):
     - `texture` (String, required)
@@ -162,7 +162,8 @@
   - Subspace missions: use the `"subspace"` flag.
 2. environment
   - `ambient_light_level` is authored as `[red, green, blue]` with integer channels in range `0..255`.
-  - Angles are ordered as `[pitch, bank, heading]` in radians.
+  - Sun `angles` are ordered as `[pitch, heading]` in radians. Bank is excluded because sun sprites are rotationally symmetric.
+  - Background bitmap `angles` are ordered as `[pitch, bank, heading]` in radians.
   - Only one asteroid/debris field is allowed per mission.
 3. player_setup
   - If the `start_ship` is standalone (not in a wing), its `arrival_cue` must be `"( true )"`.

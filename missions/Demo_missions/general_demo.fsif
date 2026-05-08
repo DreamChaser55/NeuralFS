@@ -11,7 +11,7 @@ mission_info:
 environment:
   ambient_light_level: [5, 5, 5]
   suns:
-    - { texture: SunVega, angles: [0.087266, 0.000000, 2.356194], scale: 1.5 }
+    - { texture: SunVega, angles: [0.087266, 2.356194], scale: 1.5 }
   background_bitmaps:
     - { texture: neb02, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
     - { texture: neb12,  angles: [0.401425, 0.663225, 0.139626], scale: { x: 2.0, y: 4.0 } }

@@ -12,13 +12,14 @@ class EnvironmentChecksMixin:
         for i, s in enumerate(env.suns):
             if s.texture not in self.allowed_suns:
                  self.log_error(f"Invalid sun texture '{s.texture}' in environment.suns[{i}]")
-            # Warn if sun is at [0, 0, 0] — directly in front of the player at default spawn
+            # Warn if sun is at [0, 0] — directly in front of the player at default spawn.
+            # Sun angles are [pitch, heading]; bank is always 0 and is not authored.
             if s.angles and all(abs(a) < 1e-6 for a in s.angles):
                 self.log_warning(
-                    f"environment.suns[{i}] (texture '{s.texture}') has angles [0, 0, 0], "
+                    f"environment.suns[{i}] (texture '{s.texture}') has angles [0, 0], "
                     f"which places the sun directly in front of the player at default spawn "
                     f"orientation. This causes a whiteout blinding effect. "
-                    f"Unless it's intended, set a non-zero angles value (in radians)."
+                    f"Unless it's intended, set a non-zero pitch or heading (in radians)."
                 )
 
         # Background bitmaps

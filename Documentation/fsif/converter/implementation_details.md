@@ -186,7 +186,7 @@ The validator checks the following areas:
 #### **Entities & Environment**:
 *   Checks for valid team names, message priorities, and mission flags.
 *   Validates background bitmaps and nebula patterns.
-*   Warns if any sun in `environment.suns` has `angles: [0, 0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect.
+*   Warns if any sun in `environment.suns` has `angles: [0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect. Sun angles are `[pitch, heading]`; bank is always hardcoded to `0.0` during FS2 emission.
 *   **Sparse background advisory**: warns when a non-subspace, non-full-nebula mission has fewer than 3 nebula bitmaps in `environment.background_bitmaps`. A sky with very few background nebulae looks unusually empty.
 *   **Background bitmaps forbidden in subspace or full-nebula missions**: emits an error if `environment.background_bitmaps` is non-empty when the `subspace` mission flag is set or when `environment.nebula.enabled: true` — background bitmaps are not visible in those contexts.
 *   **Mission scale recommendation**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any authored `arrival_distance` exceeds 20,000 meters, as large mission spaces lead to long travel times. The check is **arrival-method-aware**:

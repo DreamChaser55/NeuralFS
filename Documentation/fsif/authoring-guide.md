@@ -207,10 +207,10 @@ environment:
   ambient_light_level: [0, 0, 0]
   suns:
     - texture: SunWhite
-      angles: [0.000000, 0.000000, 0.000000]
+      angles: [0.000000, 0.000000]
       scale: 1.0
     - texture: SunSiriusA
-      angles: [0.087266, 0.000000, 0.226893]
+      angles: [0.087266, 0.226893]
       scale: 2.5
   background_bitmaps:
     - texture: dneb03
@@ -222,9 +222,10 @@ environment:
 ```
 Notes
 - `ambient_light_level` is authored as `[red, green, blue]`, with each channel in range `0..255`.
-- angles are [pitch, bank, heading] in radians.
+- Sun `angles` are `[pitch, heading]` in radians. Bank is omitted because sun sprites are rotationally symmetric.
+- Background bitmap `angles` are `[pitch, bank, heading]` in radians.
 - **Background richness advisory:** In normal-space missions, try to include at least **3** `background_bitmaps` that use nebula background textures. Missions with fewer than 3 background nebulae often look sparse or empty. This recommendation does **not** apply to full nebula missions or subspace missions, where those background nebulae are not visible.
-- **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view.
+- **Sun angles warning:** Avoid setting any sun's `angles` to `[0.0, 0.0]`. That direction points **directly in front of the player** when they spawn in the default position and orientation. Looking into a sun in FreeSpace produces a full-screen whiteout/blinding effect, which is highly disorienting and nearly always unintentional. Give every sun a non-zero heading or pitch so it is off to the side or above/below the player's forward view.
 - **Maintain background consistency:** If multiple missions in your campaign feature the same star system, background elements (suns, background_bitmaps, ambient light) should be the same or at least similar. Rules for missions that change location within the same star system:
   - Distant nebulae will likely look the same and be in the same positions in the sky.
   - Positions of suns or planet bitmaps could change.

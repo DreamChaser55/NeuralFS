@@ -35,6 +35,41 @@ def _normalize_vector(v: Any) -> List[float]:
         raise ValueError(f"Vector coordinates must be numbers, got: {v!r}") from e
 
 
+def _normalize_sun_angles(v: Any) -> List[float]:
+    """Ensure a 2-element [pitch, heading] float list for sun angles.
+
+    Sun sprites are rotationally symmetric, so bank has no visible effect and
+    is intentionally excluded from the FSIF sun schema. The FS2 writer
+    hardcodes bank to 0.0 when emitting the +Angles line for suns.
+
+    Raises ValueError on any malformed or absent input.
+    """
+    if v is None:
+        raise ValueError(
+            "Sun angles must be a 2-element [pitch, heading] list, got None. "
+            "Bank is omitted because suns are rotationally symmetric."
+        )
+    try:
+        items = list(v)
+    except TypeError:
+        raise ValueError(
+            f"Sun angles must be a 2-element [pitch, heading] list, got: {v!r}. "
+            "Bank is omitted because suns are rotationally symmetric."
+        )
+    if len(items) != 2:
+        raise ValueError(
+            f"Sun angles must be a 2-element [pitch, heading] list, "
+            f"got {len(items)} element(s): {v!r}. "
+            "Bank is omitted because suns are rotationally symmetric."
+        )
+    try:
+        return [float(items[0]), float(items[1])]
+    except (ValueError, TypeError) as e:
+        raise ValueError(
+            f"Sun angle values must be numbers, got: {v!r}"
+        ) from e
+
+
 def _normalize_orientation(v: Any) -> List[float]:
     """Ensure a 9-element float list (3×3 rotation matrix). Raises ValueError on bad input."""
     if v is None:
@@ -525,7 +560,7 @@ class Sun(BaseModel):
     @field_validator('angles', mode='before')
     @classmethod
     def validate_angles(cls, v):
-        return _normalize_vector(v)
+        return _normalize_sun_angles(v)
 
 class XYFloat(BaseModel):
     model_config = ConfigDict(extra='forbid')
