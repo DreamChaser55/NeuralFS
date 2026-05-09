@@ -210,7 +210,10 @@ mission_flow:
         ( when
           ( or
             ( is-event-true-delay "BrahmaTrigger" 90 )
-            ( < ( num-ships-in-wing "Brahma" ) 3 )
+            ( and
+              ( has-arrived-delay 0 "Brahma" )
+              ( < ( num-ships-in-wing "Brahma" ) 3 )
+            )
           )
           ( do-nothing )
         )
