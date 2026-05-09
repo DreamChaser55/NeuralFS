@@ -155,13 +155,13 @@ mission_flow:
           ( validate-goal "DestroyCain" )
         )
 
-    - name: "DestroyCainDirective"
+    - name: "CainDestroyed"
       formula: |
         ( when
           ( is-destroyed-delay 0 "SC Dakini" )
           ( send-message "#Command" "High" "DakiniDestroyed" )
         )
-      hud_directive_text: "Destroy the SC Cain"
+      hud_directive_text: "Destroy the SC Dakini"
 
     - name: "AllHostilesClear"
       formula: |
@@ -173,7 +173,7 @@ mission_flow:
   goals:
     - name: "DestroyCain"
       type: "Primary"
-      objective_text: "Destroy the Shivan Cruiser SC Cain."
+      objective_text: "Destroy the Shivan Cruiser SC Dakini."
       formula: |
         ( is-destroyed-delay 0 "SC Dakini" )
 
