@@ -117,13 +117,13 @@ mission_flow:
         voice_style_instructions: "Foreboding, tense"
 
   events:
-    - name: "Hostiles"
+    - name: "HostilesArrived"
       formula: |
         ( when
           ( has-arrived-delay 0 "Krishna" )
           ( send-message "Alpha 1" "High" "Contact" )
         )
-      hud_directive_text: "Engage Hostiles"
+      hud_directive_text: "Eliminate hostile contacts"
 
     - name: "MissionComplete"
       formula: |
