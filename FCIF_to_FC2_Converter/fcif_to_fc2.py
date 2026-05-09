@@ -84,11 +84,11 @@ class CampaignMission(BaseModel):
             )
         return self
 
-SUPPORTED_FCIF_VERSIONS = {"1.0", "1.1"}
+SUPPORTED_FCIF_VERSIONS = {"1.0"}
 
 class FCIF(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    fcif_version: str = "1.1"
+    fcif_version: str = "1.0"
     
     @field_validator('fcif_version', mode='before')
     @classmethod

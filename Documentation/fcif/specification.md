@@ -3,14 +3,14 @@
 FCIF is a simplified, YAML-based format for defining FreeSpace 2 campaigns. It is designed to be human-readable and easily writable by AI agents, abstracting away the verbose syntax of the legacy `.fc2` format.
 
 ## Version
-Current version: "1.1"
+Current version: "1.0"
 
 ## File Structure
 
 The file consists of three main sections: `campaign`, `starting_loadout`, and `missions`.
 
 ```yaml
-fcif_version: "1.1"
+fcif_version: "1.0"
 
 campaign:
   name: <string>
@@ -88,7 +88,7 @@ In FreeSpace missions, **goals** and **events** are distinct concepts:
 ### Example
 
 ```yaml
-fcif_version: "1.1"
+fcif_version: "1.0"
 missions:
   # Advance if the "Flight Training" goal succeeded
   - filename: btm-01.fs2

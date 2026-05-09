@@ -81,7 +81,7 @@ def capture_logs():
 def _minimal_fcif_dict(**overrides) -> dict:
     """Return a minimal valid FCIF dict, with optional field overrides."""
     base = {
-        "fcif_version": "1.1",
+        "fcif_version": "1.0",
         "campaign": {"name": "Test", "description": "A test campaign"},
         "starting_loadout": {"ships": ["GTF Ulysses"], "weapons": ["ML-16 Laser"]},
         "missions": [{"filename": "m01.fs2"}],
@@ -296,7 +296,7 @@ class TestMultipleAsciiErrors(unittest.TestCase):
         and a mission filename all produce errors in a single ValidationError.
         """
         data = {
-            "fcif_version": "1.1",
+            "fcif_version": "1.0",
             "campaign": {
                 "name": "Caf\u00e9 Wars",           # bad
                 "description": "Normal description",
@@ -374,7 +374,7 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
     def test_non_ascii_campaign_name_returns_false(self):
         """A .fcif file with a non-ASCII campaign name causes process_campaign to return False."""
         yaml_content = yaml.dump({
-            "fcif_version": "1.1",
+            "fcif_version": "1.0",
             "campaign": {"name": "Caf\u00e9", "description": "desc"},
             "starting_loadout": {"ships": [], "weapons": []},
             "missions": [{"filename": "m.fs2"}],
@@ -387,7 +387,7 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
     def test_non_ascii_ship_in_loadout_returns_false(self):
         """A .fcif file with a non-ASCII ship name in starting_loadout returns False."""
         yaml_content = yaml.dump({
-            "fcif_version": "1.1",
+            "fcif_version": "1.0",
             "campaign": {"name": "Camp", "description": "desc"},
             "starting_loadout": {"ships": ["GTF \u00c9lan"], "weapons": []},
             "missions": [{"filename": "m.fs2"}],
@@ -400,7 +400,7 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
     def test_non_ascii_mission_filename_returns_false(self):
         """A .fcif file with a non-ASCII mission filename returns False."""
         yaml_content = yaml.dump({
-            "fcif_version": "1.1",
+            "fcif_version": "1.0",
             "campaign": {"name": "Camp", "description": "desc"},
             "starting_loadout": {"ships": [], "weapons": []},
             "missions": [{"filename": "miss\u00ed\u00f3n.fs2"}],
@@ -413,7 +413,7 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
     def test_non_ascii_success_goal_returns_false(self):
         """A .fcif file with a non-ASCII success_goal returns False."""
         yaml_content = yaml.dump({
-            "fcif_version": "1.1",
+            "fcif_version": "1.0",
             "campaign": {"name": "Camp", "description": "desc"},
             "starting_loadout": {"ships": [], "weapons": []},
             "missions": [{"filename": "m.fs2", "success_goal": "G\u00f3al"}],

@@ -93,7 +93,7 @@ def _minimal_fcif_yaml(ships: list[str], weapons: list[str], missions: list[str]
         
     missions_section = "missions:\n" + "\n".join(f'  - filename: "{m}"' for m in missions)
     
-    return f"""fcif_version: "1.1"
+    return f"""fcif_version: "1.0"
 campaign:
   name: "Test Campaign"
   description: "A test campaign"
@@ -341,7 +341,7 @@ player_setup:
 # Class 2: process_campaign integration
 # ---------------------------------------------------------------------------
 
-_MINIMAL_FCIF_TEMPLATE = """fcif_version: "1.1"
+_MINIMAL_FCIF_TEMPLATE = """fcif_version: "1.0"
 campaign:
   name: "Integration Test Campaign"
   description: "Testing campaign loadout check integration"
