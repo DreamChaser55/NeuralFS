@@ -295,7 +295,7 @@ Wing members are spaced 50 m apart by default (`member_spacing: 50.0`) and the l
 ## Waypoints vs. Nav Buoys
 FSIF `entities.waypoints` are invisible to the player in the actual mission. They do not create a HUD marker, radar contact, targetable object, visible model, or any other in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
 
-If the player needs to rendezvous at a location, fly toward a marker, identify a destination, or otherwise be guided to a point in-game, place an actual navigation buoy ship instead; use the canonical ship class `Terran NavBuoy`.
+If the player needs to rendezvous at a location, fly toward a marker, identify a destination, or otherwise be guided to a point in-game that contains no visible reference object (such as an existing ship or a jump node), place an actual navigation buoy ship instead; use the canonical ship class `Terran NavBuoy`. Do not overuse NavBuoys: you don't need it if there is already another, player-visible object at the location.
 
 Refer to that ship name in briefing text, directives, messages, and SEXPs when the player needs a visible or targetable reference. Do not tell the player to "follow the waypoint" unless there is an actual visible object, such as a Nav Buoy, at that location.
 
