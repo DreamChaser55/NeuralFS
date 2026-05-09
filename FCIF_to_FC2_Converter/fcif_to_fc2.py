@@ -294,14 +294,14 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
             # start_ship
             start_ship = player_setup.get('start_ship')
             
-            # FSIF 4.0: player_setup.additional_ship_choices
+            # player_setup.additional_ship_choices
             additional_ship_choices = player_setup.get('additional_ship_choices', []) or []
             if isinstance(additional_ship_choices, list):
                 for es in additional_ship_choices:
                     if isinstance(es, dict) and 'class' in es:
                         mission_player_ships.add(str(es['class']))
             
-            # FSIF 4.0: player_setup.additional_weapons
+            # player_setup.additional_weapons
             additional_weapons = player_setup.get('additional_weapons', []) or []
             if isinstance(additional_weapons, list):
                 for ew in additional_weapons:

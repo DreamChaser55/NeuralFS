@@ -1098,7 +1098,7 @@ def validate_mission(mission) -> bool:
     total_errors = 0
     
     # Task list: (description, sexp, expected_type, current_subject)
-    #   description    — Human-readable label using FSIF 4.0 field names for user-facing errors.
+    #   description    — Human-readable label using FSIF field names for user-facing errors.
     #   sexp           — The raw SEXP string to validate.
     #   expected_type  — Expected SexpReturnType for the root expression.
     #   current_subject — Ship/wing name to use for AI-goal applicability checks (None if N/A).
@@ -1124,7 +1124,7 @@ def validate_mission(mission) -> bool:
                 None,
             ))
 
-    # Ships — use FSIF 4.0 field names (arrival_cue / departure_cue / initial_orders)
+    # Ships — use FSIF field names (arrival_cue / departure_cue / initial_orders)
     for s in mission.ships:
         if s.arrival_cue:
             tasks.append((
@@ -1151,7 +1151,7 @@ def validate_mission(mission) -> bool:
                 s.name,
             ))
 
-    # Wings — same FSIF 4.0 field names
+    # Wings — same FSIF field names
     for w in mission.wings:
         if w.arrival_cue:
             tasks.append((
@@ -1175,7 +1175,7 @@ def validate_mission(mission) -> bool:
                 w.name,
             ))
 
-    # Debriefing stages — display_condition (FSIF 4.0 field name)
+    # Debriefing stages — display_condition (FSIF field name)
     for i, stage in enumerate(mission.debriefing.stages):
         if stage.display_condition:
             tasks.append((

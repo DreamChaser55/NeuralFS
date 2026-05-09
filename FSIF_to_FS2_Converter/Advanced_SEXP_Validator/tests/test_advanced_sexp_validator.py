@@ -238,7 +238,7 @@ class TestAdvancedSexpValidator(unittest.TestCase):
         self.assertTrue(result)
 
 # =============================================================================
-# Tests for validate_mission diagnostic label naming (FSIF 4.0 field names)
+# Tests for validate_mission diagnostic label naming (FSIF field names)
 # =============================================================================
 
 import logging
@@ -288,7 +288,7 @@ def _make_minimal_mission(ships=None, wings=None):
 
 class TestValidateMissionDiagnosticLabels(unittest.TestCase):
     """
-    Verify that validate_mission() emits FSIF 4.0 field names in its diagnostics,
+    Verify that validate_mission() emits FSIF field names in its diagnostics,
     not the old FSO/FS2 labels (Arrival Cue, Departure Cue, AI Goals).
     """
 

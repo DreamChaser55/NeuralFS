@@ -169,7 +169,7 @@ entities: {}
         self.assertFalse(any("[ERROR]" in m for m in msgs), msgs)
 
     def test_additional_ship_choices_and_weapons_are_checked(self):
-        """FSIF 4.0 additional loadout fields must be included in the campaign check."""
+        """FSIF additional loadout fields must be included in the campaign check."""
         fsif = """
 entities: {}
 player_setup:
