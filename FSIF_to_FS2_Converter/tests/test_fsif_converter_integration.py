@@ -371,9 +371,9 @@ environment:
         This verifies that _validate_version() runs before _validate_fsif_schema()
         in MissionLoader.load().
         """
-        # Combine old fsif_version with several legacy FSIF 3.0 field names
+        # Combine old fsif_version with several legacy FSIF field names
         # that would each generate a Pydantic error if schema validation ran first.
-        fsif_text = """fsif_version: "3.0"
+        fsif_text = """fsif_version: "0.5"
 
 mission_info:
   name: "Old Legacy Mission"
@@ -422,7 +422,7 @@ mission_flow:
         error_msg = str(ctx.exception)
 
         # Must contain the simple version mismatch message
-        self.assertIn("Unsupported fsif_version '3.0'", error_msg)
+        self.assertIn("Unsupported fsif_version '0.5'", error_msg)
         self.assertIn("accepts FSIF version '1.0' only", error_msg)
 
         # Must NOT contain Pydantic schema error markers — version check must
