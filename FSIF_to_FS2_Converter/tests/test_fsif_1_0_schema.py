@@ -127,7 +127,7 @@ class FSIF10SchemaTests(unittest.TestCase):
     # -------------------------------------------------------------------------
 
     def test_rejects_wrong_version_string(self):
-        """Any non-1.0 version string must be rejected with a version mismatch error."""
+        """Current version: "1.0". Any non-1.0 version string must be rejected with a version mismatch error."""
         for bad_version in ("2.0", "3.0", "4.0", "1.1", "0.9"):
             with self.subTest(version=bad_version):
                 fsif_text = MINIMAL_FSIF_1.replace(
