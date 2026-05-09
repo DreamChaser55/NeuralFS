@@ -271,7 +271,10 @@ mission_flow:
     - name: "Msg2"
       formula: |
         ( when
-          ( < ( distance "Aquarius" "Theta 1" ) 2500 )
+          ( and
+            ( has-arrived-delay 0 "Theta 1" )
+            ( < ( distance "Aquarius" "Theta 1" ) 2500 )
+          )
           ( send-message "Alpha 2" "Normal" "M2" )
         )
     - name: "Msg4"

@@ -365,13 +365,19 @@ mission_flow:
     - name: "Msg2"
       formula: |
         ( when
-          ( < ( distance "Asura" "Pod 1" ) 3000 )
+          ( and
+            ( has-arrived-delay 0 "Pod 1" )
+            ( < ( distance "Asura" "Pod 1" ) 3000 )
+          )
           ( send-message "Alpha 2" "High" "M2" )
         )
     - name: "Msg3"
       formula: |
         ( when
-          ( > ( distance "Pod 1" "GTD Amadeus" ) 5000 )
+          ( and
+            ( has-arrived-delay 0 "Pod 1" )
+            ( > ( distance "Pod 1" "GTD Amadeus" ) 5000 )
+          )
           ( send-message "GTD Amadeus" "Normal" "M3" )
         )
     - name: "Msg4"

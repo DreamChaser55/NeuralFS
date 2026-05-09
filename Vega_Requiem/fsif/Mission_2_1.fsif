@@ -220,12 +220,9 @@ entities:
       position: [2000.0, -2000.0, -6000.0]
       arrival_method: "Hyperspace"
       arrival_cue: |
-        ( and
-          ( or
-            ( is-destroyed-delay 0 "Kali" )
-            ( has-time-elapsed 360 )
-          )
+        ( or
           ( is-destroyed-delay 0 "Kali" )
+          ( has-time-elapsed 360 )
         )
       initial_orders: |
         ( ai-chase "GTT Rescue" 89 )

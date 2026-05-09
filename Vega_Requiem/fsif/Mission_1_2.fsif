@@ -367,6 +367,7 @@ mission_flow:
         ( when
           ( and 
              ( has-arrived-delay 0 "Arjuna B" )
+             ( has-arrived-delay 0 "Epsilon Three" )
              ( < ( distance "Arjuna B" "Epsilon Three" ) 2500 )
           )
           ( send-message "Epsilon Three" "High" "Msg5" )
