@@ -288,6 +288,14 @@ The validator checks the following areas:
 #### **Escort Priority Requires `escort` Flag**:
 *   Error if `escort_list_priority > 0` is set on a ship that does not have the `escort` flag. The `+Escort priority` field is only meaningful for escort-flagged ships; setting a non-zero priority without the flag is almost certainly an authoring mistake.
 
+#### **No Escort-Flagged Large Ships**:
+*   Warns when a mission contains ships larger than fighter/bomber scale but **none** of them have the `escort` flag.
+*   In FreeSpace it is customary to add important larger ships (cruisers, destroyers, transports, freighters, science vessels, support ships, etc.) to the HUD escort list so the player can always see their hull integrity. Having zero escort-flagged large ships is unusual and is often an oversight.
+*   **"Larger than fighter/bomber"** is defined as: any ship whose class is **not** in `fs_data.NUM_OF_HARDPOINTS` (the set of all fighter and bomber classes) **and** is not in the small-utility exclusion set (nav buoys, sentry guns, cargo containers, escape pods, training drones).
+*   The check requires **at least one** large ship to carry the `escort` flag. It does not require all large ships to be flagged — only the most important one(s) need to be visible on the HUD.
+*   Having a fighter or bomber with `escort` does **not** satisfy the check; the flag must appear on a large ship.
+*   The warning is advisory and does not abort conversion. If all larger ships in the mission are minor background objects that the player has no gameplay reason to monitor, you may ignore it.
+
 #### **Goals vs. Directives Count**:
 *   Warns when a mission has more `mission_flow.goals` than events with `hud_directive_text`. It is strongly recommended that every important goal has a matching event with a `hud_directive_text` so the player can see the objective on the HUD.
 *   The warning is advisory and does not abort conversion.

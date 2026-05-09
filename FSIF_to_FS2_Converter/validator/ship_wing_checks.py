@@ -7,6 +7,23 @@ try:
 except ImportError:
     WEAPON_COMPATIBILITY = {}
 
+# Ship classes that are small utility objects and should NOT trigger the
+# "no large ship has escort" warning.  These are cargo containers, nav buoys,
+# sentry guns, escape pods, and training drones — objects that the player has
+# no gameplay reason to track on the HUD escort list.
+_SMALL_UTILITY_CLASSES: frozenset = frozenset({
+    # Navigation buoys
+    'Terran NavBuoy',
+    # Sentry guns
+    'GTSG Watchdog', 'GTSG Cerberus', 'PVSG Ankh', 'SSG Trident',
+    # Cargo containers
+    'TC 2', 'TSC 2', 'TAC 1', 'TTC 1', 'VC 3', 'VAC 4', 'SC 5', 'SAC 2',
+    # Escape pods
+    'GTEP Hermes', 'PVEP Ra',
+    # Training drones
+    'GTDr Amazon', 'GTDr Amazon Advanced',
+})
+
 class ShipWingChecksMixin:
     _WING_NAME_PATTERN = re.compile(r'^(' + '|'.join(sorted(fs_data.PLAYER_WING_NAMES)) + r') \d+$')
 
@@ -492,3 +509,63 @@ class ShipWingChecksMixin:
                 f"otherwise define an Alpha/Beta/Gamma/Delta/Epsilon wing and set "
                 f"player_setup.start_ship to one of its members."
             )
+
+    def validate_large_ship_escort_recommendation(self):
+        """
+        Advisory check: warn when the mission contains ships larger than
+        fighter/bomber scale but none of them have the 'escort' flag.
+
+        In FreeSpace, adding important larger ships to the HUD escort list
+        (via the 'escort' ship flag) lets the player monitor their hull
+        integrity at all times.  Having zero escorted ships in a mission that
+        contains cruisers, destroyers, transports, freighters, science vessels,
+        or similar capital/utility vessels is unusual and often an oversight.
+
+        The check uses ``self.num_hardpoints`` (``fs_data.NUM_OF_HARDPOINTS``)
+        as the fighter/bomber classifier: any ship whose class is NOT in that
+        dict is considered "larger than fighter/bomber", minus a set of small
+        utility objects (nav buoys, sentry guns, cargo containers, escape pods,
+        training drones) that have no gameplay relevance for the escort list.
+
+        The warning is advisory and does not abort conversion.
+        """
+        # Collect ships that count as "meaningful large ships" for this check.
+        large_ships = [
+            ship for ship in self.mission.ships
+            if ship.ship_class not in self.num_hardpoints
+            and ship.ship_class not in _SMALL_UTILITY_CLASSES
+        ]
+
+        if not large_ships:
+            # No large ships in the mission — nothing to warn about.
+            return
+
+        if any('escort' in ship.flags for ship in large_ships):
+            # At least one large ship is already on the escort list — OK.
+            return
+
+        # Build a compact summary for the warning message (unique class names,
+        # capped to avoid excessively long output).
+        MAX_LISTED = 8
+        seen_classes: list = []
+        seen_set: set = set()
+        for ship in large_ships:
+            if ship.ship_class not in seen_set:
+                seen_classes.append(ship.ship_class)
+                seen_set.add(ship.ship_class)
+            if len(seen_classes) >= MAX_LISTED:
+                break
+
+        classes_str = ', '.join(seen_classes)
+        if len({s.ship_class for s in large_ships}) > MAX_LISTED:
+            classes_str += ', ...'
+
+        self.log_warning(
+            f"Mission has {len(large_ships)} larger-than-fighter/bomber ship(s) "
+            f"({classes_str}) but none of them have the 'escort' flag. "
+            f"In FreeSpace it is customary to add important larger ships to the "
+            f"HUD escort list so the player can monitor their hull integrity. "
+            f"Consider adding the 'escort' flag to the most important ship(s). "
+            f"If all larger ships in this mission are minor or irrelevant to the "
+            f"player, you may ignore this warning."
+        )

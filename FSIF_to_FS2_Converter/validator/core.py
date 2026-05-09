@@ -137,6 +137,7 @@ class Validator(
         self.validate_ships()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
+        self.validate_large_ship_escort_recommendation()
         self.validate_start_ship()
         self.validate_player_setup()
         self.validate_docking()
