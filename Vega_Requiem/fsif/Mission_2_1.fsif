@@ -156,11 +156,11 @@ entities:
     - name: "SC Ahriman"
       class: "SC Lilith"
       team: "Hostile"
-      position: [4000.0, 0.0, 0.0]
+      position: [9000.0, 0.0, -3000.0]
       arrival_cue: |
         ( true )
       initial_orders: |
-        ( ai-stay-near-ship "GTC Stentor" 89 3000 )
+        ( ai-stay-near-ship "GTC Stentor" 89 7000 )
 
   wings:
     - name: "Alpha"

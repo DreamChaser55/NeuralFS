@@ -385,7 +385,7 @@ mission_flow:
     - name: "Msg6"
       formula: |
         ( when
-          ( < ( hits-left "GTD Amadeus" ) 60 )
+          ( < ( hits-left "GTD Amadeus" ) 38 )
           ( send-message "GTD Amadeus" "Normal" "M6" )
         )
     - name: "Msg7"

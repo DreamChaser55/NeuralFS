@@ -23,8 +23,8 @@ environment:
     num_objects: 30
     average_speed: 1.0
     bounds:
-      min: [-500.0, -500.0, 5500.0]
-      max: [500.0, 500.0, 6500.0]
+      min: [-500.0, -500.0, 5300.0]
+      max: [500.0, 500.0, 6700.0]
     object_variants: ["Terran Debris 1", "Terran Debris 2", "Terran Debris 3"]
 
 player_setup:
@@ -65,20 +65,20 @@ entities:
     - name: "Nav Alpha"
       class: "Terran NavBuoy"
       team: "Friendly"
-      position: [0.0, 0.0, 3500.0]
+      position: [0.0, 0.0, 6000.0]
       arrival_cue: |
         ( true )
     - name: "GTT Meridian"
       class: "GTT Elysium"
       team: "Friendly"
-      position: [0.0, -100.0, 3200.0]
+      position: [0.0, -100.0, 5800.0]
       destroyed_before_mission_seconds: 60
       arrival_cue: |
         ( true )
     - name: "Escape Pod 1"
       class: "GTEP Hermes"
       team: "Friendly"
-      position: [100.0, 0.0, 2800.0]
+      position: [100.0, 0.0, 5600.0]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -86,7 +86,7 @@ entities:
     - name: "Escape Pod 2"
       class: "GTEP Hermes"
       team: "Friendly"
-      position: [-100.0, 50.0, 2900.0]
+      position: [-100.0, 50.0, 5700.0]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -239,7 +239,10 @@ mission_flow:
     - name: "SurviveMsgEvent"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+          ( and
+            ( has-arrived-delay 0 "Vishnu" )
+            ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+          )
           ( allow-ship "GTF Valkyrie" )
         )
       hud_directive_text: "Alpha 1: Return to Jump Point"
@@ -298,6 +301,7 @@ mission_flow:
       formula: |
         ( when
           ( and
+            ( has-arrived-delay 0 "Vishnu" )
             ( < ( distance "Alpha 1" "Jump Point" ) 4000 )
             ( not ( is-destroyed-delay 0 "Escape Pod 1" ) )
             ( not ( is-destroyed-delay 0 "Escape Pod 2" ) )
@@ -309,13 +313,19 @@ mission_flow:
     - name: "Msg9"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "Jump Point" ) 2000 )
+          ( and
+            ( has-arrived-delay 0 "Vishnu" )
+            ( < ( distance "Alpha 1" "Jump Point" ) 2000 )
+          )
           ( send-message "#Command" "Normal" "M9" )
         )
     - name: "Msg10"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+          ( and
+            ( has-arrived-delay 0 "Vishnu" )
+            ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+          )
           ( send-message "Alpha 2" "Normal" "M10" )
         )
 
@@ -324,7 +334,10 @@ mission_flow:
       type: "Primary"
       objective_text: "Alpha 1 returns to Jump Point."
       formula: |
-        ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+        ( and
+          ( has-arrived-delay 0 "Vishnu" )
+          ( < ( distance "Alpha 1" "Jump Point" ) 500 )
+        )
     - name: "Save Pods"
       type: "Secondary"
       objective_text: "Both escape pods survive to Jump Point."
