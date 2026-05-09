@@ -59,8 +59,7 @@ Subspace missions: Author "subspace" in mission_info.flags to mark a mission as 
 
 Versioning:
 - The converter currently emits `$Version: 23.1` in `#Mission Info`. This is the FSO version NeuralFS was developed against.
-- **FSIF input support:** the converter accepts FSIF version `"4.0"` only.
-  - Files authored against older FSIF versions must be updated before conversion; see the FSIF Migration Guide.
+- **FSIF input support:** the converter accepts FSIF version `"1.0"` only.
 
 ---
 
@@ -354,7 +353,7 @@ Notes
 
 ## Arrival/Departure emission order
 
-> **Label note:** The labels used in this section (e.g. `$Arrival Cue`, `$Departure Cue`, `$AI Goals`) are the literal `.fs2` output labels. The parenthesised names are the corresponding FSIF 4.0 authoring fields. Authors edit FSIF fields; the converter translates them to FS2 labels.
+> **Label note:** The labels used in this section (e.g. `$Arrival Cue`, `$Departure Cue`, `$AI Goals`) are the literal `.fs2` output labels. The parenthesised names are the corresponding FSIF authoring fields. Authors edit FSIF fields; the converter translates them to FS2 labels.
 
 Ships (#Objects)
 - Arrival emission order:

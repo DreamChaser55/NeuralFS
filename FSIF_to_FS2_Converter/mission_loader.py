@@ -113,19 +113,18 @@ class MissionLoader:
         """
         Validate the 'fsif_version' field.
         
-        Currently accepted FSIF version: '4.0'.
+        Currently accepted FSIF version: '1.0'.
         
         Raises:
             ValueError: If 'fsif_version' is missing, malformed, or unsupported.
         """
         version_str = self.data.get('fsif_version')
         if not isinstance(version_str, str) or not version_str.strip():
-            raise ValueError("fsif_version is required and must be the exact string '4.0'.")
+            raise ValueError("fsif_version is required and must be the exact string '1.0'.")
         version_str = version_str.strip()
-        if version_str != '4.0':
+        if version_str != '1.0':
             raise ValueError(
-                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '4.0' only. "
-                f"Please update your mission file (see Migration Guide)."
+                f"Unsupported fsif_version '{version_str}'. The current converter accepts FSIF version '1.0' only."
             )
         self.fsif_version = version_str
 
@@ -208,9 +207,6 @@ class MissionLoader:
             env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
-        # FSIF 4.0 uses the authored field names object_type and behavior.
-        # Legacy FSIF 3.0 names (genre, type, debris_types, targets) are rejected
-        # by deep Pydantic validation (AsteroidFieldInput) in _read_yaml().
         #   Authored FSIF key  -> internal AsteroidField field
         #   object_type        -> object_type  ('asteroid' | 'debris')
         #   behavior           -> behavior     ('active'   | 'passive')
@@ -230,7 +226,7 @@ class MissionLoader:
                 if 'min' in b: af_src['min_vec'] = b['min']
                 if 'max' in b: af_src['max_vec'] = b['max']
 
-            # Write normalised strings back using the FSIF 4.0 field names.
+            # Write normalised strings back.
             af_src['object_type'] = object_type
             af_src['behavior'] = behavior
 
@@ -313,10 +309,10 @@ class MissionLoader:
 
     def _normalize_initial_orders(self, entity_name: str, raw_orders_str: str) -> str:
         """
-        Validates and wraps AI goals (initial_orders in FSIF 4.0).
+        Validates and wraps AI goals (initial_orders).
         """
         goals_raw = str(raw_orders_str).strip()
-        # FSIF 2.2: Reject explicit ( goals ... ) wrapper
+        # Reject explicit ( goals ... ) wrapper; FSIF expects bare SEXP operators
         cleaned = '\n'.join([line.split(';')[0] for line in goals_raw.splitlines()]).strip()
         if cleaned:
             if cleaned.startswith('( goals') or cleaned.startswith('(goals'):
@@ -350,8 +346,6 @@ class MissionLoader:
         
         template_base = self.templates[tmpl_name]
         
-        if wing_data.get('formation_pos') is not None:
-             raise ValueError(f"Wing '{wing_data.get('name')}' uses deprecated 'formation_pos'. Use 'position'.")
         if 'position' not in wing_data:
              raise ValueError(f"Wing '{wing_data.get('name')}' must define 'position: [x, y, z]'.")
 
@@ -362,7 +356,7 @@ class MissionLoader:
         except (ValueError, IndexError, TypeError):
              raise ValueError(f"Wing '{wing_data.get('name')}' has invalid position format. Expected [x, y, z].")
 
-        # Validate and wrap initial_orders (FSIF 4.0)
+        # Validate and wrap initial_orders
         orders_key = 'initial_orders' if 'initial_orders' in wing_data else None
         if orders_key:
             wing_data[orders_key] = self._normalize_initial_orders(
@@ -436,7 +430,7 @@ class MissionLoader:
             props['docker_point'] = dock_src.get('docker_point')
             props['dockee_point'] = dock_src.get('dockee_point')
 
-        # Validate and wrap initial_orders (FSIF 4.0)
+        # Validate and wrap initial_orders
         orders_key = 'initial_orders' if 'initial_orders' in props else None
         if orders_key:
             props[orders_key] = self._normalize_initial_orders(
@@ -476,7 +470,6 @@ class MissionLoader:
         messages = [Message(**m) for m in flow.get('messages', [])]
         
         # Briefing
-        # FSIF 4.0 icon fields: icon_type, display_class, map_position.
         briefing_raw = flow.get('briefing', {})
         for st in briefing_raw.get('stages', []):
              new_icons = []

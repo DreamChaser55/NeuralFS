@@ -25,8 +25,8 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Advanced SEXP validation
 
 ## Versions
-- **Current FSIF version**: 4.0
-- **FSIF version support**: the converter accepts FSIF **4.0** only.
+- **Current FSIF version**: 1.0
+- **FSIF version support**: the converter accepts FSIF **1.0** only.
 
 ## Requirements
 - Python 3.9+

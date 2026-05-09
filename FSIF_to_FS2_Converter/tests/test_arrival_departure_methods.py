@@ -38,7 +38,7 @@ from pydantic import ValidationError
 # ---------------------------------------------------------------------------
 
 _MINIMAL_FSIF_TEMPLATE = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 
 mission_info:
   name: "Method Test Mission"
@@ -72,7 +72,7 @@ environment:
 """
 
 _MINIMAL_FSIF_WING_TEMPLATE = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 
 mission_info:
   name: "Wing Method Test Mission"

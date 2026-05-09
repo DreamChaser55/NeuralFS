@@ -21,7 +21,7 @@ Main README file: ../README.md
   - Minimal skeletons, common patterns, do/don't, pitfalls
   - Curated examples
 - Migration Guide: ./fsif/migration-guide.md
-  - Breaking changes and notable additions with before/after snippets
+  - FSIF 1.0 is the initial public release; no migration steps required
 
 ## FSIF Converter Docs
 - README.md: ../FSIF_to_FS2_Converter/README.md

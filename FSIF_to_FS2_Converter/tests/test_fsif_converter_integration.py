@@ -359,7 +359,7 @@ environment:
             with self.assertRaises(ValueError) as ctx:
                 load_mission_from_fsif(str(fsif_path))
 
-        self.assertIn("accepts FSIF version '4.0' only", str(ctx.exception))
+        self.assertIn("accepts FSIF version '1.0' only", str(ctx.exception))
 
     def test_old_version_fsif_fails_with_version_error_not_pydantic_wall(self):
         """
@@ -423,7 +423,7 @@ mission_flow:
 
         # Must contain the simple version mismatch message
         self.assertIn("Unsupported fsif_version '3.0'", error_msg)
-        self.assertIn("accepts FSIF version '4.0' only", error_msg)
+        self.assertIn("accepts FSIF version '1.0' only", error_msg)
 
         # Must NOT contain Pydantic schema error markers — version check must
         # have fired before the schema validator had a chance to run.
@@ -433,7 +433,7 @@ mission_flow:
                          "Schema validation ran before version check — legacy field names triggered Pydantic errors.")
 
     def test_loader_rejects_packed_ambient_light_in_fsif_27(self):
-        fsif_text = """fsif_version: \"4.0\"
+        fsif_text = """fsif_version: \"1.0\"
 
 mission_info:
   name: "Invalid Ambient"
@@ -470,7 +470,7 @@ environment:
 
     def test_validator_rejects_invalid_ai_orders_and_goals(self):
         fsif_text = """
-fsif_version: "4.0"
+fsif_version: "1.0"
 mission_info:
   name: "Invalid Orders Demo"
 player_setup:
@@ -511,7 +511,7 @@ environment:
             self.assertFalse(is_valid, "Expected advanced SEXP validation to fail due to invalid player order and invalid cruiser goal.")
 
     def test_loader_rejects_arrival_delay_in_ship_template(self):
-        fsif_text = """fsif_version: "4.0"
+        fsif_text = """fsif_version: "1.0"
 
 mission_info:
   name: "Invalid Template Arrival Delay"
@@ -702,7 +702,7 @@ class VoiceManagerTesting(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 _MINIMAL_NEBULA_FSIF_TEMPLATE = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 mission_info:
   name: "Nebula Pattern Test"
 environment:
@@ -821,7 +821,7 @@ class NebulaPatternTesting(unittest.TestCase):
     def test_writer_neb2_absent_when_nebula_disabled(self):
         """When nebula.enabled is false, +Neb2 must not appear in the output."""
         fsif_text = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 mission_info:
   name: "No Nebula"
 environment:
@@ -1139,7 +1139,7 @@ class SunAnglesTesting(unittest.TestCase):
     def test_fsif_sun_two_angle_roundtrip(self):
         """FSIF with 2-value sun angles must load correctly and produce valid FS2."""
         fsif_text = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 mission_info:
   name: "Sun Roundtrip"
 environment:
@@ -1197,7 +1197,7 @@ mission_flow: {}
     def test_fsif_three_value_sun_angles_rejected(self):
         """FSIF with old 3-value sun angles must be rejected by the loader."""
         fsif_text = """\
-fsif_version: "4.0"
+fsif_version: "1.0"
 mission_info:
   name: "Bad Sun"
 environment:

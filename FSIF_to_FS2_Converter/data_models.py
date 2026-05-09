@@ -164,15 +164,15 @@ def _validate_departure_method_token(v: Any) -> str:
 
 
 # =============================================================================
-# --- Authored FSIF 4.0 Input Schema (strict Pydantic pre-validation) ---
+# --- Authored FSIF Input Schema (strict Pydantic pre-validation) ---
 # =============================================================================
 #
-# These models validate the raw YAML content against the FSIF 4.0 authored
+# These models validate the raw YAML content against the current FSIF authored
 # schema BEFORE any loader normalization (template merging, wing expansion,
 # bounds -> min_vec/max_vec, dock block -> docked_with/etc.).
 #
-# All models use extra='forbid' so that legacy FSIF 3.0 field names and any
-# other unknown keys are rejected before the loader processes the document.
+# All models use extra='forbid' so any unknown keys are rejected before the
+# loader processes the document.
 #
 # Key differences from the runtime models below:
 #   - No internal fields (docked_with / docker_point / dockee_point on ships).
@@ -504,11 +504,11 @@ class AudioSettingsInput(BaseModel):
 
 
 class FSIFDocument(BaseModel):
-    """Deep strict-validation model for the raw FSIF 4.0 document.
+    """Deep strict-validation model for the raw FSIF document.
     
     Used in mission_loader._read_yaml() immediately after YAML parsing.
-    All nested sections use extra='forbid' so unknown/legacy FSIF 3.0 keys
-    are caught before any loader normalization runs.
+    All nested sections use extra='forbid' so any unknown keys are caught
+    before any loader normalization runs.
     
     This model is used solely for validation — the loader continues to work
     with the raw dict. Do not add loader-specific internal fields here.
@@ -678,7 +678,7 @@ class BriefingIcon(BaseModel):
     @field_validator('map_position', mode='before')
     @classmethod
     def validate_map_position(cls, v):
-        # FSIF 4.0: Icons are on XZ plane. Input [x, z] ONLY.
+        # Icons are on XZ plane. Input [x, z] ONLY.
         # Normalized to [x, 0.0, z] for internal use.
         if not v:
             return [0.0, 0.0, 0.0]

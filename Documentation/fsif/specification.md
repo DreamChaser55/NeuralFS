@@ -1,7 +1,7 @@
 # FSIF Specification
 
 ## Status
-- FSIF version: 4.0 (current)
+- FSIF version: 1.0 (current)
 - Scope: Field shapes, required/optional keys, defaults, constraints. This is the canonical contract for authoring FSIF.
 - Not in scope: Converter implementation details, extended examples/tutorials, exhaustive FSO operator catalogs.
 - This file is the single source of truth for FSIF. Non-normative details will remain in the Authoring Guide and Converter Implementation Details.
@@ -12,7 +12,7 @@
 
 ## FSIF document structure
 
-- `fsif_version` (String, required): Must be `"4.0"`.
+- `fsif_version` (String, required): Must be `"1.0"`.
 - `mission_info` (Mapping, required):
   - `name` (String, required)
   - `author` (String, optional, default: `"FSIF Converter"`)

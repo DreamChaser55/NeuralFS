@@ -32,7 +32,7 @@ from fs2_writer import FS2Writer
 # Helpers
 # ---------------------------------------------------------------------------
 
-MINIMAL_FSIF_TEMPLATE = """fsif_version: "4.0"
+MINIMAL_FSIF_TEMPLATE = """fsif_version: "1.0"
 mission_info:
   name: "Asteroid Field Test"
 environment:
