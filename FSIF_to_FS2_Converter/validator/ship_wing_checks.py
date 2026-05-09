@@ -438,31 +438,57 @@ class ShipWingChecksMixin:
     def validate_start_ship(self):
         """
         Validate the player start ship configuration.
-        
+
         Ensures:
         - Start ship exists.
         - If standalone, it has arrival_cue '( true )'.
+        - Emits a warning if the start ship is not a member of a Friendly player
+          starting wing (Alpha, Beta, Gamma, Delta, or Epsilon), since that is the
+          most common and most fully supported authoring pattern in FreeSpace.
         """
         start_name = self.mission.player_setup.start_ship
         if not start_name:
             self.log_error("player_setup.start_ship is undefined.")
             return
-        
+
         # Check if ship exists
         ship = next((s for s in self.mission.ships if s.name == start_name), None)
         if not ship:
             self.log_error(f"Player start ship '{start_name}' not found in entities.")
             return
-            
-        # Check if standalone (not part of a wing)
-        in_wing = False
+
+        # Find the wing (if any) that contains the start ship.
+        start_wing = None
         for w in self.mission.wings:
             if any(s.name == start_name for s in w.ships):
-                in_wing = True
+                start_wing = w
                 break
-        
+
+        in_wing = start_wing is not None
+
         if not in_wing:
             # Standalone must have arrival_cue true
             cue = "".join(ship.arrival_cue.split()).lower()
             if cue != '(true)':
                 self.log_error(f"Player start ship '{start_name}' (standalone) must have arrival_cue '( true )'.")
+
+        # Warn when the player is not a member of a Friendly player starting wing
+        # (Alpha, Beta, Gamma, Delta, or Epsilon).  Non-leader positions such as
+        # Alpha 2 or Beta 3 are fully valid and do not trigger this warning.
+        is_in_friendly_player_starting_wing = (
+            start_wing is not None
+            and start_wing.name in fs_data.PLAYER_WING_NAMES
+            and bool(start_wing.ships)
+            and start_wing.ships[0].team == 'Friendly'
+        )
+
+        if not is_in_friendly_player_starting_wing:
+            self.log_warning(
+                f"Player start ship '{start_name}' is not a member of a Friendly player starting wing "
+                f"(Alpha, Beta, Gamma, Delta, or Epsilon). "
+                f"Most FreeSpace missions place the player in one of these standard wings (e.g. Alpha 1 or Alpha 2). "
+                f"A non-standard player start limits weapon-pool calculation, loadout-screen behavior, "
+                f"and wingman availability. If this is intentional, ignore this warning; "
+                f"otherwise define an Alpha/Beta/Gamma/Delta/Epsilon wing and set "
+                f"player_setup.start_ship to one of its members."
+            )

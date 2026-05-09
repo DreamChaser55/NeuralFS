@@ -180,6 +180,15 @@ The validator checks the following areas:
 *   Warns if a standalone ship (defined in `entities.ships`, not part of any wing) has a name that matches the common Terran wing-member pattern: `<Prefix> <Number>` where *Prefix* is one of **Alpha, Beta, Gamma, Delta, Epsilon** (e.g. `Alpha 1`, `Beta 3`).
 *   This is almost always an authoring mistake — the intended approach is to define a wing via `entities.wings`. The warning is advisory and does not abort conversion.
 
+#### **Player Not in Friendly Player Starting Wing**:
+*   Warns when `player_setup.start_ship` is **not a member** of a Friendly player starting wing (a wing named `Alpha`, `Beta`, `Gamma`, `Delta`, or `Epsilon` whose first ship has team `Friendly`).
+*   Non-leader positions are fully supported: `Alpha 2`, `Beta 3`, etc. do **not** trigger this warning.
+*   Non-standard player starts (standalone ships or ships in other wings) technically work, but have significant side effects:
+    *   The automatic **weapon pool calculation** in `write_player_setup()` only processes ships in Friendly player starting wings — a non-standard start may result in an incomplete weaponry pool.
+    *   The FSO **loadout screen** only allows swapping ships within Alpha–Epsilon; other wings cannot be modified by the player pre-mission.
+    *   **Wingman availability** is tied to Alpha–Epsilon; players in other wings may not receive appropriate wingman commands.
+*   The warning is advisory and does not abort conversion. If a non-standard player start is intentional (e.g., for a training mission or a special cutscene ship), it can safely be ignored.
+
 #### **Reinforcements**:
 *   Ensures all referenced ships and wings in `reinforcement_ships`/`reinforcement_wings` actually exist in the mission.
 
