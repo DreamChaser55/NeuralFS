@@ -369,11 +369,11 @@ mission_flow:
             "#Command" "High" "ZealotWarningMsg" 3500
           )
         )
-    - name: "DisarmCain"
+    - name: "CainWeaponsDown"
       formula: |
         ( when
           ( is-subsystem-destroyed-delay "SC Vinayaka" "weapons" 0 )
-          ( send-message "#Command" "Normal" "CainDisarmedMsg" )
+          ( send-message "#Command" "Normal" "CainWeaponsDownMsg" )
         )
       hud_directive_text: "Destroy the weapons subsystem on SC Vinayaka"
     - name: "ConvoySafe"
@@ -444,7 +444,7 @@ mission_flow:
       objective_text: "Scan the Shivan transport."
       formula: |
         ( is-cargo-known-delay 0 "SFr Mahishi" )
-    - name: "DisarmBlockade"
+    - name: "DestroyCainWeapons"
       type: "Secondary"
       objective_text: "Destroy the weapons subsystem of the Shivan cruiser."
       formula: |
@@ -476,14 +476,14 @@ mission_flow:
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent warning"
     - name: "CainArrivedMsg"
-      text: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to cover the convoy!"
+      text: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to neutralize the threat!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked command"
     - name: "ZealotWarningMsg"
       text: "Warning, a Shivan fighter has locked on a collision course with the Dauntless! Stop that kamikaze!"
       voice_name: "Alnilam"
       voice_style_instructions: "Panicked warning"
-    - name: "CainDisarmedMsg"
+    - name: "CainWeaponsDownMsg"
       text: "The Cain's weapons are down! Excellent work!"
       voice_name: "Alnilam"
       voice_style_instructions: "Relieved"
