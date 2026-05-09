@@ -721,10 +721,13 @@ Use this section as a practical sanity guide: each item describes the preferred 
 - Check that goal formulas are not already true at mission start unless that is explicitly intended.
 - Events with `hud_directive_text` must use simple, directly-evaluable conditions. Do **not** use `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` in the formula of an event that has a `hud_directive_text`. The engine cannot initially evaluate whether such an event could ever become true, so the grey "pending" directive is never shown on the HUD. Use direct object-state checks (e.g., `is-destroyed-delay`, `has-arrived-delay`) instead.
 
-### Docking and reinforcements
+### Docking
 - Pre-spawn docking is for pairs only. Author docking only on the docker ship, as described in the dedicated Docking section above.
 - Do not involve the player start ship in pre-spawn docking.
 - Keep docking leadership coherent: the dockee should be the arrival leader with `arrival_cue: ( true )`, and the docker should use `arrival_cue: ( false )`. If this is wrong, the pair may fail to dock correctly or separate on arrival.
+- Do not confuse docking (used to connect two ships; uses dockpoint names) with the `Docking Bay` arrival/departure method (which is used to spawn a new ship from another ship or make an existing ship depart into another ship; uses the "fighterbay" subsystem names).
+
+### Reinforcements
 - Keep reinforcements callable by not giving them a blocking `arrival_cue`. Reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `arrival_cue: ( true )`.
 
 ### Collision checks for waypoint paths
@@ -732,6 +735,9 @@ Use this section as a practical sanity guide: each item describes the preferred 
 
 ### Red alert missions
 - Missions with the `red_alert` flag inherit player ship (hull integrity and loadout) from the previous mission (they represent a mission that begins immediately after the previous mission ends). The briefing view shows only the first briefing stage text with no icons. If you want to carry more ships between missions, use the `red_alert_carry` flag on them (in both missions).
+
+### Distance checks
+- If your event SEXPs use distance check triggers, verify that they will not be triggered prematurely. Visalize the triggering object's initial location and predicted movement, then make sure it will not be in range of the trigger immediately at mission start, or come into range before the trigger should actually fire. Premature triggering of events with distance conditions is a common source of errors.
 
 ### Final review before conversion
 After completing a mission file, do one deliberate review pass and confirm that:
