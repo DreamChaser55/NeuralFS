@@ -56,12 +56,14 @@ entities:
       class: "GTI Arcadia"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
     - name: "GTC Stentor"
       class: "GTC Fenris"
       team: "Friendly"
       position: [0.0, 0.0, 3000.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -127,6 +129,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [-100.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTI Vega Prime"
       arrival_cue: |
@@ -140,6 +143,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [-100.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTI Vega Prime"
       arrival_cue: |
@@ -153,6 +157,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [-100.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTI Vega Prime"
       arrival_cue: |
@@ -166,6 +171,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [-100.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTI Vega Prime"
       arrival_cue: |
@@ -199,6 +205,7 @@ entities:
       class: "SC Cain"
       team: "Hostile"
       position: [0.0, 0.0, 12000.0]
+      flags: ["escort"]
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( has-time-elapsed 390 )

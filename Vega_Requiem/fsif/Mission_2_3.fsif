@@ -67,6 +67,7 @@ entities:
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
       initial_hull_percent: 55
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -91,6 +92,7 @@ entities:
       class: "GTFr Chronos"
       team: "Friendly"
       position: [0.0, 0.0, -500.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -103,6 +105,7 @@ entities:
       class: "GTFr Chronos"
       team: "Friendly"
       position: [0.0, 0.0, -1000.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -115,6 +118,7 @@ entities:
       class: "GTFr Chronos"
       team: "Friendly"
       position: [0.0, 0.0, -1500.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -127,6 +131,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, 0.0, -2000.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -139,6 +144,7 @@ entities:
       class: "PVT Isis"
       team: "Friendly"
       position: [0.0, 0.0, -2500.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       departure_method: "Hyperspace"
@@ -151,6 +157,7 @@ entities:
       class: "SC Cain"
       team: "Hostile"
       position: [2000.0, 0.0, 7000.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |

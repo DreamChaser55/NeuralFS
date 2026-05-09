@@ -72,6 +72,7 @@ entities:
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
       initial_hull_percent: 40
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -80,6 +81,7 @@ entities:
       class: "SC Lilith"
       team: "Hostile"
       position: [0.0, -2000.0, -7500.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -96,6 +98,7 @@ entities:
       class: "GTFr Chronos"
       team: "Friendly"
       position: [-500.0, 100.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       arrival_cue: |
@@ -123,6 +126,7 @@ entities:
       class: "GTEP Hermes"
       team: "Friendly"
       position: [100.0, 0.0, 0.0]
+      flags: ["escort"]
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       arrival_cue: |
