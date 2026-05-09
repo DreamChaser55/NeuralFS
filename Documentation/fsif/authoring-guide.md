@@ -148,16 +148,9 @@ environment:
     bounds:
       min: [-2500.0, -1500.0, -2500.0]
       max: [2500.0, 1500.0, 2500.0]
-    object_variants: ["Brown", "Blue", "Orange"]   # can be any subset; omit for all three
+    object_variants: ["Brown", "Blue", "Orange"]   # any subset of the three canonical asteroid variant names; omit for all three (default)
     target_ships: ["GTC Fenris 1", "GTFr Poseidon 1"]   # active fields only
 ```
-
-Valid `object_variants` for asteroid fields:
-- `"Brown"` — brown asteroid visuals
-- `"Blue"` — blue asteroid visuals
-- `"Orange"` — orange asteroid visuals
-
-Default: all three.
 
 ### Debris field
 
@@ -173,7 +166,7 @@ environment:
     bounds:
       min: [-1000.0, -1000.0, -1000.0]
       max: [1000.0, 1000.0, 1000.0]
-    object_variants:            # any subset of the nine canonical debris names; omit for all nine
+    object_variants:            # any subset of the nine canonical debris variant names; omit for all nine (default)
       - "Terran Debris 1"
       - "Terran Debris 2"
       - "Terran Debris 3"
@@ -184,13 +177,6 @@ environment:
       - "Shivan Debris 2"
       - "Shivan Debris 3"
 ```
-
-Valid `object_variants` for debris fields:
-- `"Terran Debris 1"`, `"Terran Debris 2"`, `"Terran Debris 3"`
-- `"Vasudan Debris 1"`, `"Vasudan Debris 2"`, `"Vasudan Debris 3"`
-- `"Shivan Debris 1"`, `"Shivan Debris 2"`, `"Shivan Debris 3"`
-
-Default: all nine.
 
 ### Authoring rules
 
