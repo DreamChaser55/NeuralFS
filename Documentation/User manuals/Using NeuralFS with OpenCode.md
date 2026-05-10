@@ -12,7 +12,7 @@ This guide will walk you through the campaign creation process with NeuralFS usi
 Note: Using AI for this phase is optional. If you prefer to write your own Campaign Bible and mission design documents, you can skip this phase and proceed to the next one.
 
 ## Phase 2: FSIF and FCIF Writing and Converting
-1. Start a new OpenCode session. Use the **Tab** key to switch to the "FSIF+FCIF Writing Agent".
+1. Start a new OpenCode session to clear the context window. Use the **Tab** key to switch to the "FSIF+FCIF Writing Agent".
 2. Reference the campaign folder created by the creative writing agent using an `@` mention and ask the agent to write the FSIF and FCIF files based on the existing documents.
 3. Send the prompt and wait until the agent finishes its work. When it is done, there should be:
    - A new `/fsif/` folder inside your campaign folder, containing the `.fsif` files and converted `.fs2` files for all the missions.
