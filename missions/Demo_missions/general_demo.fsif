@@ -69,13 +69,6 @@ entities:
         secondary: ["Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan", "Tsunami#Shivan"]
 
   ships:
-    - name: "Nav Buoy"
-      class: "Terran NavBuoy"
-      team: "Friendly"
-      position: [800.0, 0.0, 800.0]
-      arrival_cue: |
-        ( true )
-
     - name: "GTC Dauntless"
       class: "GTC Leviathan"
       team: "Friendly"
@@ -153,8 +146,6 @@ entities:
       arrival_method: "Hyperspace"
       arrival_cue: |
         ( is-event-true-delay "BlockadeArrival" 0 )
-      initial_orders: |
-        ( ai-stay-still "Nav Buoy" 89 )
 
     - name: "Zealot 1"
       class: "SF Manticore"
