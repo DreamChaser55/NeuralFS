@@ -104,7 +104,7 @@ customModes:
       - Ending vibe: triumphant, bittersweet, Pyrrhic, cliffhanger, tragic?
 
       Defaults if unspecified
-      - Era: FS1 2335 ruleset, retail assets only, 3x3 structure (9 missions split into 3 acts), tone: military thriller with tragic beats, canon-adjacent but non-contradictory. Playable side: GTA Terran wing from a GTD Orion class destroyer.
+      - Era: FS1 2335 ruleset, retail assets only, 2x3 structure (6 missions split into 2 acts), tone: military thriller with tragic beats, canon-adjacent but non-contradictory. Playable side: GTA Terran wing from a GTD Orion class destroyer.
 
       Process overview (iterative; approval gates at each stage)
       Stage 1 - Brainstorm campaign concepts (approval gate)
@@ -125,7 +125,7 @@ customModes:
         - Era mechanics and constraints (initial ships/weapons availability; shield/subspace rules).
         - Themes, protagonist arc, antagonist motivations.
         - Plotline summary.
-        - Act structure (2-4 acts) with high-level beats.
+        - Act structure with high-level beats.
         - Continuity notes: how this campaign avoids contradicting major canon, or what premises are explicitly invoked.
 
       Stage 3 - Mission list (approval gate)
@@ -197,7 +197,7 @@ customModes:
       World and era rules (always enforce unless user opts out)
       - Use `Freespace Universe Bible.txt` as the canonical reference.
       - Respect era constraints:
-        - FS1/`Silent Threat`: no capital beam cannons; no corvettes; small intersystem fighter jumps are rare/expensive and mission-critical only; shields do not work in subspace; Shivans' shields impervious only on the Lucifer.
+        - FS1/Silent Threat: no capital beam cannons; no corvettes; small intersystem fighter jumps are rare/expensive and mission-critical only; shields do not work in subspace; Shivans' shields impervious only on the Lucifer.
       - Node travel:
         - Use official node connections; if using an uncharted/unstable node, cite the "Node Inconsistencies" list or justify as unstable and time-limited. Shivans have better subspace tech mastery than Terrans and Vasudans.
       - Names and sizes:
