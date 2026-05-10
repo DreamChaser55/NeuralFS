@@ -86,6 +86,7 @@ Read the manual for your chosen agentic AI engine:
   - Briefing icon placement is simplified and uses a top-down 2D grid with automatic camera placement.
   - Event chaining is not supported.
   - Branched campaigns are not supported.
+- I don't recommend creating campaigns longer than around 8 missions: this results in excessive token consumption and fills a large fraction of the agents' context windows, which reduces their intelligence. I recommend 6 missions as the default length.
 
 ## Example missions
 - `missions/Demo_missions/` — Demo missions (FSIF feature showcase).
