@@ -1808,7 +1808,8 @@ Scale, navigation, and pacing:
 - Maximum speed of fighters is about 80 m/s, much lower for larger ships.
 - Keep mission points of interest under about 20 km apart whenever possible; 10 km is already a long flight for the player and much longer for larger ships.
 - If a slow convoy must cross several kilometers, fill the travel time with meaningful beats: enemy waves, scans, docking, repairs, asteroid hazards, or radio chatter.
-- If the player needs an in-game destination, use a visible ship, jump node, or a navigation buoy (`Terran NavBuoy` ship class); FSO waypoints are hidden to the player and should be used for AI paths and logic checks, not player guidance.
+- FSO waypoints are hidden to the player and should not be used for in-game player guidance, only for AI paths and logic checks. If you need to guide the player to a specific point in space, it should probably have something interesting visible on radar, such as a ship, a station or a jump node.
+- in nebula missions where visibility is limited, you can use a visible navigation buoy (`Terran NavBuoy` or `Vasudan NavBuoy` ship class) for player guidance and to mark important in-game destinations. Keep in mind that the NavBuoys will not be visible on radar beyond the nebula sensor range limit.
 
 Simple event logic:
 - Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker or finishing a waypoint path.
