@@ -66,6 +66,22 @@ class CampaignMission(BaseModel):
     failure_goal: Optional[AsciiStr] = None
     failure_event: Optional[AsciiStr] = None
 
+    @field_validator('filename')
+    @classmethod
+    def validate_filename(cls, v: str) -> str:
+        """Reject filenames that contain path separators or lack the .fs2 extension."""
+        if '/' in v or '\\' in v:
+            raise ValueError(
+                f"Mission filename must be only the bare mission file name, such as 'missionname.fs2'; "
+                f"it must not contain path separators ('/' or '\\'). Found: '{v}'. "
+            )
+        if not v.lower().endswith('.fs2'):
+            raise ValueError(
+                f"Mission filename must end with the '.fs2' extension. Found: '{v}'. "
+                f"Example of a correct value: 'missionname.fs2'."
+            )
+        return v
+
     @model_validator(mode='after')
     def check_mutual_exclusivity(self) -> 'CampaignMission':
         """Ensure at most one advance condition field is set per mission."""

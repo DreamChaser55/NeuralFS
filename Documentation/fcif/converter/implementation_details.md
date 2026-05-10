@@ -13,6 +13,16 @@ The campaign type is always `single` (hardcoded by the converter).
 
 The converter always emits `+Flags: 0` and an empty `+Main Hall:` for every mission.
 
+### Mission Filename Validation
+
+The `filename` field on each `CampaignMission` entry is validated by a Pydantic `@field_validator` that enforces two constraints, checked in order:
+
+1. **No path separators**: The filename must not contain `/` or `\`. If either character is present the validator raises a `ValueError` with a message that includes the phrase `path separators` and shows the offending value. This catches a common AI agent mistake of writing `fsif/missionname.fs2` instead of `missionname.fs2`.
+
+2. **`.fs2` extension required**: After the path-separator check passes, the filename must end with `.fs2` (case-insensitive). If it does not, the validator raises a `ValueError` whose message includes `.fs2` and shows a correct-usage example.
+
+Both violations are fatal: `load_fcif()` catches the resulting `ValidationError` and logs `[ERROR] Validation Error: ...`, after which `process_campaign()` returns `False` and the converter exits non-zero.
+
 ## Logic Generation
 
 The converter translates the linear list into `.fc2` S-expression logic.

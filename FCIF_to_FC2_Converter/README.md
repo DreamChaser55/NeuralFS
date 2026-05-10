@@ -8,6 +8,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Concise YAML syntax for campaign definition
 - Pydantic-based schema validation with strict field checking
 - Checks that all text fields use ASCII characters only
+- Validates that each `missions[*].filename` is a bare `.fs2` filename with no path separators (`/` or `\`)
 - Automatic S-Expression (SEXP) logic generation for mission progression (conditional and unconditional branching)
 - Localization of the campaign description via XSTR
 - Linear campaign progression with optional per-mission advance conditions

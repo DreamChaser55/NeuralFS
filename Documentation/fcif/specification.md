@@ -52,7 +52,7 @@ Important: any ship or weapon used in the campaign must be either listed here or
 ### Missions Section
 An ordered list of missions. The order of entries determines campaign progression.
 
-- **filename**: The filename of the mission (e.g., `m01.fs2`). Must include the extension.
+- **filename**: The bare `.fs2` filename of the mission file (e.g., `m01.fs2`). **Must end with the `.fs2` extension** and **must not contain any path separators** (`/` or `\`). Only the plain filename is allowed — no directory components. For example: writing `fsif/missionname.fs2` instead of just `missionname.fs2` is a mistake. The converter enforces both constraints as a fatal error.
 
 #### Advance Condition Fields
 
