@@ -38,4 +38,4 @@ FCIF Demo:
 
 The campaign you will be working on is in the <write_campaign_folder_name_here> folder.
 
-Read the `/<campaign_folder>/Campaign_Bible.txt`. Read the mission design docs in `/<campaign_folder>/Detailed_Mission_Design_Documents` folder. Proceed to add text styling tags into the fiction viewer files, then write the FSIF and FCIF files according to the provided instructions.
+Read the `/<campaign_folder>/Campaign_Bible.txt`. Read the mission design docs in `/<campaign_folder>/Detailed_Mission_Design_Documents` folder. Proceed to add text styling tags into the fiction viewer files, then write the FSIF and FCIF files according to the provided instructions (using the "Plan first, then implement" workflow).

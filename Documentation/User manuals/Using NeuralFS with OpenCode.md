@@ -15,6 +15,7 @@ Note: Using AI for this phase is optional. If you prefer to write your own Campa
 1. Start a new OpenCode session to clear the context window. Use the **Tab** key to switch to the "FSIF+FCIF Writing Agent".
 2. Reference the campaign folder created by the creative writing agent using an `@` mention and ask the agent to write the FSIF and FCIF files based on the existing documents.
 3. Send the prompt and wait until the agent finishes its work. When it is done, there should be:
+   - A new `/plans/` folder inside your campaign folder, containing one per-mission implementation plan `.md` file per mission.
    - A new `/fsif/` folder inside your campaign folder, containing the `.fsif` files and converted `.fs2` files for all the missions.
    - A `.fcif` campaign definition file and a converted `.fc2` campaign file inside your campaign folder.
 
