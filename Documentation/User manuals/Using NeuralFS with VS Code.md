@@ -15,7 +15,7 @@ Note: Using AI for this phase is optional. If you prefer to write your own Campa
 ## Phase 2: FSIF and FCIF Writing and Converting
 1. Start a new task in Roo Code. Switch the interaction mode to "FSIF+FCIF Writing Agent".
 2. Copy the initial prompt from `VS Code prompts/fsif+fcif writing agent.txt` and paste it into Roo Code.
-3. Replace the `<campaign_folder>` placeholder in the prompt with the name of the campaign folder created by the creative writing agent.
+3. Replace the `<write_campaign_folder_name_here>` placeholder in the prompt with the name of the campaign folder created by the creative writing agent.
 4. Send the prompt and wait until the agent finishes its work. When it is done, there should be:
    - A new `/fsif/` folder inside your campaign folder, containing the `.fsif` files and converted `.fs2` files for all the missions.
    - A `.fcif` campaign definition file and a converted `.fc2` campaign file inside your campaign folder.
