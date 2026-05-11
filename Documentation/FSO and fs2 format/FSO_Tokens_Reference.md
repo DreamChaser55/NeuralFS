@@ -82,6 +82,8 @@ Context: `send-message`, `send-random-message`, `send-message-list`.
 - `"<any unknown>"`
 - `"#Command"`
 
+Author these literals exactly as shown — including the angle brackets in the `<any ...>` selectors and the leading `#` in `"#Command"`. Do not omit or substitute these characters.
+
 Valid contexts: `send-message` sender, general SEXP entity lists, `arrival_anchor`.
 
 ## Flags catalog

@@ -562,7 +562,7 @@ Note: This rule does not apply to SEXP fields. Some SEXP tokens need to be wrapp
 ### Consult SEXP Documentation
 Always check the documentation in `Documentation/FSO SEXPs/` for the exact signature of any SEXP construct you intend to use. Pay close attention to:
 - **Operator Names:** Ensure exact spelling (e.g. use valid `ai-guard`, not non-existent `ai-guard-ship`).
-- **Argument Types:** Verify all arguments. Does the SEXP expect a Ship Name, Wing Name, or both? Do not pass a wing name to a ship-only SEXP (e.g., `is-cargo-known-delay`).
+  - **Argument Types:** Verify all arguments. Does the SEXP expect a Ship Name, Wing Name, or both? Do not pass a wing name to a ship-only SEXP (e.g., `is-cargo-known-delay`). If you need to cover a whole wing with a ship-only SEXP, either use a wing-compatible alternative operator or list all individual ships explicitly.
   - **Priorities:** Most AI goals require a priority argument (0-200). Omitting it causes crashes.
   - **Argument order:** Verify that all arguments are in the correct order.
 
