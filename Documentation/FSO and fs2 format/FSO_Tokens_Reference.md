@@ -2,16 +2,18 @@
 
 ## Scope
 - Single source of truth for valid FSO tokens: flags, enumerations, literals, and canonical spellings.
+- For FSIF field schema and constraints, see `../fsif/specification.md`.
+- For SEXP operator signatures and full catalogs, see `../FSO SEXPs/INDEX.md`.
 
 ## Guidance on Token Usage
-- Exact token spelling is required when authoring FSIF missions. All tokens (enums, flags, AI class names, goal types, SEXP operator names, wildcard literals like `"<any friendly player>"`, music file names, background/sun/planet textures, etc.) must be authored exactly as shown. Unknown or misspelled tokens will cause errors.
-- Always use canonical tokens as listed here and in the FSIF spec. Do not vary case.
-- Do / Don't (examples):
+- Exact token spelling is required. All tokens must be authored exactly as shown — unknown or misspelled tokens cause errors.
+- Do not vary case.
+- Do / Don't examples:
   - Do: `"<any friendly player>"`   Don't: `"<any player>"`, `"<any Friendly Player>"`
   - Do: `"High"`                    Don't: `"high"`
   - Do: `"ai-guard-wing"`           Don't: `"ai_guard_wing"`
-- Token length limit: Custom tokens used inside SEXPs (such as ship, message, or event names) must be shorter than 30 characters to avoid errors. To keep custom names short and minimize the risk of hitting the length limit, we recommend using CamelCase for custom token strings such as event, goal, and message names (e.g., `AmbushWarning`, `ScanComplete`) instead of using spaces or underscores.
-- Special selectors like `"<any wingman>"` and `"<any friendly player>"` should be treated as ordinary quoted strings in SEXPs; do not escape the angle brackets specially.
+- Token length limit: Custom tokens (ship, message, event names, etc.) must be shorter than 30 characters. Prefer CamelCase for custom event/goal/message names (e.g., `AmbushWarning`, `ScanComplete`) to keep tokens shorter by avoiding spaces or underscores.
+- Special selectors like `"<any wingman>"` and `"<any friendly player>"` are ordinary quoted strings; do not escape the angle brackets.
 
 ## Related reference files
 - Ship classes: ./spacecraft-classes.md
@@ -27,7 +29,7 @@
 - Unknown
 
 **Note on "Neutral" IFF team:**
-The FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second hostile faction and attacks the player. Because this behavior is misleading and redundant, FSIF does not support the "Neutral" team. Use `"Friendly"`, `"Hostile"`, or `"Unknown"` for all ships, objects, and briefing icons.
+The FSO engine theoretically supports a "Neutral" IFF team, but its implementation is broken — it essentially acts as a second hostile faction and attacks the player. FSIF does not support the "Neutral" team. Use `"Friendly"`, `"Hostile"`, or `"Unknown"` for all ships, objects, and briefing icons.
 
 Context: `team`.
 
@@ -36,12 +38,11 @@ Context: `team`.
 #### Arrival and Departure
 - Hyperspace
 - Docking Bay
-  - must have a ship as docking bay anchor (`arrival_anchor` / `departure_anchor`)
-  - `arrival_distance` is forced to `0` with Docking Bay and should be omitted.
+  - requires a ship as `arrival_anchor` / `departure_anchor`
+  - `arrival_distance` is forced to `0` and should be omitted.
 
-Context: FSIF `arrival_method`, `departure_method`
-
-#### Arrival-only
+#### Arrival-only (directional)
+All of these require both `arrival_distance` and a ship `arrival_anchor`.
 - Near Ship
 - In front of ship
 - In back of ship
@@ -51,19 +52,13 @@ Context: FSIF `arrival_method`, `departure_method`
 - To right of ship
 
 Context: FSIF `arrival_method`.
-Requires `arrival_distance` and a ship `arrival_anchor`.
 
 ### Message priorities
 - "Low"
 - "Normal"
 - "High"
 
-Context: send-message, send-random-message, send-message-list.
-
-Examples:
-    send-message "#Command" "Low" "Msg"
-    send-message "#Command" "Normal" "Msg"
-    send-message "#Command" "High" "Msg"
+Context: `send-message`, `send-random-message`, `send-message-list`.
 
 ### AI Class values (worst→best)
 - Coward
@@ -73,8 +68,6 @@ Examples:
 - Colonel
 - General
 
-Example: ai_class: "Captain"
-
 ### Goal types
 - Primary
 - Secondary
@@ -82,36 +75,24 @@ Example: ai_class: "Captain"
 
 ## Wildcards and special literals
 
-Literals:
-- "<any wingman>"
-- "<any friendly player>"
-- "<any friendly>"
-- "<any hostile>"
-- "<any unknown>"
-- "#Command"
+- `"<any wingman>"`
+- `"<any friendly player>"`
+- `"<any friendly>"`
+- `"<any hostile>"`
+- `"<any unknown>"`
+- `"#Command"`
 
-Valid contexts:
-- send-message sender
-- general SEXP entity lists
-- arrival anchor
-
-Examples:
-- (send-message "<any wingman>" "High" "Ambush_warning")
-- (send-message "#Command" "High" "Tactical_update")
-- arrival_anchor: "<any friendly player>"
-- arrival_anchor: "<any friendly>"
-- arrival_anchor: "<any hostile>"
+Valid contexts: `send-message` sender, general SEXP entity lists, `arrival_anchor`.
 
 ## Flags catalog
 
-This section lists a subset of canonical flags that are generally useful for mission authors. A complete catalog of flags, including less commonly used, debug, and special flags, is available in the converter documentation.
+This section lists a subset of canonical flags generally useful for mission authors. A complete catalog is available in the converter documentation.
 
 ### Mission flags (`mission_info.flags`)
-These tokens specify various mission properties and behaviors.
 
 *   `subspace` — Mission takes place in subspace
 *   `no_promotion` — Cannot get promoted or badges in this mission
-*   `fullneb` — Mission is a full nebula mission (flag set when environment.nebula.enabled is true)
+*   `fullneb` — Mission is a full nebula mission (auto-injected when environment.nebula.enabled is true; do not author manually)
 *   `no_builtin_msgs` — Disables builtin msgs
 *   `no_traitor` — Player cannot become a traitor
 *   `toggle_ship_trails` — Toggles ship trails (off in nebula, on outside nebula)
@@ -128,22 +109,21 @@ These tokens specify various mission properties and behaviors.
 *   `preload_subspace` — Preload the subspace tunnel for both the sexp and specs checkbox (for scripts)
 
 ### Ship flags (`entities.ships[*].flags`)
-These tokens specify various ship properties and behaviors.
 
 *   `cargo-known` — Ship's cargo is revealed to all friendly ships
 *   `ignore-count` — Ignore this ship when counting ship types for goals
 *   `protect-ship` — No AI-controlled ship will attack this ship
-*   `reinforcement` — This ship is a reinforcement ship (Note: explicit usage of this flag is deprecated. Reinforcement ships are authored only via `reinforcement_ships` list)
+*   `reinforcement` — (Deprecated; use `reinforcement_ships` list instead)
 *   `no-shields` — Disables shields for this ship
-*   `escort` — This ship is an escorted ship (shown in the HUD escort overview table)
+*   `escort` — Ship shown in the HUD escort overview table
 *   `no-arrival-music` — Don't play arrival music when ship arrives
 *   `invulnerable` — Ship cannot be damaged
 *   `hidden-from-sensors` — Ship doesn't show up on sensors, blinks in/out on radar
-*   `scannable` — Ship is "scannable". Play scan effect and report as "Scanned" or "not scanned". If your mission scenario demands scanning the ship, you must set this flag
+*   `scannable` — Ship is "scannable". Play scan effect and report as "Scanned" or "not scanned". Required if your mission demands scanning the ship.
 *   `kamikaze` — AI behavior: kamikaze
 *   `no-dynamic` — AI behavior: no dynamic goals
 *   `red-alert-carry` — Ship status should be stored/restored if red alert mission
-*   `guardian` — A guardianed ship cannot die, but it can take damage and have subsystems destroyed. This makes it much less obvious (compared to `invulnerable`) that a mission designer is keeping a ship alive artificially. At 1% hull a guardianed ship will take no further damage to the hull, but subsystems may still be killed.
+*   `guardian` — Ship cannot die (hull stuck at 1%), but can take damage and have subsystems destroyed
 *   `special-warp` — Ship arrives via Knossos subspace node
 *   `stealth` — Is this particular ship stealth
 *   `friendly-stealth-invisible` — When stealth, don't appear on radar even if friendly
@@ -173,7 +153,7 @@ These tokens specify various ship properties and behaviors.
 *   `attackable-if-no-collide` — Prevents turrets from ignoring this ship even if it has `no_collide` set
 *   `fail-sound-locked-primary` — Plays fail sound when firing with locked weapons (primary)
 *   `fail-sound-locked-secondary` — Plays fail sound when firing with locked weapons (secondary)
-*   `aspect-immune` — Ship cannot be locked onto by aspect seeking weapons (secondaries like Interceptor, Hornet)
+*   `aspect-immune` — Ship cannot be locked onto by aspect seeking weapons
 *   `cannot-perform-scan` — Ship cannot scan other ships
 *   `no-targeting-limits` — Ship is always targetable regardless of AWACS or targeting range limits
 *   `primitive-sensors` — Primitive sensor display
@@ -216,7 +196,7 @@ Ancillary per-ship fields frequently seen with flags:
 
 ### Wing flags (`entities.wings[*].flags`)
 
-*   `reinforcement` — Is this wing a reinforcement wing (Note: explicit usage of this flag is deprecated. Reinforcement wings are authored only via `reinforcement_wings` list)
+*   `reinforcement` — (Deprecated; use `reinforcement_wings` list instead)
 *   `no-arrival-music` — Don't play arrival music when wing arrives
 *   `no-arrival-message` — Don't play any arrival message
 *   `ignore-count` — Ignore all ships in this wing for goal counting purposes
@@ -227,166 +207,60 @@ Ancillary per-ship fields frequently seen with flags:
 *   `no-first-wave-message` — Don't play arrival message for the first wave
 *   `waypoints-no-formation` — Wing will not try to form up when running a waypoint together
 
-## Contextual parameters (FSIF fields)
-
-### Arrival and departure (ships and wings)
-These fields are authored in `entities.ships` and `entities.wings`.
-
-- `arrival_method`: Arrival method/location token.
-  - Values: "Hyperspace", "Docking Bay" (requires `arrival_anchor`), "Near Ship", "In front of ship", "In back of ship", "Above ship", "Below ship", "To left of ship", "To right of ship".
-  - Directional locations (all except Hyperspace) require `arrival_distance` and `arrival_anchor`.
-- `arrival_distance`: Distance in meters (Integer). Should be 0 for Docking Bay.
-- `arrival_anchor`: Anchor entity literal or wildcard.
-  - Examples: "MyShip", "MyWing", "<any friendly player>", "Docking bay 1" (if docking).
-- `arrival_delay`: Integer delay before arrival (seconds).
-- `arrival_cue`: SEXP controlling arrival (Boolean expression).
-- `departure_method`: Departure method/location token.
-  - Values: "Hyperspace", "Docking Bay".
-- `departure_anchor`: Anchor for Docking Bay departure. Must be a docking bay.
-- `departure_delay`: Integer delay before departure (seconds).
-- `departure_cue`: SEXP controlling departure (Boolean expression).
+## Tokens by context
 
 ### Waypoints and Jump Nodes
 
-#### Waypoints (`entities.waypoints`)
-Waypoints are authored as a mapping of path names to a list of [x,y,z] coordinates. They are invisible to the player and used only for AI-controlled ship paths and internal SEXP references.
+**Waypoints** (`entities.waypoints`): invisible AI/logic references. Path name is the YAML key; point reference in SEXPs is `"PathName:N"` (1-based index).
 
-- Path Name (Map Key): Literal string (e.g. "Alpha Patrol").
-- Point reference in SEXPs: "PathName:N" (1-based index).
-  - Example: "Alpha Patrol:1" refers to the first point in the path "Alpha Patrol".
+**Jump Nodes** (`entities.jump_nodes`): visible to the player. Fields: `name`, `position`.
 
-**Important:** FSIF waypoints do not create HUD markers, radar contacts, targetable objects, or any visible in-game navigation cue. They cannot be used to guide the player. If the player needs a visible rendezvous marker or navigation reference, author an actual Nav Buoy ship (`class: "Terran NavBuoy"`).
-
-#### Jump Nodes (`entities.jump_nodes`)
-Jump nodes are authored as a list of objects. They are visible to the player.
-- `name`: Node display name (e.g. "Delta Serpentis Jump Node").
-- `position`: [x, y, z] coordinates.
-
-### Messages (`mission_flow.messages`)
-Messages are authored as a list of objects.
-- `name`: Message identifier (referenced by `send-message` SEXP).
-- `text`: Localized text payload (displayed to player).
-- `voice_name`: Google TTS voice identifier (e.g. "Wavenet-A").
-
-Note: Message `name` is referenced by `send-message` SEXP; sender strings in SEXPs may be ships, wildcards like "<any wingman>", or "#Command".
-
-### SEXP Operators quick-reference (token-relevant subset only)
-- For full SEXP documentation by category, see "/Documentation/FSO SEXPs/INDEX.md".
-
-Selected SEXP tokens/literals:
-- `has-arrived-delay`
-  - Boolean operator. Becomes true `<delay>` seconds after the specified ship(s) or wing(s) have arrived.
-  - Parameters: `Delay` (seconds), `Ship/Wing` (one or more).
-- `depart-node-delay`
-  - Boolean operator. Becomes true `<delay>` seconds after specified ships depart within the radius of a specific jump node.
-  - Parameters: `Delay` (seconds), `Jump Node Name`, `Ship` (one or more).
-- `mission-time`
-  - Time operator. Returns the current mission time in seconds.
-  - Parameters: None.
-- `has-time-elapsed`
-  - Boolean operator. Becomes true when the mission time is greater than or equal to the specified time.
-  - Parameters: `Time` (seconds).
-- `is-iff`
-  - Boolean operator. True if all specified ship(s) or wing(s) are of the specified team.
-  - Parameters: `Team` ("Friendly", "Hostile", "Unknown"), `Ship/Wing` (one or more).
-- `distance`
-  - Numeric operator. Returns the distance between two objects (ships, wings, or waypoints).
-  - Parameters: `Object 1`, `Object 2`.
-- `send-message`
-  - Action operator. Sends a message to the player from a specific sender.
-  - Parameters: `Sender` (Ship name, "#Command", "<any wingman>"), `Priority` ("High", "Normal", "Low"), `Message Name`.
-- `send-message-list`
-  - Action operator. Sends a sequence of messages with delays (accumulated).
-  - Parameters: Repeating groups of 4: `Sender`, `Priority`, `Message Name`, `Delay` (milliseconds).
-- `when`
-  - Conditional operator. Performs a list of actions when a boolean condition becomes true. Standard top-level operator for Events.
-  - Parameters: `Condition` (Boolean expression), `Action` (one or more).
-- `ai-chase-any`
-  - AI Goal operator. Causes the ship to chase and attack any ship on the opposite team.
-  - Parameters: `Priority` (0-89 for AI, 90+ for player orders), `Afterburn` (optional boolean).
-
-Additional important notes:
-- 0-delay frame-lag: For a delay of 0 (evaluated in-mission), event/goal "...-true-delay" and "...-false-delay" become true on the frame after the underlying state changes, due to mission log update ordering. See /Documentation/FSO SEXPs/Event-Goals.txt.
-- Wing variants: Many ai-* goals have wing-target variants (e.g., ai-guard-wing).
-- AI Goals applicability: Some AI Goals are only valid for fighters/bombers, others are only valid for bigger ships.
-- Variadic arguments: Many operators accept one-or-more entities (ships/wings). Both singular and list forms are valid.
-- Debriefing: debriefing condition uses SEXPs.
-
-### Parameter types observed in SEXPs
-
-Entity name
-    Ship/wing literal (e.g., "Alpha 1", "GTD Bastion", "Krishna", "Omega") or wildcards ("<any friendly>", "<any hostile>", "<any wingman>")
-Waypoint path name
-    Literal (e.g., "Waypoint path 3")
-Waypoint point literal
-    "Waypoint path N:M"
-Jump Node Name
-    Literal (e.g., "Delta Serpentis Jump Node")
-Goal Name
-    Literal name from goals or event names
-Event Name
-    Literal name assigned to events
-Priority Integer
-    Integer (e.g., 89, 50, 40)
-Seconds Integer
-    Integer seconds (0+)
-Percent Integer
-    Integer percent
-Weapon/Class Name
-    For tech unlock SEXPs
-Subsystem Name
-    "engine", "communication", "navigation", "weapons", "sensors", turret01, turret02, etc.
-    See per-ship canonical lists for exact names (including turrets): ./Ship subsystems/terran-ships-subsystem-names.md, ./Ship subsystems/vasudan-ships-subsystem-names.md, ./Ship subsystems/shivan-ships-subsystem-names.md.
-Boolean
-	'(true)' or '(false)'
-
-Note: any literal names in SEXPs must be shorter than 30 characters.
-
-### Example patterns
+### SEXP example patterns
 
 #### Arrival anchored to any friendly player (wing)
-(In `entities.wings`)
+```yaml
 name: Arjuna
 arrival_method: In front of ship
 arrival_distance: 1500
-arrival_anchor: <any friendly player>
-arrival_cue: ( is-event-true-delay "Cargo is blowin' up" 12 )
+arrival_anchor: "<any friendly player>"
+arrival_cue: |
+  ( is-event-true-delay "Cargo is blowin' up" 12 )
+```
 
 #### Messaging from wildcard wingman
+```lisp
 (when
    (has-arrived-delay 4 "Tantalus")
    (send-message "<any wingman>" "High" "It looks like an ambush")
 )
+```
 
 #### Unlock tech and allow weapon
+```lisp
 (when
    (true)
    (allow-weapon "Avenger")
    (tech-add-weapons "Avenger")
    (tech-add-ships "SF Manticore" "SF Scorpion" "SB Shaitan" "SC 5" "SAC 2" "SC Cain" "SSG Trident")
 )
+```
 
 #### Protect/unprotect runtime
+```lisp
 (when
    (has-arrived-delay 6 "Arjuna")
    (send-message "#Command" "High" "Trap alert!")
    (protect-ship "Alpha 1")
    (invalidate-goal "Destroy Sentries")
 )
+```
 
-(when
-   (true)
-   (send-message "#Command" "High" "new orders 3")
-   (validate-goal "Investigate Remaining Cargo")
-   (unprotect-ship "Alpha 4")
-)
-
-#### Percent destroyed and departed
+#### Percent destroyed / departed
+```lisp
 (when
    (percent-ships-destroyed 100 "Cain" "Abel")
    (send-message "#Command" "High" "Abel dead")
 )
-
 (when
    (percent-ships-departed 66
       "Kappa 4" "Kappa 5" "Kappa 6" "Kappa 9" "Kappa 10" "Kappa 11"
@@ -394,20 +268,44 @@ arrival_cue: ( is-event-true-delay "Cargo is blowin' up" 12 )
    )
    (has-arrived-delay 0 "Mecross")
 )
+```
 
-### Weapons
-- Primary Banks (lasers):
-  - Terran: ML-16 Laser, Disruptor, D-Advanced, Avenger, Flail, Prometheus, Banshee, Training
-  - Vasudan: Vasudan Light Laser
-  - Shivan: Shivan Light Laser, Shivan Heavy Laser, Shivan Mega Laser, Shivan Uber Laser
+### SEXP parameter types quick reference
+For detailed operator signatures, see `../FSO SEXPs/INDEX.md`.
 
-- Secondary Banks (missiles):
-  - Terran: MX-50, Fury, Interceptor, Hornet, Phoenix V, D-Missile, Synaptic, Stiletto, Tsunami, Harbinger
-  - Vasudan: Enemy MX-50, Fang, Barracuda
-  - Shivan: MX-50#Shivan, Fury#Shivan, Interceptor#Shivan, Hornet#Shivan, Phoenix V#Shivan, D-Missile#Shivan, Synaptic#Shivan, Stiletto#Shivan, Tsunami#Shivan, Harbinger#Shivan, Unknown Bomb, Unknown Megabomb
+| Type | Example |
+|---|---|
+| Entity name | `"Alpha 1"`, `"GTD Bastion"`, `"<any wingman>"` |
+| Waypoint path name | `"Alpha Patrol"` |
+| Waypoint point | `"Alpha Patrol:1"` |
+| Jump Node name | `"Delta Serpentis Jump Node"` |
+| Goal/Event name | Literal name from goals/events |
+| Priority integer | `89`, `50`, `40` |
+| Seconds integer | `0`, `5`, `30` |
+| Subsystem name | `"engine"`, `"communication"`, `"turret01"` |
+| Boolean | `( true )`, `( false )` |
 
-### Background Bitmaps
-- Nebulae (the letter 'd' denotes “dark” variants). Grouped by colors:
+Additional notes:
+- 0-delay frame-lag: `"...-true-delay"` and `"...-false-delay"` become true on the frame **after** the state changes due to mission log ordering. See `../FSO SEXPs/Event-Goals.txt`.
+- Wing variants: many `ai-*` goals have wing-target variants (e.g., `ai-guard-wing`).
+- AI Goals applicability: some goals are fighter/bomber-only; others are large-ship-only. See the spec for the large-ship list.
+
+## Weapons
+
+### Primary Banks (lasers)
+- Terran: ML-16 Laser, Disruptor, D-Advanced, Avenger, Flail, Prometheus, Banshee, Training
+- Vasudan: Vasudan Light Laser
+- Shivan: Shivan Light Laser, Shivan Heavy Laser, Shivan Mega Laser, Shivan Uber Laser
+
+### Secondary Banks (missiles)
+- Terran: MX-50, Fury, Interceptor, Hornet, Phoenix V, D-Missile, Synaptic, Stiletto, Tsunami, Harbinger
+- Vasudan: Enemy MX-50, Fang, Barracuda
+- Shivan: MX-50#Shivan, Fury#Shivan, Interceptor#Shivan, Hornet#Shivan, Phoenix V#Shivan, D-Missile#Shivan, Synaptic#Shivan, Stiletto#Shivan, Tsunami#Shivan, Harbinger#Shivan, Unknown Bomb, Unknown Megabomb
+
+CAUTION: Use the weapon name token in full, **without** lore prefixes (write `ML-16 Laser`, not `GTW ML-16 Laser`).
+
+## Background Bitmaps
+- Nebulae (the letter 'd' denotes "dark" variants). Grouped by colors:
   - Red: dneb01, dneb02, dneb03, dneb12, dneb18, neb01, neb02, neb03, neb12, neb18
   - Green: dneb04, dneb05, dneb06, neb04, neb05, neb06
   - Grey: dneb06, dneb13, neb06, neb13
@@ -419,71 +317,34 @@ Capella1, Capella1-1, Capella1-1b, Capella1b, Capella2, Capella2-1, Capella2-1b,
 - Suns:
 SunAdharaA, SunAdharaB, SunAlbireoAa, SunAlbireoAb, SunAlbireoB, SunAldebaranA, SunAldebaranB, SunAlphaAquilae, SunAlphaCentauriA, SunAlphaCentauriB, SunAlphaCrucisAa, SunAlphaCrucisAb, SunAlphardA, SunAlphardB, SunAntaresB, SunBetaAquilaeA, SunBetaAquilaeBa, SunBetaAquilaeBb, SunBetaHydri, SunBetelgeuse, SunBlue, SunCapellaA, SunCapellaB, SunCapellaC, SunDeltaSerpentis, SunGammaDraconis, SunGold, SunGreen, SunMintakaB, SunMintakaCa, SunMintakaCb, SunMirfak, SunNaos, SunPhiEridaniA, SunPhiEridaniB, SunPolarisAa, SunPolarisAb, SunPolarisB, SunProcyonA, SunProcyonB, SunRed, SunSiriusA, SunSiriusB, SunSol, SunVega, SunViolet, SunWhite
 
-### Music
-- Note: use the literals exactly as written here, including the initial "<number>: " string
+## Music
+Note: use the literals exactly as written here, including the initial "<number>: " string.
 
-#### Mission Music:
-None
-1: Genesis
-2: Exodus
-3: Leviticus
-4: Numbers
-5: Deuteronomy
-6: Joshua
-7: Revelation
-FS1-1: Fortress
-FS1-2: March
-FS1-3: Chaser
-FS1-4: Worlds Apart
-FS1-5: Spook
-FS1-6: Haunted
-FS1-7: Marauder
-FS1-8: Strike
-FS1-9: Monolith
-FS1-10: Darkside
+### Mission Music
+None, 1: Genesis, 2: Exodus, 3: Leviticus, 4: Numbers, 5: Deuteronomy, 6: Joshua, 7: Revelation, FS1-1: Fortress, FS1-2: March, FS1-3: Chaser, FS1-4: Worlds Apart, FS1-5: Spook, FS1-6: Haunted, FS1-7: Marauder, FS1-8: Strike, FS1-9: Monolith, FS1-10: Darkside
 
-#### Briefing Music:
-None
-Brief1
-Brief2
-Brief3
-Brief4
-Brief5
-Brief6
-Brief7
-FS1-BRIEF1
-FS1-BRIEF2
-FS1-BRIEF3
-FS1-BRIEF4
-FS1-BRIEF5
-FS1-BRIEF6
-FS1-BRIEF7
+### Briefing Music
+None, Brief1, Brief2, Brief3, Brief4, Brief5, Brief6, Brief7, FS1-BRIEF1, FS1-BRIEF2, FS1-BRIEF3, FS1-BRIEF4, FS1-BRIEF5, FS1-BRIEF6, FS1-BRIEF7
 
-### Ships
+## Ships
 For example: GTF Ulysses, GTB Medusa, GTC Fenris, PVT Isis, SD Demon.
 CAUTION: FSO expects the ship name token in full, including the prefix (write "GTC Fenris" instead of just "Fenris").
 For a full list of ships, see ./spacecraft-classes.md.
 
-### Subsystems
+## Subsystems
 For example (GTF Ulysses): engines, communication, navigation, sensors, weapons.
 
 CAUTION: exact subsystem names can differ among the ships ('engine'/'engines', 'communication'/'communications' etc.).
 For exact per-ship subsystem names, see: ./Ship subsystems/<faction_name>-ships-subsystem-names.md.
 
-### Dockpoints
+## Dockpoints
 For example (GTSC Faustus): port docking, starboard docking.
-
 For canonical ship dockpoint names, see: ./ship-dockpoint-names.md.
 
-### Briefing icon types
-- Authors must use a canonical icon string in `icons[*].icon_type`.
+## Briefing icon types
+Authors must use a canonical `icon_type` string in `icons[*].icon_type`.
 
-**Icon Fields:**
-- **Type**: Must be a canonical string from the allowed list below (e.g., "Fighter", "Jump Node"). Controls the icon's visual silhouette.
-- **Class**: Optional (defaults to "Terran NavBuoy"). The displayed ship class text and picture when the icon is clicked in-game.
-  - **Validation:** If specified, must be a valid ship class from `spacecraft-classes.md` (strictly enforced)
-  - **Recommendation:** Omit for non-ship icons (Waypoints, Jump Nodes, Planets, Asteroid Fields) to use the safe default
-- **Team**: Must be "Friendly", "Hostile" or "Unknown"
+For `display_class` rules (conditionally required vs. must omit), see `../fsif/specification.md` — the `briefing.stages[*].icons[*].display_class` field entry.
 
 Allowed canonical icon type strings:
 - Fighter
@@ -521,18 +382,18 @@ Allowed canonical icon type strings:
 
 Note: If `icons[*].map_position` is omitted, it defaults to `[0, 0]`.
 
-### Volumetric (full) nebula parameters
+## Volumetric (full) nebula parameters
 Background Color Patterns: nbackblue1, nbackblue2, nbackcyan, nbackgreen, nbackpurp1, nbackpurp2, nbackred, nblackblack, nbackyellow, nbackblue, nbackorange
-Note: `nblackblack` backround color pattern is actually dark grey. Completely black background can be achieved by omitting the Background Color Pattern parameter.
+Note: `nblackblack` is actually dark grey. A completely black background is achieved by omitting the pattern.
 Cloud Sprites (Poofs): PoofGreen01, PoofGreen02, PoofRed01, PoofRed02, PoofPurp01, PoofPurp02
 Note: FSO SEXP docs refer to Cloud Sprites as "nebula poofs".
 Lightning Storm: none, s_standard, s_medium, s_active, s_emp
 Note: Lightning Storm variants are ordered from least active to most active. `s_emp` messes with player's HUD.
 
-### Asteroid and debris field object variants
+## Asteroid and debris field object variants
 
 Context: `environment.asteroid_field.object_variants`.
-The valid set depends on `environment.asteroid_field.object_type`. Asteroid and debris variant names are **mutually incompatible** — mixing them in the same field is an error.
+Asteroid and debris variant names are **mutually incompatible** — mixing them is an error.
 
 **Asteroid field variants** (`object_type: "asteroid"`):
 - Brown
@@ -540,16 +401,14 @@ The valid set depends on `environment.asteroid_field.object_type`. Asteroid and 
 - Orange
 
 **Debris field variants** (`object_type: "debris"`):
-- Terran Debris 1
-- Terran Debris 2
-- Terran Debris 3
-- Vasudan Debris 1
-- Vasudan Debris 2
-- Vasudan Debris 3
-- Shivan Debris 1
-- Shivan Debris 2
-- Shivan Debris 3
-
-Note: Species debris variants are ordered from smallest to largest (`Terran Debris 1` is small, `Terran Debris 2` is medium-sized, `Terran Debris 3` is large).
+- Terran Debris 1 (small)
+- Terran Debris 2 (medium)
+- Terran Debris 3 (large)
+- Vasudan Debris 1 (small)
+- Vasudan Debris 2 (medium)
+- Vasudan Debris 3 (large)
+- Shivan Debris 1 (small)
+- Shivan Debris 2 (medium)
+- Shivan Debris 3 (large)
 
 **End of reference**
