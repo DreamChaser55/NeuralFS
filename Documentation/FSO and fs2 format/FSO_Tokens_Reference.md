@@ -35,6 +35,8 @@ Context: `team`.
 
 ### Arrival/Departure Methods
 
+Context: FSIF `arrival_method`, `departure_method`.
+
 #### Arrival and Departure
 - Hyperspace
 - Docking Bay
@@ -50,8 +52,6 @@ All of these require both `arrival_distance` and a ship `arrival_anchor`.
 - Below ship
 - To left of ship
 - To right of ship
-
-Context: FSIF `arrival_method`.
 
 ### Message priorities
 - "Low"
@@ -253,6 +253,12 @@ arrival_cue: |
    (protect-ship "Alpha 1")
    (invalidate-goal "Destroy Sentries")
 )
+(when
+   (true)
+   (send-message "#Command" "High" "New orders received")
+   (validate-goal "Investigate Remaining Cargo")
+   (unprotect-ship "Alpha 4")
+)
 ```
 
 #### Percent destroyed / departed
@@ -284,11 +290,14 @@ For detailed operator signatures, see `../FSO SEXPs/INDEX.md`.
 | Seconds integer | `0`, `5`, `30` |
 | Subsystem name | `"engine"`, `"communication"`, `"turret01"` |
 | Boolean | `( true )`, `( false )` |
+| Percent integer | `100`, `66`, `25` |
+| Weapon/Class name | `"Avenger"`, `"GTF Ulysses"` (for tech-unlock SEXPs) |
 
 Additional notes:
 - 0-delay frame-lag: `"...-true-delay"` and `"...-false-delay"` become true on the frame **after** the state changes due to mission log ordering. See `../FSO SEXPs/Event-Goals.txt`.
 - Wing variants: many `ai-*` goals have wing-target variants (e.g., `ai-guard-wing`).
 - AI Goals applicability: some goals are fighter/bomber-only; others are large-ship-only. See the spec for the large-ship list.
+- Variadic arguments: many operators accept one or more entity names (ships/wings). Always verify the exact argument count and accepted types in the per-operator SEXP documentation before use.
 
 ## Weapons
 

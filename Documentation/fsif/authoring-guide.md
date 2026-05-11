@@ -242,7 +242,7 @@ environment:
 - **`background_bitmaps` must be empty.** Authored background bitmaps are an error when full nebula is enabled.
 - **Suns are still allowed.** They are visible inside the nebula and can be authored normally.
 - **The "at least 3 background nebula bitmaps" richness advisory does not apply** to full nebula missions.
-- **Increase visibility via design.** With reduced sensor range, use visible `Terran NavBuoy` ships, clear HUD directives, and in-mission comms to guide the player, or create more compact missions.
+- **Increase visibility via design.** With reduced sensor range, players cannot easily navigate. Use visible `Terran NavBuoy` ships, clear HUD directives, and in-mission comms to guide the player, or create more compact missions. Do not rely on distant ships being visible or targetable.
 - Volumetric nebula is often used to simulate gas giant atmospheres or supernova remnant systems.
 
 **Dynamic nebula changes via SEXPs:**
@@ -291,9 +291,11 @@ Wings must define `position: [x, y, z]`, which is interpreted as the centroid of
 Wing members are spaced 50 m apart by default (`member_spacing: 50.0`) and the line is centered on the specified centroid.
 
 ## Waypoints vs. Nav Buoys
-FSIF `entities.waypoints` are invisible to the player. They do not create a HUD marker, radar contact, targetable object, or any in-game cue. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
+FSIF `entities.waypoints` are invisible to the player. They do not create a HUD marker, radar contact, targetable object, visible model, or any in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
 
-If the player needs a visible navigation reference, place an actual `Terran NavBuoy` ship there instead. Do not overuse NavBuoys: you don't need one if there is already another visible object at the location.
+If the player needs to rendezvous at a location, fly toward a marker, or identify a destination, you can place an actual navigation buoy ship instead — use ship class `Terran NavBuoy`. Refer to that ship's name in briefing text, directives, messages, and SEXPs when the player needs a visible or targetable reference. Do not tell the player to "follow the waypoint" unless there is an actual visible object (such as a Nav Buoy) at that location.
+
+Do not overuse NavBuoys: you don't need one if there is already another visible object at the location.
 
 ## Events, goals and messages
 ```yaml
@@ -647,6 +649,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 - Use double quotes (`"`) for entity names inside SEXPs.
 - Never place YAML-style `#` comments inside SEXP block scalars.
 - Many SEXPs are ship-only — use wing-compatible alternatives or target specific ships.
+- AI goals for larger ships (cruisers, destroyers, utility): only `ai-chase`, `ai-dock`, `ai-undock`, `ai-warp-out`, `ai-stay-near-ship`, `ai-stay-still`, `ai-play-dead` are valid. Prefer waypoint or warp orders for capital ships, or give them no orders at all — turrets fire automatically.
 - Jump nodes cannot be used as distance-check anchors; use waypoints for hidden references, `Terran NavBuoy` for visible ones.
 - Use exact FSO weapon token strings (e.g., `ML-16 Laser`, not `GTW ML-16 Laser`).
 - Check that goal formulas are not already true at mission start.
@@ -663,7 +666,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 - The converter checks for potential collisions between larger ships on waypoint paths and other ships' **initial positions**. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
 
 ### Red alert missions
-- Missions with the `red_alert` flag inherit player ship hull and loadout from the previous mission. Only the first briefing stage text is shown, with no icons. Use `red_alert_carry` on ships you want to carry between missions.
+- Missions with the `red_alert` flag inherit player ship hull and loadout from the previous mission. Only the first briefing stage text is shown, with no icons. Use `red_alert_carry` on ships you want to carry between missions (in **both** the previous and the red-alert mission).
 
 ### Distance checks
 - Verify distance-check SEXPs will not fire prematurely. Visualize the triggering object's initial location and movement to ensure it is not in trigger range at mission start or before the trigger should actually fire.
