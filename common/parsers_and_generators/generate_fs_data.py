@@ -60,19 +60,21 @@ def parse_tokens_reference():
             if line.strip().startswith("- "):
                 data["ai_classes"].add(line.strip()[2:].strip())
 
-    # Music
-    if match := re.search(r"#### Mission Music:\n(.*?)\n\n#### Briefing Music:", content, re.DOTALL):
-        for line in match.group(1).splitlines():
-            if line.strip():
-                data["mission_music"].add(line.strip())
-                
-    if match := re.search(r"#### Briefing Music:\n(.*?)\n\n", content, re.DOTALL):
-        for line in match.group(1).splitlines():
-            if line.strip():
-                data["briefing_music"].add(line.strip())
+    # Music — comma-separated values on single lines under ### headings
+    if match := re.search(r"### Mission Music\n(.*?)\n\n", content, re.DOTALL):
+        for val in match.group(1).split(","):
+            val = val.strip()
+            if val:
+                data["mission_music"].add(val)
+
+    if match := re.search(r"### Briefing Music\n(.*?)\n\n", content, re.DOTALL):
+        for val in match.group(1).split(","):
+            val = val.strip()
+            if val:
+                data["briefing_music"].add(val)
 
     # Nebula Patterns & Poofs
-    if match := re.search(r"### Volumetric \(full\) nebula parameters\n(.*?)\n\n", content, re.DOTALL):
+    if match := re.search(r"## Volumetric \(full\) nebula parameters\n(.*?)\n\n", content, re.DOTALL):
         block = match.group(1)
         for line in block.splitlines():
             if line.startswith("Background Color Patterns:"):
@@ -85,15 +87,13 @@ def parse_tokens_reference():
                 parts = line.replace("Lightning Storm:", "").split(",")
                 data["nebula_storms"].update(p.strip() for p in parts if p.strip())
                 
-    # Weapons
-    # Primary
-    if match := re.search(r"- Primary Banks \(lasers\):\n(.*?)\n\n", content, re.DOTALL):
+    # Weapons — ### heading followed by "- Faction: w1, w2, ..." lines
+    if match := re.search(r"### Primary Banks \(lasers\)\n(.*?)\n\n", content, re.DOTALL):
         for line in match.group(1).splitlines():
             if line.strip().startswith("-"):
                 parts = line.split(":", 1)[1].split(",")
                 data["primary_weapons"].update(p.strip() for p in parts if p.strip())
-    # Secondary
-    if match := re.search(r"- Secondary Banks \(missiles\):\n(.*?)\n\n", content, re.DOTALL):
+    if match := re.search(r"### Secondary Banks \(missiles\)\n(.*?)\n\n", content, re.DOTALL):
         for line in match.group(1).splitlines():
             if line.strip().startswith("-"):
                 parts = line.split(":", 1)[1].split(",")
@@ -115,11 +115,11 @@ def parse_tokens_reference():
     if match := re.search(r"- Suns:\n(.*?)\n\n", content, re.DOTALL):
          data["suns"].update(p.strip() for p in match.group(1).split(",") if p.strip())
 
-    # Wildcards / Anchors
-    if match := re.search(r"## Wildcards and special literals\n\nLiterals:\n(.*?)\n\n", content, re.DOTALL):
+    # Wildcards / Anchors — backtick-wrapped strings directly under ## heading
+    if match := re.search(r"## Wildcards and special literals\n\n(.*?)\n\n", content, re.DOTALL):
         for line in match.group(1).splitlines():
             if line.strip().startswith("-"):
-                val = line.strip()[2:].strip().strip('"')
+                val = line.strip()[2:].strip().strip('`').strip('"')
                 data["anchors"].add(val)
 
     # Asteroid / Debris field variants
@@ -134,13 +134,15 @@ def parse_tokens_reference():
                 data["asteroid_field_variants"].add(line.strip()[2:].strip())
 
     deb_match = re.search(
-        r"\*\*Debris field variants\*\* .*?\n(.*?)\n\nNotes:",
+        r"\*\*Debris field variants\*\* .*?\n(.*?)\n\n\*\*End",
         content, re.DOTALL
     )
     if deb_match:
         for line in deb_match.group(1).splitlines():
             if line.strip().startswith("- "):
-                data["debris_field_variants"].add(line.strip()[2:].strip())
+                # Strip parenthetical size descriptors like " (small)", " (medium)", " (large)"
+                val = re.sub(r'\s*\(.*?\)', '', line.strip()[2:].strip())
+                data["debris_field_variants"].add(val)
 
     # Arrival / Departure Methods
     # Parse shared (both arrival and departure) methods first.
@@ -153,8 +155,8 @@ def parse_tokens_reference():
                 data["arrival_methods"].add(token)
                 data["departure_methods"].add(token)
 
-    # Arrival-only methods
-    if match := re.search(r"#### Arrival-only\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
+    # Arrival-only methods — heading may have a suffix like "(directional)"
+    if match := re.search(r"#### Arrival-only.*?\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
         for line in match.group(1).splitlines():
             if re.match(r'^- \S', line):
                 token = line[2:].strip()
