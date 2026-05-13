@@ -22,7 +22,7 @@ This agent takes the detailed mission plans written by the previous agent and co
 - FSIF is much more concise than `.fs2` (the mission file format expected by FSO). `.fs2` files tend to be large, with many redundant fields and boilerplate sections; an AI agent directly creating the `.fs2` file would waste a lot of tokens and could quickly fill up its context window.
 - YAML files are much more common in LLM training data than `.fs2` files.
 
-This agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for both humans and AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
+This agent also writes the campaign definition file in a custom *FreeSpace Campaign Intermediate Format (FCIF)*. Similar to FSIF, FCIF is a concise YAML-based format that abstracts away the verbose `.fc2` syntax, making it easy for AI agents to define campaign structure, mission progression, starting loadouts, and mission success/failure logic.
 
 The agent also adds FSO text-coloring tags to the fiction viewer files written by the previous agent and checks them for issues using a small dedicated Python script (Fiction Viewer Validator).
 
