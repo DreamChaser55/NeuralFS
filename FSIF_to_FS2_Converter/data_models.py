@@ -778,7 +778,7 @@ class Ship(BaseModel):
     arrival_distance: Optional[int] = Field(None, ge=0)
     arrival_anchor: Optional[str] = None
     arrival_delay: int = Field(0, ge=0)
-    arrival_cue: str = Field('( false )')
+    arrival_cue: str = Field('( true )')
 
     departure_method: str = Field('Hyperspace')
     departure_anchor: Optional[str] = None

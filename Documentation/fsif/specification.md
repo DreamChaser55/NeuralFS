@@ -46,7 +46,7 @@
     - `object_variants` (List[String], optional). Visual variant names. Defaults depend on `object_type`. Must not be empty — omit to get the full default set for the selected `object_type`. Allowed values are mutually incompatible between the two field types.
     - `target_ships` (List[String], optional, default: `[]`). Ship names the field will actively pursue. Active fields only.
 - `player_setup` (Mapping, required):
-  - `start_ship` (String, required). Must exist in `entities`. If standalone (not in a wing), its `arrival_cue` must be `"( true )"`.
+  - `start_ship` (String, required). Must exist in `entities`. If standalone (not in a wing), its `arrival_cue` must not be set to `"( false )"` (the default is `"( true )"`, which is correct).
   - `additional_ship_choices` (List[Mapping], optional, default: `[]`). Items: `{class: String, count: Integer}`. Loadout-screen alternative ship pool.
   - `additional_weapons` (List[String], optional, default: `[]`). Extra weapons added to the Weaponry Pool for the loadout screen.
 - `entities` (Mapping, required):
@@ -118,7 +118,7 @@
 - `arrival_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`, `"Near Ship"`, `"In front of ship"`, `"In back of ship"`, `"Above ship"`, `"Below ship"`, `"To left of ship"`, `"To right of ship"`.
 - `arrival_anchor` (String, optional)
 - `arrival_distance` (Integer, optional)
-- `arrival_cue` (String, optional, default: `"( false )"`). SEXP. Boolean condition that triggers arrival.
+- `arrival_cue` (String, optional, default: `"( true )"`). SEXP. Boolean condition that triggers arrival. Docker ships (pre-spawn docking) must explicitly set this to `"( false )"`.
 - `arrival_delay` (Integer, optional, default: `0`)
 - `departure_method` (String, optional, default: `"Hyperspace"`). Enum: `"Hyperspace"`, `"Docking Bay"`.
 - `departure_anchor` (String, optional)
@@ -159,8 +159,8 @@
 - Minimal and standard FSIF skeletons are provided in the Authoring Guide.
 
 ## Constraints quicklist
-- Player start spawning: standalone start_ship requires `arrival_cue: "( true )"`
-- Docking: pairs only; not allowed for player start; author on docker only; ensure arrival leadership is coherent
+- Player start spawning: standalone `start_ship` defaults to `arrival_cue: "( true )"` — do not override it to `"( false )"`.
+- Docking: pairs only; not allowed for player start; author on docker only; docker must explicitly set `arrival_cue: "( false )"`; dockee uses the default `"( true )"`.
 - Author only canonical per-ship subsystem and dockpoint names (see references)
 - Reinforcements: author them in `entities.reinforcement_wings` / `entities.reinforcement_ships`.
 - Subspace missions: add `"subspace"` to `mission_info.flags`; `background_bitmaps` must be empty in subspace and nebula missions.

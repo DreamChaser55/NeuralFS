@@ -52,8 +52,6 @@ entities:
       class: "Terran NavBuoy"
       team: "Hostile"
       position: [0.0, 100.0, 1500.0]
-      arrival_cue: |
-        ( true )
 
     - name: "SC Dakini"
       class: "SC Cain"
@@ -73,8 +71,6 @@ entities:
       template: "friendly_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
-        ( true )
       initial_orders: |
           ( ai-chase-any 89 )
 

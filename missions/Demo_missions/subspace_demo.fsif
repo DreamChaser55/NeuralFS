@@ -49,16 +49,12 @@ entities:
       team: "Friendly"
       position: [200.0, 200.0, 100.0]
       flags: ["escort"]
-      arrival_cue: |
-        ( true )
 
   wings:
     - name: "Alpha"
       template: "friendly_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
-        ( true )
       initial_orders: |
           ( ai-guard "GTC Orpheus" 89 )
 
@@ -72,8 +68,6 @@ entities:
       arrival_anchor: "Alpha 1"
       arrival_distance: 1500
       arrival_delay: 5
-      arrival_cue: |
-        ( true )
       initial_orders: |
           ( ai-chase-any 89 )
 

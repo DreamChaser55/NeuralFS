@@ -31,8 +31,6 @@ entities:
       class: "GTF Ulysses"
       team: "Friendly"
       position: [0, 0, 0]
-      arrival_cue: |
-        ( true )
       weapons:
         primary: ["Avenger", "Avenger"]
         secondary: ["MX-50"]
@@ -85,15 +83,11 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [200.0, 0.0, 800.0]
-      arrival_cue: |
-        ( true )
   wings:
     - name: "Alpha"
       template: "alpha_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
-        ( true )
   waypoints: {}
   reinforcement_wings: []
   reinforcement_ships: []
@@ -266,8 +260,6 @@ entities:
       team: "Friendly"
       position: [542.6, 699.5, 1305.4]
       flags: ["cargo-known", "escort"]
-      arrival_cue: |
-        ( true )
       departure_cue: |
         ( is-event-true-delay "Omega 2 done docking" 97 )
   wings:
@@ -275,8 +267,6 @@ entities:
       template: "ulysses_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
-      arrival_cue: |
-        ( true )
       initial_orders: |
         ( ai-chase-any 50 )
 ```
@@ -631,7 +621,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 ### Spawning, arrivals and authored entities
 - `player_setup.start_ship` must exist in `entities` (as a standalone ship or wing member such as `Alpha 1`).
 - **Recommended player start**: place the player in a Friendly player starting wing (`Alpha`, `Beta`, `Gamma`, `Delta`, or `Epsilon`). This enables full weapon-pool calculation, loadout-screen swapping, and wingman commands.
-- Standalone start ship: give it `arrival_cue: ( true )` or it will not spawn.
+- Standalone start ship: `arrival_cue` defaults to `( true )` — it will spawn immediately. Do not override it to `( false )`.
 - Do not put arrival/departure/initial_orders/dock fields into `entities.ship_templates` — see the spec. Author them on the ship or on the wing.
 - Use `arrival_cue` to control when a ship appears. Do not use `ship-create` for ships already in YAML.
 - Leave enough physical clearance between spawned objects, especially around large ships — cruisers are ~300 m long, destroyers ~2000 m.
@@ -657,10 +647,10 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 
 ### Docking
 - See the dedicated Docking section above for rules and the worked example.
-- Keep docking leadership coherent: dockee has `arrival_cue: ( true )`, docker has `arrival_cue: ( false )`.
+- Keep docking leadership coherent: dockee uses the default `arrival_cue: ( true )`; docker must explicitly set `arrival_cue: ( false )`.
 
 ### Reinforcements
-- Keep reinforcements callable: reinforcement wings should omit `arrival_cue`; standalone reinforcement ships should use `arrival_cue: ( true )`.
+- Keep reinforcements callable: both reinforcement wings and standalone reinforcement ships should omit `arrival_cue` — it defaults to `( true )`, making the reinforcement available to call from mission start.
 
 ### Collision checks for waypoint paths
 - The converter checks for potential collisions between larger ships on waypoint paths and other ships' **initial positions**. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
