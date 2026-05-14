@@ -561,6 +561,128 @@ Do not use any SEXP construct without reading and understanding its documentatio
 ### Choose the Right Tool
 Actively explore SEXP documentation to find the best operator. For example, instead of complex boolean logic to check if any ship in a group is scanned, use `percent-ships-scanned`.
 
+### Prefer Common Mission-Logic SEXPs
+
+High-quality FreeSpace 1 missions use a relatively small set of SEXP operators to implement almost all mission logic. You should default to operators from the curated list below before reaching for more obscure alternatives. Obscure operators are acceptable only when they solve a specific problem more cleanly — in which case read their full documentation and, if possible, note the reason in the mission implementation plan.
+
+Note: The following generic glue operators are intentionally omitted from the curated list below, even though they are extremely frequent — they are control-flow or arithmetic primitives, not mission-design building blocks:
+true, false, when, and, or, not, <, >, =, <=, >=, +, -, *, do-nothing
+These remain valid and essential; they just are not the "interesting" layer of mission logic.
+
+#### Curated and recommended common mission-logic operators
+
+**Objective and state checks**
+```text
+is-destroyed-delay          — true N sec after all listed ships/wings are destroyed
+has-arrived-delay           — true N sec after listed ships/wings have arrived
+has-departed-delay          — true N sec after listed ships/wings have departed (warp-out; destroyed = never true)
+destroyed-or-departed-delay — true N sec after all listed ships/wings are destroyed or departed
+are-waypoints-done-delay    — true N sec after a ship completes a waypoint path
+has-docked-delay            — true N sec after two ships have docked N times
+has-undocked-delay          — true N sec after two ships have undocked N times
+percent-ships-destroyed     — true when a given % of listed ships/wings are destroyed
+percent-ships-departed      — true when a given % of listed ships/wings have departed
+percent-ships-scanned       — true when a given % of listed ships are scanned (ship-only, not wings)
+is-cargo-known-delay        — true N sec after a ship's cargo is revealed (ship-only, not wings)
+is-subsystem-destroyed-delay — true N sec after a specific subsystem is destroyed
+is-disabled-delay           — true N sec after listed ships lose all engine subsystems
+is-disarmed-delay           — true N sec after listed ships lose all turret subsystems
+```
+
+**Event and goal chaining**
+```text
+is-event-true-delay    — true N sec after an event in this mission succeeds
+is-event-false-delay   — true N sec after an event in this mission fails
+is-event-incomplete    — true while an event has not yet fired (useful only with has-time-elapsed)
+is-goal-true-delay     — true N sec after a goal succeeds
+is-goal-false-delay    — true N sec after a goal fails
+is-goal-incomplete     — true while a goal is still pending
+```
+
+> Note: events with `hud_directive_text` must use **direct** object-state checks (`is-destroyed-delay`, `has-arrived-delay`, `distance`, etc.) — they cannot use `is-event-true-delay` or `is-goal-true-delay`. See the Events section.
+
+**Messages and comms**
+```text
+send-message       — send a single message; args: sender, priority, message-name
+send-message-list  — send a sequence of delayed messages; args in groups of FOUR
+send-random-message — pick one message at random from a list
+```
+
+**AI orders and dynamic retasking**
+```text
+add-goal              — assign an AI goal to a ship or wing at runtime
+clear-goals           — clear all AI goals from a ship or wing (use before add-goal when retasking)
+ai-chase              — chase and attack a specific ship
+ai-chase-any          — chase and attack any enemy
+ai-chase-wing         — chase and attack ships in a wing
+ai-guard              — guard a specific ship from enemies (fighter/bomber only)
+ai-waypoints-once     — fly a waypoint path once then stop
+ai-waypoints          — fly a waypoint path repeatedly
+ai-dock               — dock with a target ship
+ai-undock             — undock from the currently docked ship
+ai-warp-out           — immediately warp out of the mission
+ai-play-dead          — stop all movement and attack
+ai-destroy-subsystem  — attack and destroy a named subsystem on a target ship
+ai-disable-ship       — destroy all engine subsystems to disable a ship
+ai-disarm-ship        — destroy all turret subsystems to disarm a ship
+ai-ignore             — ignore a specific target
+ai-stay-still         — stop and stay in place
+```
+
+**Distance, timing, and damage thresholds**
+```text
+distance         — current distance in meters between two objects; use with < for proximity triggers
+has-time-elapsed — true N seconds after mission start; useful for timed delays not tied to events
+hits-left        — current hull strength of a ship (0–100); use with < for damage-threshold triggers
+hits-left-subsystem — current health of a specific subsystem (0–100)
+```
+
+**Ship protection and state changes**
+```text
+protect-ship      — no AI ship will attack this ship
+unprotect-ship    — remove protect-ship
+ship-invulnerable — ship takes no damage (permanent; remove with ship-vulnerable)
+ship-vulnerable   — remove ship-invulnerable
+ship-guardian     — hull is stuck at 1%; ship can take damage but cannot die
+ship-no-guardian  — remove ship-guardian
+change-iff        — change a ship's IFF team at runtime
+ship-visible      — make a ship visible after ship-invisible
+ship-invisible    — make a ship invisible
+```
+
+**Campaign and goal management**
+```text
+validate-goal    — make a mission goal active (shows as pending)
+invalidate-goal  — remove a mission goal (hides it completely)
+allow-ship       — unlock a ship class for the player's loadout
+allow-weapon     — unlock a weapon for the player's loadout
+tech-add-ships   — add ships to the tech room database
+tech-add-weapons — add weapons to the tech room database
+red-alert        — trigger a red-alert transition to the next mission
+```
+
+#### Task-to-operator quick reference
+
+| Mission task | Preferred operator(s) |
+|---|---|
+| Trigger when ship(s) die | `is-destroyed-delay`, `percent-ships-destroyed` |
+| Trigger when ships arrive | `has-arrived-delay` |
+| Trigger when ships depart | `has-departed-delay`, `percent-ships-departed` |
+| Convoy success (all escaped) | `has-departed-delay` (all ships) |
+| Convoy failure (any destroyed) | `is-destroyed-delay` |
+| Either destroyed or escaped | `destroyed-or-departed-delay` |
+| Scan objective | `is-cargo-known-delay`, `percent-ships-scanned` |
+| Patrol path completed | `ai-waypoints-once` + `are-waypoints-done-delay` |
+| Docking sequence | `has-docked-delay`, `has-undocked-delay` |
+| Retask AI during mission | `clear-goals` + `add-goal` + appropriate `ai-*` goal |
+| Proximity trigger (distance-based) | `distance` with `<` |
+| Timed delay (not event-tied) | `has-time-elapsed` |
+| Damage-threshold trigger | `hits-left` with `<` |
+| Protect a ship temporarily | `protect-ship` / `unprotect-ship`, or `ship-invulnerable` / `ship-vulnerable` |
+| Prevent ship from dying | `ship-guardian` / `ship-no-guardian` |
+| Send dialogue | `send-message`, `send-message-list` |
+| Campaign unlocks | `allow-ship`, `allow-weapon`, `tech-add-ships`, `tech-add-weapons` |
+
 ### SEXP String Formatting: Use Block Scalars
 **Rule: Always use block scalars (`|`) for all SEXP fields** (`arrival_cue`, `departure_cue`, `formula`, `initial_orders`, `display_condition`, etc.), even for single-line SEXPs.
 
