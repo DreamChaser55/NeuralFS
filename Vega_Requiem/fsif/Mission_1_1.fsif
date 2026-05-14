@@ -72,7 +72,6 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, -100.0, 5800.0]
-      flags: ["escort"]
       destroyed_before_mission_seconds: 60
       arrival_cue: |
         ( true )
