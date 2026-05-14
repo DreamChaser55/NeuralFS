@@ -528,10 +528,14 @@ class ShipWingChecksMixin:
         The warning is advisory and does not abort conversion.
         """
         # Collect ships that count as "meaningful large ships" for this check.
+        # Ships with a non-zero destroyed_before_mission_seconds are destroyed
+        # before the mission starts (pre-placed wreckage) and are not actually
+        # present in the mission, so they are excluded from this check.
         large_ships = [
             ship for ship in self.mission.ships
             if ship.ship_class not in self.num_hardpoints
             and ship.ship_class not in _SMALL_UTILITY_CLASSES
+            and ship.destroyed_before_mission_seconds == 0
         ]
 
         if not large_ships:

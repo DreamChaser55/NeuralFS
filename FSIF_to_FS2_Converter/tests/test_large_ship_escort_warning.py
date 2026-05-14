@@ -80,7 +80,7 @@ def _bomber(name: str, flags=None) -> Ship:
     })
 
 
-def _cruiser(name: str, flags=None) -> Ship:
+def _cruiser(name: str, flags=None, destroyed_before_mission_seconds: int = 0) -> Ship:
     """Minimal GTC Fenris (cruiser — larger than fighter/bomber)."""
     return Ship.model_validate({
         "name": name,
@@ -89,6 +89,7 @@ def _cruiser(name: str, flags=None) -> Ship:
         "position": [500.0, 0.0, 500.0],
         "arrival_cue": "( true )",
         "flags": flags or ["cargo-known"],
+        "destroyed_before_mission_seconds": destroyed_before_mission_seconds,
     })
 
 
@@ -348,6 +349,25 @@ class TestLargeShipEscortWarning(unittest.TestCase):
         self.assertTrue(
             any("GTC Fenris" in w for w in v.warnings),
             f"Expected warning to mention 'GTC Fenris', got: {v.warnings}",
+        )
+
+    def test_destroyed_before_mission_no_warning(self):
+        """Fighter + cruiser where the cruiser has a non-zero
+        destroyed_before_mission_seconds (pre-placed wreckage) → no warning.
+
+        Ships destroyed before mission start are not actually present during
+        play; they exist only as debris.  The escort check should not fire
+        for such ships because there is nothing for the player to monitor."""
+        fighter = _fighter("Alpha 1")
+        # Cruiser is turned into wreckage 30 s before the mission starts.
+        cruiser = _cruiser("GTC Fenris 1", destroyed_before_mission_seconds=30)
+        mission = _make_mission(fighter, cruiser)
+        v = _make_validator(mission)
+        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(
+            any(_WARNING_FRAGMENT in w for w in v.warnings),
+            f"Expected no escort warning for a cruiser destroyed before mission start, "
+            f"got: {v.warnings}",
         )
 
 
