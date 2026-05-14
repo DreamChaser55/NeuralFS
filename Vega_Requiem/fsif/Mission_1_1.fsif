@@ -72,6 +72,7 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, -100.0, 5800.0]
+      flags: ["escort"]
       destroyed_before_mission_seconds: 60
       arrival_cue: |
         ( true )
@@ -79,6 +80,7 @@ entities:
       class: "GTEP Hermes"
       team: "Friendly"
       position: [100.0, 0.0, 5600.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |
@@ -87,6 +89,7 @@ entities:
       class: "GTEP Hermes"
       team: "Friendly"
       position: [-100.0, 50.0, 5700.0]
+      flags: ["escort"]
       arrival_cue: |
         ( true )
       initial_orders: |
