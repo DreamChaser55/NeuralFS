@@ -542,25 +542,19 @@ class ShipWingChecksMixin:
             # At least one large ship is already on the escort list — OK.
             return
 
-        # Build a compact summary for the warning message (unique class names,
-        # capped to avoid excessively long output).
+        # Build a compact summary for the warning message (ship names with class
+        # in parentheses, capped to avoid excessively long output).
         MAX_LISTED = 8
-        seen_classes: list = []
-        seen_set: set = set()
-        for ship in large_ships:
-            if ship.ship_class not in seen_set:
-                seen_classes.append(ship.ship_class)
-                seen_set.add(ship.ship_class)
-            if len(seen_classes) >= MAX_LISTED:
-                break
-
-        classes_str = ', '.join(seen_classes)
-        if len({s.ship_class for s in large_ships}) > MAX_LISTED:
-            classes_str += ', ...'
+        listed_ships = large_ships[:MAX_LISTED]
+        ships_str = ', '.join(
+            f"{ship.name} ({ship.ship_class})" for ship in listed_ships
+        )
+        if len(large_ships) > MAX_LISTED:
+            ships_str += ', ...'
 
         self.log_warning(
             f"Mission has {len(large_ships)} potentially important larger-than-fighter/bomber ship(s) "
-            f"({classes_str}) but none of them have the 'escort' flag. "
+            f"({ships_str}) but none of them have the 'escort' flag. "
             f"In FreeSpace it is customary to add important larger ships to the "
             f"HUD escort list so the player can monitor their hull integrity. "
             f"Consider adding the 'escort' flag to the most important ship(s). "
