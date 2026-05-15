@@ -104,9 +104,9 @@ ENVIRONMENT AND SETUP
     of convoy. Slightly faster than the freighters but slower than the Amadeus would normally be.
   - Nav Bravo: 10,000m from convoy start position, directly ahead along established corridor.
   - Nav Alpha: Midpoint waypoint, 5,000m from start. Convoy must pass through.
-  - SC Ahriman (SC Lilith-class): In scene at mission start, 12 km to the flank-aft. Moving in
-    loose parallel. Firing on the Stentor at range. The Ahriman's weapons fire is visible but she
-    is maintaining tactical distance — targeting Stentor, not the convoy directly.
+  - SC Ahriman (SC Lilith-class): In scene at mission start, 4,000m to the flank-aft. Moving in
+    loose parallel. Closing slowly to engage the Stentor. The Ahriman will maintain a tactical
+    distance of about 2,000–3,000m, providing a spectacular close-quarters plasma broadside exchange.
   - GTS Casca: Present, moving with the convoy. Available for rearming. Positioned near Amadeus.
     Casca is fragile. If Shivan fighters acquire it, it will die quickly.
 
@@ -304,8 +304,8 @@ EVENT LOGIC SKETCH
 - "Genma arrival" fires when both: Kali wing ships-alive = 0 AND T+06:00 is passed. If Kali
   is still alive after T+06:00, Genma waits until Kali is destroyed. This prevents the player
   from being overwhelmed simultaneously by both bomber waves.
-- "Ahriman engages Stentor": AI goal set at mission start. Stentor returns fire. Neither Stentor
-  nor Ahriman will close to melee range — this is a standoff exchange at 6–8 km.
+- "Ahriman engages Stentor": AI goal set at mission start. Stentor returns fire. Both ships
+  will engage in a running plasma broadside exchange at 2,000–3,000m range.
 - "Command warns about Ahriman distraction": fires if player's Alpha 1 ship is within 3 km of
   SC Ahriman. One-time trigger.
 - "Mission success" condition: GTD Amadeus arrives within 2,000m of Nav Bravo.
@@ -358,7 +358,7 @@ QA NOTES
 - The Ahriman must remain at standoff distance from the convoy. She should not close to within
   2 km of the Amadeus — that would either cause instant mission failure or require the player to
   engage a Lilith-class cruiser alone, which is not the intent. Ahriman's AI goal: maintain range
-  of 6–10 km from GTC Stentor while engaging her.
+  of 2,000–3,000m from GTC Stentor while engaging her.
 - GTS Casca is the mission's safety valve. Players who get overrun by fighters and bombers should
   be able to call Casca and recover. Casca's positioning near the Amadeus means it's always
   somewhat protected.

@@ -162,7 +162,7 @@ Message 3 — Alpha 3, persona: younger pilot (nervous edge), trigger: Brahma wi
 "Contact! Multiple bogeys from Capella bearing. They're — they're not Vasudan."
 
 Message 4 — Alpha 2, trigger: 10 seconds after Brahma wing arrival
-"Firing Avenger— no, wait, I've got ML-16s loaded. These shields are eating it. Push through."
+"Direct hits, but no effect! These shields are eating the ML-16s. Push through."
 
 Message 5 — Alpha 2, trigger: 30 seconds after Brahma engagement, if any enemy ship survives
 "These things don't die fast enough. Stay tight, Lead. Don't let them get behind you."

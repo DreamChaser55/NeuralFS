@@ -55,8 +55,8 @@ ENVIRONMENT AND SETUP
     bridge crew.) Pod 1 carries the most senior surviving officers.
   - Nav Charlie: The Amadeus's holding position. No navbuoy — just the designation.
   - Nav Bravo: 7,000m from Amadeus position. The pods' destination.
-  - SC Ahriman (SC Lilith-class): 8 km from Amadeus, closing slowly. She begins firing on the
-    Amadeus at T+01:00. She's the ship's executioner. Her weapons do capital-level damage. The
+  - SC Ahriman (SC Lilith-class): 4,000m from Amadeus, closing slowly. She begins firing effectively on the
+    Amadeus as she reaches ~2,500m. She's the ship's executioner. Her weapons do capital-level damage. The
     Amadeus's turrets fire back but cannot stop her.
   - GTS Casca: Present, following Pod 1 group. Available for rearming. Casca's presence
     near the pods makes her somewhat protected by proximity — the enemy is targeting pods, not
@@ -272,9 +272,9 @@ EVENT FLOW AND TIMING
 - T+00:00: Mission starts. Alpha wing at mid-position between Amadeus and Nav Bravo.
   Pod Group A (Pods 1–3) emerging from fighterbay, navigating to Nav Bravo (7 km away).
   Asura wing (3 Scorpions) already at 6 km, converging on pods.
-  SC Ahriman at 8 km, closing on Amadeus.
+  SC Ahriman at 4,000m, closing on Amadeus.
 - T+00:00–T+01:00: Asura wing engages pod group A. Player must intercept. Ahriman begins
-  firing on Amadeus at T+01:00.
+  firing effectively on Amadeus as she reaches ~2,500m.
 - T+00:45: Pod Group B (Pods 4–6) emerges from fighterbay.
 - T+01:30: Pod Group C (Pods 7–9) emerges from fighterbay.
   Brahma wing (3 Shaitans) arrives from Capella direction, 9 km. Targets Amadeus.

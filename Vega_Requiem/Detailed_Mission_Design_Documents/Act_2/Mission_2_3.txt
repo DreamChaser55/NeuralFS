@@ -116,7 +116,7 @@ Hostile:
   - The Basilisks want to kill the convoy's spine. Intercepting them is a primary priority.
 
 - SC Malgor (SC Cain-class): At the node. Blocking.
-  - Turrets fire on any ship approaching within 6,000m of the node.
+  - Turrets fire on any ship approaching within 2,500m of the node.
   - Malgor's cluster bomb fires if anything closes within 400m.
   - The Malgor is a mission objective — destroying her is the secondary objective. Player can
     engage Malgor's turrets (to reduce incoming fire on Stentor during transit) and then
@@ -219,7 +219,7 @@ Message 3 — Alpha 3, trigger: Indra wing (Basilisks) targets Stentor
 Message 4 — Commander Okafor, trigger: Stentor hull below 70%
 "We're taking hits. Keep moving — don't stop for us. Clear the approach."
 
-Message 5 — Alpha 2, trigger: player/Alpha wing within 6,000m of SC Malgor (entering turret range)
+Message 5 — Alpha 2, trigger: player/Alpha wing within 2,500m of SC Malgor (entering turret range)
 "Malgor's opening up. Watch the turrets — target her weapons subsystem if you can get angle."
 
 Message 6 — Krishna wing harassment, trigger: GTFr Aldrin 1 takes hull damage from Krishna
@@ -267,8 +267,8 @@ EVENT FLOW AND TIMING
 - T+00:00 onward: Convoy begins advancing toward node. Krishna and Indra engage convoy/Stentor.
   Player must intercept to protect convoy while convoy advances.
 - T+00:00–T+05:00: Player clears Krishna and Indra wings while convoy approaches. SC Malgor
-  begins firing on anything within 6 km once convoy reaches that range.
-- T+03:00–T+05:00 (convoy reaches 6 km from node): SC Malgor opens fire on Stentor.
+  begins firing on anything within 2,500m once convoy reaches that range.
+- T+05:00–T+06:30 (convoy reaches 2,500m from node): SC Malgor opens fire on Stentor.
   Player must engage Malgor's turrets / weapons subsystem.
 - T+05:00–T+08:00: Convoy reaches Nav Alpha (6 km from node). Arjuna (Dragons) activates —
   begins intercepting ships approaching within 2 km of node.
@@ -285,7 +285,7 @@ EVENT FLOW AND TIMING
 EVENT LOGIC SKETCH
 - "Krishna wing engage convoy" and "Indra wing engage Stentor": set at mission start, active
   immediately. Both wings advance toward convoy from their positions.
-- "SC Malgor fire on approaching ships": Malgor AI turret range set to 6,000m. When Stentor
+- "SC Malgor fire on approaching ships": Malgor AI turret range set to 2,500m. When Stentor
   enters this range, Malgor's turrets engage. Cannot be disabled except by weapons subsystem
   destruction or Malgor's destruction.
 - "Malgor weapons subsystem degraded": when weapons subsystem hull < 20%, all turret fire from
@@ -363,8 +363,8 @@ QA NOTES
 - GTC Stentor must survive to transit. Her hull carrying over from Mission 2-1 is a narrative
   note, not a mechanical difficulty modifier — her in-mission starting hull should be fixed at
   ~55% regardless of Mission 2-1 outcome, to keep the finale playable.
-- SC Malgor's turret-range threat at 6,000m creates a natural pacing gate: the convoy can
-  advance freely until 6 km from the node, then the final engagement begins. This ensures
+- SC Malgor's turret-range threat at 2,500m creates a natural pacing gate: the convoy can
+  advance freely until 2.5 km from the node, then the final engagement begins. This ensures
   the Krishna/Indra fight has resolved (mostly) before the Malgor engagement starts.
 - Arjuna (Dragon) activation within 2,000m of node: this is the last threat and must feel
   like a final gate rather than a trivial speed bump. Two Dragons near the node while the
