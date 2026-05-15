@@ -151,6 +151,7 @@ class Validator(
         self.validate_command_briefing()
         self.validate_briefing_span_tags()
         self.validate_briefing_text_styling_scope()
+        self.validate_mission_has_briefing_text_styling()
         self.validate_sexps()
         self.validate_audio()
         self.validate_goals_and_directives()

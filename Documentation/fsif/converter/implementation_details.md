@@ -224,6 +224,11 @@ The validator checks the following areas:
 *   Warns if an opened span tag is left unclosed at the end of the text.
 *   Warns if another style tag or a different color span opening tag is encountered before the current span is explicitly closed with `$}`.
 
+#### **Missing color styling tags (mission-level)**:
+*   Warns when at least one eligible text field exists (in command briefing, mission briefing, or debriefing stages) but **none** of those texts contain an actual color-applying tag — either a span-opening tag (e.g. `$f{`) or a single-word color tag (e.g. `$h`).
+*   This is a mission-level check designed to catch the likely AI authoring mistake of forgetting to add text styling entirely. Close tags (`$}`), color breaks (`$|`), and placeholder substitutions (`$callsign`, `$rank`, `$quote`, `$semicolon`) are intentionally excluded from the check and do not count as styled.
+*   The check is skipped entirely when no eligible text fields are present (minimal or no-briefing missions), to avoid spurious noise.
+
 #### **Global Name Integrity**:
 *   Ensures names are unique within their respective namespaces: **Objects** (Ships, Wings, Waypoints, Jump Nodes), **Events**, **Goals**, and **Messages**.
 *   Enforces a strict length limit of **< 30 characters** for all names to prevent engine truncation issues.

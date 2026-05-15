@@ -433,7 +433,7 @@ Note: use the styling tags **only** in the contexts mentioned above. They **do n
 Apply these to every named friendly, hostile or unknown ship/wing. Other color tags (such as `$y` for locations/nav points/destinations, `$W` for emphasis, `$R` for warnings) are available but should be used very sparingly. Less is more.
 
 **Single-word vs. span syntax:**
-- For a single word: `$h Rama` — colors "Rama" in hostile red.
+- For a single word: `$h Rama` — colors "Rama" in hostile red. Coloring stops when a space is encountered.
 - For a multi-word phrase: `$f{ GTC Fenris $}` — colors the entire span.
 
 Note: Do not forget the closing tag (`$}`). Missing closing tags cause errors.

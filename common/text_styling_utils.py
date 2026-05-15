@@ -23,6 +23,29 @@ STYLE_TAG_RE = re.compile(
     re.VERBOSE,
 )
 
+# Matches only color-applying tags: span-opening ($y{) and single-word ($R).
+# Does NOT match $}, $|, or placeholder tags.
+COLOR_STYLE_TAG_RE = re.compile(
+    r"""
+    \$[WwKkBbGgYyEeVvRrPpOoFfHhNn]\{ |           # span color open, e.g. $f{
+    \$[WwKkBbGgYyEeVvRrPpOoFfHhNn](?=(?:\s|$))   # single-word color, e.g. $h
+    """,
+    re.VERBOSE,
+)
+
+def has_color_styling_tag(text: Optional[str]) -> bool:
+    """
+    Return True if text contains at least one color-applying styling tag:
+    either a span-opening tag (e.g. '$f{') or a single-word color tag (e.g. '$h').
+
+    Close tags ($}), color breaks ($|), and placeholder substitutions
+    ($callsign, $rank, $quote, $semicolon) are intentionally excluded.
+    """
+    if not text:
+        return False
+    return bool(COLOR_STYLE_TAG_RE.search(text))
+
+
 def strip_text_styling_tags(text: Optional[str]) -> str:
     """
     Strips FSO text styling tags from a string and replaces 

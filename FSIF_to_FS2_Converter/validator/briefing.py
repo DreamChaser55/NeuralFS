@@ -1,7 +1,7 @@
 import math
 from typing import Optional
 from common.utils import calculate_briefing_camera_height
-from common.text_styling_utils import extract_briefing_style_tags, validate_span_style_tags
+from common.text_styling_utils import extract_briefing_style_tags, validate_span_style_tags, has_color_styling_tag
 
 class BriefingChecksMixin:
     def _validate_span_style_tags(self, context: str, text: Optional[str]):
@@ -68,6 +68,50 @@ class BriefingChecksMixin:
         mi = self.mission.mission_info
         warn_if_has_tags("mission_info.name", mi.name)
         warn_if_has_tags("mission_info.description", mi.description)
+
+    def validate_mission_has_briefing_text_styling(self):
+        """
+        Warn when eligible mission text exists but none of it contains color
+        styling tags (span-open or single-word color tags).
+
+        Eligible contexts: command briefing, mission briefing, debriefing.
+
+        Rationale: FSO text styling is mandatory in player-facing mission texts
+        to visually distinguish ships, wings, and locations. An AI authoring agent
+        that forgets to add styling tags at all is a common and silent error — this
+        check catches that case at mission level rather than per-field.
+
+        The check fires only when at least one eligible text field is non-empty, so
+        minimal or test missions with no briefing/debriefing text are not warned.
+        Placeholder-only texts ($callsign, $rank, $quote, $semicolon) do not count
+        as styled because they contain no color tags.
+        """
+        all_texts = []
+
+        for stage in self.mission.command_briefing.stages:
+            if stage.text:
+                all_texts.append(stage.text)
+
+        for stage in self.mission.briefing.stages:
+            if stage.text:
+                all_texts.append(stage.text)
+
+        for stage in self.mission.debriefing.stages:
+            if stage.text:
+                all_texts.append(stage.text)
+
+        if not all_texts:
+            # No eligible text at all — skip the check (minimal/no-briefing mission).
+            return
+
+        if not any(has_color_styling_tag(t) for t in all_texts):
+            self.log_warning(
+                "No text styling color tags were found in any eligible mission text "
+                "(command briefing, mission briefing, debriefing). "
+                "If this mission has player-facing briefing or debriefing text, add "
+                "appropriate FSO styling tags for ships, wings, locations, and warnings "
+                "(e.g. '$f{ GTC Fenris $}' for a friendly ship, '$h Rama' for a hostile wing)."
+            )
 
     def _calculate_briefing_camera_width(self, icons) -> float:
         """
