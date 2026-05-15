@@ -1,0 +1,381 @@
+fsif_version: "1.0"
+
+mission_info:
+  name: "Strange Fires"
+  author: "NeuralFS"
+  description: "Routine patrol to investigate a missing transport in the Capella approach corridor."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns:
+    - texture: SunVega
+      angles: [0.10, 3.14]
+      scale: 1.5
+  background_bitmaps:
+    - texture: dneb08
+      angles: [0.20, 0.50, 1.20]
+      scale: {x: 3.0, y: 3.0}
+    - texture: neb15
+      angles: [0.80, 0.10, 2.50]
+      scale: {x: 4.0, y: 4.0}
+    - texture: dneb09
+      angles: [1.20, 0.30, 0.80]
+      scale: {x: 2.5, y: 2.5}
+  nebula:
+    enabled: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices: []
+  additional_weapons: []
+
+entities:
+  ship_templates:
+    alpha_fighter:
+      class: "GTF Apollo"
+      team: "Friendly"
+      ai_class: "Colonel"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["ML-16 Laser", "ML-16 Laser"]
+        secondary: ["MX-50", "Fury"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_heavy:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Heavy Laser"]
+        secondary: ["Fury#Shivan", "Fury#Shivan"]
+
+  ships:
+    - name: "GTT Meridian"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [0.0, 0.0, 6000.0]
+      destroyed_before_mission_seconds: 10
+      flags: ["ignore-count"]
+      
+    - name: "Nav Alpha"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [0.0, -200.0, 6000.0]
+
+    - name: "Jump-Out Point"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [0.0, 0.0, -500.0]
+
+    - name: "Escape Pod 1"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [200.0, 0.0, 6000.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-waypoints-once "JumpOutPath" 89 )
+      departure_cue: |
+        ( < ( distance "Escape Pod 1" "JumpOutPath:1" ) 500 )
+      departure_method: "Hyperspace"
+
+    - name: "Escape Pod 2"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [-350.0, 0.0, 6000.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-waypoints-once "JumpOutPath" 89 )
+      departure_cue: |
+        ( < ( distance "Escape Pod 2" "JumpOutPath:1" ) 500 )
+      departure_method: "Hyperspace"
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_fighter"
+      count: 4
+      position: [0.0, 0.0, 0.0]
+      initial_orders: |
+        ( ai-guard "Alpha 1" 89 )
+
+    - name: "Brahma"
+      template: "shivan_fighter"
+      count: 4
+      position: [0.0, 0.0, 14000.0]
+      arrival_cue: |
+        ( is-event-true-delay "BrahmaArrives" 0 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-chase-wing "Alpha" 89 )
+
+    - name: "Vishnu"
+      template: "shivan_heavy"
+      count: 3
+      position: [0.0, 0.0, 16000.0]
+      arrival_cue: |
+        ( is-event-true-delay "VishnuArrives" 0 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-chase-wing "Alpha" 89 )
+
+  waypoints:
+    JumpOutPath:
+      - [0.0, 0.0, -500.0]
+
+mission_flow:
+  command_briefing:
+    stages:
+      - text: "Attention, pilots. Welcome to the 0800 brief. I'm Rear Admiral Chen Wei, commanding the Amadeus and the 3rd Fleet detachment in the Vega system."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, serious"
+      - text: "We have now held this system for eleven months. The Terran-Vasudan War is grinding on in its fourteenth year. Our job here is unchanged: patrol the four jump node approaches, maintain system integrity, and protect GTA assets. The GTI Vega Prime installation remains operational and is currently handling the last civilian evacuation shuttles from the Vega colony platforms - routine administrative work that I want completed without incident."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, serious"
+      - text: "The war is still raging. Until Terran Command says otherwise, standard rules of engagement remain in effect. Vasudan contacts inside Vega are to be treated as hostile. No exceptions."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, commanding"
+      - text: "We lost contact with the patrol transport GTT Meridian at 0340 this morning. She was running a standard pass along the Capella approach corridor, approximately 15,000 meters from the Capella jump node. Her last beacon ping was normal. Then nothing."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, tactical"
+      - text: "This is most likely a systems failure. Meridian's drive was flagged for maintenance two weeks ago. However, standing orders require that all unexplained beacon silences be investigated within six hours."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, serious"
+      - text: "Alpha wing - that's you, Pilot - you're going out to investigate. Four ships, standard loadout. Check on Meridian, confirm her status, and return. If she's adrift, note the position and we'll send a salvage tug. If there's Vasudan activity in that corridor, report it and do not escalate unless fired upon first."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, directive"
+      - text: "If this is your first duty rotation on the Amadeus, welcome. This is not a glamorous posting. Vega is a four-node intersection that hasn't seen a major fleet engagement in seven months. Most of your work here will be exactly what Alpha wing is doing today: investigating silences, protecting convoys, holding the line."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, welcoming but stern"
+      - text: "Do it well. The Amadeus has a reputation, and I intend to keep it. Dismissed. Report to your wing station at 0820."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Firm, dismissing"
+
+  briefing:
+    stages:
+      - text: "GTD Amadeus Operations, this is your mission package. GTT Meridian's beacon last pinged at these coordinates in the Capella corridor. You'll jump in approximately six kilometers from her last known position."
+        voice_name: "Gacrux"
+        voice_style_instructions: "Professional military briefing"
+        icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing", highlighted: true }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha" }
+      - text: "We don't know what happened to her. This is a recon and recovery assignment. If she's adrift, pull her crew manifest and assess damage. If there's Vasudan activity in the area, follow standard rules of engagement."
+        voice_name: "Gacrux"
+        voice_style_instructions: "Clear directive"
+        icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha", highlighted: true }
+      - text: "Expected duration: thirty minutes. Come home clean. Alpha wing, you're cleared to the Capella corridor. Nav Alpha marks the Meridian's last position. Proceed there, assess the situation, and return to the jump-out point when complete. Don't get ambitious out there."
+        voice_name: "Gacrux"
+        voice_style_instructions: "Firm warning"
+        icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [0, 0], label: "Alpha Wing" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 600], label: "Nav Alpha" }
+          - { icon_type: "Waypoint", team: "Friendly", map_position: [0, -200], label: "Jump-Out Point", highlighted: true }
+
+  debriefing:
+    stages:
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "Alpha 1" )
+            ( has-departed-delay 0 "Escape Pod 1" )
+            ( has-departed-delay 0 "Escape Pod 2" )
+          )
+        text: "You made it back. The sensor data from your engagement has been transmitted to Terran Command. We have never encountered ships matching these profiles in any GTA database. They are not Vasudan, and they are not anything we've seen before.\n\nCommander's evaluation: your ML-16 rounds were largely ineffective against their shields. You know this. We know this. R&D is being alerted.\n\nMeridian's survivors are being treated aboard the Amadeus. Their account matches your sensor data: these ships came from the direction of the Capella node. We do not know what is through that node.\n\nWell done for getting the pods home. We will have more answers by morning. I wish I could promise better news when we do."
+        voice_name: "Gacrux"
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "Alpha 1" )
+            ( or 
+              ( and ( has-departed-delay 0 "Escape Pod 1" ) ( is-destroyed-delay 0 "Escape Pod 2" ) )
+              ( and ( has-departed-delay 0 "Escape Pod 2" ) ( is-destroyed-delay 0 "Escape Pod 1" ) )
+            )
+          )
+        text: "Alpha Lead, welcome back. You got one of the Meridian's pods out. The other is presumed lost.\n\nI want you to understand that those were not typical combat conditions. Our weapons were not designed for whatever we just encountered, and this was not a failure of tactics. You were handed the wrong tools for the job and you still brought people home.\n\nWe're sending all your sensor recordings to Command immediately. Whatever those ships are, we need answers fast."
+        voice_name: "Gacrux"
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "Alpha 1" )
+            ( is-destroyed-delay 0 "Escape Pod 1" )
+            ( is-destroyed-delay 0 "Escape Pod 2" )
+          )
+        text: "Alpha Lead, glad you're back. The pods are lost. The crew of the Meridian will be listed as killed in action. That is a hard outcome, but given what you faced out there, I'm not prepared to call this your fault. Those shields absorbed everything you had.\n\nThe data you brought back is the only thing we came away with. It had better count for something."
+        voice_name: "Gacrux"
+
+  events:
+    - name: "Alpha2WreckageMsg"
+      formula: |
+        ( when
+          ( < ( distance "Alpha 1" "Nav Alpha" ) 1500 )
+          ( send-message "Alpha 2" "Normal" "Msg1" )
+        )
+    - name: "SystemPodMsg"
+      formula: |
+        ( when
+          ( is-event-true-delay "Alpha2WreckageMsg" 3 )
+          ( send-message "#Command" "Normal" "Msg2" )
+        )
+    - name: "BrahmaArrives"
+      formula: |
+        ( when 
+          ( < ( distance "Alpha 1" "Nav Alpha" ) 3000 )
+          ( do-nothing )
+        )
+      hud_directive_text: "Investigate Nav Alpha"
+    - name: "BrahmaMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Brahma" )
+          ( send-message "Alpha 3" "High" "Msg3" )
+        )
+    - name: "Alpha2ShieldsMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 10 "Brahma" )
+          ( send-message "Alpha 2" "High" "Msg4" )
+        )
+    - name: "Alpha2StayTight"
+      formula: |
+        ( when
+          ( and
+            ( has-arrived-delay 30 "Brahma" )
+            ( not ( percent-ships-destroyed 100 "Brahma" ) )
+          )
+          ( send-message "Alpha 2" "Normal" "Msg5" )
+        )
+    - name: "VishnuArrives"
+      formula: |
+        ( when 
+          ( or 
+            ( is-event-true-delay "BrahmaArrives" 90 )
+            ( percent-ships-destroyed 50 "Brahma" )
+          )
+          ( do-nothing )
+        )
+    - name: "CommandRetreatMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Vishnu" )
+          ( send-message "#Command" "High" "Msg6" )
+        )
+    - name: "Alpha4PanicsMsg"
+      formula: |
+        ( when
+          ( and
+            ( has-arrived-delay 0 "Vishnu" )
+            ( or 
+              ( is-destroyed-delay 0 "Alpha 3" )
+              ( is-destroyed-delay 0 "Alpha 4" )
+            )
+          )
+          ( send-message "Alpha 4" "High" "Msg7" )
+        )
+    - name: "Alpha2PodsMsg"
+      formula: |
+        ( when
+          ( and
+            ( < ( distance "Alpha 1" "Jump-Out Point" ) 4000 )
+            ( not ( is-destroyed-delay 0 "Escape Pod 1" ) )
+            ( not ( is-destroyed-delay 0 "Escape Pod 2" ) )
+          )
+          ( send-message "Alpha 2" "Normal" "Msg8" )
+        )
+    - name: "CommandJumpReady"
+      formula: |
+        ( when
+          ( < ( distance "Alpha 1" "Jump-Out Point" ) 2000 )
+          ( send-message "#Command" "Normal" "Msg9" )
+        )
+    - name: "Alpha2EndMsg"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "Alpha 1" )
+          ( send-message "Alpha 2" "Normal" "Msg10" )
+        )
+    - name: "Pod1Safe"
+      formula: |
+        ( when 
+          ( has-departed-delay 0 "Escape Pod 1" )
+          ( do-nothing )
+        )
+    - name: "Pod2Safe"
+      formula: |
+        ( when 
+          ( has-departed-delay 0 "Escape Pod 2" )
+          ( do-nothing )
+        )
+    - name: "Alpha1Safe"
+      formula: |
+        ( when 
+          ( has-departed-delay 0 "Alpha 1" )
+          ( allow-ship "GTF Valkyrie" )
+        )
+      hud_directive_text: "Return to Jump-Out Point"
+
+  goals:
+    - name: "Survive and Return"
+      type: "Primary"
+      objective_text: "Investigate Nav Alpha and return to jump-out point."
+      formula: |
+        ( is-event-true-delay "Alpha1Safe" 0 )
+    - name: "Save Escape Pods"
+      type: "Secondary"
+      objective_text: "Ensure Meridian escape pods reach jump-out point."
+      formula: |
+        ( and 
+          ( is-event-true-delay "Pod1Safe" 0 )
+          ( is-event-true-delay "Pod2Safe" 0 )
+        )
+
+  messages:
+    - name: "Msg1"
+      text: "Alpha Lead, I'm reading - that's wreckage. Hull plating, looks like Meridian. She's gone."
+      voice_name: "Schedar"
+      voice_style_instructions: "Calm, steady, veteran"
+    - name: "Msg2"
+      text: "Two escape pods detected. Distress transponders active. Pods are alive."
+      voice_name: "Kore"
+      voice_style_instructions: "Robotic AI system voice"
+    - name: "Msg3"
+      text: "Contact! Multiple bogeys from Capella bearing. They're - they're not Vasudan."
+      voice_name: "Fenrir"
+      voice_style_instructions: "Nervous, excitable"
+    - name: "Msg4"
+      text: "Direct hits, but no effect! These shields are eating the ML-16s. Push through."
+      voice_name: "Schedar"
+      voice_style_instructions: "Focused, combat stress"
+    - name: "Msg5"
+      text: "These things don't die fast enough. Stay tight, Lead. Don't let them get behind you."
+      voice_name: "Schedar"
+      voice_style_instructions: "Professional warning"
+    - name: "Msg6"
+      text: "Alpha Lead, Command. We're reading a second wave at your position. Disengage. Break off and return immediately. Do NOT pursue. Repeat - do not pursue."
+      voice_name: "Kore"
+      voice_style_instructions: "Controlled alarm, authoritative"
+    - name: "Msg7"
+      text: "We lost one! - Command, we're taking heavy fire. Request-"
+      voice_name: "Aoede"
+      voice_style_instructions: "Frightened, panicked"
+    - name: "Msg8"
+      text: "Pods are still moving. They might make it if we buy them thirty seconds."
+      voice_name: "Schedar"
+      voice_style_instructions: "Calm, tactical"
+    - name: "Msg9"
+      text: "Alpha Lead, jump when ready. We'll send salvage for the pods if they don't make it. Get home."
+      voice_name: "Kore"
+      voice_style_instructions: "Firm, commanding"
+    - name: "Msg10"
+      text: "Amadeus, Alpha Lead is inbound. We need to talk about what we just saw."
+      voice_name: "Schedar"
+      voice_style_instructions: "Grim, serious"
+
+audio:
+  mission_music: "1: Genesis"
+  briefing_music: "Brief1"
+  tts_provider: "google"

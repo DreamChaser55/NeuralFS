@@ -1,0 +1,476 @@
+fsif_version: "1.0"
+
+mission_info:
+  name: "Vega Requiem"
+  author: "NeuralFS"
+  description: "Final evacuation through the Antares node."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns:
+    - texture: SunVega
+      angles: [0.10, 3.10]
+      scale: 0.5
+  background_bitmaps:
+    - texture: neb02
+      angles: [0.40, 0.40, 1.20]
+      scale: {x: 3.0, y: 3.0}
+    - texture: neb01
+      angles: [0.60, 0.20, 2.10]
+      scale: {x: 4.0, y: 4.0}
+    - texture: dneb18
+      angles: [1.20, 0.50, 0.80]
+      scale: {x: 2.5, y: 2.5}
+  nebula:
+    enabled: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices: []
+  additional_weapons: []
+
+entities:
+  ship_templates:
+    alpha_valkyrie:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Colonel"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["Avenger", "ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_heavy:
+      class: "SF Basilisk"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Heavy Laser"]
+        secondary: ["MX-50#Shivan", "Fury#Shivan"]
+    shivan_elite:
+      class: "SF Dragon"
+      team: "Hostile"
+      ai_class: "General"
+      weapons:
+        primary: ["Shivan Mega Laser", "Shivan Mega Laser"]
+        secondary: ["Hornet#Shivan"]
+
+  ships:
+    - name: "GTC Stentor"
+      class: "GTC Fenris"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      initial_hull_percent: 55
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTC Stentor" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "GTFr Aldrin 1"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      position: [500.0, 0.0, -2000.0]
+      flags: ["escort"]
+      cargo: "Vega Prime Data"
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 1" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "GTFr Aldrin 2"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      position: [0.0, 500.0, -2000.0]
+      flags: ["escort"]
+      cargo: "Sensor Data"
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 2" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "GTFr Aldrin 3"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      position: [-500.0, 0.0, -2000.0]
+      flags: ["escort"]
+      cargo: "Sensor Data"
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 3" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "GTT Rescue"
+      class: "GTT Elysium"
+      team: "Friendly"
+      position: [0.0, 0.0, -3000.0]
+      flags: ["escort"]
+      cargo: "Meridian Survivors"
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTT Rescue" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "Theta 3"
+      class: "PVT Isis"
+      team: "Friendly"
+      position: [0.0, 0.0, -4000.0]
+      flags: ["escort", "no-shields"]
+      cargo: "Vasudan Refugees"
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "Theta 3" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "GTS Casca"
+      class: "GTS Centaur"
+      team: "Friendly"
+      position: [-1000.0, 0.0, -1000.0]
+      initial_orders: |
+        ( ai-waypoints-once "NodePath" 89 )
+      departure_cue: |
+        ( < ( distance "GTS Casca" "Node Center" ) 2000 )
+      departure_method: "Hyperspace"
+
+    - name: "SC Malgor"
+      class: "SC Cain"
+      team: "Hostile"
+      position: [1000.0, 0.0, 7000.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-stay-still "Node Center" 89 )
+
+    - name: "Nav Alpha"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [0.0, 0.0, 6000.0]
+
+    - name: "Node Center"
+      class: "Terran NavBuoy"
+      team: "Unknown"
+      position: [0.0, 0.0, 12000.0]
+
+  jump_nodes:
+    - name: "Antares Node"
+      position: [0.0, 0.0, 12000.0]
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_valkyrie"
+      count: 4
+      position: [0.0, 500.0, 1000.0]
+      initial_orders: |
+        ( ai-guard "GTC Stentor" 89 )
+
+    - name: "Krishna"
+      template: "shivan_fighter"
+      count: 4
+      position: [-4000.0, 0.0, 4000.0]
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+    - name: "Indra"
+      template: "shivan_heavy"
+      count: 3
+      position: [0.0, 500.0, 6000.0]
+      initial_orders: |
+        ( ai-chase "GTC Stentor" 89 )
+
+    - name: "Arjuna"
+      template: "shivan_elite"
+      count: 2
+      position: [0.0, 1000.0, 10000.0]
+      initial_orders: |
+        ( ai-stay-still "Node Center" 89 )
+
+  waypoints:
+    NodePath:
+      - [0.0, 0.0, 6000.0]
+      - [0.0, 0.0, 12000.0]
+
+mission_flow:
+  fiction_viewer: "Mission_2_3_story.txt"
+  briefing:
+    stages:
+      - text: "This is Commander Okafor. Admiral Wei is gone, so I'm running this brief.\n\nThe Antares node is twelve thousand meters ahead. SC Malgor is sitting on it. She's been there for four days. She has a fighter screen - Scorpions and Basilisks at the approach, and our long-range sensors are showing Dragon-class contacts near the node itself.\n\nWe are going through that node. I need to be absolutely clear about that. There is no alternative. The Amadeus is destroyed. The system is lost. We go through the node."
+        voice_name: "Laomedeia"
+        voice_style_instructions: "Professional, exhausted but resolute naval officer"
+        icons:
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [0, -500], label: "Stentor" }
+          - { icon_type: "Freighter Wing (has cargo)", team: "Friendly", display_class: "GTFr Chronos", map_position: [0, -850], label: "Aldrin Wing" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTT Elysium", map_position: [0, -1200], label: "Rescue" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "PVT Isis", map_position: [0, -1550], label: "Theta 3" }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [0, 500], label: "Malgor" }
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 1200], label: "Antares Node" }
+      - text: "The people from the Amadeus evacuation pods are aboard the Stentor. Nine pods, most of them intact. They are in the cargo bays right now. I will not tell you what it means to me personally to have them aboard. I will tell you that they are going through that node if I have to take the Stentor through the Malgor on a collision course.\n\nAlpha wing, your job is to suppress the Malgor and clear the fighter screen. Get her turrets down if you can. If you can take out her weapons subsystem, do it - that's what matters. Destroy her if you have time.\n\nWe move on my mark. Do not hesitate when the node is clear enough. Transit and don't look back."
+        voice_name: "Laomedeia"
+        voice_style_instructions: "Fierce, determined"
+        icons:
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [0, -500], label: "Stentor", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [-200, -300], label: "Alpha Wing", highlighted: true }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [0, 500], label: "Malgor" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [-400, 200], label: "Krishna Wing" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Basilisk", map_position: [200, 100], label: "Indra Wing" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Dragon", map_position: [0, 900], label: "Arjuna Wing (Dragon intercept)" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 0], label: "Nav Alpha" }
+      - text: "One more thing. There's a Vasudan transport at the back of the convoy. PVT Theta Three.\n\nShe was here when no one asked her to be. She goes through that node. That is not optional.\n\nOkafor out."
+        voice_name: "Laomedeia"
+        voice_style_instructions: "Quietly fierce"
+        icons:
+          - { icon_type: "Transport", team: "Friendly", display_class: "PVT Isis", map_position: [0, -1550], label: "Theta 3", highlighted: true }
+
+  debriefing:
+    stages:
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "GTC Stentor" )
+            ( is-destroyed-delay 0 "SC Malgor" )
+            ( percent-ships-departed 100 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+            ( has-departed-delay 0 "Theta 3" )
+          )
+        text: "All ships are through the node. Every person who was alive in the Vega system when we started this transit is alive now in Antares.\n\nThe SC Malgor is destroyed.\n\nCommander Okafor has submitted her after-action report. I will summarize it here: 'The convoy executed the transit under sustained Shivan fire. The conduct of all crews, and of Alpha wing in particular, was exemplary. I commend Alpha wing to the attention of Terran Command for recognition.'\n\nAdmiral Wei would have said something better than I can. I'm going to leave space here for what he would have said and let you fill it in yourself.\n\nWelcome to Antares. The war isn't over. But everyone who should have made it did."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "GTC Stentor" )
+            ( percent-ships-departed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+            ( not ( percent-ships-departed 100 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" ) )
+            ( has-departed-delay 0 "Theta 3" )
+          )
+        text: "The convoy is through. The Stentor is safe. The people from the Amadeus pods are in Antares.\n\nWe lost ships on the transit. Those were ships with crews and cargo - things that can be mourned and then accounted for, which is the GTA's way of handling loss.\n\nThe Vasudan transport Theta Three made the transit. Her pilot asked me to pass along a message. I'll put it in the report.\n\nThe Vega system is behind us now. It isn't coming back."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "GTC Stentor" )
+            ( percent-ships-departed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+            ( not ( percent-ships-departed 100 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" ) )
+            ( not ( has-departed-delay 0 "Theta 3" ) )
+          )
+        text: "The convoy is through. The Stentor is safe. The people from the Amadeus pods are in Antares.\n\nWe lost ships on the transit. Those were ships with crews and cargo - things that can be mourned and then accounted for, which is the GTA's way of handling loss.\n\nWe lost PVT Theta Three on the transit. She made it this far. That counts for something.\n\nThe Vega system is behind us now. It isn't coming back."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and 
+            ( has-departed-delay 0 "GTC Stentor" )
+            ( not ( percent-ships-departed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" ) )
+          )
+        text: "The Stentor is through. That's what matters. The people from the Amadeus pods are alive.\n\nWe lost most of the convoy on the transit. The Malgor, the Dragons at the node - they were too much, and we were too few, and the math didn't work out.\n\nCommander Okafor says this: 'The node is closed behind us. We grieve what we left and we carry what we saved.'\n\nI don't have a better summary of this operation than that."
+        voice_name: "Kore"
+      - display_condition: |
+          ( is-destroyed-delay 0 "GTC Stentor" )
+        text: "The Stentor did not make it through the node.\n\nThe people from the Amadeus pods - the crew that Admiral Wei stayed behind to protect - are gone. The SC Malgor, or the Dragons, or the accumulated damage that the Stentor carried from two weeks of fighting - one of those things ended it.\n\nCommander Okafor's last recorded transmission: 'Convoy, scatter. Every ship independent. Make for the node on your own. Don't wait for us.'\n\nSome did. Some didn't. The accounting will take time.\n\nThe Vega system is closed."
+        voice_name: "Kore"
+
+  events:
+    - name: "MissionStartMsg"
+      formula: |
+        ( when
+          ( true )
+          ( send-message-list 
+            "Alpha 2" "Normal" "Msg1" 0
+            "GTC Stentor" "High" "Msg2" 8000
+          )
+        )
+    - name: "IndraAttacksMsg"
+      formula: |
+        ( when
+          ( < ( distance "Indra" "GTC Stentor" ) 4000 )
+          ( send-message "Alpha 3" "High" "Msg3" )
+        )
+    - name: "StentorDamageMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTC Stentor" ) 70 )
+          ( send-message "GTC Stentor" "High" "Msg4" )
+        )
+    - name: "MalgorEngageMsg"
+      formula: |
+        ( when
+          ( < ( distance "Alpha 1" "SC Malgor" ) 2500 )
+          ( send-message "Alpha 2" "High" "Msg5" )
+        )
+    - name: "AldrinHitMsg"
+      formula: |
+        ( when
+          ( or 
+            ( < ( hits-left "GTFr Aldrin 1" ) 80 )
+            ( < ( hits-left "GTFr Aldrin 2" ) 80 )
+            ( < ( hits-left "GTFr Aldrin 3" ) 80 )
+          )
+          ( send-message "#Command" "High" "Msg6" )
+        )
+    - name: "ArjunaActivate"
+      formula: |
+        ( when
+          ( or
+            ( < ( distance "Alpha 1" "Node Center" ) 2000 )
+            ( < ( distance "GTC Stentor" "Node Center" ) 2000 )
+          )
+          ( clear-goals "Arjuna" )
+          ( add-goal "Arjuna" ( ai-chase-any 89 ) )
+          ( send-message "Theta 3" "Normal" "Msg7" )
+        )
+    - name: "MalgorWeaponsDegraded"
+      formula: |
+        ( when
+          ( < ( hits-left-subsystem "SC Malgor" "weapons" ) 20 )
+          ( turret-lock-all "SC Malgor" )
+          ( send-message "GTC Stentor" "High" "Msg8" )
+        )
+      hud_directive_text: "Disable SC Malgor's Weapons Subsystem"
+    - name: "MalgorDestroyedMsg"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Malgor" )
+          ( send-message "GTC Stentor" "High" "Msg9" )
+        )
+    - name: "StentorAtNodeMsg"
+      formula: |
+        ( when
+          ( < ( distance "GTC Stentor" "Node Center" ) 2000 )
+          ( send-message "GTC Stentor" "High" "Msg10" )
+        )
+    - name: "StentorThroughMsg"
+      formula: |
+        ( when
+          ( has-departed-delay 30 "GTC Stentor" )
+          ( send-message "#Command" "Normal" "Msg11" )
+        )
+    - name: "RescueThroughMsg"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTT Rescue" )
+          ( send-message "#Command" "Normal" "Msg12" )
+        )
+    - name: "Theta3JumpingMsg"
+      formula: |
+        ( when
+          ( < ( distance "Theta 3" "Node Center" ) 2000 )
+          ( send-message "Theta 3" "Normal" "Msg13" )
+        )
+    - name: "AllThroughMsg"
+      formula: |
+        ( when
+          ( percent-ships-departed 100 "GTC Stentor" "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" "GTS Casca" )
+          ( send-message "Alpha 2" "Normal" "Msg14" )
+        )
+    - name: "TransitSuccess"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTC Stentor" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Escort GTC Stentor through the Jump Node"
+    - name: "MalgorKillObjective"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Malgor" )
+          ( do-nothing )
+        )
+
+    - name: "ConvoySurvivalObjective"
+      formula: |
+        ( when
+          ( percent-ships-departed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Ensure Convoy Survival"
+
+  goals:
+    - name: "Stentor Transits"
+      type: "Primary"
+      objective_text: "GTC Stentor transits the Antares node."
+      formula: |
+        ( is-event-true-delay "TransitSuccess" 0 )
+    - name: "Destroy Malgor"
+      type: "Secondary"
+      objective_text: "Destroy SC Malgor."
+      formula: |
+        ( is-event-true-delay "MalgorKillObjective" 0 )
+    - name: "Convoy Survival"
+      type: "Secondary"
+      objective_text: "At least 3 remaining convoy ships transit."
+      formula: |
+        ( percent-ships-departed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+    - name: "All Survive"
+      type: "Bonus"
+      objective_text: "All surviving convoy ships transit."
+      formula: |
+        ( percent-ships-departed 100 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+
+  messages:
+    - name: "Msg1"
+      text: "Malgor's right there. She's been waiting. Everyone want to go over the plan one more time? ...Yeah, me neither. Let's go."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, grim humor"
+    - name: "Msg2"
+      text: "Convoy, mark. All ships advance. Alpha wing, clear us a path."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Commanding, naval officer"
+    - name: "Msg3"
+      text: "Basilisks going for the Stentor - they're targeting the drive section."
+      voice_name: "Fenrir"
+      voice_style_instructions: "Urgent"
+    - name: "Msg4"
+      text: "We're taking hits. Keep moving - don't stop for us. Clear the approach."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Strained but determined"
+    - name: "Msg5"
+      text: "Malgor's opening up. Watch the turrets - target her weapons subsystem if you can get angle."
+      voice_name: "Schedar"
+      voice_style_instructions: "Tactical, warning"
+    - name: "Msg6"
+      text: "Aldrin One, taking fire - report your status. / Aldrin One, armor failing, taking hull hits. Please assist."
+      voice_name: "Kore"
+      voice_style_instructions: "Radio chatter between Command and panicked civilian freighter"
+    - name: "Msg7"
+      text: "Alpha wing. This is Theta Three. There are... large contacts near the node. Shall I proceed? ...Theta Three is proceeding to the node. Cover requested."
+      voice_name: "Algieba"
+      voice_style_instructions: "Vasudan accent, steady, resolved"
+    - name: "Msg8"
+      text: "Malgor's lost her guns. Get the convoy moving - this is our window."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Relieved, commanding"
+    - name: "Msg9"
+      text: "Malgor is gone. Node is clear. All convoy ships, advance and transit. Now. Don't wait."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Decisive"
+    - name: "Msg10"
+      text: "Stentor is at the node. We're going through... Alpha Lead - make sure everyone behind us gets through before you follow. That includes Theta Three."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Final order, firm"
+    - name: "Msg11"
+      text: "Stentor is through. Antares side confirmed. Alpha Lead - how many are behind you?"
+      voice_name: "Kore"
+      voice_style_instructions: "Professional"
+    - name: "Msg12"
+      text: "Rescue is through. Meridian's crew is in Antares."
+      voice_name: "Kore"
+      voice_style_instructions: "Relieved"
+    - name: "Msg13"
+      text: "This is Theta Three. We are... at the node. The Terran pilot - Alpha wing - thank you. I will tell the others that a Terran pilot held the door."
+      voice_name: "Algieba"
+      voice_style_instructions: "Vasudan accent, grateful, quiet"
+    - name: "Msg14"
+      text: "That's everyone. Alpha Lead - your turn. Go."
+      voice_name: "Schedar"
+      voice_style_instructions: "Quiet, conclusive"
+
+audio:
+  mission_music: "1: Genesis"
+  briefing_music: "Brief1"
+  tts_provider: "google"

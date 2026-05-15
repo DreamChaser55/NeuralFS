@@ -1,0 +1,535 @@
+fsif_version: "1.0"
+
+mission_info:
+  name: "The Last Full Measure"
+  author: "NeuralFS"
+  description: "Escape pod defense at Nav Charlie."
+  game_type: "single"
+  ai_profile: "FS1 RETAIL"
+  flags: []
+
+environment:
+  ambient_light_level: [5, 5, 5]
+  suns:
+    - texture: SunVega
+      angles: [0.10, 3.10]
+      scale: 1.0
+  background_bitmaps:
+    - texture: neb01
+      angles: [0.40, 0.40, 1.20]
+      scale: {x: 3.0, y: 3.0}
+    - texture: neb02
+      angles: [0.60, 0.20, 2.10]
+      scale: {x: 4.0, y: 4.0}
+    - texture: dneb18
+      angles: [1.20, 0.50, 0.80]
+      scale: {x: 2.5, y: 2.5}
+  nebula:
+    enabled: false
+
+player_setup:
+  start_ship: "Alpha 1"
+  additional_ship_choices: []
+  additional_weapons: []
+
+entities:
+  ship_templates:
+    alpha_valkyrie:
+      class: "GTF Valkyrie"
+      team: "Friendly"
+      ai_class: "Colonel"
+      flags: ["no-shields"]
+      weapons:
+        primary: ["Avenger", "ML-16 Laser"]
+        secondary: ["MX-50"]
+    shivan_fighter:
+      class: "SF Scorpion"
+      team: "Hostile"
+      ai_class: "Captain"
+      weapons:
+        primary: ["Shivan Light Laser", "Shivan Light Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_bomber:
+      class: "SB Shaitan"
+      team: "Hostile"
+      ai_class: "Major"
+      weapons:
+        primary: ["Shivan Heavy Laser", "Shivan Heavy Laser"]
+        secondary: ["MX-50#Shivan"]
+    shivan_elite:
+      class: "SF Dragon"
+      team: "Hostile"
+      ai_class: "General"
+      weapons:
+        primary: ["Shivan Mega Laser", "Shivan Mega Laser"]
+        secondary: ["Hornet#Shivan"]
+
+  ships:
+    - name: "GTD Amadeus"
+      class: "GTD Orion"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      initial_hull_percent: 40
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-stay-still "Nav Bravo" 89 )
+
+    - name: "Nav Bravo"
+      class: "Terran NavBuoy"
+      team: "Friendly"
+      position: [0.0, 0.0, 7000.0]
+
+    - name: "GTS Casca"
+      class: "GTS Centaur"
+      team: "Friendly"
+      position: [-500.0, 0.0, 500.0]
+      initial_orders: |
+        ( ai-stay-near-ship "Pod 1" 89 )
+
+    - name: "SC Ahriman"
+      class: "SC Lilith"
+      team: "Hostile"
+      position: [0.0, -1000.0, -5000.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-chase "GTD Amadeus" 89 )
+
+    - name: "GTFr Aldrin 4"
+      class: "GTFr Chronos"
+      team: "Friendly"
+      position: [300.0, 0.0, 1500.0]
+      flags: ["escort", "cargo-known"]
+      cargo: "TAC-1 Tech Cargo"
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "GTFr Aldrin 4" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 1"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [100.0, 0.0, 1500.0]
+      flags: ["escort"]
+      cargo: "Bridge Officers"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 1" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 2"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [-100.0, 0.0, 1500.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 2" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 3"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [0.0, 100.0, 1500.0]
+      flags: ["escort"]
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 3" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 4"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [100.0, 100.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 4" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 5"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [-100.0, 100.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 5" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 6"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [0.0, -100.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 45 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 6" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 7"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [100.0, -100.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 7" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 8"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [-100.0, -100.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 8" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+    - name: "Pod 9"
+      class: "GTEP Hermes"
+      team: "Friendly"
+      position: [0.0, 200.0, 1500.0]
+      flags: ["escort"]
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-waypoints-once "BravoPath" 89 )
+      departure_cue: |
+        ( < ( distance "Pod 9" "Nav Bravo" ) 1000 )
+      departure_method: "Hyperspace"
+
+  wings:
+    - name: "Alpha"
+      template: "alpha_valkyrie"
+      count: 4
+      position: [0.0, 500.0, 2000.0]
+      initial_orders: |
+        ( ai-guard "GTD Amadeus" 89 )
+
+    - name: "Asura"
+      template: "shivan_fighter"
+      count: 3
+      position: [0.0, 500.0, 5000.0]
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+    - name: "Brahma"
+      template: "shivan_bomber"
+      count: 3
+      position: [5000.0, 0.0, -5000.0]
+      arrival_cue: |
+        ( has-time-elapsed 90 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-chase "GTD Amadeus" 89 )
+
+    - name: "Vishnu"
+      template: "shivan_fighter"
+      count: 4
+      position: [0.0, 0.0, -10000.0]
+      arrival_cue: |
+        ( has-time-elapsed 180 )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+    - name: "Bheema"
+      template: "shivan_elite"
+      count: 3
+      position: [0.0, 1000.0, 8000.0]
+      arrival_cue: |
+        ( or 
+          ( has-time-elapsed 360 )
+          ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+        )
+      arrival_method: "Hyperspace"
+      initial_orders: |
+        ( ai-chase-any 89 )
+
+  waypoints:
+    BravoPath:
+      - [0.0, 0.0, 7000.0]
+
+mission_flow:
+  fiction_viewer: "Mission_2_2_story.txt"
+  briefing:
+    stages:
+      - text: "This is Admiral Chen Wei. I'll be brief because the situation is simple.\n\nThe Amadeus cannot transit to Antares. Her subspace drive is non-functional. We've run the numbers. We're holding here at Nav Charlie.\n\nThe crew is being evacuated in nine Hermes pods. They'll move to Nav Bravo and continue to the Antares node under Stentor's escort. All non-essential personnel are clearing the ship now."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Calm, final, authoritative"
+        icons:
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus (Nav Charlie)" }
+          - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 800], label: "Nav Bravo" }
+      - text: "Alpha wing, your assignment is the pods. Nine of them, three groups. They come out in sequence over the next two minutes. You get them to Nav Bravo.\n\nThe Ahriman is closing. We'll use the Amadeus's position and turrets to cover the pod corridor for as long as we can.\n\nI would appreciate it if you did not waste time trying to protect this ship. The Amadeus has served her purpose. The people in those pods have not."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Direct, realistic"
+        icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [0, -100], label: "Alpha Wing", highlighted: true }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus" }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [500, -800], label: "Ahriman (NOT A TARGET)" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [0, -300], label: "Pod Group A" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [0, 500], label: "Asura Wing" }
+      - text: "One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the correct decision and that I made it freely. Command will review the documentation.\n\nGood luck. Amadeus out."
+        voice_name: "Alnilam"
+        voice_style_instructions: "Resolute, concluding"
+        icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [0, -100], label: "Alpha Wing" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus" }
+
+  debriefing:
+    stages:
+      - display_condition: |
+          ( and 
+            ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( has-departed-delay 0 "Pod 1" )
+          )
+        text: "All nine escape pods reached Nav Bravo. The entire crew of the Amadeus is accounted for.\n\nAdmiral Chen Wei is listed as killed in action. He remained aboard as a decision he made openly and documented. His service record will reflect that.\n\nEvery person in those pods owes their life to Alpha wing. I don't know another way to say that.\n\nThe Amadeus is gone. She served for eleven years and she died doing what a ship is supposed to do - buying time for people who needed it.\n\nBrace yourself. We still have to get through the Antares node. And the SC Malgor is sitting on it."
+        voice_name: "Kore"
+      - display_condition: |
+          ( and 
+            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( not ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" ) )
+          )
+        text: "Most of the escape pods reached Nav Bravo. We lost some in the evacuation.\n\nAdmiral Wei is listed as killed in action. His log and his decisions have been forwarded to Terran Command.\n\nYou held the line against three fighter waves and a Dragon flight. Whatever we lost out there, it could have been worse. Today's standard is survival, not perfection.\n\nThe Malgor is still at the Antares node. We move as soon as the Stentor can reposition."
+        voice_name: "Kore"
+      - display_condition: |
+          ( not ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" ) )
+        text: "The evacuation failed. Of the nine pods that departed the Amadeus, too few made it.\n\nAdmiral Wei is listed as killed in action alongside the crew of the pods that were destroyed. I don't have words for this that are useful right now. We proceed because we have to.\n\nWhatever is at the Antares node, we have to go through it. All of us who are left."
+        voice_name: "Kore"
+
+  events:
+    - name: "MissionStartMsg"
+      formula: |
+        ( when
+          ( true )
+          ( send-message "GTD Amadeus" "Normal" "Msg1" )
+        )
+    - name: "AsuraEngageMsg"
+      formula: |
+        ( when
+          ( or 
+            ( < ( hits-left "Pod 1" ) 99 )
+            ( < ( hits-left "Pod 2" ) 99 )
+            ( < ( hits-left "Pod 3" ) 99 )
+          )
+          ( send-message "Alpha 2" "High" "Msg2" )
+        )
+    - name: "Pod1ClearMsg"
+      formula: |
+        ( when
+          ( > ( distance "Pod 1" "GTD Amadeus" ) 5000 )
+          ( send-message "GTD Amadeus" "Normal" "Msg3" )
+        )
+    - name: "BrahmaArrivalMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Brahma" )
+          ( send-message "Alpha 3" "High" "Msg4" )
+        )
+    - name: "CommandPriorityMsg"
+      formula: |
+        ( when
+          ( is-event-true-delay "BrahmaArrivalMsg" 3 )
+          ( send-message "#Command" "High" "Msg5" )
+        )
+    - name: "AmadeusDamagedMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 60 )
+          ( send-message "GTD Amadeus" "Normal" "Msg6" )
+        )
+    - name: "VishnuArrivalMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Vishnu" )
+          ( send-message "Alpha 2" "High" "Msg7" )
+        )
+    - name: "FivePodsSafeMsg"
+      formula: |
+        ( when
+          ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( send-message "Alpha 2" "Normal" "Msg8" )
+        )
+    - name: "AmadeusCriticalMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 20 )
+          ( send-message "GTD Amadeus" "Normal" "Msg9" )
+        )
+    - name: "BheemaArrivalMsg"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Bheema" )
+          ( send-message "Alpha 3" "High" "Msg10" )
+        )
+    - name: "AmadeusDoomWarning"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 15 )
+          ( send-message "#Command" "High" "MsgDoomWarning" )
+        )
+    - name: "AmadeusFinalMsg"
+      formula: |
+        ( when
+          ( < ( hits-left "GTD Amadeus" ) 5 )
+          ( send-message "GTD Amadeus" "High" "Msg11" )
+        )
+    - name: "AmadeusExplodes"
+      formula: |
+        ( when
+          ( is-event-true-delay "AmadeusFinalMsg" 15 )
+          ( self-destruct "GTD Amadeus" )
+          ( send-message "Alpha 2" "Normal" "Msg12" )
+        )
+    - name: "StentorCheckMsg"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTD Amadeus" )
+          ( send-message "#Command" "High" "Msg13" )
+        )
+    - name: "SevenPodsSafeMsg"
+      formula: |
+        ( when
+          ( percent-ships-departed 77 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( send-message "#Command" "Normal" "Msg14" )
+        )
+    - name: "MissionEndMsg"
+      formula: |
+        ( when
+          ( and 
+            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+            ( percent-ships-departed 100 "GTFr Aldrin 4" )
+          )
+          ( send-message "#Command" "Normal" "Msg15" )
+        )
+      hud_directive_text: "Protect escape pods and Aldrin 4"
+
+    - name: "AldrinSafe"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTFr Aldrin 4" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Protect GTFr Aldrin 4"
+
+  goals:
+    - name: "Evacuate Pods"
+      type: "Primary"
+      objective_text: "At least 6 escape pods reach Nav Bravo."
+      formula: |
+        ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+    - name: "Near-Complete Evacuation"
+      type: "Secondary"
+      objective_text: "At least 8 pods reach Nav Bravo."
+      formula: |
+        ( percent-ships-departed 88 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+    - name: "Save Aldrin 4"
+      type: "Secondary"
+      objective_text: "GTFr Aldrin 4 reaches Nav Bravo."
+      formula: |
+        ( has-departed-delay 0 "GTFr Aldrin 4" )
+    - name: "Perfect Evacuation"
+      type: "Bonus"
+      objective_text: "All 9 pods reach Nav Bravo."
+      formula: |
+        ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+
+  messages:
+    - name: "Msg1"
+      text: "Alpha wing, pods are away. Group A has cleared the bay. Watch your left - we're showing contacts at six kilometers."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Calm authority"
+    - name: "Msg2"
+      text: "They're going for the pods directly. Forget the Amadeus - these things are targeting the pods."
+      voice_name: "Schedar"
+      voice_style_instructions: "Veteran wingman, urgent"
+    - name: "Msg3"
+      text: "Pod One is clear. Bridge officers are aboard. Get them to Nav Bravo."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Calm, steady"
+    - name: "Msg4"
+      text: "Bombers inbound - they're going for the Amadeus. Do we- Command?"
+      voice_name: "Fenrir"
+      voice_style_instructions: "Young pilot, uncertain"
+    - name: "Msg5"
+      text: "Alpha wing, the Amadeus is not your objective. Let the Amadeus handle the Shaitans. Pods. Focus on the pods."
+      voice_name: "Kore"
+      voice_style_instructions: "Professional, operational"
+    - name: "Msg6"
+      text: "Some damage to frame forty. Manageable. Turrets holding. Alpha Lead, how are the pods?"
+      voice_name: "Alnilam"
+      voice_style_instructions: "Calm under pressure"
+    - name: "Msg7"
+      text: "Another fighter wave - Scorpions, coming out of the aft sector. Four of them."
+      voice_name: "Schedar"
+      voice_style_instructions: "Tactical, focused"
+    - name: "Msg8"
+      text: "Five pods at Nav Bravo. Halfway there. Keep pushing."
+      voice_name: "Schedar"
+      voice_style_instructions: "Encouraging, veteran"
+    - name: "Msg9"
+      text: "Significant structural compromise, frames twenty through sixty. Casca - you'll want to move away from the ship... Alpha Lead. Don't mourn on my clock. Not yet."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Quietly accepting, firm"
+    - name: "Msg10"
+      text: "Dragons. Three of them. They're fast - they're going for the pods."
+      voice_name: "Fenrir"
+      voice_style_instructions: "Frightened, urgent"
+    - name: "MsgDoomWarning"
+      text: "Amadeus structural failure imminent - clear the ship's immediate area."
+      voice_name: "Kore"
+      voice_style_instructions: "Warning"
+    - name: "Msg11"
+      text: "All pods are away. All pods are clear... Alpha wing - you have your orders. Amadeus out."
+      voice_name: "Alnilam"
+      voice_style_instructions: "Final, resonant, static at the end"
+    - name: "Msg12"
+      text: "...Copy, Admiral."
+      voice_name: "Schedar"
+      voice_style_instructions: "Soft, solemn"
+    - name: "Msg13"
+      text: "Alpha Lead, this is Stentor at Nav Bravo. The Amadeus - we're reading... confirmed destroyed. Get those pods to us. Bring everyone you can."
+      voice_name: "Laomedeia"
+      voice_style_instructions: "Shocked, recovering quickly to command"
+    - name: "Msg14"
+      text: "Seven pods at Nav Bravo. Alpha Lead, disengage and return when the area is clear."
+      voice_name: "Kore"
+      voice_style_instructions: "Professional"
+    - name: "Msg15"
+      text: "Pods are safe. Alpha wing, withdraw to Nav Bravo. We're done here."
+      voice_name: "Kore"
+      voice_style_instructions: "Conclusive"
+
+audio:
+  mission_music: "1: Genesis"
+  briefing_music: "Brief1"
+  tts_provider: "google"

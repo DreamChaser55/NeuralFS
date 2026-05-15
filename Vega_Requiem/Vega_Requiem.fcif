@@ -1,0 +1,28 @@
+fcif_version: "1.0"
+
+campaign:
+  name: "Vega Requiem"
+  description: |
+    They named the system for a dying star. It was an omen no one chose to read.
+
+starting_loadout:
+  ships:
+    - GTF Apollo
+  weapons:
+    - ML-16 Laser
+    - MX-50
+    - Fury
+
+missions:
+  - filename: Mission_1_1.fs2
+    success_goal: "Survive and Return"
+  - filename: Mission_1_2.fs2
+    success_goal: "Evacuate Transports"
+  - filename: Mission_1_3.fs2
+    success_goal: "Evacuate Refugees"
+  - filename: Mission_2_1.fs2
+    success_goal: "Reach Nav Bravo"
+  - filename: Mission_2_2.fs2
+    success_goal: "Evacuate Pods"
+  - filename: Mission_2_3.fs2
+    success_goal: "Stentor Transits"
