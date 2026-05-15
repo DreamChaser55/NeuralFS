@@ -256,14 +256,14 @@ mission_flow:
   fiction_viewer: "Mission_1_2_story.txt"
   briefing:
     stages:
-      - text: "Alpha wing, listen up. The situation has changed overnight. What Alpha Lead brought back from the Capella corridor wasn't Vasudan, wasn't anything Command could identify - and this morning at 0530, those same contact profiles showed up in force at the GTI Vega Prime perimeter.\n\nWe have four Epsilon transports at Vega Prime right now - civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now.\n\nGTC Stentor is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the Antares node."
+      - text: "Alpha wing, listen up. The situation has changed overnight. What Alpha Lead brought back from the Capella corridor wasn't Vasudan, wasn't anything Command could identify - and this morning at 0530, those same contact profiles showed up in force at the $f{ GTI Vega Prime $} perimeter.\n\nWe have four $f{ Epsilon transports $} at Vega Prime right now - civilian contractors, administrative personnel, maintenance crews. They need to get out. The transports are undocking now.\n\n$f{ GTC Stentor $} is already in the fight. Your job is to keep the fighters off those transports long enough for all four of them to clear the system at the $y{ Antares node $}."
         voice_name: "Gacrux"
         voice_style_instructions: "Professional military briefing"
         icons:
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [0, 0], label: "Vega Prime" }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [-200, 300], label: "Stentor" }
           - { icon_type: "Transport Wing", team: "Friendly", display_class: "GTT Elysium", map_position: [200, -200], label: "Epsilon Wing" }
-      - text: "You'll be flying Valkyries today. They just came in from the Amadeus complement - fast interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. The people on those transports are your mission.\n\nNav Alpha is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to Nav Bravo. Get them through."
+      - text: "You'll be flying $f{ Valkyries $} today. They just came in from the Amadeus complement - fast interceptors, good for exactly this kind of work. Use the speed. Get between the bombers and the transports. The station is already taking damage and we don't expect to hold it. That's not your mission. The people on those transports are your mission.\n\n$y{ Nav Alpha $} is the rendezvous point between the station and the node corridor. The transports will stage there before making their run to $y{ Nav Bravo $}. Get them through."
         voice_name: "Gacrux"
         voice_style_instructions: "Clear directive"
         icons:
@@ -271,7 +271,7 @@ mission_flow:
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [0, 0], label: "Vega Prime" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 200], label: "Nav Alpha" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 900], label: "Nav Bravo" }
-      - text: "One more thing. We're sending the Casca out behind you for rearming support. She's fragile - don't let her become a target. Call her in when you need her, not before.\n\nThe Stentor will hold as long as she can. Commander Okafor knows her job.\n\nGood luck. GTA Amadeus CAG out."
+      - text: "One more thing. We're sending the $f{ Casca $} out behind you for rearming support. She's fragile - don't let her become a target. Call her in when you need her, not before.\n\nThe $f{ Stentor $} will hold as long as she can. Commander Okafor knows her job.\n\nGood luck. GTA Amadeus CAG out."
         voice_name: "Gacrux"
         voice_style_instructions: "Supportive"
         icons:
@@ -288,18 +288,18 @@ mission_flow:
               ( percent-ships-destroyed 25 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
             )
           )
-        text: "Three transports made it. That's people alive who would otherwise be dead, and I'm not going to diminish that. But the Stentor took heavy damage, and I want you to think about what you could have done differently.\n\nArjuna wave - that second bomber group - came in fast. The Valkyrie was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time.\n\nVega Prime is gone. The Malgor is still in the system. The situation is deteriorating."
+        text: "Three transports made it. That's people alive who would otherwise be dead, and I'm not going to diminish that. But the $f{ Stentor $} took heavy damage, and I want you to think about what you could have done differently.\n\n$h{ Arjuna wave $} - that second bomber group - came in fast. The Valkyrie was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time.\n\nVega Prime is gone. The $h Malgor is still in the system. The situation is deteriorating."
         voice_name: "Gacrux"
       - display_condition: |
           ( and 
             ( > ( hits-left "GTC Stentor" ) 50 )
             ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
           )
-        text: "All four Epsilon transports are safely through the Antares node. The station is gone - but the people are not. That matters.\n\nCommander Okafor sends her thanks. The Stentor took some damage, but she held together, and her crew held together with her. She says you covered her exactly when she needed it.\n\nVega Prime is lost. We knew it was coming, but knowing doesn't make it easier. I want you to understand that everything you defended out there had a name and a family. You did right by them today.\n\nThe Malgor is still in the system. We're keeping track of her."
+        text: "All four $f{ Epsilon transports $} are safely through the $y{ Antares node $}. The station is gone - but the people are not. That matters.\n\nCommander Okafor sends her thanks. The $f{ Stentor $} took some damage, but she held together, and her crew held together with her. She says you covered her exactly when she needed it.\n\nVega Prime is lost. We knew it was coming, but knowing doesn't make it easier. I want you to understand that everything you defended out there had a name and a family. You did right by them today.\n\nThe $h Malgor is still in the system. We're keeping track of her."
         voice_name: "Gacrux"
       - display_condition: |
           ( percent-ships-destroyed 50 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
-        text: "This is hard to report. Most of the Epsilon transports were destroyed before they could reach the jump node. Those were civilian evacuation ships.\n\nI have to be direct with you: the Arjuna bombers were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing - those shields, that SC Malgor arriving - but our job was the transports.\n\nWe will not have another chance in Vega. What we do from here is damage limitation. Regroup."
+        text: "This is hard to report. Most of the $f{ Epsilon transports $} were destroyed before they could reach the jump node. Those were civilian evacuation ships.\n\nI have to be direct with you: the $h Arjuna bombers were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing - those shields, that $h{ SC Malgor $} arriving - but our job was the transports.\n\nWe will not have another chance in Vega. What we do from here is damage limitation. Regroup."
         voice_name: "Gacrux"
       - display_condition: |
           ( and 
@@ -307,7 +307,7 @@ mission_flow:
             ( is-cargo-known-delay 0 "TAC-1 Container B" )
             ( is-cargo-known-delay 0 "TAC-1 Container C" )
           )
-        text: "Your scans of the cargo containers at the docking arm confirmed they were holding civilian equipment. Commendations for your thoroughness, pilot. We've updated the manifest of what was lost."
+        text: "Your scans of the $V{ cargo containers $} at the docking arm confirmed they were holding civilian equipment. Commendations for your thoroughness, pilot. We've updated the manifest of what was lost."
         voice_name: "Gacrux"
 
   events:
@@ -429,6 +429,20 @@ mission_flow:
           )
           ( do-nothing )
         )
+    - name: "StentorDirective"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTC Stentor" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Protect GTC Stentor"
+    - name: "ChronosDirective"
+      formula: |
+        ( when
+          ( has-departed-delay 0 "GTFr Chronos 1" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Escort GTFr Chronos 1"
 
   goals:
     - name: "Evacuate Transports"
