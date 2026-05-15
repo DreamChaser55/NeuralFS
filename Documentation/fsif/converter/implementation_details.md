@@ -23,6 +23,7 @@ AI goals: wing-level and per-ship initial_orders are emitted.
 
 Wings placement:
 - Wings carry a single centroid position (entities.wings[*].position). The converter computes individual ship locations during loading by arranging wing members in a straight line along the X axis, centered on the centroid, spaced 50 m apart by default (optionally overridden by a per-wing `member_spacing` value).
+- **Wing-member arrival_cue invariant:** Every expanded wing-member Ship object is assigned `arrival_cue: '( false )'` unconditionally during loading, regardless of the runtime `Ship.arrival_cue` default. This ensures that individual ship entries in the FS2 `#Objects` section never trigger independent arrivals; wing arrival is controlled entirely by the wing-level `$Arrival Cue:` in `#Wings`. Authors cannot override per-member cues because `arrival_cue` is forbidden in `ship_templates`.
 
 Wings waves: supported. Emits `$Waves`, `$Wave Threshold`, and optional `+Wave Delay Min`/`+Wave Delay Max` and `+Arrival delay`; `$Special Ship` is always 0 (wing leader is the first ship).
 

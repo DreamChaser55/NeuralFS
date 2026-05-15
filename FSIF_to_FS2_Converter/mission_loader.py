@@ -376,6 +376,14 @@ class MissionLoader:
              offset = (i - center_index) * spacing
              ship_props['position'] = [cx + offset, cy, cz]
              ship_props['name'] = ship_name
+
+             # Wing members must have arrival_cue '( false )' in #Objects so
+             # that the individual ship entries do not trigger independent
+             # arrivals.  The wing-level arrival_cue in #Wings is authoritative
+             # and controls when the wing (and therefore its members) spawns.
+             # Templates are forbidden from authoring arrival_cue, so no
+             # authored value is ever overridden here.
+             ship_props['arrival_cue'] = '( false )'
              
              if ship_name == player_setup.start_ship:
                  ship_props.setdefault('flags', []).append('player-start')
