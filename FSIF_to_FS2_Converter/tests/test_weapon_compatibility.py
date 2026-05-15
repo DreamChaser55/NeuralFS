@@ -22,7 +22,7 @@ if str(_repo_root) not in sys.path:
 if str(_parent_dir) not in sys.path:
     sys.path.insert(0, str(_parent_dir))
 
-from data_models import Mission, MissionInfo, PlayerSetup, Environment, Ship, Weapons, Wing
+from data_models import Mission, MissionInfo, PlayerSetup, ShipChoice, Environment, Ship, Weapons, Wing
 from validator import Validator
 
 try:
@@ -39,6 +39,11 @@ _REPO_ROOT = _repo_root
 
 def _make_validator(mission: Mission) -> Validator:
     return Validator(mission, _REPO_ROOT)
+
+
+def _sc(ship_class: str, count: int) -> ShipChoice:
+    """Construct a ShipChoice using the required 'class' alias."""
+    return ShipChoice.model_validate({"class": ship_class, "count": count})
 
 
 def _ulysses_ship(name: str, *, banshee: bool = False) -> Ship:
@@ -113,7 +118,8 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         ship = _ulysses_ship("Alpha 1", banshee=True)
         mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            player_setup=PlayerSetup(start_ship="Alpha 1",
+                                     additional_ship_choices=[_sc("GTF Ulysses", 1)]),
             environment=Environment(),
             ships=[ship],
             wings=[_alpha_wing(ship)],
@@ -151,7 +157,8 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         player_ship = _ulysses_ship("Alpha 1", banshee=False)
         mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            player_setup=PlayerSetup(start_ship="Alpha 1",
+                                     additional_ship_choices=[_sc("GTF Ulysses", 2)]),
             environment=Environment(),
             ships=[player_ship, ship],
             wings=[_alpha_wing(player_ship), beta_wing],
@@ -190,7 +197,8 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         )
         mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            player_setup=PlayerSetup(start_ship="Alpha 1",
+                                     additional_ship_choices=[_sc("GTF Ulysses", 1)]),
             environment=Environment(),
             ships=[player_ship, npc_ship],
             wings=[_alpha_wing(player_ship), npc_wing],
@@ -232,7 +240,8 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         # npc_ship is standalone – not added to any Wing
         mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            player_setup=PlayerSetup(start_ship="Alpha 1",
+                                     additional_ship_choices=[_sc("GTF Ulysses", 1)]),
             environment=Environment(),
             ships=[player_ship, npc_ship],
             wings=[_alpha_wing(player_ship)],
@@ -270,7 +279,8 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         ship = _ulysses_ship("Alpha 1", banshee=False)
         mission = Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            player_setup=PlayerSetup(start_ship="Alpha 1",
+                                     additional_ship_choices=[_sc("GTF Ulysses", 1)]),
             environment=Environment(),
             ships=[ship],
             wings=[_alpha_wing(ship)],

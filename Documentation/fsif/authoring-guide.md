@@ -502,16 +502,25 @@ All available primary and secondary weapon banks (hardpoints) in fighters and bo
 If the mission is part of a campaign, all ships and weapons are unavailable by default. They must be explicitly allowed in the FCIF `starting_loadout` or via `allow-ship`/`allow-weapon` SEXPs (see `/FSO SEXPs/Mission and Campaign.txt`) executed at the **end of the previous mission**.
 
 ## Providing alternative player ships
-Use `additional_ship_choices` to provide a pool of alternative ships the player can swap in on the loadout screen. Player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon).
+Use `additional_ship_choices` to define the **complete ship pool** for the in-game loadout screen. The player selects ships from this pool to fill their friendly starting wing slots (Alpha, Beta, Gamma, Delta, Epsilon).
+
+**Important:** the total count across all `additional_ship_choices` entries must be **≥ the total number of Friendly player starting wing slots**. If the pool is too small (or empty), the loadout screen will show zero available ships and the player will be unable to fill their wing. The converter validates this and rejects missions that violate it (scramble missions are exempt, as they bypass the loadout screen entirely).
+
+Pool entries are cross-class — you can mix classes freely. The player can assign any class in the pool to any wing slot.
 
 ```yaml
 player_setup:
   start_ship: "Alpha 1"
   additional_ship_choices:
-    - { class: "GTF Hercules", count: 4 }
-    - { class: "GTB Ursa", count: 2 }
+    - { class: "GTF Apollo", count: 4 }    # 4 slots: covers a 4-ship Alpha wing exactly
+    - { class: "GTF Hercules", count: 2 }  # optional extras for swapping
+    - { class: "GTB Ursa", count: 2 }      # optional extras for swapping
 ```
-Note: These ships also need to be unlocked (see "Introducing new ships and weapons" above).
+
+Notes:
+- The counts must sum to **at least** the total number of wing slots. In the example above: 4+2+2=8, which covers a 4-slot Alpha wing plus 4 extras for flexibility.
+- These ships also need to be unlocked campaign-wide (see "Introducing new ships and weapons" above).
+- Scramble missions (`mission_info.flags: ["scramble"]`) bypass the loadout screen entirely; for those missions, `additional_ship_choices` may be empty.
 
 ## Providing the player with extra weapons
 Use `additional_weapons` to add extra weapons to the loadout screen Weaponry Pool:

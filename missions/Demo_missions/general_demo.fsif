@@ -31,8 +31,8 @@ environment:
 player_setup:
   start_ship: "Alpha 1"
   additional_ship_choices:
-    - { class: "GTF Hercules", count: 2 }
-    - { class: "GTF Valkyrie", count: 2 }
+    - { class: "GTF Hercules", count: 4 }
+    - { class: "GTF Valkyrie", count: 4 }
   additional_weapons:
     - "Banshee"
     - "Hornet"
