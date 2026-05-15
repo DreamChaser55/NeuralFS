@@ -226,8 +226,10 @@ GTM Harbinger: Anti-capital ship bomb. Nuclear yield. Very slow lock. Massive da
 
 ## Notable Technologies
 
+Avenger Cannon: First Terran weapon that can penetrate Shivan shields.
 Shielding: Originally Shivan-exclusive; adapted by Terrans/Vasudans in 2335.
 Subspace Tracking: Ancient technology allowing ships to be tracked and targeted inside subspace.
+Inter-system subspace drives for fighters: Developed at the end of the Great War, allowed the player to engage the Lucifer.
 
 ## FS1 Campaign Synopsis (The Great War)
 
@@ -267,5 +269,17 @@ Capella	Vega, Gamma Draconis	Key system in FS2.
 
 Note on Inconsistencies: Mission dialogue implies the existence of unstable "jump corridors" not on official maps, such as Deneb-Altair (used for Ancient artifacts) and Sirius-Delta Serpentis (used by the Lucifer). These are considered unstable nodes used only in desperation or by Shivan advanced drives.
 
+## Wing names
+
+Friendly Terran wing names: Alpha, Beta, Gamma, Delta, Epsilon, Zeta, Eta
+Enemy Terran wing names: Bragi, Buri, Freki, Geri, Hrid, Roskva, Scald, Skadi
+Friendly Vasudan wing names: Theta, Iota, Kappa, Lambda, Mu, Nu, Xi, Omicron, Pi, Rho, Sigma
+Enemy Vasudan wing names: Aquarius, Aries, Cancer, Capricorn, Gemini, Leo, Libra, Pisces, Sagittarius, Scorpio, Taurus, Virgo
+Enemy Shivan wing names: Brahma, Vishnu, Durga, Rama, Krishna, Indra, Arjuna, Deva, Bheema, Kali, Genma, Asura
+
+In most missions, the Player is the leader of Alpha wing (Alpha 1), but there are exceptions.
+Repeating or inconsistent wing designations in different missions are not an issue; They are just ad-hoc monikers issued by the commander on a per-mission basis, not permanent names.
+
 ## Mission scale:
 Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
+All Great War-era weapon ranges are below 2,000 m. There are no long-range missiles or beams in this era. Keep this in mind when positioning ships that should engage each other.
