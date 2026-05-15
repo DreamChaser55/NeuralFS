@@ -87,5 +87,52 @@ class TestWaypointCollisions(unittest.TestCase):
         # Expecting NO warnings
         self.assertEqual(len(validator.warnings), 0, f"Expected no warnings, got: {validator.warnings}")
 
+    def test_predestroyed_obstacle_not_flagged(self):
+        """
+        A ship with destroyed_before_mission_seconds > 0 is pre-placed wreckage at
+        mission start and produces only sparse debris — it must NOT appear in the
+        obstacle list and must NOT trigger a waypoint collision warning.
+        """
+        info = MissionInfo(name="Test Mission")
+        setup = PlayerSetup(start_ship="Alpha 1")
+        env = Environment()
+
+        waypoints = {"Path1": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
+
+        # Moving cruiser along the X-axis waypoint path
+        ship_moving = Ship.model_validate({
+            "name": "Alpha 1",
+            "class": "GTC Fenris",
+            "team": "Friendly",
+            "position": [0.0, 0.0, 0.0],
+            "initial_orders": '( ai-waypoints "Path1" )'
+        })
+
+        # Pre-destroyed cruiser squarely in the middle of the path — should NOT warn
+        ship_predestroyed = Ship.model_validate({
+            "name": "GTCv Wreck",
+            "class": "GTC Leviathan",
+            "team": "Friendly",
+            "position": [250.0, 0.0, 0.0],
+            "destroyed_before_mission_seconds": 30
+        })
+
+        mission = Mission(
+            mission_info=info,
+            player_setup=setup,
+            environment=env,
+            ships=[ship_moving, ship_predestroyed],
+            waypoints=waypoints
+        )
+
+        validator = Validator(mission, Path("."), None)
+        validator.validate_waypoint_collisions()
+
+        self.assertEqual(
+            len(validator.warnings), 0,
+            f"Expected no warnings for pre-destroyed obstacle, got: {validator.warnings}"
+        )
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -427,6 +427,10 @@ class SpatialChecksMixin:
                 wing_members.add(s.name)
                 
         for s in self.mission.ships:
+            # Pre-destroyed ships only produce sparse debris at mission start and
+            # do not present a physical collision hazard for passing ships.
+            if s.destroyed_before_mission_seconds > 0:
+                continue
             radius = self._get_ship_radius(s.ship_class)
             if radius <= 50.0:
                 continue
