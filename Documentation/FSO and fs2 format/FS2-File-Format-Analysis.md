@@ -87,6 +87,7 @@ This section contains mandatory metadata. Analysis of a minimal mission file con
 
 These two sections are fundamentally coupled yet structurally separate. The `#Wings` section provides a logical grouping for AI and player commands, referencing ships by their unique names (e.g., "Alpha 1", "Alpha 2"). However, the complete definition of each of these ships resides in the `#Objects` section.  
 This separation reflects a disconnect between the designer's intent and the file's structure. A designer conceptualizes "a wing of four Ulysses fighters," but the format forces a two-step, disjointed definition process. This structural inefficiency is a primary target for abstraction in the .fsif format, which will unify the concept of a wing with the definition of its constituent ships.
+Important note: Any object that is in a wing must have `$Arrival Cue: ( false )`! Its arrival is controlled by the corresponding wing section in `#Wings`.
 
 ### `#Objects`: Inter-Ship Docking (Docker/Dockee)
 
