@@ -145,7 +145,6 @@ class CombinedTesting(unittest.TestCase):
                 }
             )
         )
-        from data_models import ShipChoice
         mission.wings = [
             Wing(
                 name="Beta",
@@ -171,10 +170,6 @@ class CombinedTesting(unittest.TestCase):
                 arrival_distance=22000,
                 arrival_cue="( true )",
             )
-        ]
-        # Provide ship pool for the 1-slot Beta wing
-        mission.player_setup.additional_ship_choices = [
-            ShipChoice.model_validate({"class": "GTF Ulysses", "count": 1})
         ]
 
         validator = self.make_validator(mission)
@@ -718,9 +713,6 @@ environment:
     {extra_fields}
 player_setup:
   start_ship: "Alpha 1"
-  additional_ship_choices:
-    - class: "GTF Ulysses"
-      count: 1
 entities:
   wings:
     - name: "Alpha"

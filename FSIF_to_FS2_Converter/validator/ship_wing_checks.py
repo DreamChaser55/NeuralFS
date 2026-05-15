@@ -440,7 +440,6 @@ class ShipWingChecksMixin:
         Checks:
         - Validity of additional_weapons provided.
         - Validity of additional_ship_choices provided.
-        - Ship Choice pool coverage (non-scramble missions only).
         """
         setup = self.mission.player_setup
         for w_name in setup.additional_weapons:
@@ -450,63 +449,6 @@ class ShipWingChecksMixin:
         for choice in setup.additional_ship_choices:
             if choice.ship_class not in self.ship_classes:
                 self.log_error(f"Player setup 'additional_ship_choices' references unknown ship class '{choice.ship_class}'")
-
-        self.validate_player_ship_choice_pool()
-
-    def validate_player_ship_choice_pool(self):
-        """
-        Verify that player_setup.additional_ship_choices provides enough ships
-        to fill all slots in Friendly player starting wings (Alpha, Beta, Gamma,
-        Delta, Epsilon).
-
-        Rationale:
-        ``$Ship Choices`` is the *complete* pool from which the player assigns
-        ships to wing slots on the loadout screen.  If the total count across all
-        ``additional_ship_choices`` entries is less than the total number of
-        Friendly player starting wing slots, the player cannot fill their wing
-        and will see zero or too few ships available on the loadout screen.
-
-        Note: the pool is cross-class — mixing classes is fine (e.g. 2× Hercules
-        + 2× Valkyrie satisfies a 4-ship Alpha wing).  Only the total count
-        matters, not which specific classes are included.
-
-        The check is skipped for missions with the ``scramble`` flag, because
-        scramble missions bypass the normal loadout customization screen entirely.
-        """
-        # Scramble missions skip the loadout screen entirely.
-        flags_lower = {str(f).lower().strip() for f in (self.mission.mission_info.flags or [])}
-        if 'scramble' in flags_lower:
-            return
-
-        # Count total Friendly player starting wing slots.
-        total_wing_slots = 0
-        for wing in self.mission.wings:
-            if wing.name not in fs_data.PLAYER_WING_NAMES:
-                continue
-            if not wing.ships:
-                continue
-            if wing.ships[0].team != 'Friendly':
-                continue
-            total_wing_slots += len(wing.ships)
-
-        if total_wing_slots == 0:
-            return  # No Friendly player starting wings — nothing to check.
-
-        # Count total ships offered in the pool.
-        total_available = sum(
-            choice.count for choice in self.mission.player_setup.additional_ship_choices
-        )
-
-        if total_available < total_wing_slots:
-            self.log_error(
-                f"Non-scramble mission has {total_wing_slots} Friendly player wing slot(s) "
-                f"but player_setup.additional_ship_choices provides only {total_available} "
-                f"ship(s) in total. The in-game loadout screen will not have enough ships "
-                f"to fill the player's wing. "
-                f"Fix: add ship class entries to player_setup.additional_ship_choices so "
-                f"that their counts sum to at least {total_wing_slots}. "
-                f"Example: '- {{class: \"<ship_class>\", count: {total_wing_slots}}}'."
-            )
 
     def validate_start_ship(self):
         """

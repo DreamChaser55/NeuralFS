@@ -26,7 +26,7 @@ if str(_repo_root) not in sys.path:
 if str(_parent_dir) not in sys.path:
     sys.path.insert(0, str(_parent_dir))
 
-from data_models import Mission, MissionInfo, PlayerSetup, ShipChoice, Environment, Ship, Weapons, Wing
+from data_models import Mission, MissionInfo, PlayerSetup, Environment, Ship, Weapons, Wing
 from validator import Validator
 
 _REPO_ROOT = _repo_root
@@ -36,11 +36,6 @@ _WARNING_FRAGMENT = "not a member of a Friendly player starting wing"
 
 def _make_validator(mission: Mission) -> Validator:
     return Validator(mission, _REPO_ROOT)
-
-
-def _sc(ship_class: str, count: int) -> ShipChoice:
-    """Construct a ShipChoice using the required 'class' alias."""
-    return ShipChoice.model_validate({"class": ship_class, "count": count})
 
 
 def _ulysses(name: str, team: str = "Friendly") -> Ship:
@@ -107,10 +102,7 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         ship = _ulysses("Alpha 1")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
-            player_setup=PlayerSetup(
-                start_ship="Alpha 1",
-                additional_ship_choices=[_sc("GTF Ulysses", 1)],
-            ),
+            player_setup=PlayerSetup(start_ship="Alpha 1"),
             environment=Environment(),
             ships=[ship],
             wings=[_alpha_wing([ship])],
@@ -128,10 +120,7 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         ship2 = _ulysses("Alpha 2")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
-            player_setup=PlayerSetup(
-                start_ship="Alpha 2",
-                additional_ship_choices=[_sc("GTF Ulysses", 2)],
-            ),
+            player_setup=PlayerSetup(start_ship="Alpha 2"),
             environment=Environment(),
             ships=[ship1, ship2],
             wings=[_alpha_wing([ship1, ship2])],
@@ -148,10 +137,7 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         ships = [_ulysses(f"Beta {i}") for i in range(1, 4)]
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
-            player_setup=PlayerSetup(
-                start_ship="Beta 3",
-                additional_ship_choices=[_sc("GTF Ulysses", 3)],
-            ),
+            player_setup=PlayerSetup(start_ship="Beta 3"),
             environment=Environment(),
             ships=ships,
             wings=[_beta_wing(ships)],
