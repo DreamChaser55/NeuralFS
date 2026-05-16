@@ -43,6 +43,15 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
     - Avoid spaces in directory and file names; use underscores instead.
     - When batching in `cmd.exe`, ensure each `%%F` is quoted.
 
+## Advance Condition Reference Check
+
+For every mission that has a `success_goal`, `failure_goal`, `success_event`, or `failure_event` field set, the converter verifies that the referenced name actually exists in the corresponding `.fsif` file. The `.fsif` path is inferred from the `.fcif` location: `campaign_folder/fsif/<mission_stem>.fsif`.
+
+- **Goal fields** (`success_goal`, `failure_goal`): the referenced name must match `mission_flow.goals[*].name` in the FSIF.
+- **Event fields** (`success_event`, `failure_event`): the referenced name must match `mission_flow.events[*].name` in the FSIF.
+
+If the FSIF file is missing or unparseable for a mission that has an advance condition, or if the referenced name is not found, an `[ERROR]` is printed and the conversion is aborted. Missions without an advance condition are silently skipped. The error message lists all available goal/event names to help identify the mismatch.
+
 ## Campaign-Wide Player Loadout Check
 
 The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.

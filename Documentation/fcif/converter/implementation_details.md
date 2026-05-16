@@ -89,6 +89,51 @@ At most one condition field may be set per mission. This is enforced by a Pydant
 
 When the converter is invoked, it iterates over all missions and checks whether each mission has at least one advance condition defined (`success_goal`, `success_event`, `failure_goal`, or `failure_event`). If a mission does not define any advance conditions, it will log a warning (e.g., `Mission 'demo_m05.fs2' has no advance conditions (success or failure goals/events) defined. It will advance unconditionally.`). This is a non-fatal warning (does not abort conversion) because unconditional advancement is technically valid but often an oversight by campaign authors.
 
+## Advance Condition Reference Check
+
+After the advance conditions warning check, the converter performs a **fatal** reference check: for every mission that has an advance condition field set, it verifies that the referenced goal or event name actually exists in the corresponding `.fsif` file.
+
+### What is checked
+
+For each mission with an advance condition, the converter:
+
+1. Infers the FSIF path as `input_path.parent / "fsif" / f"{mission_stem}.fsif"`.
+2. Opens and parses the FSIF YAML file.
+3. Reads `mission_flow.goals` (for `success_goal` / `failure_goal`) or `mission_flow.events` (for `success_event` / `failure_event`).
+4. Checks that at least one item in the list has a `name` field that exactly matches the referenced string.
+
+Missions with **no advance condition** are silently skipped.
+
+### Fatal conditions
+
+The following situations cause the check to return `False` and abort conversion with an `[ERROR]`:
+
+- The inferred `.fsif` file does not exist or is not a file.
+- The `.fsif` file cannot be parsed as YAML.
+- The `.fsif` file does not parse as a YAML mapping.
+- The referenced goal or event name is not found in `mission_flow.goals` / `mission_flow.events`.
+
+This differs from the loadout check, which treats a missing `.fsif` as a non-fatal warning. Because a typo in a campaign progression condition silently breaks campaign advancement (FSO will simply never advance from the mission), these errors are fatal.
+
+### Output
+
+On failure, the converter emits an `[ERROR]` that includes:
+- The offending FCIF field name (e.g., `success_goal`).
+- The referenced name that could not be found.
+- A list of available goal/event names when the collection exists but the referenced name is absent.
+- Actionable advice on how to fix the issue.
+
+On success, an `[INFO]` confirmation is logged.
+
+### Example error
+
+```text
+[ERROR] Campaign advance condition reference check failed in mission 'mission_01.fs2':
+  Field 'success_goal' references goal 'EscrotConvoy', but no goal with that name exists in '.../fsif/mission_01.fsif'.
+  Available goals: 'EscortConvoy', 'ScanTransport'
+  Actionable advice: Fix the FCIF condition name to match an existing goal in mission_flow.goals, or define the referenced goal in the FSIF mission file.
+```
+
 ## Campaign-Wide Player Loadout Check
 
 When the converter is invoked, it performs a pre-conversion check to verify that the player's ships and weapons across the entire campaign are either in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The converter infers the path to the `.fsif` files by checking the `fsif` directory relative to the input `.fcif` path (e.g., `input_path.parent / "fsif" / f"{mission_stem}.fsif"`).

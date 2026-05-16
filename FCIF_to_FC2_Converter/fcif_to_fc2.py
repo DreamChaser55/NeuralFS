@@ -420,6 +420,125 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
     return True
 
 
+def _infer_fsif_path(input_path: Path, mission: 'CampaignMission') -> Path:
+    """Infer the .fsif file path for a campaign mission from the .fcif path."""
+    mission_stem = Path(mission.filename).stem
+    return input_path.parent / "fsif" / f"{mission_stem}.fsif"
+
+
+def _get_advance_condition_reference(mission: 'CampaignMission'):
+    """
+    Return a tuple (field_name, referenced_name, collection_key) for the
+    advance condition set on this mission, or (None, None, None) if none.
+
+    collection_key is either "goals" or "events".
+    """
+    if mission.success_goal is not None:
+        return ("success_goal", mission.success_goal, "goals")
+    if mission.failure_goal is not None:
+        return ("failure_goal", mission.failure_goal, "goals")
+    if mission.success_event is not None:
+        return ("success_event", mission.success_event, "events")
+    if mission.failure_event is not None:
+        return ("failure_event", mission.failure_event, "events")
+    return (None, None, None)
+
+
+def check_campaign_advance_condition_references(fcif: 'FCIF', input_path: Path) -> bool:
+    """
+    Verify that every advance condition field (success_goal, failure_goal,
+    success_event, failure_event) references a goal or event that is actually
+    defined in the corresponding mission's .fsif file.
+
+    This is a fatal check: if a mission has an advance condition set and its
+    .fsif file cannot be found, parsed, or does not contain the referenced name,
+    the check returns False.
+
+    Missions without any advance condition are silently skipped.
+
+    Returns True if all references are valid, False otherwise.
+    """
+    ok = True
+
+    for mission in fcif.missions:
+        field_name, referenced_name, collection_key = _get_advance_condition_reference(mission)
+
+        if referenced_name is None:
+            # No advance condition set — nothing to verify.
+            continue
+
+        fsif_path = _infer_fsif_path(input_path, mission)
+
+        if not fsif_path.exists() or not fsif_path.is_file():
+            logger.error(
+                f"Campaign advance condition reference check failed in mission '{mission.filename}':\n"
+                f"  Field '{field_name}' references {collection_key[:-1]} '{referenced_name}', "
+                f"but the FSIF file could not be found at '{fsif_path}'.\n"
+                f"  Actionable advice: Ensure the FSIF file exists at the expected path "
+                f"(campaign_folder/fsif/{Path(mission.filename).stem}.fsif), or remove the advance condition field."
+            )
+            ok = False
+            continue
+
+        try:
+            with open(fsif_path, 'r', encoding='utf-8') as f:
+                data = yaml.safe_load(f)
+        except Exception as e:
+            logger.error(
+                f"Campaign advance condition reference check failed in mission '{mission.filename}':\n"
+                f"  Field '{field_name}' references {collection_key[:-1]} '{referenced_name}', "
+                f"but the FSIF file '{fsif_path}' could not be parsed: {e}\n"
+                f"  Actionable advice: Fix the YAML syntax in the FSIF file."
+            )
+            ok = False
+            continue
+
+        if not isinstance(data, dict):
+            logger.error(
+                f"Campaign advance condition reference check failed in mission '{mission.filename}':\n"
+                f"  Field '{field_name}' references {collection_key[:-1]} '{referenced_name}', "
+                f"but the FSIF file '{fsif_path}' did not parse as a YAML mapping.\n"
+                f"  Actionable advice: Ensure the FSIF file is a valid YAML mapping."
+            )
+            ok = False
+            continue
+
+        mission_flow = data.get('mission_flow') or {}
+        collection = mission_flow.get(collection_key) or []
+
+        # Extract defined names from the collection (goals or events)
+        defined_names = set()
+        if isinstance(collection, list):
+            for item in collection:
+                if isinstance(item, dict):
+                    name = item.get('name')
+                    if isinstance(name, str) and name:
+                        defined_names.add(name)
+
+        if referenced_name not in defined_names:
+            if defined_names:
+                available = ", ".join(f"'{n}'" for n in sorted(defined_names))
+                available_hint = f"\n  Available {collection_key}: {available}"
+            else:
+                available_hint = f"\n  No {collection_key} are defined in mission_flow.{collection_key} of '{fsif_path.name}'."
+
+            logger.error(
+                f"Campaign advance condition reference check failed in mission '{mission.filename}':\n"
+                f"  Field '{field_name}' references {collection_key[:-1]} '{referenced_name}', "
+                f"but no {collection_key[:-1]} with that name exists in '{fsif_path}'."
+                f"{available_hint}\n"
+                f"  Actionable advice: Fix the FCIF condition name to match an existing "
+                f"{collection_key[:-1]} in mission_flow.{collection_key}, or define the referenced "
+                f"{collection_key[:-1]} in the FSIF mission file."
+            )
+            ok = False
+
+    if ok:
+        logger.info("Campaign advance condition reference check passed: all referenced goals and events exist.")
+
+    return ok
+
+
 def check_campaign_advance_conditions(fcif: 'FCIF'):
     """
     Check if any missions lack advance conditions and log a warning if so.
@@ -463,6 +582,8 @@ def process_campaign(
 
     if fcif_data.missions:
         check_campaign_advance_conditions(fcif_data)
+        if not check_campaign_advance_condition_references(fcif_data, input_path):
+            return False
         if not check_campaign_player_loadouts(fcif_data, input_path):
             return False
 

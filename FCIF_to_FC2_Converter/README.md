@@ -13,6 +13,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Localization of the campaign description via XSTR
 - Linear campaign progression with optional per-mission advance conditions
 - Four advance condition types: goal true/false, event true/false (`is-previous-goal-true`, `is-previous-event-true`, `is-previous-goal-false`, `is-previous-event-false`)
+- **Advance condition reference validation**: for every mission with a `success_goal`, `failure_goal`, `success_event`, or `failure_event` field set, the converter verifies that the referenced name actually exists in the corresponding `.fsif` file (`mission_flow.goals[*].name` or `mission_flow.events[*].name`). A missing name, missing FSIF file, or unparseable FSIF is a fatal error; the error message lists available names to help fix typos.
 - **Campaign-wide player loadout check**: the converter automatically infers the path to the `.fsif` files and verifies that all player ship classes and weapons used in each mission are present in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in previous missions. The check also validates that `template` references on player ships and wings are strings.
 
 ## Versions

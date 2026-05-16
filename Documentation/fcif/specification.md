@@ -78,6 +78,8 @@ Each mission may optionally specify **one** advance condition that determines wh
 
 If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement). **Note:** While this is perfectly valid, the converter will emit a warning for each mission that lacks an advance condition, to help catch potential oversights.
 
+**Advance condition reference validation**: The converter verifies that the name given in each advance condition field actually exists in the corresponding mission's `.fsif` file (`mission_flow.goals[*].name` for goal fields, `mission_flow.events[*].name` for event fields). This check is **fatal**: if the referenced name is not found — or if the FSIF file is missing or unparseable for a mission that has an advance condition — the converter aborts with an `[ERROR]` and does not write the `.fc2` output. The name must be an exact match (case-sensitive). If an advance condition field contains a typo or refers to a goal/event that was renamed, the error message will list the available names to help pinpoint the problem.
+
 ### Goals vs. Events
 
 In FreeSpace missions, **goals** and **events** are distinct concepts:
