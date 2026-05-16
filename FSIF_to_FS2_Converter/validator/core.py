@@ -134,6 +134,7 @@ class Validator(
         self.validate_3d_mission_design()
         self.validate_spawn_collisions()
         self.validate_waypoint_collisions()
+        self.validate_shared_waypoint_orders()
         self.validate_ships()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()

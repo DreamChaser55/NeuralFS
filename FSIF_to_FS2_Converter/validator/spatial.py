@@ -564,3 +564,82 @@ class SpatialChecksMixin:
                     if eff_loc is None:
                         continue
                     check_path_for_collisions("Ship", s.name, eff_loc, s.ship_class, path_name)
+
+    # ------------------------------------------------------------------
+    # Shared-destination waypoint order helpers
+    # ------------------------------------------------------------------
+
+    def _extract_waypoint_paths(self, initial_orders):
+        """Return a list of all waypoint path names referenced by
+        ai-waypoints / ai-waypoints-once in *initial_orders*.
+
+        Returns an empty list when *initial_orders* is None or contains
+        no such orders.
+        """
+        import re
+        if not initial_orders:
+            return []
+        wp_regex = re.compile(
+            r'\(\s*ai-waypoints(?:-once)?\s+(?:"([^"]+)"|([^"\s)]+))',
+            re.IGNORECASE,
+        )
+        paths = []
+        for m in wp_regex.finditer(initial_orders):
+            path_name = m.group(1) if m.group(1) is not None else m.group(2)
+            if path_name:
+                paths.append(path_name)
+        return paths
+
+    def validate_shared_waypoint_orders(self):
+        """Warn when multiple ships or wings are ordered to move along the
+        same waypoint path, because they will arrive at the same destination
+        and are likely to collide.
+
+        Entities considered:
+        - Standalone ships (ships that are not members of a wing).
+        - Wings (treated as a single entity; their members intentionally
+          share the wing-level order and are handled by FSO formation logic).
+
+        Wing members are excluded individually to avoid double-counting
+        members of the same wing as "separate ships sharing a path".
+        """
+        from collections import defaultdict
+
+        # Identify wing-member ship names so we can exclude them from the
+        # standalone-ship scan.
+        wing_member_names = set()
+        for w in self.mission.wings:
+            for s in w.ships:
+                wing_member_names.add(s.name)
+
+        # Map each waypoint path name -> list of (entity_type, entity_name)
+        path_to_entities = defaultdict(list)
+
+        # 1. Standalone ships
+        for s in self.mission.ships:
+            if s.name in wing_member_names:
+                continue
+            for path_name in self._extract_waypoint_paths(s.initial_orders):
+                path_to_entities[path_name].append(("Ship", s.name))
+
+        # 2. Wings (treated as one entity; member sharing is expected/normal)
+        for w in self.mission.wings:
+            for path_name in self._extract_waypoint_paths(w.initial_orders):
+                path_to_entities[path_name].append(("Wing", w.name))
+
+        # 3. Emit a warning for every path shared by more than one entity
+        for path_name, entities in sorted(path_to_entities.items()):
+            if len(entities) <= 1:
+                continue
+
+            entity_descriptions = ", ".join(
+                f"{etype} '{ename}'" for etype, ename in entities
+            )
+            self.log_warning(
+                f"Mission design recommendation: multiple ships/wings share "
+                f"waypoint movement order path '{path_name}': "
+                f"{entity_descriptions}. "
+                f"Ships ordered to the same waypoint destination will collide "
+                f"when they arrive. For convoys, give each ship its own "
+                f"waypoint path with a slightly offset final destination."
+            )
