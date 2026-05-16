@@ -1,53 +1,60 @@
 # Mission 2_2 Implementation Plan
-## Metadata
-- **Name**: The Last Full Measure
-- **Author**: NeuralFS
-- **Description**: Escape pod defense at Nav Charlie.
-- **Game Type**: single
-- **AI Profile**: FS1 RETAIL
-- **Flags**: `[]`
-- **Fiction Viewer**: `Mission_2_2_story.txt`
 
-## Environment
-- **Ambient Light**: `[5, 5, 5]`
-- **Bitmaps**: standard.
+## Discovered Issues from Validation
+1. **Collision Warnings**: Escape pods (`Pod 1` to `Pod 9`) and potentially `GTFr Aldrin 4` are currently set to arrive via `Hyperspace` with static locations that overlap or are too close to each other.
+   - *Fix*: The mission design document states they emerge from the `GTD Amadeus` fighterbay. We will change their `arrival_method` to `"Docking Bay"` with `arrival_anchor: "GTD Amadeus"` and remove the static `position` and `arrival_distance` parameters. We will adjust the `arrival_delay` and `arrival_cue` to sequence them in groups of 3 over time as specified (Group A at T+0s, Group B at T+45s, Group C at T+90s).
 
-## Entities
-- **GTD Amadeus** (Orion): `[0, 0, 0]`. Hull 40%. `ai-stay-still "Nav Bravo" 89`.
-- **Nav Charlie**: Implicit `[0, 0, 0]`.
-- **Nav Bravo** (Terran NavBuoy): `[0, 0, 7000]`.
-- **GTS Casca** (Centaur): `[-500, 0, 500]`. `ai-stay-near-ship "Pod Group A 1" 89`.
-- **Alpha Wing**: 4x Valkyrie. `[0, 500, 2000]`.
-- **SC Ahriman** (Lilith): `[0, -1000, -5000]`. `ai-chase "GTD Amadeus" 89`.
-- **Pod Group A**: 3x Hermes. `[0, 0, 500]`.
-- **Pod Group B**: 3x Hermes. `[0, -100, 500]`. Arrives T+45.
-- **Pod Group C**: 3x Hermes. `[0, 100, 500]`. Arrives T+90.
-- **GTFr Aldrin 4** (Chronos): `[500, 0, 500]`. Arrives T+45.
-- **TAC-1 Tech Cargo**: `docked` to Aldrin 4. `arrival_cue: (false)`.
-- **Asura**: 3x Scorpion. `[0, 500, 5000]`. `ai-chase-wing "Pod Group A" 89`.
-- **Brahma**: 3x Shaitan. `[5000, 0, -5000]`. Arrives T+90. `ai-chase "GTD Amadeus" 89`.
-- **Vishnu**: 4x Scorpion. `[0, 0, -10000]`. Arrives T+180. `ai-chase-wing "Pod Group B" 89`.
-- **Bheema**: 3x Dragon. `[0, 1000, 8000]`. Arrives T+360 or 5 pods at Nav Bravo. `ai-chase-wing "Pod Group C" 89`.
+2. **Missing Text Styling**: The briefing and debriefing texts lack standard FreeSpace text color tags (`$f{ ... $}`, `$h{ ... $}`, `$y{ ... $}`).
+   - *Fix*: Add appropriate tags to the `text` fields in `mission_flow.briefing.stages` and `mission_flow.debriefing.stages`.
+     - `$f{ GTD Amadeus $}`, `$y{ Nav Charlie $}`, `$y{ Nav Bravo $}`, `$f{ GTC Stentor $}`
+     - `$f{ Alpha wing $}`, `$h{ SC Ahriman $}`, `$h{ Asura wing $}`, `$f{ Pod One $}`
 
-## SEXP Strategy
-- **Pod Arrival & Departure**: 
-  - `departure_cue` for pods: `(< (distance "<pod name>" "Nav Bravo") 1000)`. Wait, we can't do this for individual wing members easily unless we explicitly define them or use `percent-ships-departed`. If we just give the whole wing the `departure_cue: (< (distance "Pod Group A 1" "Nav Bravo") 1000)`? FSO wing departure cue applies to the whole wing at once. But pods might be at different distances.
-  It's better to explicitly define Pod 1 through Pod 9 as standalone ships! Yes, the design doc says "Pod 1 through Pod 9 (GTEP Hermes x9)". Explicit definitions allow individual departure cues and tracking!
-  - Pod 1, 2, 3: `[100, 0, 500]`, `[-100, 0, 500]`, `[0, 100, 500]`. Arrive T+0.
-  - Pod 4, 5, 6: Arrive T+45.
-  - Pod 7, 8, 9: Arrive T+90.
-  - Initial orders for all: `ai-waypoints-once "BravoPath" 89`.
-- **Amadeus Death sequence**:
-  - `(< (hits-left "GTD Amadeus") 15)` -> "Amadeus structural failure imminent — clear the ship's immediate area."
-  - `(< (hits-left "GTD Amadeus") 5)` -> Msg11.
-  - 15 seconds after Msg11 -> `self-destruct "GTD Amadeus"`.
-- **Success / Failure**:
-  - Track departed pods. `(percent-ships-departed 66 "Pod 1" "Pod 2" ... "Pod 9")` means 6/9 departed.
-  - Track destroyed pods. `(percent-ships-destroyed 44 "Pod 1" ... "Pod 9")` means 4/9 destroyed (which means < 6 survive).
+3. **HUD Directives Mismatch**: The validation warns that there are 4 goals but only 2 events with `hud_directive_text`. Also, the MDD describes an additional bonus goal.
+   - *Fix*: Add the missing Bonus goal "Save Admiral's Pod" (Ensure Pod 1 reaches Nav Bravo).
+   - *Fix*: Add standalone events with `hud_directive_text` for the primary and main secondary goals. Remove `hud_directive_text` from general messaging events, and instead create dedicated directive events:
+     - "DirEvacuatePods": `percent-ships-departed 66 ...` -> "At least 6 pods reach Nav Bravo"
+     - "DirSaveAldrin4": `has-departed-delay 0 "GTFr Aldrin 4"` -> "Protect GTFr Aldrin 4"
+     - "DirSaveAmadeusCrew" (Optional Bonus): `percent-ships-departed 100 ...` -> "Ensure all pods escape"
 
-## Audio
-- Admiral Wei: Alnilam
-- Alpha 2: Schedar
-- Alpha 3: Fenrir
-- Command/Amadeus CAG: Kore
-- Stentor/Okafor: Laomedeia
+## Detailed Plan
+1. **Pod and Freighter Arrival Parameters:**
+   - Update `GTFr Aldrin 4` and `Pod 1` through `Pod 9` with:
+     ```yaml
+     arrival_method: "Docking Bay"
+     arrival_anchor: "GTD Amadeus"
+     ```
+   - Ensure the `arrival_cue` logic matches the timings (T=0 for group A, T=45 for group B, T=90 for group C). 
+   - Note: Since they use `Docking Bay`, `position` can actually be omitted (or left as a fallback, but removing is cleaner). We will leave `position` as is just in case, but the `arrival_method` overrides it. Wait, the schema says `position` is required for `ships`. We'll just spread their `position` coordinates out by a few hundred meters so that if `position` is validated for bounding boxes, it won't complain. But wait, `Docking Bay` makes them spawn at the fighterbay. We can just spread the initial `position` vector [x, y, z] so they don't overlap in the file's static checker, and `arrival_method` will handle actual game spawning.
+     Actually, let's just spread their `position` out (e.g. `[100, 0, 1500]`, `[200, 0, 1500]`, `[300, 0, 1500]`) to bypass the validator warning, and add `arrival_method: "Docking Bay"` and `arrival_anchor: "GTD Amadeus"`.
+
+2. **Goals Updates:**
+   - Add:
+     ```yaml
+     - name: "Save Admiral's Pod"
+       type: "Bonus"
+       objective_text: "Ensure Pod 1 reaches Nav Bravo."
+       formula: |
+         ( has-departed-delay 0 "Pod 1" )
+     ```
+
+3. **Events Updates:**
+   - Add dedicated events for HUD directives to match the goals.
+   - Remove `hud_directive_text` from `MissionEndMsg` and `AldrinSafe`.
+   - Add:
+     ```yaml
+     - name: "DirEvacuate"
+       formula: |
+         ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+       hud_directive_text: "At least 6 pods reach Nav Bravo"
+     - name: "DirAldrin"
+       formula: |
+         ( has-departed-delay 0 "GTFr Aldrin 4" )
+       hud_directive_text: "Protect GTFr Aldrin 4"
+     ```
+
+4. **Briefing Text Formatting:**
+   - Replace plain ship names with styled ones in `mission_flow.briefing.stages` and `debriefing.stages`.
+   - Ensure closing tag `$}` is always present.
+
+5. **Re-Run Converter:**
+   - Validate the changes fix the warnings and produce a working mission.
