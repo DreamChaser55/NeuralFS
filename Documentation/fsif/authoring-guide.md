@@ -767,6 +767,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 - Use exact FSO weapon token strings (e.g., `ML-16 Laser`, not `GTW ML-16 Laser`).
 - Check that goal formulas are not already true at mission start.
 - Events with `hud_directive_text` must use directly-evaluable conditions, not `is-event-true-delay`, `is-event-false-delay` (see Events section above).
+- Operator `is-destroyed-delay` or `has-departed-delay` must never check the player ship. FreeSpace ends the mission immediately when the player ship is destroyed or departs, so this condition can never trigger any downstream logic.
 
 ### Docking
 - See the dedicated Docking section above for rules and the worked example.
