@@ -30,7 +30,8 @@ environment:
 player_setup:
   start_ship: "Alpha 1"
   additional_ship_choices: []
-  additional_weapons: []
+  additional_weapons:
+    - "Fury"
 
 entities:
   ship_templates:
@@ -83,7 +84,7 @@ entities:
       team: "Friendly"
       position: [0.0, 500.0, 9000.0]
 
-    - name: "Epsilon 1"
+    - name: "Epsilon Transport 1"
       class: "GTT Elysium"
       team: "Friendly"
       position: [-1500.0, 0.0, 1500.0]
@@ -92,10 +93,10 @@ entities:
       initial_orders: |
         ( ai-play-dead-persistent 89 )
       departure_cue: |
-        ( < ( distance "Epsilon 1" "Nav Bravo" ) 1000 )
+        ( < ( distance "Epsilon Transport 1" "Nav Bravo" ) 1000 )
       departure_method: "Hyperspace"
 
-    - name: "Epsilon 2"
+    - name: "Epsilon Transport 2"
       class: "GTT Elysium"
       team: "Friendly"
       position: [-1500.0, 150.0, 1500.0]
@@ -104,10 +105,10 @@ entities:
       initial_orders: |
         ( ai-play-dead-persistent 89 )
       departure_cue: |
-        ( < ( distance "Epsilon 2" "Nav Bravo" ) 1000 )
+        ( < ( distance "Epsilon Transport 2" "Nav Bravo" ) 1000 )
       departure_method: "Hyperspace"
 
-    - name: "Epsilon 3"
+    - name: "Epsilon Transport 3"
       class: "GTT Elysium"
       team: "Friendly"
       position: [-1500.0, -150.0, 1500.0]
@@ -116,10 +117,10 @@ entities:
       initial_orders: |
         ( ai-play-dead-persistent 89 )
       departure_cue: |
-        ( < ( distance "Epsilon 3" "Nav Bravo" ) 1000 )
+        ( < ( distance "Epsilon Transport 3" "Nav Bravo" ) 1000 )
       departure_method: "Hyperspace"
 
-    - name: "Epsilon 4"
+    - name: "Epsilon Transport 4"
       class: "GTT Elysium"
       team: "Friendly"
       position: [-1500.0, 300.0, 1500.0]
@@ -128,7 +129,7 @@ entities:
       initial_orders: |
         ( ai-play-dead-persistent 89 )
       departure_cue: |
-        ( < ( distance "Epsilon 4" "Nav Bravo" ) 1000 )
+        ( < ( distance "Epsilon Transport 4" "Nav Bravo" ) 1000 )
       departure_method: "Hyperspace"
 
     - name: "GTFr Chronos 1"
@@ -181,7 +182,7 @@ entities:
       arrival_method: "Hyperspace"
       departure_cue: |
         ( or 
-          ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+          ( percent-ships-departed 100 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
           ( is-destroyed-delay 0 "GTI Vega Prime" )
         )
       departure_method: "Hyperspace"
@@ -233,7 +234,10 @@ entities:
         )
       arrival_method: "Hyperspace"
       initial_orders: |
-        ( ai-chase-wing "Alpha" 89 )
+        ( ai-chase "Epsilon Transport 3" 89 )
+        ( ai-chase "Epsilon Transport 4" 89 )
+        ( ai-chase "Epsilon Transport 2" 89 )
+        ( ai-chase "Epsilon Transport 1" 89 )
 
     - name: "Krishna"
       template: "shivan_fighter"
@@ -282,10 +286,10 @@ mission_flow:
     stages:
       - display_condition: |
           ( and 
-            ( percent-ships-departed 75 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+            ( percent-ships-departed 75 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
             ( or 
               ( < ( hits-left "GTC Stentor" ) 50 )
-              ( percent-ships-destroyed 25 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+              ( percent-ships-destroyed 25 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
             )
           )
         text: "Three transports made it. That's people alive who would otherwise be dead, and I'm not going to diminish that. But the $f{ Stentor $} took heavy damage, and I want you to think about what you could have done differently.\n\n$h{ Arjuna wave $} - that second bomber group - came in fast. The Valkyrie was the right choice, but the intercept timing was tight. Study the sensor recording. It'll matter next time.\n\nVega Prime is gone. The $h Malgor is still in the system. The situation is deteriorating."
@@ -293,12 +297,12 @@ mission_flow:
       - display_condition: |
           ( and 
             ( > ( hits-left "GTC Stentor" ) 50 )
-            ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+            ( percent-ships-departed 100 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
           )
         text: "All four $f{ Epsilon transports $} are safely through the $y{ Antares node $}. The station is gone - but the people are not. That matters.\n\nCommander Okafor sends her thanks. The $f{ Stentor $} took some damage, but she held together, and her crew held together with her. She says you covered her exactly when she needed it.\n\nVega Prime is lost. We knew it was coming, but knowing doesn't make it easier. I want you to understand that everything you defended out there had a name and a family. You did right by them today.\n\nThe $h Malgor is still in the system. We're keeping track of her."
         voice_name: "Gacrux"
       - display_condition: |
-          ( percent-ships-destroyed 50 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+          ( percent-ships-destroyed 50 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
         text: "This is hard to report. Most of the $f{ Epsilon transports $} were destroyed before they could reach the jump node. Those were civilian evacuation ships.\n\nI have to be direct with you: the $h Arjuna bombers were the mission-critical threat, and they were not intercepted quickly enough. I understand what you were facing - those shields, that $h{ SC Malgor $} arriving - but our job was the transports.\n\nWe will not have another chance in Vega. What we do from here is damage limitation. Regroup."
         voice_name: "Gacrux"
       - display_condition: |
@@ -321,10 +325,10 @@ mission_flow:
       formula: |
         ( when
           ( has-time-elapsed 90 )
-          ( clear-goals "Epsilon 1" )
-          ( add-goal "Epsilon 1" ( ai-waypoints-once "EpsPath" 89 ) )
+          ( clear-goals "Epsilon Transport 1" )
+          ( add-goal "Epsilon Transport 1" ( ai-waypoints-once "EpsPath" 89 ) )
           ( send-message-list 
-            "Epsilon 1" "Normal" "Msg2" 0
+            "Epsilon Transport 1" "Normal" "Msg2" 0
             "#Command" "Normal" "Msg2Response" 3000
           )
         )
@@ -332,22 +336,22 @@ mission_flow:
       formula: |
         ( when
           ( has-time-elapsed 120 )
-          ( clear-goals "Epsilon 2" )
-          ( add-goal "Epsilon 2" ( ai-waypoints-once "EpsPath" 89 ) )
+          ( clear-goals "Epsilon Transport 2" )
+          ( add-goal "Epsilon Transport 2" ( ai-waypoints-once "EpsPath" 89 ) )
         )
     - name: "Epsilon3Undock"
       formula: |
         ( when
           ( has-time-elapsed 165 )
-          ( clear-goals "Epsilon 3" )
-          ( add-goal "Epsilon 3" ( ai-waypoints-once "EpsPath" 89 ) )
+          ( clear-goals "Epsilon Transport 3" )
+          ( add-goal "Epsilon Transport 3" ( ai-waypoints-once "EpsPath" 89 ) )
         )
     - name: "Epsilon4Undock"
       formula: |
         ( when
           ( has-time-elapsed 210 )
-          ( clear-goals "Epsilon 4" )
-          ( add-goal "Epsilon 4" ( ai-waypoints-once "EpsPath" 89 ) )
+          ( clear-goals "Epsilon Transport 4" )
+          ( add-goal "Epsilon Transport 4" ( ai-waypoints-once "EpsPath" 89 ) )
         )
     - name: "Arjuna1Msg"
       formula: |
@@ -361,21 +365,14 @@ mission_flow:
           ( < ( distance "Arjuna Wave 1" "GTI Vega Prime" ) 2000 )
           ( send-message "GTI Vega Prime" "High" "Msg4" )
         )
-    - name: "Arjuna2Retarget"
-      formula: |
-        ( when
-          ( has-arrived-delay 0 "Arjuna Wave 2" )
-          ( clear-goals "Arjuna Wave 2" )
-          ( add-goal "Arjuna Wave 2" ( ai-chase-any 89 ) )
-        )
     - name: "Epsilon3Attacked"
       formula: |
         ( when
           ( and 
             ( has-arrived-delay 15 "Arjuna Wave 2" )
-            ( not ( is-destroyed-delay 0 "Epsilon 3" ) )
+            ( not ( is-destroyed-delay 0 "Epsilon Transport 3" ) )
           )
-          ( send-message "Epsilon 3" "High" "Msg5" )
+          ( send-message "Epsilon Transport 3" "High" "Msg5" )
         )
     - name: "MalgorArrivesMsg"
       formula: |
@@ -389,6 +386,8 @@ mission_flow:
           ( has-time-elapsed 480 )
           ( clear-goals "SC Malgor" )
           ( add-goal "SC Malgor" ( ai-waypoints-once "MalgorPath" 89 ) )
+          ( clear-goals "GTC Stentor" )
+          ( add-goal "GTC Stentor" ( ai-chase "SC Malgor" 89 ) )
           ( send-message "GTC Stentor" "High" "Msg7" )
         )
     - name: "StationDying"
@@ -407,32 +406,27 @@ mission_flow:
       formula: |
         ( when
           ( or 
-            ( is-destroyed-delay 0 "Epsilon 3" )
-            ( is-destroyed-delay 0 "Epsilon 4" )
+            ( is-destroyed-delay 0 "Epsilon Transport 3" )
+            ( is-destroyed-delay 0 "Epsilon Transport 4" )
           )
           ( send-message "#Command" "High" "Msg10" )
         )
     - name: "EvacuationSuccess"
       formula: |
         ( when
-          ( percent-ships-departed 75 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+          ( percent-ships-departed 75 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
           ( send-message "#Command" "High" "Msg11" )
           ( allow-weapon "Avenger" )
         )
       hud_directive_text: "Protect Epsilon Transports"
-    - name: "StentorCheck"
-      formula: |
-        ( when
-          ( and 
-            ( is-event-true-delay "EvacuationSuccess" 0 )
-            ( > ( hits-left "GTC Stentor" ) 50 )
-          )
-          ( do-nothing )
-        )
+
     - name: "StentorDirective"
       formula: |
         ( when
-          ( is-destroyed-delay 0 "GTC Stentor" )
+          ( and 
+            ( percent-ships-departed 75 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
+            ( > ( hits-left "GTC Stentor" ) 50 )
+          )
           ( do-nothing )
         )
       hud_directive_text: "Protect GTC Stentor"
@@ -454,7 +448,7 @@ mission_flow:
       type: "Secondary"
       objective_text: "GTC Stentor hull remains above 50%."
       formula: |
-        ( is-event-true-delay "StentorCheck" 0 )
+        ( is-event-true-delay "StentorDirective" 0 )
     - name: "Deploy Sentry Guns"
       type: "Secondary"
       objective_text: "Escort GTFr Chronos 1 to deploy Nav Alpha Sentry Guns."
@@ -464,7 +458,7 @@ mission_flow:
       type: "Bonus"
       objective_text: "All 4 Epsilon transports jump out."
       formula: |
-        ( percent-ships-departed 100 "Epsilon 1" "Epsilon 2" "Epsilon 3" "Epsilon 4" )
+        ( percent-ships-departed 100 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
 
   messages:
     - name: "Msg1"
