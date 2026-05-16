@@ -53,7 +53,6 @@ mission_info:
   description: "Mission description string"
   game_type: "single"
   flags: []
-  ai_profile: "FS1 RETAIL"
 
 environment:
   ambient_light_level: [0, 0, 0]

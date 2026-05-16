@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Escort Vasudan refugees and field test the Avenger cannon."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: ["all_attack"]
 
 environment:

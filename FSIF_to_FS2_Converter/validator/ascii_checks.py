@@ -56,7 +56,6 @@ class AsciiChecksMixin:
         self._validate_ascii_text('mission_info.author', info.author)
         self._validate_xstr_text('mission_info.description', info.description)
         self._validate_ascii_text('mission_info.game_type', info.game_type)
-        self._validate_ascii_text('mission_info.ai_profile', info.ai_profile)
         self._validate_ascii_text_list('mission_info.flags', info.flags)
 
         env = self.mission.environment

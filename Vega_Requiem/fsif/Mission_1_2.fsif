@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Evacuation cover operation at GTI Vega Prime."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:

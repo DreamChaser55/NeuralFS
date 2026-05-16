@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Demo mission: protect the evacuation convoy from Shivan attack."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:

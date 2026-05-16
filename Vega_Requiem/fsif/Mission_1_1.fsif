@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Routine patrol to investigate a missing transport in the Capella approach corridor."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:

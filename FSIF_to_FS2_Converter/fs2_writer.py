@@ -243,7 +243,7 @@ class FS2Writer:
         top_down_orient = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0]
         self._write(f'+Viewer orient:\n{self._format_matrix(top_down_orient)}')
         
-        self._write(f'\n$AI Profile: {info.ai_profile}')
+        self._write('\n$AI Profile: FS1 RETAIL')
 
     def write_fiction_viewer(self):
         if not self.mission.fiction_viewer:

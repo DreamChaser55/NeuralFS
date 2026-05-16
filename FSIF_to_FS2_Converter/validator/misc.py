@@ -52,10 +52,6 @@ class MiscChecksMixin:
             if not canon:
                 self.log_warning(f"Unknown mission flag: '{f}'")
 
-        # Validate ai_profile
-        known_ai_profiles = {"FS1 RETAIL", "FS2 RETAIL"}
-        if self.mission.mission_info.ai_profile not in known_ai_profiles:
-            self.log_warning(f"Unknown ai_profile: '{self.mission.mission_info.ai_profile}'")
 
     def validate_messages(self):
         """

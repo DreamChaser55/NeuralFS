@@ -20,7 +20,6 @@
   - `game_type` (String, optional, default: `"single"`). Enum: `"single"`, `"multiplayer"`, `"training"`.
   - `flags` (List[String], optional, default: `[]`)
   - `disallow_support_ships` (Boolean, optional, default: `false`)
-  - `ai_profile` (String, optional, default: `"FS1 RETAIL"`)
 - `environment` (Mapping, required):
   - `ambient_light_level` (List[Integer], required). Format: `[red, green, blue]`, each channel `0..255`.
   - `suns` (List[Mapping], optional, default: `[]`):

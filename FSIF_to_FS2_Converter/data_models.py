@@ -190,7 +190,6 @@ class MissionInfoInput(BaseModel):
     game_type: Optional[str] = None
     flags: Optional[List[str]] = None
     disallow_support_ships: Optional[bool] = None
-    ai_profile: Optional[str] = None
 
 
 class NebulaInput(BaseModel):
@@ -633,7 +632,6 @@ class MissionInfo(BaseModel):
     game_type: Literal['single', 'multiplayer', 'training'] = 'single'
     flags: List[str] = Field(default_factory=list)
     disallow_support_ships: bool = False
-    ai_profile: str = 'FS1 RETAIL'
 
 class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')

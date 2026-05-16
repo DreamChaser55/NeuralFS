@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Escape pod defense at Nav Charlie."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:

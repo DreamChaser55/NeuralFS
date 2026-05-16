@@ -5,7 +5,6 @@ mission_info:
   author: "NeuralFS"
   description: "Convoy escort through a dense asteroid field."
   game_type: "single"
-  ai_profile: "FS1 RETAIL"
   flags: []
 
 environment:
