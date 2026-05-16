@@ -1,18 +1,65 @@
-# Mission 1-3 Implementation Plan
+# Mission 1-3 Implementation Plan: No Truce With the Tide
 
-## Discovered Issues
-1. **Background Nebulae**: The mission only has 2 background bitmaps, triggering a warning about the environment feeling sparse.
-2. **Standalone Alpha Wing**: Alpha 1, 2, 3, and 4 are defined as standalone ships rather than a wing, triggering warnings about non-standard player starts. 
-3. **Briefing Icon Proximity**: Icons in the briefing stages are placed too closely together, causing visual overlap.
-4. **Missing Text Styling**: The mission and command briefings lack FSO text styling color tags (`$f`, `$h`, `$y`, etc.).
-5. **HUD Directives**: The bonus goal lacks a corresponding event with `hud_directive_text`, triggering a recommendation warning.
+## Source Material and Existing File Paths
+- Design Doc: `Vega_Requiem/Detailed_Mission_Design_Documents/Act_1/Mission_1_3.txt`
+- Existing FSIF: `Vega_Requiem/fsif/Mission_1_3.fsif`
+- Output Path: `Vega_Requiem/fsif/Mission_1_3.fsif`
 
-## Fix Strategy
-1. **Background Nebulae**: Add a 3rd nebula bitmap (`dneb03`) to the `background_bitmaps` array.
-2. **Standalone Alpha Wing**: Intentionally ignore the standalone ship warnings. The design document explicitly dictates an asymmetric loadout for Alpha wing: Alpha 1 must start with the field-test Avenger cannon, while Alpha 2-4 must start with standard ML-16 Lasers. FSIF does not support weapon overrides for individual wing members within a `wings` definition, so standalone ships are the only way to achieve this canonical loadout constraint.
-3. **Briefing Icon Proximity**: Adjust the `map_position` vectors for the Capella Node and Pisces Wing icons to increase the separation distance.
-4. **Missing Text Styling**: Add `$f{ ... $}` and `$h{ ... $}` tags to the briefing text strings for ships and wings.
-5. **HUD Directives**: The missing directive is for a `Bonus` goal ("Full Evacuation"). Bonus goals typically do not have HUD directives in FreeSpace. This warning will be intentionally ignored.
+## Requested Changes and Affected Schema Sections
+The mission was already partially implemented. The requested changes are fixes to specific SEXP logic blocks and AI goals to match the design document.
+- **Initial Orders for Brahma Wing**: Currently set to `ai-stay-still "Alpha 1" 89`. Must be changed to `ai-chase "PVD Vigil" 89` to execute the scripted early destruction of the Vigil.
+- **Initial Orders for Aquarius Wing**: Currently set to `ai-chase-any 89`. Must be changed to chase Theta transports sequentially (`ai-chase "Theta 1" 89`, etc.).
+- **Initial Orders for Rama Wing**: Currently set to `ai-chase-any 89`. Must be changed to prioritize `Theta 3` as per the design doc ("Keep them off Theta Three").
+- **Message Senders**: `HethorMessage` (Msg1) currently has `#Command` as the sender, but the text is from Sub-Imperator Hethor on the `PVD Vigil`.
+- **ThetaAttacked Event Goals**: Currently clears Brahma goals and gives `ai-chase-any`. It must give specific orders to chase the Theta transports (`Theta 1`, `Theta 2`, `Theta 3`).
 
-## Execution
-Apply the FSIF edits and re-run the FSIF Converter to ensure the remaining warnings are only the intentionally suppressed ones.
+## Player Setup and Loadout Impacts
+No changes needed. Player correctly has `GTF Valkyrie` with `Avenger` cannon in Bank 1 as the only Avenger.
+
+## Entity List Impacts
+No new entities or wings need to be added. `PVD Vigil` correctly arrives at 20s. `Theta` transports arrive at 20s and depart at `Nav Alpha`. `GTS Casca` correctly arrives at 360s.
+
+## Briefing, Command Briefing, Debriefing and Message Impacts
+No changes needed to the text. The voices map correctly to the providers. However, the sender for `Msg1` in the SEXP logic will be updated to `PVD Vigil`.
+
+## Mission Flow and SEXP Strategy
+- **Brahma wing initial_orders**: `( ai-chase "PVD Vigil" 89 )`
+- **Aquarius wing initial_orders**:
+  ```lisp
+  ( ai-chase "Theta 1" 89 )
+  ( ai-chase "Theta 2" 89 )
+  ( ai-chase "Theta 3" 89 )
+  ```
+- **Rama wing initial_orders**:
+  ```lisp
+  ( ai-chase "Theta 3" 89 )
+  ( ai-chase "Theta 2" 89 )
+  ( ai-chase "Theta 1" 89 )
+  ```
+- **ThetaAttacked Event**:
+  ```lisp
+  ( when
+    ( is-destroyed-delay 0 "PVD Vigil" )
+    ( clear-goals "Brahma" )
+    ( add-goal "Brahma" ( ai-chase "Theta 1" 89 ) )
+    ( add-goal "Brahma" ( ai-chase "Theta 2" 89 ) )
+    ( add-goal "Brahma" ( ai-chase "Theta 3" 89 ) )
+    ( send-message "Theta 1" "High" "Msg4" )
+  )
+  ```
+- **HethorMessage Event**:
+  ```lisp
+  ( when
+    ( has-time-elapsed 22 )
+    ( send-message "PVD Vigil" "High" "Msg1" )
+  )
+  ```
+
+## FCIF Campaign / Loadout Impacts
+N/A (We are editing a single FSIF mission file).
+
+## Known Risks and Mitigation
+- **Risk**: `PVD Vigil` might survive if the player destroys `Brahma` wing too quickly.
+- **Mitigation**: The design doc states the Vigil's death is guaranteed by its low 35% hull, which the Typhon class starts with. The Scorpions will focus it heavily. If the player kills them quickly, it's a heroic feat, but standard FreeSpace design doesn't require hardcoding `destroy-instantly` unless absolutely necessary, and the design doc doesn't explicitly mention it.
+- **Risk**: `all_attack` behavior with `Unknown` team (HoL).
+- **Mitigation**: Setting them to `Unknown` with `all_attack` enabled is the correct way to implement a third faction that is hostile to both Terrans and Shivans.

@@ -186,14 +186,16 @@ entities:
       count: 4
       position: [3000.0, 0.0, 5000.0]
       initial_orders: |
-        ( ai-stay-still "Alpha 1" 89 )
+        ( ai-chase "PVD Vigil" 89 )
 
     - name: "Aquarius"
       template: "hol_fighter"
       count: 4
       position: [0.0, 0.0, 8000.0]
       initial_orders: |
-        ( ai-chase-any 89 )
+        ( ai-chase "Theta 1" 89 )
+        ( ai-chase "Theta 2" 89 )
+        ( ai-chase "Theta 3" 89 )
 
     - name: "Pisces"
       template: "hol_heavy"
@@ -213,7 +215,9 @@ entities:
         )
       arrival_method: "Hyperspace"
       initial_orders: |
-        ( ai-chase-any 89 )
+        ( ai-chase "Theta 3" 89 )
+        ( ai-chase "Theta 2" 89 )
+        ( ai-chase "Theta 1" 89 )
 
   jump_nodes:
     - name: "Capella Node"
@@ -299,7 +303,7 @@ mission_flow:
       formula: |
         ( when
           ( has-time-elapsed 22 )
-          ( send-message "#Command" "High" "Msg1" )
+          ( send-message "PVD Vigil" "High" "Msg1" )
         )
     - name: "BrahmaEngage"
       formula: |
@@ -340,7 +344,9 @@ mission_flow:
         ( when
           ( is-destroyed-delay 0 "PVD Vigil" )
           ( clear-goals "Brahma" )
-          ( add-goal "Brahma" ( ai-chase-any 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 1" 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 2" 89 ) )
+          ( add-goal "Brahma" ( ai-chase "Theta 3" 89 ) )
           ( send-message "Theta 1" "High" "Msg4" )
         )
     - name: "VigilCriticalMsg"
