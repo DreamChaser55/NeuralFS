@@ -123,6 +123,10 @@ Notes:
   ```
   It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
+## Callable support ships
+
+In FSO, player can call in a support ship at any time. A generic `GTS Centaur` will jump in to rearm and repair the player as well as other friendly fighters. You can disable this option in your mission by setting `mission_info.disallow_support_ships` to `true`. Note that `disallow_support_ships` will not affect any support ships defined in `entities.ships`.
+
 ## Asteroid and debris fields
 
 FSO supports two mutually exclusive field genres, selected by `object_type`.
