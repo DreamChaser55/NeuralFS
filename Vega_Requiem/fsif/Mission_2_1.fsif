@@ -61,7 +61,7 @@ entities:
       ai_class: "Major"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Heavy Laser"]
-        secondary: ["MX-50#Shivan"]
+        secondary: ["Tsunami#Shivan"]
     shivan_heavy:
       class: "SF Basilisk"
       team: "Hostile"
@@ -295,8 +295,15 @@ mission_flow:
         text: "Convoy reached $y{ Nav Bravo $}. We lost ships on the transit.\n\nThe sensor data or the civilian lives lost out there are a blow we could not afford, but we must accept. We proceed with what we have left.\n\nThe $h{ Ahriman $} is still with us. She'll be a problem at the node. Rest while you can."
         voice_name: "Alnilam"
       - display_condition: |
-          ( percent-ships-destroyed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+          ( and
+            ( < ( distance "GTD Amadeus" "Nav Bravo" ) 2500 )
+            ( percent-ships-destroyed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" )
+          )
         text: "We reached $y{ Nav Bravo $}, but the cost was too high. The convoy has been effectively destroyed.\n\nWe've lost irreplaceable sensor data, the Meridian survivors, and the Vasudan refugees. The $h{ Ahriman $}'s pressure, the bomber waves - one of them found our limit.\n\nWe will attempt to push what remains through the node, but this operation has failed."
+        voice_name: "Alnilam"
+      - display_condition: |
+          ( is-destroyed-delay 0 "GTD Amadeus" )
+        text: "The Amadeus did not survive the transit. Without the Amadeus, there is no convoy, no organized withdrawal. Whatever makes it to Antares will scatter.\n\nThis is the worst outcome of this operation. The Ahriman's pressure, the bomber waves - one of them found the limit."
         voice_name: "Alnilam"
 
   events:
@@ -373,7 +380,7 @@ mission_flow:
     - name: "AmadeusArrived"
       formula: |
         ( when
-          ( < ( distance "GTD Amadeus" "Nav Bravo" ) 2000 )
+          ( < ( distance "GTD Amadeus" "Nav Bravo" ) 2500 )
           ( send-message "GTD Amadeus" "High" "Msg11" )
         )
       hud_directive_text: "Escort GTD Amadeus to Nav Bravo"
