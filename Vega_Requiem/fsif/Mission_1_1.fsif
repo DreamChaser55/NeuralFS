@@ -212,7 +212,7 @@ mission_flow:
     - name: "Alpha2WreckageMsg"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "Nav Alpha" ) 1500 )
+          ( < ( distance "Alpha 1" "Nav Alpha" ) 1000 )
           ( send-message "Alpha 2" "Normal" "Msg1" )
         )
     - name: "SystemPodMsg"
@@ -280,6 +280,7 @@ mission_flow:
       formula: |
         ( when
           ( and
+            ( is-event-true-delay "CommandRetreatMsg" 0 )
             ( < ( distance "Alpha 1" "Jump-Out Point" ) 4000 )
             ( not ( is-destroyed-delay 0 "Escape Pod 1" ) )
             ( not ( is-destroyed-delay 0 "Escape Pod 2" ) )
@@ -289,13 +290,19 @@ mission_flow:
     - name: "CommandJumpReady"
       formula: |
         ( when
-          ( < ( distance "Alpha 1" "Jump-Out Point" ) 2000 )
+          ( and
+            ( is-event-true-delay "CommandRetreatMsg" 0 )
+            ( < ( distance "Alpha 1" "Jump-Out Point" ) 2000 )
+          )
           ( send-message "#Command" "Normal" "Msg9" )
         )
     - name: "Alpha2EndMsg"
       formula: |
         ( when
-          ( has-departed-delay 0 "Alpha 1" )
+          ( and
+            ( is-event-true-delay "CommandRetreatMsg" 0 )
+            ( < ( distance "Alpha 1" "Jump-Out Point" ) 1000 )
+          )
           ( send-message "Alpha 2" "Normal" "Msg10" )
         )
     - name: "Pod1Safe"

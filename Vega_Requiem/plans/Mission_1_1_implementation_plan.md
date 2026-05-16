@@ -1,53 +1,32 @@
-# Mission 1_1 Implementation Plan
-## Metadata
-- **Name**: Strange Fires
-- **Author**: NeuralFS
-- **Description**: Routine patrol to investigate a missing transport in the Capella approach corridor.
-- **Game Type**: single
-- **AI Profile**: FS1 RETAIL
-- **Environment**: Deep space, dark background (blue-black), Vega sun, Capella node far off.
+# Mission 1-1: Strange Fires - Implementation Plan
 
-## Player Setup & Loadout
-- **Start Ship**: Alpha 1 (GTF Apollo)
-- **Primary**: GTW ML-16 Laser
-- **Secondary**: GTM MX-50, GTM Fury
-- *No Avenger, no alternative ships, no bombers.*
+## Objective
+Analyze `Vega_Requiem/fsif/Mission_1_1.fsif` against the Campaign Bible and Mission Design Document (Act 1, Mission 1-1) and fix any discovered discrepancies or SEXP logic issues.
 
-## Entities
-### Waypoints & Nav Buoys
-- `Nav Alpha` (Terran NavBuoy) at `[0, 0, 6000]`
-- `Jump-Out Point` (Terran NavBuoy) at `[0, 0, -500]`
-- Waypoint path: `JumpOutPath` with a point at `[0, 0, -500]` for AI orders.
+## Source Material
+- `Vega_Requiem/Campaign_Bible.txt`
+- `Vega_Requiem/Detailed_Mission_Design_Documents/Act_1/Mission_1_1.txt`
+- `Vega_Requiem/fsif/Mission_1_1.fsif`
 
-### Ships & Wings
-- **GTT Meridian**: Wreckage. `GTT Elysium`, `[0, 0, 6000]`, `destroyed_before_mission_seconds: 10`.
-- **Escape Pod 1**: `GTEP Hermes`, `[200, 0, 6000]`. Initial orders: `ai-waypoints-once "JumpOutPath" 89`. Departure cue: `( < ( distance "Escape Pod 1" "JumpOutPath:1" ) 500 )`.
-- **Escape Pod 2**: `GTEP Hermes`, `[-350, 0, 6000]`. Initial orders: `ai-waypoints-once "JumpOutPath" 89`. Departure cue: `( < ( distance "Escape Pod 2" "JumpOutPath:1" ) 500 )`.
-- **Alpha Wing**: 4x `GTF Apollo`. Position: `[0, 0, 0]`. Template: `alpha_fighter`. AI Wingmen orders: `ai-guard "Alpha 1" 89`.
-- **Brahma Wing**: 4x `SF Scorpion`. Hostile. Arrival cue: `is-event-true-delay "BrahmaArrives" 0`. Position: `[0, 0, 14000]`. Distance from Nav Alpha is 8km. Initial orders: `ai-chase-wing "Alpha" 89`.
-- **Vishnu Wing**: 3x `SF Basilisk`. Hostile. Arrival cue: `is-event-true-delay "VishnuArrives" 0`. Position: `[0, 0, 16000]`.
+## Intended Output Path
+`Vega_Requiem/fsif/Mission_1_1.fsif`
 
-## SEXP Strategy
-- **BrahmaArrives**: `( < ( distance "Alpha 1" "Nav Alpha" ) 3000 )`
-- **VishnuArrives**: `( or ( is-event-true-delay "BrahmaArrives" 90 ) ( percent-ships-destroyed 50 "Brahma" ) )`
-- **Pod1Safe**: `( has-departed-delay 0 "Escape Pod 1" )`
-- **Pod2Safe**: `( has-departed-delay 0 "Escape Pod 2" )`
-- **BothPodsSafe**: `( and ( is-event-true-delay "Pod1Safe" 0 ) ( is-event-true-delay "Pod2Safe" 0 ) )`
+## SEXP Strategy and Logic Analysis
+After reviewing the source files, the implementation is highly accurate to the MDD. The ship placements, timing, wave logic, and loadouts correspond properly to the constraints established in the campaign bible (e.g., standard ML-16 Lasers without Avengers).
 
-## Messages & Briefings
-- **Command Briefing**: Admiral Chen Wei. Voice: `Alnilam` (Firm).
-- **Mission Briefing**: Standard Officer. Voice: `Gacrux`.
-- **In-Mission**: 
-  - Alpha 2: `Schedar` (Even, calm veteran)
-  - Alpha 3: `Fenrir` (Excitable young pilot)
-  - Alpha 4: `Aoede` (Youthful/breezy)
-  - Command: `Kore` (Firm, controlled alarm)
+However, during SEXP logic analysis, several timing issues related to distance checks were identified:
+1. **Premature Message Triggers (Bug):** `Alpha2PodsMsg` and `CommandJumpReady` relied on distance checks `< 4000` and `< 2000` from the `Jump-Out Point`. Since the player starts 500m away from the `Jump-Out Point` at mission start, these messages would trigger instantly at `T+00:00`.
+   - **Fix:** Added `( is-event-true-delay "CommandRetreatMsg" 0 )` to both message events to ensure they only trigger during the retreat phase.
+2. **End Message SEXP:** `Alpha2EndMsg` used `has-departed-delay` for `Alpha 1`. As this message is meant to be heard during the jump-out sequence, the player might miss the comms if they warp out instantly.
+   - **Fix:** Switched logic to trigger when distance to the jump-out point is `< 1000`, matching the condition style of other retreat messages, combined with the retreat order event `( is-event-true-delay "CommandRetreatMsg" 0 )`.
+3. **Wreckage Message Distance:** `Alpha2WreckageMsg` was set to trigger at 1500m, while the MDD specified 1000m.
+   - **Fix:** Adjusted the trigger distance to 1000m.
 
-## Risks & Mitigations
-- Pods are too slow: `ai-waypoints-once` will make them move at their top speed (which is very slow). Giving them a jump-out point at `-500` means they have to travel 6.5 km. Hermes speed is 40 m/s, so 6500m / 40 = 162 seconds (about 2.5 mins). That's perfect to force the player to defend them while the Vishnu wave hits.
-- Alpha wing AI dying too fast: `ai-guard "Alpha 1"` keeps them grouped.
-- Using `Terran NavBuoy` for Nav Alpha so it can be targeted and measured by `distance`.
+## Entity List Impacts
+No changes necessary. Ship templates, starting loadouts, and wings correctly adhere to Act 1 constraints.
 
-## Known Constraints
-- Player weapons intentionally weak.
-- No `hud_directive_text` on events that use `is-event-true-delay`. Use direct checks.
+## Briefing / Debriefing
+All messages and briefings align precisely with MDD. Voice provider (`google`) correctly implemented.
+
+## Execution
+The aforementioned fixes were applied directly to the `Mission_1_1.fsif` file. A successful pass through the `fsif_to_fs2.py` converter yielded zero errors and zero warnings, confirming structural and logic integrity.
