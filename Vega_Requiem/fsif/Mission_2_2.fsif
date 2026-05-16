@@ -30,7 +30,8 @@ environment:
 player_setup:
   start_ship: "Alpha 1"
   additional_ship_choices: []
-  additional_weapons: []
+  additional_weapons:
+    - "Fury"
 
 entities:
   ship_templates:
@@ -83,8 +84,6 @@ entities:
       class: "GTS Centaur"
       team: "Friendly"
       position: [-500.0, 0.0, 500.0]
-      initial_orders: |
-        ( ai-stay-near-ship "Pod 1" 89 )
 
     - name: "SC Ahriman"
       class: "SC Lilith"
@@ -253,7 +252,7 @@ entities:
       count: 3
       position: [0.0, 500.0, 5000.0]
       initial_orders: |
-        ( ai-chase-any 89 )
+        ( ai-chase-ship-class "GTEP Hermes" 89 )
 
     - name: "Brahma"
       template: "shivan_bomber"
@@ -273,7 +272,7 @@ entities:
         ( has-time-elapsed 180 )
       arrival_method: "Hyperspace"
       initial_orders: |
-        ( ai-chase-any 89 )
+        ( ai-chase-ship-class "GTEP Hermes" 89 )
 
     - name: "Bheema"
       template: "shivan_elite"
@@ -286,7 +285,8 @@ entities:
         )
       arrival_method: "Hyperspace"
       initial_orders: |
-        ( ai-chase-any 89 )
+        ( ai-chase-ship-class "GTEP Hermes" 89 )
+        ( ai-chase-wing "Alpha" 80 )
 
   waypoints:
     BravoPath:
@@ -340,6 +340,12 @@ mission_flow:
         voice_name: "Kore"
 
   events:
+    - name: "CascaOrders"
+      formula: |
+        ( when
+          ( true )
+          ( add-goal "GTS Casca" ( ai-stay-near-ship "Pod 1" 89 1000 ) )
+        )
     - name: "MissionStartMsg"
       formula: |
         ( when
@@ -354,7 +360,7 @@ mission_flow:
             ( < ( hits-left "Pod 2" ) 99 )
             ( < ( hits-left "Pod 3" ) 99 )
           )
-          ( send-message "Alpha 2" "High" "Msg2" )
+          ( send-message "<any wingman>" "High" "Msg2" )
         )
     - name: "Pod1ClearMsg"
       formula: |
@@ -366,7 +372,7 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 0 "Brahma" )
-          ( send-message "Alpha 3" "High" "Msg4" )
+          ( send-message "<any wingman>" "High" "Msg4" )
         )
     - name: "CommandPriorityMsg"
       formula: |
@@ -384,13 +390,13 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 0 "Vishnu" )
-          ( send-message "Alpha 2" "High" "Msg7" )
+          ( send-message "<any wingman>" "High" "Msg7" )
         )
     - name: "FivePodsSafeMsg"
       formula: |
         ( when
           ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
-          ( send-message "Alpha 2" "Normal" "Msg8" )
+          ( send-message "<any wingman>" "Normal" "Msg8" )
         )
     - name: "AmadeusCriticalMsg"
       formula: |
@@ -402,7 +408,7 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 0 "Bheema" )
-          ( send-message "Alpha 3" "High" "Msg10" )
+          ( send-message "<any wingman>" "High" "Msg10" )
         )
     - name: "AmadeusDoomWarning"
       formula: |
@@ -419,9 +425,14 @@ mission_flow:
     - name: "AmadeusExplodes"
       formula: |
         ( when
-          ( is-event-true-delay "AmadeusFinalMsg" 15 )
+          ( is-event-true-delay "AmadeusFinalMsg" 5 )
           ( self-destruct "GTD Amadeus" )
-          ( send-message "Alpha 2" "Normal" "Msg12" )
+        )
+    - name: "Alpha2CopyMsg"
+      formula: |
+        ( when
+          ( is-event-true-delay "AmadeusFinalMsg" 15 )
+          ( send-message "<any wingman>" "Normal" "Msg12" )
         )
     - name: "StentorCheckMsg"
       formula: |
@@ -439,8 +450,8 @@ mission_flow:
       formula: |
         ( when
           ( and 
-            ( percent-ships-departed 66 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
-            ( percent-ships-departed 100 "GTFr Aldrin 4" )
+            ( destroyed-or-departed-delay 5 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" "GTFr Aldrin 4" )
+            ( is-goal-true-delay "Evacuate Pods" 0 )
           )
           ( send-message "#Command" "Normal" "Msg15" )
         )
@@ -459,6 +470,30 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "At least 6 pods reach Nav Bravo"
+
+    - name: "DirEvacuateSecondary"
+      formula: |
+        ( when 
+          ( percent-ships-departed 88 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( do-nothing )
+        )
+      hud_directive_text: "At least 8 pods reach Nav Bravo"
+
+    - name: "DirEvacuateBonus"
+      formula: |
+        ( when 
+          ( percent-ships-departed 100 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
+          ( do-nothing )
+        )
+      hud_directive_text: "All 9 pods reach Nav Bravo"
+
+    - name: "DirPod1"
+      formula: |
+        ( when 
+          ( has-departed-delay 0 "Pod 1" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Ensure Pod 1 reaches Nav Bravo"
 
     - name: "DirAldrin"
       formula: |
