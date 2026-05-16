@@ -1,37 +1,23 @@
-# Mission 2-3 Implementation Plan
+# Implementation Plan: Mission 2-3 (Vega Requiem) fixes
 
-## Objective
-Fix issues discovered by the FSIF Validator and verify correct implementation of the source material for `Vega_Requiem/fsif/Mission_2_3.fsif`.
+## Source Material and Context
+- **Mission**: `Vega_Requiem/fsif/Mission_2_3.fsif`
+- **Design Document**: `Vega_Requiem/Detailed_Mission_Design_Documents/Act_2/Mission_2_3.txt`
+- **Campaign Bible**: `Vega_Requiem/Campaign_Bible.txt`
 
-## Identified Issues & Required Fixes
+## Issues Discovered
+1. **Goal 3 (All Survive) logic**: The `AllThroughMsg` event uses `percent-ships-departed 100` on the whole convoy. However, `percent-ships-departed` ignores destroyed ships. This means if *any* ship is destroyed, this event will never fire, and the mission could stall if there's no alternative trigger for the final jump message. Since the message is "That's everyone. Alpha Lead - your turn. Go." it should fire when all surviving ships have transited. Using `destroyed-or-departed-delay` evaluates to true once the fate of all listed ships is sealed (all are either destroyed or departed). This is the proper trigger for the final jump call.
+2. **AI Goal error - `ai-stay-still`**: `Arjuna` wing, `SC Malgor`, and `Theta 3` are given `ai-stay-still` with `"Node Center"` as the argument. The FSO `ai-stay-still` SEXP expects a *waypoint name*, but `"Node Center"` is actually a ship (`Terran NavBuoy`). The appropriate SEXP for staying near a ship is `ai-stay-near-ship`. For `Theta 3`, simply clearing goals (`clear-goals`) effectively tells her to stop and fight, which perfectly matches her intended behavior of pausing upon detecting Dragons until ordered to resume.
+3. **Malgor initial position**: In the MDD, Malgor is "Stationary at the node, 5000m from node mouth". The FSIF positions her at `[1000.0, 0.0, 7000.0]`, which is exactly 5000m from the node center at `[0.0, 0.0, 12000.0]`. This is correct.
+4. **AllThroughMsg sender**: The sender is "Alpha 2", which works, but if Alpha 2 is destroyed, the message won't play. We should keep it as Alpha 2 since there's no `<any wingman>` fallback for an exact persona, and we can rely on the engine's fallback logic if available, but it's not a critical bug. We will just fix the trigger condition.
 
-1. **Missing Text Styling Tags (Validator Warning)**
-   - Add `$f{ ... $}` (Friendly), `$h{ ... $}` (Hostile), and `$y{ ... $}` (Locations) to briefing and debriefing stages.
-   - Example: `$f{ GTC Stentor $}`, `$h{ SC Malgor $}`, `$f{ Alpha wing $}`, `$h Krishna wing`, `$h Indra wing`, `$h Arjuna wing`.
+## Intended Fixes
+- Edit `mission_flow.events.AllThroughMsg`: Replace `percent-ships-departed 100` with `destroyed-or-departed-delay 0` so Alpha 2 correctly tells the player to jump when the fate of the entire convoy is decided.
+- Edit `entities.ships` for `SC Malgor`: Change `initial_orders` from `( ai-stay-still "Node Center" 89 )` to `( ai-stay-near-ship "Node Center" 89 )`.
+- Edit `entities.wings` for `Arjuna`: Change `initial_orders` from `( ai-stay-still "Node Center" 89 )` to `( ai-stay-near-ship "Node Center" 89 )`.
+- Edit `mission_flow.events.ArjunaActivate`: For `Theta 3`, remove the `add-goal` that tells her to `ai-stay-still "Node Center" 89` and leave just `clear-goals`. This will naturally pause her pathing without forcing an invalid goal.
 
-2. **Briefing Icons Overlap (Validator Warning)**
-   - The icons for `GTC Stentor`, `Aldrin Wing`, `Rescue`, and `Theta 3` are placed too close to each other on the Y-axis (distance 350, minimum 395).
-   - *Fix:* Spread them out along the Z-axis (map Y-axis). E.g., `[0, -500]`, `[0, -1000]`, `[0, -1500]`, `[0, -2000]`.
-
-3. **Missing `hud_directive_text` (Validator Warning)**
-   - Mission has 4 goals but only 3 events with `hud_directive_text`.
-   - *Fix:* Add `hud_directive_text: "Destroy SC Malgor"` to the `MalgorKillObjective` event.
-   - Also add an event `AllSurviveObjective` with `hud_directive_text: "Ensure all convoy ships transit"` to match the "All Survive" bonus goal, if needed, or simply let bonus goals remain hidden directives. Secondary goals definitely need one.
-
-4. **Missing Bonus Goal (Source Material mismatch)**
-   - The design document specifies: "Bonus: PVT Theta 3 specifically transits."
-   - *Fix:* Add a new goal "Theta 3 Transits" with `type: "Bonus"`.
-   - Formula: `( has-departed-delay 0 "Theta 3" )`.
-
-5. **Theta 3 Logic Implementation (Source Material mismatch)**
-   - The design doc specifies that when Arjuna wing activates, Theta 3 asks if she should proceed and waits for cover (20 seconds) before proceeding on her own.
-   - *Fix:* 
-     - Update `ArjunaActivate` event to also clear Theta 3's goals and order her to `ai-stay-still`.
-     - Create a new event `Theta3Resumes` that triggers 20 seconds after `ArjunaActivate` to restore her `ai-waypoints-once` order and send the follow-up message.
-     - Add `Msg7_followup` to the `messages` list with text: "Theta Three is proceeding to the node. Cover requested."
-
-## Strategy for FSIF Modification
-- **Briefing / Debriefing:** Update `mission_flow.briefing` and `mission_flow.debriefing` to include styling tags and adjusted icon coordinates.
-- **Events:** Add `Theta3Resumes`. Update `ArjunaActivate`, `MalgorKillObjective`.
-- **Goals:** Add `Theta 3 Transits`.
-- **Messages:** Add `Msg7_followup`.
+## Execution
+1. Perform exact string edits in `Vega_Requiem/fsif/Mission_2_3.fsif`.
+2. Run FSIF Converter to validate changes.
+3. Complete the task.

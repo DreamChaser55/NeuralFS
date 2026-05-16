@@ -153,7 +153,7 @@ entities:
       position: [1000.0, 0.0, 7000.0]
       flags: ["escort"]
       initial_orders: |
-        ( ai-stay-still "Node Center" 89 )
+        ( ai-stay-near-ship "Node Center" 89 )
 
     - name: "Nav Alpha"
       class: "Terran NavBuoy"
@@ -196,7 +196,7 @@ entities:
       count: 2
       position: [0.0, 1000.0, 10000.0]
       initial_orders: |
-        ( ai-stay-still "Node Center" 89 )
+        ( ai-stay-near-ship "Node Center" 89 )
 
   waypoints:
     NodePath:
@@ -324,7 +324,6 @@ mission_flow:
           ( add-goal "Arjuna" ( ai-chase-any 89 ) )
           ( send-message "Theta 3" "Normal" "Msg7" )
           ( clear-goals "Theta 3" )
-          ( add-goal "Theta 3" ( ai-stay-still "Node Center" 89 ) )
         )
     - name: "Theta3Resumes"
       formula: |
@@ -374,7 +373,7 @@ mission_flow:
     - name: "AllThroughMsg"
       formula: |
         ( when
-          ( percent-ships-departed 100 "GTC Stentor" "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" "GTS Casca" )
+          ( destroyed-or-departed-delay 0 "GTC Stentor" "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" "GTS Casca" )
           ( send-message "Alpha 2" "Normal" "Msg14" )
         )
     - name: "TransitSuccess"
