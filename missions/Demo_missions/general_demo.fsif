@@ -84,7 +84,7 @@ entities:
       departure_cue: |
         ( < ( distance "GTC Dauntless" "JumpNodeWaypoint:1" ) 500 )
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "DauntlessPath" 89 )
 
     - name: "GTFr Trent"
       class: "GTFr Poseidon"
@@ -200,7 +200,7 @@ entities:
         ( ai-chase "GTC Dauntless" 90 )
 
   waypoints:
-    ConvoyPath:
+    DauntlessPath:
       - [0.0, 0.0, 1000.0]
       - [500.0, 0.0, 2000.0]
       - [2000.0, 0.0, 3000.0]
