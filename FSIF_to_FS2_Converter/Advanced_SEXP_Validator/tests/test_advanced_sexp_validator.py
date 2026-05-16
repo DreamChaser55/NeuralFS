@@ -502,5 +502,243 @@ class TestAtomValidatorWording(unittest.TestCase):
 import logging.handlers  # needed by _capture_logs above
 
 
+# =============================================================================
+# Tests for player-ship terminal-state SEXP check
+# =============================================================================
+
+class TestPlayerShipTerminalStateCheck(unittest.TestCase):
+    """
+    Verify that has-departed-delay and is-destroyed-delay with the player
+    start ship as an argument are detected as errors, while the same operators
+    used with non-player ships pass cleanly.
+    """
+
+    def setUp(self):
+        self.ctx = MissionContext()
+        # Register a player ship and a non-player ship
+        self.ctx.ships.add("Alpha 1")
+        self.ctx.ships.add("Alpha 2")
+        self.ctx.ships.add("GTC Fenris 1")
+        self.ctx.player_start_ship = "Alpha 1"
+
+        self.parser = SexpParser()
+        self.validator = SexpValidator(self.ctx)
+
+    def _errors(self, sexp_str, expected_type=SexpReturnType.BOOL):
+        roots = self.parser.parse(sexp_str)
+        errors = []
+        for root in roots:
+            errors.extend(self.validator.validate(root, expected_type=expected_type))
+        return errors
+
+    def test_is_destroyed_delay_with_player_ship_is_error(self):
+        """is-destroyed-delay with the player start ship must produce an error."""
+        errors = self._errors('(is-destroyed-delay 0 "Alpha 1")')
+        self.assertTrue(
+            any("Invalid mission-end logic" in e for e in errors),
+            f"Expected 'Invalid mission-end logic' error, got: {errors}",
+        )
+
+    def test_has_departed_delay_with_player_ship_is_error(self):
+        """has-departed-delay with the player start ship must produce an error."""
+        errors = self._errors('(has-departed-delay 0 "Alpha 1")')
+        self.assertTrue(
+            any("Invalid mission-end logic" in e for e in errors),
+            f"Expected 'Invalid mission-end logic' error, got: {errors}",
+        )
+
+    def test_is_destroyed_delay_with_non_player_ship_is_ok(self):
+        """is-destroyed-delay with a non-player ship must pass the terminal-state check."""
+        errors = self._errors('(is-destroyed-delay 0 "GTC Fenris 1")')
+        terminal_errors = [e for e in errors if "Invalid mission-end logic" in e]
+        self.assertFalse(
+            terminal_errors,
+            f"Non-player ship should not trigger terminal-state error, got: {terminal_errors}",
+        )
+
+    def test_has_departed_delay_with_non_player_ship_is_ok(self):
+        """has-departed-delay with a non-player ship must pass the terminal-state check."""
+        errors = self._errors('(has-departed-delay 0 "GTC Fenris 1")')
+        terminal_errors = [e for e in errors if "Invalid mission-end logic" in e]
+        self.assertFalse(
+            terminal_errors,
+            f"Non-player ship should not trigger terminal-state error, got: {terminal_errors}",
+        )
+
+    def test_nested_in_when_with_player_ship_is_error(self):
+        """
+        is-destroyed-delay with the player ship nested inside a when formula
+        must still be detected.
+        """
+        errors = self._errors(
+            '(when (is-destroyed-delay 0 "Alpha 1") (do-nothing))',
+            expected_type=SexpReturnType.NULL,
+        )
+        self.assertTrue(
+            any("Invalid mission-end logic" in e for e in errors),
+            f"Expected 'Invalid mission-end logic' inside 'when', got: {errors}",
+        )
+
+    def test_player_ship_not_first_arg_is_detected(self):
+        """
+        Player ship name appearing after a non-player name must still be caught
+        (the check scans all ship arguments, not only the first).
+        """
+        errors = self._errors('(is-destroyed-delay 0 "GTC Fenris 1" "Alpha 1")')
+        self.assertTrue(
+            any("Invalid mission-end logic" in e for e in errors),
+            f"Expected 'Invalid mission-end logic' when player ship is not the first arg, got: {errors}",
+        )
+
+    def test_no_player_start_ship_in_context_does_not_crash(self):
+        """
+        When player_start_ship is None (no player setup configured), the check
+        must silently pass without errors or exceptions.
+        """
+        ctx = MissionContext()
+        ctx.ships.add("Alpha 1")
+        # player_start_ship intentionally left as None
+        validator = SexpValidator(ctx)
+        roots = self.parser.parse('(is-destroyed-delay 0 "Alpha 1")')
+        errors = []
+        for root in roots:
+            errors.extend(validator.validate(root, expected_type=SexpReturnType.BOOL))
+        terminal_errors = [e for e in errors if "Invalid mission-end logic" in e]
+        self.assertFalse(
+            terminal_errors,
+            f"No player_start_ship set — should not produce terminal-state error, got: {terminal_errors}",
+        )
+
+    def test_error_message_names_the_operator(self):
+        """The error message must include the offending operator name."""
+        errors = self._errors('(has-departed-delay 0 "Alpha 1")')
+        self.assertTrue(
+            any("has-departed-delay" in e for e in errors),
+            f"Error message should mention 'has-departed-delay', got: {errors}",
+        )
+
+    def test_error_message_names_the_player_ship(self):
+        """The error message must include the player start ship name."""
+        errors = self._errors('(is-destroyed-delay 0 "Alpha 1")')
+        self.assertTrue(
+            any("Alpha 1" in e for e in errors),
+            f"Error message should mention 'Alpha 1', got: {errors}",
+        )
+
+
+class TestPlayerShipTerminalStateViaValidateMission(unittest.TestCase):
+    """
+    Integration-level tests: verify that validate_mission() rejects FSIF missions
+    that use has-departed-delay / is-destroyed-delay on the player start ship,
+    and accepts them on non-player ships.
+    """
+
+    def _make_mission_with_event(self, formula: str, player_start: str = "Alpha 1"):
+        """Build a minimal mission namespace whose single event uses the given formula."""
+        from types import SimpleNamespace
+
+        event = SimpleNamespace()
+        event.name = "TestEvent"
+        event.formula = formula
+
+        ship = SimpleNamespace()
+        ship.name = player_start
+        ship.ship_class = "GTF Ulysses"
+        ship.team = "Friendly"
+        ship.arrival_cue = None
+        ship.departure_cue = None
+        ship.initial_orders = None
+
+        ps = SimpleNamespace()
+        ps.start_ship = player_start
+
+        m = SimpleNamespace()
+        m.ships = [ship]
+        m.wings = []
+        m.events = [event]
+        m.goals = []
+        m.messages = []
+        m.waypoints = {}
+        m.jump_nodes = []
+        m.debriefing = SimpleNamespace(stages=[])
+        m.player_setup = ps
+        return m
+
+    def test_validate_mission_rejects_is_destroyed_delay_on_player(self):
+        """validate_mission returns False when an event checks is-destroyed-delay on the player ship."""
+        import logging
+        logging.disable(logging.CRITICAL)
+        try:
+            from advanced_sexp_validator import validate_mission
+            mission = self._make_mission_with_event(
+                '( when ( is-destroyed-delay 0 "Alpha 1" ) ( do-nothing ) )'
+            )
+            result = validate_mission(mission)
+        finally:
+            logging.disable(logging.NOTSET)
+        self.assertFalse(result, "Expected validate_mission to fail for is-destroyed-delay on player ship")
+
+    def test_validate_mission_rejects_has_departed_delay_on_player(self):
+        """validate_mission returns False when an event checks has-departed-delay on the player ship."""
+        import logging
+        logging.disable(logging.CRITICAL)
+        try:
+            from advanced_sexp_validator import validate_mission
+            mission = self._make_mission_with_event(
+                '( when ( has-departed-delay 0 "Alpha 1" ) ( do-nothing ) )'
+            )
+            result = validate_mission(mission)
+        finally:
+            logging.disable(logging.NOTSET)
+        self.assertFalse(result, "Expected validate_mission to fail for has-departed-delay on player ship")
+
+    def test_validate_mission_accepts_is_destroyed_delay_on_non_player(self):
+        """validate_mission does not fail when is-destroyed-delay checks a non-player ship."""
+        import logging
+        from types import SimpleNamespace
+        logging.disable(logging.CRITICAL)
+        try:
+            from advanced_sexp_validator import validate_mission
+
+            event = SimpleNamespace()
+            event.name = "TestEvent"
+            event.formula = '( when ( is-destroyed-delay 0 "GTC Fenris 1" ) ( do-nothing ) )'
+
+            player_ship = SimpleNamespace()
+            player_ship.name = "Alpha 1"
+            player_ship.ship_class = "GTF Ulysses"
+            player_ship.team = "Friendly"
+            player_ship.arrival_cue = None
+            player_ship.departure_cue = None
+            player_ship.initial_orders = None
+
+            npc_ship = SimpleNamespace()
+            npc_ship.name = "GTC Fenris 1"
+            npc_ship.ship_class = "GTC Fenris"
+            npc_ship.team = "Friendly"
+            npc_ship.arrival_cue = None
+            npc_ship.departure_cue = None
+            npc_ship.initial_orders = None
+
+            ps = SimpleNamespace()
+            ps.start_ship = "Alpha 1"
+
+            m = SimpleNamespace()
+            m.ships = [player_ship, npc_ship]
+            m.wings = []
+            m.events = [event]
+            m.goals = []
+            m.messages = []
+            m.waypoints = {}
+            m.jump_nodes = []
+            m.debriefing = SimpleNamespace(stages=[])
+            m.player_setup = ps
+
+            result = validate_mission(m)
+        finally:
+            logging.disable(logging.NOTSET)
+        self.assertTrue(result, "Expected validate_mission to pass when is-destroyed-delay targets a non-player ship")
+
+
 if __name__ == '__main__':
     unittest.main()

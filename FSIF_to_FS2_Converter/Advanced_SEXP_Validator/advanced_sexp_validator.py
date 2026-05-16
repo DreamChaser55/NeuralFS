@@ -216,6 +216,11 @@ class MissionContext:
         self.messages: Set[str] = set()
         self.waypoints: Dict[str, int] = {}
         self.jump_nodes: Set[str] = set()
+        # The player start ship name, derived from player_setup.start_ship.
+        # Used to detect the anti-pattern of checking the player ship with
+        # has-departed-delay or is-destroyed-delay (the mission ends immediately
+        # when the player departs or is destroyed, so these SEXPs can never trigger).
+        self.player_start_ship: Optional[str] = None
 
     @classmethod
     def from_mission(cls, mission: Any) -> 'MissionContext':
@@ -263,6 +268,13 @@ class MissionContext:
 
         # 8. Variables (TODO: FSIF doesn't explicitly define variables yet)
         # ctx.variables["mission_time"] = SexpReturnType.NUMBER
+
+        # 9. Player start ship (used to detect terminal-state SEXP anti-patterns)
+        player_setup = getattr(mission, 'player_setup', None)
+        if player_setup is not None:
+            start_ship = getattr(player_setup, 'start_ship', None)
+            if start_ship:
+                ctx.player_start_ship = start_ship
         
         return ctx
 
@@ -558,6 +570,30 @@ class SexpValidator:
             # 3b. Logical AI Checks (IFF, Self-Target)
             if self.current_subject and node.text in (GUARD_OPERATORS | ATTACK_OPERATORS):
                 errors.extend(self._validate_ai_logic(node, self.current_subject, context))
+
+            # 3c. Player-ship terminal-state check.
+            # Using has-departed-delay or is-destroyed-delay with the player start ship
+            # as an argument is a mission-authoring error: the mission ends immediately
+            # when the player ship departs or is destroyed, so these conditions can
+            # never trigger any downstream logic.  arg[0] is the delay (a number);
+            # the ship/wing arguments start at index 1.
+            if (
+                node.text in {"has-departed-delay", "is-destroyed-delay"}
+                and self.context.player_start_ship
+                and len(node.children) > 1
+            ):
+                player_ship = self.context.player_start_ship
+                for arg_node in node.children[1:]:
+                    if not arg_node.is_list and arg_node.text == player_ship:
+                        errors.append(self._format_error(
+                            f"Invalid mission-end logic: operator '{node.text}' checks the player "
+                            f"start ship '{player_ship}'. FreeSpace ends the mission immediately "
+                            f"when the player ship departs or is destroyed, so this condition can "
+                            f"never trigger any downstream logic. Use an event or goal that tracks "
+                            f"a non-player ship, or trigger end-of-mission logic via other means.",
+                            context,
+                        ))
+                        break  # one error per operator call is sufficient
 
             if recursive:
                 for i, child in enumerate(node.children):
