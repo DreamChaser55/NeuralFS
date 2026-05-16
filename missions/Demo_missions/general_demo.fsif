@@ -95,7 +95,7 @@ entities:
       departure_cue: |
         ( < ( distance "GTFr Trent" "JumpNodeWaypoint:1" ) 500 )
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "TrentPath" 89 )
 
     - name: "TSC 2 Cargo"
       class: "TSC 2"
@@ -205,6 +205,11 @@ entities:
       - [500.0, 0.0, 2000.0]
       - [2000.0, 0.0, 3000.0]
       - [3000.0, 0.0, 4000.0]
+    TrentPath:
+      - [-250.0, -300.0, 900.0]
+      - [250.0, -300.0, 1900.0]
+      - [1750.0, -300.0, 3000.0]
+      - [2800.0, -300.0, 3900.0]
     JumpNodeWaypoint:
       - [3000.0, 0.0, 4000.0]
     SomersetAttackPath:
