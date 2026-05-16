@@ -314,6 +314,7 @@ Notes:
 - Directive texts for events follow the same coloring rules but are always visible on the HUD. Important objectives should have a corresponding event with `hud_directive_text`, not just a goal.
 - **Directive text limitation:** Events with `hud_directive_text` must use simple, directly-evaluable conditions. Formulas referencing another event or goal with `is-event-true-delay`, `is-event-false-delay`, `is-event-true-msecs-delay`, `is-event-false-msecs-delay`, `is-goal-true-delay`, or `is-goal-false-delay` will silently fail — the engine cannot evaluate such conditions at mission start, so the grey "pending" directive is never displayed. Use direct object-state SEXPs (`is-destroyed-delay`, `is-cargo-known-delay`, `has-arrived-delay`, `percent-ships-destroyed`) in events with `hud_directive_text`.
 - Try to include enough comms chatter (messages) in your missions to make them lively.
+- For wingman messages where specific wingman sender is not important, you should prefer '<any wingman>' wildcard sender parameter. This means the messages will reliably play even if a specific wingman is killed.
 
 ## Authoring dialogue (TTS voicing)
 
