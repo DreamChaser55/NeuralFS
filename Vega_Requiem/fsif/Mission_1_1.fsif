@@ -182,27 +182,22 @@ mission_flow:
     stages:
       - display_condition: |
           ( and 
-            ( has-departed-delay 0 "Alpha 1" )
             ( has-departed-delay 0 "Escape Pod 1" )
             ( has-departed-delay 0 "Escape Pod 2" )
           )
         text: "You made it back. The sensor data from your engagement has been transmitted to Terran Command. We have never encountered ships matching these profiles in any GTA database. They are not $h Vasudan, and they are not anything we've seen before.\n\nCommander's evaluation: your ML-16 rounds were largely ineffective against their shields. You know this. We know this. R&D is being alerted.\n\n$f{ Meridian $}'s survivors are being treated aboard the $f{ Amadeus $}. Their account matches your sensor data: these ships came from the direction of the $y{ Capella $} node. We do not know what is through that node.\n\nWell done for getting the pods home. We will have more answers by morning. I wish I could promise better news when we do."
         voice_name: "Gacrux"
       - display_condition: |
-          ( and 
-            ( has-departed-delay 0 "Alpha 1" )
-            ( or 
-              ( and ( has-departed-delay 0 "Escape Pod 1" ) ( is-destroyed-delay 0 "Escape Pod 2" ) )
-              ( and ( has-departed-delay 0 "Escape Pod 2" ) ( is-destroyed-delay 0 "Escape Pod 1" ) )
-            )
+          ( or 
+            ( and ( has-departed-delay 0 "Escape Pod 1" ) ( not ( has-departed-delay 0 "Escape Pod 2" ) ) )
+            ( and ( has-departed-delay 0 "Escape Pod 2" ) ( not ( has-departed-delay 0 "Escape Pod 1" ) ) )
           )
         text: "$f{ Alpha Lead $}, welcome back. You got one of the $f{ Meridian $}'s pods out. The other is presumed lost.\n\nI want you to understand that those were not typical combat conditions. Our weapons were not designed for whatever we just encountered, and this was not a failure of tactics. You were handed the wrong tools for the job and you still brought people home.\n\nWe're sending all your sensor recordings to Command immediately. Whatever those ships are, we need answers fast."
         voice_name: "Gacrux"
       - display_condition: |
           ( and 
-            ( has-departed-delay 0 "Alpha 1" )
-            ( is-destroyed-delay 0 "Escape Pod 1" )
-            ( is-destroyed-delay 0 "Escape Pod 2" )
+            ( not ( has-departed-delay 0 "Escape Pod 1" ) )
+            ( not ( has-departed-delay 0 "Escape Pod 2" ) )
           )
         text: "$f{ Alpha Lead $}, glad you're back. The pods are lost. The crew of the $f{ Meridian $} will be listed as killed in action. That is a hard outcome, but given what you faced out there, I'm not prepared to call this your fault. Those shields absorbed everything you had.\n\nThe data you brought back is the only thing we came away with. It had better count for something."
         voice_name: "Gacrux"
@@ -319,7 +314,10 @@ mission_flow:
     - name: "Alpha1Safe"
       formula: |
         ( when 
-          ( has-departed-delay 0 "Alpha 1" )
+          ( and 
+            ( has-arrived-delay 0 "Vishnu" )
+            ( < ( distance "Alpha 1" "Jump-Out Point" ) 2500 )
+          )
           ( allow-ship "GTF Valkyrie" )
         )
       hud_directive_text: "Return to Jump-Out Point"
