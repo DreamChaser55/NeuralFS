@@ -776,8 +776,9 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 ### Reinforcements
 - Keep reinforcements callable: both reinforcement wings and standalone reinforcement ships should omit `arrival_cue` — it defaults to `( true )`, making the reinforcement available to call from mission start.
 
-### Collision checks for waypoint paths
+### Waypoint paths
 - The converter checks for potential collisions between larger ships on waypoint paths and other ships' **initial positions**. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
+- Multiple ships must not share the same waypoint movement order. Ships ordered to the same waypoint destination will collide when they arrive. For convoys, give each ship its own waypoint path with a slightly offset final destination.
 
 ### Red alert missions
 - Missions with the `red_alert` flag inherit player ship hull and loadout from the previous mission. Only the first briefing stage text is shown, with no icons. Use `red_alert_carry` on ships you want to carry between missions (in **both** the previous and the red-alert mission).
