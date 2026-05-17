@@ -383,7 +383,7 @@ entities:
 ```
 Strict Rules:
 - **Arrival Conditions**: The Dockee (Leader) must have `arrival_cue: ( true )`. The Docker (Follower) must have `arrival_cue: ( false )`.
-- **Pairs Only**: Multi-ship docking trees are not supported.
+- **Pairs Only**: Multi-ship (daisy chained) docking is not supported.
 - **No Player Ships**: Player start ships cannot be pre-docked.
 - **Reference Checks**: Use only the dockpoint names from `../FSO and fs2 format/ship-dockpoint-names.md`.
 

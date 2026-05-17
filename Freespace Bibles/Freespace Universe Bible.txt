@@ -1855,6 +1855,7 @@ NeuralFS limitations:
 - Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (wing members cannot have different ship classes or weapons).
 - Turret weapons cannot be changed.
 - Briefing icon placement is simplified and uses a top-down 2D grid with automatic camera placement.
+- Multi-ship (daisy chained) docking is not supported.
 - Branched campaigns are not supported.
 
 Adherence to FreeSpace canon lore:
