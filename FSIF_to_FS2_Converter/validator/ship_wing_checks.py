@@ -211,7 +211,7 @@ class ShipWingChecksMixin:
     def validate_standalone_wing_name_patterns(self):
         """
         Warn if a standalone ship (not part of any wing) has a name that looks
-        like a wing member (e.g. 'Alpha 1', 'Beta 2', 'Gamma 3').
+        like a wing member (e.g. 'Alpha 1', 'Beta 4', 'Gamma 2').
 
         Common Terran wing prefixes checked: Alpha, Beta, Gamma, Delta, Epsilon.
 
@@ -515,7 +515,7 @@ class ShipWingChecksMixin:
             self.log_error(
                 f"Invalid player start ship: {reason} "
                 f"FSO's team loadout screen only works when the player starts in a "
-                f"Friendly Alpha, Beta, or Gamma wing (e.g. 'Alpha 1', 'Beta 2', 'Gamma 3'). "
+                f"Friendly Alpha, Beta, or Gamma wing (e.g. 'Alpha 1', 'Beta 3', 'Gamma 2'). "
                 f"Define an Alpha, Beta, or Gamma wing in entities.wings and set "
                 f"player_setup.start_ship to one of its members."
             )
