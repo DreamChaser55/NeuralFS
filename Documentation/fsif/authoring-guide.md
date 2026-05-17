@@ -23,17 +23,21 @@ environment:
   ambient_light_level: [0, 0, 0]
 
 player_setup:
-  start_ship: "Player Ship"
+  start_ship: "Alpha 1"
 
 entities:
-  ships:
-    - name: "Player Ship"
+  ship_templates:
+    alpha_t:
       class: "GTF Ulysses"
       team: "Friendly"
-      position: [0, 0, 0]
       weapons:
         primary: ["Avenger", "Avenger"]
         secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
 
 mission_flow: {}
 ```
@@ -746,9 +750,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 ## Pitfalls, best practices and recommendations
 
 ### Spawning, arrivals and authored entities
-- `player_setup.start_ship` must exist in `entities` (as a standalone ship or wing member such as `Alpha 1`).
-- **Recommended player start**: place the player in a Friendly player starting wing (`Alpha`, `Beta`, `Gamma`, `Delta`, or `Epsilon`). This enables full weapon-pool calculation, loadout-screen swapping, and wingman commands.
-- Standalone start ship: `arrival_cue` defaults to `( true )` — it will spawn immediately. Do not override it to `( false )`.
+- `player_setup.start_ship` **must** be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing (e.g. `Alpha 1`, `Beta 3`, `Gamma 2`). Standalone player ships and starts in any other wing (including `Delta`, `Epsilon`, hostile wings, or non-standard wings) are a **validation error** that aborts conversion: FSO's team loadout screen only works for the first three Friendly wings.
 - Do not put arrival/departure/initial_orders/dock fields into `entities.ship_templates` — see the spec. Author them on the ship or on the wing.
 - Use `arrival_cue` to control when a ship appears. Do not use `ship-create` for ships already in YAML.
 - Leave enough physical clearance between spawned objects, especially around large ships — cruisers are ~300 m long, destroyers ~2000 m.
@@ -796,4 +798,5 @@ After completing a mission file, confirm:
 - all custom names are unique and under 30 characters
 - all reinforcement, event, and message cross-references resolve to defined objects
 - all SEXPs use valid operators with compatible argument types and correct argument order
-- standalone player starts, docking setups, and reinforcements are correctly defined
+- player start ship is a member of a Friendly Alpha, Beta, or Gamma wing
+- docking setups and reinforcements are correctly defined

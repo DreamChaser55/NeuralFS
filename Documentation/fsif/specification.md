@@ -45,7 +45,7 @@
     - `object_variants` (List[String], optional). Visual variant names. Defaults depend on `object_type`. Must not be empty — omit to get the full default set for the selected `object_type`. Allowed values are mutually incompatible between the two field types.
     - `target_ships` (List[String], optional, default: `[]`). Ship names the field will actively pursue. Active fields only.
 - `player_setup` (Mapping, required):
-  - `start_ship` (String, required). Must exist in `entities`. If standalone (not in a wing), its `arrival_cue` must not be set to `"( false )"` (the default is `"( true )"`, which is correct).
+  - `start_ship` (String, required). Must be the name of a ship that is a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing. Standalone player ships and ships belonging to any other wing are a validation error.
   - `additional_ship_choices` (List[Mapping], optional, default: `[]`). Items: `{class: String, count: Integer}`. Loadout-screen alternative ship pool.
   - `additional_weapons` (List[String], optional, default: `[]`). Extra weapons added to the Weaponry Pool for the loadout screen.
 - `entities` (Mapping, required):
@@ -158,7 +158,7 @@
 - Minimal and standard FSIF skeletons are provided in the Authoring Guide.
 
 ## Constraints quicklist
-- Player start spawning: standalone `start_ship` defaults to `arrival_cue: "( true )"` — do not override it to `"( false )"`.
+- Player start: `player_setup.start_ship` **must** be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing.
 - Docking: pairs only; not allowed for player start; author on docker only; docker must explicitly set `arrival_cue: "( false )"`; dockee uses the default `"( true )"`.
 - Author only canonical per-ship subsystem and dockpoint names (see references)
 - Reinforcements: author them in `entities.reinforcement_wings` / `entities.reinforcement_ships`.

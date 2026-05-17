@@ -380,6 +380,12 @@ SHIP_BOUNDING_BOXES = {
 
 # --- 10. Player Wing Names ---
 PLAYER_WING_NAMES = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
+# Wings in which a valid player start ship may be placed.
+# FSO's team loadout screen only works when the player starts in the first
+# three friendly wings (Alpha, Beta, or Gamma). Delta and Epsilon are usable
+# as additional friendly wings for loadout-pool calculation, but a player
+# starting in Delta or Epsilon causes the loadout screen to malfunction.
+PLAYER_START_WING_NAMES = {"Alpha", "Beta", "Gamma"}
 
 # --- 11. Asteroid/Debris Field Object Variants ---
 # Ordered lists preserve canonical display order; sets are used for fast membership checks.

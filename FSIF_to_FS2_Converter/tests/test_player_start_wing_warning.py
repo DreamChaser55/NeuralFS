@@ -1,17 +1,22 @@
 """
-Tests for the validator warning emitted when the player start ship is not a
-member of a Friendly player starting wing (Alpha, Beta, Gamma, Delta, Epsilon).
+Tests for the validation error emitted when the player start ship is not a
+member of a Friendly Alpha, Beta, or Gamma wing.
 
-The warning is advisory: validate() must still return True when only this
-warning is present, but no errors.
+FSO's team loadout screen only works when the player starts in one of the
+first three Friendly wings (Alpha, Beta, Gamma). Starting anywhere else
+(standalone ship, Delta/Epsilon wing, hostile wing, or any other wing) is
+therefore a hard validation error that aborts conversion.
 
 Cases tested:
-- Alpha 1 (wing leader) -> no warning
-- Alpha 2 (non-leader) -> no warning
-- Beta 3 (different player wing, non-leader) -> no warning
-- Standalone 'Player Ship' -> warning
-- Ship in non-player wing 'Zeta' -> warning
-- Ship in hostile Alpha wing -> warning
+- Alpha 1 (wing leader) -> no error
+- Alpha 2 (non-leader) -> no error
+- Beta 3 (different player wing, non-leader) -> no error
+- Gamma 1 -> no error
+- Standalone 'Player Ship' -> error
+- Ship in non-player wing 'Zeta' -> error
+- Ship in Hostile Alpha wing -> error
+- Ship in Friendly Delta wing -> error
+- Ship in Friendly Epsilon wing -> error
 """
 
 import unittest
@@ -31,7 +36,7 @@ from validator import Validator
 
 _REPO_ROOT = _repo_root
 
-_WARNING_FRAGMENT = "not a member of a Friendly player starting wing"
+_ERROR_FRAGMENT = "Invalid player start ship"
 
 
 def _make_validator(mission: Mission) -> Validator:
@@ -49,40 +54,42 @@ def _ulysses(name: str, team: str = "Friendly") -> Ship:
     })
 
 
-def _alpha_wing(ships) -> Wing:
+def _make_wing(name: str, ships, position=None) -> Wing:
     return Wing(
-        name="Alpha",
+        name=name,
         count=len(ships),
         ships=ships,
-        position=[0.0, 0.0, 0.0],
+        position=position or [0.0, 0.0, 0.0],
         arrival_cue="( true )",
         initial_orders="( ai-chase-any 89 )",
     )
+
+
+def _alpha_wing(ships) -> Wing:
+    return _make_wing("Alpha", ships)
 
 
 def _beta_wing(ships) -> Wing:
-    return Wing(
-        name="Beta",
-        count=len(ships),
-        ships=ships,
-        position=[200.0, 0.0, 0.0],
-        arrival_cue="( true )",
-        initial_orders="( ai-chase-any 89 )",
-    )
+    return _make_wing("Beta", ships, [200.0, 0.0, 0.0])
+
+
+def _gamma_wing(ships) -> Wing:
+    return _make_wing("Gamma", ships, [400.0, 0.0, 0.0])
+
+
+def _delta_wing(ships) -> Wing:
+    return _make_wing("Delta", ships, [600.0, 0.0, 0.0])
+
+
+def _epsilon_wing(ships) -> Wing:
+    return _make_wing("Epsilon", ships, [800.0, 0.0, 0.0])
 
 
 def _zeta_wing(ships) -> Wing:
-    return Wing(
-        name="Zeta",
-        count=len(ships),
-        ships=ships,
-        position=[400.0, 0.0, 0.0],
-        arrival_cue="( true )",
-        initial_orders="( ai-chase-any 89 )",
-    )
+    return _make_wing("Zeta", ships, [1000.0, 0.0, 0.0])
 
 
-class TestPlayerStartWingWarning(unittest.TestCase):
+class TestPlayerStartWingValidation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import logging
@@ -94,11 +101,11 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         logging.disable(logging.NOTSET)
 
     # ------------------------------------------------------------------
-    # Cases that should NOT produce the warning
+    # Cases that should NOT produce an error
     # ------------------------------------------------------------------
 
-    def test_alpha_1_leader_no_warning(self):
-        """Player is Alpha 1 (wing leader) in a Friendly Alpha wing — no warning."""
+    def test_alpha_1_leader_no_error(self):
+        """Player is Alpha 1 (wing leader) in a Friendly Alpha wing — no error."""
         ship = _ulysses("Alpha 1")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
@@ -110,12 +117,12 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         v = _make_validator(mission)
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected no player-start-wing warning, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected no player-start error, got: {v.errors}",
         )
 
-    def test_alpha_2_non_leader_no_warning(self):
-        """Player is Alpha 2 (non-leader) in a Friendly Alpha wing — no warning."""
+    def test_alpha_2_non_leader_no_error(self):
+        """Player is Alpha 2 (non-leader) in a Friendly Alpha wing — no error."""
         ship1 = _ulysses("Alpha 1")
         ship2 = _ulysses("Alpha 2")
         mission = Mission(
@@ -128,12 +135,12 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         v = _make_validator(mission)
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected no player-start-wing warning for Alpha 2, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected no player-start error for Alpha 2, got: {v.errors}",
         )
 
-    def test_beta_3_non_leader_no_warning(self):
-        """Player is Beta 3 (non-leader) in a Friendly Beta wing — no warning."""
+    def test_beta_3_non_leader_no_error(self):
+        """Player is Beta 3 (non-leader) in a Friendly Beta wing — no error."""
         ships = [_ulysses(f"Beta {i}") for i in range(1, 4)]
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
@@ -145,16 +152,33 @@ class TestPlayerStartWingWarning(unittest.TestCase):
         v = _make_validator(mission)
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected no player-start-wing warning for Beta 3, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected no player-start error for Beta 3, got: {v.errors}",
+        )
+
+    def test_gamma_1_leader_no_error(self):
+        """Player is Gamma 1 (wing leader) in a Friendly Gamma wing — no error."""
+        ship = _ulysses("Gamma 1")
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Gamma 1"),
+            environment=Environment(),
+            ships=[ship],
+            wings=[_gamma_wing([ship])],
+        )
+        v = _make_validator(mission)
+        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected no player-start error for Gamma 1, got: {v.errors}",
         )
 
     # ------------------------------------------------------------------
-    # Cases that SHOULD produce the warning
+    # Cases that SHOULD produce an error (validate() returns False)
     # ------------------------------------------------------------------
 
-    def test_standalone_start_ship_warns(self):
-        """Standalone player start ship produces the warning (validation still passes)."""
+    def test_standalone_start_ship_is_error(self):
+        """Standalone player start ship is a hard validation error."""
         ship = _ulysses("Player Ship")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
@@ -163,20 +187,19 @@ class TestPlayerStartWingWarning(unittest.TestCase):
             ships=[ship],
         )
         v = _make_validator(mission)
-        # Validation must still pass (warning is advisory)
-        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(v.validate(), "Expected validate() to return False for standalone start")
         self.assertTrue(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected player-start-wing warning for standalone start, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for standalone start, got: {v.errors}",
         )
-        # Warning message must mention the ship name
+        # Error message must mention the ship name
         self.assertTrue(
-            any("Player Ship" in w for w in v.warnings),
-            f"Expected warning to mention 'Player Ship', got: {v.warnings}",
+            any("Player Ship" in e for e in v.errors),
+            f"Expected error to mention 'Player Ship', got: {v.errors}",
         )
 
-    def test_non_player_wing_start_warns(self):
-        """Player in a non-player wing ('Zeta') produces the warning."""
+    def test_non_player_wing_start_is_error(self):
+        """Player in a non-player wing ('Zeta') is a hard validation error."""
         ship = _ulysses("Zeta 1")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
@@ -186,14 +209,14 @@ class TestPlayerStartWingWarning(unittest.TestCase):
             wings=[_zeta_wing([ship])],
         )
         v = _make_validator(mission)
-        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(v.validate(), "Expected validate() to return False for Zeta wing start")
         self.assertTrue(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected player-start-wing warning for Zeta wing start, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for Zeta wing start, got: {v.errors}",
         )
 
-    def test_hostile_alpha_wing_start_warns(self):
-        """Player in a Hostile Alpha wing produces the warning."""
+    def test_hostile_alpha_wing_start_is_error(self):
+        """Player in a Hostile Alpha wing is a hard validation error."""
         ship = _ulysses("Alpha 1", team="Hostile")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
@@ -203,10 +226,56 @@ class TestPlayerStartWingWarning(unittest.TestCase):
             wings=[_alpha_wing([ship])],
         )
         v = _make_validator(mission)
-        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(v.validate(), "Expected validate() to return False for Hostile Alpha start")
         self.assertTrue(
-            any(_WARNING_FRAGMENT in w for w in v.warnings),
-            f"Expected player-start-wing warning for Hostile Alpha start, got: {v.warnings}",
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for Hostile Alpha start, got: {v.errors}",
+        )
+
+    def test_delta_wing_start_is_error(self):
+        """Player in a Friendly Delta wing is a hard validation error.
+
+        FSO's team loadout screen only works for Alpha, Beta, Gamma.
+        Delta and Epsilon wings cannot host the player start ship.
+        """
+        ship = _ulysses("Delta 1")
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Delta 1"),
+            environment=Environment(),
+            ships=[ship],
+            wings=[_delta_wing([ship])],
+        )
+        v = _make_validator(mission)
+        self.assertFalse(v.validate(), "Expected validate() to return False for Delta wing start")
+        self.assertTrue(
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for Delta wing start, got: {v.errors}",
+        )
+        self.assertTrue(
+            any("Delta" in e for e in v.errors),
+            f"Expected error to mention 'Delta', got: {v.errors}",
+        )
+
+    def test_epsilon_wing_start_is_error(self):
+        """Player in a Friendly Epsilon wing is a hard validation error."""
+        ship = _ulysses("Epsilon 1")
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Epsilon 1"),
+            environment=Environment(),
+            ships=[ship],
+            wings=[_epsilon_wing([ship])],
+        )
+        v = _make_validator(mission)
+        self.assertFalse(v.validate(), "Expected validate() to return False for Epsilon wing start")
+        self.assertTrue(
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for Epsilon wing start, got: {v.errors}",
+        )
+        self.assertTrue(
+            any("Epsilon" in e for e in v.errors),
+            f"Expected error to mention 'Epsilon', got: {v.errors}",
         )
 
 

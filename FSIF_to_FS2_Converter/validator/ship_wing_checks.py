@@ -456,10 +456,11 @@ class ShipWingChecksMixin:
 
         Ensures:
         - Start ship exists.
-        - If standalone, it has arrival_cue '( true )'.
-        - Emits a warning if the start ship is not a member of a Friendly player
-          starting wing (Alpha, Beta, Gamma, Delta, or Epsilon), since that is the
-          most common and most fully supported authoring pattern in FreeSpace.
+        - Start ship is a member of a Friendly Alpha, Beta, or Gamma wing.
+          Standalone player starts and starts in any other wing (including
+          Friendly Delta/Epsilon or hostile wings) are a hard validation error
+          because FSO's team loadout screen only works correctly when the
+          player starts in one of the first three Friendly wings.
         """
         start_name = self.mission.player_setup.start_ship
         if not start_name:
@@ -479,32 +480,43 @@ class ShipWingChecksMixin:
                 start_wing = w
                 break
 
-        in_wing = start_wing is not None
-
-        if not in_wing:
-            # Standalone must have arrival_cue true
-            cue = "".join(ship.arrival_cue.split()).lower()
-            if cue != '(true)':
-                self.log_error(f"Player start ship '{start_name}' (standalone) must have arrival_cue '( true )'.")
-
-        # Warn when the player is not a member of a Friendly player starting wing
-        # (Alpha, Beta, Gamma, Delta, or Epsilon).  Non-leader positions such as
-        # Alpha 2 or Beta 3 are fully valid and do not trigger this warning.
-        is_in_friendly_player_starting_wing = (
+        # The player start ship must be a member of a Friendly Alpha, Beta, or
+        # Gamma wing.  Non-leader positions such as Alpha 2 or Beta 3 are fully
+        # valid and do not trigger this error.
+        # Rationale: FSO's team loadout screen reads the player's team entry from
+        # the first three wings (Team 1: Alpha, Beta, Gamma).  Starting the player
+        # in any other configuration (standalone ship, Delta/Epsilon wing, or any
+        # Hostile wing) causes the loadout screen to malfunction.
+        is_in_valid_start_wing = (
             start_wing is not None
-            and start_wing.name in fs_data.PLAYER_WING_NAMES
+            and start_wing.name in fs_data.PLAYER_START_WING_NAMES
             and bool(start_wing.ships)
             and start_wing.ships[0].team == 'Friendly'
         )
 
-        if not is_in_friendly_player_starting_wing:
-            self.log_warning(
-                f"Player start ship '{start_name}' is not a member of a Friendly player starting wing "
-                f"(Alpha, Beta, Gamma, Delta, or Epsilon). "
-                f"Most FreeSpace missions place the player in one of these standard wings (e.g. Alpha 1 or Alpha 2). "
-                f"A non-standard player start limits weapon-pool calculation, loadout-screen behavior, "
-                f"and wingman availability. If this is intentional, ignore this warning; "
-                f"otherwise define an Alpha/Beta/Gamma/Delta/Epsilon wing and set "
+        if not is_in_valid_start_wing:
+            if start_wing is None:
+                reason = (
+                    f"'{start_name}' is a standalone ship (not a member of any wing). "
+                    f"Standalone player starts are not supported."
+                )
+            elif start_wing.name not in fs_data.PLAYER_START_WING_NAMES:
+                reason = (
+                    f"'{start_name}' is in wing '{start_wing.name}', which is not one of "
+                    f"the valid player-start wings (Alpha, Beta, Gamma)."
+                )
+            elif not start_wing.ships or start_wing.ships[0].team != 'Friendly':
+                reason = (
+                    f"'{start_name}' is in wing '{start_wing.name}', but that wing is not Friendly."
+                )
+            else:
+                reason = f"'{start_name}' does not meet player-start wing requirements."
+
+            self.log_error(
+                f"Invalid player start ship: {reason} "
+                f"FSO's team loadout screen only works when the player starts in a "
+                f"Friendly Alpha, Beta, or Gamma wing (e.g. 'Alpha 1', 'Beta 2', 'Gamma 3'). "
+                f"Define an Alpha, Beta, or Gamma wing in entities.wings and set "
                 f"player_setup.start_ship to one of its members."
             )
 

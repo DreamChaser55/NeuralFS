@@ -162,20 +162,27 @@ def _alpha_wing(ships) -> Wing:
 
 
 def _make_mission(*ships) -> Mission:
-    """Build a minimal Mission with the given ships.  Alpha 1 (first fighter-
-    class ship) is the player start if available; otherwise the first ship."""
+    """Build a minimal Mission with the given ships.
+
+    The first fighter/bomber in the list (or the first ship if none) is used
+    as the player start and placed in a Friendly Alpha wing so that the
+    player-start validation passes.  All other ships remain standalone.
+    """
     all_ships = list(ships)
-    # Identify a usable player start ship (first fighter)
+    # Identify a usable player start ship (first fighter/bomber)
     start_name = all_ships[0].name
     for s in all_ships:
         if s.ship_class in ("GTF Ulysses", "GTB Medusa"):
             start_name = s.name
             break
+    start_ship = next(s for s in all_ships if s.name == start_name)
+    player_wing = _alpha_wing([start_ship])
     return Mission(
         mission_info=MissionInfo(name="Test"),
         player_setup=PlayerSetup(start_ship=start_name),
         environment=Environment(),
         ships=all_ships,
+        wings=[player_wing],
     )
 
 
@@ -213,12 +220,7 @@ class TestLargeShipEscortWarning(unittest.TestCase):
     def test_bomber_only_mission_no_warning(self):
         """Bomber-only mission: no large ships → no warning."""
         ship = _bomber("Bravo 1")
-        mission = Mission(
-            mission_info=MissionInfo(name="Test"),
-            player_setup=PlayerSetup(start_ship="Bravo 1"),
-            environment=Environment(),
-            ships=[ship],
-        )
+        mission = _make_mission(ship)
         v = _make_validator(mission)
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(

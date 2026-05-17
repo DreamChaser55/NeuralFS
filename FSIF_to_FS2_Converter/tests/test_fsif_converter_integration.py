@@ -50,25 +50,33 @@ class CombinedTesting(unittest.TestCase):
         logging.disable(logging.NOTSET)
 
     def make_valid_mission(self) -> Mission:
+        player_ship = Ship.model_validate(
+            {
+                "name": "Alpha 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [0.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        alpha_wing = Wing(
+            name="Alpha",
+            count=1,
+            ships=[player_ship],
+            position=[0.0, 0.0, 0.0],
+            arrival_cue="( true )",
+            initial_orders="( ai-chase-any 89 )",
+        )
         return Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Player Ship", additional_ship_choices=[]),
+            player_setup=PlayerSetup(start_ship="Alpha 1", additional_ship_choices=[]),
             environment=Environment(),
-            ships=[
-                Ship.model_validate(
-                    {
-                        "name": "Player Ship",
-                        "class": "GTF Ulysses",
-                        "team": "Friendly",
-                        "position": [0.0, 0.0, 0.0],
-                        "arrival_cue": "( true )",
-                        "weapons": Weapons(
-                            primary=["Avenger", "Avenger"],
-                            secondary=["MX-50"],
-                        ),
-                    }
-                )
-            ],
+            ships=[player_ship],
+            wings=[alpha_wing],
         )
 
     def make_validator(self, mission: Mission) -> Validator:
@@ -127,7 +135,7 @@ class CombinedTesting(unittest.TestCase):
         self.assertTrue(
             any(
                 "Mission scale recommendation: 1 object pair(s) exceed" in warning
-                and "Ship 'Player Ship' <-> Jump Node 'Far Node'" in warning
+                and "Far Node" in warning
                 for warning in validator.warnings
             ),
             validator.warnings,
@@ -143,38 +151,40 @@ class CombinedTesting(unittest.TestCase):
                     "team": "Friendly",
                     "position": [500.0, 0.0, 0.0],
                     "arrival_method": "In front of ship",
-                    "arrival_anchor": "Player Ship",
+                    "arrival_anchor": "Alpha 1",
                     "arrival_distance": 25001,
                     "arrival_cue": "( true )",
                 }
             )
         )
-        mission.wings = [
+        # Keep the Alpha wing (player start) AND add Beta wing.
+        # Directly overwriting mission.wings would remove Alpha, causing player-start error.
+        beta_ship = Ship.model_validate(
+            {
+                "name": "Beta 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [1000.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        mission.ships.append(beta_ship)
+        mission.wings.append(
             Wing(
                 name="Beta",
                 count=1,
-                ships=[
-                    Ship.model_validate(
-                        {
-                            "name": "Beta 1",
-                            "class": "GTF Ulysses",
-                            "team": "Friendly",
-                            "position": [1000.0, 0.0, 0.0],
-                            "arrival_cue": "( true )",
-                            "weapons": Weapons(
-                                primary=["Avenger", "Avenger"],
-                                secondary=["MX-50"],
-                            ),
-                        }
-                    )
-                ],
+                ships=[beta_ship],
                 position=[1000.0, 0.0, 0.0],
                 arrival_method="In front of ship",
-                arrival_anchor="Player Ship",
+                arrival_anchor="Alpha 1",
                 arrival_distance=22000,
                 arrival_cue="( true )",
             )
-        ]
+        )
 
         validator = self.make_validator(mission)
 
@@ -207,7 +217,7 @@ class CombinedTesting(unittest.TestCase):
                     "team": "Friendly",
                     "position": [500.0, 0.0, 0.0],
                     "arrival_method": "In front of ship",
-                    "arrival_anchor": "Player Ship",
+                    "arrival_anchor": "Alpha 1",
                     "arrival_distance": 20000,
                     "arrival_cue": "( true )",
                 }
@@ -1305,25 +1315,33 @@ class BriefingIconDisplayClassValidation(unittest.TestCase):
         logging.disable(logging.NOTSET)
 
     def make_valid_mission(self) -> Mission:
+        player_ship = Ship.model_validate(
+            {
+                "name": "Alpha 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [0.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        alpha_wing = Wing(
+            name="Alpha",
+            count=1,
+            ships=[player_ship],
+            position=[0.0, 0.0, 0.0],
+            arrival_cue="( true )",
+            initial_orders="( ai-chase-any 89 )",
+        )
         return Mission(
             mission_info=MissionInfo(name="Test Mission"),
-            player_setup=PlayerSetup(start_ship="Player Ship", additional_ship_choices=[]),
+            player_setup=PlayerSetup(start_ship="Alpha 1", additional_ship_choices=[]),
             environment=Environment(),
-            ships=[
-                Ship.model_validate(
-                    {
-                        "name": "Player Ship",
-                        "class": "GTF Ulysses",
-                        "team": "Friendly",
-                        "position": [0.0, 0.0, 0.0],
-                        "arrival_cue": "( true )",
-                        "weapons": Weapons(
-                            primary=["Avenger", "Avenger"],
-                            secondary=["MX-50"],
-                        ),
-                    }
-                )
-            ],
+            ships=[player_ship],
+            wings=[alpha_wing],
         )
 
     def make_validator(self, mission: Mission) -> Validator:

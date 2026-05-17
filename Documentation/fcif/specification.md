@@ -47,7 +47,7 @@ The campaign type is always `single` (hardcoded by the converter).
 
 Important: any ship or weapon used in the campaign must be either listed here or explicitly allowed with the appropriate SEXP (`allow-ship` or `allow-weapon`) during the campaign; otherwise it will not appear in the game even if it is defined in the mission files. By default, all ships and weapons are unavailable at campaign start.
 
-**Campaign-wide player loadout constraint**: The converter checks every mission in sequence to ensure that all player-usable ships and weapons (Alpha–Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`) are either in `starting_loadout` or granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The converter verifies this automatically: it infers the `.fsif` path for each mission from its filename, parses it, tracks the granted items, and throws a fatal error if any ship class or weapon is used by the player without being unlocked.
+**Campaign-wide player loadout constraint**: The converter checks every mission in sequence to ensure that all player-usable ships and weapons (Alpha–Epsilon wings, the player start ship, `additional_ship_choices`, `additional_weapons`) are either in `starting_loadout` or granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The FCIF converter verifies this automatically: it infers the `.fsif` path for each mission from its filename, parses it, tracks the granted items, and throws a fatal error if any ship class or weapon is used by the player without being unlocked.
 
 ### Missions Section
 An ordered list of missions. The order of entries determines campaign progression.

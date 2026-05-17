@@ -23,7 +23,7 @@ if str(_converter_dir) not in sys.path:
     sys.path.insert(0, str(_converter_dir))
 
 from mission_loader import load_mission_from_fsif
-from data_models import AsteroidField, Environment, Mission, MissionInfo, PlayerSetup, Ship, Weapons
+from data_models import AsteroidField, Environment, Mission, MissionInfo, PlayerSetup, Ship, Weapons, Wing
 from validator import Validator
 from fs2_writer import FS2Writer
 
@@ -69,21 +69,35 @@ def _make_validator(mission: Mission) -> Validator:
 
 
 def _mission_with_asteroid_field(af: AsteroidField) -> Mission:
-    """Build a minimal Mission with the given AsteroidField."""
+    """Build a minimal Mission with the given AsteroidField.
+
+    The player ship is placed in a Friendly Alpha wing so that the
+    player-start validation passes (required since FSO's team loadout
+    screen only works with Alpha/Beta/Gamma player starts).
+    """
     player_ship = Ship.model_validate({
-        "name": "Player Ship",
+        "name": "Alpha 1",
         "class": "GTF Ulysses",
         "team": "Friendly",
         "position": [0.0, 0.0, 0.0],
         "arrival_cue": "( true )",
         "weapons": Weapons(primary=["Avenger", "Avenger"], secondary=["MX-50"]),
     })
+    alpha_wing = Wing(
+        name="Alpha",
+        count=1,
+        ships=[player_ship],
+        position=[0.0, 0.0, 0.0],
+        arrival_cue="( true )",
+        initial_orders="( ai-chase-any 89 )",
+    )
     env = Environment(asteroid_field=af)
     return Mission(
         mission_info=MissionInfo(name="Test Mission"),
-        player_setup=PlayerSetup(start_ship="Player Ship"),
+        player_setup=PlayerSetup(start_ship="Alpha 1"),
         environment=env,
         ships=[player_ship],
+        wings=[alpha_wing],
     )
 
 

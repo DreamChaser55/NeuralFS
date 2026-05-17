@@ -526,7 +526,13 @@ def generate_file():
 
         # Player Wing Names
         f.write("# --- 10. Player Wing Names ---\n")
-        f.write("PLAYER_WING_NAMES = {\"Alpha\", \"Beta\", \"Gamma\", \"Delta\", \"Epsilon\"}\n\n")
+        f.write("PLAYER_WING_NAMES = {\"Alpha\", \"Beta\", \"Gamma\", \"Delta\", \"Epsilon\"}\n")
+        f.write("# Wings in which a valid player start ship may be placed.\n")
+        f.write("# FSO's team loadout screen only works when the player starts in the first\n")
+        f.write("# three friendly wings (Alpha, Beta, or Gamma). Delta and Epsilon are usable\n")
+        f.write("# as additional friendly wings for loadout-pool calculation, but a player\n")
+        f.write("# starting in Delta or Epsilon causes the loadout screen to malfunction.\n")
+        f.write("PLAYER_START_WING_NAMES = {\"Alpha\", \"Beta\", \"Gamma\"}\n\n")
 
         # Asteroid / Debris Field Variants
         # Emit ordered lists (used for defaults) and sets (used for validation).
