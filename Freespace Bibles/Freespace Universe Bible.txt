@@ -208,7 +208,7 @@ Ship size classes (from smallest to largest, with average length specified):
 6. Superdestroyers or Juggernauts (3000-6000 meters)
 
 Destroyers and superdestroyers/juggernauts are called Capital Ships. Fleets are always led by a Capital Ship. Only corvettes, destroyers, superdestroyers and installations (stations) have fighterbays capable of holding fighters and bombers (cruisers cannot carry fighters/bombers). Fighters and bombers are typically deployed in wings containing from 3 to 6 ships.
-All ships have destroyable subsystems, such as engines, weapons, navigation, sensors and communications. Larger ships also have turrets and dockpoints.
+All ships have destroyable subsystems, such as engines, weapons, navigation, sensors and communications. Larger ships also have turrets, fighterbays, and dockpoints.
 
 Friendly Terran wing names: Alpha, Beta, Gamma, Delta, Epsilon, Zeta, Eta
 Enemy Terran wing names: Bragi, Buri, Freki, Geri, Hrid, Roskva, Scald, Skadi
@@ -459,12 +459,12 @@ Galactic Terran Alliance
 
 GTS Charon
     GTS Centaur-class support ship
-    Captured Arjuna 1 during "Enter the Dragon"
+    Captured Dragon-class fighter Arjuna 1 during "Enter the Dragon"
 
 GTEP Plato Escape
     GTEP Hermes-class escape pod
     Launched from the GTSC Plato during "Out of the Dark, Into the Night"
-    Escaped to Ribos
+    Escaped to Ribos with the Avenger prototype
 
 GTT Omega
     NOTE: generic name
@@ -473,7 +473,7 @@ GTT Omega
     Defected to the Vasudans before "Small Deadly Space" (Act 1 Mission 3)
     Escaped from the GTD Intrepid
     Arrived at a secured Vasudan cargo depot in Antares.
-    Docked and transferred cargo (weapon prototypes) from a cargo container in "Small Deadly Space", then escaped the area
+    Docked and transferred cargo (Avenger weapon prototypes) from a cargo container in "Small Deadly Space", then escaped the area
     Arrived at a Vasudan rendezvous point to give the GTW-5 Avenger Prototypes to the Vasudans in "Avenging Angels"
     Disabled by Alpha and Beta wings of the 242nd Suicide Kings of the GTD Galatea in "Avenging Angels"
     Captured by GTT Comet
@@ -490,7 +490,7 @@ GTFr Halkins
 
 GTFr Nelson
     GTFr Chronos-class freighter
-    Attacked and destroyed by Vishnu wing in The Aftermath
+    Attacked and destroyed by Vishnu wing in "The Aftermath"
 
 GTFr Mascheri
     GTFr Poseidon-class freighter
@@ -508,14 +508,14 @@ GTSC Plato
 GTSC Asimov
     GTSC Faustus-class science cruiser
     Assigned to Project Tsunami
-    Attacked by Shivan forces in the Antares system
+    Attacked by Shivan forces in the Antares system in "The Big Bang"
     Docked with GTT Spomer
     Transferred information and crew to GTT Spomer
 
 GTSC Aquilae Communications
     GTSC Faustus-class science cruiser serving as a subspace comm relay, stationed near the GTI Beta Aquilae Installation
     Must be defended in "A Failure to Communicate"
-    Receives transmission from Vasudan refugees in the Altair system
+    Receives crucial transmission from Vasudan refugees in the Altair system
 
 GTC Orff
     GTC Fenris-class cruiser
@@ -533,7 +533,7 @@ GTC Neptune
     Acted as an attacker to Alpha 1 during a training exercise
 
 GTC Ravage
-    GTC Fenris-class cruiser
+    GTC Fenris-class cruiser protecting the GTSC Asimov in "The Big Bang"
 
 GTD Goliath
     GTD Orion-class destroyer
@@ -553,7 +553,6 @@ GTD Galatea
     Dispatched to Antares to reinforce Operation: Thresher in "Eve of Destruction"
     Ordered to capture traitor Lieutenant Alexander McCarthy after "Small Deadly Space"
     Withdrew from Antares after the first sighting of the Shivans
-    Acquired Shivan shields from a cargo depot in Ikeya after "Pandora's Box"
     Ordered to capture the SC Taranis before it escaped from Ikeya
     Reinforced Alpha and Beta wings after a failed attack on a Hammer of Light depot in Antares
     Attacked by SC Hellions 1 and SC Hellions 2, destroyed both cruisers
@@ -580,6 +579,7 @@ GTD Bastion
         66th Black Knights
         81st Screaming Weasels
     Sent on a Special Operations mission to acquire Shivan technology in Ikeya
+    Acquired Shivan shields from a cargo depot in Ikeya in "Pandora's Box"
 	After the destruction of the GTD Galatea, the doomed destroyer's fighter and bomber complement transferred to GTD Bastion
     Failed to chase the Lucifer into subspace, but its fighters and bombers successfully intercepted and destroyed the Shivan superdestroyer in "Good Luck"
 
@@ -1850,7 +1850,7 @@ FSO engine capabilities:
 - Arrival and departure methods for ships (entering and exiting the playing area):
   - Subspace
   - Docking Bay (Fighterbay): Despite the name, this arrival/departure method is unrelated to the inter-ship Docking mechanism outlined above. Requires a large ship (destroyer or installation) with the Fighterbay subsystem as the origin/departure point.
-- FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma, Delta, Epsilon). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship.
+- FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma, Delta, Epsilon). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship. NeuralFS enforces that the player ship is a member of Alpha, Beta, or Gamma wing.
 
 NeuralFS limitations:
 - Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (wing members cannot have different ship classes or weapons).
