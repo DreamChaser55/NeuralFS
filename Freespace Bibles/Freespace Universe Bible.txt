@@ -1827,7 +1827,7 @@ Balance reminders:
 
 Useful tips:
 - Name exact ship classes, wing names and wing wave counts.
-- Describe arrival directions or distances, objectives, message triggers, and debrief outcomes.
+- Describe ship and wing arrival methods (subspace/docking bay), directions or distances, objectives, message triggers, and debrief outcomes.
 - Keep implementation-facing names short and distinct, ideally under 30 characters. FSO does not support very long ship or object names.
 - Repeating or inconsistent wing designations (Beta, Aries, Krishna, etc...) in different missions are not an issue; They are just ad-hoc monikers issued by the commander on a per-mission basis, not permanent names.
 
@@ -1845,6 +1845,17 @@ FSO engine capabilities:
     - types: Terran, Vasudan, Shivan
     - debris sizes: small, medium, large
 - All ships should be Friendly, Hostile, or Unknown to the player. "Neutral" is not supported in FSO.
+- Docking: A pair of ships can be docked together. One is the Dockee (Leader), the other is the Docker (Follower). A docked ship can tow the partner.
+- Arrival and departure methods for ships (entering and exiting the playing area):
+  - Subspace
+  - Docking Bay (Fighterbay): Despite the name, this arrival/departure method is unrelated to the inter-ship Docking mechanism outlined above. Requires a large ship (destroyer or installation) with the Fighterbay subsystem as the origin/departure point.
+- FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma, Delta, Epsilon). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship.
+
+NeuralFS limitations:
+- Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (wing members cannot have different ship classes or weapons).
+- Turret weapons cannot be changed.
+- Briefing icon placement is simplified and uses a top-down 2D grid with automatic camera placement.
+- Branched campaigns are not supported.
 
 Adherence to FreeSpace canon lore:
 - If your campaign happens in established setting, you should take care to not violate FreeSpace canon and not include any anachronistic elements:
