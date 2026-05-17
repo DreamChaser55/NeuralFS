@@ -1811,6 +1811,7 @@ Scale, navigation, and pacing:
 - FSO waypoints are hidden to the player and should not be used for in-game player guidance, only for AI paths and logic checks. If you need to guide the player to a specific point in space, it should probably have something interesting visible on radar, such as a ship, a station or a jump node.
 - In nebula missions where visibility is limited, you can use a visible navigation buoy (`Terran NavBuoy` or `Vasudan NavBuoy` ship class) for player guidance and to mark important in-game destinations. Keep in mind that the NavBuoys will not be visible on radar beyond the nebula sensor range limit.
 - All Great War-era weapon ranges are below 2,000 m. There are no long-range missiles or beams in this era. Keep this in mind when positioning ships that should engage each other.
+- Jump node radius is 660 m.
 
 Simple event logic:
 - Prefer triggers based on observable game states: elapsed time, arrivals, departures, destruction, scans, docking or undocking, disabled subsystems, hull thresholds, or a ship reaching a visible marker or finishing a waypoint path.

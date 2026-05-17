@@ -283,3 +283,4 @@ Repeating or inconsistent wing designations in different missions are not an iss
 ## Mission scale:
 Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
 All Great War-era weapon ranges are below 2,000 m. There are no long-range missiles or beams in this era. Keep this in mind when positioning ships that should engage each other.
+Jump node radius is 660 m.
