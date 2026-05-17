@@ -36,7 +36,7 @@ ENVIRONMENT AND SETUP
     firing at incoming Shivan fighters and serving as picket line.
   - Nav Alpha: 2,000m from Vega Prime — the rally point for Epsilon transports before their jump.
   - Nav Bravo: The Vega-Antares subspace jump node approach, 9,000m from station.
-  - Epsilon wing (GTT Elysium x4): Docked at Vega Prime at mission start. Undock staggered across
+  - Epsilon wing (GTT Elysium x4): Arrive via Fighterbay from GTI Vega Prime. Launch staggered across
     first 3 minutes, then form up at Nav Alpha before proceeding to Nav Bravo.
   - GTFr Chronos freighter (unarmed): Drops two GTSG Watchdog sentry guns at the start of the mission near Nav Alpha to form a desperate defensive perimeter before jumping out.
   - Three TAC-1 cargo containers at docking arm 3 (civilian equipment — irrelevant to objectives
@@ -61,7 +61,7 @@ Allied:
     turns to engage it at close range — suicidal, but necessary to give the transports time.
   - Orders: Protect GTI Vega Prime, then Protect Epsilon wing (shifts when station destroyed)
 
-- Epsilon 1–4 (GTT Elysium-class transports): Undock staggered from Vega Prime
+- Epsilon 1–4 (GTT Elysium-class transports): Launch staggered from Vega Prime's fighterbay
 - Epsilon 1 departs at T+01:30; Epsilon 2 at T+02:00; Epsilon 3 at T+02:45; Epsilon 4 at T+03:30
 - All four navigate to Nav Alpha, then proceed to Nav Bravo (Antares node)
 - Speed: Slow. Nav Alpha is 30 seconds at transport speed. Nav Bravo is approximately 4 minutes.
@@ -146,7 +146,7 @@ Alpha wing, listen up. The situation has changed overnight. What Alpha Lead brou
 the Capella corridor wasn't Vasudan, wasn't anything Command could identify — and this morning
 at 0530, those same contact profiles showed up in force at the GTI Vega Prime perimeter.
 We have four Epsilon transports at Vega Prime right now — civilian contractors, administrative
-personnel, maintenance crews. They need to get out. The transports are undocking now.
+personnel, maintenance crews. They need to get out. The transports are launching now.
 GTC Stentor is already in the fight. Your job is to keep the fighters off those transports long
 enough for all four of them to clear the system at the Antares node.
 
@@ -174,9 +174,9 @@ Message 1 — Commander Okafor / GTC Stentor, persona: professional naval office
 mission start
 "Alpha Lead, Stentor. We have four Scorpions on us already. Get in here."
 
-Message 2 — Epsilon 1 pilot, persona: civilian transport pilot, anxious, trigger: Epsilon 1 undock
+Message 2 — Epsilon 1 pilot, persona: civilian transport pilot, anxious, trigger: Epsilon 1 launch
 (T+01:30)
-"GTD Amadeus control, this is Epsilon One. We are... we're undocking. Please advise on our route."
+"GTD Amadeus control, this is Epsilon One. We are... we're launching. Please advise on our route."
 [Command responds] "Epsilon One, proceed to Nav Alpha and hold for the others. Alpha wing is
 covering you."
 
@@ -186,7 +186,7 @@ Message 3 — Alpha 2, trigger: Arjuna wave 1 arrival (T+02:30)
 Message 4 — Vega Prime Control, persona: station controller (calm professional performing
 last duty), trigger: Arjuna wave 1 within 2,000m of station
 "All ships, Vega Prime is taking structural hits. Docking arm two is compromised. Epsilon Two,
-Three, Four — accelerate undocking sequence. Repeat, accelerate."
+Three, Four — accelerate launch sequence. Repeat, accelerate."
 
 Message 5 — Epsilon 3 pilot, trigger: Arjuna second wave targeting Epsilon 3
 "Alpha wing — something's on me! On me — please—"
@@ -220,13 +220,13 @@ Come home."
 EVENT FLOW AND TIMING
 - T+00:00: Mission begins. GTI Vega Prime under attack. Durga wing (Scorpion x4) engaging
   station and Stentor. Alpha wing at jump-in point 6 km from station.
-- T+01:30: Epsilon 1 undocks from Vega Prime. Begins navigation to Nav Alpha.
-- T+02:00: Epsilon 2 undocks. Begins navigation to Nav Alpha.
+- T+01:30: Epsilon 1 launches from Vega Prime fighterbay. Begins navigation to Nav Alpha.
+- T+02:00: Epsilon 2 launches. Begins navigation to Nav Alpha.
 - T+02:30: Arjuna wave 1 (Basilisk x3) arrives from Capella, 12 km. Targets Vega Prime.
-- T+02:45: Epsilon 3 undocks.
+- T+02:45: Epsilon 3 launches.
 - T+03:00: Epsilon 1 and 2 reach Nav Alpha and begin proceeding to Nav Bravo (7 km at
   transport speed — approximately 3.5 minutes of travel).
-- T+03:30: Epsilon 4 undocks.
+- T+03:30: Epsilon 4 launches.
 - T+04:00: GTS Casca arrives in scene (available for rearm requests from this point).
 - T+04:30: Krishna wing (Scorpion x3) arrives from Capella, 10 km. Targets Alpha wing.
 - T+05:30 (or when Arjuna wave 1 drops to 1 ship): Arjuna wave 2 (Basilisk x3) arrives.
@@ -240,7 +240,7 @@ EVENT FLOW AND TIMING
   Mission ends when all surviving Epsilon ships have jumped.
 
 EVENT LOGIC SKETCH
-- "Epsilon 1 undock" event fires at T+01:30. Subsequent transports fire at fixed intervals.
+- "Epsilon 1 launch" event fires at T+01:30. Subsequent transports fire at fixed intervals.
 - "Arjuna wave 2 arrival" event fires when Arjuna wave 1 ships-alive count is 1 OR when
   T+05:30 is reached. First trigger wins.
 - "Krishna wing arrival" fires at T+04:30 unconditionally.
