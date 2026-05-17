@@ -56,6 +56,7 @@ Main README file: ../README.md
 - FS2 file format analysis: ./FSO and fs2 format/FS2-File-Format-Analysis.md
   - Deeper technical analysis of the FS2 file format (for converter developers)
 - List of all FreeSpace ship class names: ./FSO and fs2 format/spacecraft-classes.md
+- Ship bounding box dimensions: ./FSO and fs2 format/ship_bounding_boxes.md
 - Ship subsystem names (per faction): documents in `./FSO and fs2 format/Ship subsystems/`
   - terran-ships-subsystem-names.md
   - vasudan-ships-subsystem-names.md
