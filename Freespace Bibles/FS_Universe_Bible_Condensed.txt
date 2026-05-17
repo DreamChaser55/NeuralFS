@@ -58,6 +58,16 @@ Lucifer is destroyed in the Sol-Delta Serpentis jump node, collapsing the node a
 
 2367 (The Second Great War / FS2): The NTF rebellion occurs; Shivans return via the Knossos portal. The Capella system is destroyed to seal off the Shivan fleet.
 
+## Ship size classes
+
+Ordered from smallest to largest, with average length specified:
+1. Fighters (20 meters)
+2. Bombers (40 meters)
+3. Cruisers (250 meters)
+4. Corvettes - introduced in Freespace 2 (750 meters)
+5. Destroyers (2000 meters)
+6. Superdestroyers or Juggernauts (3000-6000 meters)
+
 ## Ship Database
 
 ### Fighters & Bombers
