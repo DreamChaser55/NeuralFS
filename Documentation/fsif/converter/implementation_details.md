@@ -31,7 +31,7 @@ Localization: XSTR wrapping is applied to mission name/description, goals $Messa
 
 Mission flags: +Flags is computed from mission_info.flags using the FSO Mission::Mission_Flags order. Flags must be exact canonical tokens (case-sensitive, lowercase) as listed in the FSO Tokens Reference. Unknown flags are ignored with a warning. Examples: red_alert = 65536, scramble = 131072, both → 196608.
 
-Validation: If the player's starting ship is standalone (not part of any wing), its `arrival_cue` must be `( true )` to spawn. The converter preserves SEXP text verbatim and will print an error if this constraint is violated.
+Validation: `player_setup.start_ship` must be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing — standalone player starts are a hard validation error that aborts conversion. The converter preserves SEXP text verbatim and will print an error for any SEXP validation failures it detects.
 
 Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list).
 

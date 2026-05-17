@@ -25,6 +25,11 @@ from mission_loader import load_mission_from_fsif
 
 # ---------------------------------------------------------------------------
 # Minimal valid FSIF 1.0 fixture
+#
+# Uses an Alpha wing so that the fixture is both schema-valid (loads without
+# errors) AND conversion-valid (passes full validator).
+# player_setup.start_ship must always be a member of a Friendly Alpha, Beta,
+# or Gamma wing — standalone player starts are a hard validation error.
 # ---------------------------------------------------------------------------
 
 MINIMAL_FSIF_1 = """fsif_version: "1.0"
@@ -33,18 +38,20 @@ mission_info:
 environment:
   ambient_light_level: [0, 0, 0]
 player_setup:
-  start_ship: "Player Ship"
+  start_ship: "Alpha 1"
 entities:
-  ships:
-    - name: "Player Ship"
+  ship_templates:
+    alpha_t:
       class: "GTF Ulysses"
       team: "Friendly"
-      position: [0, 0, 0]
-      arrival_cue: |
-        ( true )
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
         secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
 mission_flow: {}
 """
 
@@ -54,18 +61,21 @@ mission_info:
 environment:
   ambient_light_level: [0, 0, 0]
 player_setup:
-  start_ship: "Player Ship"
+  start_ship: "Alpha 1"
 entities:
-  ships:
-    - name: "Player Ship"
+  ship_templates:
+    alpha_t:
       class: "GTF Ulysses"
       team: "Friendly"
-      position: [0, 0, 0]
-      arrival_cue: |
-        ( true )
       weapons:
         primary: ["ML-16 Laser", "ML-16 Laser"]
         secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
+  ships:
     - name: "GTC Fenris 1"
       class: "GTC Fenris"
       team: "Friendly"
@@ -112,7 +122,7 @@ class FSIF10SchemaTests(unittest.TestCase):
     def test_accepts_minimal_fsif_1_0(self):
         """A minimal valid FSIF 1.0 file loads without errors."""
         mission = self._write_and_load(MINIMAL_FSIF_1)
-        self.assertEqual(mission.player_setup.start_ship, "Player Ship")
+        self.assertEqual(mission.player_setup.start_ship, "Alpha 1")
 
     def test_accepts_valid_dock_block(self):
         """A valid FSIF 1.0 dock block (using 'dockee') loads without errors."""
@@ -162,10 +172,13 @@ class FSIF10SchemaTests(unittest.TestCase):
         self.assertIn("Extra inputs are not permitted", str(ctx.exception))
 
     def test_rejects_unknown_ship_field(self):
-        """An unknown field on a ship must be rejected by schema validation."""
-        fsif_text = MINIMAL_FSIF_1.replace(
-            "      weapons:",
-            "      unknown_ship_field: 42\n      weapons:",
+        """An unknown field on a standalone ship must be rejected by schema validation.
+        Uses MINIMAL_FSIF_1_WITH_DOCKED_SHIP which contains standalone ships."""
+        # Inject an unknown field into the standalone GTC Fenris 1 ship entry
+        fsif_text = MINIMAL_FSIF_1_WITH_DOCKED_SHIP.replace(
+            '      arrival_cue: |',
+            '      unknown_ship_field: 42\n      arrival_cue: |',
+            1,  # replace only the first occurrence (GTC Fenris 1)
         )
         with self.assertRaises(ValueError) as ctx:
             self._write_and_load(fsif_text)
@@ -173,9 +186,10 @@ class FSIF10SchemaTests(unittest.TestCase):
 
     def test_rejects_unknown_template_field(self):
         """An unknown field in a ship template must be rejected (templates use extra='forbid')."""
+        # Add an unknown field directly into the existing alpha_t template
         fsif_text = MINIMAL_FSIF_1.replace(
-            "entities:",
-            "entities:\n  ship_templates:\n    tmpl:\n      class: GTF Ulysses\n      team: Friendly\n      unknown_tmpl_field: 99",
+            '      class: "GTF Ulysses"',
+            '      class: "GTF Ulysses"\n      unknown_tmpl_field: 99',
         )
         with self.assertRaises(ValueError) as ctx:
             self._write_and_load(fsif_text)
@@ -183,9 +197,10 @@ class FSIF10SchemaTests(unittest.TestCase):
 
     def test_rejects_arrival_delay_in_template(self):
         """arrival_delay in a ship template must be rejected (never valid in templates)."""
+        # Inject arrival_delay directly into the existing alpha_t template
         fsif_text = MINIMAL_FSIF_1.replace(
-            "entities:",
-            "entities:\n  ship_templates:\n    tmpl:\n      class: GTF Ulysses\n      team: Friendly\n      arrival_delay: 5",
+            '      class: "GTF Ulysses"',
+            '      class: "GTF Ulysses"\n      arrival_delay: 5',
         )
         with self.assertRaises(ValueError) as ctx:
             self._write_and_load(fsif_text)
@@ -225,9 +240,10 @@ class FSIF10SchemaTests(unittest.TestCase):
 
     def test_rejects_unknown_reinforcement_field(self):
         """An unknown key in a reinforcement entry must be rejected."""
+        # Inject a reinforcement_ships entry with an unknown field before the wings section
         fsif_text = MINIMAL_FSIF_1.replace(
-            "  ships:",
-            "  reinforcement_ships:\n    - name: \"Player Ship\"\n      unknown_reinf_key: 1\n  ships:",
+            "  wings:",
+            "  reinforcement_ships:\n    - name: \"Alpha 1\"\n      unknown_reinf_key: 1\n  wings:",
         )
         with self.assertRaises(ValueError) as ctx:
             self._write_and_load(fsif_text)

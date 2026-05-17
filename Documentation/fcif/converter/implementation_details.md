@@ -147,9 +147,8 @@ For any mission after the first one, an `allow-ship` or `allow-weapon` SEXP exec
 The converter iterates through all missions sequentially, parsing the FSIF YAML file (using `yaml.safe_load`) and extracting player loadouts for the current mission:
 
 - **Ship classes** from:
-  - `player_setup.start_ship` (if it's a standalone ship, resolving its `template` if used)
+  - Wings named "Alpha", "Beta", "Gamma", "Delta", or "Epsilon" (resolving their `template`). The FSIF validation rule requires `player_setup.start_ship` to be a member of a Friendly Alpha, Beta, or Gamma wing, so the start ship's class is covered by the wing check.
   - `player_setup.additional_ship_choices`
-  - Wings named "Alpha", "Beta", "Gamma", "Delta", or "Epsilon" (resolving their `template`)
 - **Primary weapons** from `weapons.primary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
 - **Secondary weapons** from `weapons.secondary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
 

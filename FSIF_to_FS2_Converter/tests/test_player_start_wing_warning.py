@@ -278,6 +278,38 @@ class TestPlayerStartWingValidation(unittest.TestCase):
             f"Expected error to mention 'Epsilon', got: {v.errors}",
         )
 
+    def test_hostile_alpha_non_leader_start_is_error(self):
+        """Player start ship has team Hostile even though it is in an Alpha wing — hard error.
+
+        This tests that the validator checks the actual start ship's team rather
+        than the wing leader's team.  If the check were only on ships[0].team,
+        placing the player on a non-leader Hostile ship in an otherwise Friendly
+        Alpha wing would silently pass.
+        """
+        friendly_leader = _ulysses("Alpha 1", team="Friendly")
+        hostile_member = _ulysses("Alpha 2", team="Hostile")
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Alpha 2"),
+            environment=Environment(),
+            ships=[friendly_leader, hostile_member],
+            wings=[_alpha_wing([friendly_leader, hostile_member])],
+        )
+        v = _make_validator(mission)
+        self.assertFalse(
+            v.validate(),
+            "Expected validate() to return False when start ship is Hostile despite being in Alpha wing",
+        )
+        self.assertTrue(
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected player-start error for Hostile non-leader in Alpha wing, got: {v.errors}",
+        )
+        # The error should mention the team problem, not just a missing wing
+        self.assertTrue(
+            any("Hostile" in e for e in v.errors),
+            f"Expected error to mention 'Hostile', got: {v.errors}",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

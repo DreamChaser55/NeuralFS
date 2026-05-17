@@ -487,11 +487,15 @@ class ShipWingChecksMixin:
         # the first three wings (Team 1: Alpha, Beta, Gamma).  Starting the player
         # in any other configuration (standalone ship, Delta/Epsilon wing, or any
         # Hostile wing) causes the loadout screen to malfunction.
+        #
+        # Note: we check the actual start ship's team directly rather than using
+        # the wing leader as a proxy.  This correctly handles edge cases where
+        # different wing members might have different teams (even though FSIF
+        # normally prevents this, the validator should express the rule directly).
         is_in_valid_start_wing = (
             start_wing is not None
             and start_wing.name in fs_data.PLAYER_START_WING_NAMES
-            and bool(start_wing.ships)
-            and start_wing.ships[0].team == 'Friendly'
+            and ship.team == 'Friendly'
         )
 
         if not is_in_valid_start_wing:
@@ -505,9 +509,10 @@ class ShipWingChecksMixin:
                     f"'{start_name}' is in wing '{start_wing.name}', which is not one of "
                     f"the valid player-start wings (Alpha, Beta, Gamma)."
                 )
-            elif not start_wing.ships or start_wing.ships[0].team != 'Friendly':
+            elif ship.team != 'Friendly':
                 reason = (
-                    f"'{start_name}' is in wing '{start_wing.name}', but that wing is not Friendly."
+                    f"'{start_name}' is in wing '{start_wing.name}', but the start ship "
+                    f"itself has team '{ship.team}' (must be 'Friendly')."
                 )
             else:
                 reason = f"'{start_name}' does not meet player-start wing requirements."
