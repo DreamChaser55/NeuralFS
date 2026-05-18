@@ -178,13 +178,20 @@ class TestPlayerStartWingValidation(unittest.TestCase):
     # ------------------------------------------------------------------
 
     def test_standalone_start_ship_is_error(self):
-        """Standalone player start ship is a hard validation error."""
-        ship = _ulysses("Player Ship")
+        """Standalone player start ship is a hard validation error.
+
+        The mission must have at least one wing (so the zero-wings guard does
+        not fire), but the start ship itself must not be a member of any wing.
+        """
+        # Alpha 1 is a proper wing member; 'Player Ship' is standalone.
+        alpha1 = _ulysses("Alpha 1")
+        standalone = _ulysses("Player Ship")
         mission = Mission(
             mission_info=MissionInfo(name="Test"),
             player_setup=PlayerSetup(start_ship="Player Ship"),
             environment=Environment(),
-            ships=[ship],
+            ships=[alpha1, standalone],
+            wings=[_alpha_wing([alpha1])],
         )
         v = _make_validator(mission)
         self.assertFalse(v.validate(), "Expected validate() to return False for standalone start")
@@ -308,6 +315,59 @@ class TestPlayerStartWingValidation(unittest.TestCase):
         self.assertTrue(
             any("Hostile" in e for e in v.errors),
             f"Expected error to mention 'Hostile', got: {v.errors}",
+        )
+
+
+    def test_zero_wings_no_ships_is_error(self):
+        """Zero wings with no ships at all is a hard validation error.
+
+        The error must explicitly mention 'zero wings' rather than defaulting
+        to the generic 'not found in entities' message, so the author
+        understands immediately what to fix.
+        """
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            environment=Environment(),
+            ships=[],
+            wings=[],
+        )
+        v = _make_validator(mission)
+        self.assertFalse(v.validate(), "Expected validate() to return False for zero-wings mission")
+        self.assertTrue(
+            any(_ERROR_FRAGMENT in e for e in v.errors),
+            f"Expected '{_ERROR_FRAGMENT}' error for zero-wings mission, got: {v.errors}",
+        )
+        self.assertTrue(
+            any("zero wings" in e for e in v.errors),
+            f"Expected error to mention 'zero wings', got: {v.errors}",
+        )
+        self.assertTrue(
+            any("Friendly Alpha, Beta, or Gamma wing" in e for e in v.errors),
+            f"Expected error to mention 'Friendly Alpha, Beta, or Gamma wing', got: {v.errors}",
+        )
+
+    def test_zero_wings_with_standalone_alpha1_is_error(self):
+        """Zero wings, but a standalone ship named 'Alpha 1' exists — still a hard error.
+
+        The zero-wings early guard must fire and produce the 'zero wings' message
+        even when the start ship does exist as a standalone entity.  This ensures
+        the clearer zero-wings diagnostic wins over the generic standalone-player
+        message.
+        """
+        ship = _ulysses("Alpha 1")
+        mission = Mission(
+            mission_info=MissionInfo(name="Test"),
+            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            environment=Environment(),
+            ships=[ship],
+            wings=[],  # no wings defined
+        )
+        v = _make_validator(mission)
+        self.assertFalse(v.validate(), "Expected validate() to return False when wings=[] despite standalone Alpha 1")
+        self.assertTrue(
+            any("zero wings" in e for e in v.errors),
+            f"Expected zero-wings error to win, got: {v.errors}",
         )
 
 

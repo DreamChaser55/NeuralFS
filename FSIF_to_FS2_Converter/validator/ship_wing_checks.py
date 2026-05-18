@@ -477,6 +477,19 @@ class ShipWingChecksMixin:
             self.log_error("player_setup.start_ship is undefined.")
             return
 
+        # Early guard: missions with zero wings cannot have a valid player start.
+        if not self.mission.wings:
+            self.log_error(
+                "Invalid player start ship: mission defines zero wings. "
+                "FSIF missions must define at least one Friendly Alpha, Beta, or Gamma wing "
+                "containing player_setup.start_ship. "
+                "FSO's team loadout screen only works when the player starts in a "
+                "Friendly Alpha, Beta, or Gamma wing (e.g. 'Alpha 1', 'Beta 3', 'Gamma 2'). "
+                "Define an Alpha, Beta, or Gamma wing in entities.wings and set "
+                "player_setup.start_ship to one of its members."
+            )
+            return
+
         # Check if ship exists
         ship = next((s for s in self.mission.ships if s.name == start_name), None)
         if not ship:
