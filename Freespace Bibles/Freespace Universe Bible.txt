@@ -3,7 +3,7 @@ Freespace Universe
 FreeSpace is a space combat simulation series by Volition, Inc. and Interplay Entertainment. Set in the 24th century, humans (Terrans) have developed faster-than-light space travel via subspace, enabling interstellar expansion. Terrans soon encounter the Vasudans, another sentient species, but cultural differences lead to a 14-year war between the Galactic Terran Alliance (GTA) and the Parliamentary Vasudan Empire (PVE).
 
 FreeSpace 1:
-FreeSpace — The Great War, also known as Conflict: Freespace or Freespace 1 (FS1), was released in 1998. Player is a pilot for the Galactic Terran Alliance (GTA), which has been at war with the Parliamentary Vasudan Navy (PVN) for 14 years. A third race, the technologically superior and enigmatic Shivans, suddenly appears, attacking both sides. This forces the GTA and PVN to form a truce to combat the Shivans. FS1 was well-received for its solid gameplay, controls, and compelling plot. It also had excellent mod support, including the FreeSpace Editor (FRED) for mission creation. The game's alternate title, "Descent: FreeSpace – The Great War", has little connection to the separate Descent series of games.
+FreeSpace — The Great War, also known as Descent: Freespace, Conflict: Freespace or FreeSpace 1 (FS1), was released in 1998. Player is a pilot for the Galactic Terran Alliance (GTA), which has been at war with the Parliamentary Vasudan Navy (PVN) for 14 years. A third race, the technologically superior and enigmatic Shivans, suddenly appears, attacking both sides. This forces the GTA and PVN to form a truce to combat the Shivans. FS1 was well-received for its solid gameplay, controls, and compelling plot. It also had excellent mod support, including the FreeSpace Editor (FRED) for mission creation. The game's alternate title, "Descent: FreeSpace – The Great War", has little connection to the separate Descent series of games.
 Story of FreeSpace 1:
 Terrans and Vasudans are locked in a 14-year war with billions of casualties. A new enemy, the Shivans, emerges, attacking both sides and forcing them to unite to save their civilizations.
 
@@ -26,6 +26,13 @@ Advance in rank, earn medals and ribbons, and access more advanced ships and wea
 Enjoy event-driven music tailored to the action.
 Detailed branching campaign influenced by your performance.
 High-resolution cinematic cutscenes with an epic storyline.
+
+FreeSpace Source Code Project and FreeSpace Open:
+The FreeSpace 2 Source Code Project is the project of a group of programmers maintaining and enhancing the game engine for the space combat simulator FreeSpace 2. The source code was released in 2002. To prevent a plethora of different versions of the game from appearing, a single "umbrella" project (with the unified goal of enhancing the game) under the name FreeSpace 2 Source Code Project was formed, which resulted in FreeSpace Open (FSO), a significantly enhanced game engine. In addition, content update packs have been developed which take advantage of the upgraded engine. Many fan-made missions and campaigns were released.
+The FreeSpace Port ports the original FreeSpace – The Great War to the FreeSpace Open engine with many graphical enhancements, and serves as a base for many mods and campaigns set in the Great War era.
+
+NeuralFS:
+NeuralFS is an agentic AI framework that can create fully playable original campaigns for the FreeSpace Open (FSO) engine. It consists of three AI agents (LLMs with tool calling and custom system prompts) and two specialized Python conversion and validation scripts. The first agent (FreeSpace Creative Writer) writes a detailed campaign description in natural language. Other agents then convert this description into exact campaign and mission specification files expected by FSO.
 
 Universe of FreeSpace:
 The FreeSpace universe continues human history as they interact with two alien species. Canon events span 2335 to 2367, focusing on these dates. In 2335, the Terrans (humans) and Vasudans had been at war for fourteen years when the technologically superior Shivans appeared. The two species united to combat the Shivans, known as the Great War (chronicled in FS1). The Shivans were defeated, but the Vasudan homeworld was destroyed, and contact with Earth was lost.
@@ -1850,12 +1857,11 @@ FSO engine capabilities:
 - Arrival and departure methods for ships (entering and exiting the playing area):
   - Subspace
   - Docking Bay (Fighterbay): Despite the name, this arrival/departure method is unrelated to the inter-ship Docking mechanism outlined above. Requires a large ship (destroyer or installation) with the Fighterbay subsystem as the origin/departure point.
-- FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma, Delta, Epsilon). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship. NeuralFS enforces that the player ship is a member of Alpha, Beta, or Gamma wing.
+- FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship.
 
 NeuralFS limitations:
-- Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (wing members cannot have different ship classes or weapons).
+- Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (all wing members have the same ship class and weapon configuration).
 - Turret weapons cannot be changed.
-- Briefing icon placement is simplified and uses a top-down 2D grid with automatic camera placement.
 - Multi-ship (daisy chained) docking is not supported.
 - Branched campaigns are not supported.
 
