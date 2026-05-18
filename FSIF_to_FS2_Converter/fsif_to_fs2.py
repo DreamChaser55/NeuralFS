@@ -210,7 +210,8 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     try:
         writer = FS2Writer(mission, str(op))
         writer.write_mission()
-        logger.info("[SUCCESS] Conversion successful.")
+        suffix = " (with warnings)" if validator.warnings else ""
+        logger.info(f"[SUCCESS] Conversion successful{suffix}.")
         return True
     except OSError as e:
         logger.error(f"[ERROR] IO failure while writing FS2 file: {e}")
