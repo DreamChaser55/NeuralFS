@@ -23,7 +23,11 @@ _SMALL_UTILITY_CLASSES: frozenset = frozenset({
 })
 
 class ShipWingChecksMixin:
-    _WING_NAME_PATTERN = re.compile(r'^(' + '|'.join(sorted(fs_data.PLAYER_WING_NAMES)) + r') \d+$')
+    # Broad canonical wing-name pattern for the advisory standalone-name warning.
+    # Covers all Terran, Vasudan, and Shivan wing names from the FreeSpace Universe Bible.
+    _WING_NAME_PATTERN = re.compile(
+        r'^(' + '|'.join(re.escape(n) for n in sorted(fs_data.COMMON_WING_NAMES)) + r') \d+$'
+    )
 
     def _ship_has_fighterbay(self, ship_class: str) -> bool:
         """Check if a ship class has a fighterbay subsystem."""
@@ -84,16 +88,17 @@ class ShipWingChecksMixin:
 
     def _player_starting_wing_ship_names(self) -> Set[str]:
         """
-        Return the set of ship names that belong to Friendly player starting wings.
+        Return the set of ship names that belong to Friendly player-loadout wings.
 
-        Player starting wings are the wings whose names are in
-        ``fs_data.PLAYER_WING_NAMES`` (Alpha, Beta, Gamma, Delta, Epsilon) and
-        whose first ship has team "Friendly".  These are the only ships for
-        which weapon-compatibility must be checked.
+        Player-loadout wings are the wings whose names are in
+        ``fs_data.PLAYER_START_WING_NAMES`` (Alpha, Beta, Gamma) and whose
+        first ship has team "Friendly".  These are the only wings shown on the
+        FSO loadout screen, so weapon-compatibility is only checked for ships
+        in these wings.
         """
         names: Set[str] = set()
         for wing in self.mission.wings:
-            if wing.name not in fs_data.PLAYER_WING_NAMES:
+            if wing.name not in fs_data.PLAYER_START_WING_NAMES:
                 continue
             if not wing.ships:
                 continue
@@ -110,8 +115,10 @@ class ShipWingChecksMixin:
         Checks:
         - Validity of ship class and team.
         - Known flags and AI class.
-        - Weapon compatibility for Friendly player starting wing ships only
-          (Alpha, Beta, Gamma, Delta, Epsilon).
+        - Weapon compatibility for Friendly player-loadout wing ships only
+          (Alpha, Beta, Gamma). FSO only enforces weapon compatibility for
+          ships on the loadout screen; incompatible weapons on other ships
+          are harmless.
         - Subsystem validity (if data available).
         - FS1 shield/weapon canon timeline consistency.
         """
@@ -154,10 +161,11 @@ class ShipWingChecksMixin:
                 self.log_error(f"Ship '{ship.name}' initial_hull_percent {ship.initial_hull_percent} out of range [0, 100]")
 
             # 4. Weapon Compatibility
-            # Only validate class-level compatibility for ships in Friendly player
-            # starting wings (Alpha, Beta, Gamma, Delta, Epsilon).  FSO only
-            # enforces compatible weapons in the context of the player loadout
-            # screen; incompatible weapons on NPC/non-starting ships are harmless.
+            # Only validate class-level compatibility for ships in Friendly
+            # player-loadout wings (Alpha, Beta, Gamma).  FSO only enforces
+            # weapon compatibility via the loadout screen; incompatible weapons
+            # on any other ship (NPC wings, Delta/Epsilon, standalone ships,
+            # enemy ships) are harmless.
             if ship.ship_class in WEAPON_COMPATIBILITY:
                 allowed = WEAPON_COMPATIBILITY[ship.ship_class]
                 is_player_starting_ship = ship.name in player_starting_ship_names
@@ -211,11 +219,13 @@ class ShipWingChecksMixin:
     def validate_standalone_wing_name_patterns(self):
         """
         Warn if a standalone ship (not part of any wing) has a name that looks
-        like a wing member (e.g. 'Alpha 1', 'Beta 4', 'Gamma 2').
+        like a wing member (e.g. 'Alpha 1', 'Rama 4', 'Theta 2').
 
-        Common Terran wing prefixes checked: Alpha, Beta, Gamma, Delta, Epsilon.
+        Checks the full canonical FreeSpace wing-name vocabulary from the
+        Universe Bible: all Terran friendly/enemy, Vasudan friendly/enemy, and
+        Shivan enemy wing prefixes (see ``fs_data.COMMON_WING_NAMES``).
 
-        This is almost always a mistake: the intended pattern is to define the
+        This is most likely a mistake: the intended pattern is to define the
         wing via entities.wings, not to create individual standalone ships with
         wing-member-style names.  The warning is advisory only and does not
         abort conversion.

@@ -2,11 +2,12 @@
 Tests for scoped ship-weapon compatibility validation.
 
 Weapon-class compatibility (via WEAPON_COMPATIBILITY) is enforced as a
-hard error only for ships that belong to Friendly player starting wings
-(Alpha, Beta, Gamma, Delta, Epsilon).  Ships outside those wings (NPC/enemy
-wings, standalone NPC ships) may carry canonical-but-incompatible weapons
-without causing FSO issues, so the validator completely ignores such
-incompatibilities — it emits neither an error nor a warning for them.
+hard error only for ships that belong to Friendly player-loadout wings
+(Alpha, Beta, Gamma — the only wings shown on the FSO loadout screen).
+Ships in Delta/Epsilon wings, NPC/enemy wings, or standalone NPC ships
+may carry canonical-but-incompatible weapons without causing FSO issues,
+so the validator completely ignores such incompatibilities — it emits
+neither an error nor a warning for them.
 """
 
 import unittest
@@ -162,6 +163,54 @@ class TestWeaponCompatibilityScopedToPlayerWings(unittest.TestCase):
         self.assertTrue(
             any("Beta 1" in e and "incompatible" in e.lower() for e in v.errors),
             f"Expected incompatible-weapon ERROR mentioning 'Beta 1', got errors: {v.errors}",
+        )
+
+    # ------------------------------------------------------------------
+    # Delta/Epsilon wings → completely ignored (no error, no warning)
+    # ------------------------------------------------------------------
+
+    @unittest.skipUnless(
+        _BANSHEE_INCOMPATIBLE_WITH_ULYSSES,
+        "WEAPON_COMPATIBILITY data unavailable or Banshee is compatible with GTF Ulysses",
+    )
+    def test_incompatible_weapon_in_delta_wing_is_ignored(self):
+        """
+        Banshee in a GTF Ulysses that is part of a Delta wing must be
+        completely ignored: Delta/Epsilon are not shown on the FSO loadout
+        screen, so FSO never enforces compatibility for them.
+        validate() must return True and no incompatible-weapon error or
+        warning should be emitted.
+        """
+        player_ship = _ulysses_ship("Alpha 1", banshee=False)
+        delta_ship = _ulysses_ship("Delta 1", banshee=True)
+        delta_wing = Wing(
+            name="Delta",
+            count=1,
+            ships=[delta_ship],
+            position=[600.0, 0.0, 0.0],
+            arrival_cue="( true )",
+            initial_orders="( ai-chase-any 89 )",
+        )
+        mission = Mission(
+            mission_info=MissionInfo(name="Test Mission"),
+            player_setup=PlayerSetup(start_ship="Alpha 1"),
+            environment=Environment(),
+            ships=[player_ship, delta_ship],
+            wings=[_alpha_wing(player_ship), delta_wing],
+        )
+        v = _make_validator(mission)
+
+        self.assertTrue(
+            v.validate(),
+            f"Expected validation to pass for Delta wing incompatible weapon, errors: {v.errors}",
+        )
+        self.assertFalse(
+            any("Delta 1" in w and "incompatible" in w.lower() for w in v.warnings),
+            f"Expected no incompatible-weapon WARNING for 'Delta 1', got: {v.warnings}",
+        )
+        self.assertFalse(
+            any("Delta 1" in e and "incompatible" in e.lower() for e in v.errors),
+            f"Expected no incompatible-weapon ERROR for 'Delta 1', got: {v.errors}",
         )
 
     # ------------------------------------------------------------------

@@ -379,13 +379,30 @@ SHIP_BOUNDING_BOXES = {
 }
 
 # --- 10. Player Wing Names ---
-PLAYER_WING_NAMES = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
-# Wings in which a valid player start ship may be placed.
-# FSO's team loadout screen only works when the player starts in the first
-# three friendly wings (Alpha, Beta, or Gamma). Delta and Epsilon are usable
-# as additional friendly wings for loadout-pool calculation, but a player
-# starting in Delta or Epsilon causes the loadout screen to malfunction.
+# Canonical player-start and loadout wings.
+# FSO's loadout screen only covers Alpha, Beta, and Gamma (the first three
+# Friendly wings). Starting the player in any other wing — or as a standalone
+# ship — causes the loadout screen to malfunction.
 PLAYER_START_WING_NAMES = {"Alpha", "Beta", "Gamma"}
+
+# Broader set of canonical/common FreeSpace wing names drawn from
+# the FreeSpace Universe Bible (Terran, Vasudan, and Shivan canonical names).
+# Used ONLY for the advisory standalone ship name-pattern warning.
+# Does NOT affect conversion logic or loadout validation.
+COMMON_WING_NAMES = {
+    # Terran friendly
+    "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta",
+    # Terran enemy
+    "Bragi", "Buri", "Freki", "Geri", "Hrid", "Roskva", "Scald", "Skadi",
+    # Vasudan friendly
+    "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma",
+    # Vasudan enemy
+    "Aquarius", "Aries", "Cancer", "Capricorn", "Gemini", "Leo", "Libra",
+    "Pisces", "Sagittarius", "Scorpio", "Taurus", "Virgo",
+    # Shivan enemy
+    "Brahma", "Vishnu", "Durga", "Rama", "Krishna", "Indra", "Arjuna",
+    "Deva", "Bheema", "Kali", "Genma", "Asura",
+}
 
 # --- 11. Asteroid/Debris Field Object Variants ---
 # Ordered lists preserve canonical display order; sets are used for fast membership checks.

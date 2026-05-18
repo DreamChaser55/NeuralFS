@@ -166,25 +166,24 @@ The validator checks the following areas:
 *   **Player Constraints**: Player ships cannot be involved in pre-spawn docking.
 
 #### **Weapon Supply and Demand**:
-*   The converter automatically calculates and generates the required primary and secondary weapon pool for all **Friendly** player starting wings, ensuring adequate supply: it reads secondary weapon bank capacities of all fighters and bombers and secondary weapon sizes, goes over the player wings and determines the weapon supplies needed to fill the banks with specified weapons. Before writing the values into .fs2, they are increased by a 25% safety margin.
-*   If the FSIF author specifies `additional_weapons` under `player_setup`, the converter calculates the maximum possible quantities needed to fully equip all available banks of all player wings with these extra weapons. For primary extra weapons, the demand is based on the total number of primary banks across all ships in the player wings. For secondary extra weapons, the demand is based on the number of missiles that can fit into all secondary banks across all ships in the player wings (calculated by dividing each bank's capacity by the weapon's cargo size). This demand is merged with the existing demand (using the maximum value to avoid unnecessary double-counting) and also receives the 25% safety margin before emission.
+*   The converter automatically calculates and generates the required primary and secondary weapon pool for all **Friendly Alpha, Beta, and Gamma wings** (the only three wings shown on the FSO loadout screen), ensuring adequate supply: it reads secondary weapon bank capacities of all fighters and bombers and secondary weapon sizes, goes over those wings and determines the weapon supplies needed to fill the banks with specified weapons. Before writing the values into .fs2, they are increased by a 25% safety margin.
+*   If the FSIF author specifies `additional_weapons` under `player_setup`, the converter calculates the maximum possible quantities needed to fully equip all available banks of the Alpha/Beta/Gamma player wings with these extra weapons. For primary extra weapons, the demand is based on the total number of primary banks across all ships in those wings. For secondary extra weapons, the demand is based on the number of missiles that can fit into all secondary banks across all ships in those wings (calculated by dividing each bank's capacity by the weapon's cargo size). This demand is merged with the existing demand (using the maximum value to avoid unnecessary double-counting) and also receives the 25% safety margin before emission.
 
 #### **Detection of Empty Hardpoints**:
 *   Checks all fighters and bombers for primary/secondary hardpoints with unassigned weapons: checks if the number of specified primary/secondary weapons is different than the number of hardpoints on the ship. Empty hardpoints can cause errors in FSO.
 
 #### **Ship-Weapon Class Compatibility**:
-*   Validates whether each weapon assigned to a player starting wing fighter or bomber is allowed on that ship class, using data extracted directly from the FSO ship tables (`WEAPON_COMPATIBILITY`).
-*   **Scope**: Compatibility is enforced as a **hard error** only for ships that belong to Friendly **player starting wings** — wings named `Alpha`, `Beta`, `Gamma`, `Delta`, or `Epsilon`. These are the only ships whose loadout is exposed to the player via the loadout screen, where FSO enforces compatibility. For all other ships (ships in non-player/NPC wings, standalone NPC ships, or enemy ships), an incompatible weapon assignment is not a problem and is ignored.
+*   Validates whether each weapon assigned to a player-loadout wing fighter or bomber is allowed on that ship class, using data extracted directly from the FSO ship tables (`WEAPON_COMPATIBILITY`).
+*   **Scope**: Compatibility is enforced as a **hard error** only for ships that belong to Friendly **player-loadout wings** — wings named `Alpha`, `Beta`, or `Gamma`. These are the only wings shown on the FSO loadout screen, where FSO enforces compatibility. For all other ships (Delta/Epsilon wings, non-player/NPC wings, standalone NPC ships, or enemy ships), an incompatible weapon assignment is not a problem and is ignored.
 
 #### **Standalone Ship Wing-Name Pattern**:
-*   Warns if a standalone ship (defined in `entities.ships`, not part of any wing) has a name that matches the common Terran wing-member pattern: `<Prefix> <Number>` where *Prefix* is one of **Alpha, Beta, Gamma, Delta, Epsilon** (e.g. `Alpha 1`, `Beta 3`).
+*   Warns if a standalone ship (defined in `entities.ships`, not part of any wing) has a name that matches the canonical FreeSpace wing-member pattern: `<Prefix> <Number>` where *Prefix* is any of the Terran, Vasudan, or Shivan wing names from the FreeSpace Universe Bible (e.g. `Alpha 1`, `Rama 4`, `Theta 2`).
 *   This is almost always an authoring mistake — the intended approach is to define a wing via `entities.wings`. The warning is advisory and does not abort conversion.
 
 #### **Invalid Player Start Ship**:
 *   **Hard error (aborts conversion)** when `player_setup.start_ship` is not a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing.
 *   **Why only Alpha/Beta/Gamma?** FSO's team loadout screen reads player-wing data exclusively from the first three Friendly wings (Team 1: Alpha, Beta, Gamma). Starting the player anywhere else — as a standalone ship, in a `Delta` or `Epsilon` wing, in a hostile wing, or in any other non-standard wing — causes the FSO loadout screen to malfunction.
 *   Non-leader positions within Alpha/Beta/Gamma are fully supported: `Alpha 2`, `Beta 3`, `Gamma 4`, etc. do **not** trigger this error.
-*   `Delta` and `Epsilon` wings remain valid as **additional friendly wings** for weapon-pool calculation and `additional_ship_choices`. They just cannot host the player start ship itself.
 
 #### **Reinforcements**:
 *   Ensures all referenced ships and wings in `reinforcement_ships`/`reinforcement_wings` actually exist in the mission.

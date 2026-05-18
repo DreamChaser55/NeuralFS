@@ -12,7 +12,7 @@ if str(_root_dir) not in sys.path:
     sys.path.insert(0, str(_root_dir))
 from common.utils import sanitize_path
 from common.validation_utils import AsciiStr
-from common.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS
+from common.fs_data import ALLOWED_SHIP_CLASSES, ALLOWED_WEAPONS, PLAYER_START_WING_NAMES
 
 SUCCESS_LEVEL = 25
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
@@ -278,8 +278,9 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
     """
     allowed_ships = set(fcif.starting_loadout.ships)
     allowed_weapons = set(fcif.starting_loadout.weapons)
-    
-    player_wings = {"Alpha", "Beta", "Gamma", "Delta", "Epsilon"}
+
+    # Only Alpha, Beta, and Gamma are shown on the FSO loadout screen.
+    player_wings = PLAYER_START_WING_NAMES
 
     for mission in fcif.missions:
         mission_filename = Path(mission.filename).stem

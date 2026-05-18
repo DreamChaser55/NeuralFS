@@ -459,5 +459,126 @@ player_setup:
         )
 
 
+class TestDeltaEpsilonWingsNotChecked(unittest.TestCase):
+    """
+    Verify that Delta and Epsilon wing ship classes and weapons are NOT
+    required in starting_loadout.  Only Alpha, Beta, and Gamma wings are
+    shown on the FSO loadout screen, so only those are validated.
+    """
+
+    def _run_check(self, fsif_content, fcif_ships, fcif_weapons):
+        """Write a single FSIF for mission_01.fs2 and run the loadout check."""
+        import contextlib
+
+        @contextlib.contextmanager
+        def cap():
+            handler = LogCaptureHandler()
+            handler.setLevel(logging.DEBUG)
+            old_level = fcif_logger.level
+            old_propagate = fcif_logger.propagate
+            fcif_logger.setLevel(logging.DEBUG)
+            fcif_logger.addHandler(handler)
+            fcif_logger.propagate = False
+            try:
+                yield handler.messages
+            finally:
+                fcif_logger.removeHandler(handler)
+                fcif_logger.setLevel(old_level)
+                fcif_logger.propagate = old_propagate
+
+        import tempfile
+        with cap() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                tmp = Path(tmpdir)
+                fsif_dir = tmp / "fsif"
+                fsif_dir.mkdir(parents=True, exist_ok=True)
+                _write_fsif(fsif_dir, "mission_01.fsif", fsif_content)
+                fcif = _load_fcif(_minimal_fcif_yaml(fcif_ships, fcif_weapons))
+                fcif_path = tmp / "campaign.fcif"
+                result = check_campaign_player_loadouts(fcif, fcif_path)
+        return result, msgs
+
+    def test_delta_wing_ships_and_weapons_not_required_in_loadout(self):
+        """
+        A Delta wing that uses GTF Hercules and Banshee should NOT require
+        those to be in starting_loadout.  Only Alpha/Beta/Gamma are checked.
+        """
+        fsif = """
+entities:
+  ship_templates:
+    alpha_t:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
+    delta_t:
+      class: "GTF Hercules"
+      team: "Friendly"
+      weapons:
+        primary: ["Banshee", "Avenger"]
+        secondary: ["Hornet", "Interceptor"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
+    - name: "Delta"
+      template: "delta_t"
+      count: 2
+      position: [200, 0, 0]
+player_setup:
+  start_ship: "Alpha 1"
+"""
+        # starting_loadout covers only Alpha-wing requirements (GTF Ulysses, Avenger, MX-50)
+        # Delta-wing requirements (GTF Hercules, Banshee, Hornet, Interceptor) are NOT included.
+        result, msgs = self._run_check(
+            fsif,
+            fcif_ships=["GTF Ulysses"],
+            fcif_weapons=["Avenger", "MX-50"],
+        )
+
+        self.assertTrue(result, f"Expected loadout check to pass with Delta-only surplus, got errors: {msgs}")
+        self.assertFalse(
+            any("[ERROR]" in m for m in msgs),
+            f"Expected no errors, got: {msgs}",
+        )
+
+    def test_alpha_wing_ships_and_weapons_still_required(self):
+        """
+        Alpha wing ships and weapons are still required in starting_loadout.
+        This ensures the Delta exclusion does not accidentally skip Alpha.
+        """
+        fsif = """
+entities:
+  ship_templates:
+    alpha_t:
+      class: "GTF Ulysses"
+      team: "Friendly"
+      weapons:
+        primary: ["Avenger", "Avenger"]
+        secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0, 0, 0]
+player_setup:
+  start_ship: "Alpha 1"
+"""
+        # starting_loadout is empty — GTF Ulysses and its weapons are missing.
+        result, msgs = self._run_check(
+            fsif,
+            fcif_ships=[],
+            fcif_weapons=[],
+        )
+
+        self.assertFalse(result, "Expected loadout check to fail when Alpha ships are missing")
+        self.assertTrue(
+            any("[ERROR]" in m and "GTF Ulysses" in m for m in msgs),
+            f"Expected error mentioning 'GTF Ulysses', got: {msgs}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -510,7 +510,7 @@ All available primary and secondary weapon banks (hardpoints) in fighters and bo
 If the mission is part of a campaign, all ships and weapons are unavailable by default. They must be explicitly allowed in the FCIF `starting_loadout` or via `allow-ship`/`allow-weapon` SEXPs (see `/FSO SEXPs/Mission and Campaign.txt`) executed at the **end of the previous mission**.
 
 ## Providing alternative player ships
-Use `additional_ship_choices` to provide a pool of alternative ships the player can swap in on the loadout screen. Player can then swap these extra ships into their friendly starting wings (Alpha, Beta, Gamma, Delta, Epsilon).
+Use `additional_ship_choices` to provide a pool of alternative ships the player can swap in on the loadout screen. Player can swap these extra ships into the loadout-screen wings Alpha, Beta, and Gamma.
 
 ```yaml
 player_setup:
