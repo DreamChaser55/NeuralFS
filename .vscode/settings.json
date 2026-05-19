@@ -2,5 +2,10 @@
   "files.associations": {
     "*.fsif": "yaml",
     "*.fcif": "yaml"
-  }
+  },
+  "python.testing.pytestArgs": [
+    "FSIF_to_FS2_Converter"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
