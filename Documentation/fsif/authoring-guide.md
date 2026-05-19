@@ -782,9 +782,10 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 ### Reinforcements
 - Keep reinforcements callable: both reinforcement wings and standalone reinforcement ships should omit `arrival_cue` — it defaults to `( true )`, making the reinforcement available to call from mission start.
 
-### Waypoint paths
-- The converter checks for potential collisions between larger standalone ships or larger-ship wings on waypoint paths and other ships' **initial positions**. For wing-level waypoint orders, NeuralFS uses the wing's ship template class: wings whose class is not in the fighter/bomber class list are checked, while fighter/bomber-only wings are skipped. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
-- Multiple ships must not share the same waypoint movement order. Ships ordered to the same waypoint destination will collide when they arrive. For convoys, give each ship its own waypoint path with a slightly offset final destination.
+### Waypoint paths and convoys
+- The converter checks for potential collisions between larger standalone ships or larger-ship wings on waypoint paths and other ships' **initial positions**. For wing-level waypoint orders, NeuralFS uses the wing's ship template class for collision checks: wings whose class is not in the fighter/bomber class list are checked, while fighter/bomber-only wings are skipped. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
+- Multiple standalone larger ships or multiple wings of larger ships must not share the same waypoint movement order. Ships ordered to the same waypoint destination will collide when they arrive. For convoys, give each ship its own waypoint path with a slightly offset final destination.
+- If the ships in the convoy are of the same class and the naming schema allows it, you can make them into a wing and give it a wing-level waypoint movement order; wing members automatically avoid colliding with each other during movements. However, keep in mind that wing members will not automatically avoid collisions with other standalone ships or members of other wings, so any other convoy elements should still have separate waypoints.
 
 ### Red alert missions
 - Missions with the `red_alert` flag inherit player ship hull and loadout from the previous mission. Only the first briefing stage text is shown, with no icons. Use `red_alert_carry` on ships you want to carry between missions (in **both** the previous and the red-alert mission).
