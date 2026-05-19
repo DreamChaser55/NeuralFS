@@ -14,6 +14,42 @@ from data_models import Mission, MissionInfo, PlayerSetup, Ship, Wing, Environme
 from validator import Validator
 
 class TestWaypointCollisions(unittest.TestCase):
+    @staticmethod
+    def _make_wing(name, ship_class, count=2, initial_orders=None,
+                   position=None, member_spacing=50.0, arrival_method="Hyperspace",
+                   arrival_anchor=None, arrival_distance=None):
+        if position is None:
+            position = [0.0, 0.0, 0.0]
+
+        center_index = (count - 1) / 2.0
+        members = []
+        for i in range(count):
+            offset = (i - center_index) * member_spacing
+            members.append(Ship.model_validate({
+                "name": f"{name} {i + 1}",
+                "class": ship_class,
+                "team": "Friendly",
+                "position": [position[0] + offset, position[1], position[2]],
+                "arrival_cue": "( false )",
+            }))
+
+        wing_data = {
+            "name": name,
+            "count": count,
+            "ships": members,
+            "position": position,
+            "member_spacing": member_spacing,
+            "arrival_method": arrival_method,
+        }
+        if initial_orders is not None:
+            wing_data["initial_orders"] = initial_orders
+        if arrival_anchor is not None:
+            wing_data["arrival_anchor"] = arrival_anchor
+        if arrival_distance is not None:
+            wing_data["arrival_distance"] = arrival_distance
+
+        return Wing(**wing_data)
+
     def test_collision_detected(self):
         # Minimal setup
         info = MissionInfo(name="Test Mission")
@@ -142,6 +178,158 @@ class TestWaypointCollisions(unittest.TestCase):
             len(validator.warnings), 0,
             f"Expected no warnings for pre-destroyed obstacle, got: {validator.warnings}"
         )
+
+    def test_large_ship_wing_waypoint_collision_detected(self):
+        """A wing whose single NeuralFS template class is not fighter/bomber
+        should receive the same geometric waypoint collision warning as a large
+        standalone ship.
+        """
+        info = MissionInfo(name="Large Wing WP Test")
+        setup = PlayerSetup(start_ship="Alpha 1")
+        env = Environment()
+        waypoints = {"WingPath": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
+
+        wing = self._make_wing(
+            "Epsilon",
+            "GTC Fenris",
+            count=2,
+            initial_orders='( ai-waypoints-once "WingPath" 89 )',
+        )
+        obstacle = Ship.model_validate({
+            "name": "GTC Obstacle",
+            "class": "GTC Leviathan",
+            "team": "Friendly",
+            "position": [250.0, 0.0, 0.0],
+        })
+
+        mission = Mission(
+            mission_info=info,
+            player_setup=setup,
+            environment=env,
+            ships=wing.ships + [obstacle],
+            wings=[wing],
+            waypoints=waypoints,
+        )
+
+        validator = Validator(mission, Path("."), None)
+        validator.validate_waypoint_collisions()
+
+        combined = "\n".join(validator.warnings)
+        self.assertIn("Wing 'Epsilon'", combined)
+        self.assertIn("GTC Obstacle", combined)
+        self.assertIn("collision during waypoint movement", combined)
+
+    def test_fighter_bomber_wing_waypoint_collision_not_checked_geometrically(self):
+        """Fighter/bomber wings are excluded from the geometric wing path check
+        by NUM_OF_HARDPOINTS classification.
+        """
+        info = MissionInfo(name="Fighter Wing WP Test")
+        setup = PlayerSetup(start_ship="Alpha 1")
+        env = Environment()
+        waypoints = {"WingPath": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
+
+        wing = self._make_wing(
+            "Alpha",
+            "GTF Ulysses",
+            count=2,
+            initial_orders='( ai-waypoints-once "WingPath" 89 )',
+        )
+        obstacle = Ship.model_validate({
+            "name": "GTC Obstacle",
+            "class": "GTC Leviathan",
+            "team": "Friendly",
+            "position": [250.0, 0.0, 0.0],
+        })
+
+        mission = Mission(
+            mission_info=info,
+            player_setup=setup,
+            environment=env,
+            ships=wing.ships + [obstacle],
+            wings=[wing],
+            waypoints=waypoints,
+        )
+
+        validator = Validator(mission, Path("."), None)
+        validator.validate_waypoint_collisions()
+
+        self.assertEqual([], validator.warnings)
+
+    def test_large_ship_wing_does_not_warn_against_own_members(self):
+        """A wing-level path check must not treat the wing's own members as
+        static obstacles; intra-wing spacing is handled by wing movement AI.
+        """
+        info = MissionInfo(name="Own Members WP Test")
+        setup = PlayerSetup(start_ship="Alpha 1")
+        env = Environment()
+        waypoints = {"WingPath": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
+
+        wing = self._make_wing(
+            "Epsilon",
+            "GTC Fenris",
+            count=3,
+            initial_orders='( ai-waypoints-once "WingPath" 89 )',
+            member_spacing=50.0,
+        )
+
+        mission = Mission(
+            mission_info=info,
+            player_setup=setup,
+            environment=env,
+            ships=wing.ships,
+            wings=[wing],
+            waypoints=waypoints,
+        )
+
+        validator = Validator(mission, Path("."), None)
+        validator.validate_waypoint_collisions()
+
+        self.assertEqual([], validator.warnings)
+
+    def test_directional_arrival_large_ship_wing_waypoint_collision_skipped(self):
+        """Directional arrival wings have no fixed initial path, so the
+        geometric waypoint collision check should skip them.
+        """
+        info = MissionInfo(name="Directional Wing WP Test")
+        setup = PlayerSetup(start_ship="Alpha 1")
+        env = Environment()
+        waypoints = {"WingPath": [[100.0, 0.0, 0.0], [500.0, 0.0, 0.0]]}
+
+        anchor = Ship.model_validate({
+            "name": "GTC Anchor",
+            "class": "GTC Leviathan",
+            "team": "Friendly",
+            "position": [0.0, 0.0, 0.0],
+        })
+        obstacle = Ship.model_validate({
+            "name": "GTC Obstacle",
+            "class": "GTC Leviathan",
+            "team": "Friendly",
+            "position": [250.0, 0.0, 0.0],
+        })
+        wing = self._make_wing(
+            "Epsilon",
+            "GTC Fenris",
+            count=2,
+            initial_orders='( ai-waypoints-once "WingPath" 89 )',
+            arrival_method="Near Ship",
+            arrival_anchor="GTC Anchor",
+            arrival_distance=1000,
+        )
+
+        mission = Mission(
+            mission_info=info,
+            player_setup=setup,
+            environment=env,
+            ships=[anchor, obstacle] + wing.ships,
+            wings=[wing],
+            waypoints=waypoints,
+        )
+
+        validator = Validator(mission, Path("."), None)
+        validator.validate_waypoint_collisions()
+
+        self.assertEqual([], validator.warnings)
 
 
 # ---------------------------------------------------------------------------

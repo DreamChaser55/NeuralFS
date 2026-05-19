@@ -371,53 +371,85 @@ class SpatialChecksMixin:
 
     def validate_waypoint_collisions(self):
         """
-        Check if standalone ship waypoint move orders are likely to cause a collision 
-        with another ship or station in the mission.
-        
-        Note: Wing-level waypoint orders are intentionally not checked for path collisions. 
-        Wings typically consist of fighters or bombers which have their own AI routines for collision avoidance.
-        """
-        import re
-        import math
+        Check if waypoint move orders are likely to cause a collision with another
+        ship or station in the mission.
 
-        # Regex to find ai-waypoints and ai-waypoints-once
-        # Extracts the path name, stripping quotes if present
-        wp_regex = re.compile(r'\(\s*ai-waypoints(?:-once)?\s+(?:"([^"]+)"|([^"\s)]+))', re.IGNORECASE)
+        Standalone ships use the historical radius cutoff for this advisory check.
+        Wing-level waypoint orders are checked only when the wing's single NeuralFS
+        template class is larger than fighter/bomber scale (not present in
+        NUM_OF_HARDPOINTS). Fighter/bomber-only wings are skipped because their
+        formation and collision-avoidance AI is sufficient for this advisory check.
+        """
+        import math
 
         ships_with_waypoints = set()
         for w in self.mission.wings:
-            if w.initial_orders and wp_regex.search(w.initial_orders):
+            if self._extract_waypoint_paths(w.initial_orders):
                 for s in w.ships:
                     ships_with_waypoints.add(s.name)
-                    
+                     
         for s in self.mission.ships:
-            if s.initial_orders and wp_regex.search(s.initial_orders):
+            if self._extract_waypoint_paths(s.initial_orders):
                 ships_with_waypoints.add(s.name)
 
         ship_map = {s.name: s for s in self.mission.ships}
 
+        def resolve_effective_initial_location(arrival_method, arrival_anchor, own_position, visited=None):
+            if visited is None:
+                visited = set()
+
+            arr_loc = (arrival_method or "Hyperspace").strip().lower()
+            if arr_loc == "hyperspace":
+                return own_position
+
+            if arr_loc == "docking bay":
+                if arrival_anchor:
+                    if arrival_anchor in visited:
+                        return own_position
+                    visited.add(arrival_anchor)
+                    anchor_ship = ship_map.get(arrival_anchor)
+                    if anchor_ship:
+                        anchor_loc = resolve_effective_initial_location(
+                            anchor_ship.arrival_method,
+                            anchor_ship.arrival_anchor,
+                            anchor_ship.position,
+                            visited,
+                        )
+                        if anchor_loc is not None:
+                            return anchor_loc
+                return own_position
+
+            return None
+
         def get_effective_initial_location(ship_name, visited=None):
+            s = ship_map.get(ship_name)
+            if not s:
+                return None
+
             if visited is None:
                 visited = set()
             if ship_name in visited:
                 return None
             visited.add(ship_name)
-            
-            s = ship_map.get(ship_name)
-            if not s:
+
+            return resolve_effective_initial_location(
+                s.arrival_method,
+                s.arrival_anchor,
+                s.position,
+                visited,
+            )
+
+        def get_effective_wing_initial_location(wing):
+            wing_position = wing.position
+            if wing_position is None and wing.ships:
+                wing_position = wing.ships[0].position
+            if wing_position is None:
                 return None
-                
-            arr_loc = s.arrival_method.strip().lower()
-            if arr_loc == "hyperspace":
-                return s.position
-            elif arr_loc == "docking bay":
-                if s.arrival_anchor:
-                    anchor_loc = get_effective_initial_location(s.arrival_anchor, visited)
-                    if anchor_loc is not None:
-                        return anchor_loc
-                return s.position
-            else:
-                return None
+            return resolve_effective_initial_location(
+                wing.arrival_method,
+                wing.arrival_anchor,
+                wing_position,
+            )
 
         # 1. Collect all stationary or existing objects to check against
         obstacles = []
@@ -467,7 +499,7 @@ class SpatialChecksMixin:
             dist = math.sqrt((p[0]-closest[0])**2 + (p[1]-closest[1])**2 + (p[2]-closest[2])**2)
             return dist
 
-        def get_segment_obb(p1, p2, ship_class):
+        def get_segment_obb(p1, p2, ship_class, padding=0.0):
             if ship_class in self.ship_bounding_boxes:
                 box = self.ship_bounding_boxes[ship_class]
                 min_x, min_y, min_z = box['min']
@@ -477,9 +509,9 @@ class SpatialChecksMixin:
                 min_x, min_y, min_z = -r, -r, -r
                 max_x, max_y, max_z = r, r, r
                 
-            ex = (max_x - min_x) / 2.0
-            ey = (max_y - min_y) / 2.0
-            ez = (max_z - min_z) / 2.0
+            ex = (max_x - min_x) / 2.0 + padding
+            ey = (max_y - min_y) / 2.0 + padding
+            ez = (max_z - min_z) / 2.0 + padding
             
             dx = p2[0] - p1[0]
             dy = p2[1] - p1[1]
@@ -508,21 +540,36 @@ class SpatialChecksMixin:
             }
 
         def check_path_for_collisions(entity_type, entity_name, start_pos, entity_class, path_name):
+            formation_padding = 0.0
+            ignore_obstacle_names = set()
+
+            if entity_type == "Wing":
+                wing = next((w for w in self.mission.wings if w.name == entity_name), None)
+                if wing:
+                    member_count = len(wing.ships) if wing.ships else wing.count
+                    formation_padding = max(0.0, ((member_count - 1) * wing.member_spacing) / 2.0)
+                    ignore_obstacle_names = {member.name for member in wing.ships}
+
             if path_name not in self.mission.waypoints:
                 return
-                
+                 
             points = [start_pos] + self.mission.waypoints[path_name]
             collisions = {}
             
             for i in range(len(points) - 1):
                 p1 = points[i]
                 p2 = points[i+1]
-                
-                segment_obb = get_segment_obb(p1, p2, entity_class)
-                
+                 
+                segment_obb = get_segment_obb(p1, p2, entity_class, padding=formation_padding)
+                 
                 for obs in obstacles:
                     # Don't collide with yourself
                     if obs['name'] == entity_name:
+                        continue
+
+                    # Don't flag a wing-level path against its own members. Wing
+                    # movement AI is expected to handle intra-wing spacing.
+                    if obs['name'] in ignore_obstacle_names:
                         continue
                         
                     # Exclude collision checks between a ship and its arrival anchor
@@ -553,17 +600,31 @@ class SpatialChecksMixin:
         for s in self.mission.ships:
             if s.name in wing_members:
                 continue
-            if s.initial_orders:
-                match = wp_regex.search(s.initial_orders)
-                if match:
-                    path_name = match.group(1) or match.group(2)
-                    my_radius = self._get_ship_radius(s.ship_class)
-                    if my_radius <= 50.0:
-                        continue
-                    eff_loc = get_effective_initial_location(s.name)
-                    if eff_loc is None:
-                        continue
-                    check_path_for_collisions("Ship", s.name, eff_loc, s.ship_class, path_name)
+            for path_name in self._extract_waypoint_paths(s.initial_orders):
+                my_radius = self._get_ship_radius(s.ship_class)
+                if my_radius <= 50.0:
+                    continue
+                eff_loc = get_effective_initial_location(s.name)
+                if eff_loc is None:
+                    continue
+                check_path_for_collisions("Ship", s.name, eff_loc, s.ship_class, path_name)
+
+        # 3. Check large-ship wings. NeuralFS wings are single-class because the
+        # loader expands every member from one template, so the leader class is
+        # representative for the whole wing.
+        for w in self.mission.wings:
+            if not w.ships:
+                continue
+            wing_class = w.ships[0].ship_class
+            if wing_class in self.num_hardpoints:
+                continue
+
+            eff_loc = get_effective_wing_initial_location(w)
+            if eff_loc is None:
+                continue
+
+            for path_name in self._extract_waypoint_paths(w.initial_orders):
+                check_path_for_collisions("Wing", w.name, eff_loc, wing_class, path_name)
 
     # ------------------------------------------------------------------
     # Shared-destination waypoint order helpers

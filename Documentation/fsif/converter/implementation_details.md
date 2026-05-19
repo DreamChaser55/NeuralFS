@@ -269,11 +269,11 @@ The validator checks the following areas:
 *   The warning is advisory and does not abort conversion.
 
 #### **Waypoint Path Collisions**:
-*   Warns when a standalone ship's `ai-waypoints` or `ai-waypoints-once` path is likely to pass through or very close to the initial position of another large ship or installation.
-*   **Scope**: only standalone ships with waypoint AI orders are checked. Wing-level waypoints are intentionally not checked — wings of fighters/bombers rely on their own AI collision avoidance routines.
-*   **Collision test**: a segment OBB is constructed for each waypoint leg and tested against the static OBBs of potential obstacles.
-*   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from both the mover and obstacle sets. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
-*   The effective start position of the moving ship is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships with directional arrival methods are excluded (no fixed initial position).
+*   Warns when a standalone ship's or large-ship wing's `ai-waypoints` or `ai-waypoints-once` path is likely to pass through or very close to the initial position of another large ship or installation.
+*   **Scope**: standalone ships with waypoint AI orders are checked using the existing radius cutoff. Wing-level waypoint orders are checked when the wing's single NeuralFS template class is not present in `NUM_OF_HARDPOINTS` (that is, when the wing is not fighter/bomber scale). Fighter/bomber-only wings remain excluded because their formation and collision-avoidance AI is sufficient for this advisory check.
+*   **Collision test**: a segment OBB is constructed for each waypoint leg and tested against the static OBBs of potential obstacles. Large-ship wings use the leader/member template class as the representative OBB and add conservative formation padding from wing member count and `member_spacing`.
+*   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from the standalone mover and obstacle sets. Large-ship wing eligibility uses `NUM_OF_HARDPOINTS` rather than the radius cutoff. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
+*   The effective start position of the moving ship or wing is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships and wings with directional arrival methods are excluded (no fixed initial position).
 *   The warning is advisory and does not abort conversion.
 
 #### **Anchor Validation**:
