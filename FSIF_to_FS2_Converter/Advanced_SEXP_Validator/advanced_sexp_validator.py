@@ -42,12 +42,17 @@ except (ImportError, ValueError):
 def is_fighter_bomber(ship_class: str) -> bool:
     """
     Determine if a ship class is a Fighter or Bomber.
-    First checks weapons_compatibility_data (which is extracted exactly from ship flags).
-    Falls back to a prefix heuristic.
+    First checks fs_data.FIGHTER_BOMBER_CLASSES, which is generated from ship
+    table fighter/bomber flags via fighter_bomber_hardpoints.md. Falls back to
+    the older compatibility/prefix logic only when generated data is unavailable.
     """
     if not ship_class:
         return False
-        
+
+    fighter_bomber_classes = getattr(fs_data, 'FIGHTER_BOMBER_CLASSES', None)
+    if fighter_bomber_classes:
+        return ship_class in fighter_bomber_classes
+
     try:
         from weapons_compatibility_data import WEAPON_COMPATIBILITY
         if ship_class in WEAPON_COMPATIBILITY:

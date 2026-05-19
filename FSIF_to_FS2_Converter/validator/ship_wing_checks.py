@@ -48,8 +48,8 @@ class ShipWingChecksMixin:
         """
         friendly_fighter_bombers = [
             s for s in self.mission.ships 
-            if s.team == 'Friendly' and s.ship_class in self.num_hardpoints
-        ] # num_hardpoints (fs_data.NUM_OF_HARDPOINTS) contains exactly the set of all fighters and bombers
+            if s.team == 'Friendly' and s.ship_class in self.fighter_bomber_classes
+        ]
 
         
         if not friendly_fighter_bombers:
@@ -559,9 +559,10 @@ class ShipWingChecksMixin:
         contains cruisers, destroyers, transports, freighters, science vessels, escape pods,
         or similar potentially important vessels is unusual and often an oversight.
 
-        The check uses ``self.num_hardpoints`` (``fs_data.NUM_OF_HARDPOINTS``)
-        as the fighter/bomber classifier: any ship whose class is NOT in that
-        dict is considered "larger than fighter/bomber", minus a set of small
+        The check uses ``self.fighter_bomber_classes``
+        (``fs_data.FIGHTER_BOMBER_CLASSES``) as the fighter/bomber classifier:
+        any ship whose class is NOT in that set is considered
+        "larger than fighter/bomber", minus a set of small
         utility objects (nav buoys, sentry guns, cargo containers,
         training drones) that have no gameplay relevance for the escort list.
 
@@ -573,7 +574,7 @@ class ShipWingChecksMixin:
         # present in the mission, so they are excluded from this check.
         large_ships = [
             ship for ship in self.mission.ships
-            if ship.ship_class not in self.num_hardpoints
+            if ship.ship_class not in self.fighter_bomber_classes
             and ship.ship_class not in _SMALL_UTILITY_CLASSES
             and ship.destroyed_before_mission_seconds == 0
         ]

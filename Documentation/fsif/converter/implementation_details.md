@@ -270,9 +270,9 @@ The validator checks the following areas:
 
 #### **Waypoint Path Collisions**:
 *   Warns when a standalone ship's or large-ship wing's `ai-waypoints` or `ai-waypoints-once` path is likely to pass through or very close to the initial position of another large ship or installation.
-*   **Scope**: standalone ships with waypoint AI orders are checked using the existing radius cutoff. Wing-level waypoint orders are checked when the wing's single NeuralFS template class is not present in `NUM_OF_HARDPOINTS` (that is, when the wing is not fighter/bomber scale). Fighter/bomber-only wings remain excluded because their formation and collision-avoidance AI is sufficient for this advisory check.
+*   **Scope**: standalone ships with waypoint AI orders are checked using the existing radius cutoff. Wing-level waypoint orders are checked when the wing's single NeuralFS template class is not present in `FIGHTER_BOMBER_CLASSES` (that is, when the wing is not fighter/bomber scale). Fighter/bomber-only wings remain excluded because their formation and collision-avoidance AI is sufficient for this advisory check.
 *   **Collision test**: a segment OBB is constructed for each waypoint leg and tested against the static OBBs of potential obstacles. Large-ship wings use the leader/member template class as the representative OBB and add conservative formation padding from wing member count and `member_spacing`.
-*   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from the standalone mover and obstacle sets. Large-ship wing eligibility uses `NUM_OF_HARDPOINTS` rather than the radius cutoff. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
+*   **Exclusions**: ships with a radius ≤ 50 m (fighters, bombers, small craft) are excluded from the standalone mover and obstacle sets. Large-ship wing eligibility uses `FIGHTER_BOMBER_CLASSES` rather than the radius cutoff. Docking-bay-arrival ships are excluded from checks against their own arrival anchor.
 *   The effective start position of the moving ship or wing is resolved recursively for Docking Bay arrivals (inherits anchor position). Ships and wings with directional arrival methods are excluded (no fixed initial position).
 *   The warning is advisory and does not abort conversion.
 
@@ -292,7 +292,7 @@ The validator checks the following areas:
 #### **No Escort-Flagged Large Ships**:
 *   Warns when a mission contains ships larger than fighter/bomber scale but **none** of them have the `escort` flag.
 *   In FreeSpace it is customary to add important larger ships (cruisers, destroyers, transports, freighters, science vessels, support ships, etc.) to the HUD escort list so the player can always see their hull integrity. Having zero escort-flagged large ships is unusual and is often an oversight.
-*   **"Larger than fighter/bomber"** is defined as: any ship whose class is **not** in `fs_data.NUM_OF_HARDPOINTS` (the set of all fighter and bomber classes) **and** is not in the small-utility exclusion set (nav buoys, sentry guns, cargo containers, escape pods, training drones).
+*   **"Larger than fighter/bomber"** is defined as: any ship whose class is **not** in `fs_data.FIGHTER_BOMBER_CLASSES` **and** is not in the small-utility exclusion set (nav buoys, sentry guns, cargo containers, escape pods, training drones).
 *   The check requires **at least one** large ship to carry the `escort` flag. It does not require all large ships to be flagged — only the most important one(s) need to be visible on the HUD.
 *   Having a fighter or bomber with `escort` does **not** satisfy the check; the flag must appear on a large ship.
 *   The warning is advisory and does not abort conversion. If all larger ships in the mission are minor background objects that the player has no gameplay reason to monitor, you may ignore it.

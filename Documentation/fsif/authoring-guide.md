@@ -783,7 +783,7 @@ Use `destroyed_before_mission_seconds` to create ship debris at mission start. T
 - Keep reinforcements callable: both reinforcement wings and standalone reinforcement ships should omit `arrival_cue` — it defaults to `( true )`, making the reinforcement available to call from mission start.
 
 ### Waypoint paths
-- The converter checks for potential collisions between larger standalone ships or larger-ship wings on waypoint paths and other ships' **initial positions**. For wing-level waypoint orders, NeuralFS uses the wing's single template class: wings whose class is not in the fighter/bomber hardpoint table are checked, while fighter/bomber-only wings are skipped. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
+- The converter checks for potential collisions between larger standalone ships or larger-ship wings on waypoint paths and other ships' **initial positions**. For wing-level waypoint orders, NeuralFS uses the wing's ship template class: wings whose class is not in the fighter/bomber class list are checked, while fighter/bomber-only wings are skipped. This check can produce spurious warnings because ships may move from their initial positions. Consider the planned mission flow when reviewing these warnings.
 - Multiple ships must not share the same waypoint movement order. Ships ordered to the same waypoint destination will collide when they arrive. For convoys, give each ship its own waypoint path with a slightly offset final destination.
 
 ### Red alert missions

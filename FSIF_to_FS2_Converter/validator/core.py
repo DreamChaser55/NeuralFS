@@ -52,6 +52,7 @@ class Validator(
         self.subsystems: Dict[str, Set[str]] = {} # class -> set of subsystems
         self.voices: Set[str] = set()
         self.allowed_sexp_operators: Set[str] = set()
+        self.fighter_bomber_classes: Set[str] = set()
         self.num_hardpoints: Dict[str, Dict[str, int]] = {}
         
         # Static Reference Data (from fs_data)
@@ -110,10 +111,13 @@ class Validator(
         # 5. SEXPs
         self.allowed_sexp_operators = fs_data.ALLOWED_SEXP_OPERATORS
 
-        # 6. Hardpoints
+        # 6. Fighter/Bomber classes
+        self.fighter_bomber_classes = fs_data.FIGHTER_BOMBER_CLASSES
+
+        # 7. Hardpoints
         self.num_hardpoints = fs_data.NUM_OF_HARDPOINTS
 
-        # 7. Ship bounding boxes
+        # 8. Ship bounding boxes
         self.ship_bounding_boxes = getattr(fs_data, 'SHIP_BOUNDING_BOXES', {})
 
 

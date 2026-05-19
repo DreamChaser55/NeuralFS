@@ -221,7 +221,7 @@ class TestWaypointCollisions(unittest.TestCase):
 
     def test_fighter_bomber_wing_waypoint_collision_not_checked_geometrically(self):
         """Fighter/bomber wings are excluded from the geometric wing path check
-        by NUM_OF_HARDPOINTS classification.
+        by FIGHTER_BOMBER_CLASSES classification.
         """
         info = MissionInfo(name="Fighter Wing WP Test")
         setup = PlayerSetup(start_ship="Alpha 1")

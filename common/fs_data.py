@@ -214,7 +214,12 @@ ALLOWED_VOICES_GOOGLE = {'Achernar', 'Achird', 'Algenib', 'Algieba', 'Alnilam', 
 ALLOWED_VOICES_ELEVENLABS = {'Adam', 'Arnold', 'Bella', 'Brian', 'Callum', 'Charlie', 'Charlotte', 'Daniel', 'Dorothy', 'Elli', 'Emily', 'Freya', 'George', 'Harry', 'James', 'Josh', 'Lily', 'Matilda', 'Nicole', 'Rachel', 'Ryan', 'Sam', 'Sarah', 'Serena', 'Thomas'}
 ALLOWED_VOICES_INWORLD = {'Abby', 'Alex', 'Amina', 'Anjali', 'Arjun', 'Ashley', 'Avery', 'Bianca', 'Blake', 'Brandon', 'Brian', 'Callum', 'Carter', 'Cedric', 'Celeste', 'Chloe', 'Claire', 'Clive', 'Conrad', 'Craig', 'Damon', 'Darlene', 'Deborah', 'Dennis', 'Derek', 'Dominus', 'Duncan', 'Edward', 'Eleanor', 'Elizabeth', 'Elliot', 'Ethan', 'Evan', 'Evelyn', 'Felix', 'Gareth', 'Graham', 'Grant', 'Hades', 'Hamish', 'Hana', 'Hank', 'Jake', 'James', 'Jason', 'Jessica', 'Jonah', 'Julia', 'Kayla', 'Kelsey', 'Lauren', 'Levi', 'Liam', 'Loretta', 'Lucian', 'Luna', 'Malcolm', 'Marcus', 'Mark', 'Marlene', 'Mia', 'Miranda', 'Mortimer', 'Nadia', 'Naomi', 'Nate', 'Oliver', 'Olivia', 'Pippa', 'Pixie', 'Priya', 'Reed', 'Riley', 'Ronald', 'Rupert', 'Saanvi', 'Sarah', 'Sebastian', 'Selene', 'Serena', 'Shaun', 'Simon', 'Snik', 'Sophie', 'Tessa', 'Theodore', 'Timothy', 'Trevor', 'Tristan', 'Tyler', 'Veronica', 'Victor', 'Victoria', 'Vinny', 'Wendy'}
 
-# --- 6. Hardpoints ---
+# --- 6. Fighter/Bomber Classes ---
+# Set of ship classes flagged as fighters or bombers.
+# Source: fighter_bomber_hardpoints.md, generated from ship table flags.
+FIGHTER_BOMBER_CLASSES = {'GTB Athena', 'GTB Medusa', 'GTB Ursa', 'GTB Zeus', 'GTDr Amazon', 'GTF Angel', 'GTF Apollo', 'GTF Hercules', 'GTF Loki', 'GTF Loki#stealth', 'GTF Ulysses', 'GTF Valkyrie', 'PVB Amun', 'PVB Osiris', 'PVB Sekhmet', 'PVDr Jackal', 'PVF Anubis', 'PVF Horus', 'PVF Seth', 'PVF Thoth', 'PVF Ulysses', 'SB Nahema', 'SB Nephilim', 'SB Seraphim', 'SB Shaitan', 'SF Basilisk', 'SF Dragon', 'SF Dragon#Terrans', 'SF Dragon#weakened', 'SF Gorgon', 'SF Manticore', 'SF Scorpion'}
+
+# --- 7. Hardpoints ---
 # Mapping Class -> {'primary': N, 'secondary': M}
 NUM_OF_HARDPOINTS = {
     'GTB Athena': {'primary': 2, 'secondary': 2},
@@ -251,7 +256,7 @@ NUM_OF_HARDPOINTS = {
     'SF Scorpion': {'primary': 2, 'secondary': 1},
 }
 
-# --- 7. Secondary Bank Capacities ---
+# --- 8. Secondary Bank Capacities ---
 # Mapping Class -> [cap1, cap2, ...]
 SHIP_SBANK_CAPACITIES = {
     'GTB Athena': [80, 80],
@@ -287,7 +292,7 @@ SHIP_SBANK_CAPACITIES = {
     'SF Scorpion': [40],
 }
 
-# --- 8. Secondary Weapon Sizes ---
+# --- 9. Secondary Weapon Sizes ---
 # Mapping Weapon -> float
 WEAPON_CARGO_SIZES = {
     'Barracuda': 10.0,
@@ -343,7 +348,7 @@ WEAPON_CARGO_SIZES = {
     'Vasudan Flux Cannon': 1.0,
 }
 
-# --- 9. Ship Bounding Boxes ---
+# --- 10. Ship Bounding Boxes ---
 # Mapping Class -> {'min': [x, y, z], 'max': [x, y, z]}
 SHIP_BOUNDING_BOXES = {
     'GTB Athena': {'min': [-8.6, -2.6, -15.0], 'max': [8.6, 4.6, 8.5]},

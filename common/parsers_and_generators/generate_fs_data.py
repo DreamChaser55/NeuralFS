@@ -492,8 +492,13 @@ def generate_file():
         f.write(f"ALLOWED_VOICES_ELEVENLABS = {fmt_set(voices_elevenlabs)}\n")
         f.write(f"ALLOWED_VOICES_INWORLD = {fmt_set(voices_inworld)}\n\n")
         
-        # Hardpoints
-        f.write("# --- 6. Hardpoints ---\n")
+        # Fighter/Bomber classes and hardpoints
+        f.write("# --- 6. Fighter/Bomber Classes ---\n")
+        f.write("# Set of ship classes flagged as fighters or bombers.\n")
+        f.write("# Source: fighter_bomber_hardpoints.md, generated from ship table flags.\n")
+        f.write(f"FIGHTER_BOMBER_CLASSES = {fmt_set(set(hardpoints.keys()))}\n\n")
+
+        f.write("# --- 7. Hardpoints ---\n")
         f.write("# Mapping Class -> {'primary': N, 'secondary': M}\n")
         f.write("NUM_OF_HARDPOINTS = {\n")
         for ship, hp in sorted(hardpoints.items()):
@@ -501,7 +506,7 @@ def generate_file():
         f.write("}\n\n")
 
         # Secondary Bank Capacities
-        f.write("# --- 7. Secondary Bank Capacities ---\n")
+        f.write("# --- 8. Secondary Bank Capacities ---\n")
         f.write("# Mapping Class -> [cap1, cap2, ...]\n")
         f.write("SHIP_SBANK_CAPACITIES = {\n")
         for ship, caps in sorted(sbank_capacities.items()):
@@ -509,7 +514,7 @@ def generate_file():
         f.write("}\n\n")
 
         # Secondary Weapon Sizes
-        f.write("# --- 8. Secondary Weapon Sizes ---\n")
+        f.write("# --- 9. Secondary Weapon Sizes ---\n")
         f.write("# Mapping Weapon -> float\n")
         f.write("WEAPON_CARGO_SIZES = {\n")
         for weapon, size in sorted(weapon_sizes.items()):
@@ -517,7 +522,7 @@ def generate_file():
         f.write("}\n\n")
 
         # Ship Bounding Boxes
-        f.write("# --- 9. Ship Bounding Boxes ---\n")
+        f.write("# --- 10. Ship Bounding Boxes ---\n")
         f.write("# Mapping Class -> {'min': [x, y, z], 'max': [x, y, z]}\n")
         f.write("SHIP_BOUNDING_BOXES = {\n")
         for ship, box in sorted(bounding_boxes.items()):

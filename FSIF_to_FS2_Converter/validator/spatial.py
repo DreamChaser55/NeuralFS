@@ -377,8 +377,9 @@ class SpatialChecksMixin:
         Standalone ships use the historical radius cutoff for this advisory check.
         Wing-level waypoint orders are checked only when the wing's single NeuralFS
         template class is larger than fighter/bomber scale (not present in
-        NUM_OF_HARDPOINTS). Fighter/bomber-only wings are skipped because their
-        formation and collision-avoidance AI is sufficient for this advisory check.
+        FIGHTER_BOMBER_CLASSES). Fighter/bomber-only wings are skipped because
+        their formation and collision-avoidance AI is sufficient for this
+        advisory check.
         """
         import math
 
@@ -616,7 +617,7 @@ class SpatialChecksMixin:
             if not w.ships:
                 continue
             wing_class = w.ships[0].ship_class
-            if wing_class in self.num_hardpoints:
+            if wing_class in self.fighter_bomber_classes:
                 continue
 
             eff_loc = get_effective_wing_initial_location(w)
