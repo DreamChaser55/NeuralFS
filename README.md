@@ -5,7 +5,7 @@
 </p>
 
 NeuralFS is an agentic AI framework that can create fully playable original campaigns for the FreeSpace Open (FSO) engine. It consists of three AI agents (LLMs with tool calling and custom system prompts) and two specialized Python conversion and validation scripts. NeuralFS supports two agentic AI engines:
-- Visual Studio Code (using the Roo Code extension)
+- Visual Studio Code (using the Zoo Code extension)
 - OpenCode
 
 ## Main Components
@@ -56,7 +56,7 @@ For details, see `\FCIF_to_FC2_Converter\README.md`.
 ## Requirements
 - Python 3.9+
 - One of these agentic AI engines:
-  - Visual Studio Code with Roo Code extension
+  - Visual Studio Code with Zoo Code extension
   - OpenCode
 - PyYAML
 - pydantic
