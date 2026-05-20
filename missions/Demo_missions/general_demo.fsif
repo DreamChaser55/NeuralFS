@@ -294,7 +294,7 @@ mission_flow:
         voice_name: "Gacrux"
 
   events:
-    - name: "MissionStartMsg"
+    - name: "MissionStart"
       formula: |
         ( when
           ( true )
@@ -316,11 +316,11 @@ mission_flow:
           ( has-arrived-delay 0 "Rama" )
           ( send-message "GTC Dauntless" "Normal" "RamaArrivedMsg" )
         )
-    - name: "MephistoArrivedMsg"
+    - name: "MephistoArrived"
       formula: |
         ( when
           ( has-arrived-delay 0 "SFr Mahishi" )
-          ( send-message "#Command" "Normal" "MephistoMsg" )
+          ( send-message "#Command" "Normal" "MephistoArrivedMsg" )
         )
     - name: "MephistoScanDirective"
       formula: |
@@ -440,7 +440,7 @@ mission_flow:
       text: "Command, we have Shivan fighters dropping in. Rama wing is engaging."
       voice_name: "Achird"
       voice_style_instructions: "Cruiser captain under fire"
-    - name: "MephistoMsg"
+    - name: "MephistoArrivedMsg"
       text: "Alpha, a Shivan transport just warped in, likely suffering from drive failure. Scan it if you can."
       voice_name: "Alnilam"
       voice_style_instructions: "Tactical update"
