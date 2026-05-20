@@ -339,7 +339,10 @@ mission_flow:
       formula: |
         ( when
           ( has-arrived-delay 0 "Krishna" )
-          ( send-message "#Command" "High" "KrishnaArrivedMsg" )
+          ( send-message-list
+            "#Command" "High" "KrishnaArrivedMsg" 0
+            "<any wingman>" "High" "WingmanKrishnaMsg" 4000
+          )
         )
     - name: "BlockadeArrival"
       formula: |
@@ -456,6 +459,10 @@ mission_flow:
       text: "Warning, Shivan bombers inbound. Krishna wing is targeting the Dauntless."
       voice_name: "Alnilam"
       voice_style_instructions: "Urgent warning"
+    - name: "WingmanKrishnaMsg"
+      text: "Those bombers are lining up on the Dauntless! Intercept them now!"
+      voice_name: "Achird"
+      voice_style_instructions: "Alarmed warning"
     - name: "CainArrivedMsg"
       text: "Alpha, a Shivan cruiser just warped in blocking the jump node! Target its weapons subsystem to neutralize the threat!"
       voice_name: "Alnilam"
