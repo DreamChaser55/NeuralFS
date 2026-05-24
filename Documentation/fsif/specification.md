@@ -157,6 +157,10 @@
 ## Minimal FSIF skeleton
 - Minimal and standard FSIF skeletons are provided in the Authoring Guide.
 
+## Null semantics for optional collections
+
+Optional list and mapping fields in FSIF may be omitted entirely or set explicitly to `null`; both are treated identically by the converter — the value is normalized to the documented default (usually an empty list `[]` or an empty mapping `{}`).
+
 ## Constraints quicklist
 - Player start: `player_setup.start_ship` **must** be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing.
 - Docking: pairs only; not allowed for player start; author on docker only; docker must explicitly set `arrival_cue: "( false )"`; dockee uses the default `"( true )"`.

@@ -96,6 +96,21 @@ def _normalize_orientation(v: Any) -> List[float]:
         raise ValueError(f"orientation elements must be numbers, got: {v!r}") from e
 
 
+def _none_to_empty_list(v: Any) -> list:
+    """Pydantic ``mode='before'`` normalizer: coerce ``None`` to ``[]``.
+
+    Optional FSIF list fields may carry an explicit YAML ``null`` value which
+    YAML parses as Python ``None``.  Pydantic v2 rejects ``None`` for a
+    ``List[X]`` field even when the field has a ``default_factory``, because
+    the factory only runs for absent keys, not for explicitly-supplied
+    ``None``.  This helper is used as a ``field_validator(mode='before')`` on
+    every runtime list field that authors may legitimately leave as ``null``.
+    """
+    if v is None:
+        return []
+    return v
+
+
 def _normalize_ambient_light_rgb(v: Any) -> List[int]:
     """Ensure ambient light is a 3-element RGB list with 0-255 integer channels."""
     if v is None:
@@ -590,6 +605,11 @@ class Nebula(BaseModel):
     pattern: Optional[str] = None
     cloud_sprites: List[str] = Field(default_factory=list)
 
+    @field_validator('cloud_sprites', mode='before')
+    @classmethod
+    def coerce_cloud_sprites_null(cls, v):
+        return _none_to_empty_list(v)
+
 class AsteroidField(BaseModel):
     # 'min_vec'/'max_vec' are an internal representation produced by the
     # mission_loader from the authored 'bounds.min'/'bounds.max' mapping.
@@ -633,11 +653,21 @@ class MissionInfo(BaseModel):
     flags: List[str] = Field(default_factory=list)
     disallow_support_ships: bool = False
 
+    @field_validator('flags', mode='before')
+    @classmethod
+    def coerce_flags_null(cls, v):
+        return _none_to_empty_list(v)
+
 class PlayerSetup(BaseModel):
     model_config = ConfigDict(extra='forbid')
     start_ship: str
     additional_ship_choices: List[ShipChoice] = Field(default_factory=list)
     additional_weapons: List[str] = Field(default_factory=list)
+
+    @field_validator('additional_ship_choices', 'additional_weapons', mode='before')
+    @classmethod
+    def coerce_optional_lists_null(cls, v):
+        return _none_to_empty_list(v)
 
 class Event(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -707,9 +737,19 @@ class BriefingStage(BaseModel):
     camera_time: int = Field(500, ge=0)
     icons: List[BriefingIcon] = Field(default_factory=list)
 
+    @field_validator('icons', mode='before')
+    @classmethod
+    def coerce_icons_null(cls, v):
+        return _none_to_empty_list(v)
+
 class Briefing(BaseModel):
     model_config = ConfigDict(extra='forbid')
     stages: List[BriefingStage] = Field(default_factory=list)
+
+    @field_validator('stages', mode='before')
+    @classmethod
+    def coerce_stages_null(cls, v):
+        return _none_to_empty_list(v)
 
 class DebriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -724,6 +764,11 @@ class Debriefing(BaseModel):
     model_config = ConfigDict(extra='forbid')
     stages: List[DebriefingStage] = Field(default_factory=list)
 
+    @field_validator('stages', mode='before')
+    @classmethod
+    def coerce_stages_null(cls, v):
+        return _none_to_empty_list(v)
+
 class CommandBriefingStage(BaseModel):
     model_config = ConfigDict(extra='forbid')
     text: str
@@ -735,6 +780,11 @@ class CommandBriefing(BaseModel):
     model_config = ConfigDict(extra='forbid')
     stages: List[CommandBriefingStage] = Field(default_factory=list)
 
+    @field_validator('stages', mode='before')
+    @classmethod
+    def coerce_stages_null(cls, v):
+        return _none_to_empty_list(v)
+
 class Reinforcement(BaseModel):
     model_config = ConfigDict(extra='forbid')
     name: str
@@ -742,6 +792,11 @@ class Reinforcement(BaseModel):
     arrival_delay: int = Field(0, ge=0)
     unavailable_messages: List[str] = Field(default_factory=list)
     available_messages: List[str] = Field(default_factory=list)
+
+    @field_validator('unavailable_messages', 'available_messages', mode='before')
+    @classmethod
+    def coerce_messages_null(cls, v):
+        return _none_to_empty_list(v)
 
 class JumpNode(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -811,6 +866,11 @@ class Ship(BaseModel):
     def validate_orient(cls, v):
         return _normalize_orientation(v)
 
+    @field_validator('flags', mode='before')
+    @classmethod
+    def coerce_flags_null(cls, v):
+        return _none_to_empty_list(v)
+
     @field_validator('arrival_method', mode='before')
     @classmethod
     def validate_arrival_method(cls, v):
@@ -859,6 +919,11 @@ class Wing(BaseModel):
     def validate_pos(cls, v):
         if v is None: return None
         return _normalize_vector(v)
+
+    @field_validator('flags', mode='before')
+    @classmethod
+    def coerce_flags_null(cls, v):
+        return _none_to_empty_list(v)
 
     @field_validator('arrival_method', mode='before')
     @classmethod

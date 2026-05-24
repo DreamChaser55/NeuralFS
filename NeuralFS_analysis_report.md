@@ -29,7 +29,7 @@ The main risks are not architectural failure. They are mostly edge-case correctn
 
 1. `common/parsers_and_generators/fetch_inworld_voices.py` calculates the project root incorrectly and will read/write under `common/` instead of the repository root. **ALREADY ADDRESSED**
 2. Standalone FSIF ships can reference a missing template without a clear validation error. **ALREADY ADDRESSED**
-3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions.
+3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions. **ALREADY ADDRESSED**
 4. FCIF condition and filename strings are quoted into FC2 SEXPs without rejecting or escaping embedded double quotes.
 5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check.
 6. The FSIF GUI starts with TTS disabled but leaves the TTS option controls visually enabled until the user toggles the checkbox.
@@ -76,7 +76,7 @@ Recommended fix:
 - Reuse the same error style used for wings.
 - Add a regression test with a standalone ship whose template name is invalid.
 
-### P1: Explicit YAML Null Values Can Crash Loader Paths
+### P1: Explicit YAML Null Values Can Crash Loader Paths - **ALREADY ADDRESSED**
 
 File: `FSIF_to_FS2_Converter/mission_loader.py`
 
@@ -836,7 +836,7 @@ Potential bloat:
 
 1. Fix `fetch_inworld_voices.py` root path. **ALREADY ADDRESSED**
 2. Add standalone ship template existence validation. **ALREADY ADDRESSED**
-3. Decide and implement null handling for optional FSIF collections.
+3. Decide and implement null handling for optional FSIF collections. **ALREADY ADDRESSED**
 4. Reject or escape double quotes in FCIF quoted fields.
 5. Fix initial GUI TTS disabled state.
 6. Guard Inworld `requests` import.

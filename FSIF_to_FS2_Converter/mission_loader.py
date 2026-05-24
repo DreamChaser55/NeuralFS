@@ -67,7 +67,10 @@ class MissionLoader:
         
         # Other top-level
         entities_data = self.data.get('entities', {})
-        jump_nodes = [JumpNode(**jn) for jn in entities_data.get('jump_nodes', [])]
+        jump_nodes = [
+            JumpNode(**jn)
+            for jn in self._as_list(entities_data.get('jump_nodes'), 'entities.jump_nodes')
+        ]
         reinforcements = self._process_reinforcements()
         audio = self._load_audio()
 
@@ -81,7 +84,9 @@ class MissionLoader:
             player_setup=player_setup,
             ships=self.all_ships,
             wings=self.all_wings,
-            waypoints=self.data.get('entities', {}).get('waypoints', {}),
+            waypoints=self._as_mapping(
+                self.data.get('entities', {}).get('waypoints'), 'entities.waypoints'
+            ),
             events=flow_data['events'],
             goals=flow_data['goals'],
             messages=flow_data['messages'],
@@ -265,19 +270,23 @@ class MissionLoader:
             player_setup: Player setup for identifying start ship.
         """
         entities = self.data.get('entities', {})
-        self.templates = entities.get('ship_templates', {})
-        
+        # Normalize optional mapping/list sub-sections so that explicit YAML
+        # `null` values are treated identically to omitted keys.
+        self.templates = self._as_mapping(
+            entities.get('ship_templates'), 'entities.ship_templates'
+        )
+
         # Validate templates
         for name, template in self.templates.items():
             self._validate_ship_template_authoring_rules(name, template)
             self._validate_no_player_start(template.get('flags'), f"template '{name}'")
 
         # Expand Wings
-        for wing_data in entities.get('wings', []):
+        for wing_data in self._as_list(entities.get('wings'), 'entities.wings'):
             self._process_wing(wing_data, player_setup)
 
         # Expand Standalone Ships
-        for ship_data in entities.get('ships', []):
+        for ship_data in self._as_list(entities.get('ships'), 'entities.ships'):
             self._process_ship(ship_data)
 
     def _validate_ship_template_authoring_rules(self, template_name: str, template_data: Dict[str, Any]):
@@ -473,21 +482,34 @@ class MissionLoader:
 
         fiction_viewer = flow.get('fiction_viewer')
 
-        events = [Event(**e) for e in flow.get('events', [])]
-        
+        # Normalize optional collections: explicit YAML `null` is treated the
+        # same as an omitted key (empty list/mapping) rather than crashing.
+        events = [
+            Event(**e)
+            for e in self._as_list(flow.get('events'), 'mission_flow.events')
+        ]
+
         goals = []
-        for g in flow.get('goals', []):
+        for g in self._as_list(flow.get('goals'), 'mission_flow.goals'):
              if 'objective_text' not in g:
                  raise ValueError(f"Goal '{g.get('name')}' missing required 'objective_text'.")
              goals.append(Goal(**g))
-        
-        messages = [Message(**m) for m in flow.get('messages', [])]
-        
-        # Briefing
-        briefing_raw = flow.get('briefing', {})
-        for st in briefing_raw.get('stages', []):
+
+        messages = [
+            Message(**m)
+            for m in self._as_list(flow.get('messages'), 'mission_flow.messages')
+        ]
+
+        # Briefing — normalize both the top-level mapping and the stages list
+        # so that `briefing: null` or `briefing: {stages: null}` both yield an
+        # empty Briefing rather than an AttributeError.
+        briefing_raw = self._as_mapping(flow.get('briefing'), 'mission_flow.briefing')
+        briefing_stages = self._as_list(
+            briefing_raw.get('stages'), 'mission_flow.briefing.stages'
+        )
+        for st in briefing_stages:
              new_icons = []
-             for ic in st.get('icons', []):
+             for ic in self._as_list(st.get('icons'), 'mission_flow.briefing.stages[*].icons'):
                  typ_str = ic.get('icon_type')
                  if not typ_str: raise ValueError("Briefing icon missing icon_type.")
                  rid = brief_types.parse_icon_type(typ_str)
@@ -497,13 +519,19 @@ class MissionLoader:
                  # Preserve whether the author explicitly wrote display_class.
                  ic_data['display_class_authored'] = 'display_class' in ic
                  new_icons.append(BriefingIcon(**ic_data))
-             st['icons'] = new_icons 
-             
+             st['icons'] = new_icons
+
              self._calculate_briefing_camera(st, new_icons)
-        
+
+        briefing_raw['stages'] = briefing_stages
         briefing = Briefing(**briefing_raw)
-        debriefing = Debriefing(**flow.get('debriefing', {}))
-        command_briefing = CommandBriefing(**flow.get('command_briefing', {}))
+
+        debriefing = Debriefing(
+            **self._as_mapping(flow.get('debriefing'), 'mission_flow.debriefing')
+        )
+        command_briefing = CommandBriefing(
+            **self._as_mapping(flow.get('command_briefing'), 'mission_flow.command_briefing')
+        )
         
         return {
             'fiction_viewer': fiction_viewer,
@@ -568,7 +596,9 @@ class MissionLoader:
         seen = set()
         
         # Wings
-        for item in entities.get('reinforcement_wings', []):
+        for item in self._as_list(
+            entities.get('reinforcement_wings'), 'entities.reinforcement_wings'
+        ):
             n = str(item.get('name', '')).strip()
             if not n: continue
             if n in seen:
@@ -584,7 +614,9 @@ class MissionLoader:
             seen.add(n)
             
         # Ships
-        for item in entities.get('reinforcement_ships', []):
+        for item in self._as_list(
+            entities.get('reinforcement_ships'), 'entities.reinforcement_ships'
+        ):
             n = str(item.get('name', '')).strip()
             if not n: continue
             if n in seen:
@@ -609,6 +641,44 @@ class MissionLoader:
         if isinstance(audio_src, dict):
             return AudioSettings(**audio_src)
         return AudioSettings()
+
+    @staticmethod
+    def _as_list(value: Any, field_path: str) -> list:
+        """Normalize an optional FSIF list field.
+
+        - ``None`` (explicit YAML ``null`` or omitted key) → empty list.
+        - A proper ``list`` → returned as-is.
+        - Any other type → ``ValueError`` with a clear field-path message.
+
+        Using this helper instead of bare ``or []`` ensures that an author who
+        accidentally writes a scalar or mapping where a list is expected gets a
+        clear error rather than a generic ``TypeError`` deep inside the loader.
+        """
+        if value is None:
+            return []
+        if isinstance(value, list):
+            return value
+        raise ValueError(
+            f"FSIF field '{field_path}' must be a list (or null/omitted), "
+            f"got {type(value).__name__!r}: {value!r}"
+        )
+
+    @staticmethod
+    def _as_mapping(value: Any, field_path: str) -> dict:
+        """Normalize an optional FSIF mapping field.
+
+        - ``None`` (explicit YAML ``null`` or omitted key) → empty dict.
+        - A proper ``dict`` → returned as-is.
+        - Any other type → ``ValueError`` with a clear field-path message.
+        """
+        if value is None:
+            return {}
+        if isinstance(value, dict):
+            return value
+        raise ValueError(
+            f"FSIF field '{field_path}' must be a mapping (or null/omitted), "
+            f"got {type(value).__name__!r}: {value!r}"
+        )
 
     def _validate_no_player_start(self, flags_list, context):
         """
