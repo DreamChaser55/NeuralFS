@@ -165,6 +165,7 @@ class ConverterGUI(LogMixin):
         
         # Initial UI state update
         self.update_api_key_visibility()
+        self.toggle_tts_options()
 
         tts_paths_frame.columnconfigure(1, weight=1)
 
