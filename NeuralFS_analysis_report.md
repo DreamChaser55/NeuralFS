@@ -108,7 +108,7 @@ Recommended fix:
 - Add tests for embedded quotes in filenames and condition names.
 - Update the FCIF specification to document the rule consistently.
 
-### P2: FCIF Loadout Check Documentation Is Stricter Than Code
+### P2: FCIF Loadout Check Documentation Is Stricter Than Code - **ALREADY ADDRESSED**
 
 Files:
 
@@ -120,13 +120,6 @@ Files:
 The README and FCIF spec say the converter verifies every campaign mission loadout and rejects ungranted player ships/weapons. The implementation treats missing or unreadable FSIF files during `check_campaign_player_loadouts()` as non-fatal warnings and skips that mission.
 
 The implementation details document is more accurate in one place because it explicitly says this differs from the advance-condition reference check, which is fatal. The README/spec should either be softened or the implementation should become strict.
-
-Recommended fix:
-
-- Prefer adding a `--strict-loadout-check` option or making missing FSIF fatal by default if campaign correctness depends on it.
-- In all docs, separate two behaviors:
-  - Advance-condition FSIF reference check: fatal when the mission has a condition.
-  - Campaign loadout check: currently warning-only for missing/unparseable FSIF.
 
 ### P2: FSIF Vector/Orientation Normalizers Accept Arbitrary Iterables
 
@@ -821,7 +814,7 @@ Potential bloat:
 ### Phase 2: Documentation Alignment
 
 1. Ensure that current FCIF version is set to "1.0" throughout the docs. **ALREADY ADDRESSED**
-2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs.
+2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs. **ALREADY ADDRESSED**
 3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults.
 4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation.
 5. Fix small typos and stale comments.
