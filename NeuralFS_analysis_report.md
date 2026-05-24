@@ -32,7 +32,7 @@ The main risks are not architectural failure. They are mostly edge-case correctn
 3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions. **ALREADY ADDRESSED**
 4. FCIF condition and filename strings are quoted into FC2 SEXPs without rejecting or escaping embedded double quotes. **ALREADY ADDRESSED**
 5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check.
-6. The FSIF GUI starts with TTS disabled but leaves the TTS option controls visually enabled until the user toggles the checkbox.
+6. The FSIF GUI starts with TTS disabled but leaves the TTS option controls visually enabled until the user toggles the checkbox. **ALREADY ADDRESSED**
 7. The Inworld TTS provider imports `requests` unguarded, so optional-dependency handling is less graceful than Google and ElevenLabs.
 
 The project would benefit from a small stabilization pass before broader feature work: fix the path/validation bugs, add a root dev setup, align documentation with actual behavior, and add targeted regression tests around the identified edge cases.
@@ -151,7 +151,7 @@ Recommended fix:
 - Catch and classify `yaml.YAMLError`, `OSError`, and `ValidationError` where appropriate.
 - Keep unexpected exceptions visible in debug mode, but return a clean `False` and readable log in normal CLI/GUI usage.
 
-### P2: FSIF GUI TTS Controls Start Enabled While TTS Is Disabled
+### P2: FSIF GUI TTS Controls Start Enabled While TTS Is Disabled - **ALREADY ADDRESSED**
 
 File: `FSIF_to_FS2_Converter/fsif_converter_gui.py`
 
@@ -838,7 +838,7 @@ Potential bloat:
 2. Add standalone ship template existence validation. **ALREADY ADDRESSED**
 3. Decide and implement null handling for optional FSIF collections. **ALREADY ADDRESSED**
 4. Reject or escape double quotes in FCIF quoted fields. **ALREADY ADDRESSED**
-5. Fix initial GUI TTS disabled state.
+5. Fix initial GUI TTS disabled state. **ALREADY ADDRESSED**
 6. Guard Inworld `requests` import.
 7. Add regression tests for all of the above.
 
