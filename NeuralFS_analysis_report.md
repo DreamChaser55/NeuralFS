@@ -840,7 +840,6 @@ Potential bloat:
 4. Reject or escape double quotes in FCIF quoted fields. **ALREADY ADDRESSED**
 5. Fix initial GUI TTS disabled state. **ALREADY ADDRESSED**
 6. Guard Inworld `requests` import. **ALREADY ADDRESSED**
-7. Add regression tests for all of the above.
 
 ### Phase 2: Documentation Alignment
 
