@@ -226,25 +226,26 @@ def get_provider(config: TTSConfig) -> BaseTTSProvider:
     if provider_name == 'google':
         try:
             from tts_google import GoogleTTSProvider
-            return GoogleTTSProvider(config)
-        except ImportError:
-            # Fallback for circular imports or missing files
-            # In a clean structure, this should just work
-            raise ImportError("Could not import GoogleTTSProvider. Ensure tts_google.py exists.")
-            
+        except ImportError as exc:
+            # Only raised when the tts_google module file itself cannot be found
+            raise ImportError("Could not import GoogleTTSProvider. Ensure tts_google.py exists.") from exc
+        return GoogleTTSProvider(config)
+
     elif provider_name == 'elevenlabs':
         try:
             from tts_elevenlabs import ElevenLabsTTSProvider
-            return ElevenLabsTTSProvider(config)
-        except ImportError:
-            raise ImportError("Could not import ElevenLabsTTSProvider. Ensure tts_elevenlabs.py exists.")
-            
+        except ImportError as exc:
+            raise ImportError("Could not import ElevenLabsTTSProvider. Ensure tts_elevenlabs.py exists.") from exc
+        return ElevenLabsTTSProvider(config)
+
     elif provider_name == 'inworld':
         try:
             from tts_inworld import InworldTTSProvider
-            return InworldTTSProvider(config)
-        except ImportError:
-            raise ImportError("Could not import InworldTTSProvider. Ensure tts_inworld.py exists.")
+        except ImportError as exc:
+            raise ImportError("Could not import InworldTTSProvider. Ensure tts_inworld.py exists.") from exc
+        # Construction may raise ImportError if the `requests` library is missing;
+        # let it propagate with its own clear message.
+        return InworldTTSProvider(config)
     
     else:
         raise ValueError(f"Unknown TTS provider: {provider_name}")

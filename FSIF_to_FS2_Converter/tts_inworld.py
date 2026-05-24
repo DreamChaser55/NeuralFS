@@ -11,7 +11,11 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-import requests
+try:
+    import requests
+except ImportError:
+    requests = None
+
 from tts_provider_base import BaseTTSProvider, TTSConfig
 
 class InworldTTSProvider(BaseTTSProvider):
@@ -19,6 +23,10 @@ class InworldTTSProvider(BaseTTSProvider):
 
     def __init__(self, config: TTSConfig):
         super().__init__(config)
+        if requests is None:
+            raise ImportError(
+                "requests is not installed. Install it with: pip install requests"
+            )
         self.api_key = None
         self.url = "https://api.inworld.ai/tts/v1/voice"
 
