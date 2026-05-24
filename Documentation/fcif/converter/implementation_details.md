@@ -15,13 +15,23 @@ The converter always emits `+Flags: 0` and an empty `+Main Hall:` for every miss
 
 ### Mission Filename Validation
 
-The `filename` field on each `CampaignMission` entry is validated by a Pydantic `@field_validator` that enforces two constraints, checked in order:
+The `filename` field on each `CampaignMission` entry is validated by a Pydantic `@field_validator` that enforces three constraints, checked in order:
 
 1. **No path separators**: The filename must not contain `/` or `\`. If either character is present the validator raises a `ValueError` with a message that includes the phrase `path separators` and shows the offending value. This catches a common AI agent mistake of writing `fsif/missionname.fs2` instead of `missionname.fs2`.
 
 2. **`.fs2` extension required**: After the path-separator check passes, the filename must end with `.fs2` (case-insensitive). If it does not, the validator raises a `ValueError` whose message includes `.fs2` and shows a correct-usage example.
 
-Both violations are fatal: `load_fcif()` catches the resulting `ValidationError` and logs `[ERROR] Validation Error: ...`, after which `process_campaign()` returns `False` and the converter exits non-zero.
+3. **No double quotes**: After both structural checks pass, the filename must not contain `"`. The filename is emitted verbatim inside a quoted SEXP string in the `.fc2` output; an embedded `"` would break the FC2 parser.
+
+All three violations are fatal: `load_fcif()` catches the resulting `ValidationError` and logs `[ERROR] Validation Error: ...`, after which `process_campaign()` returns `False` and the converter exits non-zero.
+
+### Advance Condition Field Validation
+
+The four advance condition fields (`success_goal`, `success_event`, `failure_goal`, `failure_event`) are validated by a shared Pydantic `@field_validator` that enforces:
+
+- **No double quotes**: The value must not contain `"`. Each condition name is emitted inside a quoted SEXP string in the `.fc2` formula (e.g., `( is-previous-goal-true "mission.fs2" "Goal Name" )`); an embedded `"` would break the FC2 parser.
+
+This violation is fatal and follows the same error path as the filename validation above.
 
 ## Logic Generation
 

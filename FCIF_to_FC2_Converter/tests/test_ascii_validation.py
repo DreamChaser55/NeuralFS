@@ -602,5 +602,183 @@ class TestProcessCampaignAsciiIntegration(unittest.TestCase):
         self.assertFalse(any("[ERROR]" in m for m in msgs), msgs)
 
 
+# ---------------------------------------------------------------------------
+# 9. Double-quote rejection in CampaignMission fields
+# ---------------------------------------------------------------------------
+
+class TestCampaignMissionDoubleQuoteRejection(unittest.TestCase):
+    """
+    Verify that CampaignMission raises ValidationError when a double-quote
+    character is present in filename or any advance condition field.
+
+    Double quotes in these fields would be emitted verbatim inside FC2 quoted
+    strings, breaking the FC2 SEXP parser.
+    """
+
+    # -- filename ------------------------------------------------------------
+
+    def test_double_quote_in_filename_raises(self):
+        """A mission filename containing a double quote raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename='mis"sion.fs2')
+        err_str = str(ctx.exception)
+        self.assertIn("filename", err_str)
+        self.assertIn("double quotes", err_str)
+
+    def test_double_quote_at_start_of_filename_raises(self):
+        """A double quote at the start of a filename raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename='"mission.fs2')
+        err_str = str(ctx.exception)
+        self.assertIn("double quotes", err_str)
+
+    # -- success_goal --------------------------------------------------------
+
+    def test_double_quote_in_success_goal_raises(self):
+        """A success_goal containing a double quote raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename="m.fs2", success_goal='Protect "the" Fenris')
+        err_str = str(ctx.exception)
+        self.assertIn("success_goal", err_str)
+        self.assertIn("double quotes", err_str)
+
+    # -- success_event -------------------------------------------------------
+
+    def test_double_quote_in_success_event_raises(self):
+        """A success_event containing a double quote raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename="m.fs2", success_event='Convoy "safe"')
+        err_str = str(ctx.exception)
+        self.assertIn("success_event", err_str)
+        self.assertIn("double quotes", err_str)
+
+    # -- failure_goal --------------------------------------------------------
+
+    def test_double_quote_in_failure_goal_raises(self):
+        """A failure_goal containing a double quote raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename="m.fs2", failure_goal='Base "Destroyed"')
+        err_str = str(ctx.exception)
+        self.assertIn("failure_goal", err_str)
+        self.assertIn("double quotes", err_str)
+
+    # -- failure_event -------------------------------------------------------
+
+    def test_double_quote_in_failure_event_raises(self):
+        """A failure_event containing a double quote raises ValidationError."""
+        with self.assertRaises(ValidationError) as ctx:
+            CampaignMission(filename="m.fs2", failure_event='"Arjuna" destroyed')
+        err_str = str(ctx.exception)
+        self.assertIn("failure_event", err_str)
+        self.assertIn("double quotes", err_str)
+
+    # -- None is still accepted ----------------------------------------------
+
+    def test_none_condition_fields_unaffected(self):
+        """All condition fields set to None pass without triggering the double-quote check."""
+        m = CampaignMission(
+            filename="m.fs2",
+            success_goal=None,
+            success_event=None,
+            failure_goal=None,
+            failure_event=None,
+        )
+        self.assertIsNone(m.success_goal)
+
+    # -- single quotes are fine ----------------------------------------------
+
+    def test_single_quotes_in_condition_field_pass(self):
+        """Single quotes in an advance condition name are allowed (no error)."""
+        m = CampaignMission(filename="m.fs2", success_goal="Protect the Fen'ris")
+        self.assertIn("'", m.success_goal)
+
+    # -- campaign.description double-quote rejection (regression) -----------
+
+    def test_double_quote_in_description_raises(self):
+        """campaign.description with a double quote raises ValidationError (regression)."""
+        from pydantic import ValidationError as _VE
+        from fcif_to_fc2 import CampaignInfo
+        with self.assertRaises(_VE) as ctx:
+            CampaignInfo(name="Campaign", description='A "quoted" description')
+        err_str = str(ctx.exception)
+        self.assertIn("double quotes", err_str)
+
+
+# ---------------------------------------------------------------------------
+# 10. process_campaign integration: double quotes → False + [ERROR]
+# ---------------------------------------------------------------------------
+
+class TestProcessCampaignDoubleQuoteIntegration(unittest.TestCase):
+    """
+    Integration tests verifying that process_campaign returns False and logs
+    [ERROR] when a .fcif file contains double quotes in any FC2-quoted field.
+    """
+
+    def _write_and_run(self, content: dict) -> tuple:
+        import yaml as _yaml
+        yaml_content = _yaml.dump(content, allow_unicode=True)
+        with capture_logs() as msgs:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                fcif_path = Path(tmpdir) / "camp.fcif"
+                fcif_path.write_text(yaml_content, encoding="utf-8")
+                output_path = Path(tmpdir) / "camp.fc2"
+                success = process_campaign(str(fcif_path), str(output_path))
+        return success, msgs
+
+    def _base_content(self, **mission_overrides) -> dict:
+        mission = {"filename": "m01.fs2"}
+        mission.update(mission_overrides)
+        return {
+            "fcif_version": "1.0",
+            "campaign": {"name": "Camp", "description": "desc"},
+            "starting_loadout": {"ships": [], "weapons": []},
+            "missions": [mission],
+        }
+
+    def test_double_quote_in_filename_returns_false(self):
+        """process_campaign returns False when missions[*].filename contains a double quote."""
+        success, msgs = self._write_and_run(self._base_content(filename='mis"sion.fs2'))
+        self.assertFalse(success)
+        self.assertTrue(any("[ERROR]" in m for m in msgs), msgs)
+
+    def test_double_quote_in_success_goal_returns_false(self):
+        """process_campaign returns False when success_goal contains a double quote."""
+        success, msgs = self._write_and_run(
+            self._base_content(success_goal='Protect "the" Fenris')
+        )
+        self.assertFalse(success)
+        self.assertTrue(any("[ERROR]" in m for m in msgs), msgs)
+
+    def test_double_quote_in_success_event_returns_false(self):
+        """process_campaign returns False when success_event contains a double quote."""
+        success, msgs = self._write_and_run(
+            self._base_content(success_event='Convoy "safe"')
+        )
+        self.assertFalse(success)
+        self.assertTrue(any("[ERROR]" in m for m in msgs), msgs)
+
+    def test_double_quote_in_failure_goal_returns_false(self):
+        """process_campaign returns False when failure_goal contains a double quote."""
+        success, msgs = self._write_and_run(
+            self._base_content(failure_goal='Base "Destroyed"')
+        )
+        self.assertFalse(success)
+        self.assertTrue(any("[ERROR]" in m for m in msgs), msgs)
+
+    def test_double_quote_in_failure_event_returns_false(self):
+        """process_campaign returns False when failure_event contains a double quote."""
+        success, msgs = self._write_and_run(
+            self._base_content(failure_event='"Arjuna" destroyed')
+        )
+        self.assertFalse(success)
+        self.assertTrue(any("[ERROR]" in m for m in msgs), msgs)
+
+    def test_no_condition_fields_passes(self):
+        """process_campaign succeeds when no advance condition fields are present (unconditional mission)."""
+        success, msgs = self._write_and_run(self._base_content())
+        self.assertTrue(success, msgs)
+        self.assertFalse(any("[ERROR]" in m for m in msgs), msgs)
+
+
 if __name__ == "__main__":
     unittest.main()

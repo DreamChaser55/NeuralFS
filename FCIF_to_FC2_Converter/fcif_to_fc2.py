@@ -21,6 +21,24 @@ logger = logging.getLogger(__name__)
 
 # --- FCIF Data Models ---
 
+def _check_no_double_quotes(field_name: str, v: str) -> str:
+    """Reject a string that contains double quotes.
+
+    All FCIF string fields that are emitted inside FC2 quoted strings must not
+    contain double-quote characters.  A ``"`` inside such a string would break the
+    FC2 SEXP parser.
+
+    Raises ValueError when a double quote is found.
+    """
+    if '"' in v:
+        raise ValueError(
+            f"'{field_name}' must not contain double quotes (\"), "
+            f"because the value is emitted inside a quoted string in the generated "
+            f".fc2 file and a '\"' would break its SEXP syntax."
+        )
+    return v
+
+
 class CampaignInfo(BaseModel):
     model_config = ConfigDict(extra='forbid')
     name: AsciiStr
@@ -29,13 +47,7 @@ class CampaignInfo(BaseModel):
     @field_validator('description')
     @classmethod
     def no_double_quotes_in_description(cls, v: str) -> str:
-        if '"' in v:
-            raise ValueError(
-                'campaign.description must not contain double quotes ("), '
-                'because it would cause syntax issues in the generated .fc2 file. '
-                'Remove all double quotes from the description string.'
-            )
-        return v
+        return _check_no_double_quotes('campaign.description', v)
 
 class StartingLoadout(BaseModel):
     model_config = ConfigDict(extra='forbid')
@@ -69,7 +81,7 @@ class CampaignMission(BaseModel):
     @field_validator('filename')
     @classmethod
     def validate_filename(cls, v: str) -> str:
-        """Reject filenames that contain path separators or lack the .fs2 extension."""
+        """Reject filenames that contain path separators, lack the .fs2 extension, or contain double quotes."""
         if '/' in v or '\\' in v:
             raise ValueError(
                 f"Mission filename must be only the bare mission file name, such as 'missionname.fs2'; "
@@ -80,6 +92,15 @@ class CampaignMission(BaseModel):
                 f"Mission filename must end with the '.fs2' extension. Found: '{v}'. "
                 f"Example of a correct value: 'missionname.fs2'."
             )
+        _check_no_double_quotes('missions[*].filename', v)
+        return v
+
+    @field_validator('success_goal', 'success_event', 'failure_goal', 'failure_event', mode='before')
+    @classmethod
+    def no_double_quotes_in_condition_fields(cls, v, info):
+        """Reject advance condition names that contain double quotes."""
+        if v is not None:
+            _check_no_double_quotes(f'missions[*].{info.field_name}', str(v))
         return v
 
     @model_validator(mode='after')

@@ -37,7 +37,7 @@ missions:
 
 ### Campaign Section
 - **name**: The display name of the campaign.
-- **description**: A description of the campaign. **Must not contain double quotes (`"`).** Any `"` inside the string would break the syntax of the generated `.fc2` file. The converter checks for this and raises an error if any double quotes are found.
+- **description**: A description of the campaign. **Must not contain double quotes (`"`).** Any `"` inside the string would break the syntax of the generated `.fc2` file. The converter checks for this and raises an error if any double quotes are found. Use single quotes (`'`) as a replacement.
 
 The campaign type is always `single` (hardcoded by the converter).
 
@@ -52,7 +52,7 @@ Important: any ship or weapon used in the campaign must be either listed here or
 ### Missions Section
 An ordered list of missions. The order of entries determines campaign progression.
 
-- **filename**: The bare `.fs2` filename of the mission file (e.g., `m01.fs2`). **Must end with the `.fs2` extension** and **must not contain any path separators** (`/` or `\`). Only the plain filename is allowed — no directory components. For example: writing `fsif/missionname.fs2` instead of just `missionname.fs2` is a mistake. The converter enforces both constraints as a fatal error.
+- **filename**: The bare `.fs2` filename of the mission file (e.g., `m01.fs2`). **Must end with the `.fs2` extension**, **must not contain any path separators** (`/` or `\`), and **must not contain double quotes** (`"`). Only the plain filename is allowed — no directory components. For example: writing `fsif/missionname.fs2` instead of just `missionname.fs2` is a mistake. The converter enforces all three constraints as a fatal error.
 
 #### Advance Condition Fields
 
@@ -77,6 +77,8 @@ Each mission may optionally specify **one** advance condition that determines wh
   - Example: `failure_event: "Arjuna destroyed"` — advance if the "Arjuna destroyed" event did not occur (i.e., the Arjuna survived).
 
 If none of these fields is set, the campaign advances to the next mission regardless of the outcome (unconditional advancement). **Note:** While this is perfectly valid, the converter will emit a warning for each mission that lacks an advance condition, to help catch potential oversights.
+
+**Double-quote restriction on advance condition fields**: All four advance condition fields (`success_goal`, `success_event`, `failure_goal`, `failure_event`) must **not contain double quotes** (`"`). The value is emitted inside a quoted string in the generated `.fc2` SEXP logic; a `"` inside would break the FC2 parser. The converter enforces this as a fatal validation error.
 
 **Advance condition reference validation**: The converter verifies that the name given in each advance condition field actually exists in the corresponding mission's `.fsif` file (`mission_flow.goals[*].name` for goal fields, `mission_flow.events[*].name` for event fields). This check is **fatal**: if the referenced name is not found — or if the FSIF file is missing or unparseable for a mission that has an advance condition — the converter aborts with an `[ERROR]` and does not write the `.fc2` output. The name must be an exact match (case-sensitive). If an advance condition field contains a typo or refers to a goal/event that was renamed, the error message will list the available names to help pinpoint the problem.
 

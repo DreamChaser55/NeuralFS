@@ -96,6 +96,8 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif -o camp
   - A `missions[*].filename` entry contains a `/` or `\` character. The field must be a bare mission filename such as `missionname.fs2`, with no directory components.
 - **"Validation Error" with "missing '.fs2' extension"** (e.g. `must end with the '.fs2' extension`):
   - A `missions[*].filename` entry is missing the `.fs2` extension or has the wrong extension (e.g. `.fc2`, `.fsif`). The field must look like `missionname.fs2`.
+- **"Validation Error" with "double quotes"** (e.g. `must not contain double quotes`):
+  - A `missions[*].filename`, `success_goal`, `success_event`, `failure_goal`, or `failure_event` entry contains a `"` character. These values are emitted inside quoted strings in the FC2 SEXP output; a `"` inside would break the FC2 parser.
 - **"Validation Error" with "extra inputs are not permitted"**:
   - The FCIF file contains an unrecognized field. The converter uses strict validation (`extra='forbid'`). Only fields documented in the [FCIF Specification](../specification.md) are accepted. Remove any extra or misspelled fields.
 - **"Validation Error" with "field required"**:
