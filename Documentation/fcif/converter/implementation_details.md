@@ -157,7 +157,7 @@ For any mission after the first one, an `allow-ship` or `allow-weapon` SEXP exec
 The converter iterates through all missions sequentially, parsing the FSIF YAML file (using `yaml.safe_load`) and extracting player loadouts for the current mission:
 
 - **Ship classes** from:
-  - Wings named "Alpha", "Beta", "Gamma", "Delta", or "Epsilon" (resolving their `template`). The FSIF validation rule requires `player_setup.start_ship` to be a member of a Friendly Alpha, Beta, or Gamma wing, so the start ship's class is covered by the wing check.
+  - Wings named "Alpha", "Beta", or "Gamma" (the only three wings shown on the FSO loadout screen; resolving their `template`). The FSIF validation rule requires `player_setup.start_ship` to be a member of a Friendly Alpha, Beta, or Gamma wing, so the start ship's class is covered by the wing check.
   - `player_setup.additional_ship_choices`
 - **Primary weapons** from `weapons.primary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
 - **Secondary weapons** from `weapons.secondary` lists on the extracted ships and their templates, as well as `player_setup.additional_weapons`.
@@ -167,8 +167,9 @@ Finally, the converter regex-scans the `.fsif` file for new `allow-ship` and `al
 
 ### Output
 
-- If an un-granted ship or weapon is used by the player, a `[ERROR]` is emitted listing the missing items and providing actionable advice. The conversion process returns `False` and aborts.
-- If all player ships and weapons are covered, an `[INFO]` confirmation is printed and the conversion proceeds.
+- If the inferred `.fsif` file for a mission is missing, unreadable, or does not parse as a YAML mapping, a `[WARNING]` is emitted and that mission is skipped — this is non-fatal and does not abort conversion.
+- If an un-granted ship or weapon is used by the player in a mission whose FSIF was successfully parsed, an `[ERROR]` is emitted listing the missing items and providing actionable advice. The conversion process returns `False` and aborts.
+- If all player ships and weapons are covered across every parsed mission, an `[INFO]` confirmation is printed and the conversion proceeds.
 
 ## Version Handling
 

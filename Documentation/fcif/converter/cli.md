@@ -56,9 +56,9 @@ If the FSIF file is missing or unparseable for a mission that has an advance con
 
 The first mission of a campaign is special: no `allow-ship` or `allow-weapon` SEXP has run before it, so every player ship class and weapon it uses must be in `starting_loadout` — otherwise it will not appear in the game. In subsequent missions, the player can only use ships and weapons that are either in `starting_loadout` or explicitly granted by an `allow-ship` or `allow-weapon` SEXP in a previous mission.
 
-The converter automatically verifies this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha–Epsilon wings, `start_ship`, `additional_ship_choices`, `additional_weapons`).
+The converter automatically verifies this campaign progression by tracking allowed items from `starting_loadout`, scanning each mission's `.fsif` file for new `allow-ship`/`allow-weapon` SEXPs, and validating the player's loadout for the current mission (Alpha, Beta, and Gamma wings, `additional_ship_choices`, `additional_weapons`).
 
-For each item that is used by the player but not previously granted, an `[ERROR]` is printed and the conversion is aborted.
+If a mission's `.fsif` file is missing, unreadable, or does not parse as a YAML mapping, a `[WARNING]` is printed and that mission is skipped for the loadout check (non-fatal). For each item that is used by the player but not previously granted in a successfully parsed mission, an `[ERROR]` is printed and the conversion is aborted.
 
 ## Output
 The converter writes the `.fc2` file to the specified (or derived) output path.
