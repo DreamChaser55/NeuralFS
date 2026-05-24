@@ -820,7 +820,7 @@ Potential bloat:
 
 ### Phase 2: Documentation Alignment
 
-1. Ensure that current FCIF version is set to "1.0" throughout the docs.
+1. Ensure that current FCIF version is set to "1.0" throughout the docs. **ALREADY ADDRESSED**
 2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs.
 3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults.
 4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation.
