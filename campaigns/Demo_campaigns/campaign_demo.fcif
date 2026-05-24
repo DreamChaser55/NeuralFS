@@ -4,7 +4,7 @@ campaign:
   name: "FCIF Feature Showcase"
   description: |
     A demonstration campaign showcasing all features of the
-    FreeSpace Campaign Intermediate Format (FCIF 1.1).
+    FreeSpace Campaign Intermediate Format.
     This campaign is not playable - it exists only as a
     reference for FCIF authors.
 

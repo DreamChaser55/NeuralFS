@@ -19,8 +19,8 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 
 ## Versions
 FCIF and converter versions:
-- **FCIF**: 1.1 (current)
-- **FCIF version support**: the converter accepts FCIF **1.0** and **1.1**. Files with other `fcif_version` values are rejected.
+- **FCIF**: 1.0 (current)
+- **FCIF version support**: the converter accepts FCIF **1.0**. Files with other `fcif_version` values are rejected.
 
 ## Requirements
 - Python 3.9+

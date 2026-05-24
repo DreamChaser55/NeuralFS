@@ -175,21 +175,6 @@ Recommended fix:
   - `except ImportError: requests = None`
   - In `__init__`, raise `ImportError("requests is not installed. Install it with: pip install requests")` if needed.
 
-### P2: Documentation Version Drift for FCIF
-
-Files:
-
-- `Documentation/fcif/specification.md`
-- `FCIF_to_FC2_Converter/README.md`
-- `Documentation/fcif/converter/implementation_details.md`
-
-`Documentation/fcif/specification.md` says current version is `"1.0"`, while the converter and README identify FCIF `1.1` as current and accept both `1.0` and `1.1`. The spec also documents the 1.1 fields (`success_event`, `failure_goal`, `failure_event`), so the version header is stale.
-
-Recommended fix:
-
-- Update the specification header to current version `1.1`.
-- Add a short compatibility note explaining accepted versions and which fields were introduced in 1.1.
-
 ### P2: FSIF Specification Has Several Schema/Behavior Mismatches
 
 File: `Documentation/fsif/specification.md`
@@ -699,10 +684,6 @@ Recommendation:
 
 #### `Documentation/fcif/specification.md`
 
-Version header is stale (`1.0` vs current `1.1`). The spec otherwise describes the newer condition fields.
-
-Other issue:
-
 - The campaign-wide loadout check is described as always verifying all missions and throwing fatal errors for missing grants. It does not mention that missing/unparseable FSIF files are warning-only in the current implementation.
 
 #### `Documentation/fcif/converter/cli.md`
@@ -716,10 +697,6 @@ Mismatch:
 #### `Documentation/fcif/converter/implementation_details.md`
 
 This is the most accurate FCIF implementation doc because it explicitly says the loadout check treats missing FSIF as non-fatal.
-
-Improvement:
-
-- Add the current version `1.1` near the top to avoid cross-file confusion.
 
 #### `FSIF_to_FS2_Converter/README.md`
 
@@ -843,7 +820,7 @@ Potential bloat:
 
 ### Phase 2: Documentation Alignment
 
-1. Update FCIF spec to current version 1.1.
+1. Ensure that current FCIF version is set to "1.0" throughout the docs.
 2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs.
 3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults.
 4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation.

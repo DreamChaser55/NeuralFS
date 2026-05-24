@@ -172,4 +172,4 @@ Finally, the converter regex-scans the `.fsif` file for new `allow-ship` and `al
 
 ## Version Handling
 
-The converter accepts FCIF versions **1.0** and **1.1**. Files with other `fcif_version` values are rejected with a validation error. The new advance condition fields (`success_event`, `failure_goal`, `failure_event`) were introduced in version 1.1, but since they are optional with `None` defaults, version 1.0 files (which only use `success_goal` or no condition) remain fully compatible.
+The converter accepts FCIF version **1.0**. Files with other `fcif_version` values are rejected with a validation error.
