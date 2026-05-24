@@ -1,6 +1,6 @@
 # Data Generation Tools
 
-This folder contains four scripts that generate or update data files used by the converter. Three of them (`extract_hardpoints.py`, `parse_tables.py`, and `generate_weapons_compatibility.py`) must be run **before** `generate_fs_data.py` whenever the raw FSO table files (`ship_tables.txt`, `weapon_tables.txt`) are updated, because they produce the intermediate Markdown/Python files that `generate_fs_data.py` reads.
+This folder contains five scripts. Four of them generate or update data files used by the converter: `extract_hardpoints.py`, `parse_tables.py`, `generate_weapons_compatibility.py`, and `generate_fs_data.py`. The first three must be run **before** `generate_fs_data.py` whenever the raw FSO table files (`ship_tables.txt`, `weapon_tables.txt`) are updated, because they produce the intermediate Markdown/Python files that `generate_fs_data.py` reads. The fifth script, `fetch_inworld_voices.py`, fetches the Inworld TTS voice catalogue from the Inworld API and is run on demand when the catalogue changes.
 
 ## `common/parsers_and_generators/extract_hardpoints.py`
 Reads `ship_tables.txt` and extracts the number of primary and secondary weapon banks (hardpoints) for every ship flagged as a fighter or bomber. Writes the results to `Documentation/FSO and fs2 format/fighter_bomber_hardpoints.md`, which is used by `generate_fs_data.py` and by the converter's empty-hardpoint validator.
@@ -35,3 +35,16 @@ To update the validation data (e.g., after adding a new ship class or SEXP to th
 python common/parsers_and_generators/generate_fs_data.py
 ```
 This will re-parse the Markdown files and overwrite `fs_data.py` with the latest definitions.
+
+## `common/parsers_and_generators/fetch_inworld_voices.py`
+Fetches the current list of available Inworld TTS voices from the Inworld REST API and writes it to `Documentation/Inworld TTS/voices.txt`.
+
+**Prerequisites:**
+- The `requests` library must be installed (`pip install requests`).
+- A valid Inworld API key must be present in `API_keys/Inworld_API_key.txt` (in the repository root).
+
+```bash
+python common/parsers_and_generators/fetch_inworld_voices.py
+```
+
+Run this script whenever the Inworld voice catalogue changes to keep the reference list in `Documentation/Inworld TTS/voices.txt` up to date.

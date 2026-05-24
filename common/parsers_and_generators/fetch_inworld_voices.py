@@ -1,9 +1,9 @@
 import requests
-import os
 from pathlib import Path
 
 # Paths
-ROOT_DIR = Path(__file__).resolve().parent.parent
+# This script is located in common/parsers_and_generators/, so repo root is ../../
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 API_KEY_PATH = ROOT_DIR / "API_keys" / "Inworld_API_key.txt"
 OUTPUT_PATH = ROOT_DIR / "Documentation" / "Inworld TTS" / "voices.txt"
 
