@@ -28,7 +28,7 @@ NeuralFS is thoughtfully structured around a useful intermediate-format workflow
 The main risks are not architectural failure. They are mostly edge-case correctness, stale documentation, missing packaging/test setup, and a growing docstring/comment debt as the codebase has expanded. There are a few concrete bugs worth fixing first:
 
 1. `common/parsers_and_generators/fetch_inworld_voices.py` calculates the project root incorrectly and will read/write under `common/` instead of the repository root. **ALREADY ADDRESSED**
-2. Standalone FSIF ships can reference a missing template without a clear validation error.
+2. Standalone FSIF ships can reference a missing template without a clear validation error. **ALREADY ADDRESSED**
 3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions.
 4. FCIF condition and filename strings are quoted into FC2 SEXPs without rejecting or escaping embedded double quotes.
 5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check.
@@ -57,7 +57,7 @@ Recommended fix:
 - Change `ROOT_DIR` to the repository root.
 - Add a small dry-run or path assertion test for all generator scripts that verifies their input/output paths are under the intended project root.
 
-### P1: Standalone Ship Template References Can Be Silently Ignored
+### P1: Standalone Ship Template References Can Be Silently Ignored - **ALREADY ADDRESSED**
 
 File: `FSIF_to_FS2_Converter/mission_loader.py`
 
@@ -835,7 +835,7 @@ Potential bloat:
 ### Phase 1: Correctness Patch
 
 1. Fix `fetch_inworld_voices.py` root path. **ALREADY ADDRESSED**
-2. Add standalone ship template existence validation.
+2. Add standalone ship template existence validation. **ALREADY ADDRESSED**
 3. Decide and implement null handling for optional FSIF collections.
 4. Reject or escape double quotes in FCIF quoted fields.
 5. Fix initial GUI TTS disabled state.

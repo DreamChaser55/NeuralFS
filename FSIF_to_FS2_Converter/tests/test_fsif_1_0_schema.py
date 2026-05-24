@@ -289,6 +289,53 @@ class FSIF10SchemaTests(unittest.TestCase):
             self._write_and_load(fsif_text)
         self.assertIn("Extra inputs are not permitted", str(ctx.exception))
 
+    # -------------------------------------------------------------------------
+    # Standalone ship template existence validation
+    # -------------------------------------------------------------------------
+
+    def test_rejects_standalone_ship_with_missing_template(self):
+        """A standalone ship referencing a non-existent template must be rejected with a clear error."""
+        # Add a standalone ship that references 'no_such_template', which is not
+        # defined in ship_templates.  The ship also defines 'class' and 'position'
+        # so that under the old behaviour (silent empty-dict fallback) the load
+        # would have succeeded, masking the template typo.
+        fsif_text = MINIMAL_FSIF_1.replace(
+            "  wings:",
+            "  ships:\n"
+            "    - name: \"GTC Test\"\n"
+            "      template: \"no_such_template\"\n"
+            "      class: \"GTC Fenris\"\n"
+            "      team: \"Friendly\"\n"
+            "      position: [500, 0, 0]\n"
+            "  wings:",
+        )
+        with self.assertRaises(ValueError) as ctx:
+            self._write_and_load(fsif_text)
+        msg = str(ctx.exception)
+        self.assertIn("no_such_template", msg,
+                      "Error message must name the missing template")
+        self.assertIn("GTC Test", msg,
+                      "Error message must name the offending ship")
+
+    def test_accepts_standalone_ship_with_valid_template(self):
+        """A standalone ship referencing an existing template must load without errors."""
+        # Re-use the alpha_t template already present in MINIMAL_FSIF_1.
+        # Provide position explicitly (templates cannot carry position).
+        fsif_text = MINIMAL_FSIF_1.replace(
+            "  wings:",
+            "  ships:\n"
+            "    - name: \"Extra Ship\"\n"
+            "      template: \"alpha_t\"\n"
+            "      position: [200, 0, 0]\n"
+            "  wings:",
+        )
+        # Should not raise
+        mission = self._write_and_load(fsif_text)
+        extra = next((s for s in mission.ships if s.name == "Extra Ship"), None)
+        self.assertIsNotNone(extra, "Extra Ship should be present in loaded ships")
+        self.assertEqual(extra.ship_class, "GTF Ulysses",
+                         "Template 'class' must be inherited by the standalone ship")
+
 
 if __name__ == "__main__":
     unittest.main()

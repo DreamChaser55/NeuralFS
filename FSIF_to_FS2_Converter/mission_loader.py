@@ -413,6 +413,12 @@ class MissionLoader:
         if 'template' in ship_data:
             if ship_data['template'] is not None and not isinstance(ship_data['template'], str):
                 raise ValueError(f"Validation Error: Ship '{ship_data.get('name', 'unknown')}' must use a string reference for 'template', found {type(ship_data['template']).__name__} instead.")
+            if isinstance(ship_data['template'], str) and ship_data['template'] not in self.templates:
+                raise ValueError(
+                    f"Ship '{ship_data.get('name', 'unknown')}' references unknown template "
+                    f"'{ship_data['template']}'. "
+                    f"Check that the template name is defined in entities.ship_templates."
+                )
             t_props = copy.deepcopy(self.templates.get(ship_data['template'], {}))
             props.update(t_props)
         props.update(ship_data)
