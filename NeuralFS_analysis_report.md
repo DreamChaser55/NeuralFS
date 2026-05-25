@@ -31,7 +31,7 @@ The main risks are not architectural failure. They are mostly edge-case correctn
 2. Standalone FSIF ships can reference a missing template without a clear validation error. **ALREADY ADDRESSED**
 3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions. **ALREADY ADDRESSED**
 4. FCIF condition and filename strings are quoted into FC2 SEXPs without rejecting or escaping embedded double quotes. **ALREADY ADDRESSED**
-5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check.
+5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check. **ALREADY ADDRESSED**
 6. The FSIF GUI starts with TTS disabled but leaves the TTS option controls visually enabled until the user toggles the checkbox. **ALREADY ADDRESSED**
 7. The Inworld TTS provider imports `requests` unguarded, so optional-dependency handling is less graceful than Google and ElevenLabs. **ALREADY ADDRESSED**
 
