@@ -291,7 +291,7 @@ Minor cleanup:
 
 #### `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/generation_tools/generate_argument_logic.py`
 
-The script contains a live debug print:
+The script contains a live debug print: **ALREADY ADDRESSED**
 
 ```python
 print(f"DEBUG: Block ended at line {line_num}: {line.strip()}")
@@ -361,8 +361,8 @@ Strengths:
 Issues:
 
 - `open(self.output_path, 'w')` uses the platform default encoding and newline behavior. The converter validates ASCII, but explicit `encoding='utf-8', newline='\n'` would make output deterministic across Windows and Linux.
-- Stale comment: `# FSIF 2.1: Camera orientation is calculated by the loader.` The current FSIF version is 1.0.
-- `from typing import Optional` appears separated and potentially unused; check and remove if unused.
+- Stale comment: `# FSIF 2.1: Camera orientation is calculated by the loader.` The current FSIF version is 1.0. **ALREADY ADDRESSED**
+- `from typing import Optional` appears separated and potentially unused; check and remove if unused. **ALREADY ADDRESSED**
 - Several helpers and section writers lack docstrings, especially private formatting/sanitization methods.
 
 Refactor suggestion:
@@ -429,7 +429,7 @@ Briefing validation is appropriately isolated. It checks map icons, display clas
 
 Issues:
 
-- Typo in comment: "calcutated".
+- Typo in comment: "calcutated". **ALREADY ADDRESSED**
 - The validator warns on debriefing `( true )` display conditions, while the loader defaults omitted conditions to `( true )`. This is coherent as a warning policy, but the spec should be explicit.
 
 #### `FSIF_to_FS2_Converter/validator/sexp_checks.py`
@@ -549,7 +549,7 @@ The GUI is practical and mostly a thin wrapper around `process_mission()`.
 Issues:
 
 - Initial TTS options state bug noted above.
-- `TkLogHandler` is imported but unused because logging setup comes from `LogMixin`.
+- `TkLogHandler` is imported but unused because logging setup comes from `LogMixin`. **ALREADY ADDRESSED**
 - Many GUI methods lack docstrings. GUI callbacks do not need verbose docstrings, but important callbacks such as conversion start, batch processing, and TTS settings assembly should have one-line purpose comments/docstrings.
 
 ### FCIF Converter
@@ -588,7 +588,7 @@ Simple and clear. Same GUI docstring cleanup applies here.
 
 Issue:
 
-- `TkLogHandler` is imported but unused.
+- `TkLogHandler` is imported but unused. **ALREADY ADDRESSED**
 
 #### `FCIF_to_FC2_Converter/tests/*`
 
@@ -647,7 +647,7 @@ This is one of the strongest docs: it contains practical authoring guidance, com
 
 Issues:
 
-- Typo: "failure.." double period in the debriefing display-condition note.
+- Typo: "failure.." double period in the debriefing display-condition note. **ALREADY ADDRESSED**
 - Some path examples use backslashes. Prefer portable relative paths.
 - It repeats many rules from the spec. That is okay for usability, but add a note that the spec is canonical.
 
@@ -697,7 +697,7 @@ Good high-level converter overview. It correctly lists Inworld TTS and FSIF 1.0 
 
 Issues:
 
-- Project structure says `utils.py`, but shared utilities live under `common/`.
+- Project structure says `utils.py`, but shared utilities live under `common/`. **ALREADY ADDRESSED**
 - Some rendered output in PowerShell appears mojibaked because of console encoding, but the file itself contains Unicode arrows. This is not a source bug; still, ASCII arrows would render more robustly in old Windows consoles.
 
 #### `FCIF_to_FC2_Converter/README.md`
@@ -767,9 +767,9 @@ High-priority docstring gaps:
 
 Comment cleanup:
 
-- Fix stale comments like `FSIF 2.1`.
-- Fix typo "calcutated".
-- Remove or gate generator debug prints.
+- Fix stale comments like `FSIF 2.1`. **ALREADY ADDRESSED**
+- Fix typo "calcutated". **ALREADY ADDRESSED**
+- Remove or gate generator debug prints. **ALREADY ADDRESSED**
 - Avoid comments that restate a direct assignment; keep comments for FreeSpace/FSO domain intent and tricky transformations.
 
 ## Naming Review
@@ -787,9 +787,9 @@ Most domain names are clear and match FSIF/FCIF concepts. Suggested improvements
 
 Potential cruft:
 
-- Unused `TkLogHandler` imports in both converter GUI files.
-- Stale `FSIF 2.1` comment.
-- Debug print in `generate_argument_logic.py`.
+- Unused `TkLogHandler` imports in both converter GUI files. **ALREADY ADDRESSED**
+- Stale `FSIF 2.1` comment. **ALREADY ADDRESSED**
+- Debug print in `generate_argument_logic.py`. **ALREADY ADDRESSED**
 - Local `.pytest_cache` and unusable `.venv`.
 - Possible unreachable alias-handling code in `mission_loader.py` due strict Pydantic `extra='forbid'`.
 - Documentation references to old validation ownership (`misc`) and Google-only voice validation. **ALREADY ADDRESSED**
@@ -817,7 +817,7 @@ Potential bloat:
 2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs. **ALREADY ADDRESSED**
 3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults. **ALREADY ADDRESSED**
 4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation. **ALREADY ADDRESSED**
-5. Fix small typos and stale comments.
+5. Fix small typos and stale comments. **ALREADY ADDRESSED**
 
 ### Phase 3: Tooling and Testability
 

@@ -202,7 +202,7 @@ class BriefingChecksMixin:
                             )
 
             # Icon proximity check: warn if any two icons are closer than 5% of the camera width.
-            # Camera width calcutated here mirrors the calculation in MissionLoader._calculate_briefing_camera.
+            # Camera width calculated here mirrors the calculation in MissionLoader._calculate_briefing_camera.
             if stage.icons and len(stage.icons) >= 2:
                 cam_width = self._calculate_briefing_camera_width(stage.icons)
                 threshold = 0.05 * cam_width

@@ -1,5 +1,5 @@
 # fs2_writer.py
-# Writes the hydrated Mission object to a valid.fs2 file.
+# Writes the hydrated Mission object to a valid FS2 mission file.
 
 import textwrap
 import logging
@@ -11,8 +11,6 @@ import math
 
 logger = logging.getLogger(__name__)
 
-
-from typing import Optional
 
 class FS2Writer:
     def __init__(self, mission: Mission, output_path: str):
@@ -294,8 +292,7 @@ class FS2Writer:
             cam_pos = stage.camera_pos
             cam_orient = stage.camera_orient
 
-            # FSIF 2.1: Camera orientation is calculated by the loader.
-            # We simply write what is provided.
+            # Camera orientation is calculated by the loader; we simply write what is provided.
             cam_orient_use = cam_orient if cam_orient else DEFAULT_ORIENTATION
 
             self._write(f'$camera_pos: {self._format_vector(cam_pos)}')

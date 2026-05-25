@@ -411,7 +411,6 @@ def generate():
             started = True
             
         if started and balance == 0:
-            print(f"DEBUG: Block ended at line {line_num}: {line.strip()}")
             break
             
     func_body = "\n".join(captured_lines)

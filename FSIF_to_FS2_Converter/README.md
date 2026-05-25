@@ -92,5 +92,5 @@ This tool allows you to:
 - `tts_google.py` — Google GenAI TTS provider implementation.
 - `tts_elevenlabs.py` — ElevenLabs TTS provider implementation.
 - `voice_manager.py` — Manages voice filename generation and normalization. Assigns unique filenames to voiced lines and handles collision resolution based on the selected TTS strategy.
-- `utils.py` — Shared utility functions.
+- `../common/utils.py` — Shared utility functions (lives in the project-level `common/` package).
 - `Advanced_SEXP_Validator/` — A Python implementation of the SEXP parser and validator used in the FSO engine.
