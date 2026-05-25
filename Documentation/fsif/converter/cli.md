@@ -37,7 +37,7 @@ python FSIF_to_FS2_Converter/fsif_to_fs2.py <path_to_mission.fsif>
 The converter supports automatic voice generation using Google GenAI, ElevenLabs, or Inworld TTS. The TTS provider should ideally be specified in the `.fsif` file itself under the `audio.tts_provider` field. The CLI arguments act as optional overrides.
 
 - `--enable-tts`: Force-enable TTS generation. If no provider is specified in the `.fsif` file or via CLI, Google is used as the default.
-- `--tts-provider <google|elevenlabs|inworld|none>`: Force a specific TTS provider, overriding the `.fsif` file setting. Use `none` to forcefully disable TTS generation.
+- `--tts-provider <google|elevenlabs|inworld|none>`: Force a specific TTS provider, overriding the `.fsif` file setting. Use `none` to forcefully disable TTS generation even when `--enable-tts` is passed.
 - `--tts-mode <mode>`: Voice filename strategy (default: `unique`).
   - `unique`: Generate unique filenames (e.g. `msg1.wav`) to avoid collisions with existing files. Useful for batch conversions or shared output directories.
   - `overwrite`: Use canonical filenames (e.g. `msg.wav`) and overwrite existing files on disk.
@@ -51,6 +51,14 @@ The converter supports automatic voice generation using Google GenAI, ElevenLabs
 - `--elevenlabs-model <id>`: ElevenLabs model ID (default: `eleven_v3`).
 - `--inworld-model <id>`: Inworld model ID (default: `inworld-tts-1.5-max`).
 - `--tts-rate-limit-delay <seconds>`: Delay in seconds between consecutive TTS API calls (default: `0.0`).
+
+### Effective TTS Provider Resolution
+
+When `--enable-tts` is passed, the converter determines the active provider using the following priority order (highest wins):
+
+1. **`--tts-provider <value>` CLI argument** (or equivalent GUI selection) — always overrides everything else, including the FSIF file.
+2. **`audio.tts_provider` field in the `.fsif` file** — the recommended way to record the intended provider with the mission.
+3. **`"google"`** — built-in default when TTS is enabled and no provider is specified by either of the above sources.
 
 ### API Key Resolution Priority
 

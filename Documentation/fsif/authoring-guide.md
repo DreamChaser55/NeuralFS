@@ -287,6 +287,11 @@ Wings must define `position: [x, y, z]`, which is interpreted as the centroid of
 
 Wing members are spaced 50 m apart by default (`member_spacing: 50.0`) and the line is centered on the specified centroid.
 
+**Template inheritance for standalone ships:**
+Templates are primarily designed for wings, but standalone ships can also reference a template via the `template` key. When a standalone ship references a template, the loader shallow-merges the template's properties into the ship first, then applies any ship-level keys on top. This means a standalone ship can omit `class`, `team`, `weapons`, and any other shared property if they are already provided by the template.
+
+Override semantics are shallow: authoring any top-level key on the ship replaces the entire template value for that key. Nested mappings are replaced wholesale — to override only `weapons.primary`, re-author the complete `weapons` block. The following fields are always forbidden in templates regardless: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
+
 ## Waypoints vs. Nav Buoys
 FSIF `entities.waypoints` are invisible to the player. They do not create a HUD marker, radar contact, targetable object, visible model, or any in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
 
@@ -468,7 +473,7 @@ mission_flow:
 ```
 
 **Debriefing stage display_condition authoring note:**
-Debriefing stages are displayed only when their `display_condition` SEXP is met. Make conditions sufficiently restrictive — a stage describing success should never use `( true )` as its condition, because that would cause it to display even when the mission was a failure.. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )`.
+`display_condition` is optional. When omitted, it defaults to `( true )`, which causes the stage to display unconditionally after every mission outcome. Authors should provide a restrictive SEXP that precisely targets the intended outcome — a stage describing mission success should never use `( true )` (or omit the field), because that would cause it to display even after a failure. Prefer specific SEXPs such as `( is-event-true-delay "..." 0 )`.
 
 ## Briefing Room Grid View
 

@@ -95,19 +95,24 @@
           - **Non-ship icon types** (`"Waypoint"`, `"Jump Node"`, `"Planet"`, `"Small Planet"`, `"Asteroid Field"`, `"Unknown"`, `"Unknown Wing"`): **must be omitted**. The converter automatically uses the safe default `"Terran NavBuoy"` for these icon types.
         - `highlighted` (Boolean, optional, default: `false`)
   - `debriefing` (Mapping, optional):
-    - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`, `display_condition` (SEXP, required), `recommendation`.
+    - `stages` (List[Mapping], optional):
+      - `text` (String, required)
+      - `voice_name` (String, optional)
+      - `voice_style_instructions` (String, optional)
+      - `display_condition` (String, optional, default: `"( true )"`). SEXP Boolean condition.
+      - `recommendation` (String, optional)
   - `command_briefing` (Mapping, optional):
     - `stages` (List[Mapping], optional). Fields: `text`, `voice_name`, `voice_style_instructions`.
 - `audio` (Mapping, optional):
   - `mission_music` (String, optional)
   - `briefing_music` (String, optional)
-  - `tts_provider` (String, optional). Specifies the Text-to-Speech provider for the mission. Valid options: `"google"`, `"elevenlabs"`, `"inworld"`, `"none"`. Defaults to `"none"` if unspecified.
+  - `tts_provider` (String, optional). Specifies the preferred Text-to-Speech provider for the mission. Valid options: `"google"`, `"elevenlabs"`, `"inworld"`, `"none"`.
 
 **Ship Properties:**
 - `name` (String, required for `ships`)
 - `template` (String, optional). Name of a template defined in `ship_templates`.
 - `class` (String, required)
-- `team` (String, required). Enum: `"Friendly"`, `"Hostile"`.
+- `team` (String, required). Enum: `"Friendly"`, `"Hostile"`, `"Unknown"`.
 - `position` (List[Float], required for `ships`). Format: `[x, y, z]`. World-space spawn location.
 - `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats.
 - `ai_class` (String, optional)
