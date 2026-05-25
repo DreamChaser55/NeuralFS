@@ -105,13 +105,35 @@ class MissionLoader:
         with open(self.fsif_path, 'r', encoding='utf-8') as f:
             raw_yaml = f.read()
 
-        self.data = yaml.safe_load(raw_yaml) or {}
+        try:
+            loaded = yaml.safe_load(raw_yaml)
+        except yaml.YAMLError as e:
+            raise ValueError(
+                f"Invalid YAML in FSIF file '{self.fsif_path}': {e}"
+            ) from e
+
+        if loaded is None:
+            loaded = {}
+
+        if not isinstance(loaded, dict):
+            raise ValueError(
+                f"FSIF root document must be a YAML mapping/object, "
+                f"got {type(loaded).__name__!r}. "
+                f"Check that the file starts with top-level key/value pairs "
+                f"(e.g. 'fsif_version: \"1.0\"') rather than a list or scalar."
+            )
+
+        self.data = loaded
 
         # Compose once from the same in-memory YAML text so downstream
         # validators can inspect scalar styles without re-opening the file.
         try:
             self.root_node = yaml.compose(raw_yaml)
-        except Exception:
+        except yaml.YAMLError as e:
+            logger.warning(
+                "Could not compose YAML root node for scalar-style validation "
+                "(safe_load succeeded, so the file is valid): %s", e
+            )
             self.root_node = None
 
     def _validate_version(self):
@@ -189,7 +211,10 @@ class MissionLoader:
         Returns:
             Environment: Populated environment object.
         """
-        env_data = self.data.get('environment', {})
+        # Work on a deep copy so that loader normalization (asteroid field
+        # bounds -> min_vec/max_vec, default variants injection, etc.) does not
+        # mutate the raw YAML document held in self.data.
+        env_data = copy.deepcopy(self.data.get('environment', {}))
 
         ambient_light_level = env_data.get('ambient_light_level')
         if not isinstance(ambient_light_level, list):
@@ -272,8 +297,11 @@ class MissionLoader:
         entities = self.data.get('entities', {})
         # Normalize optional mapping/list sub-sections so that explicit YAML
         # `null` values are treated identically to omitted keys.
-        self.templates = self._as_mapping(
-            entities.get('ship_templates'), 'entities.ship_templates'
+        # Deep-copy so that template dicts are independent of self.data —
+        # wing expansion mutates ship_props derived from these dicts, and we
+        # want self.data['entities']['ship_templates'] to stay authored-clean.
+        self.templates = copy.deepcopy(
+            self._as_mapping(entities.get('ship_templates'), 'entities.ship_templates')
         )
 
         # Validate templates
@@ -343,6 +371,10 @@ class MissionLoader:
         Raises:
             ValueError: If wing is missing required fields or references invalid template.
         """
+        # Work on a local deep copy so that normalization (e.g. wrapping
+        # initial_orders) does not mutate the raw YAML dict in self.data.
+        wing_data = copy.deepcopy(wing_data)
+
         if 'count' not in wing_data:
             raise ValueError(f"Wing '{wing_data.get('name')}' missing required 'count'.")
         
@@ -416,6 +448,11 @@ class MissionLoader:
         Raises:
             ValueError: If required fields are missing or logic constraints violated.
         """
+        # Work on a local deep copy so that normalization (subsystem list
+        # filtering, dock expansion) does not mutate the raw YAML dict in
+        # self.data.
+        ship_data = copy.deepcopy(ship_data)
+
         self._validate_no_player_start(ship_data.get('flags'), f"ship '{ship_data.get('name')}'")
         
         props = {}
@@ -503,7 +540,10 @@ class MissionLoader:
         # Briefing — normalize both the top-level mapping and the stages list
         # so that `briefing: null` or `briefing: {stages: null}` both yield an
         # empty Briefing rather than an AttributeError.
-        briefing_raw = self._as_mapping(flow.get('briefing'), 'mission_flow.briefing')
+        # Deep-copy so that we can safely replace icon dicts with BriefingIcon
+        # objects and inject camera fields into stage dicts without mutating
+        # the raw YAML document held in self.data.
+        briefing_raw = copy.deepcopy(self._as_mapping(flow.get('briefing'), 'mission_flow.briefing'))
         briefing_stages = self._as_list(
             briefing_raw.get('stages'), 'mission_flow.briefing.stages'
         )
