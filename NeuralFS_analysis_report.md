@@ -666,14 +666,14 @@ Improvements:
 This is detailed and valuable for contributors. Some stale sections need cleanup:
 
 - Says briefing/debriefing must include a `stages` key if present; code accepts omitted stages through defaults in several paths.
-- Says `misc` validates templates, global name uniqueness, docking pairs, and reinforcements; actual checks are split across mixins.
-- Voice validation line says voices must exist in Google TTS files, but provider-specific voice docs now include ElevenLabs and Inworld.
-- The provider voice-loading list mentions Google and ElevenLabs but omits Inworld.
+- Says `misc` validates templates, global name uniqueness, docking pairs, and reinforcements; actual checks are split across mixins. **ALREADY ADDRESSED**
+- Voice validation line says voices must exist in Google TTS files, but provider-specific voice docs now include ElevenLabs and Inworld. **ALREADY ADDRESSED**
+- The provider voice-loading list mentions Google and ElevenLabs but omits Inworld. **ALREADY ADDRESSED**
 
 Recommendation:
 
-- Add a "validation pass map" table listing each mixin and the actual checks it owns.
-- Keep provider-specific voice validation docs synchronized with `Validator.__init__`.
+- Add a "validation pass map" table listing each mixin and the actual checks it owns. **ALREADY ADDRESSED**
+- Keep provider-specific voice validation docs synchronized with `Validator.__init__`. **ALREADY ADDRESSED**
 
 #### `Documentation/fcif/specification.md`
 
@@ -792,7 +792,7 @@ Potential cruft:
 - Debug print in `generate_argument_logic.py`.
 - Local `.pytest_cache` and unusable `.venv`.
 - Possible unreachable alias-handling code in `mission_loader.py` due strict Pydantic `extra='forbid'`.
-- Documentation references to old validation ownership (`misc`) and Google-only voice validation.
+- Documentation references to old validation ownership (`misc`) and Google-only voice validation. **ALREADY ADDRESSED**
 
 Potential bloat:
 
@@ -816,7 +816,7 @@ Potential bloat:
 1. Ensure that current FCIF version is set to "1.0" throughout the docs. **ALREADY ADDRESSED**
 2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs. **ALREADY ADDRESSED**
 3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults. **ALREADY ADDRESSED**
-4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation.
+4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation. **ALREADY ADDRESSED**
 5. Fix small typos and stale comments.
 
 ### Phase 3: Tooling and Testability

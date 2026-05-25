@@ -122,11 +122,14 @@ The converter supports multiple Text-to-Speech providers. The user selects the p
     3. `Elevenlabs_API_key.txt` file in the `API_keys` directory.
 
 **Voice Lists and Parsing**:
-The system loads allowed voices from the documentation folder corresponding to the selected provider:
-*   **Google**: `Documentation/Google TTS/male_voices.txt` & `female_voices.txt`
-*   **ElevenLabs**: `Documentation/ElevenLabs TTS/voices.txt`
+Allowed voice names for each provider are loaded from the documentation folder by `common/parsers_and_generators/generate_fs_data.py` and stored in `common/fs_data.py` as provider-specific sets:
+*   **Google**: `Documentation/Google TTS/male_voices.txt` & `female_voices.txt` → `ALLOWED_VOICES_GOOGLE`
+*   **ElevenLabs**: `Documentation/ElevenLabs TTS/voices.txt` → `ALLOWED_VOICES_ELEVENLABS`
+*   **Inworld**: `Documentation/Inworld TTS/voices.txt` → `ALLOWED_VOICES_INWORLD`
 
-Both use the `Name -- Characteristic` format. For ElevenLabs, the internal converter maps these human-readable names to their specific Voice IDs.
+All three files use the `Name -- Characteristic` format. For ElevenLabs, the internal converter maps these human-readable names to their specific Voice IDs.
+
+**Provider-aware voice validation**: `Validator.load_reference_data()` selects the correct voice set based on the active TTS provider: `elevenlabs` → `ALLOWED_VOICES_ELEVENLABS`, `inworld` → `ALLOWED_VOICES_INWORLD`, all others (including `google` and the disabled-TTS path) → `ALLOWED_VOICES_GOOGLE`. Voice name validation then runs against the selected set for all voiced lines in messages, briefing, debriefing, and command briefing.
 
 ---
 
@@ -136,13 +139,16 @@ The converter employs a comprehensive **Strict Validation** system via a modular
 
 ### Validator Architecture
 The validator is structured as a single `Validator` class built using a Python Mixin pattern across a dedicated `validator/` package. The base state and execution flow are managed in `core.py`, while specific validation domains are separated into specialized mixin modules:
-*   `ascii_checks`: Enforces ASCII-only characters in FSO-facing strings.
-*   `sexp_checks`: Validates SEXP structures, parenthesis matching, and formatting.
-*   `spatial`: Checks mission scale, object overlaps, and waypoint collisions.
-*   `ship_wing_checks`: Validates ship/wing relationships, names, anchors, and assignments.
-*   `environment`: Ensures valid sun, nebula, and bitmap configurations.
-*   `briefing`: Validates briefing/debriefing stages and icon placements.
-*   `misc`: Validates templates, global name uniqueness, docking pairs, and reinforcements.
+
+| Mixin (`validator/*.py`) | Primary responsibilities |
+|---|---|
+| `ascii_checks` | ASCII-only enforcement and double-quote prohibition in XSTR text for all FSO-facing string fields |
+| `sexp_checks` | SEXP parenthesis balance, YAML comment leakage, token length, basic operator validity; directive-text SEXP compatibility |
+| `spatial` | Mission scale and 3D design advisories; hyperspace spawn collisions; waypoint path collisions; shared waypoint order conflicts |
+| `ship_wing_checks` | Ship class/team/flag/AI class/weapon compatibility/hardpoint validation; wing count and flag checks; standalone wing-name pattern advisory; docking pair validation; reinforcement reference validation; arrival/departure anchor validation with fighterbay check; player setup and start-ship validation; large-ship escort recommendation |
+| `environment` | Sun, background bitmap, and full-nebula token validation; asteroid/debris field object-variant and target-ship validation |
+| `briefing` | Span-style tag balancing; text-styling scope and mission-level color-tag presence checks; briefing stage voice/icon/proximity validation; debriefing stage condition and voice validation; command briefing stage voice validation |
+| `misc` | Global name uniqueness and length enforcement (Objects, Events, Goals, Messages namespaces); mission-info flag validation; message voice-name validation; audio music-token validation; goals-vs-directives count advisory |
 
 This modular design prevents a monolithic class structure while allowing all checks to seamlessly share and modify the internal validation state.
 
@@ -153,7 +159,7 @@ The validator checks the following areas:
 *   **Ship Classes**: Must exist in `spacecraft-classes.md`.
 *   **Dockpoints**: Must match the specific ship class in `ship-dockpoint-names.md`.
 *   **Subsystems**: Must match the specific ship class in `Ship subsystems/*.md`.
-*   **Voices**: TTS voice names must exist in `Google TTS/*_voices.txt`.
+*   **Voices**: TTS `voice_name` values are validated against the provider-specific voice registry loaded by `Validator.load_reference_data()`: `ALLOWED_VOICES_ELEVENLABS` for ElevenLabs, `ALLOWED_VOICES_INWORLD` for Inworld, and `ALLOWED_VOICES_GOOGLE` for all other cases (including when TTS generation is disabled). Voice registries are derived from the provider documentation files in `Documentation/<Provider> TTS/`. See the Voice Generation Engine section above for details.
 
 #### **Hardcoded Token Lists**:
 *   Validates against stable lists for: Music, Briefing Icons, Background Textures (Suns, Planets, Nebulae), and Weapon Names.
