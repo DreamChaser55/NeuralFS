@@ -1,0 +1,33 @@
+fsif_version: "1.0"
+
+mission_info:
+  name: "Demo Mission 01"
+  description: "Minimal fixture for FCIF feature showcase (advance condition: success_goal)."
+
+environment:
+  ambient_light_level: [5, 5, 5]
+
+player_setup:
+  start_ship: "Alpha 1"
+
+entities:
+  ship_templates:
+    alpha_t:
+      class: "GTF Apollo"
+      team: "Friendly"
+      weapons:
+        primary: ["ML-16 Laser", "Avenger"]
+        secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0.0, 0.0, 0.0]
+
+mission_flow:
+  goals:
+    - name: "Complete Training"
+      type: "Primary"
+      objective_text: "Complete all training objectives."
+      formula: |
+        ( true )

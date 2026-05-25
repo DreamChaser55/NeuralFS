@@ -1,0 +1,34 @@
+fsif_version: "1.0"
+
+mission_info:
+  name: "Demo Mission 04"
+  description: "Minimal fixture for FCIF feature showcase (advance condition: failure_event)."
+
+environment:
+  ambient_light_level: [5, 5, 5]
+
+player_setup:
+  start_ship: "Alpha 1"
+
+entities:
+  ship_templates:
+    alpha_t:
+      class: "GTF Apollo"
+      team: "Friendly"
+      weapons:
+        primary: ["ML-16 Laser", "Avenger"]
+        secondary: ["MX-50"]
+  wings:
+    - name: "Alpha"
+      template: "alpha_t"
+      count: 1
+      position: [0.0, 0.0, 0.0]
+
+mission_flow:
+  events:
+    - name: "Flagship lost"
+      formula: |
+        ( when
+          ( true )
+          ( do-nothing )
+        )
