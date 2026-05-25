@@ -121,7 +121,7 @@ The README and FCIF spec say the converter verifies every campaign mission loado
 
 The implementation details document is more accurate in one place because it explicitly says this differs from the advance-condition reference check, which is fatal. The README/spec should either be softened or the implementation should become strict.
 
-### P2: FSIF Vector/Orientation Normalizers Accept Arbitrary Iterables
+### P2: FSIF Vector/Orientation Normalizers Accept Arbitrary Iterables - **ALREADY ADDRESSED**
 
 File: `FSIF_to_FS2_Converter/data_models.py`
 
@@ -313,7 +313,7 @@ Strengths:
 
 Issues:
 
-- See vector/orientation iterable issue above.
+- See vector/orientation iterable issue above. **ALREADY ADDRESSED**
 - `EnvironmentInput.suns` and `background_bitmaps` are typed as `Optional[List[Any]]`; the surrounding comment says runtime models are reused, but they are not. Loader/runtime validation may still catch bad values later, but the strict input model is looser than advertised.
 - Many Pydantic model classes lack class docstrings. Since the file mixes input and runtime models, short class docstrings would make the intent much clearer.
 

@@ -18,13 +18,30 @@ DEFAULT_ORIENTATION = [
 
 
 def _normalize_vector(v: Any) -> List[float]:
-    """Ensure a 3-element float list. Raises ValueError on any malformed or absent input."""
+    """Ensure a 3-element float list. Raises ValueError on any malformed or absent input.
+
+    Only ``list`` and ``tuple`` inputs are accepted. Strings, bytes, mappings,
+    and other arbitrary iterables are explicitly rejected to avoid silent
+    misinterpretation (e.g. a string ``"123"`` being iterated character-by-character).
+    """
     if v is None:
         raise ValueError("Expected a 3-element [x, y, z] list, got None.")
-    try:
-        items = list(v)
-    except TypeError:
-        raise ValueError(f"Expected a 3-element [x, y, z] list, got: {v!r}")
+    if isinstance(v, (str, bytes, bytearray)):
+        raise ValueError(
+            f"Expected a 3-element [x, y, z] list, got a string/bytes value: {v!r}. "
+            "Author positions and angles as a YAML list, e.g. [0.0, 0.0, 0.0]."
+        )
+    if isinstance(v, dict):
+        raise ValueError(
+            f"Expected a 3-element [x, y, z] list, got a mapping: {v!r}. "
+            "Author positions and angles as a YAML list, e.g. [0.0, 0.0, 0.0]."
+        )
+    if not isinstance(v, (list, tuple)):
+        raise ValueError(
+            f"Expected a 3-element [x, y, z] list, got {type(v).__name__!r}: {v!r}. "
+            "Author positions and angles as a YAML list, e.g. [0.0, 0.0, 0.0]."
+        )
+    items = v
     if len(items) != 3:
         raise ValueError(
             f"Expected a 3-element [x, y, z] list, got {len(items)} element(s): {v!r}"
@@ -42,6 +59,10 @@ def _normalize_sun_angles(v: Any) -> List[float]:
     is intentionally excluded from the FSIF sun schema. The FS2 writer
     hardcodes bank to 0.0 when emitting the +Angles line for suns.
 
+    Only ``list`` and ``tuple`` inputs are accepted. Strings, bytes, mappings,
+    and other arbitrary iterables are explicitly rejected to avoid silent
+    misinterpretation.
+
     Raises ValueError on any malformed or absent input.
     """
     if v is None:
@@ -49,13 +70,24 @@ def _normalize_sun_angles(v: Any) -> List[float]:
             "Sun angles must be a 2-element [pitch, heading] list, got None. "
             "Bank is omitted because suns are rotationally symmetric."
         )
-    try:
-        items = list(v)
-    except TypeError:
+    if isinstance(v, (str, bytes, bytearray)):
         raise ValueError(
-            f"Sun angles must be a 2-element [pitch, heading] list, got: {v!r}. "
+            f"Sun angles must be a 2-element [pitch, heading] list, got a string/bytes value: {v!r}. "
+            "Author sun angles as a YAML list, e.g. [0.087266, 2.356194]. "
             "Bank is omitted because suns are rotationally symmetric."
         )
+    if isinstance(v, dict):
+        raise ValueError(
+            f"Sun angles must be a 2-element [pitch, heading] list, got a mapping: {v!r}. "
+            "Author sun angles as a YAML list, e.g. [0.087266, 2.356194]. "
+            "Bank is omitted because suns are rotationally symmetric."
+        )
+    if not isinstance(v, (list, tuple)):
+        raise ValueError(
+            f"Sun angles must be a 2-element [pitch, heading] list, got {type(v).__name__!r}: {v!r}. "
+            "Author sun angles as a YAML list, e.g. [0.087266, 2.356194]."
+        )
+    items = v
     if len(items) != 2:
         raise ValueError(
             f"Sun angles must be a 2-element [pitch, heading] list, "
@@ -71,20 +103,49 @@ def _normalize_sun_angles(v: Any) -> List[float]:
 
 
 def _normalize_orientation(v: Any) -> List[float]:
-    """Ensure a 9-element float list (3×3 rotation matrix). Raises ValueError on bad input."""
+    """Ensure a 9-element float list (3×3 rotation matrix). Raises ValueError on bad input.
+
+    Accepted forms:
+    - A flat ``list`` or ``tuple`` of 9 numbers.
+    - A 3×3 nested ``list`` or ``tuple`` of ``list``/``tuple`` rows (each with 3 numbers).
+
+    Strings, bytes, mappings, and other arbitrary iterables are explicitly
+    rejected to avoid silent misinterpretation (e.g. a 9-character string
+    being iterated character by character).
+    """
     if v is None:
         raise ValueError("orientation must be a 9-element flat list or 3×3 nested list, got None.")
+    if isinstance(v, (str, bytes, bytearray)):
+        raise ValueError(
+            f"orientation must be a 9-element flat list or 3×3 nested list, "
+            f"got a string/bytes value: {v!r}. "
+            "Author orientation as a YAML list of 9 floats, e.g. [1, 0, 0, 0, 1, 0, 0, 0, 1]."
+        )
+    if isinstance(v, dict):
+        raise ValueError(
+            f"orientation must be a 9-element flat list or 3×3 nested list, "
+            f"got a mapping: {v!r}. "
+            "Author orientation as a YAML list of 9 floats, e.g. [1, 0, 0, 0, 1, 0, 0, 0, 1]."
+        )
+    if not isinstance(v, (list, tuple)):
+        raise ValueError(
+            f"orientation must be a 9-element flat list or 3×3 nested list, "
+            f"got {type(v).__name__!r}: {v!r}. "
+            "Author orientation as a YAML list of 9 floats, e.g. [1, 0, 0, 0, 1, 0, 0, 0, 1]."
+        )
 
-    # Handle nested lists (3×3) as well as flat 9-element lists
+    # Handle nested 3×3 form: each element must also be a list/tuple (not a string/dict/etc.)
     flat: List[float] = []
-    try:
-        if isinstance(v[0], (list, tuple)):
-            for row in v:
-                flat.extend(row)
-        else:
-            flat = list(v)
-    except (TypeError, IndexError) as e:
-        raise ValueError(f"orientation must be a 9-element flat list or 3×3 nested list, got: {v!r}") from e
+    if len(v) > 0 and isinstance(v[0], (list, tuple)):
+        for row in v:
+            if not isinstance(row, (list, tuple)):
+                raise ValueError(
+                    f"orientation 3×3 rows must each be a list or tuple of 3 numbers, "
+                    f"got row {row!r}."
+                )
+            flat.extend(row)
+    else:
+        flat = list(v)
 
     if len(flat) != 9:
         raise ValueError(
