@@ -54,7 +54,7 @@ The converter supports automatic voice generation using Google GenAI, ElevenLabs
 
 ### Effective TTS Provider Resolution
 
-When `--enable-tts` is passed, the converter determines the active provider using the following priority order (highest wins):
+When `--enable-tts` is passed, the converter determines the active provider using the following priority order:
 
 1. **`--tts-provider <value>` CLI argument** (or equivalent GUI selection) — always overrides everything else, including the FSIF file.
 2. **`audio.tts_provider` field in the `.fsif` file** — the recommended way to record the intended provider with the mission.
