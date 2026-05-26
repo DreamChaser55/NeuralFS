@@ -15,7 +15,7 @@ This is the index for all available documentation on FSIF, FCIF, FSO, and the co
 Main README file: ../README.md
 
 ## Developer Setup and Tests
-See the **Developer setup and tests** section in `../README.md` for:
+See `../developer_setup.md` for:
 - Creating and activating a virtual environment
 - Installing core and optional TTS dependencies via `pyproject.toml`
 - Running the full test suite with `python -m pytest`
