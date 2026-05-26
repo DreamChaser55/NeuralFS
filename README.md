@@ -42,7 +42,7 @@ The converter provides both a command-line interface suitable for use by AI agen
 
 If provided with a Google Gemini, ElevenLabs, or Inworld API key, the converter can optionally generate voice files for briefings, messages, and debriefings using the respective TTS API.
 
-For details, see `\FSIF_to_FS2_Converter\README.md`.
+For details, see `FSIF_to_FS2_Converter/README.md`.
 
 #### FCIF to FC2 Converter
 
@@ -51,7 +51,7 @@ The converter validates the FCIF input, generates S-expression (SEXP) logic for 
 
 This converter also provides both interfaces: a command-line interface suitable for use by AI agents and a GUI for human users.
 
-For details, see `\FCIF_to_FC2_Converter\README.md`.
+For details, see `FCIF_to_FC2_Converter/README.md`.
 
 ## Requirements
 - Python 3.9+
@@ -67,6 +67,50 @@ Optional (for TTS):
 - `requests` (for Inworld TTS)
 
 If you want to use TTS, you need to provide an API key for your chosen provider. The simplest option is to place a file named `Gemini_API_key.txt`, `Elevenlabs_API_key.txt`, or `Inworld_API_key.txt` (containing only your key) into the `API_keys` directory.
+
+## Developer setup and tests
+
+A `pyproject.toml` at the repository root declares all runtime and optional dependencies.
+
+### 1. Create and activate a virtual environment
+
+**Windows (PowerShell):**
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+**macOS / Linux:**
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 2. Install dependencies
+
+Install the core runtime dependencies plus the dev extras (`pytest`):
+```bash
+pip install -e ".[dev]"
+```
+
+To also install optional TTS dependencies (all three providers):
+```bash
+pip install -e ".[dev,google-tts,elevenlabs-tts,inworld-tts]"
+```
+
+### 3. Run the test suite
+
+```bash
+python -m pytest
+```
+
+This automatically discovers tests under `FSIF_to_FS2_Converter/tests/`, `FCIF_to_FC2_Converter/tests/`, and `Fiction_Viewer_Validator/tests/`.
+
+### 4. Run a Python syntax check
+
+```bash
+python -m compileall -q common FCIF_to_FC2_Converter Fiction_Viewer_Validator FSIF_to_FS2_Converter
+```
 
 ## Documentation for AI agents
 - `Documentation/index.md` — documentation home, index, navigation, and recommended reading order.

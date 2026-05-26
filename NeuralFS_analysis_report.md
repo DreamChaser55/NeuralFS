@@ -19,7 +19,7 @@ No code changes were made during this review. This file is the only new artifact
   - `python -m pytest -q -p no:cacheprovider` failed because `pytest` is missing.
   - `python -m unittest discover -v` failed because `yaml` is missing.
 
-Recommendation: add a root-level dependency file and one documented test command so future reviews can run the same checks reliably.
+Recommendation: add a root-level dependency file and one documented test command so future reviews can run the same checks reliably. **ALREADY ADDRESSED**
 
 ## Executive Summary
 
@@ -200,9 +200,9 @@ The root README gives a clear overview of the agent-driven workflow and the purp
 
 Improvement opportunities:
 
-- Add a root "Developer setup" section with a single environment creation command and test command.
-- Replace Windows-only backslash doc links such as `\FSIF_to_FS2_Converter\README.md` with portable relative links.
-- Mention the root-level dependency story once, rather than requiring readers to open each converter README.
+- Add a root "Developer setup" section with a single environment creation command and test command. **ALREADY ADDRESSED**
+- Replace Windows-only backslash doc links such as `\FSIF_to_FS2_Converter\README.md` with portable relative links. **ALREADY ADDRESSED**
+- Mention the root-level dependency story once, rather than requiring readers to open each converter README. **ALREADY ADDRESSED**
 
 #### `.gitignore`
 
@@ -210,7 +210,7 @@ The ignore rules cover API keys, virtual environments, caches, generated game as
 
 Cruft observed locally:
 
-- `.pytest_cache` directories are present and caused permission warnings during traversal.
+- `.pytest_cache` directories are present and caused permission warnings during traversal. **ALREADY ADDRESSED** (added to `.gitignore`)
 - `.venv` exists but appears Linux-style and unusable from the Windows shell (`.venv/bin`, no `.venv/Scripts`).
 
 Recommendation: clean local caches and avoid checking any generated environment artifacts into workflows. No tracked `.gitignore` issue was found.
@@ -630,7 +630,7 @@ Good navigation page. It makes the project approachable.
 Improvements:
 
 - Convert prose paths into clickable Markdown links where practical.
-- Add a "Developer setup and tests" entry once a root setup document exists.
+- Add a "Developer setup and tests" entry once a root setup document exists. **ALREADY ADDRESSED**
 
 #### `Documentation/fsif/specification.md`
 
@@ -728,18 +728,18 @@ Strengths:
 
 Problems:
 
-- No root `requirements.txt`, `pyproject.toml`, or `uv.lock`/equivalent for repeatable setup.
-- No root test command documented.
-- `pytest` is used by test files but not declared in an obvious project-level dependency file.
+- No root `requirements.txt`, `pyproject.toml`, or `uv.lock`/equivalent for repeatable setup. **ALREADY ADDRESSED**
+- No root test command documented. **ALREADY ADDRESSED**
+- `pytest` is used by test files but not declared in an obvious project-level dependency file. **ALREADY ADDRESSED**
 - Local `.venv` is unusable from this Windows shell, which makes contributor setup harder.
 
 Recommendations:
 
-1. Add `pyproject.toml` with runtime and optional dependencies:
+1. Add `pyproject.toml` with runtime and optional dependencies: **ALREADY ADDRESSED**
    - Core: `PyYAML`, `pydantic>=2`
    - Test: `pytest`
    - TTS extras: `google-genai`, `elevenlabs`, `requests`
-2. Add root commands:
+2. Add root commands: **ALREADY ADDRESSED**
    - `python -m pytest`
    - `python -m compileall common FCIF_to_FC2_Converter Fiction_Viewer_Validator FSIF_to_FS2_Converter`
 3. Add CI that runs syntax and tests on Windows and Linux.
@@ -790,7 +790,7 @@ Potential cruft:
 - Unused `TkLogHandler` imports in both converter GUI files. **ALREADY ADDRESSED**
 - Stale `FSIF 2.1` comment. **ALREADY ADDRESSED**
 - Debug print in `generate_argument_logic.py`. **ALREADY ADDRESSED**
-- Local `.pytest_cache` and unusable `.venv`.
+- Local `.pytest_cache` and unusable `.venv`. (`.pytest_cache` **ALREADY ADDRESSED** via `.gitignore`)
 - Possible unreachable alias-handling code in `mission_loader.py` due strict Pydantic `extra='forbid'`.
 - Documentation references to old validation ownership (`misc`) and Google-only voice validation. **ALREADY ADDRESSED**
 
@@ -821,8 +821,8 @@ Potential bloat:
 
 ### Phase 3: Tooling and Testability
 
-1. Add root `pyproject.toml` or `requirements*.txt`.
-2. Document one setup path and one test path.
+1. Add root `pyproject.toml` or `requirements*.txt`. **ALREADY ADDRESSED**
+2. Document one setup path and one test path. **ALREADY ADDRESSED**
 3. Add CI.
 4. Extract pure functions for player weapon pool calculation and shared spatial position resolution.
 5. Add generator smoke tests or regenerate-and-diff docs.

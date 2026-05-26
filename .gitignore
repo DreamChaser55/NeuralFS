@@ -35,3 +35,6 @@ desktop.ini
 *.wav
 *.bak
 campaigns/Demo_campaigns/campaign_demo.fc2
+
+# Test cache
+.pytest_cache/

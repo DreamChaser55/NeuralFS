@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "NeuralFS"
+version = "1.0.0"
+description = "Agentic AI framework for creating FreeSpace Open campaigns"
+requires-python = ">=3.9"
+dependencies = [
+    "PyYAML",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+google-tts = ["google-genai"]
+elevenlabs-tts = ["elevenlabs"]
+inworld-tts = ["requests"]
+dev = [
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+# Discover tests in both converter test directories.
+testpaths = [
+    "FSIF_to_FS2_Converter/tests",
+    "FCIF_to_FC2_Converter/tests",
+    "Fiction_Viewer_Validator/tests",
+]
+# Suppress the .pytest_cache noise from the FSIF_to_FS2_Converter sub-directory.
+norecursedirs = [".git", ".venv", "__pycache__", "*.egg-info", "build", "dist"]
