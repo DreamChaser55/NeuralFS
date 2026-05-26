@@ -19,201 +19,19 @@ No code changes were made during this review. This file is the only new artifact
   - `python -m pytest -q -p no:cacheprovider` failed because `pytest` is missing.
   - `python -m unittest discover -v` failed because `yaml` is missing.
 
-Recommendation: add a root-level dependency file and one documented test command so future reviews can run the same checks reliably. **ALREADY ADDRESSED**
-
 ## Executive Summary
 
 NeuralFS is thoughtfully structured around a useful intermediate-format workflow: FSIF and FCIF are concise, AI-friendly authoring formats, and the converters perform meaningful domain validation before emitting FreeSpace Open assets. The strongest areas are the breadth of FSIF validation, the separation of validation mixins, the advanced SEXP validation integration, and the practical documentation for mission authors.
 
-The main risks are not architectural failure. They are mostly edge-case correctness, stale documentation, missing packaging/test setup, and a growing docstring/comment debt as the codebase has expanded. There are a few concrete bugs worth fixing first:
-
-1. `common/parsers_and_generators/fetch_inworld_voices.py` calculates the project root incorrectly and will read/write under `common/` instead of the repository root. **ALREADY ADDRESSED**
-2. Standalone FSIF ships can reference a missing template without a clear validation error. **ALREADY ADDRESSED**
-3. Several FSIF fields are typed as optional lists/mappings but the loader assumes non-null lists/mappings, so explicit YAML `null` can crash with generic exceptions. **ALREADY ADDRESSED**
-4. FCIF condition and filename strings are quoted into FC2 SEXPs without rejecting or escaping embedded double quotes. **ALREADY ADDRESSED**
-5. The FCIF README/spec implies campaign loadout FSIF files are always fatal when missing, but the implementation only warns and skips those missions for the loadout check. **ALREADY ADDRESSED**
-6. The FSIF GUI starts with TTS disabled but leaves the TTS option controls visually enabled until the user toggles the checkbox. **ALREADY ADDRESSED**
-7. The Inworld TTS provider imports `requests` unguarded, so optional-dependency handling is less graceful than Google and ElevenLabs. **ALREADY ADDRESSED**
-
-The project would benefit from a small stabilization pass before broader feature work: fix the path/validation bugs, add a root dev setup, align documentation with actual behavior, and add targeted regression tests around the identified edge cases.
-
-## Priority Findings
-
-### P1: Inworld Voice Fetcher Writes to the Wrong Tree - **ALREADY ADDRESSED**
-
-File: `common/parsers_and_generators/fetch_inworld_voices.py`
-
-`ROOT_DIR = Path(__file__).resolve().parent.parent` resolves to `common/`, because the script is in `common/parsers_and_generators/`. As a result:
-
-- `API_KEY_PATH` points to `common/API_keys/Inworld_API_key.txt`.
-- `OUTPUT_PATH` points to `common/Documentation/Inworld TTS/voices.txt`.
-
-Other generator scripts use the repository root. This script should likely use `Path(__file__).resolve().parent.parent.parent`.
-
-Impact: the script will fail to find the expected API key and can create duplicate documentation output under `common/Documentation`.
-
-Recommended fix:
-
-- Change `ROOT_DIR` to the repository root.
-- Add a small dry-run or path assertion test for all generator scripts that verifies their input/output paths are under the intended project root.
-
-### P1: Standalone Ship Template References Can Be Silently Ignored - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/mission_loader.py`
-
-Wing templates are validated, but standalone ship templates are read with:
-
-```python
-t_props = copy.deepcopy(self.templates.get(ship_data['template'], {}))
-props.update(t_props)
-```
-
-If `template` is misspelled, the loader silently uses `{}` and continues. If the standalone ship defines `class` and `team` itself, conversion can succeed while the author believes inherited fields were applied. If it does not define those fields, the error becomes a generic missing-field error instead of "template not found".
-
-Recommended fix:
-
-- If a standalone ship contains `template`, explicitly verify that the template name exists in `self.templates`.
-- Reuse the same error style used for wings.
-- Add a regression test with a standalone ship whose template name is invalid.
-
-### P1: Explicit YAML Null Values Can Crash Loader Paths - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/mission_loader.py`
-
-Many input model fields allow `Optional[List[...]]` or `Optional[Mapping[...]]`, but the loader assumes normal list/dict values. Examples:
-
-- `entities.get('wings', [])` fails if `wings: null`.
-- `for e in flow.get('events', [])` fails if `events: null`.
-- `briefing_raw = flow.get('briefing', {})` followed by `briefing_raw.get(...)` fails if `briefing: null`.
-- Similar patterns exist for goals, messages, command briefing, debriefing, reinforcements, waypoints, jump nodes, and other collections.
-
-Impact: authors can write schema-accepted YAML that produces an implementation exception instead of a clear validation error.
-
-Recommended fix:
-
-- Decide whether explicit `null` should be legal.
-- If legal, normalize each list/mapping with `value or []` / `value or {}` before iteration.
-- If not legal, make the input models reject `None` for those fields and document the stricter contract.
-- Add tests for `events: null`, `briefing: null`, `wings: null`, and `debriefing: null`.
-
-### P1: FCIF Quote Handling Can Emit Invalid FC2 - **ALREADY ADDRESSED**
-
-File: `FCIF_to_FC2_Converter/fcif_to_fc2.py`
-
-`quote_string(s)` returns `f'"{s}"'` without escaping or rejecting double quotes. `CampaignInfo.description` explicitly rejects double quotes, but `CampaignMission.filename`, `success_goal`, `success_event`, `failure_goal`, and `failure_event` are only `AsciiStr`. A condition name containing `"` can generate malformed FC2 logic.
-
-Recommended fix:
-
-- Either reject `"` in all FCIF fields that are emitted inside FC2 quoted strings, or implement an engine-compatible escaping strategy if FC2 supports escaping.
-- Add tests for embedded quotes in filenames and condition names.
-- Update the FCIF specification to document the rule consistently.
-
-### P2: FCIF Loadout Check Documentation Is Stricter Than Code - **ALREADY ADDRESSED**
-
-Files:
-
-- `FCIF_to_FC2_Converter/README.md`
-- `Documentation/fcif/specification.md`
-- `Documentation/fcif/converter/implementation_details.md`
-- `FCIF_to_FC2_Converter/fcif_to_fc2.py`
-
-The README and FCIF spec say the converter verifies every campaign mission loadout and rejects ungranted player ships/weapons. The implementation treats missing or unreadable FSIF files during `check_campaign_player_loadouts()` as non-fatal warnings and skips that mission.
-
-The implementation details document is more accurate in one place because it explicitly says this differs from the advance-condition reference check, which is fatal. The README/spec should either be softened or the implementation should become strict.
-
-### P2: FSIF Vector/Orientation Normalizers Accept Arbitrary Iterables - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/data_models.py`
-
-`_normalize_vector`, `_normalize_sun_angles`, and `_normalize_orientation` convert input with `list(v)` or nested iteration. This accepts strings and other arbitrary iterables before conversion. For example, a string with numeric characters can be treated as a sequence rather than rejected as the wrong shape.
-
-Recommended fix:
-
-- Reject `str`, `bytes`, and mappings explicitly.
-- Require `list` or `tuple` for vectors and orientation rows.
-- Keep the existing clear length/value errors after the type guard.
-
-### P2: FSIF Entry Point Catches Only Some Load Failures - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/fsif_to_fs2.py`
-
-`process_mission()` catches `ValueError` around `load_mission_with_yaml_root()`. YAML parse errors, unexpected Pydantic/schema errors, and I/O errors can escape depending on where they are raised.
-
-Recommended fix:
-
-- Catch and classify `yaml.YAMLError`, `OSError`, and `ValidationError` where appropriate.
-- Keep unexpected exceptions visible in debug mode, but return a clean `False` and readable log in normal CLI/GUI usage.
-
-### P2: FSIF GUI TTS Controls Start Enabled While TTS Is Disabled - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/fsif_converter_gui.py`
-
-`tts_enabled_var` defaults to `False`, and `toggle_tts_options()` correctly disables the controls. However, it is not called at the end of widget creation, so the controls initially appear enabled even though TTS generation is off.
-
-Recommended fix:
-
-- Call `self.toggle_tts_options()` at the end of `create_widgets()`.
-- Add a tiny GUI initialization smoke test if GUI testing is available.
-
-### P2: Inworld Optional Dependency Handling Is Inconsistent - **ALREADY ADDRESSED**
-
-File: `FSIF_to_FS2_Converter/tts_inworld.py`
-
-Google and ElevenLabs providers guard optional imports and return a meaningful `is_available()` result. Inworld imports `requests` directly at module import time. If `requests` is missing, `get_provider('inworld')` reports a generic provider import failure instead of a clear optional-dependency message.
-
-Recommended fix:
-
-- Use the same pattern as the other providers:
-  - `try: import requests`
-  - `except ImportError: requests = None`
-  - In `__init__`, raise `ImportError("requests is not installed. Install it with: pip install requests")` if needed.
-
-### P2: FSIF Specification Has Several Schema/Behavior Mismatches - **ALREADY ADDRESSED**
-
-File: `Documentation/fsif/specification.md`
-
-Observed mismatches:
-
-- Debriefing stage `display_condition` is documented as required, but the input model allows omission and the loader defaults it to `( true )`.
-- Ship `class` is documented as required, but it can be inherited from a template.
-- Ship `team` is documented as only `"Friendly"` or `"Hostile"`, while the broader token docs and validator allow `"Unknown"`.
-- The audio section says `tts_provider` defaults to `"none"` if unspecified, while `fsif_to_fs2.py` defaults to Google when TTS generation is enabled and neither CLI nor FSIF chooses a provider. If TTS is not enabled, the conversion path uses `none`.
-
-Recommended fix:
-
-- Clarify "required unless inherited from template" for ship fields.
-- Include `"Unknown"` wherever ship teams are documented if it is intentionally supported.
-- State the real TTS precedence:
-  1. CLI provider if passed.
-  2. FSIF `audio.tts_provider` if present.
-  3. Google when TTS is enabled and no provider is specified.
-  4. No TTS when disabled.
-- Document debriefing `display_condition` either as required by policy or optional with a default and a warning for `( true )`.
+The main remaining risks fall into a few categories:
+- **Refactoring and testability**: several large files have grown to the point where extracting pure functions would enable better unit testing.
+- **Docstring and comment debt**: many public surfaces lack docstrings, and generated files lack provenance headers.
+- **CI**: no automated CI pipeline runs tests on commit.
+- **Documentation polish**: a few remaining authoring-guide and CLI doc gaps after the initial corrections round.
 
 ## Per-Area Review Notes
 
 ### Root Project Files
-
-#### `README.md`
-
-The root README gives a clear overview of the agent-driven workflow and the purpose of FSIF/FCIF. It accurately positions the converters as validation and emission tools.
-
-Improvement opportunities:
-
-- Add a root "Developer setup" section with a single environment creation command and test command. **ALREADY ADDRESSED**
-- Replace Windows-only backslash doc links such as `\FSIF_to_FS2_Converter\README.md` with portable relative links. **ALREADY ADDRESSED**
-- Mention the root-level dependency story once, rather than requiring readers to open each converter README. **ALREADY ADDRESSED**
-
-#### `.gitignore`
-
-The ignore rules cover API keys, virtual environments, caches, generated game assets, and audio output. This is good.
-
-Cruft observed locally:
-
-- `.pytest_cache` directories are present and caused permission warnings during traversal. **ALREADY ADDRESSED** (added to `.gitignore`)
-- `.venv` exists but appears Linux-style and unusable from the Windows shell (`.venv/bin`, no `.venv/Scripts`).
-
-Recommendation: clean local caches and avoid checking any generated environment artifacts into workflows. No tracked `.gitignore` issue was found.
 
 #### `opencode.json` and VS Code prompt files
 
@@ -259,10 +77,6 @@ Potential issue:
 
 ### Data Generation Scripts
 
-#### `common/parsers_and_generators/fetch_inworld_voices.py`
-
-See P1 path bug above. **ALREADY ADDRESSED**
-
 #### `common/parsers_and_generators/parse_tables.py`
 
 The module docstring explains the expected input tables and generated outputs. The regex approach is acceptable for a generator script but should be treated as brittle.
@@ -289,16 +103,6 @@ Minor cleanup:
 - Generated comments currently include repeated section numbering around section 10/11. This is harmless but noisy.
 - Add a generated-file header to `common/fs_data.py` with the exact generator command.
 
-#### `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/generation_tools/generate_argument_logic.py`
-
-The script contains a live debug print: **ALREADY ADDRESSED**
-
-```python
-print(f"DEBUG: Block ended at line {line_num}: {line.strip()}")
-```
-
-Recommendation: gate this behind a verbose flag or remove it. Generator output should be quiet unless something fails.
-
 ### FSIF Converter
 
 #### `FSIF_to_FS2_Converter/data_models.py`
@@ -313,7 +117,6 @@ Strengths:
 
 Issues:
 
-- See vector/orientation iterable issue above. **ALREADY ADDRESSED**
 - `EnvironmentInput.suns` and `background_bitmaps` are typed as `Optional[List[Any]]`; the surrounding comment says runtime models are reused, but they are not. Loader/runtime validation may still catch bad values later, but the strict input model is looser than advertised.
 - Many Pydantic model classes lack class docstrings. Since the file mixes input and runtime models, short class docstrings would make the intent much clearer.
 
@@ -338,14 +141,11 @@ Strengths:
 
 Issues:
 
-- Missing standalone template validation, as described above.
-- `Optional` collection fields are not normalized consistently.
 - Some support for standalone ship dock alias keys appears unreachable because strict `ShipInput` forbids those extra fields before the loader can normalize them. This is likely leftover cruft.
 - `_normalize_initial_orders()` strips semicolon comments only to detect an existing `( goals ... )` wrapper but returns the original string when already wrapped. If semicolon comments are not accepted by the target FS2 SEXP parser in that location, this may leak unsupported syntax. Confirm with FSO behavior before changing.
 
 Refactor suggestion:
 
-- Add small helpers like `_as_list(value, field_name)` and `_as_mapping(value, field_name)` to either normalize or reject nulls with a consistent message.
 - Extract briefing camera math into a named helper class or a small pure function if more briefing logic is added.
 
 #### `FSIF_to_FS2_Converter/fs2_writer.py`
@@ -361,8 +161,6 @@ Strengths:
 Issues:
 
 - `open(self.output_path, 'w')` uses the platform default encoding and newline behavior. The converter validates ASCII, but explicit `encoding='utf-8', newline='\n'` would make output deterministic across Windows and Linux.
-- Stale comment: `# FSIF 2.1: Camera orientation is calculated by the loader.` The current FSIF version is 1.0. **ALREADY ADDRESSED**
-- `from typing import Optional` appears separated and potentially unused; check and remove if unused. **ALREADY ADDRESSED**
 - Several helpers and section writers lack docstrings, especially private formatting/sanitization methods.
 
 Refactor suggestion:
@@ -375,7 +173,6 @@ This entry point is compact and readable. The CLI options cover output, TTS prov
 
 Issues:
 
-- Loader error handling is too narrow, as noted above. **ALREADY ADDRESSED**
 - Internal logic checks for CLI provider `"fsif"`, but argparse choices do not include it. The GUI uses `"fsif"` and maps it to `None`, so this is likely leftover tolerance. Either add a CLI `fsif` choice or remove the branch for clarity.
 - TTS provider precedence should be documented in one place and tested.
 
@@ -429,7 +226,6 @@ Briefing validation is appropriately isolated. It checks map icons, display clas
 
 Issues:
 
-- Typo in comment: "calcutated". **ALREADY ADDRESSED**
 - The validator warns on debriefing `( true )` display conditions, while the loader defaults omitted conditions to `( true )`. This is coherent as a warning policy, but the spec should be explicit.
 
 #### `FSIF_to_FS2_Converter/validator/sexp_checks.py`
@@ -455,7 +251,6 @@ The name `misc` is starting to hide responsibility. It currently handles a subse
 Recommendation:
 
 - Rename once responsibilities settle, or keep `misc` very small.
-- Update implementation docs that currently attribute docking/reinforcement checks to `misc`.
 
 #### `FSIF_to_FS2_Converter/validate_sexp_scalar_styles.py`
 
@@ -512,11 +307,7 @@ Improvement:
 
 #### `FSIF_to_FS2_Converter/tts_inworld.py`
 
-See optional dependency issue above.
-
-Additional note:
-
-- The `style` argument is accepted for interface consistency but effectively ignored by the Inworld REST request. The authoring guide notes that Inworld style support is currently not utilized, so this is documented behavior.
+The `style` argument is accepted for interface consistency but effectively ignored by the Inworld REST request. The authoring guide notes that Inworld style support is currently not utilized, so this is documented behavior.
 
 #### `FSIF_to_FS2_Converter/voice_manager.py`
 
@@ -548,8 +339,6 @@ The GUI is practical and mostly a thin wrapper around `process_mission()`.
 
 Issues:
 
-- Initial TTS options state bug noted above.
-- `TkLogHandler` is imported but unused because logging setup comes from `LogMixin`. **ALREADY ADDRESSED**
 - Many GUI methods lack docstrings. GUI callbacks do not need verbose docstrings, but important callbacks such as conversion start, batch processing, and TTS settings assembly should have one-line purpose comments/docstrings.
 
 ### FCIF Converter
@@ -567,8 +356,6 @@ Strengths:
 
 Issues:
 
-- Quote handling bug described above.
-- Missing FSIF files are warning-only for loadout checks, while some docs imply stricter behavior.
 - `check_campaign_advance_conditions()` warns for every mission without an advance condition, including the last mission and intentionally linear campaigns. This can create warning fatigue.
 
 Refactor suggestion:
@@ -586,18 +373,13 @@ This is not urgent, but it would make the converter easier to test as features g
 
 Simple and clear. Same GUI docstring cleanup applies here.
 
-Issue:
-
-- `TkLogHandler` is imported but unused. **ALREADY ADDRESSED**
-
 #### `FCIF_to_FC2_Converter/tests/*`
 
 The FCIF tests cover ASCII validation, advance-condition references, loadout checks, and formula generation. This is a good foundation.
 
 Improvement:
 
-- Add tests for embedded double quotes in condition fields.
-- Add tests that pin the intended missing-FSIF behavior for loadout checks, whichever policy is chosen.
+- Add tests that pin the intended missing-FSIF behavior for loadout checks.
 
 ### Fiction Viewer Validator
 
@@ -611,12 +393,6 @@ Strengths:
 - Clear distinction between errors and warnings.
 - Useful CLI behavior.
 
-Improvements:
-
-- Add short docstrings to `log_error()`, `log_warning()`, and `main()`. **ALREADY ADDRESSED**
-- The README says "non-ASCII characters"; the implementation reports non-ASCII bytes. That is fine, but the README could mention byte offsets so users understand the output. **ALREADY ADDRESSED**
-- `collect_files()` rejects directories; this is fine, but the README should say only explicit `.txt` files are accepted. **ALREADY ADDRESSED**
-
 #### `Fiction_Viewer_Validator/README.md`
 
 Accurate and useful. Could be expanded with a short example of a failing output and fixed text.
@@ -627,14 +403,13 @@ Accurate and useful. Could be expanded with a short example of a failing output 
 
 Good navigation page. It makes the project approachable.
 
-Improvements:
+Improvement:
 
 - Convert prose paths into clickable Markdown links where practical.
-- Add a "Developer setup and tests" entry once a root setup document exists. **ALREADY ADDRESSED**
 
 #### `Documentation/fsif/specification.md`
 
-This should remain the canonical FSIF contract. It is mostly clear but has the mismatches listed above.
+This should remain the canonical FSIF contract. It is mostly clear.
 
 Recommendation:
 
@@ -647,7 +422,6 @@ This is one of the strongest docs: it contains practical authoring guidance, com
 
 Issues:
 
-- Typo: "failure.." double period in the debriefing display-condition note. **ALREADY ADDRESSED**
 - Some path examples use backslashes. Prefer portable relative paths.
 - It repeats many rules from the spec. That is okay for usability, but add a note that the spec is canonical.
 
@@ -659,21 +433,12 @@ Improvements:
 
 - Document TTS provider precedence clearly.
 - If CLI keeps no `fsif` provider choice, explain that omitting `--tts-provider` uses the FSIF file setting.
-- Add dependency/test setup links.
 
 #### `Documentation/fsif/converter/implementation_details.md`
 
-This is detailed and valuable for contributors. Some stale sections need cleanup:
+This is detailed and valuable for contributors. One remaining stale item:
 
 - Says briefing/debriefing must include a `stages` key if present; code accepts omitted stages through defaults in several paths.
-- Says `misc` validates templates, global name uniqueness, docking pairs, and reinforcements; actual checks are split across mixins. **ALREADY ADDRESSED**
-- Voice validation line says voices must exist in Google TTS files, but provider-specific voice docs now include ElevenLabs and Inworld. **ALREADY ADDRESSED**
-- The provider voice-loading list mentions Google and ElevenLabs but omits Inworld. **ALREADY ADDRESSED**
-
-Recommendation:
-
-- Add a "validation pass map" table listing each mixin and the actual checks it owns. **ALREADY ADDRESSED**
-- Keep provider-specific voice validation docs synchronized with `Validator.__init__`. **ALREADY ADDRESSED**
 
 #### `Documentation/fcif/specification.md`
 
@@ -697,7 +462,6 @@ Good high-level converter overview. It correctly lists Inworld TTS and FSIF 1.0 
 
 Issues:
 
-- Project structure says `utils.py`, but shared utilities live under `common/`. **ALREADY ADDRESSED**
 - Some rendered output in PowerShell appears mojibaked because of console encoding, but the file itself contains Unicode arrows. This is not a source bug; still, ASCII arrows would render more robustly in old Windows consoles.
 
 #### `FCIF_to_FC2_Converter/README.md`
@@ -728,22 +492,12 @@ Strengths:
 
 Problems:
 
-- No root `requirements.txt`, `pyproject.toml`, or `uv.lock`/equivalent for repeatable setup. **ALREADY ADDRESSED**
-- No root test command documented. **ALREADY ADDRESSED**
-- `pytest` is used by test files but not declared in an obvious project-level dependency file. **ALREADY ADDRESSED**
 - Local `.venv` is unusable from this Windows shell, which makes contributor setup harder.
 
 Recommendations:
 
-1. Add `pyproject.toml` with runtime and optional dependencies: **ALREADY ADDRESSED**
-   - Core: `PyYAML`, `pydantic>=2`
-   - Test: `pytest`
-   - TTS extras: `google-genai`, `elevenlabs`, `requests`
-2. Add root commands: **ALREADY ADDRESSED**
-   - `python -m pytest`
-   - `python -m compileall common FCIF_to_FC2_Converter Fiction_Viewer_Validator FSIF_to_FS2_Converter`
-3. Add CI that runs syntax and tests on Windows and Linux.
-4. Keep generated output tests separate from fast unit tests if they require large docs/table fixtures.
+1. Add CI that runs syntax and tests on Windows and Linux.
+2. Keep generated output tests separate from fast unit tests if they require large docs/table fixtures.
 
 ## Comments and Docstrings
 
@@ -763,13 +517,9 @@ High-priority docstring gaps:
 - `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/advanced_sexp_validator.py`: key parser/type-checker helpers need docstrings.
 - `FCIF_to_FC2_Converter/fcif_to_fc2.py`: Pydantic model classes and major check functions need complete docstrings.
 - GUI files: important callbacks should have short docstrings.
-- `Fiction_Viewer_Validator/fiction_viewer_validator.py`: small missing helper docstrings.
 
 Comment cleanup:
 
-- Fix stale comments like `FSIF 2.1`. **ALREADY ADDRESSED**
-- Fix typo "calcutated". **ALREADY ADDRESSED**
-- Remove or gate generator debug prints. **ALREADY ADDRESSED**
 - Avoid comments that restate a direct assignment; keep comments for FreeSpace/FSO domain intent and tricky transformations.
 
 ## Naming Review
@@ -787,12 +537,7 @@ Most domain names are clear and match FSIF/FCIF concepts. Suggested improvements
 
 Potential cruft:
 
-- Unused `TkLogHandler` imports in both converter GUI files. **ALREADY ADDRESSED**
-- Stale `FSIF 2.1` comment. **ALREADY ADDRESSED**
-- Debug print in `generate_argument_logic.py`. **ALREADY ADDRESSED**
-- Local `.pytest_cache` and unusable `.venv`. (`.pytest_cache` **ALREADY ADDRESSED** via `.gitignore`)
-- Possible unreachable alias-handling code in `mission_loader.py` due strict Pydantic `extra='forbid'`.
-- Documentation references to old validation ownership (`misc`) and Google-only voice validation. **ALREADY ADDRESSED**
+- Possible unreachable alias-handling code in `mission_loader.py` due to strict Pydantic `extra='forbid'`.
 
 Potential bloat:
 
@@ -802,32 +547,13 @@ Potential bloat:
 
 ## Suggested Improvement Roadmap
 
-### Phase 1: Correctness Patch
+### Phase 1: Tooling and Testability
 
-1. Fix `fetch_inworld_voices.py` root path. **ALREADY ADDRESSED**
-2. Add standalone ship template existence validation. **ALREADY ADDRESSED**
-3. Decide and implement null handling for optional FSIF collections. **ALREADY ADDRESSED**
-4. Reject or escape double quotes in FCIF quoted fields. **ALREADY ADDRESSED**
-5. Fix initial GUI TTS disabled state. **ALREADY ADDRESSED**
-6. Guard Inworld `requests` import. **ALREADY ADDRESSED**
+1. Add CI that runs syntax and tests on Windows and Linux.
+2. Extract pure functions for player weapon pool calculation and shared spatial position resolution.
+3. Add generator smoke tests or regenerate-and-diff docs.
 
-### Phase 2: Documentation Alignment
-
-1. Ensure that current FCIF version is set to "1.0" throughout the docs. **ALREADY ADDRESSED**
-2. Align FCIF loadout-check docs with actual missing-FSIF behavior or change code to match docs. **ALREADY ADDRESSED**
-3. Fix FSIF spec mismatches around templates, teams, debrief display conditions, and TTS defaults. **ALREADY ADDRESSED**
-4. Update FSIF implementation details for validation mixin ownership and provider-specific voice validation. **ALREADY ADDRESSED**
-5. Fix small typos and stale comments. **ALREADY ADDRESSED**
-
-### Phase 3: Tooling and Testability
-
-1. Add root `pyproject.toml` or `requirements*.txt`. **ALREADY ADDRESSED**
-2. Document one setup path and one test path. **ALREADY ADDRESSED**
-3. Add CI.
-4. Extract pure functions for player weapon pool calculation and shared spatial position resolution.
-5. Add generator smoke tests or regenerate-and-diff docs.
-
-### Phase 4: Docstrings and Organization
+### Phase 2: Docstrings and Organization
 
 1. Add class/function docstrings to important public surfaces.
 2. Add generated-file headers.
@@ -914,4 +640,3 @@ Documentation:
 - `Documentation/fcif/converter/implementation_details.md`
 - `Documentation/FSO and fs2 format/FSO_Tokens_Reference.md`
 - Selected TTS voice documentation and generated FSO/token reference files as needed for validation drift checks.
-
