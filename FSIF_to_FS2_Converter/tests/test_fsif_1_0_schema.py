@@ -337,5 +337,37 @@ class FSIF10SchemaTests(unittest.TestCase):
                          "Template 'class' must be inherited by the standalone ship")
 
 
+    # -------------------------------------------------------------------------
+    # Docking: alias keys must be rejected; only the 'dock:' block is valid
+    # -------------------------------------------------------------------------
+
+    def test_rejects_docked_with_alias_on_standalone_ship(self):
+        """Authored 'docked_with' at ship top level must be rejected.
+
+        'docked_with', 'docker_point', and 'dockee_point' are internal runtime
+        fields produced by loader normalization of the public 'dock:' block.
+        They must never appear in authored FSIF; ShipInput(extra='forbid')
+        catches them before the loader can reach _process_ship().
+        """
+        fsif_text = MINIMAL_FSIF_1_WITH_DOCKED_SHIP.replace(
+            "      dock:\n"
+            "        dockee: \"GTC Fenris 1\"\n"
+            "        docker_point: \"topside docking\"\n"
+            "        dockee_point: \"Docking bay 1\"\n",
+            "      docked_with: \"GTC Fenris 1\"\n"
+            "      docker_point: \"topside docking\"\n"
+            "      dockee_point: \"Docking bay 1\"\n",
+        )
+        with self.assertRaises(ValueError) as ctx:
+            self._write_and_load(fsif_text)
+        msg = str(ctx.exception)
+        self.assertIn("Extra inputs are not permitted", msg)
+        # At least one of the alias key names must appear in the error message
+        self.assertTrue(
+            any(key in msg for key in ("docked_with", "docker_point", "dockee_point")),
+            f"Expected one of the alias key names in the error message, got: {msg}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

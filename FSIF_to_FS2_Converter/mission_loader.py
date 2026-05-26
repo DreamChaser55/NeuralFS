@@ -480,10 +480,6 @@ class MissionLoader:
              subs['list'] = valid_list
         
         # Normalize Docking
-        alias_keys = [k for k in ('docked_with', 'docker_point', 'dockee_point') if k in ship_data]
-        if alias_keys and 'dock' in ship_data:
-             raise ValueError(f"Ship '{props.get('name')}' mixes 'dock' block with alias keys {alias_keys}.")
-        
         dock_src = props.get('dock')
         if isinstance(dock_src, dict):
             props['docked_with'] = dock_src.get('dockee')
