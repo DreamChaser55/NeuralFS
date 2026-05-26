@@ -354,10 +354,6 @@ Strengths:
 - Campaign advance-condition reference validation is valuable and well tested.
 - Loadout tracking across missions is a meaningful campaign-level correctness check.
 
-Issues:
-
-- `check_campaign_advance_conditions()` warns for every mission without an advance condition, including the last mission and intentionally linear campaigns. This can create warning fatigue.
-
 Refactor suggestion:
 
 - Split into:
