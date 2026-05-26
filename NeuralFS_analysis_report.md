@@ -141,7 +141,7 @@ Strengths:
 
 Issues:
 
-- Some support for standalone ship dock alias keys appears unreachable because strict `ShipInput` forbids those extra fields before the loader can normalize them. This is likely leftover cruft.
+- Some support for standalone ship dock alias keys appears unreachable because strict `ShipInput` forbids those extra fields before the loader can normalize them. This is likely leftover cruft. **ALREADY ADDRESSED**
 - `_normalize_initial_orders()` strips semicolon comments only to detect an existing `( goals ... )` wrapper but returns the original string when already wrapped. If semicolon comments are not accepted by the target FS2 SEXP parser in that location, this may leak unsupported syntax. Confirm with FSO behavior before changing.
 
 Refactor suggestion:
