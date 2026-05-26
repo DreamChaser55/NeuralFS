@@ -1,8 +1,8 @@
 # **FreeSpace Open Advanced SEXP Parser & Validator (Python Port)**
 
-This project is a Python implementation of the **Symbolic Expression (SEXP)** parser and validator used in the FreeSpace Open (FSO) engine. It is designed to parse mission SEXP strings (e.g., events, arrival cues) and validate them against a strict set of rules, exactly mimicking the behavior of the FSO C++ engine.
+This project is a Python implementation of the **Symbolic Expression (SEXP)** parser and validator used in the FreeSpace Open (FSO) engine. It is designed to parse mission SEXP strings (e.g., events, arrival cues) and validate them using a comprehensive set of rules derived from the FSO C++ engine.
 
-The validator includes auto-generated argument type logic for all 678+ SEXP operators, transpiled directly from the FSO C++ source code. It implements full recursive type checking using `map_opf_to_opr` logic to bridge Argument Types (OPF) and Return Types (OPR). Return Types have been refactored into a formal `SexpReturnType` enum for improved type safety and maintainability.
+The validator includes auto-generated argument type logic for all 678+ SEXP operators, transpiled directly from the FSO C++ source code. It implements recursive type checking using `map_opf_to_opr` logic to bridge Argument Types (OPF) and Return Types (OPR). Return Types have been refactored into a formal `SexpReturnType` enum for improved type safety and maintainability.
 
 ## **Quick Start**
 
@@ -127,6 +127,42 @@ The function `validate_mission(mission)` in `advanced_sexp_validator.py` serves 
 
 ### **Usage**
 The validator runs automatically as part of the FSIF to FS2 conversion process.
+
+## **Known Limitations and Validation Coverage**
+
+The Advanced SEXP Validator is a strong preflight checker that catches most real-world authoring errors, but it is **not** a formal proof of FSO/FRED acceptance. The following limitations should be understood to avoid overconfidence in a clean validation pass.
+
+### `map_opf_to_opr` string-like fallback
+
+The core `map_opf_to_opr()` function maps each FSO Argument Type (`OPF_*`) to a Return Type (`OPR_*`) so the validator can check whether a nested operator expression produces the right kind of value for its parent's argument slot.
+
+Only five OPF classes receive precise, structurally distinct mappings:
+
+| OPF class | Maps to OPR |
+|---|---|
+| `OPF_BOOL` | `BOOL` |
+| `OPF_NUMBER` | `NUMBER` |
+| `OPF_POSITIVE` | `POSITIVE` |
+| `OPF_NULL` | `NULL` |
+| `OPF_AI_GOAL` | `AI_GOAL` |
+
+All other OPF classes — including `OPF_SHIP`, `OPF_WING`, `OPF_MESSAGE`, `OPF_WEAPON_NAME`, `OPF_SHIP_CLASS_NAME`, `OPF_WAYPOINT_PATH`, `OPF_JUMP_NODE_NAME`, `OPF_CONTAINER_NAME`, `OPF_ANYTHING`, `OPF_FLEXIBLE_ARGUMENT`, and many more — fall through to a generic **`STRING`** return type.
+
+**Why this is acceptable in practice:** FSO has no operators that produce a typed "Ship name" or "Message name" as a return value. In real missions, domain-specific argument slots are nearly always filled by literal quoted string atoms, not by nested operator calls. The STRING fallback therefore causes no false negatives for normal mission patterns.
+
+**Where coverage is reduced:** If a nested operator expression is placed in a string-like argument slot (e.g., a numeric expression where a ship name is expected), the validator will only check that the expression returns *something string-like* rather than catching the specific semantic mismatch. This is an inherent limitation of the flat OPF→STRING mapping.
+
+**Where coverage is precise:** When an argument is a **literal atom**, the validator's `_validate_atom_content()` dispatch table runs a dedicated, domain-specific validator (e.g., ship name lookup, weapon name lookup, subsystem name lookup). That path is strict and checks against the actual reference data. The coarser STRING fallback only applies to nested operator expressions in those slots.
+
+### Summary
+
+| Scenario | Validation coverage |
+|---|---|
+| Structural type errors (wrong number type in bool slot, etc.) | ✔ Full coverage via explicit OPF→OPR mappings |
+| Literal atom content (ship names, weapon names, subsystems, events, etc.) | ✔ Full coverage via `_validate_atom_content()` |
+| Nested operator in numeric/boolean/null slot | ✔ Full coverage (precise mappings) |
+| Nested operator in string-like slot (ship, weapon, message, etc.) | ⚠ Coarse — STRING-level return type only |
+| FSO runtime behavior (e.g., lua scripts, scripted SEXPs) | ✗ Out of scope |
 
 ## **Extending the System**
 

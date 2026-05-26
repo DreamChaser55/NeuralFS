@@ -302,8 +302,53 @@ for text, data in SEXP_DEFINITIONS.items():
 
 def map_opf_to_opr(opf_type):
     """
-    Maps an argument type (OPF_*) to a return type (OPR_*).
-    This tells us what kind of operator can be plugged into an argument slot.
+    Maps an argument type (OPF_*) to a required return type (OPR_*).
+
+    This determines which return type a nested operator expression must have in
+    order to be accepted in a given argument slot.
+
+    **Explicit mappings** (structurally distinct types that the type-checking
+    system can enforce precisely):
+
+        OPF_BOOL     -> BOOL       (Boolean expression)
+        OPF_NUMBER   -> NUMBER     (Numeric expression, can be negative)
+        OPF_POSITIVE -> POSITIVE   (Non-negative numeric expression)
+        OPF_NULL     -> NULL       (Action/void expression)
+        OPF_AI_GOAL  -> AI_GOAL    (AI goal expression)
+
+    **String-like fallback** (all other OPF classes):
+        Everything else maps to SexpReturnType.STRING.
+
+    Design rationale and known limitation
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Most domain-specific OPF classes (e.g. OPF_SHIP, OPF_WING, OPF_MESSAGE,
+    OPF_WEAPON_NAME, OPF_SHIP_CLASS_NAME, OPF_MISSION_NAME, OPF_WAYPOINT_PATH,
+    OPF_CONTAINER_NAME, OPF_ANYTHING, OPF_FLEXIBLE_ARGUMENT, etc.) are collapsed
+    here into a single STRING return type.  This is pragmatic and intentional:
+    at the SEXP tree level, all of these are represented by quoted string atoms,
+    and no FSO operator produces a typed "Ship" or "Weapon" value that a parent
+    could use in a slot expecting one of those OPF classes.
+
+    However, this fallback means that **nested operator expressions** in
+    string-like argument slots receive only coarse return-type checking (i.e.,
+    "does the sub-expression return something string-like?") rather than
+    OPF-specific semantic checking (e.g., "does this operator actually produce a
+    ship name?").  In practice almost no FSO operators return a ship name or
+    message name as a value, so the practical impact is low; but the validator
+    cannot catch the case where an author accidentally places, say, a numeric
+    operator into a string-type slot.
+
+    Precise, domain-specific validation for string-like OPF types is instead
+    performed by the atom-content validators in ``_validate_atom_content()``
+    (e.g. _validate_ship, _validate_weapon_name), which run when the argument
+    is a literal atom.  That path *is* strict: it checks against known ships,
+    weapon lists, subsystem tables, etc.
+
+    In summary: for **literal atoms**, coverage is fine-grained and strict.
+    For **nested operator expressions** in string-like slots, the validator only
+    enforces STRING-level return type compatibility, not full OPF-semantic
+    equivalence.  Authors should not interpret a clean validation pass as a
+    guarantee that every argument semantically satisfies its FSO OPF contract.
     """
     if opf_type == OPF_BOOL:
         return SexpReturnType.BOOL
@@ -315,8 +360,10 @@ def map_opf_to_opr(opf_type):
         return SexpReturnType.NULL
     if opf_type == OPF_AI_GOAL:
         return SexpReturnType.AI_GOAL
-    
-    # Most things (Ships, Wings, Messages, etc.) are just strings in the SEXP tree
+
+    # All remaining OPF classes (Ships, Wings, Messages, Weapon names, Containers,
+    # ANYTHING, FLEXIBLE_ARGUMENT, etc.) are treated as generic strings.
+    # See the docstring above for the implications of this choice.
     return SexpReturnType.STRING
 
 # =============================================================================

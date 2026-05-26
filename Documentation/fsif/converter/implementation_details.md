@@ -326,7 +326,7 @@ The validator checks the following areas:
 
 The converter includes an **Advanced SEXP Validator** that is enabled by default.
 
-Unlike the standard validation which primarily checks structure (parentheses balance, token length), this layer performs full **semantic analysis** using the same logic as the FSO engine source code.
+Unlike the standard validation which primarily checks structure (parentheses balance, token length), this layer performs deep **semantic analysis** using rules derived from the FSO engine source code.
 
 **Capabilities:**
 *   **Recursive Type Checking:** It validates that every argument provided to a SEXP operator matches the expected type (e.g., ensuring `ai-chase` receives a Ship/Wing, a Priority number, and a Boolean, in that order). It understands return types (e.g., `when` returns Action/Void, `distance` returns Number) and enforces type safety throughout the formula tree.
@@ -334,6 +334,17 @@ Unlike the standard validation which primarily checks structure (parentheses bal
     *   **Ships/Wings:** Validates that names referenced in SEXPs actually exist in the mission.
     *   **Events/Goals/Messages:** Validates that event/goal/message names referenced in operators refer to valid entities.
 *   **Operator Signatures:** Enforces minimum and maximum argument counts for all 670+ supported FSO operators.
+
+**Coverage caveat — `map_opf_to_opr` string-like fallback:**
+
+The type-checking system maps each FSO Argument Type (`OPF_*`) to a Return Type (`OPR_*`) via `map_opf_to_opr()`. Only five OPF classes receive precise, structurally distinct mappings: `OPF_BOOL → BOOL`, `OPF_NUMBER → NUMBER`, `OPF_POSITIVE → POSITIVE`, `OPF_NULL → NULL`, and `OPF_AI_GOAL → AI_GOAL`. All other OPF classes — including `OPF_SHIP`, `OPF_WING`, `OPF_MESSAGE`, `OPF_WEAPON_NAME`, `OPF_WAYPOINT_PATH`, `OPF_CONTAINER_NAME`, `OPF_ANYTHING`, `OPF_FLEXIBLE_ARGUMENT`, and many more — map to a generic `STRING` return type.
+
+*   **For literal atoms**, this has no negative impact: the validator's dedicated atom-content checkers (`_validate_atom_content`) run separately and enforce domain-specific rules (ship name lookup, weapon name lookup, subsystem validation, etc.) with full precision.
+*   **For nested operator expressions** placed in string-like argument slots, the validator only confirms that the expression returns *something string-like* rather than checking full OPF-semantic equivalence. In practice FSO has no operators that return a typed "Ship name" or "Weapon name" as a value, so this case almost never arises in real missions — but it is possible to author a nested expression that passes validation here yet fails in FRED or at FSO runtime.
+
+**Conclusion:** A clean Advanced SEXP validation pass is strong evidence of correctness and will catch nearly all real-world authoring errors. It is not, however, a formal guarantee that FRED or FSO will accept every SEXP. When in doubt, open the converted `.fs2` in FRED to perform a final check.
+
+For full details on the validator architecture and the complete coverage table, see `FSIF_to_FS2_Converter/Advanced_SEXP_Validator/README and Documentation.md`.
 
 ---
 
