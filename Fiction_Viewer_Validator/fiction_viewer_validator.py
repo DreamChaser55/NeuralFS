@@ -35,9 +35,11 @@ class FictionViewerValidator:
         self.warnings: List[str] = []
 
     def log_error(self, msg: str):
+        """Append a fatal validation error. Files with any error fail validation."""
         self.errors.append(msg)
 
     def log_warning(self, msg: str):
+        """Append a non-fatal warning. Warnings are reported but do not fail validation."""
         self.warnings.append(msg)
 
     def validate(self) -> bool:
@@ -163,6 +165,15 @@ def collect_files(input_paths: List[str]) -> Optional[List[Path]]:
 
 
 def main():
+    """
+    CLI entry point for the Fiction Viewer Validator.
+
+    Parses one or more `.txt` file paths from the command line, runs all
+    validation checks on each file, and exits with status 1 if any file
+    fails (contains errors). Directories are rejected — only explicit `.txt`
+    file paths are accepted. Warnings are printed to stdout but do not affect
+    the exit code.
+    """
     parser = argparse.ArgumentParser(
         description=(
             "Validate fiction viewer text files for FSO compatibility. "

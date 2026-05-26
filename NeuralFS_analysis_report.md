@@ -613,9 +613,9 @@ Strengths:
 
 Improvements:
 
-- Add short docstrings to `log_error()`, `log_warning()`, and `main()`.
-- The README says "non-ASCII characters"; the implementation reports non-ASCII bytes. That is fine, but the README could mention byte offsets so users understand the output.
-- `collect_files()` rejects directories; this is fine, but the README should say only explicit `.txt` files are accepted.
+- Add short docstrings to `log_error()`, `log_warning()`, and `main()`. **ALREADY ADDRESSED**
+- The README says "non-ASCII characters"; the implementation reports non-ASCII bytes. That is fine, but the README could mention byte offsets so users understand the output. **ALREADY ADDRESSED**
+- `collect_files()` rejects directories; this is fine, but the README should say only explicit `.txt` files are accepted. **ALREADY ADDRESSED**
 
 #### `Fiction_Viewer_Validator/README.md`
 
