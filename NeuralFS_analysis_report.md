@@ -173,8 +173,8 @@ This entry point is compact and readable. The CLI options cover output, TTS prov
 
 Issues:
 
-- Internal logic checks for CLI provider `"fsif"`, but argparse choices do not include it. The GUI uses `"fsif"` and maps it to `None`, so this is likely leftover tolerance. Either add a CLI `fsif` choice or remove the branch for clarity.
-- TTS provider precedence should be documented in one place and tested.
+- **ALREADY ADDRESSED** Internal logic checks for CLI provider `"fsif"`, but argparse choices do not include it. The GUI uses `"fsif"` and maps it to `None`, so this is likely leftover tolerance. Either add a CLI `fsif` choice or remove the branch for clarity. *(Fixed: the ambiguous `!= 'fsif'` branch was replaced by `resolve_tts_provider()`, a named pure helper in `fsif_to_fs2.py` that encodes the full precedence — CLI/caller > FSIF file > built-in default — in one documented, tested place. GUI callers already pass `None` for "From FSIF File"; `'fsif'` as a string is no longer tolerated.)*
+- **ALREADY ADDRESSED** TTS provider precedence should be documented in one place and tested. *(Fixed: `resolve_tts_provider()` is the single source of truth; its docstring specifies all four priority levels, and 27 unit tests in `FSIF_to_FS2_Converter/tests/test_tts_provider_resolution.py` cover every combination of enabled/disabled, CLI override, FSIF fallback, built-in default, case insensitivity, and return-shape invariants.)*
 
 #### `FSIF_to_FS2_Converter/validator/core.py`
 
@@ -431,8 +431,8 @@ The CLI doc is mostly accurate and helpful.
 
 Improvements:
 
-- Document TTS provider precedence clearly.
-- If CLI keeps no `fsif` provider choice, explain that omitting `--tts-provider` uses the FSIF file setting.
+- **ALREADY ADDRESSED** Document TTS provider precedence clearly. *(The "Effective TTS Provider Resolution" section in `cli.md` already lists all three priority levels explicitly. The `resolve_tts_provider()` refactor in the converter code now matches this documented order exactly.)*
+- **ALREADY ADDRESSED** If CLI keeps no `fsif` provider choice, explain that omitting `--tts-provider` uses the FSIF file setting. *(The `cli.md` "Effective TTS Provider Resolution" section already states that omitting `--tts-provider` falls back to `audio.tts_provider` in the FSIF file. The `_KNOWN_PROVIDERS` constant and `resolve_tts_provider()` docstring in the converter code confirm this contract: `None` means "defer to FSIF file"; the literal string `'fsif'` is not accepted.)*
 
 #### `Documentation/fsif/converter/implementation_details.md`
 

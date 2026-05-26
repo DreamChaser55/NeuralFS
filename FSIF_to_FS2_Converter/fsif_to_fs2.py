@@ -22,6 +22,89 @@ from common.utils import sanitize_path
 # Setup basic module logger
 logger = logging.getLogger(__name__)
 
+
+# Valid explicit TTS provider names accepted by the CLI and the tts_settings dict.
+# The special sentinel value None means "defer to the FSIF file setting".
+_KNOWN_PROVIDERS = frozenset({'google', 'elevenlabs', 'inworld', 'none'})
+
+
+def resolve_tts_provider(
+    tts_enabled: bool,
+    cli_provider,   # str | None
+    fsif_provider,  # str | None
+):
+    """Resolve the effective TTS provider name and generation-enabled flag.
+
+    This is the single source of truth for TTS provider precedence.  It
+    encodes the following priority order:
+
+    1. If *tts_enabled* is False the result is always ('none', False, 'google').
+       TTS generation is disabled regardless of any provider setting, and
+       'google' is returned as the *validation_provider* fallback so that the
+       validator and voice manager can still name-check voice fields.
+    2. If *cli_provider* is one of the known provider names (``'google'``,
+       ``'elevenlabs'``, ``'inworld'``, ``'none'``) it overrides the FSIF
+       setting completely.
+    3. If *cli_provider* is ``None`` (i.e. omitted from the CLI / GUI) the
+       FSIF file's ``audio.tts_provider`` value is used when present.
+    4. When neither source specifies a provider the built-in default is
+       ``'google'``.
+
+    The GUI maps its "From FSIF File" radio button to ``None`` before calling
+    ``process_mission()``, so it follows the same path as an omitted CLI flag.
+    The old tolerance for a literal ``'fsif'`` string has been removed; callers
+    must pass ``None`` to indicate "defer to FSIF file".
+
+    Parameters
+    ----------
+    tts_enabled:
+        Whether the caller has explicitly enabled TTS generation (e.g. via
+        ``--enable-tts`` on the CLI or the GUI checkbox).
+    cli_provider:
+        Provider string supplied by the caller, or ``None`` when omitted.
+        Must be one of ``_KNOWN_PROVIDERS`` or ``None``.
+    fsif_provider:
+        The ``audio.tts_provider`` value read from the loaded FSIF file, or
+        ``None`` when the field is absent/empty.
+
+    Returns
+    -------
+    tuple[str, bool, str]
+        ``(final_provider, generation_enabled, validation_provider)``
+
+        * *final_provider* — the canonical provider name string
+          (``'google'`` / ``'elevenlabs'`` / ``'inworld'`` / ``'none'``).
+        * *generation_enabled* — ``True`` when voice files should be
+          generated (i.e. *final_provider* != ``'none'``).
+        * *validation_provider* — the provider to pass to the Validator and
+          VoiceManager even when generation is disabled; always a real
+          provider name (never ``'none'``).
+    """
+    if not tts_enabled:
+        return ('none', False, 'google')
+
+    # Normalise cli_provider to lowercase if supplied
+    if cli_provider is not None:
+        cli_provider = str(cli_provider).lower().strip()
+    if fsif_provider is not None:
+        fsif_provider = str(fsif_provider).lower().strip()
+
+    # Priority 1: explicit CLI/caller override
+    if cli_provider in _KNOWN_PROVIDERS:
+        final_provider = cli_provider
+    # Priority 2: FSIF file setting
+    elif fsif_provider in _KNOWN_PROVIDERS:
+        final_provider = fsif_provider
+    # Priority 3: built-in default
+    else:
+        final_provider = 'google'
+
+    generation_enabled = (final_provider != 'none')
+    # validation_provider is always a real provider so the validator can
+    # check voice-name tokens even when TTS generation is off.
+    validation_provider = final_provider if generation_enabled else 'google'
+    return (final_provider, generation_enabled, validation_provider)
+
 # Import Advanced SEXP Validator
 try:
     # Try relative import (Package Mode)
@@ -115,23 +198,15 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         logger.exception(f"[ERROR] Unexpected error while loading '{ip}': {e}")
         return False
 
-    # Determine final TTS provider and enable state
+    # Determine final TTS provider and enable state via the canonical helper.
+    # resolve_tts_provider() encodes the full precedence in one tested place:
+    #   CLI/caller > FSIF file > built-in default ('google').
     fsif_tts_provider = mission.audio.tts_provider if mission.audio and mission.audio.tts_provider else None
-    cli_provider = tts_opts.get('provider')
-    cli_enable = tts_opts.get('enabled')
-
-    if not cli_enable:
-        final_provider = 'none'
-    else:
-        if cli_provider is not None and cli_provider.lower().strip() != 'fsif':
-            final_provider = cli_provider.lower().strip()
-        elif fsif_tts_provider is not None:
-            final_provider = fsif_tts_provider.lower().strip()
-        else:
-            final_provider = 'google'
-            
-    tts_enabled = (final_provider != 'none')
-    provider = final_provider if tts_enabled else 'google' # Fallback for validator/voice manager if disabled
+    final_provider, tts_enabled, provider = resolve_tts_provider(
+        tts_enabled=bool(tts_opts.get('enabled')),
+        cli_provider=tts_opts.get('provider'),
+        fsif_provider=fsif_tts_provider,
+    )
 
     # Extended Validation
     logger.info(f"[INFO] TTS Provider: {final_provider}")
