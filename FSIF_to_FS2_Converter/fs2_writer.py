@@ -111,8 +111,14 @@ class FS2Writer:
         
         Opens the output file and calls sub-methods to write each section
         in the order expected by the FSO engine.
+
+        The file is written with explicit UTF-8 encoding and LF newlines
+        (newline='\\n') so that output is byte-for-byte identical on Windows
+        and Linux. This avoids Python's default text-mode newline translation,
+        which would write CRLF on Windows. The FSO engine and all common
+        tooling accept LF-terminated mission files on both platforms.
         """
-        with open(self.output_path, 'w') as f:
+        with open(self.output_path, 'w', encoding='utf-8', newline='\n') as f:
             self.file = f
             self.write_mission_info()
             self.write_fiction_viewer()

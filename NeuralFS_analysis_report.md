@@ -160,7 +160,7 @@ Strengths:
 
 Issues:
 
-- `open(self.output_path, 'w')` uses the platform default encoding and newline behavior. The converter validates ASCII, but explicit `encoding='utf-8', newline='\n'` would make output deterministic across Windows and Linux.
+- **ALREADY ADDRESSED** `open(self.output_path, 'w')` uses the platform default encoding and newline behavior. The converter validates ASCII, but explicit `encoding='utf-8', newline='\n'` would make output deterministic across Windows and Linux. *(Fixed: `write_mission()` now opens the output file with `encoding='utf-8', newline='\n'`, ensuring byte-for-byte identical output on both Windows and Linux. Three regression tests in `FSIF_to_FS2_Converter/tests/test_fs2_writer_output_encoding.py` verify no CRLF sequences, presence of LF newlines, and valid UTF-8 encoding.)*
 - Several helpers and section writers lack docstrings, especially private formatting/sanitization methods.
 
 Refactor suggestion:
