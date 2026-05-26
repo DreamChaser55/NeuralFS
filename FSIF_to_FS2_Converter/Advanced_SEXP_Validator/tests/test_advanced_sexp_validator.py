@@ -214,6 +214,39 @@ class TestAdvancedSexpValidator(unittest.TestCase):
         errors = self.validate_string('(add-goal "Ulysses 1" ( ai-guard "Beta 1" 89 ))', SexpReturnType.NULL)
         self.assertEqual(errors, [])
 
+    # --- Tests for OPF_POSITIVE semantics (non-negative, not strictly positive) ---
+
+    def test_opf_positive_zero_is_valid(self):
+        """
+        FSO OPF_POSITIVE means 'positive or zero' (non-negative).
+        Literal 0 must be accepted wherever OPF_POSITIVE is expected.
+        has-time-elapsed takes one OPF_POSITIVE argument.
+        """
+        errors = self.validate_string('(has-time-elapsed 0)', SexpReturnType.BOOL)
+        positive_errors = [e for e in errors if "non-negative" in e or "must be positive" in e]
+        self.assertFalse(positive_errors, f"0 should be valid for OPF_POSITIVE, got: {positive_errors}")
+
+    def test_opf_positive_positive_integer_is_valid(self):
+        """A normal positive integer must be accepted for OPF_POSITIVE."""
+        errors = self.validate_string('(has-time-elapsed 30)', SexpReturnType.BOOL)
+        positive_errors = [e for e in errors if "non-negative" in e or "must be positive" in e]
+        self.assertFalse(positive_errors, f"30 should be valid for OPF_POSITIVE, got: {positive_errors}")
+
+    def test_opf_positive_negative_is_invalid(self):
+        """
+        A negative number must be rejected for OPF_POSITIVE.
+        The error message must mention 'non-negative' (positive or zero), not just 'positive'.
+        """
+        errors = self.validate_string('(has-time-elapsed -1)', SexpReturnType.BOOL)
+        positive_errors = [e for e in errors if "non-negative" in e or "must be positive" in e]
+        self.assertTrue(positive_errors,
+                        f"Expected a non-negative error for -1 in OPF_POSITIVE slot, got: {errors}")
+        # Confirm the new wording is used, not the old 'must be positive'
+        self.assertTrue(
+            any("non-negative" in e for e in positive_errors),
+            f"Error message should contain 'non-negative', got: {positive_errors}",
+        )
+
     # --- Tests for malformed parenthesis detection ---
 
     def test_extra_closing_paren_top_level(self):

@@ -752,7 +752,7 @@ class SexpValidator:
         names = {
             SexpReturnType.BOOL: "Boolean",
             SexpReturnType.NUMBER: "Number",
-            SexpReturnType.POSITIVE: "Positive Number",
+            SexpReturnType.POSITIVE: "Non-negative Number",
             SexpReturnType.STRING: "String",
             SexpReturnType.NULL: "Action/Void",
             SexpReturnType.AMBIGUOUS: "Any",
@@ -1038,9 +1038,13 @@ class SexpValidator:
         return [self._format_error(f"Invalid Message name: '{text}'", context)]
 
     def _validate_positive(self, text: str, context: str, node: SexpNode) -> List[str]:
+        # FSO OPF_POSITIVE means "positive or zero" (i.e. non-negative), not strictly > 0.
+        # This is documented in sexp.h: OPF_POSITIVE = "positive number or zero".
+        # The engine classifies any numeric atom without a leading '-' as OPR_POSITIVE,
+        # so literal 0 is valid wherever OPF_POSITIVE is expected.
         if self._is_number(text):
             if float(text) < 0:
-                return [self._format_error(f"Value '{text}' must be positive.", context)]
+                return [self._format_error(f"Value '{text}' must be non-negative (positive or zero).", context)]
             return []
         elif text in self.context.variables:
             return []
