@@ -530,7 +530,7 @@ def generate_file():
         f.write("}\n\n")
 
         # Player Wing Names
-        f.write("# --- 10. Player Wing Names ---\n")
+        f.write("# --- 11. Player Wing Names ---\n")
         f.write("# Canonical player-start and loadout wings.\n")
         f.write("# FSO's loadout screen only covers Alpha, Beta, and Gamma (the first three\n")
         f.write("# Friendly wings). Starting the player in any other wing — or as a standalone\n")
@@ -557,7 +557,7 @@ def generate_file():
 
         # Asteroid / Debris Field Variants
         # Emit ordered lists (used for defaults) and sets (used for validation).
-        f.write("# --- 11. Asteroid/Debris Field Object Variants ---\n")
+        f.write("# --- 12. Asteroid/Debris Field Object Variants ---\n")
         f.write("# Ordered lists preserve canonical display order; sets are used for fast membership checks.\n")
         ast_vars = sorted(tokens['asteroid_field_variants']) if tokens['asteroid_field_variants'] else ['Blue', 'Brown', 'Orange']
         deb_vars = sorted(tokens['debris_field_variants']) if tokens['debris_field_variants'] else [

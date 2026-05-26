@@ -100,7 +100,7 @@ Central generated-data builder. The generated `common/fs_data.py` is intentional
 
 Minor cleanup:
 
-- Generated comments currently include repeated section numbering around section 10/11. This is harmless but noisy.
+- Generated comments currently include repeated section numbering around section 10/11. This is harmless but noisy. **ALREADY ADDRESSED**
 - Add a generated-file header to `common/fs_data.py` with the exact generator command.
 
 ### FSIF Converter

@@ -383,7 +383,7 @@ SHIP_BOUNDING_BOXES = {
     'Vasudan Asteroid Base': {'min': [-908.4, -460.1, -1025.4], 'max': [895.0, 457.4, 1029.9]},
 }
 
-# --- 10. Player Wing Names ---
+# --- 11. Player Wing Names ---
 # Canonical player-start and loadout wings.
 # FSO's loadout screen only covers Alpha, Beta, and Gamma (the first three
 # Friendly wings). Starting the player in any other wing — or as a standalone
@@ -409,7 +409,7 @@ COMMON_WING_NAMES = {
     "Deva", "Bheema", "Kali", "Genma", "Asura",
 }
 
-# --- 11. Asteroid/Debris Field Object Variants ---
+# --- 12. Asteroid/Debris Field Object Variants ---
 # Ordered lists preserve canonical display order; sets are used for fast membership checks.
 ASTEROID_FIELD_VARIANTS = ['Blue', 'Brown', 'Orange']
 DEBRIS_FIELD_VARIANTS = ['Shivan Debris 1', 'Shivan Debris 2', 'Shivan Debris 3', 'Terran Debris 1', 'Terran Debris 2', 'Terran Debris 3', 'Vasudan Debris 1', 'Vasudan Debris 2', 'Vasudan Debris 3']
