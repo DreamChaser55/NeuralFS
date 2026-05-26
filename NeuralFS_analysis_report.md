@@ -133,7 +133,7 @@ Recommended fix:
 - Require `list` or `tuple` for vectors and orientation rows.
 - Keep the existing clear length/value errors after the type guard.
 
-### P2: FSIF Entry Point Catches Only Some Load Failures
+### P2: FSIF Entry Point Catches Only Some Load Failures - **ALREADY ADDRESSED**
 
 File: `FSIF_to_FS2_Converter/fsif_to_fs2.py`
 
@@ -375,7 +375,7 @@ This entry point is compact and readable. The CLI options cover output, TTS prov
 
 Issues:
 
-- Loader error handling is too narrow, as noted above.
+- Loader error handling is too narrow, as noted above. **ALREADY ADDRESSED**
 - Internal logic checks for CLI provider `"fsif"`, but argparse choices do not include it. The GUI uses `"fsif"` and maps it to `None`, so this is likely leftover tolerance. Either add a CLI `fsif` choice or remove the branch for clarity.
 - TTS provider precedence should be documented in one place and tested.
 

@@ -5,6 +5,7 @@ import argparse
 import os
 import sys
 import logging
+import yaml
 from pathlib import Path
 
 # Inject root directory to sys.path to allow imports from common
@@ -95,7 +96,23 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         # Load mission (without voice generation)
         mission, fsif_root_node = load_mission_with_yaml_root(str(ip))
     except ValueError as e:
+        # Covers FSIF schema errors, YAML parse errors re-raised by the loader,
+        # version mismatches, and all other load-time validation failures.
         logger.error(f"[ERROR] Validation failed during loading: {e}")
+        return False
+    except yaml.YAMLError as e:
+        # Defensive: yaml.YAMLError should normally be caught and re-raised
+        # as ValueError inside mission_loader, but catch it here too so that
+        # any future code path that omits that conversion still fails cleanly.
+        logger.error(f"[ERROR] YAML parse error in '{ip}': {e}")
+        return False
+    except OSError as e:
+        logger.error(f"[ERROR] Could not read FSIF file '{ip}': {e}")
+        return False
+    except Exception as e:
+        # Pydantic ValidationError or any other unexpected exception during
+        # loading — log with a stack trace so bugs remain visible, then abort.
+        logger.exception(f"[ERROR] Unexpected error while loading '{ip}': {e}")
         return False
 
     # Determine final TTS provider and enable state
