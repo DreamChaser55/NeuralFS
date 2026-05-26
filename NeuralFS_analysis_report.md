@@ -268,7 +268,7 @@ Potential issues:
 
 - The tokenizer appears not to handle escaped quotes inside quoted strings. Basic SEXP validation has escape-aware logic, so the advanced parser may reject or mis-tokenize inputs that the simpler check allows.
 - `_validate_positive()` allows zero by checking only `< 0`. Confirm whether FSO `OPF_POSITIVE` means strictly positive or non-negative. **ALREADY ADDRESSED**
-- `map_opf_to_opr()` maps many argument classes to string-like return types. This may be pragmatic, but limitations should be documented to avoid overconfidence in SEXP validation coverage.
+- `map_opf_to_opr()` maps many argument classes to string-like return types. This may be pragmatic, but limitations should be documented to avoid overconfidence in SEXP validation coverage. **ALREADY ADDRESSED: but can this limitation be removed?**
 - A TODO notes that variables are not explicitly defined in FSIF yet. This limitation should appear in the advanced validator docs.
 
 Refactor suggestion:
