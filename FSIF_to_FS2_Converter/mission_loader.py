@@ -455,7 +455,7 @@ class MissionLoader:
 
         self._validate_no_player_start(ship_data.get('flags'), f"ship '{ship_data.get('name')}'")
         
-        props = {}
+        ship_props = {}
         if 'template' in ship_data:
             if ship_data['template'] is not None and not isinstance(ship_data['template'], str):
                 raise ValueError(f"Validation Error: Ship '{ship_data.get('name', 'unknown')}' must use a string reference for 'template', found {type(ship_data['template']).__name__} instead.")
@@ -465,39 +465,39 @@ class MissionLoader:
                     f"'{ship_data['template']}'. "
                     f"Check that the template name is defined in entities.ship_templates."
                 )
-            t_props = copy.deepcopy(self.templates.get(ship_data['template'], {}))
-            props.update(t_props)
-        props.update(ship_data)
+            template_props = copy.deepcopy(self.templates.get(ship_data['template'], {}))
+            ship_props.update(template_props)
+        ship_props.update(ship_data)
         
-        if 'position' not in props:
-             raise ValueError(f"Ship '{props.get('name')}' missing required 'position'.")
+        if 'position' not in ship_props:
+             raise ValueError(f"Ship '{ship_props.get('name')}' missing required 'position'.")
         
         # Normalize custom subsystems
-        subs = props.get('subsystems', {})
+        subs = ship_props.get('subsystems', {})
         if isinstance(subs, dict) and subs.get('status') == 'custom':
              raw_list = subs.get('list', [])
              valid_list = [item for item in raw_list if isinstance(item, dict) and item.get('name')]
              subs['list'] = valid_list
         
         # Normalize Docking
-        dock_src = props.get('dock')
+        dock_src = ship_props.get('dock')
         if isinstance(dock_src, dict):
-            props['docked_with'] = dock_src.get('dockee')
-            props['docker_point'] = dock_src.get('docker_point')
-            props['dockee_point'] = dock_src.get('dockee_point')
+            ship_props['docked_with'] = dock_src.get('dockee')
+            ship_props['docker_point'] = dock_src.get('docker_point')
+            ship_props['dockee_point'] = dock_src.get('dockee_point')
 
         # Validate and wrap initial_orders
-        orders_key = 'initial_orders' if 'initial_orders' in props else None
+        orders_key = 'initial_orders' if 'initial_orders' in ship_props else None
         if orders_key:
-            props[orders_key] = self._normalize_initial_orders(
-                f"Ship '{props.get('name')}'",
-                props[orders_key]
+            ship_props[orders_key] = self._normalize_initial_orders(
+                f"Ship '{ship_props.get('name')}'",
+                ship_props[orders_key]
             )
 
-        props.pop('template', None)
-        props.pop('dock', None)
+        ship_props.pop('template', None)
+        ship_props.pop('dock', None)
             
-        self.all_ships.append(Ship(**props))
+        self.all_ships.append(Ship(**ship_props))
 
     def _load_mission_flow(self) -> Dict[str, Any]:
         """
@@ -511,26 +511,26 @@ class MissionLoader:
             Dict containing parsed lists of events, goals, messages, briefing objects,
             and the optional fiction_viewer filename.
         """
-        flow = self.data.get('mission_flow', {})
+        mission_flow_raw = self.data.get('mission_flow', {})
 
-        fiction_viewer = flow.get('fiction_viewer')
+        fiction_viewer = mission_flow_raw.get('fiction_viewer')
 
         # Normalize optional collections: explicit YAML `null` is treated the
         # same as an omitted key (empty list/mapping) rather than crashing.
         events = [
             Event(**e)
-            for e in self._as_list(flow.get('events'), 'mission_flow.events')
+            for e in self._as_list(mission_flow_raw.get('events'), 'mission_flow.events')
         ]
 
         goals = []
-        for g in self._as_list(flow.get('goals'), 'mission_flow.goals'):
+        for g in self._as_list(mission_flow_raw.get('goals'), 'mission_flow.goals'):
              if 'objective_text' not in g:
                  raise ValueError(f"Goal '{g.get('name')}' missing required 'objective_text'.")
              goals.append(Goal(**g))
 
         messages = [
             Message(**m)
-            for m in self._as_list(flow.get('messages'), 'mission_flow.messages')
+            for m in self._as_list(mission_flow_raw.get('messages'), 'mission_flow.messages')
         ]
 
         # Briefing — normalize both the top-level mapping and the stages list
@@ -539,7 +539,7 @@ class MissionLoader:
         # Deep-copy so that we can safely replace icon dicts with BriefingIcon
         # objects and inject camera fields into stage dicts without mutating
         # the raw YAML document held in self.data.
-        briefing_raw = copy.deepcopy(self._as_mapping(flow.get('briefing'), 'mission_flow.briefing'))
+        briefing_raw = copy.deepcopy(self._as_mapping(mission_flow_raw.get('briefing'), 'mission_flow.briefing'))
         briefing_stages = self._as_list(
             briefing_raw.get('stages'), 'mission_flow.briefing.stages'
         )
@@ -563,10 +563,10 @@ class MissionLoader:
         briefing = Briefing(**briefing_raw)
 
         debriefing = Debriefing(
-            **self._as_mapping(flow.get('debriefing'), 'mission_flow.debriefing')
+            **self._as_mapping(mission_flow_raw.get('debriefing'), 'mission_flow.debriefing')
         )
         command_briefing = CommandBriefing(
-            **self._as_mapping(flow.get('command_briefing'), 'mission_flow.command_briefing')
+            **self._as_mapping(mission_flow_raw.get('command_briefing'), 'mission_flow.command_briefing')
         )
         
         return {
