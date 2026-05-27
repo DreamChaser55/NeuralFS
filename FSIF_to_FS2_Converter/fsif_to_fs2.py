@@ -261,7 +261,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                 generator = get_provider(tts_config)
             except Exception as e:
                 logger.error(f"[ERROR] Failed to initialize TTS provider '{provider}': {e}")
-                logger.error("Check if required libraries are installed (e.g., 'pip install elevenlabs' or 'pip install google-genai')")
+                logger.error("Check if required libraries are installed (e.g., 'pip install google-genai' for Google, 'pip install elevenlabs' for ElevenLabs, 'pip install requests' for Inworld)")
                 generator = None
 
             if generator:
@@ -286,7 +286,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                         logger.info("[INFO] No voiced lines found - skipping TTS")
                 else:
                     logger.info(f"[INFO] TTS provider '{provider}' libraries not available - skipping TTS generation")
-                    logger.info("       Install 'google-genai' for Google TTS or 'elevenlabs' for ElevenLabs TTS.")
+                    logger.info("       Install 'google-genai' for Google TTS, 'elevenlabs' for ElevenLabs TTS, or 'requests' for Inworld TTS.")
         except Exception as e:
             logger.exception(f"[ERROR] TTS generation failed: {e}")
             return False
