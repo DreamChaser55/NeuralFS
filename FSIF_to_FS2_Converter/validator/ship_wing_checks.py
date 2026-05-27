@@ -202,6 +202,17 @@ class ShipWingChecksMixin:
                     self.log_error(f"Ship '{ship.name}' ({ship.ship_class}) has {len(ship.weapons.secondary)} secondary banks specified, but requires {req_secondary}.")
 
     def validate_wings(self):
+        """
+        Validate wing definitions.
+
+        Invariants:
+        - Wing ``count`` must not exceed 6 (FSO hard engine limit on ships per
+          wing).
+        - Every flag in ``wing.flags`` must be a recognised FSO wing flag from
+          ``fs_flags_constants.WING_FLAGS_BUCKET``.
+        - Wings without ``initial_orders`` are warned (advisory): AI ships with
+          no orders will sit idle, which is almost always an authoring oversight.
+        """
         for wing in self.mission.wings:
             if wing.count > 6:
                 self.log_error(f"Wing '{wing.name}' has count {wing.count}. FSO enforces a hard maximum of 6 ships per wing.")

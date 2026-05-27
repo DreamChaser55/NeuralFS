@@ -26,6 +26,23 @@ class Validator(
     BriefingChecksMixin,
     MiscChecksMixin
 ):
+    """Aggregate FSIF invariant checker.
+
+    Composes all mixin validation passes into a single ``validate()`` call.
+    Each mixin enforces a distinct category of FSIF invariants (ASCII content,
+    SEXP structure, spatial design guidelines, ship/wing constraints,
+    environment tokens, briefing schema, and miscellaneous fields).
+
+    Invariant contract:
+    - ``validate()`` returns True when no errors are accumulated, even if
+      warnings are present.  A single recorded error causes False.
+    - Mixins append to ``self.errors`` (fatal) or ``self.warnings``
+      (advisory) via ``log_error`` / ``log_warning`` — they never raise or
+      print directly.
+    - Reference data loaded in ``load_reference_data()`` is the sole source
+      of truth for canonical token sets used during validation.
+    """
+
     def __init__(
         self,
         mission: Mission,
@@ -90,6 +107,18 @@ class Validator(
         self.load_reference_data()
 
     def load_reference_data(self):
+        """Populate all token/reference sets used by the mixin validators.
+
+        This is the single place where canonical data from ``fs_data`` and
+        ``briefing_icon_types`` is copied into ``self.*`` attributes that the
+        mixin checks use.  Any mixin that needs, for example, the set of valid
+        ship classes, reads ``self.ship_classes`` rather than importing
+        ``fs_data`` directly.
+
+        Invariant: after this method returns, every reference set attribute
+        required by a mixin check is populated; a mixin check must never fail
+        with an ``AttributeError`` on a reference-set attribute.
+        """
         # 1. Spacecraft Classes
         self.ship_classes = fs_data.ALLOWED_SHIP_CLASSES
         
@@ -128,6 +157,14 @@ class Validator(
         self.warnings.append(msg)
 
     def validate(self) -> bool:
+        """Run all FSIF invariant checks and return whether the mission is valid.
+
+        Invariant: the mission is considered valid (returns True) when every
+        mixin check completes without appending to ``self.errors``.  Warnings
+        do not affect the return value.  The full error and warning lists are
+        logged after all checks run so the author receives a consolidated
+        report.
+        """
         logger.info("[INFO] [Validator] Starting validation...")
         
         self.validate_global_names()

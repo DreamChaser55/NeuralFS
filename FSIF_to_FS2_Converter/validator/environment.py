@@ -141,6 +141,15 @@ class EnvironmentChecksMixin:
             )
 
     def validate_asteroid_targets(self):
+        """
+        Validate that every ship name listed in ``asteroid_field.target_ships``
+        refers to an existing ship in the mission.
+
+        Invariant: ``target_ships`` entries must match the name of a ship
+        defined in ``entities.ships``.  A name that resolves to no ship would
+        cause FSO to silently ignore the targeting directive, so this is a
+        hard error.
+        """
         af = self.mission.environment.asteroid_field
         if not af or not af.target_ships:
             return

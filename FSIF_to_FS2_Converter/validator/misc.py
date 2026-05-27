@@ -45,6 +45,16 @@ class MiscChecksMixin:
         for m in self.mission.messages: check(m.name, "Message", messages)
 
     def validate_mission_info(self):
+        """
+        Validate top-level mission metadata flags.
+
+        Invariant: every flag string in ``mission_info.flags`` must resolve to
+        a known FSO mission-flag bit via ``fs_flags_constants.resolve_mission_flag``.
+        Unknown flag strings are silently ignored by FSO, which means a typo
+        would silently disable the intended behaviour.  Unknown flags are
+        reported as warnings (non-fatal) rather than errors because FSO mods
+        can introduce custom flags outside the built-in set.
+        """
         # Validate flags
         for f in self.mission.mission_info.flags:
             # We check if it maps to a known flag bit

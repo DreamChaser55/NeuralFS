@@ -231,6 +231,20 @@ class BriefingChecksMixin:
                             )
 
     def validate_debriefing(self):
+        """
+        Validate debriefing stage definitions.
+
+        Invariants:
+        - ``display_condition`` must be a structurally valid SEXP boolean
+          expression (checked via ``_check_sexp_string``).
+        - A bare ``( true )`` display_condition is warned against because it
+          causes the stage to display after every mission outcome, regardless
+          of success or failure.  Authors should use specific SEXPs that target
+          the intended outcome (e.g. ``is-event-true-delay``,
+          ``has-departed-delay``).
+        - ``voice_name`` must exist in the TTS voice registry for the active
+          provider.
+        """
         for i, stage in enumerate(self.mission.debriefing.stages):
             # Validate SEXP condition
             if stage.display_condition:
@@ -254,6 +268,14 @@ class BriefingChecksMixin:
                 self.log_error(f"Debriefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")
 
     def validate_command_briefing(self):
+        """
+        Validate command briefing stage definitions.
+
+        Invariant: ``voice_name`` on each stage must exist in the TTS voice
+        registry for the active provider.  Other structural constraints (text
+        content, ASCII encoding) are handled by the ASCII and briefing-span
+        checks.
+        """
         for i, stage in enumerate(self.mission.command_briefing.stages):
             if stage.voice_name and stage.voice_name not in self.voices:
                 self.log_error(f"Command Briefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")

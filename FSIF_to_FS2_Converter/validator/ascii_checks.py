@@ -42,12 +42,19 @@ class AsciiChecksMixin:
 
     def validate_ascii_text_fields(self):
         """
-        Validate only FSO-facing string fields.
+        Enforce that all FSO-facing FSIF string fields contain only ASCII characters.
 
-        Excluded intentionally:
-        - voice_name
-        - voice_style_instructions
-        - internal converter-only helper fields such as wing template names
+        Invariant: the FSO engine only supports ASCII reliably.  Any field that
+        will be embedded in the emitted ``.fs2`` file must be pure ASCII.
+        Additionally, fields wrapped in an XSTR macro (player-visible text such
+        as mission name, goal objective_text, message text, cargo labels, etc.)
+        must not contain double quotes ``"``, because those break the FSO
+        ``stuff_string`` parser when embedded inside ``XSTR("...", -1)``.
+
+        Excluded intentionally from this check:
+        - ``voice_name`` and ``voice_style_instructions`` — not emitted into the
+          ``.fs2`` file; consumed only by the TTS generation pipeline.
+        - Internal converter-only fields such as wing template names.
         """
         self._validate_ascii_text('mission_flow.fiction_viewer', self.mission.fiction_viewer)
 

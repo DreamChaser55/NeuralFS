@@ -177,7 +177,15 @@ class SpatialChecksMixin:
 
     def validate_spawn_collisions(self):
         """
-        Warn if ships or wings that arrive via Hyperspace spawn too close to each other.
+        Warn when ships or wings that arrive via Hyperspace spawn so close that
+        their oriented bounding boxes (OBBs) overlap at mission start.
+
+        Invariant (advisory): two Hyperspace-arriving entities whose initial
+        OBBs intersect will likely collide immediately when the mission begins,
+        causing physics glitches.  Pre-spawn docked pairs are exempted because
+        FSO intentionally positions them in contact.  Directional-arrival
+        entities (Near Ship, In front of ship, etc.) are excluded because their
+        initial position is not statically determined.
         """
         positioned_objects = []
         wing_members = set()
