@@ -478,9 +478,21 @@ class SexpParser:
 
     def parse(self, text: str) -> List[SexpNode]:
         """
-        Main entry point for parsing a SEXP string.
-        :param text: The raw SEXP string (e.g., '(when (true) (do-nothing))').
-        :return: A list of root SexpNodes representing the parsed structure.
+        Main entry point for parsing one or more top-level SEXP expressions from a string.
+
+        Parser state (token list and cursor) is reset on each call, so the same
+        ``SexpParser`` instance can be reused across multiple FSIF fields.  The
+        returned list may contain more than one root node: some FSIF fields such
+        as ``initial_orders`` allow multiple consecutive operator expressions
+        (e.g. several ``ai-*`` goals separated by newlines), each of which
+        becomes its own root node.
+
+        :param text: The raw SEXP string (e.g., ``'(when (true) (do-nothing))'``).
+        :return: A list of root ``SexpNode`` objects representing the parsed
+            expression tree(s).  Returns an empty list when *text* contains only
+            whitespace or comments.
+        :raises SyntaxError: If the expression contains unmatched parentheses
+            (extra closing ``)``) at the top level.
         """
         self.tokens = self._tokenize(text)
         self.cursor = 0
@@ -493,8 +505,24 @@ class SexpParser:
 
     def _tokenize(self, text):
         """
-        Splits text into tokens, handling parens, quotes, and comments.
-        Mirrors FSO tokenizer behavior.
+        Splits the raw SEXP string into a flat list of string tokens.
+
+        Tokenization rules (applied in order):
+        - **Whitespace** — any whitespace character is treated as a token separator
+          and is consumed without producing a token.
+        - **Comments** (``; … <newline>``) — everything from a semicolon to the end
+          of the current line is discarded.  Inline comments are supported.
+        - **Parentheses** — each ``(`` or ``)`` becomes a single-character token.
+        - **Quoted strings** — content between ``"…"`` delimiters is extracted as
+          a single token *without* the surrounding quote characters (e.g.,
+          ``"Alpha 1"`` → token ``Alpha 1``).  The closing ``"`` is consumed.
+        - **Atoms** — any other run of non-whitespace, non-``(``/``)``, non-``;``
+          characters (operator names, numbers, bare identifiers) becomes a token.
+
+        This mirrors the FSO tokeniser behaviour described in ``missionparse.cpp``.
+
+        :param text: The raw SEXP source string.
+        :return: A flat list of string tokens ready for ``_parse_node()``.
         """
         tokens = []
         i = 0
@@ -539,7 +567,30 @@ class SexpParser:
         return tokens
 
     def _parse_node(self):
-        """Recursive function to build the tree."""
+        """
+        Recursively consume tokens and build a single ``SexpNode`` subtree.
+
+        Called by ``parse()`` in a loop to collect top-level expressions, and by
+        itself when building the child list of a list node.
+
+        **Token dispatch:**
+        - ``(`` — start of a list.  Reads the next token as the operator name
+          (or marks the node as an anonymous ``<container>`` when the very next
+          token is itself an opening parenthesis).  Then recursively calls itself
+          for each child until a matching ``)`` is consumed.  An empty ``()``
+          returns a list node with no children.
+        - ``)`` — always a structural error at this call depth: the parent loop in
+          Case A stops *before* consuming ``)`` so a stray ``)`` at the top level
+          or after a closed expression reaches this branch.
+          Raises ``SyntaxError: Unexpected closing parenthesis``.
+        - Any other token — atom node (operator argument, number, string literal,
+          variable reference, etc.).
+
+        :return: The root ``SexpNode`` for the consumed expression, or ``None``
+            when the token stream is exhausted.
+        :raises SyntaxError: On a missing closing parenthesis or an unexpected
+            closing parenthesis.
+        """
         if self.cursor >= len(self.tokens):
             return None
 
@@ -659,6 +710,57 @@ class SexpValidator:
         return self._validate_recursive(node, expected_type, recursive, context)
 
     def _validate_recursive(self, node: SexpNode, expected_type: SexpReturnType, recursive: bool, context: str = "") -> List[str]:
+        """
+        Core recursive type-checking and semantic validation pass.
+
+        This is the central implementation of the validator.  It is called by
+        ``validate()`` and calls itself when descending into child nodes.
+
+        **Phase 1 — Return-type resolution:**
+        The actual return type of *node* is determined:
+        - If *node* is a list (operator), its ``OperatorDef.return_type`` is used.
+          Unknown operators produce an error and abort further descent.
+          Anonymous ``<container>`` nodes (i.e. ``((...))``) are also flagged and
+          treated as ``NONE`` to force a type-mismatch error.
+        - If *node* is an atom, ``_get_atom_return_type()`` classifies it as
+          ``NUMBER``, ``BOOL``, ``STRING``, or a named variable type.
+
+        **Phase 2 — Type compatibility check:**
+        ``_sexp_query_type_match()`` compares *expected_type* (the OPR requirement
+        imposed by the parent argument slot) with the resolved actual type.
+        A mismatch appends a ``Type Mismatch`` error.
+
+        **Phase 3 — Operator argument validation** (list nodes with a known def):
+        - Argument count is checked against ``OperatorDef.min_args`` /
+          ``max_args``.
+        - **AI-goal applicability**: operators in ``FIGHTER_BOMBER_ONLY_OPERATORS``
+          are validated against ``self.current_subject``'s ship class.
+        - **IFF / self-target logic**: guard and attack operators are checked for
+          same-team or self-targeting mistakes via ``_validate_ai_logic()``.
+        - **Player terminal-state check**: ``has-departed-delay`` and
+          ``is-destroyed-delay`` using the player start ship as an argument are
+          flagged as authoring errors.
+        - **Recursive child descent** (when *recursive* is True):
+          For each child argument, the expected OPF type is resolved using the
+          generated ``_query_operator_argument_type()`` logic, converted to an OPR
+          type via ``map_opf_to_opr()``, and passed into the recursive call.
+          The argument-provider guard is applied before descending.
+          Atom children additionally run ``_validate_atom_content()`` for
+          domain-specific string validation (ship names, weapon names, etc.).
+        - ``self.current_subject`` is updated around the second argument of
+          ``add-goal`` so that nested AI-goal operators can check applicability
+          against the correct ship/wing class.
+
+        :param node: The ``SexpNode`` to validate (list operator or atom).
+        :param expected_type: The ``SexpReturnType`` the caller expects this node
+            to produce.
+        :param recursive: If ``False``, only the root node is checked and children
+            are skipped.  Normally ``True``.
+        :param context: Human-readable context label for error messages (e.g.
+            ``"Argument 2 of 'when'"``).
+        :return: A list of error strings found during this call and all recursive
+            descendant calls.
+        """
         errors: List[str] = []
         
         # 1. Determine Actual Return Type
@@ -848,7 +950,19 @@ class SexpValidator:
         return errors
 
     def _opf_name(self, opf_type: int) -> str:
-        """Return a human-readable name for an OPF_* constant."""
+        """
+        Return the symbolic name string for an OPF_* integer constant.
+
+        Looks up the constant in the ``OPF_NAMES`` reverse-map that is built at
+        module load time from all ``OPF_*`` names imported from
+        ``opf_definitions.py``.  Used in error messages to identify domain-literal
+        argument slots (e.g. ``"OPF_SHIP"``, ``"OPF_MESSAGE"``).  Falls back to a
+        raw ``OPF(n)`` string for values not present in the map.
+
+        :param opf_type: The integer OPF_* constant to look up.
+        :return: The symbolic name string (e.g. ``"OPF_SHIP"``), or
+            ``"OPF(<n>)"`` if the constant is not recognised.
+        """
         return OPF_NAMES.get(opf_type, f"OPF({opf_type})")
 
     def _validate_nested_expression_allowed_for_opf(
@@ -905,11 +1019,43 @@ class SexpValidator:
         )]
 
     def _query_operator_argument_type(self, op: OperatorDef, arg_index: int):
+        """
+        Return the FSO OPF_* argument type constant for the given argument position.
+
+        Delegates to the auto-generated ``get_argument_type()`` function from
+        ``sexp_argument_logic.py``, which was transpiled from the FSO C++ source
+        ``query_operator_argument_type`` function.  The result is an integer
+        ``OPF_*`` constant that describes the semantic domain expected at position
+        *arg_index* (e.g. ``OPF_SHIP``, ``OPF_BOOL``, ``OPF_POSITIVE``).
+
+        For variadic or out-of-range indices, the generated logic returns a
+        suitable catch-all type (usually ``OPF_ANYTHING``).
+
+        :param op: The ``OperatorDef`` for the parent operator being validated.
+        :param arg_index: Zero-based index of the child argument being queried.
+        :return: An integer OPF_* constant.
+        """
         return get_argument_type(op.id, arg_index)
 
     def _sexp_query_type_match(self, expected_opr: SexpReturnType, actual_opr: SexpReturnType) -> bool:
         """
-        Returns True if 'actual_opr' return type satisfies 'expected_opr'.
+        Return ``True`` if *actual_opr* satisfies the *expected_opr* requirement.
+
+        Mirrors the ``sexp_query_type_match`` function in FSO's ``sexp.cpp``.
+        Compatibility rules:
+        - ``AMBIGUOUS`` on either side always passes (one or both types are
+          unknown/flexible, so no constraint can be enforced).
+        - ``NUMBER`` expected: accepts both ``NUMBER`` and ``POSITIVE`` (a
+          non-negative number is a valid number).
+        - ``POSITIVE`` expected: accepts both ``POSITIVE`` and ``NUMBER`` (FSO
+          relaxes this check in practice — a numeric expression satisfies a
+          positive-numeric slot).
+        - All other types require an exact match (``BOOL``, ``NULL``, ``AI_GOAL``,
+          ``STRING``, etc.).
+
+        :param expected_opr: The return type required by the parent argument slot.
+        :param actual_opr: The return type produced by the child node or atom.
+        :return: ``True`` if the types are compatible, ``False`` otherwise.
         """
         if expected_opr == SexpReturnType.AMBIGUOUS or actual_opr == SexpReturnType.AMBIGUOUS:
             return True
@@ -925,6 +1071,24 @@ class SexpValidator:
         return expected_opr == actual_opr
 
     def _get_atom_return_type(self, node: SexpNode) -> SexpReturnType:
+        """
+        Classify a bare (non-list) atom node into its ``SexpReturnType``.
+
+        Classification precedence:
+        1. If the text parses as a floating-point number via ``_is_number()``,
+           the atom is classified as ``NUMBER``.  This covers integers, floats,
+           and negative values (e.g. ``0``, ``89``, ``-1``, ``3.14``).
+        2. If the text is the literal string ``"true"`` or ``"false"``, the atom
+           is classified as ``BOOL``.
+        3. If the text matches a key in ``self.context.variables``, the stored
+           ``SexpReturnType`` value is returned (e.g. a numeric variable yields
+           ``NUMBER``).
+        4. Everything else (ship names, wing names, message names, operator
+           literals, etc.) is treated as ``STRING`` — a generic string atom.
+
+        :param node: The atom ``SexpNode`` to classify.
+        :return: The inferred ``SexpReturnType`` for this atom.
+        """
         if self._is_number(node.text):
             return SexpReturnType.NUMBER
         if node.text in ["true", "false"]:
@@ -939,7 +1103,30 @@ class SexpValidator:
         return SexpReturnType.STRING
 
     def _validate_atom_content(self, node: SexpNode, expected_opf, context: str = "") -> List[str]:
-        """Checks if the raw string content fits the expected specific OPF type."""
+        """
+        Dispatch domain-specific semantic validation for a literal atom node.
+
+        When the parent operator expects a concrete domain token — a ship name,
+        weapon name, message name, waypoint path, subsystem name, etc. — this
+        method looks up the corresponding per-OPF validator in
+        ``self._atom_validators`` and delegates to it.
+
+        Only *literal atom* nodes (``node.is_list == False``) are passed here;
+        the caller (``_validate_recursive``) already filters for that.  Nested
+        list expressions in string-like argument slots receive only the coarser
+        return-type check via ``_sexp_query_type_match()``, not the domain-
+        specific content check.
+
+        If no validator is registered for *expected_opf* (e.g. for
+        ``OPF_ANYTHING`` or other unconstrained types), no errors are produced.
+
+        :param node: The literal atom node whose text content is being validated.
+        :param expected_opf: The OPF_* integer constant describing what kind of
+            value is expected in this argument slot.
+        :param context: Human-readable context label for error messages.
+        :return: A list of error strings, empty if content is valid or no
+            domain-specific validator is registered for *expected_opf*.
+        """
         validator = self._atom_validators.get(expected_opf)
         if validator:
             return validator(node.text, context, node)
@@ -948,6 +1135,17 @@ class SexpValidator:
     # --- Helpers ---
 
     def _is_number(self, s):
+        """
+        Return ``True`` if *s* can be parsed as a floating-point number.
+
+        Uses Python's ``float()`` for parsing, which accepts integers, floats,
+        and values with a leading sign (e.g. ``"89"``, ``"-1"``, ``"3.14"``).
+        Intentionally permissive — negative values are allowed here; callers
+        such as ``_validate_positive`` apply range constraints as needed.
+
+        :param s: The string to test.
+        :return: ``True`` if *s* represents a number, ``False`` otherwise.
+        """
         try:
             float(s)
             return True
@@ -955,6 +1153,17 @@ class SexpValidator:
             return False
 
     def _opr_name(self, t: Union[SexpReturnType, int]) -> str:
+        """
+        Return a human-readable label for a ``SexpReturnType`` (OPR_*) value.
+
+        Used in error messages to describe expected or actual return types (e.g.
+        ``"Boolean"``, ``"Action/Void"``, ``"AI Goal"``).  Falls back to a raw
+        ``Type(n)`` string for unrecognised enum values so that errors are always
+        printable even for future FSO extensions.
+
+        :param t: A ``SexpReturnType`` enum member or raw integer OPR_* value.
+        :return: A short human-readable type name string.
+        """
         try:
             enum_val = SexpReturnType(t)
         except ValueError:
@@ -1008,7 +1217,26 @@ class SexpValidator:
         return [self._format_error(f"Invalid Ship/Wing name: '{text}'", context)]
 
     def _validate_specific_point(self, text: str, context: str) -> List[str]:
-        """Helper to validate Path:N syntax and range."""
+        """
+        Validate a ``PathName:N`` waypoint-point reference string.
+
+        FSO SEXP operators that accept a specific waypoint point use the syntax
+        ``"PathName:N"`` where *PathName* is a key in ``MissionContext.waypoints``
+        and *N* is a 1-based integer index into that path.
+
+        Checks performed:
+        1. The text must contain exactly one ``":"`` separator, splitting it into
+           exactly two parts.
+        2. The path name before the colon must exist in
+           ``self.context.waypoints``.
+        3. The index after the colon must parse as an integer.
+        4. The index must be in the range ``[1, len(path)]`` (1-based, inclusive).
+
+        :param text: The raw atom text to validate (e.g. ``"MyPath:2"``).
+        :param context: Human-readable context label for error messages.
+        :return: A list containing a single error string if validation fails,
+            or an empty list on success.
+        """
         parts = text.split(':')
         if len(parts) != 2:
             return [self._format_error(f"Invalid waypoint syntax: '{text}'. Expected format 'PathName:Index'.", context)]
@@ -1105,10 +1333,33 @@ class SexpValidator:
 
     def _get_associated_ship_node(self, node: SexpNode) -> Optional[SexpNode]:
         """
-        Attempts to find a sibling node that represents the ship/wing associated with this subsystem node.
-        Uses a heuristic: 
-        1. Check the immediate predecessor (Index - 1).
-        2. Fallback to the first argument (Index 0).
+        Heuristically find the sibling argument node that names the ship or wing
+        associated with a subsystem or dockpoint atom.
+
+        Used by ``_validate_subsystem()`` and ``_validate_dockpoint()`` to provide
+        class-specific validation: once we know which ship is referenced, we can
+        check the subsystem or dockpoint against that ship's canonical list rather
+        than only against the global union of all known names.
+
+        Heuristic search order:
+        1. **Immediate predecessor** (index − 1): check if the argument immediately
+           before the current node has a ship-type OPF (``OPF_SHIP``, ``OPF_WING``,
+           ``OPF_SHIP_WING``, etc.).  This covers the common pattern
+           ``( op ShipName SubsystemName ... )`` where the ship precedes the
+           subsystem in the argument list.
+        2. **First argument** (index 0): if the predecessor check fails, check
+           whether the first argument of the parent operator has a ship-type OPF.
+           This is a fallback for operators where the ship is listed before
+           non-ship arguments that appear between the ship and the subsystem slot.
+
+        Returns ``None`` if:
+        - The node has no parent, or the parent is not a list node.
+        - The parent operator is not in the ``OPERATORS`` registry.
+        - Neither the predecessor nor the first argument has a ship-type OPF.
+
+        :param node: The subsystem or dockpoint atom node being validated.
+        :return: The sibling ``SexpNode`` that names the associated ship/wing, or
+            ``None`` if the association cannot be determined.
         """
         if not node.parent or not node.parent.is_list:
             return None
@@ -1140,6 +1391,29 @@ class SexpValidator:
         return None
 
     def _validate_subsystem(self, text: str, context: str, node: SexpNode) -> List[str]:
+        """
+        Validate a subsystem name atom against known FSO subsystem lists.
+
+        Two-pass validation:
+        1. **Global check**: the name must appear in ``ALL_KNOWN_SUBSYSTEMS``
+           (the union of all subsystem names across all ship classes, plus the
+           virtual subsystems ``"pilot"``, ``"hull"``, and ``"shields"``).
+           If it is not known globally, validation fails immediately — the name
+           does not exist in any ship, so it cannot be valid.
+        2. **Class-specific check**: if the associated ship or wing can be
+           inferred via ``_get_associated_ship_node()``, and if that ship class
+           has a known subsystem list in ``fs_data.ALLOWED_SUBSYSTEMS``, the name
+           is further checked against the per-class list.  The virtual subsystems
+           ``"pilot"``, ``"hull"``, and ``"shields"`` bypass this check and are
+           always allowed.  Ships classes without subsystem data (e.g. NavBuoys,
+           class ``"Unknown"``) also bypass the class-specific check.
+
+        :param text: The subsystem name atom text to validate.
+        :param context: Human-readable context label for error messages.
+        :param node: The atom ``SexpNode`` (used by ``_get_associated_ship_node``
+            to find the parent operator context).
+        :return: A list of error strings (empty if valid).
+        """
         # 1. Basic check against global list
         if text not in ALL_KNOWN_SUBSYSTEMS:
             return [self._format_error(f"Invalid Subsystem: '{text}'. (Not found in any known ship class)", context)]
@@ -1172,6 +1446,31 @@ class SexpValidator:
         return []
 
     def _validate_dockpoint(self, text: str, context: str, node: SexpNode) -> List[str]:
+        """
+        Validate a dockpoint name atom against known FSO dockpoint lists.
+
+        Two-pass validation:
+        1. **Global check**: the name must appear in ``ALL_KNOWN_DOCKPOINTS``
+           (the union of all dockpoint names across all ship classes).  Fails
+           immediately if the name is not known globally.
+        2. **Class-specific check**: attempts to identify the ship class that owns
+           this dockpoint, then checks the name against that class's canonical
+           dockpoint list in ``fs_data.ALLOWED_DOCKPOINTS``.
+
+           For the ``ai-dock`` operator specifically:
+           - Argument index 1 (``DockerPoint``) is resolved against
+             ``self.current_subject`` (the ship being given the AI goal).
+           - Argument index 2 (``DockeePoint``) is resolved against the first
+             argument of the ``ai-dock`` call (the dockee ship).
+           For other operators the generic ``_get_associated_ship_node()``
+           heuristic is used as a fallback.
+
+        :param text: The dockpoint name atom text to validate.
+        :param context: Human-readable context label for error messages.
+        :param node: The atom ``SexpNode`` (used to resolve operator context
+            and sibling arguments).
+        :return: A list of error strings (empty if valid).
+        """
         # 1. Basic check against global list
         if text not in ALL_KNOWN_DOCKPOINTS:
             return [self._format_error(f"Invalid Dockpoint: '{text}'. (Not found in any known ship class)", context)]
