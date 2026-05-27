@@ -33,7 +33,7 @@ Mission flags: +Flags is computed from mission_info.flags using the FSO Mission:
 
 Validation: `player_setup.start_ship` must be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing — standalone player starts are a hard validation error that aborts conversion. The converter preserves SEXP text verbatim and will print an error for any SEXP validation failures it detects.
 
-Briefing/Debriefing: if present, a `stages` key must exist (can be an empty list).
+Briefing/Debriefing/Command Briefing: these sections are optional. If present, their `stages` key may be omitted, set to `null`, or set to an explicit list; omitted and `null` values both normalize to an empty list. Briefing stage `icons` likewise may be omitted or `null` and normalize to an empty list. The writer still emits the corresponding FS2 sections with zero stages when no stages are present.
 
 Music: when a top-level `audio` mapping is present in FSIF, the converter emits `#Music` with `$Event Music` and `$Briefing Music`. Both values are written verbatim (e.g., `mission_music: "1: Genesis"` -> `$Event Music: 1: Genesis`, `briefing_music: "Brief1"` -> `$Briefing Music: Brief1`). If neither is provided, `#Music` is omitted.
 
