@@ -213,34 +213,30 @@ class SpatialChecksMixin:
                 'docked_with': s.docked_with
             })
 
-        # 2. Collect all wings arriving via Hyperspace
+        # 2. Collect all wings arriving via Hyperspace.
+        # Each expanded wing member is added as a separate collision object using
+        # its own exact position and ship-class OBB.  This correctly handles
+        # wings of large ships (cruisers, destroyers, freighters, etc.) whose
+        # formation footprint is much larger than a single fighter OBB plus
+        # fixed padding.  Same-wing pairs are excluded in the pairwise check
+        # below because intra-wing spacing is the author's deliberate choice.
         for w in self.mission.wings:
             arr_loc = w.arrival_method.strip().lower()
             if arr_loc != "hyperspace":
                 continue
-                
-            # Use wing position, fallback to leader's position
-            pos = w.position
-            if pos is None and w.ships:
-                pos = w.ships[0].position
-                
-            if pos is None:
-                continue
 
-            # Estimate wing bounding box using the first ship's class
-            if w.ships:
-                obb = self._get_world_obb(w.ships[0].ship_class, w.ships[0].orientation, pos, padding=100.0)
-            else:
-                ident_orientation = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
-                obb = self._get_world_obb("Unknown", ident_orientation, pos, padding=100.0)
-
-            positioned_objects.append({
-                'type': 'Wing',
-                'name': w.name,
-                'pos': pos,
-                'obb': obb,
-                'docked_with': None # Wings can't be pre-spawn docked
-            })
+            for member in w.ships:
+                obb = self._get_world_obb(
+                    member.ship_class, member.orientation, member.position, padding=0.0
+                )
+                positioned_objects.append({
+                    'type': 'Wing member',
+                    'name': member.name,
+                    'parent_wing': w.name,
+                    'pos': member.position,
+                    'obb': obb,
+                    'docked_with': None,  # Wings can't be pre-spawn docked
+                })
 
         collisions = []
 
@@ -252,6 +248,13 @@ class SpatialChecksMixin:
 
                 # Skip if a is explicitly docked to b or vice versa
                 if obj_a['docked_with'] == obj_b['name'] or obj_b['docked_with'] == obj_a['name']:
+                    continue
+
+                # Skip members that belong to the same wing — intra-wing
+                # spacing is the author's deliberate choice and FSO's formation
+                # AI is expected to handle member separation.
+                if (obj_a.get('parent_wing') is not None
+                        and obj_a.get('parent_wing') == obj_b.get('parent_wing')):
                     continue
 
                 # OBB overlap test
@@ -266,9 +269,16 @@ class SpatialChecksMixin:
             # Sort by distance for cleaner logging
             collisions.sort(key=lambda x: x[2])
             for obj_a, obj_b, dist in collisions:
+                # Build a human-readable label for each object, showing the
+                # parent wing when available.
+                def _label(obj):
+                    if obj.get('parent_wing'):
+                        return f"Wing member '{obj['name']}' (Wing '{obj['parent_wing']}')"
+                    return f"{obj['type']} '{obj['name']}'"
+
                 self.log_warning(
-                    f"Mission design recommendation: {obj_a['type']} '{obj_a['name']}' spawns very close to "
-                    f"{obj_b['type']} '{obj_b['name']}'. Their bounding boxes intersect (center distance {dist:.1f}m). "
+                    f"Mission design recommendation: {_label(obj_a)} spawns very close to "
+                    f"{_label(obj_b)}. Their bounding boxes intersect (center distance {dist:.1f}m). "
                     f"Both objects arrive via Hyperspace at static locations. This may cause an immediate collision upon mission start or arrival."
                 )
 
