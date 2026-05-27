@@ -4,18 +4,7 @@ This project is a Python implementation of the **Symbolic Expression (SEXP)** pa
 
 The validator includes auto-generated argument type logic for all 678+ SEXP operators, transpiled directly from the FSO C++ source code. It implements recursive type checking using `map_opf_to_opr` logic to bridge Argument Types (OPF) and Return Types (OPR). Return Types have been refactored into a formal `SexpReturnType` enum for improved type safety and maintainability.
 
-## **Quick Start**
-
-Main executable file: `advanced_sexp_validator.py`.
-
-### **Prerequisites**
-
-* Python 3.9 or higher.
-* The tool depends on internal NeuralFS converter components (e.g., `fs_data.py`, `fs_flags_constants.py`, and `data_models.py`).
-
-### **Running the Tool**
-
-The tool is integrated as a core component of the `FSIF_to_FS2_Converter` and runs automatically during the conversion process.
+The tool depends on internal NeuralFS converter components (e.g., `fs_data.py`, `fs_flags_constants.py`, and `data_models.py`). The tool is integrated as a core component of the `FSIF_to_FS2_Converter` and runs automatically during the conversion process.
 
 ### **Example Usage in Code**
 
@@ -113,10 +102,6 @@ Located in the `/generated_code/` subfolder. **Do not edit manually.** Edit the 
     * **Atoms:** Checked to ensure their content matches the specific constraints of the `OPF` type (e.g., `OPF_SHIP` must be a valid ship name, `OPF_BOOL` must be `"true"`/`"false"` or a number).
 * **FSO Equivalent:** Mirrors `check_sexp_syntax`, `query_operator_argument_type`, and `sexp_query_type_match`.
 
-## **Integration with FSIF Converter**
-
-This validator is integrated with the main `FSIF_to_FS2_Converter` as a core validation step.
-
 ### **Entry Point**
 The function `validate_mission(mission)` in `advanced_sexp_validator.py` serves as the bridge. It:
 1. Accepts a hydrated `data_models.Mission` object.
@@ -124,9 +109,6 @@ The function `validate_mission(mission)` in `advanced_sexp_validator.py` serves 
 3. Iterates through every SEXP field in the mission (event formulas, goal formulas, ship/wing arrival/departure cues, AI goals).
 4. Validates each SEXP against the context and strict FSO typing rules.
 5. Reports errors via the `logger`.
-
-### **Usage**
-The validator runs automatically as part of the FSIF to FS2 conversion process.
 
 ## **Known Limitations and Validation Coverage**
 
