@@ -259,6 +259,7 @@ def _validate_departure_method_token(v: Any) -> str:
 # =============================================================================
 
 class MissionInfoInput(BaseModel):
+    """Raw FSIF ``mission_info`` mapping; validated before loader normalization applies defaults."""
     model_config = ConfigDict(extra='forbid')
     name: str
     author: Optional[str] = None
@@ -269,6 +270,7 @@ class MissionInfoInput(BaseModel):
 
 
 class NebulaInput(BaseModel):
+    """Raw FSIF ``environment.nebula`` mapping; all fields optional as authored."""
     model_config = ConfigDict(extra='forbid')
     enabled: Optional[bool] = None
     pattern: Optional[str] = None
@@ -285,6 +287,11 @@ class BoundsInput(BaseModel):
 
 
 class AsteroidFieldInput(BaseModel):
+    """Raw FSIF ``environment.asteroid_field`` mapping including authored ``bounds`` key.
+
+    The loader converts ``bounds.min``/``bounds.max`` to ``min_vec``/``max_vec`` before
+    constructing the runtime ``AsteroidField`` model.
+    """
     model_config = ConfigDict(extra='forbid')
     object_type: Optional[str] = None
     behavior: Optional[str] = None
@@ -296,6 +303,7 @@ class AsteroidFieldInput(BaseModel):
 
 
 class EnvironmentInput(BaseModel):
+    """Raw FSIF ``environment`` mapping; validated before nebula-flag injection and asteroid-field normalization."""
     model_config = ConfigDict(extra='forbid')
     ambient_light_level: Any = None
     # Reuse existing Sun/BackgroundBitmap runtime models here because they
@@ -314,6 +322,7 @@ class ShipChoiceInput(BaseModel):
 
 
 class PlayerSetupInput(BaseModel):
+    """Raw FSIF ``player_setup`` mapping; validated before loader normalizes optional list fields."""
     model_config = ConfigDict(extra='forbid')
     start_ship: str
     additional_ship_choices: Optional[List[ShipChoiceInput]] = None
@@ -329,18 +338,21 @@ class DockInput(BaseModel):
 
 
 class SubsystemStatusInput(BaseModel):
+    """Raw authored subsystem name + optional health override for a single subsystem."""
     model_config = ConfigDict(extra='forbid')
     name: str
     health: Optional[int] = None
 
 
 class SubsystemsInput(BaseModel):
+    """Raw FSIF subsystems block; ``status`` is ``'all_ok'`` or ``'custom'``."""
     model_config = ConfigDict(extra='forbid')
     status: Optional[str] = None
     list: Optional[List[SubsystemStatusInput]] = None
 
 
 class WeaponsInput(BaseModel):
+    """Raw FSIF weapons block; primary/secondary bank lists and optional ammo overrides as authored."""
     model_config = ConfigDict(extra='forbid')
     primary: Optional[List[str]] = None
     secondary: Optional[List[str]] = None
@@ -419,6 +431,10 @@ class ShipInput(BaseModel):
 
 
 class WingInput(BaseModel):
+    """Raw FSIF wing definition; compact form with template reference and centroid position.
+
+    The loader expands this into a runtime ``Wing`` with individual ``Ship`` members.
+    """
     model_config = ConfigDict(extra='forbid')
     name: str
     template: str
@@ -457,12 +473,14 @@ class WingInput(BaseModel):
 
 
 class JumpNodeInput(BaseModel):
+    """Raw FSIF jump node entry; name and world-space position as authored."""
     model_config = ConfigDict(extra='forbid')
     name: str
     position: List[float]
 
 
 class ReinforcementInput(BaseModel):
+    """Raw FSIF reinforcement entry; references a ship or wing by name."""
     model_config = ConfigDict(extra='forbid')
     name: str
     max_uses: Optional[int] = None
@@ -472,6 +490,7 @@ class ReinforcementInput(BaseModel):
 
 
 class EntitiesInput(BaseModel):
+    """Raw FSIF ``entities`` mapping; top-level container for all authored ship templates, ships, wings, waypoints, reinforcements, and jump nodes."""
     model_config = ConfigDict(extra='forbid')
     ship_templates: Optional[Dict[str, ShipTemplateInput]] = None
     ships: Optional[List[ShipInput]] = None
@@ -486,6 +505,7 @@ class EntitiesInput(BaseModel):
 
 
 class EventInput(BaseModel):
+    """Raw FSIF mission event; name, SEXP formula, and optional HUD directive text as authored."""
     model_config = ConfigDict(extra='forbid')
     name: Optional[str] = None
     formula: str
@@ -493,6 +513,7 @@ class EventInput(BaseModel):
 
 
 class GoalInput(BaseModel):
+    """Raw FSIF mission goal; name, type, player-visible objective text, and SEXP formula as authored."""
     model_config = ConfigDict(extra='forbid')
     name: str
     type: Optional[str] = None
@@ -501,6 +522,7 @@ class GoalInput(BaseModel):
 
 
 class MessageInput(BaseModel):
+    """Raw FSIF in-mission message; text and optional TTS voice fields as authored."""
     model_config = ConfigDict(extra='forbid')
     name: str
     text: str
@@ -509,6 +531,11 @@ class MessageInput(BaseModel):
 
 
 class BriefingIconInput(BaseModel):
+    """Raw FSIF briefing icon; ``map_position`` is a 2-element ``[x, z]`` list as authored.
+
+    The runtime ``BriefingIcon`` model normalizes this to ``[x, 0.0, z]`` and resolves the
+    numeric ``type_id`` from the canonical ``icon_type`` string.
+    """
     model_config = ConfigDict(extra='forbid')
     icon_type: str
     team: str
@@ -521,6 +548,7 @@ class BriefingIconInput(BaseModel):
 
 
 class BriefingStageInput(BaseModel):
+    """Raw FSIF briefing stage; text, optional TTS fields, camera time, and icon list as authored."""
     model_config = ConfigDict(extra='forbid')
     text: str
     voice_name: Optional[str] = None
@@ -530,11 +558,13 @@ class BriefingStageInput(BaseModel):
 
 
 class BriefingInput(BaseModel):
+    """Raw FSIF ``mission_flow.briefing`` mapping; list of authored briefing stages."""
     model_config = ConfigDict(extra='forbid')
     stages: Optional[List[BriefingStageInput]] = None
 
 
 class DebriefingStageInput(BaseModel):
+    """Raw FSIF debriefing stage; text, optional SEXP display condition, and TTS fields as authored."""
     model_config = ConfigDict(extra='forbid')
     text: str
     display_condition: Optional[str] = None
@@ -544,11 +574,13 @@ class DebriefingStageInput(BaseModel):
 
 
 class DebriefingInput(BaseModel):
+    """Raw FSIF ``mission_flow.debriefing`` mapping; list of authored debriefing stages."""
     model_config = ConfigDict(extra='forbid')
     stages: Optional[List[DebriefingStageInput]] = None
 
 
 class CommandBriefingStageInput(BaseModel):
+    """Raw FSIF command briefing stage; text and optional TTS fields as authored."""
     model_config = ConfigDict(extra='forbid')
     text: str
     voice_name: Optional[str] = None
@@ -556,11 +588,13 @@ class CommandBriefingStageInput(BaseModel):
 
 
 class CommandBriefingInput(BaseModel):
+    """Raw FSIF ``mission_flow.command_briefing`` mapping; list of authored command briefing stages."""
     model_config = ConfigDict(extra='forbid')
     stages: Optional[List[CommandBriefingStageInput]] = None
 
 
 class MissionFlowInput(BaseModel):
+    """Raw FSIF ``mission_flow`` mapping; top-level container for all authored flow elements."""
     model_config = ConfigDict(extra='forbid')
     fiction_viewer: Optional[str] = None
     events: Optional[List[EventInput]] = None
@@ -572,6 +606,7 @@ class MissionFlowInput(BaseModel):
 
 
 class AudioSettingsInput(BaseModel):
+    """Raw FSIF ``audio`` mapping; music tokens and TTS provider preference as authored."""
     model_config = ConfigDict(extra='forbid')
     mission_music: Optional[str] = None
     briefing_music: Optional[str] = None
@@ -606,27 +641,32 @@ class FSIFDocument(BaseModel):
 # They are used by the writer, validator, and TTS provider.
 
 class SubsystemStatus(BaseModel):
+    """Runtime subsystem health record; name validated against per-ship canonical lists."""
     model_config = ConfigDict(extra='forbid')
     name: str
     health: int = Field(100, ge=0, le=100)
 
 class Subsystems(BaseModel):
+    """Runtime normalized subsystems block; ``status`` defaults to ``'all_ok'`` when not explicitly customized."""
     model_config = ConfigDict(extra='forbid')
     status: Literal['all_ok', 'custom'] = 'all_ok'
     list: List[SubsystemStatus] = Field(default_factory=list)
 
 class Weapons(BaseModel):
+    """Runtime normalized weapons block with resolved primary/secondary bank lists for a ship."""
     model_config = ConfigDict(extra='forbid')
     primary: List[str] = Field(default_factory=list)
     secondary: List[str] = Field(default_factory=list)
     secondary_ammo_counts: List[int] = Field(default_factory=list)
 
 class ShipChoice(BaseModel):
+    """Runtime alternative player ship pool entry for the loadout screen."""
     model_config = ConfigDict(extra='forbid')
     ship_class: str = Field(..., alias='class')
     count: int = Field(..., ge=1)
 
 class Sun(BaseModel):
+    """Runtime background sun; angles normalized to ``[pitch, heading]`` (bank omitted; suns are rotationally symmetric)."""
     model_config = ConfigDict(extra='forbid')
     texture: str
     angles: List[float]
@@ -638,16 +678,19 @@ class Sun(BaseModel):
         return _normalize_sun_angles(v)
 
 class XYFloat(BaseModel):
+    """Helper model for a 2D float scale value (used by ``BackgroundBitmap.scale`` when x/y differ)."""
     model_config = ConfigDict(extra='forbid')
     x: float
     y: float
 
 class XYInt(BaseModel):
+    """Helper model for a 2D integer dimension pair."""
     model_config = ConfigDict(extra='forbid')
     x: int
     y: int
 
 class BackgroundBitmap(BaseModel):
+    """Runtime background bitmap; angles normalized to ``[pitch, bank, heading]`` in radians."""
     model_config = ConfigDict(extra='forbid')
     texture: str
     angles: List[float]
@@ -659,6 +702,7 @@ class BackgroundBitmap(BaseModel):
         return _normalize_vector(v)
 
 class Nebula(BaseModel):
+    """Runtime normalized nebula settings; defaults applied by loader when fields are absent."""
     model_config = ConfigDict(extra='forbid')
     enabled: bool = False
     sensor_range: float = Field(default=3000.0)
@@ -672,6 +716,10 @@ class Nebula(BaseModel):
         return _none_to_empty_list(v)
 
 class AsteroidField(BaseModel):
+    """Runtime asteroid/debris field; ``min_vec``/``max_vec`` are loader-produced from the authored ``bounds`` mapping.
+
+    ``object_variants`` defaults are injected by the loader based on ``object_type``.
+    """
     # 'min_vec'/'max_vec' are an internal representation produced by the
     # mission_loader from the authored 'bounds.min'/'bounds.max' mapping.
     model_config = ConfigDict(extra='forbid')
@@ -693,6 +741,7 @@ class AsteroidField(BaseModel):
         return _normalize_vector(v)
 
 class Environment(BaseModel):
+    """Runtime normalized environment; all sub-models fully hydrated with defaults by the loader."""
     model_config = ConfigDict(extra='forbid')
     ambient_light_level: List[int] = Field(default_factory=lambda: [0, 0, 0])
     suns: List[Sun] = Field(default_factory=list)
@@ -706,6 +755,7 @@ class Environment(BaseModel):
         return _normalize_ambient_light_rgb(v)
 
 class MissionInfo(BaseModel):
+    """Runtime normalized mission metadata with all optional fields resolved to defaults."""
     model_config = ConfigDict(extra='forbid')
     name: str
     author: str = 'FSIF Converter'
@@ -720,6 +770,7 @@ class MissionInfo(BaseModel):
         return _none_to_empty_list(v)
 
 class PlayerSetup(BaseModel):
+    """Runtime normalized player setup; optional loadout lists resolved to empty by default."""
     model_config = ConfigDict(extra='forbid')
     start_ship: str
     additional_ship_choices: List[ShipChoice] = Field(default_factory=list)
@@ -731,12 +782,14 @@ class PlayerSetup(BaseModel):
         return _none_to_empty_list(v)
 
 class Event(BaseModel):
+    """Runtime mission event; SEXP formula and optional HUD directive text, passed verbatim to the FS2 writer."""
     model_config = ConfigDict(extra='forbid')
     name: Optional[str] = None
     formula: str
     hud_directive_text: Optional[str] = Field(default=None)
 
 class Goal(BaseModel):
+    """Runtime mission goal with normalized ``type`` defaulting to ``'Primary'``."""
     model_config = ConfigDict(extra='forbid')
     name: str
     formula: str
@@ -744,6 +797,7 @@ class Goal(BaseModel):
     type: Literal['Primary', 'Secondary', 'Bonus'] = 'Primary'
 
 class Message(BaseModel):
+    """Runtime in-mission message; ``voice_filename`` is an internal TTS-assigned path, excluded from serialization."""
     model_config = ConfigDict(extra='forbid')
     name: str
     text: str = Field(...)
@@ -752,6 +806,11 @@ class Message(BaseModel):
     voice_filename: Optional[str] = Field(default=None, exclude=True)
 
 class BriefingIcon(BaseModel):
+    """Runtime briefing icon; ``type_id`` resolved from ``icon_type`` string, ``map_position`` normalized to ``[x, 0.0, z]``.
+
+    ``display_class_authored`` is an internal loader flag that records whether the author
+    explicitly provided ``display_class`` in FSIF; it is never serialized.
+    """
     model_config = ConfigDict(extra='forbid')
     type_id: int
     icon_type: str = Field(...)
@@ -785,6 +844,7 @@ class BriefingIcon(BaseModel):
              raise ValueError(f"Briefing icon coordinates must be numbers, got {v}")
 
 class BriefingStage(BaseModel):
+    """Runtime briefing stage; ``camera_pos``/``camera_orient`` are loader-computed from icon positions, excluded from serialization."""
     model_config = ConfigDict(extra='forbid')
     text: str
     voice_name: Optional[str] = None
@@ -804,6 +864,7 @@ class BriefingStage(BaseModel):
         return _none_to_empty_list(v)
 
 class Briefing(BaseModel):
+    """Runtime mission briefing; contains normalized stages with computed camera placement."""
     model_config = ConfigDict(extra='forbid')
     stages: List[BriefingStage] = Field(default_factory=list)
 
@@ -813,6 +874,7 @@ class Briefing(BaseModel):
         return _none_to_empty_list(v)
 
 class DebriefingStage(BaseModel):
+    """Runtime debriefing stage; ``display_condition`` defaults to ``( true )`` when not authored."""
     model_config = ConfigDict(extra='forbid')
     text: str
     display_condition: str = Field('( true )')
@@ -822,6 +884,7 @@ class DebriefingStage(BaseModel):
     recommendation: str = ''
 
 class Debriefing(BaseModel):
+    """Runtime mission debriefing; contains normalized stages with defaulted display conditions."""
     model_config = ConfigDict(extra='forbid')
     stages: List[DebriefingStage] = Field(default_factory=list)
 
@@ -831,6 +894,7 @@ class Debriefing(BaseModel):
         return _none_to_empty_list(v)
 
 class CommandBriefingStage(BaseModel):
+    """Runtime command briefing stage; ``voice_filename`` is an internal TTS-assigned path, excluded from serialization."""
     model_config = ConfigDict(extra='forbid')
     text: str
     voice_name: Optional[str] = None
@@ -838,6 +902,7 @@ class CommandBriefingStage(BaseModel):
     voice_filename: Optional[str] = Field(default=None, exclude=True)
 
 class CommandBriefing(BaseModel):
+    """Runtime command briefing; contains the ordered list of pre-mission command stages."""
     model_config = ConfigDict(extra='forbid')
     stages: List[CommandBriefingStage] = Field(default_factory=list)
 
@@ -847,6 +912,7 @@ class CommandBriefing(BaseModel):
         return _none_to_empty_list(v)
 
 class Reinforcement(BaseModel):
+    """Runtime reinforcement entry; loader injects the ``'reinforcement'`` flag onto the referenced ship/wing object."""
     model_config = ConfigDict(extra='forbid')
     name: str
     max_uses: int = Field(1, ge=1)
@@ -860,6 +926,7 @@ class Reinforcement(BaseModel):
         return _none_to_empty_list(v)
 
 class JumpNode(BaseModel):
+    """Runtime jump node with validated world-space position vector."""
     model_config = ConfigDict(extra='forbid')
     name: str
     position: List[float]
@@ -870,6 +937,11 @@ class JumpNode(BaseModel):
         return _normalize_vector(v)
 
 class Ship(BaseModel):
+    """Normalized runtime ship used for FS2 emission; covers both standalone ships and expanded wing members.
+
+    Docking fields (``docked_with``, ``docker_point``, ``dockee_point``) are internal and populated by
+    the loader from the authored ``dock`` block on the docker ship; they are never authored directly.
+    """
     model_config = ConfigDict(extra='forbid')
 
     name: str
@@ -943,6 +1015,11 @@ class Ship(BaseModel):
         return _validate_departure_method_token(v)
 
 class Wing(BaseModel):
+    """Runtime wing with loader-expanded ``Ship`` member objects and normalized arrival/departure settings.
+
+    ``template`` is retained for reference but all template properties have already been merged
+    into the individual ``ships`` entries by the loader.
+    """
     model_config = ConfigDict(extra='forbid')
     
     name: str
@@ -997,6 +1074,7 @@ class Wing(BaseModel):
         return _validate_departure_method_token(v)
 
 class AudioSettings(BaseModel):
+    """Runtime audio settings; ``tts_provider`` is normalized to lowercase by the validator."""
     model_config = ConfigDict(extra='forbid')
     mission_music: Optional[str] = None
     briefing_music: Optional[str] = None
@@ -1010,6 +1088,12 @@ class AudioSettings(BaseModel):
         return v
 
 class Mission(BaseModel):
+    """Top-level runtime mission object; fully normalized and hydrated, consumed by the validator, FS2 writer, and TTS provider.
+
+    ``ships`` is a flat list of ALL ships (standalone + wing members) for linear iteration.
+    Wing members are also referenced from their parent ``Wing.ships`` list.
+    ``created``/``modified`` are internal timestamps generated at conversion time, never authored in FSIF.
+    """
     model_config = ConfigDict(extra='forbid')
     mission_info: MissionInfo
     environment: Environment = Field(default_factory=Environment)
