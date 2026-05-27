@@ -773,5 +773,200 @@ class TestPlayerShipTerminalStateViaValidateMission(unittest.TestCase):
         self.assertTrue(result, "Expected validate_mission to pass when is-destroyed-delay targets a non-player ship")
 
 
+# =============================================================================
+# Tests for the argument-provider guard (DOMAIN_LITERAL_OPFS check)
+# =============================================================================
+
+class TestArgumentProviderGuard(unittest.TestCase):
+    """
+    Verify that dynamic <argument>-expansion operators (any-of, for-players,
+    random-of, for-ship-class, etc.) are rejected when placed in domain-literal
+    argument slots (ship names, message names, weapon names, waypoint paths, etc.)
+    outside of their legitimate when-argument / every-time-argument contexts.
+
+    Before this fix, the validator silently passed these as false negatives
+    because for-players, any-of, etc. carry AMBIGUOUS return types that matched
+    the coarse STRING requirement produced by map_opf_to_opr().
+
+    These tests also verify that:
+    - Normal literal domain values still pass unchanged.
+    - Argument-provider operators are accepted where they legitimately belong.
+    """
+
+    def setUp(self):
+        self.ctx = MissionContext()
+        self.ctx.ships.add("Alpha 1")
+        self.ctx.ships.add("Alpha 2")
+        self.ctx.wings.add("Alpha")
+        self.ctx.messages.add("Message 1")
+        self.ctx.waypoints["Path1"] = 3
+        self.parser = SexpParser()
+        self.validator = SexpValidator(self.ctx)
+
+    def _errors(self, sexp_str, expected_type=SexpReturnType.NULL):
+        roots = self.parser.parse(sexp_str)
+        errors = []
+        for root in roots:
+            errors.extend(self.validator.validate(root, expected_type=expected_type))
+        return errors
+
+    def _provider_errors(self, sexp_str, expected_type=SexpReturnType.NULL):
+        """Return only errors that mention 'argument-provider'."""
+        return [e for e in self._errors(sexp_str, expected_type) if "argument-provider" in e]
+
+    # ---- False-negative regression tests: these must now FAIL ----
+
+    def test_for_players_rejected_in_ship_wing_slot(self):
+        """
+        ( is-destroyed-delay 0 ( for-players ) ) used to pass silently.
+        After the fix it must produce an argument-provider error.
+        This is the canonical false-negative example documented in the README.
+        """
+        errs = self._provider_errors(
+            "(is-destroyed-delay 0 (for-players))",
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'for-players' in ship/wing slot")
+
+    def test_for_ship_class_rejected_in_ship_wing_slot(self):
+        """for-ship-class is an argument provider and must be rejected in OPF_SHIP_WING slots."""
+        errs = self._provider_errors(
+            '(is-destroyed-delay 0 (for-ship-class "GTF Ulysses"))',
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'for-ship-class' in ship/wing slot")
+
+    def test_any_of_rejected_in_ship_wing_slot(self):
+        """any-of used in place of a ship/wing argument must be rejected."""
+        errs = self._provider_errors(
+            '(is-destroyed-delay 0 (any-of "Alpha 1" "Alpha 2"))',
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'any-of' in ship/wing slot")
+
+    def test_random_of_rejected_in_ship_wing_slot(self):
+        """random-of used in place of a ship/wing argument must be rejected."""
+        errs = self._provider_errors(
+            '(is-destroyed-delay 0 (random-of "Alpha 1" "Alpha 2"))',
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'random-of' in ship/wing slot")
+
+    def test_for_ship_team_rejected_in_ship_wing_slot(self):
+        """for-ship-team used in place of a ship/wing argument must be rejected."""
+        errs = self._provider_errors(
+            '(is-destroyed-delay 0 (for-ship-team "Hostile"))',
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'for-ship-team' in ship/wing slot")
+
+    def test_for_players_rejected_in_weapon_name_slot(self):
+        """
+        allow-weapon expects OPF_SHIP_CLASS_NAME/OPF_WEAPON_NAME (domain literal).
+        A for-players provider must be rejected there.
+        """
+        errs = self._provider_errors("(allow-weapon (for-players))")
+        self.assertTrue(errs, "Expected argument-provider error for 'for-players' in weapon name slot")
+
+    def test_any_of_rejected_in_message_slot(self):
+        """any-of must be rejected in the OPF_MESSAGE (message name) slot of send-message."""
+        errs = self._provider_errors(
+            '(send-message "Alpha 1" "High" (any-of "Message 1"))'
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'any-of' in message slot")
+
+    def test_random_of_rejected_in_who_from_slot(self):
+        """random-of must be rejected in the OPF_WHO_FROM (sender) slot of send-message."""
+        errs = self._provider_errors(
+            '(send-message (random-of "Alpha 1") "High" "Message 1")'
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'random-of' in who-from slot")
+
+    def test_in_sequence_rejected_in_ship_wing_slot(self):
+        """in-sequence must be rejected in OPF_SHIP_WING slots."""
+        errs = self._provider_errors(
+            '(protect-ship (in-sequence "Alpha 1" "Alpha 2"))',
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'in-sequence' in ship slot")
+
+    def test_for_ship_type_rejected_in_ship_wing_slot(self):
+        """for-ship-type must be rejected in OPF_SHIP_WING slots."""
+        errs = self._provider_errors(
+            '(protect-ship (for-ship-type "Fighter"))',
+        )
+        self.assertTrue(errs, "Expected argument-provider error for 'for-ship-type' in ship slot")
+
+    # ---- Error message quality ----
+
+    def test_error_message_names_the_provider_operator(self):
+        """The error message must include the specific argument-provider operator name."""
+        errs = self._provider_errors(
+            "(is-destroyed-delay 0 (for-players))",
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(
+            any("for-players" in e for e in errs),
+            f"Error should name 'for-players', got: {errs}",
+        )
+
+    def test_error_message_names_the_opf_slot(self):
+        """The error message must include an OPF identifier for the bad slot."""
+        errs = self._provider_errors(
+            "(is-destroyed-delay 0 (for-players))",
+            SexpReturnType.BOOL,
+        )
+        self.assertTrue(
+            any("OPF_" in e for e in errs),
+            f"Error should include OPF identifier, got: {errs}",
+        )
+
+    # ---- Non-regression: valid patterns must still pass ----
+
+    def test_literal_ship_wing_still_accepted(self):
+        """Normal literal ship/wing names must continue to pass unchanged."""
+        errs = self._provider_errors(
+            '(is-destroyed-delay 0 "Alpha 1")',
+            SexpReturnType.BOOL,
+        )
+        self.assertFalse(errs, f"Literal ship name should not trigger guard, got: {errs}")
+
+    def test_literal_ship_wing_not_in_context_still_gives_ship_error(self):
+        """A bad literal ship name must still produce its existing error (not a guard error)."""
+        errs = self._errors('(is-destroyed-delay 0 "NonExistentShip")', SexpReturnType.BOOL)
+        # Should have a ship/wing name error, not an argument-provider error
+        provider_errs = [e for e in errs if "argument-provider" in e]
+        ship_errs = [e for e in errs if "Invalid Ship" in e or "Invalid Ship/Wing" in e]
+        self.assertFalse(provider_errs, f"Literal bad ship name should NOT trigger argument-provider guard: {errs}")
+        self.assertTrue(ship_errs, f"Bad literal ship name should still produce ship validation error: {errs}")
+
+    def test_literal_message_still_accepted_in_send_message(self):
+        """Literal message names in send-message must continue to pass."""
+        errs = self._provider_errors(
+            '(send-message "Alpha 1" "High" "Message 1")',
+        )
+        self.assertFalse(errs, f"Literal message name should not trigger guard, got: {errs}")
+
+    def test_literal_weapon_still_accepted_in_allow_weapon(self):
+        """Literal weapon names in allow-weapon must continue to pass."""
+        errs = self._provider_errors('(allow-weapon "Avenger")')
+        self.assertFalse(errs, f"Literal weapon name should not trigger guard, got: {errs}")
+
+    def test_boolean_expression_in_bool_slot_not_affected(self):
+        """Boolean nested expressions in boolean slots must not be affected by the guard."""
+        errs = self._provider_errors(
+            '(when (is-destroyed-delay 0 "Alpha 1") (do-nothing))',
+            SexpReturnType.NULL,
+        )
+        self.assertFalse(errs, f"Boolean nested expression should not trigger guard, got: {errs}")
+
+    def test_number_expression_in_number_slot_not_affected(self):
+        """Arithmetic nested expressions in numeric slots must not be affected by the guard."""
+        errs = self._provider_errors(
+            "(< (distance \"Alpha 1\" \"Alpha 2\") 500)",
+            SexpReturnType.BOOL,
+        )
+        self.assertFalse(errs, f"Numeric nested expression should not trigger guard, got: {errs}")
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -154,6 +154,21 @@ All other OPF classes — including `OPF_SHIP`, `OPF_WING`, `OPF_MESSAGE`, `OPF_
 
 **Where coverage is precise:** When an argument is a **literal atom**, the validator's `_validate_atom_content()` dispatch table runs a dedicated, domain-specific validator (e.g., ship name lookup, weapon name lookup, subsystem name lookup). That path is strict and checks against the actual reference data. The coarser STRING fallback only applies to nested operator expressions in those slots.
 
+### Argument-provider guard (focused fix for the most dangerous false negatives)
+
+Although the STRING fallback cannot be fully eliminated without porting all of FSO's OPF/node-subtype validation logic, the most dangerous class of false negatives has been addressed by a targeted guard.
+
+**The problem it solves:** FSO has a family of *argument-provider* operators (`any-of`, `every-of`, `random-of`, `random-multiple-of`, `number-of`, `first-of`, `in-sequence`, `for-counter`, `for-ship-class`, `for-ship-type`, `for-ship-team`, `for-ship-species`, `for-players`, `for-subsystems`, `for-container-data`, `for-map-container-keys`) whose sole purpose is to supply `<argument>` expansion values for the `when-argument` / `every-time-argument` mechanism. They carry `AMBIGUOUS` return types, which previously caused them to silently pass the coarse STRING check when nested inside ordinary ship/message/weapon/waypoint/etc. slots — even though FSO/FRED would reject such constructs.
+
+For example, `( is-destroyed-delay 0 ( for-players ) )` previously passed validation silently. It now correctly produces an error.
+
+**How the guard works:** The method `_validate_nested_expression_allowed_for_opf()` is called for every nested list argument. If the child's operator name is in `ARGUMENT_PROVIDER_OPERATORS` and the parent argument slot is in `DOMAIN_LITERAL_OPFS` (ship, wing, message, weapon, waypoint, event name, etc.), an error is emitted — unless the parent operator is one of the known legitimate argument-provider contexts (`when-argument`, `every-time-argument`).
+
+**What remains out of scope:**
+- Full FSO container/variable/dynamic argument parity.
+- Arbitrary string-returning nested operators in domain-literal slots (only the named argument-provider set is blocked).
+- FSO runtime behavior (lua scripts, scripted SEXPs).
+
 ### Summary
 
 | Scenario | Validation coverage |
@@ -161,7 +176,9 @@ All other OPF classes — including `OPF_SHIP`, `OPF_WING`, `OPF_MESSAGE`, `OPF_
 | Structural type errors (wrong number type in bool slot, etc.) | ✔ Full coverage via explicit OPF→OPR mappings |
 | Literal atom content (ship names, weapon names, subsystems, events, etc.) | ✔ Full coverage via `_validate_atom_content()` |
 | Nested operator in numeric/boolean/null slot | ✔ Full coverage (precise mappings) |
-| Nested operator in string-like slot (ship, weapon, message, etc.) | ⚠ Coarse — STRING-level return type only |
+| Known argument-provider operators in domain-literal slots (ship, message, weapon, etc.) | ✔ Caught by `_validate_nested_expression_allowed_for_opf()` guard |
+| Other nested operators in string-like slots (non-argument-provider, non-numeric) | ⚠ Coarse — STRING-level return type only |
+| FSO container/variable/dynamic argument typing | ⚠ Partial — container and variable OPFs not fully modeled |
 | FSO runtime behavior (e.g., lua scripts, scripted SEXPs) | ✗ Out of scope |
 
 ## **Extending the System**

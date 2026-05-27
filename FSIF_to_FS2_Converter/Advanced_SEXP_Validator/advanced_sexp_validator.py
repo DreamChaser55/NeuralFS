@@ -115,6 +115,102 @@ ATTACK_OPERATORS = {
     "ai-disarm-ship-tactical"
 }
 
+# =============================================================================
+# ARGUMENT-PROVIDER GUARD DATA
+# =============================================================================
+
+# OPF classes that expect a concrete, literal domain token (ship name, weapon name,
+# message name, waypoint path, etc.).  Placing a dynamic argument-provider operator
+# (such as for-players, any-of, random-of, for-ship-class …) in one of these slots
+# is a type error in FSO/FRED because those operators supply <argument> expansion
+# values, not concrete domain objects.
+#
+# This set should stay in sync with the OPF types that have explicit validators in
+# SexpValidator._atom_validators, plus closely related ship/wing/point OPFs.
+DOMAIN_LITERAL_OPFS = frozenset({
+    OPF_SHIP,
+    OPF_WING,
+    OPF_SHIP_WING,
+    OPF_SHIP_WING_WHOLETEAM,
+    OPF_SHIP_WING_SHIPONTEAM_POINT,
+    OPF_SHIP_WING_POINT,
+    OPF_SHIP_WING_POINT_OR_NONE,
+    OPF_SHIP_OR_NONE,
+    OPF_SHIP_WITH_BAY,
+    OPF_SHIP_NOT_PLAYER,
+    OPF_POINT,
+    OPF_SHIP_POINT,
+    OPF_WAYPOINT_PATH,
+    OPF_JUMP_NODE_NAME,
+    OPF_MESSAGE,
+    OPF_WHO_FROM,
+    OPF_PRIORITY,
+    OPF_AI_CLASS,
+    OPF_IFF,
+    OPF_WEAPON_NAME,
+    OPF_SHIP_CLASS_NAME,
+    OPF_SHIP_TYPE,
+    OPF_SUBSYSTEM,
+    OPF_SUBSYS_OR_GENERIC,
+    OPF_DOCKER_POINT,
+    OPF_DOCKEE_POINT,
+    OPF_EVENT_NAME,
+    OPF_GOAL_NAME,
+    OPF_SHIP_FLAG,
+    OPF_WING_FLAG,
+    OPF_BACKGROUND_BITMAP,
+    OPF_SUN_BITMAP,
+    OPF_NEBULA_PATTERN,
+    OPF_NEBULA_POOF,
+    OPF_NEBULA_STORM_TYPE,
+    OPF_SOUNDTRACK_NAME,
+    OPF_AI_ORDER,
+})
+
+# Operators whose purpose is to supply dynamic argument values for the <argument>
+# special data item used with when-argument / every-time-argument.  These operators
+# are NOT valid as nested expressions in domain-literal argument slots and must be
+# rejected there.
+ARGUMENT_PROVIDER_OPERATORS = frozenset({
+    "any-of",
+    "every-of",
+    "random-of",
+    "random-multiple-of",
+    "number-of",
+    "first-of",
+    "in-sequence",
+    "for-counter",
+    "for-ship-class",
+    "for-ship-type",
+    "for-ship-team",
+    "for-ship-species",
+    "for-players",
+    "for-subsystems",
+    "for-container-data",
+    "for-map-container-keys",
+})
+
+# Parent operators that legitimately receive argument-provider children.  The guard
+# must not fire when an argument-provider is placed in one of these parents' slots.
+ARGUMENT_PROVIDER_PARENT_OPERATORS = frozenset({
+    "when-argument",
+    "every-time-argument",
+})
+
+# Reverse map from OPF integer constant to a human-readable name string, built
+# lazily at module load time from the imported OPF_* constants.
+OPF_NAMES: Dict[int, str] = {}
+def _build_opf_names():
+    import sys as _sys
+    _mod = _sys.modules.get(__name__) or _sys.modules.get('advanced_sexp_validator')
+    source = vars(_mod) if _mod else {}
+    for _name, _val in source.items():
+        if _name.startswith("OPF_") and isinstance(_val, int) and _val not in OPF_NAMES:
+            OPF_NAMES[_val] = _name
+
+# Build the OPF reverse map now that all OPF_* constants are in scope.
+_build_opf_names()
+
 # Construct a set of all known subsystem names (from all ships) for validation
 # This allows checking if a subsystem name is at least valid for *some* ship,
 # even if we can't determine the specific ship context.
@@ -669,7 +765,18 @@ class SexpValidator:
                     
                     # Context for child
                     child_context = f"Argument {i+1} of '{node.text}'"
-                    
+
+                    # Argument-provider guard: reject dynamic <argument>-expansion
+                    # operators (any-of, for-players, random-of, etc.) when placed
+                    # in a domain-literal slot (ship, message, weapon, waypoint …).
+                    # These operators supply <argument> expansion values and are not
+                    # valid as concrete domain tokens in ordinary expression contexts.
+                    errors.extend(
+                        self._validate_nested_expression_allowed_for_opf(
+                            child, arg_opf_type, node.text, child_context
+                        )
+                    )
+
                     # Recurse: Check if the child returns the correct OPR type
                     errors.extend(self._validate_recursive(child, child_expected_opr, recursive, child_context))
                     
@@ -739,6 +846,63 @@ class SexpValidator:
                     ))
                     
         return errors
+
+    def _opf_name(self, opf_type: int) -> str:
+        """Return a human-readable name for an OPF_* constant."""
+        return OPF_NAMES.get(opf_type, f"OPF({opf_type})")
+
+    def _validate_nested_expression_allowed_for_opf(
+        self,
+        child: SexpNode,
+        expected_opf: int,
+        parent_op: str,
+        context: str,
+    ) -> List[str]:
+        """
+        Argument-provider guard for domain-literal argument slots.
+
+        Rejects dynamic <argument>-expansion operators (any-of, for-players,
+        random-of, for-ship-class, etc.) when they are placed in a slot that
+        expects a concrete domain token (ship name, weapon name, message name,
+        waypoint path, etc.).
+
+        These operators are argument providers for the when-argument / every-time-
+        argument mechanism.  They supply <argument> expansion values at runtime,
+        not concrete literal tokens, so using them in ordinary domain-specific
+        slots is a type error in FSO/FRED.
+
+        The guard fires only for:
+        1. A nested list node (not a literal atom).
+        2. Whose operator name is in ARGUMENT_PROVIDER_OPERATORS.
+        3. Whose parent expects a domain-literal OPF (in DOMAIN_LITERAL_OPFS).
+        4. Whose parent operator is NOT one of the known argument-provider
+           parent contexts (ARGUMENT_PROVIDER_PARENT_OPERATORS).
+
+        Literal atoms are handled by _validate_atom_content(), not here.
+        Numeric/boolean/null/action slots are handled by the main type-match
+        logic and are not checked here.
+        """
+        # Only applies to nested operator expressions, not atoms
+        if not child.is_list:
+            return []
+        # Only applies to known argument-provider operators
+        if child.text not in ARGUMENT_PROVIDER_OPERATORS:
+            return []
+        # Only applies to domain-literal slots
+        if expected_opf not in DOMAIN_LITERAL_OPFS:
+            return []
+        # Allow argument-provider operators when the parent is an explicit provider context
+        if parent_op in ARGUMENT_PROVIDER_PARENT_OPERATORS:
+            return []
+
+        opf_label = self._opf_name(expected_opf)
+        return [self._format_error(
+            f"Invalid argument-provider operator '{child.text}' in domain-literal "
+            f"argument slot ({opf_label}). This slot expects a concrete token "
+            f"(e.g. a ship name, message name, or weapon name), not a dynamic "
+            f"<argument> provider. Use a literal quoted string instead.",
+            context,
+        )]
 
     def _query_operator_argument_type(self, op: OperatorDef, arg_index: int):
         return get_argument_type(op.id, arg_index)
