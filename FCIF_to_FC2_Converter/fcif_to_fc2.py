@@ -40,6 +40,26 @@ def _check_no_double_quotes(field_name: str, v: str) -> str:
 
 
 class CampaignInfo(BaseModel):
+    """Pydantic model for the ``campaign:`` section of an FCIF file.
+
+    Represents the top-level campaign metadata that is emitted into the ``.fc2``
+    header.
+
+    Fields:
+        name:        Display name of the campaign.  Written verbatim after
+                     ``$Name:`` in the generated ``.fc2`` file.
+        description: Human-readable campaign description.  Wrapped in an
+                     ``XSTR(...)`` block for FSO localization support.
+
+    Constraints (enforced by field validators):
+        - Both fields must be pure ASCII (non-ASCII characters raise
+          ``ValidationError``).
+        - ``description`` must not contain double-quote characters (``"``),
+          because it is emitted inside a quoted FSO string; a ``"`` would break
+          the ``.fc2`` SEXP parser.
+
+    Unrecognized extra fields are rejected (``extra='forbid'``).
+    """
     model_config = ConfigDict(extra='forbid')
     name: AsciiStr
     description: AsciiStr
@@ -50,6 +70,31 @@ class CampaignInfo(BaseModel):
         return _check_no_double_quotes('campaign.description', v)
 
 class StartingLoadout(BaseModel):
+    """Pydantic model for the ``starting_loadout:`` section of an FCIF file.
+
+    Specifies the ship classes and weapons that are available to the player at
+    campaign start.  In FSO, all ships and weapons are locked by default; only
+    items listed here (or unlocked via ``allow-ship``/``allow-weapon`` SEXPs in
+    a prior mission) will appear on the loadout screen.
+
+    Fields:
+        ships:   List of FSO ship class tokens available at campaign start
+                 (e.g. ``"GTF Ulysses"``).  Defaults to an empty list.
+        weapons: List of FSO weapon tokens available at campaign start
+                 (e.g. ``"ML-16 Laser"``).  Defaults to an empty list.
+
+    Constraints (enforced by field validators):
+        - All entries must be pure ASCII.
+        - Every ship token must be a recognized FSO ship class
+          (checked against ``ALLOWED_SHIP_CLASSES``).
+        - Every weapon token must be a recognized FSO weapon token
+          (checked against ``ALLOWED_WEAPONS``).
+
+    These lists are written verbatim as ``+Starting Ships:`` and
+    ``+Starting Weapons:`` in the generated ``.fc2`` file.
+
+    Unrecognized extra fields are rejected (``extra='forbid'``).
+    """
     model_config = ConfigDict(extra='forbid')
     ships: List[AsciiStr] = Field(default_factory=list)
     weapons: List[AsciiStr] = Field(default_factory=list)
@@ -71,6 +116,42 @@ class StartingLoadout(BaseModel):
         return v
 
 class CampaignMission(BaseModel):
+    """Pydantic model for a single entry in the ``missions:`` list of an FCIF file.
+
+    Each ``CampaignMission`` corresponds to one ``$Mission:`` block written into
+    the ``.fc2`` file.  The order of missions in the FCIF list determines
+    campaign progression; the first mission is the starting mission and the last
+    one targets ``end-of-campaign``.
+
+    Fields:
+        filename:      The bare ``.fs2`` filename of the mission
+                       (e.g. ``"m01.fs2"``).  Must not include directory
+                       components.  Written after ``$Mission:`` in the ``.fc2``
+                       file.
+        success_goal:  Name of a mission goal that must be *true* (succeeded)
+                       to advance to the next mission.  Emits
+                       ``is-previous-goal-true`` in the generated SEXP formula.
+        success_event: Name of a mission event that must be *true* (fired) to
+                       advance.  Emits ``is-previous-event-true``.
+        failure_goal:  Name of a mission goal that must be *false* (failed) to
+                       advance.  Emits ``is-previous-goal-false``.
+        failure_event: Name of a mission event that must be *false* (did not
+                       fire) to advance.  Emits ``is-previous-event-false``.
+
+    At most one advance condition field may be set per mission; setting more
+    than one is a ``ValidationError``.  If no condition field is set the
+    campaign advances unconditionally (the converter will log a warning).
+
+    Constraints (enforced by field validators):
+        - ``filename`` must end with ``.fs2``, must not contain path separators
+          (``/`` or ``\\``), must be pure ASCII, and must not contain double
+          quotes (``"``).
+        - All four advance condition fields must not contain double quotes (``"``),
+          because they are emitted inside quoted strings in ``.fc2`` SEXP logic.
+        - All string fields must be pure ASCII.
+
+    Unrecognized extra fields are rejected (``extra='forbid'``).
+    """
     model_config = ConfigDict(extra='forbid')
     filename: AsciiStr
     success_goal: Optional[AsciiStr] = None
@@ -124,6 +205,25 @@ class CampaignMission(BaseModel):
 SUPPORTED_FCIF_VERSIONS = {"1.0"}
 
 class FCIF(BaseModel):
+    """Pydantic model for the complete FCIF campaign definition file.
+
+    This is the top-level model that captures the full contents of a ``.fcif``
+    YAML file.  It is produced by ``load_fcif()`` and consumed by
+    ``process_campaign()`` to generate a ``.fc2`` campaign file for FSO.
+
+    Fields:
+        fcif_version:    FCIF format version string.  Must be ``"1.0"``; any
+                         other value causes a ``ValidationError``.  Non-string
+                         values (e.g. bare YAML numbers such as ``1.0``) are
+                         coerced to string before the version check.
+        campaign:        Top-level campaign metadata (name, description).
+        starting_loadout: Ships and weapons available to the player from the
+                         start of the campaign.
+        missions:        Ordered list of missions.  The sequence determines
+                         campaign progression.
+
+    Unrecognized extra fields are rejected (``extra='forbid'``).
+    """
     model_config = ConfigDict(extra='forbid')
     fcif_version: str = "1.0"
     
@@ -149,7 +249,26 @@ class FCIF(BaseModel):
 # --- Logic ---
 
 def load_fcif(path: Path) -> Optional[FCIF]:
-    """Loads and validates the FCIF YAML file."""
+    """Load and validate an FCIF YAML file, returning the hydrated model.
+
+    Reads the file at *path*, parses it as YAML, and constructs an ``FCIF``
+    Pydantic model from the resulting dictionary.  All schema constraints
+    (field types, ASCII requirements, version check, mutual exclusivity of
+    advance conditions, etc.) are enforced during construction.
+
+    Args:
+        path: Filesystem path to the ``.fcif`` file to load.
+
+    Returns:
+        A validated ``FCIF`` instance on success, or ``None`` if any of the
+        following errors occur:
+
+        - ``yaml.YAMLError``: the file is not valid YAML.
+        - ``pydantic.ValidationError``: the YAML data fails schema validation.
+        - Any other exception (e.g. ``OSError`` for a missing/unreadable file).
+
+    All errors are logged at ERROR level before returning ``None``.
+    """
     try:
         with open(path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
@@ -244,7 +363,33 @@ def generate_formula(mission: CampaignMission, next_mission_filename: Optional[s
     return f"( cond\n   {formula_body}\n)"
 
 def write_fc2(fcif: FCIF, output_path: Path):
-    """Generates the .fc2 file."""
+    """Write the ``.fc2`` campaign file for the given validated FCIF data.
+
+    Generates the full FSO ``.fc2`` text format and writes it to *output_path*.
+    The generated file always uses Unix line endings (``\\n``) and UTF-8
+    encoding.
+
+    Output structure:
+        - ``$Name:`` / ``$Type: single`` header.
+        - ``+Description: XSTR(...)`` block (FSO localization wrapper).
+        - ``+Starting Ships: (...)`` and ``+Starting Weapons: (...)`` lines.
+        - One ``$Mission:`` block per entry in ``fcif.missions``, each
+          containing ``+Flags:``, ``+Main Hall:``, ``+Formula:``, ``+Level:``,
+          and ``+Position:`` fields.
+        - ``#End`` terminator.
+
+    The ``+Formula:`` for each mission is generated by ``generate_formula()``,
+    which encodes the campaign progression logic as a ``( cond ... )`` SEXP.
+    The level index (``+Level:``) is zero-based and increments with each
+    mission; ``+Position:`` is always ``1`` for linear campaigns.
+
+    Args:
+        fcif:        Validated ``FCIF`` model to convert.
+        output_path: Filesystem path where the ``.fc2`` file will be written.
+
+    Raises:
+        OSError: if the output file cannot be opened or written.
+    """
     
     with open(output_path, 'w', encoding='utf-8', newline='\n') as f:
         # Header
@@ -289,13 +434,44 @@ def write_fc2(fcif: FCIF, output_path: Path):
 # --- Campaign Loadout Check ---
 
 def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
-    """
-    Check that all player ship classes and weapons used across the campaign
-    are present in the FCIF starting_loadout or explicitly granted by allow-ship/allow-weapon SEXPs
-    in a previous mission.
+    """Verify that all player ships and weapons are unlocked before they are used.
 
-    Returns True if the check passes or if non-fatal warnings are issued,
-    False if an error occurs.
+    For each mission in the campaign, the function:
+
+    1. Infers the path to the corresponding ``.fsif`` file as
+       ``<fcif_dir>/fsif/<mission_stem>.fsif`` (see ``_infer_fsif_path()``).
+    2. Parses the FSIF file as raw YAML (no Pydantic validation).
+    3. Collects every ship class and weapon reachable by the player in that
+       mission, drawn from:
+       - Friendly *Alpha*, *Beta*, and *Gamma* wings (the only wings shown on
+         the FSO loadout screen) and their templates.
+       - ``player_setup.additional_ship_choices[*].class``.
+       - ``player_setup.additional_weapons[*]``.
+       - The standalone ship named by ``player_setup.start_ship``, if it
+         exists in ``entities.ships``.
+    4. Checks that each discovered ship class and weapon is present in the
+       cumulative *allowed* set (initialized from ``fcif.starting_loadout``
+       and grown by any ``allow-ship``/``allow-weapon`` SEXPs found in
+       previously processed missions).
+    5. After validating the mission, scans every string value in the FSIF for
+       ``allow-ship`` and ``allow-weapon`` SEXP patterns and adds any matched
+       tokens to the allowed set for subsequent missions.
+
+    File-not-found and parse failures for a mission's FSIF are **non-fatal**:
+    a WARNING is logged and that mission is skipped.  An actual loadout
+    violation (a ship or weapon used but not yet unlocked) is **fatal**: an
+    ERROR is logged and the function returns ``False`` immediately.
+
+    Args:
+        fcif:       Validated ``FCIF`` model containing ``starting_loadout``
+                    and the ordered ``missions`` list.
+        input_path: Path to the ``.fcif`` file being converted; used to
+                    resolve the sibling ``fsif/`` directory.
+
+    Returns:
+        ``True`` if all reachable player ships and weapons are unlocked by the
+        time each mission is reached, or if every mission's FSIF is skipped
+        (missing/unreadable).  ``False`` if any loadout violation is found.
     """
     allowed_ships = set(fcif.starting_loadout.ships)
     allowed_weapons = set(fcif.starting_loadout.weapons)
@@ -443,17 +619,50 @@ def check_campaign_player_loadouts(fcif: 'FCIF', input_path: Path) -> bool:
 
 
 def _infer_fsif_path(input_path: Path, mission: 'CampaignMission') -> Path:
-    """Infer the .fsif file path for a campaign mission from the .fcif path."""
+    """Infer the expected ``.fsif`` file path for a campaign mission.
+
+    Constructs the path ``<fcif_dir>/fsif/<mission_stem>.fsif``, where
+    ``<fcif_dir>`` is the parent directory of *input_path* and
+    ``<mission_stem>`` is the filename of ``mission.filename`` without its
+    ``.fs2`` extension.
+
+    This convention requires all FSIF source files to be co-located in a
+    ``fsif/`` subdirectory next to the ``.fcif`` campaign file.
+
+    Args:
+        input_path: Path to the ``.fcif`` file being converted.
+        mission:    The ``CampaignMission`` entry whose FSIF path is needed.
+
+    Returns:
+        The expected ``Path`` to the ``.fsif`` file (which may or may not
+        exist on disk).
+    """
     mission_stem = Path(mission.filename).stem
     return input_path.parent / "fsif" / f"{mission_stem}.fsif"
 
 
 def _get_advance_condition_reference(mission: 'CampaignMission'):
-    """
-    Return a tuple (field_name, referenced_name, collection_key) for the
-    advance condition set on this mission, or (None, None, None) if none.
+    """Return the active advance condition for a mission as a structured tuple.
 
-    collection_key is either "goals" or "events".
+    Inspects the four mutually exclusive advance condition fields on *mission*
+    and returns metadata about the one that is set.  If no condition is set,
+    all three tuple elements are ``None``.
+
+    The returned ``collection_key`` indicates which FSIF ``mission_flow``
+    sub-list to search when verifying the reference (``"goals"`` for goal-based
+    conditions, ``"events"`` for event-based conditions).
+
+    Args:
+        mission: The ``CampaignMission`` entry to inspect.
+
+    Returns:
+        A 3-tuple ``(field_name, referenced_name, collection_key)`` where:
+
+        - *field_name* is the FCIF field that is set (e.g. ``"success_goal"``).
+        - *referenced_name* is the goal or event name string that was authored.
+        - *collection_key* is ``"goals"`` or ``"events"``.
+
+        Returns ``(None, None, None)`` when no advance condition is set.
     """
     if mission.success_goal is not None:
         return ("success_goal", mission.success_goal, "goals")
@@ -467,18 +676,40 @@ def _get_advance_condition_reference(mission: 'CampaignMission'):
 
 
 def check_campaign_advance_condition_references(fcif: 'FCIF', input_path: Path) -> bool:
-    """
-    Verify that every advance condition field (success_goal, failure_goal,
-    success_event, failure_event) references a goal or event that is actually
-    defined in the corresponding mission's .fsif file.
+    """Verify that every advance condition references an existing goal or event.
 
-    This is a fatal check: if a mission has an advance condition set and its
-    .fsif file cannot be found, parsed, or does not contain the referenced name,
-    the check returns False.
+    For each mission that has an advance condition field set
+    (``success_goal``, ``failure_goal``, ``success_event``, or
+    ``failure_event``), this function:
 
-    Missions without any advance condition are silently skipped.
+    1. Infers the path to the corresponding ``.fsif`` file via
+       ``_infer_fsif_path()``.
+    2. Reads and parses the FSIF file as raw YAML.
+    3. Extracts every goal/event ``name`` from
+       ``mission_flow.goals`` or ``mission_flow.events`` (depending on the
+       condition type).
+    4. Checks that the referenced name is present in the extracted set.
 
-    Returns True if all references are valid, False otherwise.
+    Missions without any advance condition field are silently skipped.
+
+    All failures in this function are **fatal** — the function accumulates
+    errors across all missions and returns ``False`` if any reference check
+    fails.  Unlike the loadout check, a missing or unparseable FSIF for a
+    mission *with* an advance condition is also a fatal error (not a warning),
+    because the reference cannot be verified.
+
+    When all references are valid, a confirmation INFO message is logged.
+
+    Args:
+        fcif:       Validated ``FCIF`` model containing the ordered missions.
+        input_path: Path to the ``.fcif`` file being converted; used to
+                    resolve the sibling ``fsif/`` directory via
+                    ``_infer_fsif_path()``.
+
+    Returns:
+        ``True`` if every advance condition reference resolves to a defined
+        goal or event in the corresponding FSIF file (or if no missions have
+        advance conditions).  ``False`` if any reference cannot be resolved.
     """
     ok = True
 
@@ -562,8 +793,20 @@ def check_campaign_advance_condition_references(fcif: 'FCIF', input_path: Path) 
 
 
 def check_campaign_advance_conditions(fcif: 'FCIF'):
-    """
-    Check if any missions lack advance conditions and log a warning if so.
+    """Warn about missions that will advance unconditionally.
+
+    Iterates over all missions in the campaign and logs a WARNING for each
+    mission that has none of the four advance condition fields set
+    (``success_goal``, ``success_event``, ``failure_goal``,
+    ``failure_event``).  Such missions always advance to the next mission
+    regardless of outcome, which is often unintentional.
+
+    This check is **non-fatal** — it only logs warnings and does not affect
+    the conversion result.  It is called by ``process_campaign()`` before the
+    heavier reference and loadout checks.
+
+    Args:
+        fcif: Validated ``FCIF`` model whose missions are inspected.
     """
     for mission in fcif.missions:
         if not any([mission.success_goal, mission.success_event, mission.failure_goal, mission.failure_event]):
@@ -574,12 +817,43 @@ def process_campaign(
     input_file: str,
     output_file: Optional[str] = None,
 ) -> bool:
-    """
-    Core conversion logic for the campaign.
-    
-    :param input_file: Path to the .fcif file.
-    :param output_file: Optional path for the output .fc2 file.
-    :return: True if successful, False otherwise.
+    """Convert an FCIF campaign file to the FSO ``.fc2`` format.
+
+    This is the main entry point for the conversion pipeline.  It orchestrates
+    the following steps in order:
+
+    1. **Input validation** — checks that *input_file* exists and has a
+       ``.fcif`` extension.
+    2. **FCIF loading** — calls ``load_fcif()`` to parse and schema-validate
+       the YAML, including all Pydantic field constraints.
+    3. **Advance condition warnings** — calls
+       ``check_campaign_advance_conditions()`` to warn about missions that
+       lack advance conditions and will advance unconditionally.
+    4. **Advance condition reference check** (fatal) — calls
+       ``check_campaign_advance_condition_references()`` to verify every
+       referenced goal/event name exists in the corresponding FSIF file.
+    5. **Player loadout check** (fatal) — calls
+       ``check_campaign_player_loadouts()`` to verify that all player ships
+       and weapons are unlocked before they are first used.
+    6. **FC2 generation** — calls ``write_fc2()`` to emit the ``.fc2`` output
+       file.
+
+    Steps 3–5 are only executed when the campaign has at least one mission.
+    The output file defaults to *input_file* with the extension replaced by
+    ``.fc2`` when *output_file* is not supplied.
+
+    Args:
+        input_file:  Path to the ``.fcif`` source file.  May contain
+                     surrounding quotes (handled by ``sanitize_path()``).
+        output_file: Optional path for the generated ``.fc2`` file.  When
+                     ``None``, the output is written next to the input file
+                     with the ``.fc2`` extension.
+
+    Returns:
+        ``True`` on success (the ``.fc2`` file was written).
+        ``False`` on any fatal error (file not found, validation failure,
+        missing FSIF references, loadout violations, or write errors); the
+        specific cause is logged at ERROR level before returning.
     """
     input_path = Path(sanitize_path(input_file))
     
