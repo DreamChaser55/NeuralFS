@@ -13,18 +13,51 @@ logger = logging.getLogger(__name__)
 
 
 class FS2Writer:
+    """Serialize a hydrated Mission object into a FreeSpace Open .fs2 mission file.
+
+    The writer is used in a single-shot manner: construct with a ``Mission``
+    and an output path, then call :meth:`write_mission` once.  Internal state
+    (open file handle, running briefing icon counter) is managed automatically.
+
+    All output is written with explicit UTF-8 encoding and LF-only line endings
+    so that files are byte-identical on Windows and Linux.
+    """
+
     def __init__(self, mission: Mission, output_path: str):
+        """Initialize the writer with a hydrated mission and target file path.
+
+        Args:
+            mission: The fully loaded and validated ``Mission`` object to serialize.
+            output_path: Filesystem path for the output ``.fs2`` file.
+        """
         self.mission = mission
         self.output_path = output_path
         self.file = None
         self._brief_icon_id = 1
 
     def _write(self, text: str):
+        """Append *text* followed by a newline to the currently open output file.
+
+        Raises:
+            RuntimeError: If called before the output file has been opened by
+                :meth:`write_mission`.
+        """
         if self.file is None:
             raise RuntimeError("FS2 output file is not open for writing.")
         self.file.write(text + '\n')
 
     def _sanitize_xstr_text(self, text: str) -> str:
+        """Prepare a player-facing string for safe embedding inside an XSTR macro.
+
+        Normalizes line endings to a single space, escapes backslashes, and
+        escapes double-quote characters so they do not break the FSO parser.
+
+        Args:
+            text: Raw text to sanitize. ``None`` is treated as an empty string.
+
+        Returns:
+            A stripped string safe to place inside ``XSTR("...", -1)``.
+        """
         s = str(text) if text is not None else ""
         s = s.replace('\r\n', '\n').replace('\r', '\n').replace('\n', ' ')
         # Escape backslashes first, then quotes
@@ -33,9 +66,31 @@ class FS2Writer:
         return s.strip()
 
     def _write_xstr(self, text: str):
+        """Return an XSTR localization macro wrapping *text*.
+
+        The text is sanitized via :meth:`_sanitize_xstr_text` before embedding.
+        The XSTR ID is always ``-1`` (unlocalized placeholder).
+
+        Args:
+            text: Player-facing string to wrap.
+
+        Returns:
+            A string of the form ``XSTR("...", -1)``.
+        """
         return f'XSTR("{self._sanitize_xstr_text(text)}", -1)'
 
     def _format_vector(self, vec):
+        """Format a 3-element position or direction as an FS2 coordinate triple.
+
+        Each component is emitted with six decimal places.  A ``None`` input
+        is treated as the origin ``(0, 0, 0)``.
+
+        Args:
+            vec: Sequence of three numeric values ``[x, y, z]``, or ``None``.
+
+        Returns:
+            A string of the form ``"x.xxxxxx, y.yyyyyy, z.zzzzzz"``.
+        """
         if vec is None:
             x, y, z = 0.0, 0.0, 0.0
         else:
@@ -43,6 +98,19 @@ class FS2Writer:
         return f'{x:.6f}, {y:.6f}, {z:.6f}'
 
     def _format_matrix(self, mat):
+        """Format a 3×3 rotation matrix as a tab-indented FS2 orientation block.
+
+        Accepts either a flat 9-element sequence or a nested ``[[row], ...]``
+        structure.  Falls back to the identity matrix when *mat* is ``None`` or
+        has fewer than nine elements.
+
+        Args:
+            mat: Flat list of 9 floats, nested 3×3 list/tuple, or ``None``.
+
+        Returns:
+            A three-line, tab-indented string ready to follow a ``$Orientation:``
+            or ``$camera_orient:`` FS2 key.
+        """
         def _flatten(m):
             if m is None:
                 return None
@@ -72,6 +140,19 @@ class FS2Writer:
         )
 
     def _write_arrival_block(self, entity, is_wing=False):
+        """Emit the FS2 arrival block for a ship or wing entity.
+
+        Writes ``$Arrival Location``, optional distance and anchor lines, an
+        optional arrival delay, and the ``$Arrival Cue`` SEXP.  The arrival
+        delay key differs in capitalization between ships (``+Arrival Delay``)
+        and wings (``+Arrival delay``) to match the FRED/FSO convention exactly.
+
+        Args:
+            entity: A ``Ship`` or ``Wing`` object with arrival-related fields.
+            is_wing: ``True`` when emitting a wing entry so that the lowercase
+                delay key ``+Arrival delay`` is used instead of the ship-style
+                ``+Arrival Delay``.
+        """
         self._write(f'$Arrival Location: {entity.arrival_method}')
         
         arr_loc_norm = entity.arrival_method.strip().lower()
@@ -94,6 +175,14 @@ class FS2Writer:
         self._write(f'$Arrival Cue: {entity.arrival_cue}')
 
     def _write_departure_block(self, entity):
+        """Emit the FS2 departure block for a ship or wing entity.
+
+        Writes ``$Departure Location``, an optional anchor for Docking Bay
+        departures, an optional departure delay, and the ``$Departure Cue`` SEXP.
+
+        Args:
+            entity: A ``Ship`` or ``Wing`` object with departure-related fields.
+        """
         self._write(f'$Departure Location: {entity.departure_method}')
         
         if entity.departure_method.strip().lower() == "docking bay":
@@ -250,6 +339,12 @@ class FS2Writer:
         self._write('\n$AI Profile: FS1 RETAIL')
 
     def write_fiction_viewer(self):
+        """Write the '#Fiction Viewer' section.
+
+        Emits the ``$File`` reference pointing to the narrative text file shown
+        to the player before the mission begins.  The section is omitted entirely
+        when no fiction viewer file is specified in the mission.
+        """
         if not self.mission.fiction_viewer:
             return
         self._write('\n#Fiction Viewer\n')
@@ -600,6 +695,12 @@ class FS2Writer:
             self._write('')
 
     def write_events(self):
+        """Write the '#Events' section.
+
+        Emits each event's SEXP formula, optional name, and optional HUD
+        directive text (``+Objective``).  The total event count is written as
+        a FRED comment on the section header.
+        """
         self._write(f'#Events\t\t;! {len(self.mission.events)} total\n')
         for event in self.mission.events:
             self._write(f'$Formula: {event.formula}')
@@ -610,6 +711,12 @@ class FS2Writer:
             self._write('')
 
     def write_goals(self):
+        """Write the '#Goals' section.
+
+        Emits each mission goal with its type (Primary / Secondary / Bonus),
+        name, localized objective text, and SEXP formula that evaluates whether
+        the goal has been achieved.
+        """
         self._write(f'#Goals\t\t;! {len(self.mission.goals)} total\n')
         for goal in self.mission.goals:
             self._write(f'$Type: {goal.type}')
@@ -634,6 +741,13 @@ class FS2Writer:
             self._write(f'$List: (\n{points}\n)\n')
 
     def write_messages(self):
+        """Write the '#Messages' section.
+
+        Emits each message with its name, localized text, and optional voice
+        wave filename.  The ``+AVI Name`` field is always set to ``<None>``
+        (portrait animations are not used).  ``+Wave Name`` is omitted when no
+        voice file has been assigned to the message.
+        """
         self._write(f'#Messages\t\t;! {len(self.mission.messages)} total\n')
         for msg in self.mission.messages:
             self._write(f'$Name: {msg.name}')
@@ -747,6 +861,16 @@ class FS2Writer:
             self._write('+DivY: 1')
 
     def write_asteroid_field(self):
+        """Write the '#Asteroid Fields' section.
+
+        Emits the field density (total object count), field type (active/passive),
+        debris genre (asteroid/debris), object variant names, speed, bounding box,
+        and optional target ships for active asteroid fields.  The section is
+        omitted entirely when no asteroid field is defined on the mission.
+
+        Note: The FS2 ``$Density`` key stores the *total object count*, not a
+        density ratio — the key name is misleading but FSO interprets it this way.
+        """
         fld = self.mission.environment.asteroid_field
         if not fld:
             return
@@ -772,6 +896,15 @@ class FS2Writer:
         self._write('')
 
     def write_music(self):
+        """Write the '#Music' section.
+
+        Emits ``$Event Music`` (in-mission music track) and/or ``$Briefing Music``
+        when at least one of these is set in the mission's audio settings.  The
+        section is omitted entirely when neither field is populated.
+
+        Note: The FSIF field ``audio.mission_music`` maps to ``$Event Music`` in
+        the FS2 format, not ``$Mission Music``.
+        """
         audio = self.mission.audio
         
         em = audio.mission_music # in-mission music is emitted as '$Event Music' in fs2
