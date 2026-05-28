@@ -305,6 +305,49 @@ Use deliberate initial facing for:
 - ships with waypoints
 - installations or large static set pieces that would otherwise look grid-aligned
 
+### FSO orientation matrix layout
+
+FSIF `orientation` stores the same 3x3 matrix that the converter writes into the FS2 `$Orientation:` block. The flat list is row-major:
+
+```text
+[m00, m01, m02,
+ m10, m11, m12,
+ m20, m21, m22]
+```
+
+In FRED, the identity matrix points the ship nose along world +Z and the ship top along world +Y:
+
+```yaml
+orientation: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+```
+
+The converter writes the authored matrix directly; it does not transpose the matrix or convert from game-engine convention to a math-library convention. A common mistake is to build the matrix from a generic local-to-world formula and accidentally use the wrong sign or transpose, which produces systematic 90-degree or 180-degree errors in FRED. Use the FRED-verified yaw-only formula below for level target-facing matrices.
+
+### Safe yaw-only formula
+
+For most mission-authoring purposes, keep ships level and rotate only on the XZ plane. To make a ship at `[sx, sy, sz]` face a target at `[tx, ty, tz]`:
+
+1. Compute the XZ-plane difference vector: `dx = tx - sx`, `dz = tz - sz`.
+2. Normalize it: `len = sqrt(dx*dx + dz*dz)`, `fx = dx / len`, `fz = dz / len`.
+3. Author this level yaw-only orientation matrix:
+
+```yaml
+orientation: [fz, 0.0, -fx, 0.0, 1.0, 0.0, fx, 0.0, fz]
+```
+
+This formula is FRED-verified for level yaw-only facing: the visible ship nose points along the normalized desired XZ vector `[fx, fz]`, while the ship top remains aligned with world +Y. If `len` is zero, the source and target have the same XZ position and no meaningful yaw can be computed.
+
+Cardinal FRED-verified yaw-only examples:
+
+| Desired visible nose direction | Orientation matrix |
+|---|---|
+| Face world +X | `[0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]` |
+| Face world +Z | `[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]` |
+| Face world -X | `[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0]` |
+| Face world -Z | `[-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]` |
+
+For pitched 3D facings, prefer a tested helper or a mission-start `set-object-facing-object` setup event rather than hand-authoring a full 3D matrix by intuition.
+
 ### Standalone ships:
 
 Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix.
@@ -316,8 +359,8 @@ entities:
       class: "GTD Orion"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
-      # Slightly angled toward the enemy battle line.
-      orientation: [0.996195, 0.0, 0.087156, 0.0, 1.0, 0.0, -0.087156, 0.0, 0.996195]
+      # Mostly facing +X, slightly angled toward +Z.
+      orientation: [0.087156, 0.0, -0.996195, 0.0, 1.0, 0.0, 0.996195, 0.0, 0.087156]
 
     - name: "SC Example"
       class: "SC Cain"
@@ -372,12 +415,12 @@ Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact sign
 
 Before committing an orientation matrix, sanity-check the rough direction on the XZ plane.
 
-Example: a ship at `[8200, -300, -1000]` should face a target at `[5200, 0, -1200]`.
-- Difference vector: target minus source = `[-3000, 300, -200]`.
-- On the XZ plane, this is mostly negative X, slightly positive Y and slightly negative Z.
-- A matrix for this direction: `[-0.064, 0.007, 0.997, 0.151, 0.988, 0.002, -0.986, 0.151, -0.064]`.
+Example: a ship at `[0, 0, 0]` should face a target at `[3000, 0, 4000]`.
+- Difference vector on the XZ plane: `[3000, 4000]`.
+- Normalized desired nose vector: `[fx, fz] = [0.6, 0.8]`.
+- Correct level yaw-only matrix: `orientation: [0.8, 0.0, -0.6, 0.0, 1.0, 0.0, 0.6, 0.0, 0.8]`.
 
-This kind of quick check helps catch common mistakes such as accidentally swapping X and Z components in a hand-authored matrix.
+This quick check catches common mistakes such as swapping X/Z, using the opposite sign, or transposing a generic rotation matrix. A wrong pattern such as `[fz, 0.0, fx, 0.0, 1.0, 0.0, -fx, 0.0, fz]` will produce a systematic 90-degree offset in FRED even though the identity matrix itself correctly points the nose along world +Z.
 
 ## Waypoints vs. Nav Buoys
 FSIF `entities.waypoints` are invisible to the player. They do not create a HUD marker, radar contact, targetable object, visible model, or any in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
