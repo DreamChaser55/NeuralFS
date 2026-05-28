@@ -362,9 +362,9 @@ class WeaponsInput(BaseModel):
 class ShipTemplateInput(BaseModel):
     """Allowed ship template properties.
 
-    Arrival/departure fields, initial_orders, and docking are intentionally
-    absent — they are not permitted in ship_templates and are caught here by
-    extra='forbid' before the loader runs.
+    Arrival/departure fields, initial_orders, docking, name, position, and orientation are
+    intentionally absent — they are not permitted in ship_templates and are
+    caught here by extra='forbid' before the loader runs.
     """
     model_config = ConfigDict(extra='forbid', populate_by_name=True)
     ship_class: Optional[str] = Field(None, alias='class')
@@ -373,7 +373,6 @@ class ShipTemplateInput(BaseModel):
     cargo: Optional[str] = None
     initial_speed_percent: Optional[int] = None
     initial_hull_percent: Optional[int] = None
-    orientation: Optional[List[float]] = None
     flags: Optional[List[str]] = None
     respawn_priority: Optional[int] = None
     subsystems: Optional[SubsystemsInput] = None
@@ -432,15 +431,17 @@ class ShipInput(BaseModel):
 
 
 class WingInput(BaseModel):
-    """Raw FSIF wing definition; compact form with template reference and centroid position.
+    """Raw FSIF wing definition; compact form with template reference, centroid position, and optional orientation.
 
     The loader expands this into a runtime ``Wing`` with individual ``Ship`` members.
+    ``orientation`` is applied to every expanded wing member at spawn time.
     """
     model_config = ConfigDict(extra='forbid')
     name: str
     template: str
     count: int
     position: Optional[List[float]] = None
+    orientation: Optional[List[float]] = None
     wave_count: Optional[int] = None
     next_wave_threshold: Optional[int] = None
     next_wave_delay_min: Optional[int] = None
@@ -1050,6 +1051,9 @@ class Wing(BaseModel):
     position: Optional[List[float]] = None
     member_spacing: float = Field(50.0, gt=0)
 
+    # Shared orientation for all wing members (None = identity default on each Ship)
+    orientation: Optional[List[float]] = None
+
     # Template reference (used during expansion, kept for record)
     template: Optional[str] = None
 
@@ -1058,6 +1062,12 @@ class Wing(BaseModel):
     def validate_pos(cls, v):
         if v is None: return None
         return _normalize_vector(v)
+
+    @field_validator('orientation', mode='before')
+    @classmethod
+    def validate_orient(cls, v):
+        if v is None: return None
+        return _normalize_orientation(v)
 
     @field_validator('flags', mode='before')
     @classmethod

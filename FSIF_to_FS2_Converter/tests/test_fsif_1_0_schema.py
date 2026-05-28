@@ -370,11 +370,11 @@ class FSIF10SchemaTests(unittest.TestCase):
 
 
     # -------------------------------------------------------------------------
-    # Template orientation inheritance
+    # Wing orientation authoring
     # -------------------------------------------------------------------------
 
-    def test_accepts_orientation_in_template_and_inherits_to_wing_members(self):
-        """An orientation authored in a ship template must be accepted and inherited by all expanded wing members."""
+    def test_accepts_orientation_on_wing_and_applies_to_all_members(self):
+        """An orientation authored on a wing definition must be applied to every expanded member."""
         IDENTITY_FLIPPED = [
             -1.0, 0.0,  0.0,
              0.0, 1.0,  0.0,
@@ -382,8 +382,8 @@ class FSIF10SchemaTests(unittest.TestCase):
         ]
         orient_yaml = "[" + ", ".join(str(v) for v in IDENTITY_FLIPPED) + "]"
         fsif_text = MINIMAL_FSIF_1.replace(
-            '      class: "GTF Ulysses"',
-            f'      class: "GTF Ulysses"\n      orientation: {orient_yaml}',
+            '      position: [0, 0, 0]',
+            f'      position: [0, 0, 0]\n      orientation: {orient_yaml}',
         )
         mission = self._write_and_load(fsif_text)
         wing_ships = [s for s in mission.ships if s.name.startswith("Alpha")]
@@ -391,22 +391,18 @@ class FSIF10SchemaTests(unittest.TestCase):
         for ship in wing_ships:
             self.assertEqual(
                 ship.orientation, IDENTITY_FLIPPED,
-                f"{ship.name} should inherit orientation from template",
+                f"{ship.name} should receive orientation from the wing definition",
             )
 
-    def test_standalone_ship_overrides_template_orientation(self):
-        """A standalone ship referencing a template may override the template orientation with its own value."""
-        TEMPLATE_ORIENT = [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
+    def test_standalone_ship_with_own_orientation_is_independent(self):
+        """A standalone ship with an authored orientation carries that value; wing members without a wing-level orientation use the identity default."""
+        IDENTITY = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
         SHIP_ORIENT = [0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0]
-        template_yaml = "[" + ", ".join(str(v) for v in TEMPLATE_ORIENT) + "]"
         ship_yaml = "[" + ", ".join(str(v) for v in SHIP_ORIENT) + "]"
 
-        # Add template orientation to alpha_t, then add a standalone ship that
-        # references alpha_t but authors its own orientation.
+        # Add a standalone ship with its own orientation; leave the template and
+        # wing definition without orientation so wing members fall back to identity.
         fsif_text = MINIMAL_FSIF_1.replace(
-            '      class: "GTF Ulysses"',
-            f'      class: "GTF Ulysses"\n      orientation: {template_yaml}',
-        ).replace(
             "  wings:",
             "  ships:\n"
             "    - name: \"Extra Ship\"\n"
@@ -420,22 +416,31 @@ class FSIF10SchemaTests(unittest.TestCase):
         self.assertIsNotNone(extra, "Extra Ship must be present in loaded ships")
         self.assertEqual(
             extra.orientation, SHIP_ORIENT,
-            "Standalone ship orientation must override the template orientation",
+            "Standalone ship orientation must be preserved exactly as authored",
         )
-        # Wing members should still carry the template orientation.
+        # Wing members have no wing-level orientation → identity default.
         alpha1 = next((s for s in mission.ships if s.name == "Alpha 1"), None)
         self.assertIsNotNone(alpha1, "Alpha 1 must be present")
         self.assertEqual(
-            alpha1.orientation, TEMPLATE_ORIENT,
-            "Wing member orientation must come from the template",
+            alpha1.orientation, IDENTITY,
+            "Wing member without wing-level orientation must use the identity default",
         )
 
-    def test_template_with_malformed_orientation_is_rejected(self):
-        """A template orientation with wrong element count must be rejected."""
-        # Provide only 8 floats instead of 9
+    def test_template_with_orientation_field_is_rejected(self):
+        """Any orientation field in a ship template must be rejected as a schema error."""
         fsif_text = MINIMAL_FSIF_1.replace(
             '      class: "GTF Ulysses"',
-            '      class: "GTF Ulysses"\n      orientation: [1, 0, 0, 0, 1, 0, 0, 0]',
+            '      class: "GTF Ulysses"\n      orientation: [1, 0, 0, 0, 1, 0, 0, 0, 1]',
+        )
+        with self.assertRaises((ValueError, Exception)):
+            self._write_and_load(fsif_text)
+
+    def test_wing_with_malformed_orientation_is_rejected(self):
+        """A wing orientation with wrong element count must be rejected."""
+        # Provide only 8 floats instead of 9
+        fsif_text = MINIMAL_FSIF_1.replace(
+            '      position: [0, 0, 0]',
+            '      position: [0, 0, 0]\n      orientation: [1, 0, 0, 0, 1, 0, 0, 0]',
         )
         with self.assertRaises((ValueError, Exception)):
             self._write_and_load(fsif_text)

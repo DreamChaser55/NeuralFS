@@ -47,6 +47,10 @@ class MissionLoader:
         'docked_with',
         'docker_point',
         'dockee_point',
+        'orientation',
+        'position',
+        'template',
+        'name'
     )
         
     def load(self) -> Mission:
@@ -409,6 +413,12 @@ class MissionLoader:
         wing_ships_objs = []
         count = int(wing_data.get('count', 0))
         center_index = (count - 1) / 2.0
+
+        # Wing-level orientation: if authored, it is applied to every member.
+        # Templates are now forbidden from carrying orientation, so the only
+        # way a wing member can have a non-identity orientation at spawn time
+        # is through this wing-level field.
+        wing_orientation = wing_data.get('orientation')
         
         for i in range(count):
              ship_name = f"{wing_data['name']} {i + 1}"
@@ -417,6 +427,10 @@ class MissionLoader:
              offset = (i - center_index) * spacing
              ship_props['position'] = [cx + offset, cy, cz]
              ship_props['name'] = ship_name
+
+             # Apply wing orientation to every member when authored.
+             if wing_orientation is not None:
+                 ship_props['orientation'] = wing_orientation
 
              # Wing members must have arrival_cue '( false )' in #Objects so
              # that the individual ship entries do not trigger independent

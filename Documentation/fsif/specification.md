@@ -49,7 +49,7 @@
   - `additional_ship_choices` (List[Mapping], optional, default: `[]`). Items: `{class: String, count: Integer}`. Loadout-screen alternative ship pool.
   - `additional_weapons` (List[String], optional, default: `[]`). Extra weapons added to the Weaponry Pool for the loadout screen.
 - `entities` (Mapping, required):
-  - `ship_templates` (Mapping, optional). Keys are template names, values are ship properties mappings. Override semantics are **shallow**: a top-level key on the ship replaces the entire template value; nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary` you must re-author the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions). The following fields are **not allowed** in ship templates: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`. In addition to these, fields `name`, `position`, and `template` are also not allowed in ship templates, for obvious reasons.
+  - `ship_templates` (Mapping, optional). Keys are template names, values are ship properties mappings. Override semantics are **shallow**: a top-level key on the ship replaces the entire template value; nested mappings such as `weapons` and `subsystems` are replaced wholesale — to override only `weapons.primary` you must re-author the complete `weapons` block. Ships in wings are defined solely by the referenced template (overrides are not supported on wing definitions). The following fields are **not allowed** in ship templates: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`. In addition to these, fields `name`, `position`, `orientation` and `template` are also not allowed in ship templates, for obvious reasons.
   - `ships` (List[Mapping], optional). See Ship Properties below.
   - `wings` (List[Mapping], optional). See Wing Properties below.
   - `waypoints` (Mapping, optional). Keys are path names, values are Lists of `[x,y,z]`. Invisible to the player; for AI paths and internal SEXP references only.
@@ -142,6 +142,7 @@
 - `template` (String, required). Name of a template defined in `ship_templates`.
 - `count` (Integer, required). Number of ships in the wing.
 - `position` (List[Float], required). Format: `[x, y, z]`. Centroid of the wing's spawn line. Individual ship positions are computed along the X axis spaced `member_spacing` meters apart.
+- `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats. Shared initial facing applied to every expanded wing member at spawn time. When omitted, all members use the identity matrix.
 - `wave_count` (Integer, optional, default: `1`). Number of waves for this wing.
 - `next_wave_threshold` (Integer, optional, default: `0`). Minimum surviving ships before the next wave spawns.
 - `next_wave_delay_min` (Integer, optional). Minimum delay in seconds before next wave.

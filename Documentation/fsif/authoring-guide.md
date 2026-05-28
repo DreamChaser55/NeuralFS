@@ -290,7 +290,7 @@ Wing members are spaced 50 m apart by default (`member_spacing: 50.0`) and the l
 **Template inheritance for standalone ships:**
 Templates are primarily designed for wings, but standalone ships can also reference a template via the `template` key. When a standalone ship references a template, the loader shallow-merges the template's properties into the ship first, then applies any ship-level keys on top. This means a standalone ship can omit `class`, `team`, `weapons`, and any other shared property if they are already provided by the template.
 
-Override semantics are shallow: authoring any top-level key on the ship replaces the entire template value for that key. Nested mappings are replaced wholesale — to override only `weapons.primary`, re-author the complete `weapons` block. The following fields are always forbidden in templates regardless: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
+Override semantics are shallow: authoring any top-level key on the ship replaces the entire template value for that key. Nested mappings are replaced wholesale — to override only `weapons.primary`, re-author the complete `weapons` block. The following fields are always forbidden in templates regardless: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`, `position`, `orientation`, `name`, `template`.
 
 ## Initial ship orientation and facing direction
 
@@ -305,7 +305,7 @@ Use deliberate initial facing for:
 - ships with waypoints
 - installations or large static set pieces that would otherwise look grid-aligned
 
-### Standalone ships: author `orientation`
+### Standalone ships:
 
 Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix.
 
@@ -327,9 +327,9 @@ entities:
       orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
 ```
 
-### Wings: author template `orientation`
+### Wings:
 
-Wing definitions do not accept an `orientation` field directly. However, `orientation` is accepted in `entities.ship_templates`. Because all wing members are expanded from their template, authoring `orientation` in a template will give all members of a wing a shared initial facing at spawn time.
+Author `orientation` directly on the wing definition. The loader copies the orientation value to every expanded wing member at spawn time, giving all ships in the wing the same initial facing.
 
 ```yaml
 entities:
@@ -337,8 +337,6 @@ entities:
     shivan_bomber:
       class: "SB Nephilim"
       team: "Hostile"
-      # All Krishna wing members will spawn facing this direction.
-      orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
       weapons:
         primary: ["Shivan Heavy Laser"]
         secondary: ["Tsunami#Shivan"]
@@ -347,6 +345,8 @@ entities:
       template: "shivan_bomber"
       count: 4
       position: [0.0, 0.0, 2000.0]
+      # All Krishna wing members will spawn facing this direction.
+      orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
 ```
 
 ### Using orientation setup event
@@ -894,6 +894,6 @@ After completing a mission file, confirm:
 - player start ship is a member of a Friendly Alpha, Beta, or Gamma wing
 - docking setups and reinforcements are correctly defined
 - major standalone ships have deliberate `orientation` values when initial facing matters
-- wings that should face specific targets at mission start are oriented by a setup event using `set-object-facing-object` or `set-object-facing`
+- wings that need a fixed initial facing author `orientation` directly on the wing definition; wings that should face a named ship use a setup event with `set-object-facing-object`
 - direction vectors were sanity-checked so X/Z components were not swapped
 - the opening scene was reviewed for visually plausible battle lines, bomber approach vectors, and station/convoy facing
