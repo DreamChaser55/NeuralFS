@@ -292,6 +292,86 @@ Templates are primarily designed for wings, but standalone ships can also refere
 
 Override semantics are shallow: authoring any top-level key on the ship replaces the entire template value for that key. Nested mappings are replaced wholesale — to override only `weapons.primary`, re-author the complete `weapons` block. The following fields are always forbidden in templates regardless: `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point`.
 
+## Initial ship orientation and facing direction
+
+Default ship orientation often makes an opening scene look artificial: every ship points the same way (in the positive Z direction) even if the briefing says two battle lines are facing each other, ships or bombers are beginning an attack run towards their targets, or convoys are moving towards their waypoints. When authoring your mission, decide what each important ship should be facing during the first 10-30 seconds of gameplay.
+
+Use deliberate initial facing for:
+- opposing fleet battle lines
+- bomber approach vectors
+- interceptors waiting for incoming bombers
+- escorts protecting a convoy, installation, or destroyer
+- cruisers or destroyers arriving as flankers
+- ships with waypoints
+- installations or large static set pieces that would otherwise look grid-aligned
+
+### Standalone ships: author `orientation`
+
+Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix. This is most useful for individually authored capital ships, cruisers, freighters, transports, installations, sentry guns, and other important set-piece objects.
+
+```yaml
+entities:
+  ships:
+    - name: "GTD Example"
+      class: "GTD Orion"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      # Slightly angled toward the enemy battle line.
+      orientation: [0.996195, 0.0, 0.087156, 0.0, 1.0, 0.0, -0.087156, 0.0, 0.996195]
+
+    - name: "SC Example"
+      class: "SC Cain"
+      team: "Hostile"
+      position: [0.0, 0.0, 4000.0]
+      # Facing back toward the Terran line.
+      orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
+```
+
+The converter validates the shape of the matrix, but it cannot tell whether the ship is artistically facing the intended target. A syntactically valid 9-float orientation can still point the wrong way.
+
+### Wings: use a setup event
+
+Current FSIF wing definitions do not support an authored `orientation` field, and `orientation` is not accepted inside `entities.ship_templates`. Do **not** put `orientation` in a ship template unless the schema is explicitly changed in the future.
+
+For wings, use a mission-start setup event with `set-object-facing-object` or `set-object-facing`. This keeps the FSIF schema valid and makes the intended facing direction readable.
+
+```yaml
+mission_flow:
+  events:
+    - name: "SetInitialFacing"
+      formula: |
+        ( when
+          ( true )
+          ( set-object-facing-object "Alpha" "SD Ravana" )
+          ( set-object-facing-object "Gamma" "SC Malphas" )
+          ( set-object-facing-object "Durga" "GTD Actium" )
+        )
+```
+
+Do not add `hud_directive_text` to setup events like this. They are invisible mission-composition logic, not player objectives.
+
+Use `set-object-facing-object` when a ship or wing should face a known object. Use `set-object-facing` when it should face a coordinate instead of a target object, such as an approach corridor or empty point in space. Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact signatures before using either operator.
+
+### Facing-direction rules of thumb
+
+- Capital ships in opposing battle lines should face each other, or be angled slightly across the battle line for a more cinematic broadside composition.
+- Bombers should face their initial bombing target or the first point of their approach corridor.
+- Interceptors should face the expected bomber or fighter threat vector.
+- Convoy ships should face their first waypoint or departure path.
+- Docked, docking, or staged ships should face their docking partner, launch direction, or expected departure vector.
+- Installations often do not have an obvious tactical front, but they should still receive a deliberate orientation when they are a major visual anchor.
+
+### Sanity-check target vectors
+
+Before committing an orientation matrix, sanity-check the rough direction on the XZ plane.
+
+Example: a ship at `[8200, -300, -1000]` should face a target at `[5200, 0, -1200]`.
+- Difference vector: target minus source = `[-3000, 300, -200]`.
+- On the XZ plane, this is mostly negative X and slightly negative Z.
+- A yaw-only matrix for this direction should therefore point mostly along negative X, not mostly along negative Z.
+
+This kind of quick check helps catch common mistakes such as accidentally swapping X and Z components in a hand-authored matrix.
+
 ## Waypoints vs. Nav Buoys
 FSIF `entities.waypoints` are invisible to the player. They do not create a HUD marker, radar contact, targetable object, visible model, or any in-game cue that the player can follow. Use waypoints only for AI movement paths (`ai-waypoints`, `ai-waypoints-once`), hidden distance checks, and internal SEXP references such as `PathName:1`.
 
@@ -806,3 +886,7 @@ After completing a mission file, confirm:
 - all SEXPs use valid operators with compatible argument types and correct argument order
 - player start ship is a member of a Friendly Alpha, Beta, or Gamma wing
 - docking setups and reinforcements are correctly defined
+- major standalone ships have deliberate `orientation` values when initial facing matters
+- wings that should face specific targets at mission start are oriented by a setup event using `set-object-facing-object` or `set-object-facing`
+- direction vectors were sanity-checked so X/Z components were not swapped
+- the opening scene was reviewed for visually plausible battle lines, bomber approach vectors, and station/convoy facing
