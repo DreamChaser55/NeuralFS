@@ -294,7 +294,7 @@ Override semantics are shallow: authoring any top-level key on the ship replaces
 
 ## Initial ship orientation and facing direction
 
-Default ship orientation often makes an opening scene look artificial: every ship points the same way (in the positive Z direction) even if the briefing says two battle lines are facing each other, ships or bombers are beginning an attack run towards their targets, or convoys are moving towards their waypoints. When authoring your mission, decide what each important ship should be facing during the first 10-30 seconds of gameplay.
+Default ship orientation often makes an opening scene look artificial: every ship points the same way (ship nose points to +Z, ship top points to +Y) even if the briefing says two battle lines are facing each other, ships or bombers are beginning an attack run towards their targets, or convoys are moving towards their waypoints. When authoring your mission, decide what each important ship should be facing during the first 10-30 seconds of gameplay.
 
 Use deliberate initial facing for:
 - opposing fleet battle lines
@@ -307,7 +307,7 @@ Use deliberate initial facing for:
 
 ### Standalone ships: author `orientation`
 
-Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix. This is most useful for individually authored capital ships, cruisers, freighters, transports, installations, sentry guns, and other important set-piece objects.
+Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix.
 
 ```yaml
 entities:
@@ -327,11 +327,9 @@ entities:
       orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
 ```
 
-The converter validates the shape of the matrix, but it cannot tell whether the ship is artistically facing the intended target. A syntactically valid 9-float orientation can still point the wrong way.
+### Wings: author template `orientation`
 
-### Wings: author template `orientation` or use a setup event
-
-Wing definitions do not accept an `orientation` field directly. However, `orientation` **is** accepted in `entities.ship_templates`. Because all wing members are expanded from their template, authoring `orientation` in a template is the simplest way to give all members of a wing a shared initial facing at spawn time.
+Wing definitions do not accept an `orientation` field directly. However, `orientation` is accepted in `entities.ship_templates`. Because all wing members are expanded from their template, authoring `orientation` in a template will give all members of a wing a shared initial facing at spawn time.
 
 ```yaml
 entities:
@@ -351,7 +349,9 @@ entities:
       position: [0.0, 0.0, 2000.0]
 ```
 
-For more dynamic or readable intent — for example when a wing should face a named ship that exists elsewhere in the mission — use a mission-start setup event with `set-object-facing-object` or `set-object-facing` instead.
+### Using orientation setup event
+
+For more dynamic or readable intent — for example when a ship or wing should face a named ship that exists elsewhere in the mission — use a mission-start setup event with `set-object-facing-object`.
 
 ```yaml
 mission_flow:
@@ -362,22 +362,11 @@ mission_flow:
           ( true )
           ( set-object-facing-object "Alpha" "SD Ravana" )
           ( set-object-facing-object "Gamma" "SC Malphas" )
-          ( set-object-facing-object "Durga" "GTD Actium" )
+          ( set-object-facing-object "GTD Galatea" "SD Valac" )
         )
 ```
 
-Do not add `hud_directive_text` to setup events like this. They are invisible mission-composition logic, not player objectives.
-
-Use `set-object-facing-object` when a ship or wing should face a known object. Use `set-object-facing` when it should face a coordinate instead of a target object, such as an approach corridor or empty point in space. Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact signatures before using either operator.
-
-### Facing-direction rules of thumb
-
-- Capital ships in opposing battle lines should face each other, or be angled slightly across the battle line for a more cinematic broadside composition.
-- Bombers should face their initial bombing target or the first point of their approach corridor.
-- Interceptors should face the expected bomber or fighter threat vector.
-- Convoy ships should face their first waypoint or departure path.
-- Docked, docking, or staged ships should face their docking partner, launch direction, or expected departure vector.
-- Installations often do not have an obvious tactical front, but they should still receive a deliberate orientation when they are a major visual anchor.
+Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact signatures before using this operator.
 
 ### Sanity-check target vectors
 
@@ -386,7 +375,7 @@ Before committing an orientation matrix, sanity-check the rough direction on the
 Example: a ship at `[8200, -300, -1000]` should face a target at `[5200, 0, -1200]`.
 - Difference vector: target minus source = `[-3000, 300, -200]`.
 - On the XZ plane, this is mostly negative X and slightly negative Z.
-- A yaw-only matrix for this direction should therefore point mostly along negative X, not mostly along negative Z.
+- A yaw-only matrix for this direction should therefore point mostly along negative X.
 
 This kind of quick check helps catch common mistakes such as accidentally swapping X and Z components in a hand-authored matrix.
 
