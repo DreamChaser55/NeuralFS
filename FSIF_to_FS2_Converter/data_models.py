@@ -361,7 +361,7 @@ class WeaponsInput(BaseModel):
 
 class ShipTemplateInput(BaseModel):
     """Allowed ship template properties.
-    
+
     Arrival/departure fields, initial_orders, and docking are intentionally
     absent — they are not permitted in ship_templates and are caught here by
     extra='forbid' before the loader runs.
@@ -373,6 +373,7 @@ class ShipTemplateInput(BaseModel):
     cargo: Optional[str] = None
     initial_speed_percent: Optional[int] = None
     initial_hull_percent: Optional[int] = None
+    orientation: Optional[List[float]] = None
     flags: Optional[List[str]] = None
     respawn_priority: Optional[int] = None
     subsystems: Optional[SubsystemsInput] = None

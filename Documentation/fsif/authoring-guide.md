@@ -329,11 +329,29 @@ entities:
 
 The converter validates the shape of the matrix, but it cannot tell whether the ship is artistically facing the intended target. A syntactically valid 9-float orientation can still point the wrong way.
 
-### Wings: use a setup event
+### Wings: author template `orientation` or use a setup event
 
-Current FSIF wing definitions do not support an authored `orientation` field, and `orientation` is not accepted inside `entities.ship_templates`. Do **not** put `orientation` in a ship template unless the schema is explicitly changed in the future.
+Wing definitions do not accept an `orientation` field directly. However, `orientation` **is** accepted in `entities.ship_templates`. Because all wing members are expanded from their template, authoring `orientation` in a template is the simplest way to give all members of a wing a shared initial facing at spawn time.
 
-For wings, use a mission-start setup event with `set-object-facing-object` or `set-object-facing`. This keeps the FSIF schema valid and makes the intended facing direction readable.
+```yaml
+entities:
+  ship_templates:
+    shivan_bomber:
+      class: "SB Nephilim"
+      team: "Hostile"
+      # All Krishna wing members will spawn facing this direction.
+      orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
+      weapons:
+        primary: ["Shivan Heavy Laser"]
+        secondary: ["Tsunami#Shivan"]
+  wings:
+    - name: "Krishna"
+      template: "shivan_bomber"
+      count: 4
+      position: [0.0, 0.0, 2000.0]
+```
+
+For more dynamic or readable intent — for example when a wing should face a named ship that exists elsewhere in the mission — use a mission-start setup event with `set-object-facing-object` or `set-object-facing` instead.
 
 ```yaml
 mission_flow:
