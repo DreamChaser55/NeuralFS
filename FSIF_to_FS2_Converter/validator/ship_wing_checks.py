@@ -559,6 +559,120 @@ class ShipWingChecksMixin:
                 f"player_setup.start_ship to one of its members."
             )
 
+    # ------------------------------------------------------------------
+    # Orientation helpers
+    # ------------------------------------------------------------------
+
+    _IDENTITY_ORIENTATION = (
+        1.0, 0.0, 0.0,
+        0.0, 1.0, 0.0,
+        0.0, 0.0, 1.0,
+    )
+
+    def _is_identity_orientation(self, orientation, eps: float = 1e-6) -> bool:
+        """Return True when *orientation* is (approximately) the identity matrix."""
+        if orientation is None:
+            return True  # None → identity default
+        if len(orientation) != 9:
+            return False  # malformed — not our problem here
+        return all(
+            abs(v - ref) < eps
+            for v, ref in zip(orientation, self._IDENTITY_ORIENTATION)
+        )
+
+    # ------------------------------------------------------------------
+    # Orientation advisory check
+    # ------------------------------------------------------------------
+
+    def validate_large_ship_orientation_defaults(self):
+        """Advisory check: warn when larger ships or wings of larger ships
+        leave the ``orientation`` field at its identity-matrix default.
+
+        Mirrors the Authoring Guide recommendation that authors set a
+        deliberate ``orientation`` on important larger ships.
+
+        **Standalone ships**: any ship whose class is NOT in
+        ``self.fighter_bomber_classes`` and NOT in ``_SMALL_UTILITY_CLASSES``,
+        whose ``orientation`` is (approximately) the identity matrix.
+
+        **Wings of larger ships**: any wing classified as "larger" (first
+        member's ship class not in fighter/bomber or small-utility sets) whose
+        ``wing.orientation`` is ``None`` (the authoring guide states that
+        omitting the field means it is at the default).
+
+        Excludes ships with ``destroyed_before_mission_seconds > 0``
+        (pre-placed wreckage is not a moving presence at mission start).
+
+        Both checks are advisory and do not abort conversion.
+        """
+        MAX_LISTED = 8
+
+        # ── Collect wing-member names so we can skip them in the ship loop ──
+        wing_member_names: Set[str] = set()
+        for wing in self.mission.wings:
+            for ship in wing.ships:
+                wing_member_names.add(ship.name)
+
+        # ── 1. Standalone larger ships with identity orientation ──
+        flagged_ships = []
+        for ship in self.mission.ships:
+            if ship.name in wing_member_names:
+                continue  # handled via the wing-level check
+            if ship.ship_class in self.fighter_bomber_classes:
+                continue
+            if ship.ship_class in _SMALL_UTILITY_CLASSES:
+                continue
+            if ship.destroyed_before_mission_seconds > 0:
+                continue
+            if self._is_identity_orientation(ship.orientation):
+                flagged_ships.append(ship)
+
+        if flagged_ships:
+            listed = flagged_ships[:MAX_LISTED]
+            ships_str = ', '.join(
+                f"{s.name} ({s.ship_class})" for s in listed
+            )
+            if len(flagged_ships) > MAX_LISTED:
+                ships_str += ', ...'
+            self.log_warning(
+                f"Mission has {len(flagged_ships)} larger-than-fighter/bomber standalone ship(s) "
+                f"with the default identity orientation ({ships_str}). "
+                f"Default orientation makes the opening scene look grid-aligned and artificial. "
+                f"Consider authoring a deliberate `orientation` matrix (or a mission-start "
+                f"`set-object-facing-object` event) for important larger ships "
+                f"See the FSIF Authoring Guide - 'Initial ship orientation and facing direction'."
+            )
+
+        # ── 2. Wings of larger ships with missing (default) orientation ──
+        flagged_wings = []
+        for wing in self.mission.wings:
+            if not wing.ships:
+                continue
+            lead_class = wing.ships[0].ship_class
+            if lead_class in self.fighter_bomber_classes:
+                continue
+            if lead_class in _SMALL_UTILITY_CLASSES:
+                continue
+            if wing.orientation is None:
+                flagged_wings.append(wing)
+
+        if flagged_wings:
+            listed = flagged_wings[:MAX_LISTED]
+            wings_str = ', '.join(
+                f"{w.name} ({w.ships[0].ship_class})" for w in listed
+            )
+            if len(flagged_wings) > MAX_LISTED:
+                wings_str += ', ...'
+            self.log_warning(
+                f"Mission has {len(flagged_wings)} wing(s) of larger-than-fighter/bomber ships "
+                f"without an authored `orientation` field ({wings_str}). "
+                f"Wing members default to the identity matrix when `orientation` is omitted, "
+                f"which makes the opening scene look grid-aligned and artificial. "
+                f"Author `orientation` directly on the wing definition to give all members a "
+                f"shared initial facing, or use a mission-start `set-object-facing-object` event. "
+                f"See the FSIF Authoring Guide - 'Initial ship orientation and facing direction'."
+            )
+
     def validate_large_ship_escort_recommendation(self):
         """
         Advisory check: warn when the mission contains potentially important ships larger than
