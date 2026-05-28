@@ -374,8 +374,8 @@ Before committing an orientation matrix, sanity-check the rough direction on the
 
 Example: a ship at `[8200, -300, -1000]` should face a target at `[5200, 0, -1200]`.
 - Difference vector: target minus source = `[-3000, 300, -200]`.
-- On the XZ plane, this is mostly negative X and slightly negative Z.
-- A yaw-only matrix for this direction should therefore point mostly along negative X: `[-0.064, 0.007, 0.997, 0.151, 0.988, 0.002, -0.986, 0.151, -0.064]`.
+- On the XZ plane, this is mostly negative X, slightly positive Y and slightly negative Z.
+- A matrix for this direction: `[-0.064, 0.007, 0.997, 0.151, 0.988, 0.002, -0.986, 0.151, -0.064]`.
 
 This kind of quick check helps catch common mistakes such as accidentally swapping X and Z components in a hand-authored matrix.
 
