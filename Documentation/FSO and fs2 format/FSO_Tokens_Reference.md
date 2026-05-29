@@ -53,6 +53,16 @@ All of these require both `arrival_distance` and a ship `arrival_anchor`.
 - To left of ship
 - To right of ship
 
+Example usage (wing arrival anchored to any friendly player):
+```yaml
+name: Arjuna
+arrival_method: In front of ship
+arrival_distance: 1500
+arrival_anchor: "<any friendly player>"
+arrival_cue: |
+  ( is-event-true-delay "CargoBlowinUp" 12 )
+```
+
 ### Message priorities
 - "Low"
 - "Normal"
@@ -209,27 +219,15 @@ Ancillary per-ship fields frequently seen with flags:
 *   `no-first-wave-message` — Don't play arrival message for the first wave
 *   `waypoints-no-formation` — Wing will not try to form up when running a waypoint together
 
-## Tokens by context
-
-### Waypoints and Jump Nodes
+## Waypoints and Jump Nodes
 
 **Waypoints** (`entities.waypoints`): invisible AI/logic references. Path name is the YAML key; point reference in SEXPs is `"PathName:N"` (1-based index).
 
 **Jump Nodes** (`entities.jump_nodes`): visible to the player. Fields: `name`, `position`.
 
-### SEXP example patterns
+## SEXP example patterns
 
-#### Arrival anchored to any friendly player (wing)
-```yaml
-name: Arjuna
-arrival_method: In front of ship
-arrival_distance: 1500
-arrival_anchor: "<any friendly player>"
-arrival_cue: |
-  ( is-event-true-delay "Cargo is blowin' up" 12 )
-```
-
-#### Messaging from wildcard wingman
+### Messaging from wildcard wingman
 ```lisp
 (when
    (has-arrived-delay 4 "Tantalus")
@@ -237,7 +235,7 @@ arrival_cue: |
 )
 ```
 
-#### Unlock tech and allow weapon
+### Unlock tech and allow weapon
 ```lisp
 (when
    (true)
@@ -247,7 +245,7 @@ arrival_cue: |
 )
 ```
 
-#### Protect/unprotect runtime
+### Protect/unprotect runtime
 ```lisp
 (when
    (has-arrived-delay 6 "Arjuna")
@@ -263,7 +261,7 @@ arrival_cue: |
 )
 ```
 
-#### Percent destroyed / departed
+### Percent destroyed / departed
 ```lisp
 (when
    (percent-ships-destroyed 100 "Cain" "Abel")
