@@ -367,4 +367,4 @@ The runtime converter only needs the generated files (`fs_data.py`, `weapons_com
 
 The NeuralFS codebase is clean, well-commented, and logically organized. The validation pipeline is particularly thorough — having both a schema-validation layer (Pydantic, `FSIFDocument`) and a runtime semantic-validation layer (Validator mixins, Advanced SEXP Validator) gives strong defense-in-depth. The documentation is extensive and accurately reflects the code with only minor discrepancies.
 
-The main actionable improvements are: removing the redundant template field check (§4.1, saves ~30 lines of loader code), factoring `validate_anchors` (§4.5, halves ~80 lines of duplication), and adding the Pydantic version pin to the top-level README (§7.1, one-line fix with real usability impact).
+The main actionable improvement is: adding the Pydantic version pin to the top-level README (§7.1, one-line fix with real usability impact).
