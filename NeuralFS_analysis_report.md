@@ -94,7 +94,7 @@ If `initial_orders` contains only FSO semicolon comments (e.g., `; a note`), `cl
 
 ## 4. Code: Cruft, Redundancy & Over-Engineering
 
-### 4.1 `_validate_ship_template_authoring_rules` + `_FORBIDDEN_TEMPLATE_FIELDS` largely redundant — MEDIUM
+### 4.1 `_validate_ship_template_authoring_rules` + `_FORBIDDEN_TEMPLATE_FIELDS` largely redundant — MEDIUM - **ALREADY ADDRESSED**
 
 **File:** `FSIF_to_FS2_Converter/mission_loader.py`
 

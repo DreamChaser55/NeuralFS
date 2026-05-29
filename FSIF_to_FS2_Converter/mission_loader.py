@@ -32,27 +32,6 @@ class MissionLoader:
         self.all_ships: List[Ship] = []
         self.all_wings: List[Wing] = []
 
-    _FORBIDDEN_TEMPLATE_FIELDS = (
-        'arrival_method',
-        'arrival_anchor',
-        'arrival_distance',
-        'arrival_delay',
-        'arrival_cue',
-        'departure_method',
-        'departure_anchor',
-        'departure_delay',
-        'departure_cue',
-        'initial_orders',
-        'dock',
-        'docked_with',
-        'docker_point',
-        'dockee_point',
-        'orientation',
-        'position',
-        'template',
-        'name'
-    )
-        
     def load(self) -> Mission:
         """Main execution method."""
         self._read_yaml()
@@ -313,9 +292,10 @@ class MissionLoader:
             self._as_mapping(entities.get('ship_templates'), 'entities.ship_templates')
         )
 
-        # Validate templates
+        # Forbidden template fields (arrival/departure/dock/orientation/etc.) are
+        # already rejected by ShipTemplateInput(extra='forbid') during
+        # _validate_fsif_schema(), so only the player-start flag needs checking here.
         for name, template in self.templates.items():
-            self._validate_ship_template_authoring_rules(name, template)
             self._validate_no_player_start(template.get('flags'), f"template '{name}'")
 
         # Expand Wings
@@ -325,33 +305,6 @@ class MissionLoader:
         # Expand Standalone Ships
         for ship_data in self._as_list(entities.get('ships'), 'entities.ships'):
             self._process_ship(ship_data)
-
-    def _validate_ship_template_authoring_rules(self, template_name: str, template_data: Dict[str, Any]):
-        """
-        Reject ship-template fields that must be authored on the concrete ship/wing.
-
-        Arrival/departure methods, anchors, distances, delays, conditions (arrival_cue,
-        departure_cue), initial_orders, and docking fields do not work correctly
-        when inherited by ships that are part of a wing, so FSIF forbids authoring these
-        fields in ship_templates entirely. Standalone ships must author them directly
-        on the ship, while wing members must author them on the wing.
-        """
-        if not isinstance(template_data, dict):
-            raise ValueError(f"Ship template '{template_name}' must be a mapping.")
-
-        forbidden_fields = [field for field in self._FORBIDDEN_TEMPLATE_FIELDS if field in template_data]
-        if not forbidden_fields:
-            return
-
-        if len(forbidden_fields) == 1:
-            fields_phrase = f"field '{forbidden_fields[0]}'"
-        else:
-            fields_phrase = "fields " + ", ".join(f"'{field}'" for field in forbidden_fields)
-
-        raise ValueError(
-            f"Validation error in ship template '{template_name}': {fields_phrase} must not be authored in ship_templates. "
-            f"Author these values directly on a standalone ship, or on the corresponding wing if the ship is part of a wing."
-        )
 
     def _normalize_initial_orders(self, entity_name: str, raw_orders_str: str) -> str:
         """
