@@ -38,10 +38,14 @@ def resolve_tts_provider(
     This is the single source of truth for TTS provider precedence.  It
     encodes the following priority order:
 
-    1. If *tts_enabled* is False the result is always ('none', False, 'google').
-       TTS generation is disabled regardless of any provider setting, and
-       'google' is returned as the *validation_provider* fallback so that the
-       validator and voice manager can still name-check voice fields.
+    1. If *tts_enabled* is False, TTS generation is disabled (``final_provider``
+       is always ``'none'`` and ``generation_enabled`` is always ``False``).
+       However, ``validation_provider`` is derived from the normal CLI/FSIF/default
+       precedence so that the validator can still name-check voice fields against
+       the correct provider's voice list (e.g. an ElevenLabs mission is validated
+       against ElevenLabs voices, not Google voices).  A declared provider of
+       ``'none'`` maps to ``'google'`` so that ``validation_provider`` is never
+       ``'none'``.
     2. If *cli_provider* is one of the known provider names (``'google'``,
        ``'elevenlabs'``, ``'inworld'``, ``'none'``) it overrides the FSIF
        setting completely.
@@ -80,25 +84,34 @@ def resolve_tts_provider(
           VoiceManager even when generation is disabled; always a real
           provider name (never ``'none'``).
     """
-    if not tts_enabled:
-        return ('none', False, 'google')
-
     # Normalise cli_provider to lowercase if supplied
     if cli_provider is not None:
         cli_provider = str(cli_provider).lower().strip()
     if fsif_provider is not None:
         fsif_provider = str(fsif_provider).lower().strip()
 
-    # Priority 1: explicit CLI/caller override
+    # Compute the "intended" provider once using the full precedence chain:
+    #   CLI/caller > FSIF file > built-in default ('google').
+    # This is done regardless of tts_enabled so that validation_provider can
+    # reflect the mission's declared provider even when generation is disabled.
     if cli_provider in _KNOWN_PROVIDERS:
-        final_provider = cli_provider
-    # Priority 2: FSIF file setting
+        intended = cli_provider
     elif fsif_provider in _KNOWN_PROVIDERS:
-        final_provider = fsif_provider
-    # Priority 3: built-in default
+        intended = fsif_provider
     else:
-        final_provider = 'google'
+        intended = 'google'
 
+    if not tts_enabled:
+        # TTS generation is disabled, but validation_provider must still
+        # reflect the declared provider so that voice-name checks use the
+        # correct voice list.  For example, an ElevenLabs mission run without
+        # --enable-tts should validate voice names against the ElevenLabs set,
+        # not the Google set.  A provider value of 'none' maps to 'google' so
+        # that validation_provider is always a real provider name.
+        validation_provider = intended if intended != 'none' else 'google'
+        return ('none', False, validation_provider)
+
+    final_provider = intended
     generation_enabled = (final_provider != 'none')
     # validation_provider is always a real provider so the validator can
     # check voice-name tokens even when TTS generation is off.

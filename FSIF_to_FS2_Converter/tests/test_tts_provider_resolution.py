@@ -38,29 +38,48 @@ from fsif_to_fs2 import resolve_tts_provider, _KNOWN_PROVIDERS  # noqa: E402
 
 
 class TestResolveTtsProviderDisabled(unittest.TestCase):
-    """When TTS is disabled the provider arguments are irrelevant."""
+    """When TTS is disabled, generation is always off but validation_provider
+    still reflects the declared provider so voice-name checks use the correct
+    voice list.  A declared provider of 'none' falls back to 'google'."""
 
-    def _assert_disabled(self, final, enabled, validation):
+    def _assert_disabled(self, final, enabled, validation, expected_validation='google'):
         self.assertEqual(final, 'none', "final_provider must be 'none' when TTS is disabled")
         self.assertFalse(enabled, "generation_enabled must be False when TTS is disabled")
-        self.assertEqual(validation, 'google',
-                         "validation_provider must fall back to 'google' when TTS is disabled")
+        self.assertEqual(
+            validation, expected_validation,
+            f"validation_provider should be '{expected_validation}' when TTS is disabled "
+            f"(got '{validation}')"
+        )
 
     def test_disabled_no_cli_no_fsif(self):
+        """No provider specified anywhere — validation falls back to 'google'."""
         result = resolve_tts_provider(tts_enabled=False, cli_provider=None, fsif_provider=None)
-        self._assert_disabled(*result)
+        self._assert_disabled(*result, expected_validation='google')
 
     def test_disabled_with_cli_provider(self):
+        """CLI provider propagates to validation_provider even when generation is off."""
         result = resolve_tts_provider(tts_enabled=False, cli_provider='elevenlabs', fsif_provider=None)
-        self._assert_disabled(*result)
+        self._assert_disabled(*result, expected_validation='elevenlabs')
 
     def test_disabled_with_fsif_provider(self):
+        """FSIF provider propagates to validation_provider even when generation is off."""
         result = resolve_tts_provider(tts_enabled=False, cli_provider=None, fsif_provider='inworld')
-        self._assert_disabled(*result)
+        self._assert_disabled(*result, expected_validation='inworld')
 
     def test_disabled_with_both_sources(self):
+        """CLI wins over FSIF; validation_provider = CLI provider."""
         result = resolve_tts_provider(tts_enabled=False, cli_provider='google', fsif_provider='elevenlabs')
-        self._assert_disabled(*result)
+        self._assert_disabled(*result, expected_validation='google')
+
+    def test_disabled_provider_none_falls_back_to_google(self):
+        """A declared provider of 'none' maps to 'google' for validation."""
+        result = resolve_tts_provider(tts_enabled=False, cli_provider=None, fsif_provider='none')
+        self._assert_disabled(*result, expected_validation='google')
+
+    def test_disabled_cli_none_provider_falls_back_to_google(self):
+        """CLI 'none' also maps to 'google' for validation."""
+        result = resolve_tts_provider(tts_enabled=False, cli_provider='none', fsif_provider=None)
+        self._assert_disabled(*result, expected_validation='google')
 
 
 class TestResolveTtsProviderCliOverride(unittest.TestCase):
