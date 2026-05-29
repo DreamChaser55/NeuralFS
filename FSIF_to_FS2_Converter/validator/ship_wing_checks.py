@@ -7,6 +7,11 @@ try:
 except ImportError:
     WEAPON_COMPATIBILITY = {}
 
+# Minimum arrival_distance (metres) for directional arrival methods.
+# Values below this threshold risk spawning arriving ships dangerously close
+# to — or clipping inside — their arrival anchor.
+MIN_ARRIVAL_DISTANCE = 300
+
 # Ship classes that are small utility objects and should NOT trigger the
 # "no large ship has escort" warning.  These are cargo containers, nav buoys,
 # sentry guns, and training drones — objects that the player has
@@ -383,6 +388,15 @@ class ShipWingChecksMixin:
                     self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_anchor'.")
                 if getattr(ship, 'arrival_distance', None) is None:
                     self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_distance'.")
+                elif ship.arrival_distance < MIN_ARRIVAL_DISTANCE:
+                    self.log_warning(
+                        f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' "
+                        f"with arrival_distance {ship.arrival_distance} m, which is below the "
+                        f"recommended minimum of {MIN_ARRIVAL_DISTANCE} m. "
+                        f"Too small a distance risks spawning the ship dangerously close to or "
+                        f"clipping inside its arrival_anchor. "
+                        f"Increase arrival_distance to at least {MIN_ARRIVAL_DISTANCE}."
+                    )
 
             if ship.arrival_anchor and ship.arrival_anchor not in valid_targets:
                 self.log_error(f"Ship '{ship.name}' references unknown arrival_anchor '{ship.arrival_anchor}'")
@@ -424,6 +438,15 @@ class ShipWingChecksMixin:
                     self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_anchor'.")
                 if getattr(w, 'arrival_distance', None) is None:
                     self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_distance'.")
+                elif w.arrival_distance < MIN_ARRIVAL_DISTANCE:
+                    self.log_warning(
+                        f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' "
+                        f"with arrival_distance {w.arrival_distance} m, which is below the "
+                        f"recommended minimum of {MIN_ARRIVAL_DISTANCE} m. "
+                        f"Too small a distance risks spawning wing members dangerously close to or "
+                        f"clipping inside the arrival_anchor. "
+                        f"Increase arrival_distance to at least {MIN_ARRIVAL_DISTANCE}."
+                    )
 
             if w.arrival_anchor and w.arrival_anchor not in valid_targets:
                 self.log_error(f"Wing '{w.name}' references unknown arrival_anchor '{w.arrival_anchor}'")

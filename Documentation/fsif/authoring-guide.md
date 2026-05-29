@@ -711,6 +711,7 @@ Note: These also need to be unlocked. The maximum quantities needed to fully equ
 - `Docking Bay`: `arrival_distance` is forced to `0` and should be omitted.
 - FSO SEXP docs refer to `arrival_method` as "arrival location" and `departure_method` as "departure location".
 - `orientation` is ignored for all non-Hyperspace arrivals. FSO auto-faces the ship/wing toward its `arrival_anchor`.
+- **Minimum `arrival_distance`:** For directional arrivals, `arrival_distance` must be at least **300 m**. Values below 300 risk spawning ships dangerously close to — or clipping inside — the arrival anchor.
 
 ## Maximum mission scale recommendation
 - Keep distances between all points of interest **below 20 km** whenever possible.

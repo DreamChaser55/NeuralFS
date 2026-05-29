@@ -403,6 +403,7 @@ Wings (#Wings)
 Constraints and guidance
 - Directional $Arrival Location values (arrival_method) require both +Arrival Distance and $Arrival Anchor.
 - Docking Bay commonly uses +Arrival Distance: 0.
+- **Validation warning — arrival_distance below minimum:** When a ship or wing uses a directional `arrival_method` (Near Ship, In front of/behind/above/below/left/right of ship) and `arrival_distance` is set but less than **300 m**, the validator emits a non-fatal warning. Values below 300 risk spawning arriving ships dangerously close to or clipping inside the arrival anchor. The conversion proceeds; authors should increase `arrival_distance` to at least 300. This warning does NOT fire for Hyperspace or Docking Bay arrivals.
 
 ## Asteroid/Debris Fields mapping
 
