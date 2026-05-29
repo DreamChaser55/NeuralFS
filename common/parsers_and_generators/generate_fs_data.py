@@ -147,7 +147,10 @@ def parse_tokens_reference():
     # Arrival / Departure Methods
     # Parse shared (both arrival and departure) methods first.
     # Only collect top-level list entries (exactly "- <token>"), not indented sub-bullets.
-    if match := re.search(r"#### Arrival and Departure\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
+    # Stop at the first blank line so that any trailing notes or examples (which may contain
+    # "- " bullets) cannot leak spurious tokens into the arrival/departure sets.  The blank
+    # line immediately after the last bullet in each section is the natural boundary.
+    if match := re.search(r"#### Arrival and Departure\n(.*?)(?=\n\n|\n####|\n###|\Z)", content, re.DOTALL):
         for line in match.group(1).splitlines():
             # Top-level list entry: exactly two chars "- " at start (not indented)
             if re.match(r'^- \S', line):
@@ -155,8 +158,10 @@ def parse_tokens_reference():
                 data["arrival_methods"].add(token)
                 data["departure_methods"].add(token)
 
-    # Arrival-only methods — heading may have a suffix like "(directional)"
-    if match := re.search(r"#### Arrival-only.*?\n(.*?)(?=\n####|\n###|\Z)", content, re.DOTALL):
+    # Arrival-only methods — heading may have a suffix like "(directional)".
+    # Note: a YAML example block now lives inline in this section (after the bullet list),
+    # so the \n\n stop is important to prevent example lines from leaking into the token set.
+    if match := re.search(r"#### Arrival-only.*?\n(.*?)(?=\n\n|\n####|\n###|\Z)", content, re.DOTALL):
         for line in match.group(1).splitlines():
             if re.match(r'^- \S', line):
                 token = line[2:].strip()
