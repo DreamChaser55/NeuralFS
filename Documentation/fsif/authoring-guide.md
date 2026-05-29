@@ -301,13 +301,12 @@ Use deliberate initial facing for:
 - bomber approach vectors
 - interceptors waiting for incoming bombers
 - escorts protecting a convoy, installation, or destroyer
-- cruisers or destroyers arriving as flankers
 - ships with waypoints
 - installations or large static set pieces that would otherwise look grid-aligned
 
 ### FSO orientation matrix layout
 
-FSIF `orientation` stores the same 3x3 matrix that the converter writes into the FS2 `$Orientation:` block. The flat list is row-major:
+FSIF `orientation` stores a 3x3 matrix. The flat list is row-major:
 
 ```text
 [m00, m01, m02,
@@ -315,21 +314,19 @@ FSIF `orientation` stores the same 3x3 matrix that the converter writes into the
  m20, m21, m22]
 ```
 
-FRED interprets the rows as the ship's world-space basis vectors:
+FSO interprets the rows as the ship's world-space basis vectors:
 
 - Row 1 `[m00, m01, m02]` is the ship's local right direction.
 - Row 2 `[m10, m11, m12]` is the ship's local up/top direction.
 - Row 3 `[m20, m21, m22]` is the ship's local forward/nose direction.
 
-Therefore, the visible ship nose direction is the third row of the matrix, and the visible ship top direction is the second row. Authored matrices should be orthonormal rotation matrices: rows should be unit length, mutually perpendicular, and use a consistent right-handed basis. Non-orthonormal matrices may produce skewed or invalid object orientation in FRED/FSO.
+Therefore, the visible ship nose direction is the third row of the matrix, and the visible ship top direction is the second row. Authored matrices should be orthonormal rotation matrices: rows should be unit length, mutually perpendicular, and use a consistent right-handed basis. Non-orthonormal matrices may produce invalid object orientation in FSO.
 
-In FRED, the identity matrix points the ship nose along world +Z and the ship top along world +Y:
+In FSO, the identity matrix points the ship nose along world +Z and the ship top along world +Y:
 
 ```yaml
 orientation: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
 ```
-
-The converter writes the authored matrix directly; it does not transpose the matrix or convert from game-engine convention to a math-library convention. A common mistake is to build the matrix from a generic local-to-world formula and accidentally use the wrong sign or transpose, which produces systematic 90-degree or 180-degree errors in FRED. Use the FRED-verified yaw-only formula below for level target-facing matrices, or use the cardinal examples when you need an exact axis-aligned facing.
 
 ### Safe yaw-only formula
 
@@ -343,11 +340,11 @@ For most mission-authoring purposes, keep ships level and rotate only on the XZ 
 orientation: [fz, 0.0, -fx, 0.0, 1.0, 0.0, fx, 0.0, fz]
 ```
 
-This formula is FRED-verified for level yaw-only facing: the visible ship nose points along the normalized desired XZ vector `[fx, fz]`, while the ship top remains aligned with world +Y. If `len` is zero, the source and target have the same XZ position and no meaningful yaw can be computed.
+This formula is verified for level yaw-only facing: the ship nose points along the normalized desired XZ vector `[fx, fz]`, while the ship top remains aligned with world +Y. If `len` is zero, the source and target have the same XZ position and no meaningful yaw can be computed.
 
 Cardinal examples:
 
-| Desired visible nose direction | Visible top direction | Orientation matrix |
+| Desired nose direction | Top direction | Orientation matrix |
 |---|---|---|
 | Face world +X | world +Y | `[0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]` |
 | Face world -X | world +Y | `[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0]` |
@@ -356,11 +353,9 @@ Cardinal examples:
 | Face world +Z | world +Y | `[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]` |
 | Face world -Z | world +Y | `[-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]` |
 
-For arbitrary non-cardinal pitched 3D facings, prefer a tested helper or a mission-start `set-object-facing-object` setup event rather than hand-authoring a full 3D matrix by intuition.
+For arbitrary non-cardinal pitched 3D facings, prefer to specify the faced object name in the `orientation` field, rather than hand-authoring a full 3D matrix by intuition.
 
-### Standalone ships:
-
-Standalone ships may author the `orientation` field directly. It is a flat 9-float rotation matrix.
+### Standalone ship example:
 
 ```yaml
 entities:
@@ -380,9 +375,9 @@ entities:
       orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
 ```
 
-### Wings:
+### Wing example:
 
-Author `orientation` directly on the wing definition. The loader copies the orientation value to every expanded wing member at spawn time, giving all ships in the wing the same initial facing.
+The loader copies the orientation value to every expanded wing member at spawn time, giving all ships in the wing the same initial facing.
 
 ```yaml
 entities:
@@ -402,28 +397,9 @@ entities:
       orientation: [-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]
 ```
 
-### Using orientation setup event
-
-For more dynamic or readable intent — for example when a ship or wing should face a named ship that exists elsewhere in the mission — use a mission-start setup event with `set-object-facing-object`.
-
-```yaml
-mission_flow:
-  events:
-    - name: "SetInitialFacing"
-      formula: |
-        ( when
-          ( true )
-          ( set-object-facing-object "Alpha" "SD Ravana" )
-          ( set-object-facing-object "Gamma" "SC Malphas" )
-          ( set-object-facing-object "GTD Galatea" "SD Valac" )
-        )
-```
-
-Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact signatures before using this operator.
-
 ### Automatic facing: `orientation: object_name`
 
-When you want a ship or wing to point its nose at a known object in the mission, you can author `orientation` as a quoted string containing the target's name instead of computing the matrix yourself. The converter resolves the name to a world-space position at load time and computes the correct facing matrix automatically, using the same algorithm as FSO's `set-object-facing-object`.
+When you want a ship or wing to point its nose at a known object in the mission, you can author `orientation` as a quoted string containing the target's name instead of computing the matrix yourself. The converter resolves the name to a world-space position at load time and computes the correct facing matrix automatically.
 
 **Valid target types:**
 - Any **ship** in the mission, including individual wing members (e.g. `"Alpha 1"`, `"GTC Dauntless"`)
@@ -465,26 +441,9 @@ entities:
       orientation: "GTC Dauntless"
 ```
 
-**Wing behavior:** When `orientation` is a string on a wing, each wing member independently faces the target from its own spawn position (not from the wing centroid). For typical mission-scale distances (hundreds to thousands of meters) the per-member angle variation is negligible and all members will appear to face the target.
-
-**How the matrix is computed:** The algorithm matches FSO's `vm_vector_2_matrix` (forward-only form, default up = world +Y):
-- Forward vector = normalize(target - source).
-- Right vector = normalize(`[fz, 0, -fx]`) — FSO's horizontal-perpendicular formula.
-- Up vector = forward × right.
-- For a level target (same Y as source) this reduces exactly to the documented yaw-only formula `[fz, 0, -fx, 0, 1, 0, fx, 0, fz]`.
-
-**Error cases (fatal, aborts conversion):**
-- Target name not found in the mission → error listing available names.
-- Source and target at the same position (zero forward vector) → error.
-
 **When to use each approach:**
 
-| Need | Recommended approach |
-|---|---|
-| Level facing toward a fixed named object | `orientation: "ObjectName"` (this feature) |
-| Pitched 3D facing toward a fixed named object | `orientation: "ObjectName"` (this feature) |
-| Runtime re-facing during the mission | `set-object-facing-object` SEXP in a setup event |
-| Exact cardinal or hand-computed matrix | Explicit 9-float `orientation` matrix |
+If you need to set the object facing toward a fixed named object, use `orientation: "ObjectName"`. If you need to set the orientation in an exact cardinal direction, or in a direction with easily hand-computable matrix, or in an approximate direction (where no target object exists), use the 9-float `orientation` matrix.
 
 ### Sanity-check target vectors
 
