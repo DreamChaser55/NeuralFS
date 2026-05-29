@@ -221,8 +221,16 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         fsif_provider=fsif_tts_provider,
     )
 
+    # Report TTS state clearly. When generation is disabled (the default),
+    # `final_provider` is always 'none'; surface the mission's declared/intended
+    # provider (validation_provider, here named `provider`) instead so the line
+    # is not misleading.
+    if tts_enabled:
+        logger.info(f"[INFO] TTS Generation enabled. TTS provider: {final_provider}")
+    else:
+        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {provider}).")
+
     # Extended Validation
-    logger.info(f"[INFO] TTS Provider: {final_provider}")
     logger.info(f"[INFO] Validating mission structure...")
     # Determine root directory (where script/Documentation are)
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
