@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Dict
 import fs_flags_constants
 
@@ -83,6 +84,24 @@ class MiscChecksMixin:
             self.log_error(f"Invalid mission_music '{audio.mission_music}'")
         if audio.briefing_music and audio.briefing_music not in self.allowed_music_briefing:
             self.log_error(f"Invalid briefing_music '{audio.briefing_music}'")
+
+    def validate_mission_filename_length(self):
+        """Validate that the output .fs2 mission filename does not exceed 30 characters.
+
+        FSO uses the mission filename as an internal token; filenames longer
+        than 30 characters (including the ``.fs2`` extension) are not supported
+        by the engine.  The check is skipped when no ``fsif_path`` was provided
+        to the validator (e.g. in unit tests that only supply in-memory data).
+        """
+        if not self.fsif_path:
+            return
+        fs2_name = Path(self.fsif_path).with_suffix('.fs2').name
+        if len(fs2_name) > 30:
+            self.log_error(
+                f"Output mission filename '{fs2_name}' is {len(fs2_name)} characters long, "
+                f"which exceeds the FSO limit of 30 characters (including the .fs2 extension). "
+                f"Rename the file to shorten it to 30 characters or fewer."
+            )
 
     def validate_goals_and_directives(self):
         """

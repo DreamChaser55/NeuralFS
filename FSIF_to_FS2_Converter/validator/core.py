@@ -170,6 +170,7 @@ class Validator(
         self.validate_global_names()
         self.validate_ascii_text_fields()
         self.validate_mission_info()
+        self.validate_mission_filename_length()
         self.validate_environment()
         self.validate_mission_scale_recommendations()
         self.validate_3d_mission_design()
