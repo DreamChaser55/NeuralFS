@@ -114,7 +114,7 @@
 - `class` (String, required)
 - `team` (String, required). Enum: `"Friendly"`, `"Hostile"`, `"Unknown"`.
 - `position` (List[Float], required for `ships`). Format: `[x, y, z]`. World-space spawn location.
-- `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats in row-major FS2 `$Orientation:` order: `[m00, m01, m02, m10, m11, m12, m20, m21, m22]`. The identity matrix `[1, 0, 0, 0, 1, 0, 0, 0, 1]` points the ship nose along world `+Z` and the ship top along world `+Y`. The converter emits the authored matrix directly; it does not transpose it or convert between math-library matrix conventions. Do not infer target-facing yaw matrices from generic local-to-world matrix examples; use the FRED-verified yaw-only formula in the Authoring Guide.
+- `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats in row-major FS2 `$Orientation:` order: `[m00, m01, m02, m10, m11, m12, m20, m21, m22]`. FRED interprets the three rows as the ship's world-space basis vectors: row 1 `[m00, m01, m02]` is local right, row 2 `[m10, m11, m12]` is local up/top, and row 3 `[m20, m21, m22]` is local forward/nose. Therefore the visible nose direction is row 3 and the visible top direction is row 2. The identity matrix `[1, 0, 0, 0, 1, 0, 0, 0, 1]` points the ship nose along world `+Z` and the ship top along world `+Y`. Authored matrices should be orthonormal rotation matrices. The converter emits the authored matrix directly; it does not transpose it or convert between math-library matrix conventions. Do not infer target-facing matrices from generic local-to-world examples; use the FRED-verified formulas and cardinal examples in the Authoring Guide.
 - `ai_class` (String, optional)
 - `cargo` (String, optional, default: `"Nothing"`)
 - `initial_speed_percent` (Integer, optional, default: `33`). Ship speed at spawn as a percentage (0–100).
@@ -142,7 +142,7 @@
 - `template` (String, required). Name of a template defined in `ship_templates`.
 - `count` (Integer, required). Number of ships in the wing.
 - `position` (List[Float], required). Format: `[x, y, z]`. Centroid of the wing's spawn line. Individual ship positions are computed along the X axis spaced `member_spacing` meters apart.
-- `orientation` (List[Float], optional, default: Identity matrix). Format: 9 floats in row-major FS2 `$Orientation:` order: `[m00, m01, m02, m10, m11, m12, m20, m21, m22]`. Shared initial facing applied to every expanded wing member at spawn time. When omitted, all members use the identity matrix, which points noses along world `+Z` and tops along world `+Y`. The converter emits the authored matrix directly; it does not transpose it or convert between math-library matrix conventions. Do not infer target-facing yaw matrices from generic local-to-world matrix examples; use the FRED-verified yaw-only formula in the Authoring Guide.
+- `orientation` (List[Float], optional, default: Identity matrix). Format: see the same field in the Ship Properties section.
 - `wave_count` (Integer, optional, default: `1`). Number of waves for this wing.
 - `next_wave_threshold` (Integer, optional, default: `0`). Minimum surviving ships before the next wave spawns.
 - `next_wave_delay_min` (Integer, optional). Minimum delay in seconds before next wave.

@@ -315,13 +315,21 @@ FSIF `orientation` stores the same 3x3 matrix that the converter writes into the
  m20, m21, m22]
 ```
 
+FRED interprets the rows as the ship's world-space basis vectors:
+
+- Row 1 `[m00, m01, m02]` is the ship's local right direction.
+- Row 2 `[m10, m11, m12]` is the ship's local up/top direction.
+- Row 3 `[m20, m21, m22]` is the ship's local forward/nose direction.
+
+Therefore, the visible ship nose direction is the third row of the matrix, and the visible ship top direction is the second row. Authored matrices should be orthonormal rotation matrices: rows should be unit length, mutually perpendicular, and use a consistent right-handed basis. Non-orthonormal matrices may produce skewed or invalid object orientation in FRED/FSO.
+
 In FRED, the identity matrix points the ship nose along world +Z and the ship top along world +Y:
 
 ```yaml
 orientation: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
 ```
 
-The converter writes the authored matrix directly; it does not transpose the matrix or convert from game-engine convention to a math-library convention. A common mistake is to build the matrix from a generic local-to-world formula and accidentally use the wrong sign or transpose, which produces systematic 90-degree or 180-degree errors in FRED. Use the FRED-verified yaw-only formula below for level target-facing matrices.
+The converter writes the authored matrix directly; it does not transpose the matrix or convert from game-engine convention to a math-library convention. A common mistake is to build the matrix from a generic local-to-world formula and accidentally use the wrong sign or transpose, which produces systematic 90-degree or 180-degree errors in FRED. Use the FRED-verified yaw-only formula below for level target-facing matrices, or use the cardinal examples when you need an exact axis-aligned facing.
 
 ### Safe yaw-only formula
 
@@ -337,16 +345,18 @@ orientation: [fz, 0.0, -fx, 0.0, 1.0, 0.0, fx, 0.0, fz]
 
 This formula is FRED-verified for level yaw-only facing: the visible ship nose points along the normalized desired XZ vector `[fx, fz]`, while the ship top remains aligned with world +Y. If `len` is zero, the source and target have the same XZ position and no meaningful yaw can be computed.
 
-Cardinal FRED-verified yaw-only examples:
+Cardinal examples:
 
-| Desired visible nose direction | Orientation matrix |
-|---|---|
-| Face world +X | `[0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]` |
-| Face world +Z | `[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]` |
-| Face world -X | `[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0]` |
-| Face world -Z | `[-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]` |
+| Desired visible nose direction | Visible top direction | Orientation matrix |
+|---|---|---|
+| Face world +X | world +Y | `[0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]` |
+| Face world -X | world +Y | `[0.0, 0.0, 1.0, 0.0, 1.0, 0.0, -1.0, 0.0, 0.0]` |
+| Face world +Y | world -Z | `[1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0]` |
+| Face world -Y | world +Z | `[1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, -1.0, 0.0]` |
+| Face world +Z | world +Y | `[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]` |
+| Face world -Z | world +Y | `[-1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0]` |
 
-For pitched 3D facings, prefer a tested helper or a mission-start `set-object-facing-object` setup event rather than hand-authoring a full 3D matrix by intuition.
+For arbitrary non-cardinal pitched 3D facings, prefer a tested helper or a mission-start `set-object-facing-object` setup event rather than hand-authoring a full 3D matrix by intuition.
 
 ### Standalone ships:
 
