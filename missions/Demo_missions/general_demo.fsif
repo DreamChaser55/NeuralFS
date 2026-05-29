@@ -72,7 +72,7 @@ entities:
       class: "GTC Leviathan"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
-      orientation: [0.600000, 0.000000, -0.800000, 0.000000, 1.000000, 0.000000, 0.800000, 0.000000, 0.600000]
+      orientation: "DauntlessPath:1"
       escort_list_priority: 90
       initial_hull_percent: 60
       flags: ["escort"]
@@ -91,7 +91,7 @@ entities:
       class: "GTFr Poseidon"
       team: "Friendly"
       position: [-500.0, -300.0, -500.0]
-      orientation: [0.600000, 0.000000, -0.800000, 0.000000, 1.000000, 0.000000, 0.800000, 0.000000, 0.600000]
+      orientation: "TrentPath:1"
       flags: ["hidden-from-sensors", "escort"]
       departure_method: "Hyperspace"
       departure_cue: |
@@ -115,13 +115,13 @@ entities:
       class: "GTC Fenris"
       team: "Friendly"
       position: [-1000.0, 500.0, -1000.0]
-      orientation: [0.707107, 0.000000, -0.707107, 0.000000, 1.000000, 0.000000, 0.707107, 0.000000, 0.707107]
+      orientation: "SomersetAttackPath:1"
 
     - name: "SFr Mahishi"
       class: "SFr Mephisto"
       team: "Hostile"
       position: [1500.0, 500.0, -1000.0]
-      orientation: [0.287348, 0.000000, -0.957826, 0.000000, 1.000000, 0.000000, 0.957826, 0.000000, 0.287348]
+      orientation: "Delta Serpentis Jump Node"
       flags: ["scannable", "escort"]
       escort_list_priority: 50
       cargo: "Shivan Logistics Data"
@@ -137,7 +137,7 @@ entities:
       class: "SC Cain"
       team: "Hostile"
       position: [2500.0, 0.0, 3000.0]
-      orientation: [0.447214, 0.000000, -0.894427, 0.000000, 1.000000, 0.000000, 0.894427, 0.000000, 0.447214]
+      orientation: "GTC Dauntless"
       flags: ["escort"]
       arrival_method: "Hyperspace"
       arrival_cue: |
@@ -147,6 +147,7 @@ entities:
       class: "SF Manticore"
       team: "Hostile"
       position: [2000.0, 500.0, 2500.0]
+      orientation: "GTC Dauntless"
       flags: ["kamikaze", "escort"]
       escort_list_priority: 80
       weapons:
@@ -164,6 +165,7 @@ entities:
       template: "alpha_fighter"
       count: 4
       position: [500.0, 0.0, 500.0]
+      orientation: "GTC Dauntless"
       initial_orders: |
         ( ai-guard "GTC Dauntless" 95 )
 
@@ -171,6 +173,7 @@ entities:
       template: "delta_fighter"
       count: 4
       position: [-500.0, 0.0, -500.0]
+      orientation: "GTC Dauntless"
       initial_orders: |
         ( ai-guard "GTC Dauntless" 80 )
 
@@ -178,6 +181,7 @@ entities:
       template: "shivan_fighter"
       count: 4
       position: [0.0, 0.0, 1500.0]
+      orientation: "GTC Dauntless"
       wave_count: 2
       next_wave_threshold: 1
       next_wave_delay_min: 5
@@ -193,6 +197,7 @@ entities:
       template: "shivan_bomber"
       count: 4
       position: [0.0, 0.0, 2000.0]
+      orientation: "GTC Dauntless"
       wave_count: 2
       next_wave_threshold: 1
       next_wave_delay_min: 15
