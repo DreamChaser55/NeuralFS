@@ -304,6 +304,8 @@ Use deliberate initial facing for:
 - ships with waypoints
 - installations or large static set pieces that would otherwise look grid-aligned
 
+> **Note:** `orientation` only takes effect for ships and wings that arrive via `Hyperspace`. For any other arrival method (`Docking Bay`, `Near Ship`, `In front of ship`, `In back of ship`, `Above ship`, `Below ship`, `To left of ship`, `To right of ship`), the FSO engine **ignores** the authored `orientation` and always auto-rotates the ship or wing to face its `arrival_anchor`. Do **not** set `orientation` on ships or wings with non-Hyperspace arrivals.
+
 ### FSO orientation matrix layout
 
 FSIF `orientation` stores a 3x3 matrix. The flat list is row-major:
@@ -708,6 +710,7 @@ Note: These also need to be unlocked. The maximum quantities needed to fully equ
 - Directional `arrival_method` (Near Ship, In front of/behind/above/below/left/right of ship) requires both `arrival_anchor` and `arrival_distance`.
 - `Docking Bay`: `arrival_distance` is forced to `0` and should be omitted.
 - FSO SEXP docs refer to `arrival_method` as "arrival location" and `departure_method` as "departure location".
+- `orientation` is ignored for all non-Hyperspace arrivals. FSO auto-faces the ship/wing toward its `arrival_anchor`.
 
 ## Maximum mission scale recommendation
 - Keep distances between all points of interest **below 20 km** whenever possible.

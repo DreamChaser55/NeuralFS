@@ -56,7 +56,6 @@ entities:
       class: "SC Cain"
       team: "Hostile"
       position: [2000.0, 200.0, 2500.0]
-      orientation: "Alpha 1"
       flags: ["escort"]
       arrival_anchor: "Alpha 1"
       arrival_method: "In front of ship"
@@ -80,7 +79,6 @@ entities:
       count: 3
       wave_count: 2
       position: [2000.0, 0.0, 2000.0]
-      orientation: "Alpha"
       arrival_anchor: "SC Dakini"
       arrival_method: "Near Ship"
       arrival_distance: 500

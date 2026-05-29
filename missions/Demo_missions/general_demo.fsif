@@ -181,7 +181,6 @@ entities:
       template: "shivan_fighter"
       count: 4
       position: [0.0, 0.0, 1500.0]
-      orientation: "GTC Dauntless"
       wave_count: 2
       next_wave_threshold: 1
       next_wave_delay_min: 5
@@ -197,7 +196,6 @@ entities:
       template: "shivan_bomber"
       count: 4
       position: [0.0, 0.0, 2000.0]
-      orientation: "GTC Dauntless"
       wave_count: 2
       next_wave_threshold: 1
       next_wave_delay_min: 15

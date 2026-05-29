@@ -627,6 +627,9 @@ class ShipWingChecksMixin:
             # Ships with orientation_target have deliberate facing — skip advisory.
             if getattr(ship, 'orientation_target', None) is not None:
                 continue
+            # FSO ignores orientation for non-Hyperspace arrivals — skip advisory.
+            if ship.arrival_method.strip().lower() != "hyperspace":
+                continue
             if self._is_identity_orientation(ship.orientation):
                 flagged_ships.append(ship)
 
@@ -659,6 +662,9 @@ class ShipWingChecksMixin:
             # Wings with orientation_target have deliberate facing — skip advisory.
             if getattr(wing, 'orientation_target', None) is not None:
                 continue
+            # FSO ignores orientation for non-Hyperspace arrivals — skip advisory.
+            if wing.arrival_method.strip().lower() != "hyperspace":
+                continue
             if wing.orientation is None:
                 flagged_wings.append(wing)
 
@@ -678,6 +684,67 @@ class ShipWingChecksMixin:
                 f"shared initial facing, or use a mission-start `set-object-facing-object` event. "
                 f"See the FSIF Authoring Guide - 'Initial ship orientation and facing direction'."
             )
+
+    def validate_orientation_ignored_for_nonhyperspace_arrival(self):
+        """Advisory check: warn when a ship or wing has a deliberate non-default
+        ``orientation`` but uses a non-Hyperspace arrival method.
+
+        The FSO engine ignores the authored ``orientation`` for any non-Hyperspace
+        arrival (Docking Bay, Near Ship, In front of/behind/above/below/left/right
+        of ship).  FSO always overrides the orientation to face the arrival_anchor
+        for these methods, so an authored orientation is dead data and should be
+        removed to avoid confusion.
+
+        The check fires when BOTH conditions hold:
+        1. ``arrival_method`` is not ``"Hyperspace"``.
+        2. A deliberate orientation was authored — either ``orientation_target`` is
+           set (string target name was authored) OR the orientation matrix differs
+           from the identity default.
+
+        Both ships and wings are checked.  The warning is advisory and does not
+        abort conversion.
+        """
+        # Compute wing-member names once so we can skip them in the ship loop.
+        # Wing members inherit orientation from the wing definition itself;
+        # the relevant check for those is the wing-level loop below.
+        wing_member_names: set = set()
+        for wing in self.mission.wings:
+            for ws in wing.ships:
+                wing_member_names.add(ws.name)
+
+        for ship in self.mission.ships:
+            if ship.name in wing_member_names:
+                continue
+            if ship.arrival_method.strip().lower() == "hyperspace":
+                continue
+            has_deliberate_orientation = (
+                getattr(ship, 'orientation_target', None) is not None
+                or not self._is_identity_orientation(ship.orientation)
+            )
+            if has_deliberate_orientation:
+                self.log_warning(
+                    f"Ship '{ship.name}' has a non-default `orientation` "
+                    f"but uses arrival_method '{ship.arrival_method}'. "
+                    f"FSO ignores `orientation` for non-Hyperspace arrivals — "
+                    f"the ship is always auto-oriented to face its arrival_anchor. "
+                    f"Remove the `orientation` field from this ship."
+                )
+
+        for wing in self.mission.wings:
+            if wing.arrival_method.strip().lower() == "hyperspace":
+                continue
+            has_deliberate_orientation = (
+                getattr(wing, 'orientation_target', None) is not None
+                or not self._is_identity_orientation(wing.orientation)
+            )
+            if has_deliberate_orientation:
+                self.log_warning(
+                    f"Wing '{wing.name}' has a non-default `orientation` "
+                    f"but uses arrival_method '{wing.arrival_method}'. "
+                    f"FSO ignores `orientation` for non-Hyperspace arrivals — "
+                    f"the wing is always auto-oriented to face its arrival_anchor. "
+                    f"Remove the `orientation` field from this wing."
+                )
 
     def validate_large_ship_escort_recommendation(self):
         """

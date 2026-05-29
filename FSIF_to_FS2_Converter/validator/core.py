@@ -182,6 +182,7 @@ class Validator(
         self.validate_standalone_wing_name_patterns()
         self.validate_large_ship_escort_recommendation()
         self.validate_large_ship_orientation_defaults()
+        self.validate_orientation_ignored_for_nonhyperspace_arrival()
         self.validate_start_ship()
         self.validate_player_setup()
         self.validate_docking()

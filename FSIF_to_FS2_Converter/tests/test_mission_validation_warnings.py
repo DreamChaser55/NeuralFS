@@ -201,5 +201,171 @@ class MissionValidationWarningsTesting(SilencedTestCase):
         )
 
 
+class OrientationIgnoredForNonHyperspaceWarningTests(SilencedTestCase):
+    """Tests for the advisory warning that fires when a ship/wing has a
+    deliberate orientation but uses a non-Hyperspace arrival method."""
+
+    # Non-identity orientation matrix (facing +X direction).
+    _NON_IDENTITY = [0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0]
+    # Identity orientation (default; should NOT trigger the warning).
+    _IDENTITY = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+
+    # ------------------------------------------------------------------
+    # Ship: positive cases (warning should fire)
+    # ------------------------------------------------------------------
+
+    def test_ship_nonhyperspace_arrival_with_nontrivial_orientation_matrix_warns(self):
+        """Standalone ship with non-Hyperspace arrival and non-identity orientation warns."""
+        mission = make_valid_mission()
+        ship = Ship.model_validate(
+            {
+                "name": "SC Cain 1",
+                "class": "SC Cain",
+                "team": "Hostile",
+                "position": [2000.0, 0.0, 3000.0],
+                "orientation": self._NON_IDENTITY,
+                "arrival_method": "In front of ship",
+                "arrival_anchor": "Alpha 1",
+                "arrival_distance": 1500,
+                "arrival_cue": "( true )",
+            }
+        )
+        mission.ships.append(ship)
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "SC Cain 1" in w and "orientation" in w and "In front of ship" in w
+                for w in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_ship_nonhyperspace_arrival_with_orientation_target_warns(self):
+        """Standalone ship with non-Hyperspace arrival and orientation_target set warns."""
+        mission = make_valid_mission()
+        ship = Ship.model_validate(
+            {
+                "name": "SC Cain 2",
+                "class": "SC Cain",
+                "team": "Hostile",
+                "position": [2000.0, 0.0, 3000.0],
+                "arrival_method": "Near Ship",
+                "arrival_anchor": "Alpha 1",
+                "arrival_distance": 500,
+                "arrival_cue": "( true )",
+            }
+        )
+        # Simulate the loader having resolved an orientation target name.
+        ship.orientation_target = "Alpha 1"
+        mission.ships.append(ship)
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "SC Cain 2" in w and "orientation" in w and "Near Ship" in w
+                for w in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    # ------------------------------------------------------------------
+    # Wing: positive case (warning should fire)
+    # ------------------------------------------------------------------
+
+    def test_wing_nonhyperspace_arrival_with_nontrivial_orientation_warns(self):
+        """Wing with non-Hyperspace arrival and non-identity orientation warns."""
+        mission = make_valid_mission()
+        wing_ship = Ship.model_validate(
+            {
+                "name": "Rama 1",
+                "class": "SF Scorpion",
+                "team": "Hostile",
+                "position": [500.0, 0.0, 1500.0],
+                "arrival_cue": "( true )",
+                "weapons": {"primary": ["Shivan Light Laser", "Shivan Light Laser"], "secondary": ["MX-50#Shivan"]},
+            }
+        )
+        hostile_wing = Wing(
+            name="Rama",
+            count=1,
+            ships=[wing_ship],
+            position=[500.0, 0.0, 1500.0],
+            orientation=self._NON_IDENTITY,
+            arrival_method="Above ship",
+            arrival_anchor="Alpha 1",
+            arrival_distance=1800,
+            arrival_cue="( true )",
+            initial_orders="( ai-chase-any 89 )",
+        )
+        mission.ships.append(wing_ship)
+        mission.wings.append(hostile_wing)
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Rama" in w and "orientation" in w and "Above ship" in w
+                for w in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    # ------------------------------------------------------------------
+    # Negative cases (warning should NOT fire)
+    # ------------------------------------------------------------------
+
+    def test_ship_hyperspace_arrival_with_nontrivial_orientation_does_not_warn(self):
+        """Ship with Hyperspace arrival and non-identity orientation must NOT warn."""
+        mission = make_valid_mission()
+        ship = Ship.model_validate(
+            {
+                "name": "SC Cain 3",
+                "class": "SC Cain",
+                "team": "Hostile",
+                "position": [2000.0, 0.0, 3000.0],
+                "orientation": self._NON_IDENTITY,
+                "arrival_method": "Hyperspace",
+                "arrival_cue": "( true )",
+            }
+        )
+        mission.ships.append(ship)
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any(
+                "SC Cain 3" in w and "orientation" in w and "arrival_method" in w
+                for w in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_ship_nonhyperspace_arrival_with_identity_orientation_does_not_warn(self):
+        """Ship with non-Hyperspace arrival but identity orientation must NOT warn."""
+        mission = make_valid_mission()
+        ship = Ship.model_validate(
+            {
+                "name": "SC Cain 4",
+                "class": "SC Cain",
+                "team": "Hostile",
+                "position": [2000.0, 0.0, 3000.0],
+                "orientation": self._IDENTITY,
+                "arrival_method": "In front of ship",
+                "arrival_anchor": "Alpha 1",
+                "arrival_distance": 1500,
+                "arrival_cue": "( true )",
+            }
+        )
+        mission.ships.append(ship)
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any(
+                "SC Cain 4" in w and "orientation" in w and "arrival_method" in w
+                for w in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

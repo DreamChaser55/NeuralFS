@@ -53,6 +53,8 @@ All of these require both `arrival_distance` and a ship `arrival_anchor`.
 - To left of ship
 - To right of ship
 
+Note: with non-Hyperspace arrival methods, ship or wing orientation is always set to face the `arrival_anchor` (`orientation` field is ignored).
+
 Example usage (wing arrival anchored to any friendly player):
 ```yaml
 name: Arjuna
