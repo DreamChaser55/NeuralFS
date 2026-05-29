@@ -307,12 +307,7 @@ The Project Structure lists `tts_provider_base.py`, `tts_google.py`, `tts_eleven
 
 ### 7.7 Spec: `_FORBIDDEN_TEMPLATE_FIELDS` and spec list differ slightly — LOW
 
-**File:** `FSIF_to_FS2_Converter/mission_loader.py` vs `Documentation/fsif/specification.md`
-
-The spec lists the following fields as forbidden in `ship_templates`:
-> `arrival_method`, `arrival_anchor`, `arrival_distance`, `arrival_delay`, `arrival_cue`, `departure_method`, `departure_anchor`, `departure_delay`, `departure_cue`, `initial_orders`, `dock`, `docked_with`, `docker_point`, `dockee_point` ... `name`, `position`, `orientation`, `template`
-
-The loader's `_FORBIDDEN_TEMPLATE_FIELDS` tuple includes `orientation` and `position` but does **not** include `arrival_distance`, `departure_delay`, or `dockee_point` as separate entries (some are implicitly excluded via `ShipTemplateInput` schema). This discrepancy between the spec and the code reinforces that the manual check is unreliable and should be replaced by relying solely on the Pydantic schema (§4.1).
+**ALREADY ADDRESSED**
 
 ---
 
@@ -326,18 +321,9 @@ The tokens reference notes that `"Terran NavBuoy"` must not be used as `display_
 
 ## 8. Repository Cleanliness
 
-### 8.1 Work-in-progress content in the repository root — MEDIUM
+### 8.1 <snip>
 
-The repository root contains content that is not described in `README.md`:
-
-- `missions/battle_of_endor_style.fsif` — a development FSIF file outside the documented `Demo_missions/` folder
-- `plans/battle_of_endor_style_implementation_plan.md` — a mission implementation plan, not a demo
-- `Vega_Requiem/` — a full campaign directory with bible, FCIF, FSIFs, and plans
-- `tools/` — an undocumented tools directory
-
-These are clearly active development artifacts rather than documented examples. They should either:
-- Be documented in `README.md` (if they are intended as additional examples), or
-- Be added to `.gitignore` or moved to a clearly-named `work_in_progress/` or `scratch/` area that the README acknowledges as non-stable.
+**ALREADY ADDRESSED**
 
 ---
 
@@ -358,10 +344,7 @@ The runtime converter only needs the generated files (`fs_data.py`, `weapons_com
 
 | Priority | Finding | Action |
 |---|---|---|
-| **Medium** | §4.1 — Redundant template forbidden-field check | Remove `_FORBIDDEN_TEMPLATE_FIELDS` and `_validate_ship_template_authoring_rules`; rely on `ShipTemplateInput` schema |
-| **Medium** | §4.5 — `validate_anchors` code duplication | Refactor ship/wing blocks into a shared helper method |
 | **Medium** | §7.1 — README missing `pydantic>=2.0` | Update Requirements section |
-| **Medium** | §8.1 — WIP content not described in README | Document or isolate WIP content |
 | **Low** | §3.1 — Docstring mismatch in `process_mission` | Fix `tts_settings['provider']` default description to `None` |
 | **Low** | §3.2 — `_get_ship_radius` prefix heuristic | Use a safer catch-all default (e.g., fighter-scale) or document the known edge case |
 | **Low** | §3.3 — No-op `env_data['nebula'] = neb_src` | Remove the assignment |
