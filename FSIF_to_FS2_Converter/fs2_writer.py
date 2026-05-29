@@ -876,7 +876,7 @@ class FS2Writer:
             return
 
         self._write('\n#Asteroid Fields\n')
-        self._write(f'$Density: {fld.num_objects}') # This FS2 field name is misleading - it actually represents the total number of objects in the field, not a density value.
+        self._write(f'$Density: {fld.num_objects}')
         field_type_int   = 0 if fld.behavior == 'active'   else 1
         debris_genre_int = 0 if fld.object_type == 'asteroid' else 1
         self._write(f'+Field Type: {field_type_int}')

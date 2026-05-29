@@ -35,54 +35,19 @@ def resolve_tts_provider(
 ):
     """Resolve the effective TTS provider name and generation-enabled flag.
 
-    This is the single source of truth for TTS provider precedence.  It
-    encodes the following priority order:
+    Provider precedence (CLI/caller > FSIF file > built-in default 'google'):
+    1. ``tts_enabled=False`` always yields ``final_provider='none'`` and
+       ``generation_enabled=False``, but ``validation_provider`` still reflects
+       the intended provider (CLI/FSIF/default) so voice-name validation uses the
+       correct voice list. A declared provider of ``'none'`` maps to ``'google'``
+       for validation purposes so that ``validation_provider`` is never ``'none'``.
+    2. ``cli_provider`` (one of ``_KNOWN_PROVIDERS``) overrides the FSIF setting.
+    3. ``fsif_provider`` (``audio.tts_provider``) is used when ``cli_provider``
+       is ``None``.
+    4. Falls back to ``'google'`` when neither source specifies a provider.
 
-    1. If *tts_enabled* is False, TTS generation is disabled (``final_provider``
-       is always ``'none'`` and ``generation_enabled`` is always ``False``).
-       However, ``validation_provider`` is derived from the normal CLI/FSIF/default
-       precedence so that the validator can still name-check voice fields against
-       the correct provider's voice list (e.g. an ElevenLabs mission is validated
-       against ElevenLabs voices, not Google voices).  A declared provider of
-       ``'none'`` maps to ``'google'`` so that ``validation_provider`` is never
-       ``'none'``.
-    2. If *cli_provider* is one of the known provider names (``'google'``,
-       ``'elevenlabs'``, ``'inworld'``, ``'none'``) it overrides the FSIF
-       setting completely.
-    3. If *cli_provider* is ``None`` (i.e. omitted from the CLI / GUI) the
-       FSIF file's ``audio.tts_provider`` value is used when present.
-    4. When neither source specifies a provider the built-in default is
-       ``'google'``.
-
-    The GUI maps its "From FSIF File" radio button to ``None`` before calling
-    ``process_mission()``, so it follows the same path as an omitted CLI flag.
-    The old tolerance for a literal ``'fsif'`` string has been removed; callers
-    must pass ``None`` to indicate "defer to FSIF file".
-
-    Parameters
-    ----------
-    tts_enabled:
-        Whether the caller has explicitly enabled TTS generation (e.g. via
-        ``--enable-tts`` on the CLI or the GUI checkbox).
-    cli_provider:
-        Provider string supplied by the caller, or ``None`` when omitted.
-        Must be one of ``_KNOWN_PROVIDERS`` or ``None``.
-    fsif_provider:
-        The ``audio.tts_provider`` value read from the loaded FSIF file, or
-        ``None`` when the field is absent/empty.
-
-    Returns
-    -------
-    tuple[str, bool, str]
-        ``(final_provider, generation_enabled, validation_provider)``
-
-        * *final_provider* — the canonical provider name string
-          (``'google'`` / ``'elevenlabs'`` / ``'inworld'`` / ``'none'``).
-        * *generation_enabled* — ``True`` when voice files should be
-          generated (i.e. *final_provider* != ``'none'``).
-        * *validation_provider* — the provider to pass to the Validator and
-          VoiceManager even when generation is disabled; always a real
-          provider name (never ``'none'``).
+    Returns ``(final_provider, generation_enabled, validation_provider)``.
+    Pass ``cli_provider=None`` to defer to the FSIF file setting.
     """
     # Normalise cli_provider to lowercase if supplied
     if cli_provider is not None:
@@ -138,7 +103,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     :param output_file: Optional path for the output .fs2 file.
     :param tts_settings: Dictionary containing TTS options:
                          - enabled: bool (default False)
-                         - provider: str (default 'google')
+                         - provider: str | None (default: None, i.e. defer to FSIF file setting)
                          - mode: str (default 'unique', can be 'unique', 'overwrite', or 'keep')
                          - dry_run: bool (default False)
                          - api_key: str (optional)
@@ -215,7 +180,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     # resolve_tts_provider() encodes the full precedence in one tested place:
     #   CLI/caller > FSIF file > built-in default ('google').
     fsif_tts_provider = mission.audio.tts_provider if mission.audio and mission.audio.tts_provider else None
-    final_provider, tts_enabled, provider = resolve_tts_provider(
+    final_provider, generation_enabled, validation_provider = resolve_tts_provider(
         tts_enabled=bool(tts_opts.get('enabled')),
         cli_provider=tts_opts.get('provider'),
         fsif_provider=fsif_tts_provider,
@@ -223,19 +188,18 @@ def process_mission(input_file, output_file=None, tts_settings=None):
 
     # Report TTS state clearly. When generation is disabled (the default),
     # `final_provider` is always 'none'; surface the mission's declared/intended
-    # provider (validation_provider, here named `provider`) instead so the line
-    # is not misleading.
-    if tts_enabled:
+    # provider (validation_provider) instead so the line is not misleading.
+    if generation_enabled:
         logger.info(f"[INFO] TTS Generation enabled. TTS provider: {final_provider}")
     else:
-        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {provider}).")
+        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {validation_provider}).")
 
     # Extended Validation
     logger.info(f"[INFO] Validating mission structure...")
     # Determine root directory (where script/Documentation are)
     # We assume fsif_to_fs2.py is in the FSIF_to_FS2_Converter subdirectory, so root is parent.
     root_dir = Path(__file__).parent.parent.resolve()
-    validator = Validator(mission, root_dir, ip, tts_provider=provider, fsif_root_node=fsif_root_node)
+    validator = Validator(mission, root_dir, ip, tts_provider=validation_provider, fsif_root_node=fsif_root_node)
     is_valid = validator.validate()
 
     # Advanced SEXP Validation (Core Feature)
@@ -255,22 +219,22 @@ def process_mission(input_file, output_file=None, tts_settings=None):
         return False
 
     # Voice Filename Normalization (if TTS enabled)
-    if tts_enabled:
+    if generation_enabled:
         logger.info(f"[INFO] Normalizing voice filenames (Mode: {mode})...")
         # Update tts_opts so VoiceManager uses the resolved provider
-        tts_opts['provider'] = provider
+        tts_opts['provider'] = validation_provider
         vm = VoiceManager(mission, ip, tts_opts)
         vm.process()
     else:
         logger.info("[INFO] TTS disabled: Skipping voice filename generation (voice lines will be silent in FS2).")
 
     # Generate TTS voice files (if enabled and library available)
-    if tts_enabled:
+    if generation_enabled:
         try:
             from tts_provider_base import TTSConfig, get_provider
             
             tts_config = TTSConfig(
-                provider=provider,
+                provider=validation_provider,
                 skip_existing=skip_existing,
                 dry_run=tts_opts['dry_run'],
                 api_key=tts_opts.get('api_key'),
@@ -281,13 +245,13 @@ def process_mission(input_file, output_file=None, tts_settings=None):
             try:
                 generator = get_provider(tts_config)
             except Exception as e:
-                logger.error(f"[ERROR] Failed to initialize TTS provider '{provider}': {e}")
+                logger.error(f"[ERROR] Failed to initialize TTS provider '{validation_provider}': {e}")
                 logger.error("Check if required libraries are installed (e.g., 'pip install google-genai' for Google, 'pip install elevenlabs' for ElevenLabs, 'pip install requests' for Inworld)")
                 generator = None
 
             if generator:
                 if generator.is_available():
-                    logger.info(f"[INFO] Generating voice files (Provider: {provider}, Mode: {mode})...")
+                    logger.info(f"[INFO] Generating voice files (Provider: {validation_provider}, Mode: {mode})...")
                     items = generator.collect_items_from_mission(mission, ip.parent)
                     
                     if items:
@@ -306,7 +270,7 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                     else:
                         logger.info("[INFO] No voiced lines found - skipping TTS")
                 else:
-                    logger.info(f"[INFO] TTS provider '{provider}' libraries not available - skipping TTS generation")
+                    logger.info(f"[INFO] TTS provider '{validation_provider}' libraries not available - skipping TTS generation")
                     logger.info("       Install 'google-genai' for Google TTS, 'elevenlabs' for ElevenLabs TTS, or 'requests' for Inworld TTS.")
         except Exception as e:
             logger.exception(f"[ERROR] TTS generation failed: {e}")

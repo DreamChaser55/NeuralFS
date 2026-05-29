@@ -221,8 +221,6 @@ class MissionLoader:
                      flags.append('fullneb')
                  
                  mission_info.flags = flags # Update model
-            
-            env_data['nebula'] = neb_src
         
         # Asteroid Field Normalization
         #   Authored FSIF key  -> internal AsteroidField field
@@ -262,8 +260,6 @@ class MissionLoader:
 
             # Cleanup source for strict model
             af_src.pop('bounds', None)
-
-            env_data['asteroid_field'] = af_src
 
         return Environment(**env_data)
 

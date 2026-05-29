@@ -8,7 +8,7 @@ This is the index for all available documentation on FSIF, FCIF, FSO, and the co
 3. Consult the References for valid tokens and exact SEXP operator strings.
 4. Study the demo missions for complete practical examples.
 5. Learn to use the FSIF Converter CLI in `cli.md`.
-6. FSIF Converter emission details are consolidated under Converter Implementation Details.
+6. Read the FSIF Converter Implementation Details for FS2 emission mapping, warnings, and validation messages.
 7. Read the FCIF specification for campaign file authoring.
 8. Learn to use the FCIF Converter CLI.
 

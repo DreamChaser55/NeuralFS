@@ -121,9 +121,7 @@ class BriefingChecksMixin:
         automatically assign to a stage containing the given icons.  This is the
         same value used as the reference distance for the icon proximity check.
 
-        Formula (mirrors _calculate_briefing_camera in mission_loader.py):
-          final_width = max(delta_x, 2.5 * delta_z)
-          cam_width   = max(final_width * 1.15, 1000.0)
+        See ``common.utils.calculate_briefing_camera_height`` for the formula.
 
         Args:
             icons: Iterable of BriefingIcon objects (must have .map_position as [x, 0, z]).

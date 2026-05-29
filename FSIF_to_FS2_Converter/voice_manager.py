@@ -29,19 +29,19 @@ class VoiceManager:
     def process(self) -> None:
         """Iterates through the mission and normalizes voice filenames on the objects."""
         # Messages
-        for idx, msg in enumerate(self.mission.messages):
+        for msg in self.mission.messages:
             self._process_node(msg, text_attr='text', name_attr='name', section='messages')
 
         # Briefing Stages
-        for idx, stage in enumerate(self.mission.briefing.stages):
+        for stage in self.mission.briefing.stages:
             self._process_node(stage, text_attr='text', section='briefing')
 
         # Debriefing Stages
-        for idx, stage in enumerate(self.mission.debriefing.stages):
+        for stage in self.mission.debriefing.stages:
             self._process_node(stage, text_attr='text', section='debriefing')
-            
+
         # Command Briefing Stages
-        for idx, stage in enumerate(self.mission.command_briefing.stages):
+        for stage in self.mission.command_briefing.stages:
             self._process_node(stage, text_attr='text', section='command_briefing')
 
     def _process_node(self, voiced_item: Union[Message, BriefingStage, DebriefingStage, CommandBriefingStage],
