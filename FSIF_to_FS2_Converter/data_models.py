@@ -392,7 +392,7 @@ class ShipInput(BaseModel):
     ship_class: Optional[str] = Field(None, alias='class')
     team: Optional[str] = None
     position: Optional[List[float]] = None
-    orientation: Optional[List[float]] = None
+    orientation: Optional[Union[str, List[float]]] = None
     ai_class: Optional[str] = None
     cargo: Optional[str] = None
     initial_speed_percent: Optional[int] = None
@@ -435,13 +435,15 @@ class WingInput(BaseModel):
 
     The loader expands this into a runtime ``Wing`` with individual ``Ship`` members.
     ``orientation`` is applied to every expanded wing member at spawn time.
+    Accepts either a 9-float rotation matrix or a string naming an object to face
+    (resolved to per-member facing matrices by the loader).
     """
     model_config = ConfigDict(extra='forbid')
     name: str
     template: str
     count: int
     position: Optional[List[float]] = None
-    orientation: Optional[List[float]] = None
+    orientation: Optional[Union[str, List[float]]] = None
     wave_count: Optional[int] = None
     next_wave_threshold: Optional[int] = None
     next_wave_delay_min: Optional[int] = None
@@ -991,6 +993,13 @@ class Ship(BaseModel):
     docker_point: Optional[str] = None
     dockee_point: Optional[str] = None
 
+    # Internal: set by the loader when orientation was authored as a target name
+    # ("face this object"). The loader resolves the name to a matrix and stores
+    # it in ``orientation``; this field is retained so the validator can detect
+    # that a deliberate facing was requested and suppress the default-orientation
+    # advisory. Never authored directly; never serialized.
+    orientation_target: Optional[str] = Field(default=None, exclude=True, repr=False)
+
     @field_validator('position', mode='before')
     @classmethod
     def validate_position(cls, v):
@@ -1053,6 +1062,13 @@ class Wing(BaseModel):
 
     # Shared orientation for all wing members (None = identity default on each Ship)
     orientation: Optional[List[float]] = None
+
+    # Internal: set by the loader when orientation was authored as a target name
+    # ("face this object"). Wing members also receive individual orientation_target
+    # entries; this field is retained on the Wing so the validator can detect a
+    # deliberate facing and suppress the default-orientation advisory.
+    # Never authored directly; never serialized.
+    orientation_target: Optional[str] = Field(default=None, exclude=True, repr=False)
 
     # Template reference (used during expansion, kept for record)
     template: Optional[str] = None

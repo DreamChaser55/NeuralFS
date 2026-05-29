@@ -1,5 +1,6 @@
 import os
 import re
+import math
 from pathlib import Path
 
 def sanitize_path(arg: str) -> str:
@@ -49,6 +50,70 @@ def slugify_filename(s: str) -> str:
     s = re.sub(r"[^a-z0-9]+", "_", s)
     s = re.sub(r"_+", "_", s).strip("_")
     return s or "line"
+
+def compute_facing_orientation(source_pos, target_pos):
+    """Compute a 9-float orientation matrix that points a ship's nose at *target_pos*
+    from *source_pos*, using the same algorithm as FSO's ``vm_vector_2_matrix``
+    (forward-only form, default up = world +Y).
+
+    Row convention (FRED / FS2 ``$Orientation``):
+
+    * row 1 ``[m00, m01, m02]`` = right (rvec)
+    * row 2 ``[m10, m11, m12]`` = up   (uvec)
+    * row 3 ``[m20, m21, m22]`` = nose/forward (fvec)
+
+    For level targets (same Y as source) the result is identical to the
+    FSIF Authoring Guide yaw-only formula::
+
+        orientation: [fz, 0.0, -fx, 0.0, 1.0, 0.0, fx, 0.0, fz]
+
+    Raises:
+        ValueError: if *source_pos* and *target_pos* are at the same position
+            (zero-length forward vector, no meaningful facing direction possible).
+    """
+    dx = float(target_pos[0]) - float(source_pos[0])
+    dy = float(target_pos[1]) - float(source_pos[1])
+    dz = float(target_pos[2]) - float(source_pos[2])
+    length = math.sqrt(dx * dx + dy * dy + dz * dz)
+    if length < 1e-9:
+        raise ValueError(
+            "source and target are at the same position "
+            "(or too close to compute a meaningful facing direction)."
+        )
+
+    # ---- Forward / nose (row 3) ----
+    zx, zy, zz = dx / length, dy / length, dz / length
+
+    # ---- Right (row 1) ----
+    horiz_len = math.sqrt(zx * zx + zz * zz)
+    if horiz_len < 1e-9:
+        # Forward is straight up (+Y) or straight down (-Y).
+        # Choose right = world +X; up is derived from cross(forward, right).
+        xx, xy, xz = 1.0, 0.0, 0.0
+        # up = z × x
+        yx = zy * xz - zz * xy   # = 0
+        yy = zz * xx - zx * xz   # = 0
+        yz = zx * xy - zy * xx   # = -zy  (= ∓1)
+        y_len = math.sqrt(yx * yx + yy * yy + yz * yz)
+        if y_len < 1e-9:
+            yx, yy, yz = 0.0, 0.0, 1.0
+        else:
+            yx, yy, yz = yx / y_len, yy / y_len, yz / y_len
+    else:
+        # Non-vertical: right = normalize(zz, 0, -zx)  — FSO formula
+        xx, xy, xz = zz / horiz_len, 0.0, -zx / horiz_len
+        # up = z × x
+        yx = zy * xz - zz * xy
+        yy = zz * xx - zx * xz
+        yz = zx * xy - zy * xx
+        y_len = math.sqrt(yx * yx + yy * yy + yz * yz)
+        if y_len > 1e-9:
+            yx, yy, yz = yx / y_len, yy / y_len, yz / y_len
+        else:
+            yx, yy, yz = 0.0, 1.0, 0.0
+
+    return [xx, xy, xz, yx, yy, yz, zx, zy, zz]
+
 
 def ensure_wav_extension(name: str) -> str:
     """Ensure a non-empty .wav filename."""

@@ -624,6 +624,9 @@ class ShipWingChecksMixin:
                 continue
             if ship.destroyed_before_mission_seconds > 0:
                 continue
+            # Ships with orientation_target have deliberate facing — skip advisory.
+            if getattr(ship, 'orientation_target', None) is not None:
+                continue
             if self._is_identity_orientation(ship.orientation):
                 flagged_ships.append(ship)
 
@@ -652,6 +655,9 @@ class ShipWingChecksMixin:
             if lead_class in self.fighter_bomber_classes:
                 continue
             if lead_class in _SMALL_UTILITY_CLASSES:
+                continue
+            # Wings with orientation_target have deliberate facing — skip advisory.
+            if getattr(wing, 'orientation_target', None) is not None:
                 continue
             if wing.orientation is None:
                 flagged_wings.append(wing)

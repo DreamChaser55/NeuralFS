@@ -75,6 +75,11 @@ class MissionLoader:
             JumpNode(**jn)
             for jn in self._as_list(entities_data.get('jump_nodes'), 'entities.jump_nodes')
         ]
+
+        # Resolve string orientation targets to facing matrices now that all
+        # entity positions (ships, wings, jump nodes, waypoints) are known.
+        self._resolve_orientation_targets(jump_nodes)
+
         reinforcements = self._process_reinforcements()
         audio = self._load_audio()
 
@@ -418,8 +423,10 @@ class MissionLoader:
         # Templates are now forbidden from carrying orientation, so the only
         # way a wing member can have a non-identity orientation at spawn time
         # is through this wing-level field.
+        # The value may be a 9-float matrix OR a string naming an object to face.
         wing_orientation = wing_data.get('orientation')
-        
+        wing_orient_is_target = isinstance(wing_orientation, str)
+
         for i in range(count):
              ship_name = f"{wing_data['name']} {i + 1}"
              ship_props = copy.deepcopy(template_base)
@@ -430,7 +437,12 @@ class MissionLoader:
 
              # Apply wing orientation to every member when authored.
              if wing_orientation is not None:
-                 ship_props['orientation'] = wing_orientation
+                 if wing_orient_is_target:
+                     # String target: store for post-expansion resolution;
+                     # identity orientation placeholder is used until resolved.
+                     ship_props['orientation_target'] = wing_orientation
+                 else:
+                     ship_props['orientation'] = wing_orientation
 
              # Wing members must have arrival_cue '( false )' in #Objects so
              # that the individual ship entries do not trigger independent
@@ -446,7 +458,15 @@ class MissionLoader:
              ship_obj = Ship(**ship_props)
              wing_ships_objs.append(ship_obj)
              self.all_ships.append(ship_obj)
-        
+
+        # When wing orientation is a string target, move it to orientation_target
+        # on the Wing so the validator advisory can detect deliberate facing,
+        # and remove the raw string from the orientation key (Wing.orientation
+        # expects a 9-float list or None).
+        if wing_orient_is_target:
+            wing_data['orientation_target'] = wing_orientation
+            del wing_data['orientation']
+
         self.all_wings.append(Wing(ships=wing_ships_objs, **wing_data))
 
     def _process_ship(self, ship_data: Dict[str, Any]):
@@ -510,7 +530,16 @@ class MissionLoader:
 
         ship_props.pop('template', None)
         ship_props.pop('dock', None)
-            
+
+        # If orientation was authored as a string (target name to face), move it
+        # to orientation_target so the runtime Ship keeps identity orientation as
+        # a placeholder; the post-expansion _resolve_orientation_targets pass will
+        # compute and assign the real matrix once all positions are known.
+        orient_val = ship_props.get('orientation')
+        if isinstance(orient_val, str):
+            ship_props['orientation_target'] = orient_val
+            del ship_props['orientation']
+
         self.all_ships.append(Ship(**ship_props))
 
     def _load_mission_flow(self) -> Dict[str, Any]:
@@ -686,6 +715,100 @@ class MissionLoader:
             
         return reinforcements
 
+    def _resolve_orientation_targets(self, jump_nodes: List[JumpNode]):
+        """Resolve string ``orientation_target`` values to computed facing matrices.
+
+        Called after all entities (ships, wings) are expanded and jump nodes are
+        built, so every position in the mission is known.
+
+        Builds a name → position lookup from:
+        - All ships (standalone + wing members, identified by name).
+        - Wings (by wing name → centroid position).
+        - Jump nodes (by jump node name).
+        - Waypoint points (by ``"PathName:N"`` 1-based index notation).
+
+        For each ship or wing member with ``orientation_target`` set, computes a
+        facing matrix via :func:`common.utils.compute_facing_orientation` and
+        assigns it to ``ship.orientation``.  The ``orientation_target`` field is
+        left intact so the validator can detect deliberate facing intent.
+
+        Raises:
+            ValueError: If a target name is not found, or if source and target
+                positions are coincident (zero-length forward vector).
+        """
+        from common.utils import compute_facing_orientation
+
+        # ── Build target-name → position lookup ──────────────────────────────
+        target_positions: Dict[str, Any] = {}
+
+        # Ships (standalone + wing members)
+        for s in self.all_ships:
+            target_positions[s.name] = s.position
+
+        # Wings by wing name → centroid
+        for w in self.all_wings:
+            if w.position is not None:
+                centroid = w.position
+            elif w.ships:
+                centroid = w.ships[0].position
+            else:
+                continue
+            target_positions[w.name] = centroid
+
+        # Jump nodes
+        for jn in jump_nodes:
+            target_positions[jn.name] = jn.position
+
+        # Waypoints: "PathName:N" (1-based index)
+        waypoints_raw = self._as_mapping(
+            self.data.get('entities', {}).get('waypoints'), 'entities.waypoints'
+        )
+        for path_name, points in waypoints_raw.items():
+            if not isinstance(points, list):
+                continue
+            for idx, pt in enumerate(points, start=1):
+                target_positions[f"{path_name}:{idx}"] = pt
+
+        # Sorted for stable error messages
+        all_target_names_sorted = sorted(target_positions.keys())
+
+        def resolve_one(entity_name: str, entity_pos, target_name: str) -> List[float]:
+            if target_name not in target_positions:
+                raise ValueError(
+                    f"orientation_target '{target_name}' referenced by '{entity_name}' "
+                    f"was not found. Valid target names: "
+                    f"{', '.join(all_target_names_sorted)}"
+                )
+            target_pos = target_positions[target_name]
+            try:
+                return compute_facing_orientation(entity_pos, target_pos)
+            except ValueError as e:
+                raise ValueError(
+                    f"Cannot compute facing orientation for '{entity_name}' "
+                    f"toward target '{target_name}': {e}"
+                ) from e
+
+        # ── Resolve ships (standalone + wing members) ─────────────────────────
+        for s in self.all_ships:
+            if s.orientation_target is None:
+                continue
+            matrix = resolve_one(s.name, s.position, s.orientation_target)
+            s.orientation = matrix
+
+        # ── Validate wing-level orientation_target (members already resolved) ─
+        # The per-member matrices are computed above.  Here we just confirm the
+        # wing's own orientation_target also resolves, so any typo in the target
+        # name is caught at load time with a wing-level error message.
+        for w in self.all_wings:
+            if w.orientation_target is None:
+                continue
+            if w.orientation_target not in target_positions:
+                raise ValueError(
+                    f"orientation_target '{w.orientation_target}' referenced by "
+                    f"wing '{w.name}' was not found. Valid target names: "
+                    f"{', '.join(all_target_names_sorted)}"
+                )
+
     def _load_audio(self) -> AudioSettings:
         audio_src = self.data.get('audio', {})
         if isinstance(audio_src, dict):
@@ -733,13 +856,13 @@ class MissionLoader:
     def _validate_no_player_start(self, flags_list, context):
         """
         Ensure 'player-start' flag is not manually specified.
-        
+
         This flag is managed automatically by the player_setup section.
-        
+
         Args:
             flags_list: List of flags to check.
             context: Context description for error message.
-            
+
         Raises:
             ValueError: If 'player-start' is found in the list.
         """

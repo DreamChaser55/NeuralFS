@@ -421,6 +421,71 @@ mission_flow:
 
 Consult `Documentation/FSO SEXPs/Coordinate Manipulation.txt` for the exact signatures before using this operator.
 
+### Automatic facing: `orientation: object_name`
+
+When you want a ship or wing to point its nose at a known object in the mission, you can author `orientation` as a quoted string containing the target's name instead of computing the matrix yourself. The converter resolves the name to a world-space position at load time and computes the correct facing matrix automatically, using the same algorithm as FSO's `set-object-facing-object`.
+
+**Valid target types:**
+- Any **ship** in the mission, including individual wing members (e.g. `"Alpha 1"`, `"GTC Dauntless"`)
+- Any **wing** by name — the wing's centroid position is used (e.g. `"Alpha"`, `"Krishna"`)
+- Any **jump node** by name (e.g. `"Delta Serpentis Jump Node"`)
+- Any **waypoint point** using `"PathName:N"` notation with a 1-based index N (e.g. `"DauntlessPath:1"`)
+
+**Examples:**
+```yaml
+entities:
+  ships:
+    # Cruiser faces a hostile ship
+    - name: "GTC Pollux"
+      class: "GTC Fenris"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      orientation: "SC Cain 1"
+
+    # Cruiser faces a jump node
+    - name: "SC Cain 1"
+      class: "SC Cain"
+      team: "Hostile"
+      position: [2000.0, 0.0, 3000.0]
+      orientation: "Delta Serpentis Jump Node"
+
+    # Ship faces the first waypoint on a path
+    - name: "GTFr Trent"
+      class: "GTFr Poseidon"
+      team: "Friendly"
+      position: [0.0, 0.0, 0.0]
+      orientation: "ConvoyPath:1"
+
+  wings:
+    # All wing members independently face GTC Dauntless from their own positions
+    - name: "Alpha"
+      template: "alpha_fighter"
+      count: 4
+      position: [500.0, 0.0, 500.0]
+      orientation: "GTC Dauntless"
+```
+
+**Wing behavior:** When `orientation` is a string on a wing, each wing member independently faces the target from its own spawn position (not from the wing centroid). For typical mission-scale distances (hundreds to thousands of meters) the per-member angle variation is negligible and all members will appear to face the target.
+
+**How the matrix is computed:** The algorithm matches FSO's `vm_vector_2_matrix` (forward-only form, default up = world +Y):
+- Forward vector = normalize(target - source).
+- Right vector = normalize(`[fz, 0, -fx]`) — FSO's horizontal-perpendicular formula.
+- Up vector = forward × right.
+- For a level target (same Y as source) this reduces exactly to the documented yaw-only formula `[fz, 0, -fx, 0, 1, 0, fx, 0, fz]`.
+
+**Error cases (fatal, aborts conversion):**
+- Target name not found in the mission → error listing available names.
+- Source and target at the same position (zero forward vector) → error.
+
+**When to use each approach:**
+
+| Need | Recommended approach |
+|---|---|
+| Level facing toward a fixed named object | `orientation: "ObjectName"` (this feature) |
+| Pitched 3D facing toward a fixed named object | `orientation: "ObjectName"` (this feature) |
+| Runtime re-facing during the mission | `set-object-facing-object` SEXP in a setup event |
+| Exact cardinal or hand-computed matrix | Explicit 9-float `orientation` matrix |
+
 ### Sanity-check target vectors
 
 Before committing an orientation matrix, sanity-check the rough direction on the XZ plane.
