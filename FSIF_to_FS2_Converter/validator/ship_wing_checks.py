@@ -360,122 +360,93 @@ class ShipWingChecksMixin:
             if r.name not in all_ships and r.name not in all_wings:
                 self.log_error(f"Reinforcement references unknown ship/wing '{r.name}'")
 
+    def _validate_arrival_departure_anchors(self, entity, label, name_to_ship,
+                                             valid_targets, directional_locations):
+        """Validate arrival/departure anchors for a single ship or wing entity.
+
+        Called by ``validate_anchors`` for each ship and each wing.  ``label``
+        is ``"Ship"`` or ``"Wing"`` and drives the entity-type string used in
+        every error/warning message, preserving the original per-type wording.
+        """
+        # Per-type clause used inside the arrival_distance advisory warning to
+        # preserve the original ship vs. wing wording exactly.
+        if label == "Ship":
+            spawn_clause = "spawning the ship dangerously close to or clipping inside its arrival_anchor"
+        else:
+            spawn_clause = "spawning wing members dangerously close to or clipping inside the arrival_anchor"
+
+        name = entity.name
+
+        arr_loc = entity.arrival_method.strip().lower()
+        if arr_loc == "docking bay":
+            if not entity.arrival_anchor:
+                self.log_error(f"{label} '{name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
+        elif arr_loc in directional_locations:
+            if not entity.arrival_anchor:
+                self.log_error(f"{label} '{name}' uses directional arrival_method '{entity.arrival_method}' but is missing 'arrival_anchor'.")
+            if getattr(entity, 'arrival_distance', None) is None:
+                self.log_error(f"{label} '{name}' uses directional arrival_method '{entity.arrival_method}' but is missing 'arrival_distance'.")
+            elif entity.arrival_distance < MIN_ARRIVAL_DISTANCE:
+                self.log_warning(
+                    f"{label} '{name}' uses directional arrival_method '{entity.arrival_method}' "
+                    f"with arrival_distance {entity.arrival_distance} m, which is below the "
+                    f"recommended minimum of {MIN_ARRIVAL_DISTANCE} m. "
+                    f"Too small a distance risks {spawn_clause}. "
+                    f"Increase arrival_distance to at least {MIN_ARRIVAL_DISTANCE}."
+                )
+
+        if entity.arrival_anchor and entity.arrival_anchor not in valid_targets:
+            self.log_error(f"{label} '{name}' references unknown arrival_anchor '{entity.arrival_anchor}'")
+
+        # Fighterbay check for Docking Bay arrival
+        if arr_loc == "docking bay" and entity.arrival_anchor:
+            if entity.arrival_anchor not in name_to_ship:
+                self.log_error(f"{label} '{name}' uses Docking Bay arrival but anchor '{entity.arrival_anchor}' is not a valid ship.")
+            else:
+                anchor_ship = name_to_ship[entity.arrival_anchor]
+                if not self._ship_has_fighterbay(anchor_ship.ship_class):
+                    self.log_error(f"{label} '{name}' uses Docking Bay arrival from anchor '{entity.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
+
+        dep_loc = entity.departure_method.strip().lower()
+        if dep_loc == "docking bay":
+            if not entity.departure_anchor:
+                self.log_error(f"{label} '{name}' uses Docking Bay departure but is missing 'departure_anchor'.")
+
+        if entity.departure_anchor and entity.departure_anchor not in valid_targets:
+            self.log_error(f"{label} '{name}' references unknown departure_anchor '{entity.departure_anchor}'")
+
+        # Fighterbay check for Docking Bay departure
+        if dep_loc == "docking bay" and entity.departure_anchor:
+            if entity.departure_anchor not in name_to_ship:
+                self.log_error(f"{label} '{name}' uses Docking Bay departure but anchor '{entity.departure_anchor}' is not a valid ship.")
+            else:
+                anchor_ship = name_to_ship[entity.departure_anchor]
+                if not self._ship_has_fighterbay(anchor_ship.ship_class):
+                    self.log_error(f"{label} '{name}' uses Docking Bay departure via anchor '{entity.departure_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
+
     def validate_anchors(self):
         """
         Validate arrival/departure anchors for ships and wings.
-        
+
         Checks:
         - Anchor exists (Ship, Wing, or Special Token).
         - If using Docking Bay arrival/departure, ensures anchor has a fighterbay.
         """
-        # Collect all valid anchor targets
         name_to_ship = {s.name: s for s in self.mission.ships}
         valid_targets = set(name_to_ship.keys()) | {w.name for w in self.mission.wings} | self.allowed_anchors_tokens
-        
+
         directional_locations = {
             "near ship", "in front of ship", "in back of ship",
             "above ship", "below ship", "to left of ship", "to right of ship"
         }
 
-        # Check Ships
         for ship in self.mission.ships:
-            arr_loc = ship.arrival_method.strip().lower()
-            if arr_loc == "docking bay":
-                if not ship.arrival_anchor:
-                    self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
-            elif arr_loc in directional_locations:
-                if not ship.arrival_anchor:
-                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_anchor'.")
-                if getattr(ship, 'arrival_distance', None) is None:
-                    self.log_error(f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' but is missing 'arrival_distance'.")
-                elif ship.arrival_distance < MIN_ARRIVAL_DISTANCE:
-                    self.log_warning(
-                        f"Ship '{ship.name}' uses directional arrival_method '{ship.arrival_method}' "
-                        f"with arrival_distance {ship.arrival_distance} m, which is below the "
-                        f"recommended minimum of {MIN_ARRIVAL_DISTANCE} m. "
-                        f"Too small a distance risks spawning the ship dangerously close to or "
-                        f"clipping inside its arrival_anchor. "
-                        f"Increase arrival_distance to at least {MIN_ARRIVAL_DISTANCE}."
-                    )
+            self._validate_arrival_departure_anchors(
+                ship, "Ship", name_to_ship, valid_targets, directional_locations)
 
-            if ship.arrival_anchor and ship.arrival_anchor not in valid_targets:
-                self.log_error(f"Ship '{ship.name}' references unknown arrival_anchor '{ship.arrival_anchor}'")
-            
-            # Fighterbay check for Docking Bay arrival
-            if arr_loc == "docking bay" and ship.arrival_anchor:
-                if ship.arrival_anchor not in name_to_ship:
-                    self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival but anchor '{ship.arrival_anchor}' is not a valid ship.")
-                else:
-                    anchor_ship = name_to_ship[ship.arrival_anchor]
-                    if not self._ship_has_fighterbay(anchor_ship.ship_class):
-                        self.log_error(f"Ship '{ship.name}' uses Docking Bay arrival from anchor '{ship.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
-
-            dep_loc = ship.departure_method.strip().lower()
-            if dep_loc == "docking bay":
-                if not ship.departure_anchor:
-                    self.log_error(f"Ship '{ship.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
-
-            if ship.departure_anchor and ship.departure_anchor not in valid_targets:
-                self.log_error(f"Ship '{ship.name}' references unknown departure_anchor '{ship.departure_anchor}'")
-
-            # Fighterbay check for Docking Bay departure
-            if dep_loc == "docking bay" and ship.departure_anchor:
-                if ship.departure_anchor not in name_to_ship:
-                    self.log_error(f"Ship '{ship.name}' uses Docking Bay departure but anchor '{ship.departure_anchor}' is not a valid ship.")
-                else:
-                    anchor_ship = name_to_ship[ship.departure_anchor]
-                    if not self._ship_has_fighterbay(anchor_ship.ship_class):
-                        self.log_error(f"Ship '{ship.name}' uses Docking Bay departure via anchor '{ship.departure_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
-
-        # Check Wings
-        for w in self.mission.wings:
-            arr_loc = w.arrival_method.strip().lower()
-            if arr_loc == "docking bay":
-                if not w.arrival_anchor:
-                    self.log_error(f"Wing '{w.name}' uses Docking Bay arrival but is missing 'arrival_anchor'.")
-            elif arr_loc in directional_locations:
-                if not w.arrival_anchor:
-                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_anchor'.")
-                if getattr(w, 'arrival_distance', None) is None:
-                    self.log_error(f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' but is missing 'arrival_distance'.")
-                elif w.arrival_distance < MIN_ARRIVAL_DISTANCE:
-                    self.log_warning(
-                        f"Wing '{w.name}' uses directional arrival_method '{w.arrival_method}' "
-                        f"with arrival_distance {w.arrival_distance} m, which is below the "
-                        f"recommended minimum of {MIN_ARRIVAL_DISTANCE} m. "
-                        f"Too small a distance risks spawning wing members dangerously close to or "
-                        f"clipping inside the arrival_anchor. "
-                        f"Increase arrival_distance to at least {MIN_ARRIVAL_DISTANCE}."
-                    )
-
-            if w.arrival_anchor and w.arrival_anchor not in valid_targets:
-                self.log_error(f"Wing '{w.name}' references unknown arrival_anchor '{w.arrival_anchor}'")
-            
-            # Fighterbay check for Docking Bay arrival
-            if arr_loc == "docking bay" and w.arrival_anchor:
-                if w.arrival_anchor not in name_to_ship:
-                    self.log_error(f"Wing '{w.name}' uses Docking Bay arrival but anchor '{w.arrival_anchor}' is not a valid ship.")
-                else:
-                    anchor_ship = name_to_ship[w.arrival_anchor]
-                    if not self._ship_has_fighterbay(anchor_ship.ship_class):
-                        self.log_error(f"Wing '{w.name}' uses Docking Bay arrival from anchor '{w.arrival_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
-
-            dep_loc = w.departure_method.strip().lower()
-            if dep_loc == "docking bay":
-                if not w.departure_anchor:
-                    self.log_error(f"Wing '{w.name}' uses Docking Bay departure but is missing 'departure_anchor'.")
-
-            if w.departure_anchor and w.departure_anchor not in valid_targets:
-                self.log_error(f"Wing '{w.name}' references unknown departure_anchor '{w.departure_anchor}'")
-
-            # Fighterbay check for Docking Bay departure
-            if dep_loc == "docking bay" and w.departure_anchor:
-                if w.departure_anchor not in name_to_ship:
-                    self.log_error(f"Wing '{w.name}' uses Docking Bay departure but anchor '{w.departure_anchor}' is not a valid ship.")
-                else:
-                    anchor_ship = name_to_ship[w.departure_anchor]
-                    if not self._ship_has_fighterbay(anchor_ship.ship_class):
-                        self.log_error(f"Wing '{w.name}' uses Docking Bay departure via anchor '{w.departure_anchor}', but class '{anchor_ship.ship_class}' does not have a fighterbay subsystem.")
+        for wing in self.mission.wings:
+            self._validate_arrival_departure_anchors(
+                wing, "Wing", name_to_ship, valid_targets, directional_locations)
 
     def validate_player_setup(self):
         """

@@ -155,7 +155,7 @@ The shared function is used correctly. The problem is only the docstring copy, w
 
 ---
 
-### 4.5 `validate_anchors` duplicates ~50-line ship block verbatim for wings — MEDIUM
+### 4.5 `validate_anchors` duplicates ~50-line ship block verbatim for wings — MEDIUM - **ALREADY ADDRESSED**
 
 **File:** `FSIF_to_FS2_Converter/validator/ship_wing_checks.py`
 
