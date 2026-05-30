@@ -61,39 +61,44 @@ entities:
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, 0.0, 6000.0]
+      orientation: [0.939693, 0.0, -0.342020, 0.0, 1.0, 0.0, 0.342020, 0.0, 0.939693]
       destroyed_before_mission_seconds: 10
       flags: ["ignore-count"]
-      
+       
     - name: "Nav Alpha"
       class: "Terran NavBuoy"
       team: "Friendly"
       position: [0.0, -200.0, 6000.0]
+      orientation: "Jump-Out Point"
 
     - name: "Jump-Out Point"
       class: "Terran NavBuoy"
       team: "Friendly"
       position: [0.0, 0.0, -500.0]
+      orientation: "Nav Alpha"
 
     - name: "Escape Pod 1"
       class: "GTEP Hermes"
       team: "Friendly"
       position: [200.0, 0.0, 6000.0]
+      orientation: "Pod1JumpOutPath:1"
       flags: ["escort"]
       initial_orders: |
-        ( ai-waypoints-once "JumpOutPath" 89 )
+        ( ai-waypoints-once "Pod1JumpOutPath" 89 )
       departure_cue: |
-        ( < ( distance "Escape Pod 1" "JumpOutPath:1" ) 500 )
+        ( < ( distance "Escape Pod 1" "Jump-Out Point" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Escape Pod 2"
       class: "GTEP Hermes"
       team: "Friendly"
       position: [-350.0, 0.0, 6000.0]
+      orientation: "Pod2JumpOutPath:1"
       flags: ["escort"]
       initial_orders: |
-        ( ai-waypoints-once "JumpOutPath" 89 )
+        ( ai-waypoints-once "Pod2JumpOutPath" 89 )
       departure_cue: |
-        ( < ( distance "Escape Pod 2" "JumpOutPath:1" ) 500 )
+        ( < ( distance "Escape Pod 2" "Jump-Out Point" ) 500 )
       departure_method: "Hyperspace"
 
   wings:
@@ -101,6 +106,7 @@ entities:
       template: "alpha_fighter"
       count: 4
       position: [0.0, 0.0, 0.0]
+      orientation: "Nav Alpha"
       initial_orders: |
         ( ai-guard "Alpha 1" 89 )
 
@@ -108,6 +114,7 @@ entities:
       template: "shivan_fighter"
       count: 4
       position: [0.0, 0.0, 14000.0]
+      orientation: "Alpha"
       arrival_cue: |
         ( is-event-true-delay "BrahmaArrives" 0 )
       arrival_method: "Hyperspace"
@@ -118,6 +125,7 @@ entities:
       template: "shivan_heavy"
       count: 3
       position: [0.0, 0.0, 16000.0]
+      orientation: "Alpha"
       arrival_cue: |
         ( is-event-true-delay "VishnuArrives" 0 )
       arrival_method: "Hyperspace"
@@ -125,8 +133,10 @@ entities:
         ( ai-chase-wing "Alpha" 89 )
 
   waypoints:
-    JumpOutPath:
-      - [0.0, 0.0, -500.0]
+    Pod1JumpOutPath:
+      - [250.0, 0.0, -500.0]
+    Pod2JumpOutPath:
+      - [-250.0, 0.0, -500.0]
 
 mission_flow:
   command_briefing:
