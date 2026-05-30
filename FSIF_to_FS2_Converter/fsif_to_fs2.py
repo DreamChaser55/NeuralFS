@@ -203,14 +203,16 @@ def process_mission(input_file, output_file=None, tts_settings=None, validate_on
     )
 
     # Report TTS state clearly.
-    # Use _compute_intended_provider() to surface the actual declared provider
+    # Use _compute_intended_provider() to surface the actual effective provider
     # (which may be 'none') rather than validation_provider, which maps
     # 'none' → 'google' for internal voice-name checks and would be misleading here.
+    # The label "effective provider" is accurate regardless of whether the value
+    # came from the FSIF file, the CLI --tts-provider flag, or the built-in default.
     if generation_enabled:
         logger.info(f"[INFO] TTS Generation enabled. TTS provider: {final_provider}")
     else:
-        declared_provider = _compute_intended_provider(tts_opts.get('provider'), fsif_tts_provider)
-        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {declared_provider}).")
+        effective_provider = _compute_intended_provider(tts_opts.get('provider'), fsif_tts_provider)
+        logger.info(f"[INFO] TTS generation disabled (effective provider: {effective_provider}).")
 
     # Extended Validation
     logger.info(f"[INFO] Validating mission structure...")
