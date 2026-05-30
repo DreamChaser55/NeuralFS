@@ -34,7 +34,7 @@ for p in (_converter_dir, _root_dir):
 # We import only the pure helper; the module-level side-effects (Advanced SEXP
 # Validator import, logger setup) are harmless but isolated because we import
 # by name rather than running main().
-from fsif_to_fs2 import resolve_tts_provider, _KNOWN_PROVIDERS  # noqa: E402
+from fsif_to_fs2 import resolve_tts_provider, _KNOWN_PROVIDERS, _compute_intended_provider  # noqa: E402
 
 
 class TestResolveTtsProviderDisabled(unittest.TestCase):
@@ -277,6 +277,110 @@ class TestKnownProvidersConstant(unittest.TestCase):
         expected = {'google', 'elevenlabs', 'inworld', 'none'}
         self.assertEqual(_KNOWN_PROVIDERS, expected,
                          "_KNOWN_PROVIDERS must exactly match the CLI --tts-provider choices")
+
+
+class TestComputeIntendedProvider(unittest.TestCase):
+    """Unit tests for _compute_intended_provider().
+
+    This helper returns the raw declared/intended provider (which may be 'none')
+    using the same CLI > FSIF > default precedence as resolve_tts_provider(),
+    without the 'none'→'google' mapping applied by validation_provider.
+
+    This is what the disabled-branch log line in process_mission() uses to
+    report the accurate mission-declared provider, avoiding the earlier bug
+    where 'none' was reported as 'google'.
+    """
+
+    # ------------------------------------------------------------------
+    # Default fallback
+    # ------------------------------------------------------------------
+
+    def test_both_absent_returns_google(self):
+        self.assertEqual(_compute_intended_provider(None, None), 'google')
+
+    def test_unrecognised_cli_and_fsif_returns_google(self):
+        self.assertEqual(_compute_intended_provider('bogus', 'also_bogus'), 'google')
+
+    def test_empty_string_both_returns_google(self):
+        self.assertEqual(_compute_intended_provider('', ''), 'google')
+
+    # ------------------------------------------------------------------
+    # FSIF fallback (CLI absent or unrecognised)
+    # ------------------------------------------------------------------
+
+    def test_fsif_google_returned_when_cli_none(self):
+        self.assertEqual(_compute_intended_provider(None, 'google'), 'google')
+
+    def test_fsif_elevenlabs_returned_when_cli_none(self):
+        self.assertEqual(_compute_intended_provider(None, 'elevenlabs'), 'elevenlabs')
+
+    def test_fsif_inworld_returned_when_cli_none(self):
+        self.assertEqual(_compute_intended_provider(None, 'inworld'), 'inworld')
+
+    def test_fsif_none_returned_as_none_not_remapped(self):
+        """'none' declared in the FSIF must come back as 'none', not 'google'.
+
+        This is the core regression test for the bug: _compute_intended_provider
+        must NOT apply the validation-provider mapping ('none'→'google') that
+        resolve_tts_provider uses internally for voice-name checks.
+        """
+        self.assertEqual(_compute_intended_provider(None, 'none'), 'none')
+
+    def test_fsif_used_when_cli_is_unrecognised(self):
+        self.assertEqual(_compute_intended_provider('bogus', 'inworld'), 'inworld')
+
+    # ------------------------------------------------------------------
+    # CLI override
+    # ------------------------------------------------------------------
+
+    def test_cli_google_overrides_fsif_elevenlabs(self):
+        self.assertEqual(_compute_intended_provider('google', 'elevenlabs'), 'google')
+
+    def test_cli_elevenlabs_overrides_fsif_google(self):
+        self.assertEqual(_compute_intended_provider('elevenlabs', 'google'), 'elevenlabs')
+
+    def test_cli_inworld_overrides_fsif_none(self):
+        self.assertEqual(_compute_intended_provider('inworld', 'none'), 'inworld')
+
+    def test_cli_none_returned_as_none(self):
+        """CLI 'none' must also come back as 'none' (no remapping)."""
+        self.assertEqual(_compute_intended_provider('none', None), 'none')
+
+    def test_cli_none_beats_fsif_elevenlabs(self):
+        self.assertEqual(_compute_intended_provider('none', 'elevenlabs'), 'none')
+
+    # ------------------------------------------------------------------
+    # Case-insensitivity
+    # ------------------------------------------------------------------
+
+    def test_cli_mixed_case_normalised(self):
+        self.assertEqual(_compute_intended_provider('Google', None), 'google')
+
+    def test_fsif_mixed_case_normalised(self):
+        self.assertEqual(_compute_intended_provider(None, 'ElevenLabs'), 'elevenlabs')
+
+    def test_cli_uppercase_none_normalised(self):
+        self.assertEqual(_compute_intended_provider('NONE', None), 'none')
+
+    # ------------------------------------------------------------------
+    # Return value always in _KNOWN_PROVIDERS
+    # ------------------------------------------------------------------
+
+    def test_return_always_in_known_providers(self):
+        combos = [
+            (None, None),
+            ('google', None),
+            ('elevenlabs', 'google'),
+            ('none', 'elevenlabs'),
+            (None, 'none'),
+            (None, 'inworld'),
+            ('bogus', 'bogus'),
+        ]
+        for cli, fsif in combos:
+            result = _compute_intended_provider(cli, fsif)
+            self.assertIn(result, _KNOWN_PROVIDERS,
+                          f"_compute_intended_provider({cli!r}, {fsif!r}) = {result!r} "
+                          f"not in _KNOWN_PROVIDERS")
 
 
 if __name__ == '__main__':

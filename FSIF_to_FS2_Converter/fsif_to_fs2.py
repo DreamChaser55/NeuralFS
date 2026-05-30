@@ -28,6 +28,32 @@ logger = logging.getLogger(__name__)
 _KNOWN_PROVIDERS = frozenset({'google', 'elevenlabs', 'inworld', 'none'})
 
 
+def _compute_intended_provider(cli_provider, fsif_provider) -> str:
+    """Return the intended TTS provider following CLI/caller > FSIF > default precedence.
+
+    Normalises inputs to lowercase, then applies the precedence chain:
+      1. ``cli_provider`` if it is a recognised provider name.
+      2. ``fsif_provider`` if it is a recognised provider name.
+      3. Built-in default ``'google'`` when neither source specifies a provider.
+
+    Unlike ``resolve_tts_provider()``, this helper is not aware of whether TTS
+    generation is enabled — it simply returns the declared/intended provider,
+    which may legitimately be ``'none'``.
+
+    Returns one of ``_KNOWN_PROVIDERS``.
+    """
+    if cli_provider is not None:
+        cli_provider = str(cli_provider).lower().strip()
+    if fsif_provider is not None:
+        fsif_provider = str(fsif_provider).lower().strip()
+
+    if cli_provider in _KNOWN_PROVIDERS:
+        return cli_provider
+    if fsif_provider in _KNOWN_PROVIDERS:
+        return fsif_provider
+    return 'google'
+
+
 def resolve_tts_provider(
     tts_enabled: bool,
     cli_provider,   # str | None
@@ -49,22 +75,7 @@ def resolve_tts_provider(
     Returns ``(final_provider, generation_enabled, validation_provider)``.
     Pass ``cli_provider=None`` to defer to the FSIF file setting.
     """
-    # Normalise cli_provider to lowercase if supplied
-    if cli_provider is not None:
-        cli_provider = str(cli_provider).lower().strip()
-    if fsif_provider is not None:
-        fsif_provider = str(fsif_provider).lower().strip()
-
-    # Compute the "intended" provider once using the full precedence chain:
-    #   CLI/caller > FSIF file > built-in default ('google').
-    # This is done regardless of tts_enabled so that validation_provider can
-    # reflect the mission's declared provider even when generation is disabled.
-    if cli_provider in _KNOWN_PROVIDERS:
-        intended = cli_provider
-    elif fsif_provider in _KNOWN_PROVIDERS:
-        intended = fsif_provider
-    else:
-        intended = 'google'
+    intended = _compute_intended_provider(cli_provider, fsif_provider)
 
     if not tts_enabled:
         # TTS generation is disabled, but validation_provider must still
@@ -191,13 +202,15 @@ def process_mission(input_file, output_file=None, tts_settings=None, validate_on
         fsif_provider=fsif_tts_provider,
     )
 
-    # Report TTS state clearly. When generation is disabled (the default),
-    # `final_provider` is always 'none'; surface the mission's declared/intended
-    # provider (validation_provider) instead so the line is not misleading.
+    # Report TTS state clearly.
+    # Use _compute_intended_provider() to surface the actual declared provider
+    # (which may be 'none') rather than validation_provider, which maps
+    # 'none' → 'google' for internal voice-name checks and would be misleading here.
     if generation_enabled:
         logger.info(f"[INFO] TTS Generation enabled. TTS provider: {final_provider}")
     else:
-        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {validation_provider}).")
+        declared_provider = _compute_intended_provider(tts_opts.get('provider'), fsif_tts_provider)
+        logger.info(f"[INFO] TTS generation disabled (mission-declared provider: {declared_provider}).")
 
     # Extended Validation
     logger.info(f"[INFO] Validating mission structure...")
