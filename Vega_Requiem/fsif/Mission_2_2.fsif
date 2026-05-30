@@ -69,6 +69,7 @@ entities:
       class: "GTD Orion"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
+      orientation: "SC Ahriman"
       initial_hull_percent: 40
       flags: ["escort"]
       initial_orders: |
@@ -83,11 +84,13 @@ entities:
       class: "GTS Centaur"
       team: "Friendly"
       position: [-500.0, 0.0, 500.0]
+      orientation: "Nav Bravo"
 
     - name: "SC Ahriman"
       class: "SC Lilith"
       team: "Hostile"
       position: [0.0, -1000.0, -5000.0]
+      orientation: "GTD Amadeus"
       flags: ["escort"]
       initial_orders: |
         ( ai-chase "GTD Amadeus" 89 )
@@ -99,14 +102,28 @@ entities:
       flags: ["escort", "cargo-known"]
       cargo: "TAC-1 Tech Cargo"
       arrival_cue: |
-        ( has-time-elapsed 45 )
+        ( true )
+      arrival_delay: 45
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Aldrin4Path" 89 )
       departure_cue: |
-        ( < ( distance "GTFr Aldrin 4" "Nav Bravo" ) 1000 )
+        ( < ( distance "GTFr Aldrin 4" "Aldrin4Path:1" ) 500 )
       departure_method: "Hyperspace"
+
+    - name: "TAC-1 Tech Cargo"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [450.0, 0.0, 1500.0]
+      flags: ["cargo-known"]
+      cargo: "Avenger Schematics"
+      arrival_cue: |
+        ( false )
+      dock:
+        dockee: "GTFr Aldrin 4"
+        docker_point: "cargo dockpoint"
+        dockee_point: "cargo dockpoint"
 
     - name: "Pod 1"
       class: "GTEP Hermes"
@@ -117,9 +134,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod1Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 1" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 1" "Pod1Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 2"
@@ -130,9 +147,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod2Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 2" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 2" "Pod2Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 3"
@@ -143,9 +160,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod3Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 3" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 3" "Pod3Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 4"
@@ -158,9 +175,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod4Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 4" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 4" "Pod4Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 5"
@@ -173,9 +190,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod5Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 5" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 5" "Pod5Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 6"
@@ -188,9 +205,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod6Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 6" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 6" "Pod6Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 7"
@@ -203,9 +220,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod7Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 7" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 7" "Pod7Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 8"
@@ -218,9 +235,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod8Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 8" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 8" "Pod8Path:1" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Pod 9"
@@ -233,9 +250,9 @@ entities:
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |
-        ( ai-waypoints-once "BravoPath" 89 )
+        ( ai-waypoints-once "Pod9Path" 89 )
       departure_cue: |
-        ( < ( distance "Pod 9" "Nav Bravo" ) 1000 )
+        ( < ( distance "Pod 9" "Pod9Path:1" ) 500 )
       departure_method: "Hyperspace"
 
   wings:
@@ -243,6 +260,7 @@ entities:
       template: "alpha_valkyrie"
       count: 4
       position: [0.0, 500.0, 2000.0]
+      orientation: "Asura"
       initial_orders: |
         ( ai-guard "GTD Amadeus" 89 )
 
@@ -250,6 +268,7 @@ entities:
       template: "shivan_fighter"
       count: 3
       position: [0.0, 500.0, 5000.0]
+      orientation: "Pod 1"
       initial_orders: |
         ( ai-chase-ship-class "GTEP Hermes" 89 )
 
@@ -260,6 +279,7 @@ entities:
       arrival_cue: |
         ( has-time-elapsed 90 )
       arrival_method: "Hyperspace"
+      orientation: "GTD Amadeus"
       initial_orders: |
         ( ai-chase "GTD Amadeus" 89 )
 
@@ -270,6 +290,7 @@ entities:
       arrival_cue: |
         ( has-time-elapsed 180 )
       arrival_method: "Hyperspace"
+      orientation: "Pod 5"
       initial_orders: |
         ( ai-chase-ship-class "GTEP Hermes" 89 )
 
@@ -283,13 +304,32 @@ entities:
           ( percent-ships-departed 55 "Pod 1" "Pod 2" "Pod 3" "Pod 4" "Pod 5" "Pod 6" "Pod 7" "Pod 8" "Pod 9" )
         )
       arrival_method: "Hyperspace"
+      orientation: "Pod 7"
       initial_orders: |
         ( ai-chase-ship-class "GTEP Hermes" 89 )
         ( ai-chase-wing "Alpha" 80 )
 
   waypoints:
-    BravoPath:
+    Pod1Path:
+      - [-300.0, 0.0, 7000.0]
+    Pod2Path:
       - [0.0, 0.0, 7000.0]
+    Pod3Path:
+      - [300.0, 0.0, 7000.0]
+    Pod4Path:
+      - [-450.0, 150.0, 7050.0]
+    Pod5Path:
+      - [-150.0, 150.0, 7050.0]
+    Pod6Path:
+      - [150.0, 150.0, 7050.0]
+    Pod7Path:
+      - [-300.0, -150.0, 7100.0]
+    Pod8Path:
+      - [0.0, -150.0, 7100.0]
+    Pod9Path:
+      - [300.0, -150.0, 7100.0]
+    Aldrin4Path:
+      - [650.0, 0.0, 6950.0]
 
 mission_flow:
   fiction_viewer: "Mission_2_2_story.txt"
@@ -300,6 +340,10 @@ mission_flow:
         voice_style_instructions: "Calm, final, authoritative"
         icons:
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus (Nav Charlie)" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [-350, -250], label: "Pod Group A" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [0, -250], label: "Pod Group B" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [350, -250], label: "Pod Group C" }
+          - { icon_type: "Support Ship", team: "Friendly", display_class: "GTS Centaur", map_position: [-600, -100], label: "Casca" }
           - { icon_type: "Waypoint", team: "Unknown", map_position: [0, 800], label: "Nav Bravo" }
       - text: "Alpha wing, your assignment is the pods. Nine of them, three groups. They come out in sequence over the next two minutes. You get them to $y{ Nav Bravo $}.\n\nThe $h{ Ahriman $} is closing. We'll use the $f{ Amadeus $}'s position and turrets to cover the pod corridor for as long as we can.\n\nI would appreciate it if you did not waste time trying to protect this ship. The $f{ Amadeus $} has served her purpose. The people in those pods have not."
         voice_name: "Alnilam"
@@ -309,6 +353,8 @@ mission_flow:
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus" }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [500, -800], label: "Ahriman (NOT A TARGET)" }
           - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [0, -300], label: "Pod Group A" }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Shaitan", map_position: [800, -700], label: "Brahma ETA 01:30" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [-500, -800], label: "Vishnu ETA 03:00" }
           - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [0, 500], label: "Asura Wing" }
       - text: "One final item. I am aware that some of you know what this briefing implies about where I will be during this operation. I want it noted for the log that I consider this the correct decision and that I made it freely. Command will review the documentation.\n\nGood luck. $f{ Amadeus $} out."
         voice_name: "Alnilam"
@@ -316,6 +362,10 @@ mission_flow:
         icons:
           - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [0, -100], label: "Alpha Wing" }
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, -500], label: "Amadeus" }
+          - { icon_type: "Transport", team: "Friendly", display_class: "GTEP Hermes", map_position: [-100, -300], label: "Pod 1" }
+          - { icon_type: "Freighter (has cargo)", team: "Friendly", display_class: "GTFr Chronos", map_position: [250, -260], label: "Aldrin 4" }
+          - { icon_type: "Cargo", team: "Friendly", display_class: "TAC 1", map_position: [550, -260], label: "Tech Cargo" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Dragon", map_position: [0, 900], label: "Bheema Sector" }
 
   debriefing:
     stages:
