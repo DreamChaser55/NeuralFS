@@ -95,7 +95,7 @@ except (ImportError, ValueError):
         advanced_sexp_validator = None
 
 
-def process_mission(input_file, output_file=None, tts_settings=None):
+def process_mission(input_file, output_file=None, tts_settings=None, validate_only=False):
     """
     Core conversion logic.
     
@@ -108,6 +108,11 @@ def process_mission(input_file, output_file=None, tts_settings=None):
                          - dry_run: bool (default False)
                          - api_key: str (optional)
                          - model_id: str (optional)
+    :param validate_only: When True, run all validation (FSIF loading, standard validator,
+                          advanced SEXP validator, voice-name checks) and return without writing
+                          an FS2 file or running TTS filename normalization / voice generation.
+                          Exit status semantics are preserved: True on clean validation, False on
+                          any validation failure. Defaults to False (normal conversion behavior).
     :return: True if successful, False otherwise.
     """
     # Default TTS settings
@@ -217,6 +222,12 @@ def process_mission(input_file, output_file=None, tts_settings=None):
     if not is_valid:
         logger.error("[ERROR] Validation failed. See logs above for details.")
         return False
+
+    # Validation-only / log-only mode: return here without writing FS2 or running TTS.
+    if validate_only:
+        suffix = " (with warnings)" if validator.warnings else ""
+        logger.info(f"[SUCCESS] Validation successful{suffix}; no FS2 file written (validation-only mode).")
+        return True
 
     # Voice Filename Normalization (if TTS enabled)
     if generation_enabled:
@@ -340,7 +351,11 @@ def main():
     
     parser.add_argument("--tts-rate-limit-delay", dest="tts_rate_limit_delay", type=float, default=0.0,
                         help="Delay in seconds between consecutive TTS API calls (default: 0.0)")
-    
+
+    # Validation-only / log-only mode
+    parser.add_argument("--validate-only", dest="validate_only", action="store_true", default=False,
+                        help="Run all validation checks and exit without writing an FS2 file or generating TTS output.")
+
     args = parser.parse_args()
 
     # Determine mode priority: explicit mode > overwrite flag > skip flag > default
@@ -374,7 +389,9 @@ def main():
     }
 
     logger.info(f"Input file: {args.input_file}")
-    success = process_mission(args.input_file, args.output, tts_settings)
+    if args.validate_only and args.output:
+        logger.info("[INFO] --validate-only is active: the -o/--output path will be ignored (no FS2 file will be written).")
+    success = process_mission(args.input_file, args.output, tts_settings, validate_only=args.validate_only)
     if not success:
         sys.exit(1)
 

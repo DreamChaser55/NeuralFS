@@ -43,6 +43,7 @@ class ConverterGUI(LogMixin):
         self.tts_dry_run_var = tk.BooleanVar(value=False)
         self.api_key_var = tk.StringVar()
         self.tts_rate_limit_var = tk.DoubleVar(value=0.0)
+        self.validate_only_var = tk.BooleanVar(value=False)
 
         # Check for file-based API keys
         api_keys_dir = Path(__file__).resolve().parent.parent / "API_keys"
@@ -109,13 +110,13 @@ class ConverterGUI(LogMixin):
         ttk.Button(output_inner, text="Save As...", command=self.browse_output).pack(side="left")
 
         # TTS Options
-        tts_frame = ttk.LabelFrame(left_frame, text="TTS Options", padding="5")
-        tts_frame.pack(fill="x", pady=(0, 10))
+        self.tts_frame = ttk.LabelFrame(left_frame, text="TTS Options", padding="5")
+        self.tts_frame.pack(fill="x", pady=(0, 10))
 
-        ttk.Checkbutton(tts_frame, text="Enable TTS Generation",
+        ttk.Checkbutton(self.tts_frame, text="Enable TTS Generation",
                         variable=self.tts_enabled_var, command=self.toggle_tts_options).pack(anchor="w")
 
-        self.tts_options_inner = ttk.Frame(tts_frame)
+        self.tts_options_inner = ttk.Frame(self.tts_frame)
         self.tts_options_inner.pack(fill="x", padx=20, pady=5)
 
         # Provider Selection
@@ -168,6 +169,17 @@ class ConverterGUI(LogMixin):
         self.toggle_tts_options()
 
         tts_paths_frame.columnconfigure(1, weight=1)
+
+        # Output Options (validate-only mode)
+        output_options_frame = ttk.LabelFrame(left_frame, text="Output Options", padding="5")
+        output_options_frame.pack(fill="x", pady=(0, 10))
+
+        ttk.Checkbutton(
+            output_options_frame,
+            text="Validate only (no FS2 file or TTS output)",
+            variable=self.validate_only_var,
+            command=self.toggle_validate_only
+        ).pack(anchor="w")
 
         # Converter Actions
         actions_frame = ttk.Frame(left_frame)
@@ -238,6 +250,15 @@ class ConverterGUI(LogMixin):
         if state == 'normal':
             self.update_api_key_visibility() # Restore correct state for inner widgets
 
+    def toggle_validate_only(self):
+        """Gray out TTS controls when validate-only mode is active (TTS is skipped)."""
+        if self.validate_only_var.get():
+            self._set_state_recursive(self.tts_frame, 'disabled')
+        else:
+            # Re-enable TTS frame, then refresh inner options based on tts_enabled_var
+            self._set_state_recursive(self.tts_frame, 'normal')
+            self.toggle_tts_options()
+
     def update_api_key_visibility(self):
         if not self.tts_enabled_var.get():
             return
@@ -297,6 +318,7 @@ class ConverterGUI(LogMixin):
 
     def run_conversion_task(self, input_path):
         tts_settings = self._build_tts_settings()
+        validate_only = self.validate_only_var.get()
 
         mode = self.mode_var.get()
         output_path = self.output_path_var.get().strip() or None
@@ -307,7 +329,12 @@ class ConverterGUI(LogMixin):
             with self.conversion_runner(root_logger, _is_success):
                 if mode == "file":
                     logging.info(f"Processing single file: {input_path}")
-                    success = process_mission(input_path, output_file=output_path, tts_settings=tts_settings)
+                    success = process_mission(
+                        input_path,
+                        output_file=output_path,
+                        tts_settings=tts_settings,
+                        validate_only=validate_only
+                    )
                     if not success:
                         logging.error("Conversion failed.")
                 else:
@@ -324,7 +351,11 @@ class ConverterGUI(LogMixin):
                         failed = 0
                         for i, file_path in enumerate(files, 1):
                             logging.info(f"\n[{i}/{len(files)}] Processing {os.path.basename(file_path)}...")
-                            if process_mission(file_path, tts_settings=tts_settings):
+                            if process_mission(
+                                file_path,
+                                tts_settings=tts_settings,
+                                validate_only=validate_only
+                            ):
                                 succeeded += 1
                             else:
                                 failed += 1

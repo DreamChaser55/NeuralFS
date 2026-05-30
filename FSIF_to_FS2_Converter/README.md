@@ -22,6 +22,7 @@ FSIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Validation of FSIF files with actionable warning/error reports
   - Reported errors must be fixed for the conversion to succeed
   - Reported warnings are non-fatal, but should be addressed for best results
+- Validation-only (log-only) mode: run all checks and obtain the validator log without writing an FS2 file or generating TTS audio
 - Advanced SEXP validation
 
 ## Versions
@@ -76,6 +77,7 @@ This tool allows you to:
 - Select a single file or a folder for batch conversion.
 - Configure output paths.
 - Toggle TTS generation and configure TTS options (overwrite, dry run, etc.).
+- Toggle validation-only (log-only) mode
 - View real-time conversion logs.
 
 ## Project Structure

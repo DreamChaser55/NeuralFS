@@ -88,6 +88,10 @@ To use a key file, create a text file named `Gemini_API_key.txt`, `Elevenlabs_AP
 
 **Security note:** Make sure your API key files are not committed to version control. The `API_keys` directory is listed in `.gitignore`, so this should not happen with Git.
 
+## Validation-Only (Log-Only) Mode
+
+Use `--validate-only` to run the full validation pipeline without writing any output files or generating TTS audio.
+
 ## Advanced Validation
 The Advanced SEXP Validator runs automatically. It performs a deep semantic check on all FSIF SEXP-bearing fields — event and goal formulas, ship/wing `arrival_cue`, `departure_cue`, and `initial_orders`, and debriefing `display_condition` — using FSO engine logic (type checking, return types, reference validation).
 
