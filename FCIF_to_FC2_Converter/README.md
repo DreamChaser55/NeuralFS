@@ -16,6 +16,7 @@ FCIF is a YAML-based, human-readable, and LLM-friendly representation that abstr
 - Four advance condition types: goal true/false, event true/false (`is-previous-goal-true`, `is-previous-event-true`, `is-previous-goal-false`, `is-previous-event-false`)
 - **Advance condition reference validation**: for every mission with a `success_goal`, `failure_goal`, `success_event`, or `failure_event` field set, the converter verifies that the referenced name actually exists in the corresponding `.fsif` file (`mission_flow.goals[*].name` or `mission_flow.events[*].name`). A missing name, missing FSIF file, or unparseable FSIF is a fatal error; the error message lists available names to help fix typos.
 - **Campaign-wide player loadout check**: the converter automatically infers the path to the `.fsif` files and, for each mission whose FSIF can be loaded, verifies that all player ship classes and weapons are present in `starting_loadout` or explicitly granted by `allow-ship`/`allow-weapon` SEXPs in a previous mission. The check also validates that `template` references on player ships and wings are strings. If a mission's FSIF file is missing, unreadable, or does not parse as a YAML mapping, the check issues a warning and skips that mission (non-fatal); an actual loadout violation is a fatal error.
+- **Validation-only (log-only) mode**: run all checks (schema, advance condition references, loadout) and obtain the validator log without writing an FC2 file
 
 ## Versions
 FCIF and converter versions:
@@ -51,6 +52,7 @@ python fcif_converter_gui.py
 This tool allows you to:
 - Select a single `.fcif` file.
 - Configure the output path.
+- Toggle validation-only (log-only) mode.
 - View real-time conversion logs.
 
 ## Project Structure

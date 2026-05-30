@@ -816,6 +816,7 @@ def check_campaign_advance_conditions(fcif: 'FCIF'):
 def process_campaign(
     input_file: str,
     output_file: Optional[str] = None,
+    validate_only: bool = False,
 ) -> bool:
     """Convert an FCIF campaign file to the FSO ``.fc2`` format.
 
@@ -836,31 +837,33 @@ def process_campaign(
        ``check_campaign_player_loadouts()`` to verify that all player ships
        and weapons are unlocked before they are first used.
     6. **FC2 generation** — calls ``write_fc2()`` to emit the ``.fc2`` output
-       file.
+       file.  Skipped when ``validate_only=True``.
 
     Steps 3–5 are only executed when the campaign has at least one mission.
     The output file defaults to *input_file* with the extension replaced by
     ``.fc2`` when *output_file* is not supplied.
 
     Args:
-        input_file:  Path to the ``.fcif`` source file.  May contain
-                     surrounding quotes (handled by ``sanitize_path()``).
-        output_file: Optional path for the generated ``.fc2`` file.  When
-                     ``None``, the output is written next to the input file
-                     with the ``.fc2`` extension.
+        input_file:    Path to the ``.fcif`` source file.  May contain
+                       surrounding quotes (handled by ``sanitize_path()``).
+        output_file:   Optional path for the generated ``.fc2`` file.  When
+                       ``None``, the output is written next to the input file
+                       with the ``.fc2`` extension.  Ignored when
+                       ``validate_only=True``.
+        validate_only: When ``True``, run the full validation pipeline (steps
+                       1–5) and return without writing a ``.fc2`` file.  Exit
+                       status semantics are preserved: ``True`` on clean
+                       validation, ``False`` on any validation failure.
+                       Defaults to ``False`` (normal conversion behavior).
 
     Returns:
-        ``True`` on success (the ``.fc2`` file was written).
+        ``True`` on success (the ``.fc2`` file was written, or validation
+        passed in validate-only mode).
         ``False`` on any fatal error (file not found, validation failure,
         missing FSIF references, loadout violations, or write errors); the
         specific cause is logged at ERROR level before returning.
     """
     input_path = Path(sanitize_path(input_file))
-    
-    if output_file is None:
-        output_path = input_path.with_suffix('.fc2')
-    else:
-        output_path = Path(sanitize_path(output_file))
 
     if not input_path.exists() or not input_path.is_file():
         logger.error(f"Input file not found at '{input_path}'")
@@ -883,6 +886,16 @@ def process_campaign(
         if not check_campaign_player_loadouts(fcif_data, input_path):
             return False
 
+    # Validation-only / log-only mode: return here without writing FC2.
+    if validate_only:
+        logger.log(SUCCESS_LEVEL, f"Validation successful; no FC2 file written (validation-only mode).")
+        return True
+
+    if output_file is None:
+        output_path = input_path.with_suffix('.fc2')
+    else:
+        output_path = Path(sanitize_path(output_file))
+
     logger.info(f"Converting '{fcif_data.campaign.name}' ({len(fcif_data.missions)} missions)...")
     
     try:
@@ -898,13 +911,18 @@ def main():
     parser = argparse.ArgumentParser(description="Convert FCIF (Freespace Campaign Intermediate Format) to FC2 format.")
     parser.add_argument("input", type=str, help="Input .fcif file")
     parser.add_argument("-o", "--output", type=str, help="Output .fc2 file (optional, defaults to input filename with .fc2 extension)")
+    parser.add_argument("--validate-only", dest="validate_only", action="store_true", default=False,
+                        help="Run all validation checks and exit without writing an FC2 file.")
 
     args = parser.parse_args()
 
     # Configure root logger for CLI
     logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 
-    success = process_campaign(args.input, args.output)
+    if args.validate_only and args.output:
+        logging.info("[INFO] --validate-only is active: the -o/--output path will be ignored (no FC2 file will be written).")
+
+    success = process_campaign(args.input, args.output, validate_only=args.validate_only)
     if not success:
         sys.exit(1)
 

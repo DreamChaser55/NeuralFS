@@ -171,6 +171,30 @@ Finally, the converter regex-scans the `.fsif` file for new `allow-ship` and `al
 - If an un-granted ship or weapon is used by the player in a mission whose FSIF was successfully parsed, an `[ERROR]` is emitted listing the missing items and providing actionable advice. The conversion process returns `False` and aborts.
 - If all player ships and weapons are covered across every parsed mission, an `[INFO]` confirmation is printed and the conversion proceeds.
 
+## Validation-Only (Log-Only) Mode
+
+`process_campaign(validate_only=True)` runs the full validation pipeline (steps 1–5 in the function's docstring) and short-circuits **before** calling `write_fc2()`, so no `.fc2` file is ever created.
+
+The pipeline that runs in validate-only mode is identical to a normal conversion run:
+
+1. Input path and extension check.
+2. `load_fcif()` — full Pydantic schema validation.
+3. `check_campaign_advance_conditions()` — non-fatal unconditional-advancement warnings.
+4. `check_campaign_advance_condition_references()` — fatal reference check.
+5. `check_campaign_player_loadouts()` — fatal loadout check.
+
+On clean validation the function logs:
+
+```text
+[SUCCESS] Validation successful; no FC2 file written (validation-only mode).
+```
+
+and returns `True`.  Any earlier fatal failure causes the function to return `False` exactly as it would during a normal conversion run — exit-status semantics are fully preserved.
+
+The CLI flag `--validate-only` maps directly to this parameter.  When both `--validate-only` and `-o/--output` are supplied, the output path is silently ignored and an informational message is logged.
+
+The GUI "Validate only (no FC2 file output)" checkbox in the "Output Options" section passes `validate_only=True` to `process_campaign()` and greys out the Output file row while the mode is active.
+
 ## Version Handling
 
 The converter accepts FCIF version **1.0**. Files with other `fcif_version` values are rejected with a validation error.

@@ -28,7 +28,8 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
 ### Optional Arguments
 | Flag | Description |
 |---|---|
-| `-o`, `--output` | Path to the output `.fc2` file. If omitted, defaults to the input path with the extension changed to `.fc2`. |
+| `-o`, `--output` | Path to the output `.fc2` file. If omitted, defaults to the input path with the extension changed to `.fc2`. Ignored when `--validate-only` is active. |
+| `--validate-only` | Run all validation checks and exit without writing an FC2 file. |
 
 ## Path Quoting
 - The input and output paths may be provided with or without surrounding quotes. All of the following work:
@@ -42,6 +43,10 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py <input.fcif> [-o output.fc2]
     - Keep the path wrapped in quotes exactly as shown above.
     - Avoid spaces in directory and file names; use underscores instead.
     - When batching in `cmd.exe`, ensure each `%%F` is quoted.
+
+## Validation-Only (Log-Only) Mode
+
+Use `--validate-only` to run the full validation pipeline without writing any output file.
 
 ## Advance Condition Reference Check
 
@@ -77,6 +82,7 @@ The converter writes the `.fc2` file to the specified (or derived) output path.
   - `Loading FCIF: <path>`
   - `Converting '<campaign_name>' (<N> missions)...`
   - `Successfully wrote: <output_path>`
+  - `Validation successful; no FC2 file written (validation-only mode).` (validate-only mode)
 
 ## Examples
 
@@ -89,6 +95,11 @@ python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif
 ### Single conversion (explicit output name)
 ```bash
 python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif -o campaigns/custom_name.fc2
+```
+
+### Validate only (no FC2 output)
+```bash
+python FCIF_to_FC2_Converter/fcif_to_fc2.py campaigns/test_campaign.fcif --validate-only
 ```
 
 ## Troubleshooting

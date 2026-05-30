@@ -31,6 +31,7 @@ class ConverterGUI(LogMixin):
         # Variables
         self.input_path_var = tk.StringVar()
         self.output_path_var = tk.StringVar()
+        self.validate_only_var = tk.BooleanVar(value=False)
 
         self.is_converting = False
         self.copy_feedback_after_id = None
@@ -63,8 +64,8 @@ class ConverterGUI(LogMixin):
         ttk.Button(input_row, text="Browse...", command=self.browse_input).pack(side="left")
 
         # Output Selection
-        self.output_row_frame = ttk.Frame(input_frame, padding=(0, 5, 0, 0))
-        self.output_row_frame.pack(fill="x", pady=(5, 0))
+        self.output_row_frame = ttk.LabelFrame(left_frame, text="Output", padding="5")
+        self.output_row_frame.pack(fill="x", pady=(0, 10))
 
         ttk.Label(self.output_row_frame, text="Output File (Optional):").pack(anchor="w")
 
@@ -73,6 +74,17 @@ class ConverterGUI(LogMixin):
 
         ttk.Entry(output_inner, textvariable=self.output_path_var).pack(side="left", fill="x", expand=True, padx=(0, 5))
         ttk.Button(output_inner, text="Save As...", command=self.browse_output).pack(side="left")
+
+        # Output Options (validate-only mode)
+        output_options_frame = ttk.LabelFrame(left_frame, text="Output Options", padding="5")
+        output_options_frame.pack(fill="x", pady=(0, 10))
+
+        ttk.Checkbutton(
+            output_options_frame,
+            text="Validate only (no FC2 file output)",
+            variable=self.validate_only_var,
+            command=self.toggle_validate_only
+        ).pack(anchor="w")
 
         # Converter Actions
         actions_frame = ttk.Frame(left_frame)
@@ -98,6 +110,24 @@ class ConverterGUI(LogMixin):
         self.log_text.tag_config('warning', foreground='#ff8c00')  # Dark Orange
         self.log_text.tag_config('success', foreground='green')
         self.log_text.tag_config('info', foreground='blue')
+
+    def _set_state_recursive(self, widget, state):
+        """Recursively set state for a widget and all its children."""
+        try:
+            widget.configure(state=state)
+        except tk.TclError:
+            # Not all widgets support the 'state' option (e.g., ttk.Frame, ttk.LabelFrame)
+            pass
+
+        for child in widget.winfo_children():
+            self._set_state_recursive(child, state)
+
+    def toggle_validate_only(self):
+        """Gray out the output file row when validate-only mode is active."""
+        if self.validate_only_var.get():
+            self._set_state_recursive(self.output_row_frame, 'disabled')
+        else:
+            self._set_state_recursive(self.output_row_frame, 'normal')
 
     def browse_input(self):
         path = filedialog.askopenfilename(filetypes=[("FCIF files", "*.fcif"), ("All files", "*.*")])
@@ -135,6 +165,7 @@ class ConverterGUI(LogMixin):
 
     def run_conversion_task(self, input_path):
         output_path = self.output_path_var.get().strip() or None
+        validate_only = self.validate_only_var.get()
 
         try:
             with self.conversion_runner(fcif_logger, _is_success):
@@ -142,7 +173,7 @@ class ConverterGUI(LogMixin):
                 fcif_logger.info("Starting conversion task...")
 
                 fcif_logger.info(f"Processing single file: {input_path}")
-                success = process_campaign(input_path, output_file=output_path)
+                success = process_campaign(input_path, output_file=output_path, validate_only=validate_only)
                 if not success:
                     fcif_logger.error("Conversion failed.")
         finally:
