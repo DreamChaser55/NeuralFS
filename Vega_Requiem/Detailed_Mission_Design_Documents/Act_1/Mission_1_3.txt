@@ -236,7 +236,7 @@ carry civilians. They are your responsibility now."
 [Then silence from the Vigil.]
 
 Message 2 — Alpha 2, trigger: Aquarius wing (HoL) opens fire on Theta wing
-"HoL contacts — yellow diamonds, Vasudan hulls. Those are the Hammer. Engaging."
+"HoL contacts — purple diamonds, Vasudan hulls. Those are the Hammer. Engaging."
 
 Message 3 — Alpha 2, trigger: 20 seconds after player's first Avenger kill
 "Alpha Lead — whatever you're shooting, it's working. Clean kills."

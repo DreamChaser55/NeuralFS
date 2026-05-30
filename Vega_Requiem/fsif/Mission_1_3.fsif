@@ -270,7 +270,7 @@ mission_flow:
           - { icon_type: "Player Fighter", team: "Friendly", display_class: "GTF Valkyrie", map_position: [0, 0], label: "Alpha", highlighted: true }
           - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Scorpion", map_position: [300, 500], label: "Brahma Wing" }
           - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SF Basilisk", map_position: [0, 1000], label: "Rama Wing (Probable)" }
-      - text: "Watch the left flank. $h{ Hammer of Light $} is operating in this area. HoL transponders are yellow diamond - fire on sight if they're between you and $f{ Theta wing $}.\n\nNav Alpha is your objective. Get them there. GTD Amadeus out."
+      - text: "Watch the left flank. $h{ Hammer of Light $} is operating in this area. HoL transponders are purple diamond - fire on sight if they're between you and $f{ Theta wing $}.\n\nNav Alpha is your objective. Get them there. GTD Amadeus out."
         voice_name: "Kore"
         voice_style_instructions: "Warning"
         icons:
@@ -469,7 +469,7 @@ mission_flow:
       voice_name: "Pulcherrima"
       voice_style_instructions: "Vasudan accent, stoic, translated into Terran-inflected English"
     - name: "Msg2"
-      text: "HoL contacts - yellow diamonds, Vasudan hulls. Those are the Hammer. Engaging."
+      text: "HoL contacts - purple diamonds, Vasudan hulls. Those are the Hammer. Engaging."
       voice_name: "Schedar"
       voice_style_instructions: "Veteran wingman, steady"
     - name: "Msg3"
