@@ -74,76 +74,85 @@ entities:
       class: "GTD Orion"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
+      orientation: "AmadeusPath:1"
       initial_hull_percent: 60
       flags: ["escort"]
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "AmadeusPath" 89 )
 
     - name: "GTC Stentor"
       class: "GTC Fenris"
       team: "Friendly"
       position: [1500.0, -500.0, 0.0]
+      orientation: "SC Ahriman"
       initial_hull_percent: 70
       flags: ["escort"]
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "StentorPath" 89 )
 
     - name: "GTFr Aldrin 1"
       class: "GTFr Chronos"
       team: "Friendly"
       position: [0.0, 0.0, 3000.0]
+      orientation: "Aldrin1Path:1"
       flags: ["escort"]
       cargo: "Vega Prime Data"
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "Aldrin1Path" 89 )
 
     - name: "GTFr Aldrin 2"
       class: "GTFr Chronos"
       team: "Friendly"
       position: [500.0, 0.0, 3000.0]
+      orientation: "Aldrin2Path:1"
       flags: ["escort"]
       cargo: "Sensor Data"
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "Aldrin2Path" 89 )
 
     - name: "GTFr Aldrin 3"
       class: "GTFr Chronos"
       team: "Friendly"
       position: [-500.0, 0.0, 3000.0]
+      orientation: "Aldrin3Path:1"
       flags: ["escort"]
       cargo: "Sensor Data"
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "Aldrin3Path" 89 )
 
     - name: "GTT Rescue"
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, 500.0, 1500.0]
+      orientation: "RescuePath:1"
       flags: ["escort"]
       cargo: "Meridian Survivors"
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "RescuePath" 89 )
 
     - name: "Theta 3"
       class: "PVT Isis"
       team: "Friendly"
       position: [0.0, 0.0, -1000.0]
+      orientation: "Theta3Path:1"
       flags: ["escort", "no-shields"]
       cargo: "Vasudan Refugees"
       initial_orders: |
-        ( ai-waypoints-once "ConvoyPath" 89 )
+        ( ai-waypoints-once "Theta3Path" 89 )
 
     - name: "GTS Casca"
       class: "GTS Centaur"
       team: "Friendly"
       position: [-1000.0, 0.0, 0.0]
+      orientation: "CascaPath:1"
       initial_orders: |
-        ( ai-stay-near-ship "GTD Amadeus" 89 )
+        ( ai-waypoints-once "CascaPath" 80 )
 
     - name: "SC Ahriman"
       class: "SC Lilith"
       team: "Hostile"
       position: [4000.0, -1000.0, -2000.0]
+      orientation: "GTC Stentor"
       flags: ["escort"]
       initial_orders: |
         ( ai-waypoints-once "AhrimanPath" 89 )
@@ -163,6 +172,7 @@ entities:
       template: "alpha_valkyrie"
       count: 4
       position: [0.0, 200.0, 3000.0]
+      orientation: "Nav Alpha"
       initial_orders: |
         ( ai-guard "GTD Amadeus" 89 )
 
@@ -170,6 +180,7 @@ entities:
       template: "beta_apollo"
       count: 4
       position: [0.0, 1000.0, 1500.0]
+      orientation: "RescuePath:1"
       initial_orders: |
         ( ai-guard "GTT Rescue" 89 )
 
@@ -177,6 +188,7 @@ entities:
       template: "shivan_fighter"
       count: 4
       position: [0.0, 500.0, 10000.0]
+      orientation: "Alpha"
       arrival_cue: |
         ( has-time-elapsed 90 )
       arrival_method: "Hyperspace"
@@ -187,6 +199,7 @@ entities:
       template: "shivan_bomber"
       count: 3
       position: [0.0, 1000.0, -6000.0]
+      orientation: "GTD Amadeus"
       arrival_cue: |
         ( has-time-elapsed 150 )
       arrival_method: "Hyperspace"
@@ -197,6 +210,7 @@ entities:
       template: "shivan_heavy"
       count: 3
       position: [0.0, 1500.0, -6000.0]
+      orientation: "Alpha"
       arrival_cue: |
         ( has-time-elapsed 150 )
       arrival_method: "Hyperspace"
@@ -207,6 +221,7 @@ entities:
       template: "shivan_bomber"
       count: 3
       position: [0.0, -1000.0, -6000.0]
+      orientation: "GTT Rescue"
       arrival_cue: |
         ( and 
           ( percent-ships-destroyed 100 "Kali" )
@@ -217,9 +232,30 @@ entities:
         ( ai-chase "GTT Rescue" 89 )
 
   waypoints:
-    ConvoyPath:
+    AmadeusPath:
       - [0.0, 0.0, 5000.0]
       - [0.0, 0.0, 10000.0]
+    StentorPath:
+      - [1500.0, -500.0, 5000.0]
+      - [1500.0, -500.0, 10000.0]
+    Aldrin1Path:
+      - [0.0, 0.0, 5500.0]
+      - [0.0, 0.0, 10200.0]
+    Aldrin2Path:
+      - [500.0, 0.0, 5500.0]
+      - [500.0, 0.0, 10200.0]
+    Aldrin3Path:
+      - [-500.0, 0.0, 5500.0]
+      - [-500.0, 0.0, 10200.0]
+    RescuePath:
+      - [0.0, 500.0, 5000.0]
+      - [0.0, 500.0, 10050.0]
+    Theta3Path:
+      - [-400.0, 0.0, 4500.0]
+      - [-400.0, 0.0, 9700.0]
+    CascaPath:
+      - [-1000.0, 0.0, 5000.0]
+      - [-1000.0, 0.0, 10000.0]
     AhrimanPath:
       - [4000.0, -1000.0, 3000.0]
       - [4000.0, -1000.0, 8000.0]
@@ -405,7 +441,7 @@ mission_flow:
           )
           ( do-nothing )
         )
-      hud_directive_text: "Protect Convoy Ships"
+      hud_directive_text: "Protect at least 3 convoy ships"
 
   goals:
     - name: "Reach Nav Bravo"
@@ -417,10 +453,13 @@ mission_flow:
       type: "Secondary"
       objective_text: "At least 3 of 5 convoy ships survive to Nav Bravo."
       formula: |
-        ( is-event-true-delay "ConvoySurvival" 0 )
+        ( and 
+          ( < ( distance "GTD Amadeus" "Nav Bravo" ) 2500 )
+          ( not ( percent-ships-destroyed 60 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" ) )
+        )
     - name: "Surgical Strike"
       type: "Secondary"
-      objective_text: "Disable SC Ahriman's forward weapons subsystem."
+      objective_text: "Disable SC Ahriman's weapons subsystem."
       formula: |
         ( is-subsystem-destroyed-delay "SC Ahriman" "weapons" 0 )
     - name: "Flawless Escort"
