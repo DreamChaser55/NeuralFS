@@ -6,7 +6,7 @@ This guide will walk you through the campaign creation process with NeuralFS usi
 1. Open your terminal and navigate to the NeuralFS folder.
 2. Start an OpenCode session by running `opencode`. OpenCode will automatically load the three AI agent definitions (defined in `opencode.json`).
 3. Use the **Tab** key to switch to the "Freespace Creative Writing Agent".
-4. Tell the agent about your campaign concept. If you want the agent to work fully autonomously, tell it to do so — the agent will then not ask for your approval after completing each significant phase of the work.
+4. Tell the agent about your campaign concept. The agent will ask how you would like to collaborate: choose `Collaborative mode` (the agent pauses for your approval after each significant phase, which is the default) or `Autonomous mode` (the agent proceeds through all stages without waiting, self-critiquing at each gate).
 5. Send the prompt and wait until the FreeSpace Creative Writing Agent finishes its work. When it is done, there should be a new folder named after your campaign, containing the Campaign Bible and another folder with detailed mission design documents in natural language. If there is any fiction viewer content, it will be in separate text files in the same folder, using the naming pattern `missionname_story.txt`.
 
 Note: Using AI for this phase is optional. If you prefer to write your own Campaign Bible and mission design documents, you can skip this phase and proceed to the next one.

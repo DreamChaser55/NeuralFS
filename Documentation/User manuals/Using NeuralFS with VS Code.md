@@ -7,8 +7,8 @@ This guide will walk you through the campaign creation process with NeuralFS usi
 2. Open the Zoo Code extension.
 3. Select the "Freespace Creative Writing Agent" as the interaction mode.
 4. Copy the initial prompt from `VS Code prompts/freespace creative writing agent.txt` and paste it into Zoo Code.
-5. Add your campaign concept to the prompt. If you don't want the agent to work fully autonomously, delete the "Work autonomously." line — the agent will then ask for your approval after completing each significant phase of the work.
-6. Send the prompt and wait until the FreeSpace Creative Writing Agent finishes its work. When it is done, there should be a new folder named after your campaign, containing the Campaign Bible and another folder with detailed mission design documents in natural language. If there is any fiction viewer content, it will be in separate text files in the same folder, using the naming pattern `missionname_story.txt`.
+5. Add your campaign concept to the prompt and send it. The agent will ask how you would like to collaborate: choose `Collaborative mode` (the agent pauses for your approval after each significant phase, which is the default) or `Autonomous mode` (the agent proceeds through all stages without waiting, self-critiquing at each gate).
+6. Wait until the FreeSpace Creative Writing Agent finishes its work. When it is done, there should be a new folder named after your campaign, containing the Campaign Bible and another folder with detailed mission design documents in natural language. If there is any fiction viewer content, it will be in separate text files in the same folder, using the naming pattern `missionname_story.txt`.
 
 Note: Using AI for this phase is optional. If you prefer to write your own Campaign Bible and mission design documents, you can skip this phase and proceed to the next one.
 

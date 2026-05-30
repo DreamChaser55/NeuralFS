@@ -4,5 +4,3 @@ Write an original Freespace campaign based on this concept:
 <campaign_concept>
 
 </campaign_concept>
-
-Work autonomously.
