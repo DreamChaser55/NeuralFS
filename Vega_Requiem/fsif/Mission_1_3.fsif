@@ -319,6 +319,7 @@ mission_flow:
         ( when
           ( has-time-elapsed 22 )
           ( send-message "PVD Vigil" "High" "Msg1" )
+          ( set-support-ship "Hyperspace" "GTS Casca" "Hyperspace" "GTS Casca" "GTS Centaur" 0 1 )
         )
     - name: "BrahmaEngage"
       formula: |
@@ -348,6 +349,16 @@ mission_flow:
           )
           ( send-message "Alpha 2" "High" "Msg2" )
         )
+    - name: "ShivansHitHoL"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "AquariusEngage" 15 )
+            ( not ( percent-ships-destroyed 100 "Aquarius" ) )
+          )
+          ( add-goal "Brahma" ( ai-chase-wing "Aquarius" 55 ) )
+          ( send-message "Alpha 2" "Normal" "Msg11" )
+        )
     - name: "AvengerKillMsg"
       formula: |
         ( when
@@ -376,6 +387,15 @@ mission_flow:
           ( is-destroyed-delay 0 "PVD Vigil" )
           ( send-message "#Command" "Normal" "Msg6" )
         )
+    - name: "VigilFallsFallback"
+      formula: |
+        ( when
+          ( and
+            ( has-time-elapsed 165 )
+            ( not ( is-destroyed-delay 0 "PVD Vigil" ) )
+          )
+          ( self-destruct "PVD Vigil" )
+        )
     - name: "PiscesDetected"
       formula: |
         ( when
@@ -390,6 +410,12 @@ mission_flow:
         ( when
           ( has-arrived-delay 0 "Rama" )
           ( send-message "Alpha 2" "High" "Msg8" )
+        )
+    - name: "CascaSupportReady"
+      formula: |
+        ( when
+          ( has-time-elapsed 360 )
+          ( set-support-ship "Hyperspace" "GTS Casca" "Hyperspace" "GTS Casca" "GTS Centaur" 1 1 )
         )
     - name: "Theta1NavAlpha"
       formula: |
@@ -478,6 +504,10 @@ mission_flow:
       text: "Theta wing is through. Return to base, Alpha. And - well done."
       voice_name: "Kore"
       voice_style_instructions: "Approving, professional"
+    - name: "Msg11"
+      text: "Lead, the Shivans are firing on the Hammer ships. They don't know worshippers from targets."
+      voice_name: "Schedar"
+      voice_style_instructions: "Grim realization, combat focus"
 
 audio:
   mission_music: "1: Genesis"

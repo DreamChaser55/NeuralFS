@@ -144,23 +144,51 @@ entities:
     - name: "GTFr Chronos 1"
       class: "GTFr Chronos"
       team: "Friendly"
-      position: [2000.0, 0.0, 2000.0]
-      orientation: "Nav Alpha"
+      position: [2000.0, 0.0, 1200.0]
+      orientation: "ChronosDeployPath:1"
       initial_orders: |
-        ( ai-stay-near-ship "Nav Alpha" 89 )
+        ( ai-waypoints-once "ChronosDeployPath" 89 )
       departure_cue: |
-        ( has-time-elapsed 60 )
+        ( is-event-true-delay "ChronosDeployed" 25 )
       departure_method: "Hyperspace"
 
     - name: "Watchdog 1"
       class: "GTSG Watchdog"
       team: "Friendly"
       position: [200.0, -100.0, 2000.0]
+      arrival_cue: |
+        ( is-event-true-delay "ChronosDeployed" 0 )
 
     - name: "Watchdog 2"
       class: "GTSG Watchdog"
       team: "Friendly"
       position: [-200.0, 100.0, 2000.0]
+      arrival_cue: |
+        ( is-event-true-delay "ChronosDeployed" 0 )
+
+    - name: "Vega Sentry 1"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [2800.0, 500.0, 1800.0]
+      orientation: "Durga"
+
+    - name: "Vega Sentry 2"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [-2800.0, -500.0, 1800.0]
+      orientation: "Durga"
+
+    - name: "Vega Sentry 3"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [1800.0, 700.0, -2800.0]
+      orientation: "Durga"
+
+    - name: "Vega Sentry 4"
+      class: "GTSG Watchdog"
+      team: "Friendly"
+      position: [-1800.0, -700.0, -2800.0]
+      orientation: "Durga"
 
     - name: "TAC-1 Container A"
       class: "TAC 1"
@@ -279,6 +307,8 @@ entities:
     Eps4Path:
       - [300.0, 250.0, 2000.0]
       - [450.0, 750.0, 9000.0]
+    ChronosDeployPath:
+      - [350.0, 0.0, 2000.0]
     MalgorPath:
       - [800.0, 300.0, 7000.0]
       - [1200.0, 500.0, 8500.0]
@@ -347,6 +377,13 @@ mission_flow:
         ( when
           ( true )
           ( send-message "GTC Stentor" "High" "Msg1" )
+          ( set-support-ship "Hyperspace" "GTI Vega Prime" "Hyperspace" "GTI Vega Prime" "GTS Centaur" 0 1 )
+        )
+    - name: "CascaSupportReady"
+      formula: |
+        ( when
+          ( has-time-elapsed 240 )
+          ( set-support-ship "Hyperspace" "GTI Vega Prime" "Hyperspace" "GTI Vega Prime" "GTS Centaur" 1 1 )
         )
     - name: "Epsilon1Undock"
       formula: |
@@ -410,7 +447,7 @@ mission_flow:
     - name: "MalgorMove"
       formula: |
         ( when
-          ( has-time-elapsed 480 )
+          ( has-time-elapsed 420 )
           ( clear-goals "SC Malgor" )
           ( add-goal "SC Malgor" ( ai-waypoints-once "MalgorPath" 89 ) )
           ( clear-goals "GTC Stentor" )
@@ -422,6 +459,15 @@ mission_flow:
         ( when
           ( < ( hits-left "GTI Vega Prime" ) 10 )
           ( send-message "GTI Vega Prime" "High" "Msg8" )
+        )
+    - name: "VegaPrimeFalls"
+      formula: |
+        ( when
+          ( and
+            ( has-time-elapsed 540 )
+            ( not ( is-destroyed-delay 0 "GTI Vega Prime" ) )
+          )
+          ( self-destruct "GTI Vega Prime" )
         )
     - name: "StationDead"
       formula: |
@@ -437,6 +483,12 @@ mission_flow:
             ( is-destroyed-delay 0 "Epsilon Transport 4" )
           )
           ( send-message "#Command" "High" "Msg10" )
+        )
+    - name: "ChronosDeployed"
+      formula: |
+        ( when
+          ( < ( distance "GTFr Chronos 1" "Nav Alpha" ) 500 )
+          ( do-nothing )
         )
     - name: "EvacuationSuccess"
       formula: |
@@ -468,10 +520,21 @@ mission_flow:
     - name: "ChronosDirective"
       formula: |
         ( when
-          ( has-departed-delay 0 "GTFr Chronos 1" )
+          ( < ( distance "GTFr Chronos 1" "Nav Alpha" ) 500 )
           ( do-nothing )
         )
       hud_directive_text: "Escort GTFr Chronos 1"
+    - name: "CargoScanDirective"
+      formula: |
+        ( when
+          ( and
+            ( is-cargo-known-delay 0 "TAC-1 Container A" )
+            ( is-cargo-known-delay 0 "TAC-1 Container B" )
+            ( is-cargo-known-delay 0 "TAC-1 Container C" )
+          )
+          ( do-nothing )
+        )
+      hud_directive_text: "Scan Vega Prime cargo"
 
   goals:
     - name: "Evacuate Transports"
@@ -488,12 +551,21 @@ mission_flow:
       type: "Secondary"
       objective_text: "Escort GTFr Chronos 1 to deploy Nav Alpha Sentry Guns."
       formula: |
-        ( has-departed-delay 0 "GTFr Chronos 1" )
+        ( is-event-true-delay "ChronosDeployed" 0 )
     - name: "Full Evacuation"
       type: "Bonus"
       objective_text: "All 4 Epsilon transports jump out."
       formula: |
         ( percent-ships-departed 100 "Epsilon Transport 1" "Epsilon Transport 2" "Epsilon Transport 3" "Epsilon Transport 4" )
+    - name: "Scan Cargo"
+      type: "Bonus"
+      objective_text: "Scan the cargo containers at Vega Prime docking arm 3."
+      formula: |
+        ( and
+          ( is-cargo-known-delay 0 "TAC-1 Container A" )
+          ( is-cargo-known-delay 0 "TAC-1 Container B" )
+          ( is-cargo-known-delay 0 "TAC-1 Container C" )
+        )
 
   messages:
     - name: "Msg1"

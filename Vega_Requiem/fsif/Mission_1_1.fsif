@@ -6,6 +6,7 @@ mission_info:
   description: "Routine patrol to investigate a missing transport in the Capella approach corridor."
   game_type: "single"
   flags: []
+  disallow_support_ships: true
 
 environment:
   ambient_light_level: [5, 5, 5]
@@ -291,6 +292,30 @@ mission_flow:
           )
           ( send-message "Alpha 2" "Normal" "Msg8" )
         )
+    - name: "BrahmaPodRetask"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "CommandRetreatMsg" 8 )
+            ( not ( is-destroyed-delay 0 "Escape Pod 1" ) )
+          )
+          ( clear-goals "Brahma" )
+          ( add-goal "Brahma" ( ai-chase "Escape Pod 1" 80 ) )
+          ( add-goal "Brahma" ( ai-chase "Escape Pod 2" 75 ) )
+          ( add-goal "Brahma" ( ai-chase-wing "Alpha" 60 ) )
+        )
+    - name: "VishnuPodRetask"
+      formula: |
+        ( when
+          ( and
+            ( has-arrived-delay 20 "Vishnu" )
+            ( not ( is-destroyed-delay 0 "Escape Pod 2" ) )
+          )
+          ( clear-goals "Vishnu" )
+          ( add-goal "Vishnu" ( ai-chase "Escape Pod 2" 80 ) )
+          ( add-goal "Vishnu" ( ai-chase "Escape Pod 1" 75 ) )
+          ( add-goal "Vishnu" ( ai-chase-wing "Alpha" 60 ) )
+        )
     - name: "CommandJumpReady"
       formula: |
         ( when
@@ -326,7 +351,7 @@ mission_flow:
         ( when 
           ( and 
             ( has-arrived-delay 0 "Vishnu" )
-            ( < ( distance "Alpha 1" "Jump-Out Point" ) 2500 )
+            ( < ( distance "Alpha 1" "Jump-Out Point" ) 500 )
           )
           ( allow-ship "GTF Valkyrie" )
         )
