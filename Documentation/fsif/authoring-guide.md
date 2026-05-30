@@ -249,6 +249,37 @@ environment:
 **Dynamic nebula changes via SEXPs:**
 Use SEXPs like `nebula-change-pattern`, `nebula-change-storm`, `nebula-toggle-poof`, `nebula-change-fog-color`. Consult `Documentation/FSO SEXPs/Backgrounds and Nebulae.txt` for exact arguments.
 
+## Environment: reduced targeting range without full nebula
+`environment.nebula.sensor_range` only applies to full-nebula missions (`environment.nebula.enabled: true`). If the mission represents dust, asteroid-belt interference, electronic jamming, damaged sensors, or other non-nebula sensor degradation, do not enable full nebula unless you also want volumetric fog, and full-nebula backgrounds.
+
+For normal-space missions, use HUD/sensor SEXPs instead:
+- `hud-set-max-targeting-range` limits the farthest distance at which the player can target objects. Use `0` to restore infinite/default targeting range.
+- `hud-force-sensor-static` optionally adds HUD static as if sensors are damaged.
+- `primitive-sensors-set-range` is an advanced option for ships that already have the `primitive-sensors` behavior; it has no effect on ships without that flag.
+
+Example mission-start interference event:
+
+```yaml
+mission_flow:
+  events:
+    - name: "SensorInterference"
+      formula: |
+        ( when
+          ( true )
+          ( hud-set-max-targeting-range 2000 )
+          ( hud-force-sensor-static ( true ) )
+        )
+```
+
+If the interference is temporary, add a later event that restores normal targeting and clears the static:
+
+```lisp
+( hud-set-max-targeting-range 0 )
+( hud-force-sensor-static ( false ) )
+```
+
+With low targeting range, use clear HUD directives, and comms to help the player navigate.
+
 ## Templates, ships and wings
 ```yaml
 entities:

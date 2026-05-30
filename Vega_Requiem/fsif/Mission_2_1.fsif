@@ -9,12 +9,15 @@ mission_info:
 
 environment:
   ambient_light_level: [5, 5, 5]
-  suns: []
-  background_bitmaps: []
+  suns:
+    - { texture: SunVega, angles: [0.087266, 2.356194], scale: 1.5 }
+  background_bitmaps:
+    - { texture: dneb07, angles: [0.000000, 2.321286, 0.000000], scale: { x: 4.0, y: 4.0 } }
+    - { texture: dneb11, angles: [0.401425, 0.663225, 0.139626], scale: { x: 3.0, y: 4.0 } }
+    - { texture: dneb16, angles: [0.800000, 1.200000, 0.500000], scale: { x: 3.0, y: 3.0 } }
+    - { texture: planetb, angles: [0.104720, 0.000000, 1.832596], scale: { x: 5.0, y: 5.0 } }
   nebula:
-    enabled: true
-    sensor_range: 2000.0
-    pattern: "nbackblue1"
+    enabled: false
   asteroid_field:
     object_type: "asteroid"
     behavior: "passive"
@@ -342,6 +345,13 @@ mission_flow:
         voice_name: "Alnilam"
 
   events:
+    - name: "SensorInterference"
+      formula: |
+        ( when
+          ( true )
+          ( hud-set-max-targeting-range 2000 )
+          ( hud-force-sensor-static ( true ) )
+        )
     - name: "MissionStartMsg"
       formula: |
         ( when
