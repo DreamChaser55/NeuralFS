@@ -73,37 +73,11 @@ entities:
         secondary: ["Fury#Shivan", "Fury#Shivan"]
 
   ships:
-    - name: "Alpha 1"
-      class: "GTF Valkyrie"
-      team: "Friendly"
-      position: [0.0, 0.0, 0.0]
-      flags: ["no-shields"]
-      weapons:
-        primary: ["Avenger", "ML-16 Laser"]
-        secondary: ["MX-50"]
-
-    - name: "Alpha 2"
-      template: "alpha_wingman"
-      position: [200.0, 0.0, -200.0]
-      initial_orders: |
-        ( ai-guard "Alpha 1" 89 )
-
-    - name: "Alpha 3"
-      template: "alpha_wingman"
-      position: [-200.0, 0.0, -200.0]
-      initial_orders: |
-        ( ai-guard "Alpha 1" 89 )
-
-    - name: "Alpha 4"
-      template: "alpha_wingman"
-      position: [400.0, 0.0, -400.0]
-      initial_orders: |
-        ( ai-guard "Alpha 1" 89 )
-
     - name: "PVD Vigil"
       class: "PVD Typhon"
       team: "Friendly"
       position: [0.0, 0.0, 5000.0]
+      orientation: "Brahma"
       initial_hull_percent: 35
       flags: ["escort"]
       arrival_cue: |
@@ -114,6 +88,7 @@ entities:
       class: "PVT Isis"
       team: "Friendly"
       position: [500.0, 0.0, 2500.0]
+      orientation: "Nav Alpha"
       flags: ["escort", "no-shields"]
       arrival_cue: |
         ( has-time-elapsed 20 )
@@ -128,6 +103,7 @@ entities:
       class: "PVT Isis"
       team: "Friendly"
       position: [-500.0, 0.0, 2500.0]
+      orientation: "Nav Alpha"
       flags: ["escort", "no-shields"]
       arrival_cue: |
         ( has-time-elapsed 20 )
@@ -142,6 +118,7 @@ entities:
       class: "PVT Isis"
       team: "Friendly"
       position: [0.0, 500.0, 2500.0]
+      orientation: "Nav Alpha"
       flags: ["escort", "no-shields"]
       initial_speed_percent: 25
       arrival_cue: |
@@ -172,6 +149,7 @@ entities:
       class: "GTS Centaur"
       team: "Friendly"
       position: [0.0, 1000.0, -2000.0]
+      orientation: "Theta 3"
       arrival_cue: |
         ( has-time-elapsed 360 )
       arrival_method: "Hyperspace"
@@ -180,10 +158,19 @@ entities:
       departure_method: "Hyperspace"
 
   wings:
+    - name: "Alpha"
+      template: "alpha_wingman"
+      count: 4
+      position: [75.0, 0.0, 0.0]
+      orientation: "Capella Node"
+      initial_orders: |
+        ( ai-guard "Alpha 1" 89 )
+
     - name: "Brahma"
       template: "shivan_fighter"
       count: 4
       position: [3000.0, 0.0, 5000.0]
+      orientation: "PVD Vigil"
       initial_orders: |
         ( ai-chase "PVD Vigil" 89 )
 
@@ -191,6 +178,7 @@ entities:
       template: "hol_fighter"
       count: 4
       position: [0.0, 0.0, 8000.0]
+      orientation: "Theta 1"
       initial_orders: |
         ( ai-chase "Theta 1" 89 )
         ( ai-chase "Theta 2" 89 )
@@ -200,6 +188,7 @@ entities:
       template: "hol_heavy"
       count: 3
       position: [0.0, -500.0, -9000.0]
+      orientation: "Corridor Buoy 2"
       initial_orders: |
         ( ai-guard "Nav Alpha" 89 )
 
@@ -207,6 +196,7 @@ entities:
       template: "shivan_bomber"
       count: 3
       position: [0.0, 1500.0, 6000.0]
+      orientation: "Theta 3"
       arrival_cue: |
         ( or 
           ( has-time-elapsed 300 )
@@ -223,8 +213,21 @@ entities:
       position: [0.0, 0.0, 5000.0]
 
   waypoints:
-    ThetaPath:
-      - [0.0, -500.0, -10000.0]
+    Theta1Path:
+      - [350.0, -450.0, 1000.0]
+      - [300.0, -500.0, -3000.0]
+      - [250.0, -500.0, -8500.0]
+      - [250.0, -500.0, -10000.0]
+    Theta2Path:
+      - [-350.0, -450.0, 1000.0]
+      - [-300.0, -500.0, -3000.0]
+      - [-250.0, -500.0, -8500.0]
+      - [-250.0, -500.0, -10000.0]
+    Theta3Path:
+      - [0.0, -250.0, 1000.0]
+      - [0.0, -300.0, -3000.0]
+      - [0.0, -300.0, -8500.0]
+      - [0.0, -300.0, -10000.0]
 
 mission_flow:
   fiction_viewer: "Mission_1_3_story.txt"
@@ -298,6 +301,19 @@ mission_flow:
         voice_name: "Kore"
 
   events:
+    - name: "AlphaAvengerSetup"
+      formula: |
+        ( when
+          ( true )
+          ( set-primary-weapon "Alpha 1" 0 "Avenger" 100 100 )
+          ( set-primary-weapon "Alpha 1" 1 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 2" 0 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 2" 1 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 3" 0 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 3" 1 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 4" 0 "ML-16 Laser" 100 100 )
+          ( set-primary-weapon "Alpha 4" 1 "ML-16 Laser" 100 100 )
+        )
     - name: "HethorMessage"
       formula: |
         ( when
@@ -318,9 +334,9 @@ mission_flow:
           ( clear-goals "Theta 1" )
           ( clear-goals "Theta 2" )
           ( clear-goals "Theta 3" )
-          ( add-goal "Theta 1" ( ai-waypoints-once "ThetaPath" 89 ) )
-          ( add-goal "Theta 2" ( ai-waypoints-once "ThetaPath" 89 ) )
-          ( add-goal "Theta 3" ( ai-waypoints-once "ThetaPath" 89 ) )
+          ( add-goal "Theta 1" ( ai-waypoints-once "Theta1Path" 89 ) )
+          ( add-goal "Theta 2" ( ai-waypoints-once "Theta2Path" 89 ) )
+          ( add-goal "Theta 3" ( ai-waypoints-once "Theta3Path" 89 ) )
         )
     - name: "AquariusEngage"
       formula: |
@@ -396,6 +412,13 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "Destroy Pisces Wing (HoL)"
+    - name: "FullEvacDirective"
+      formula: |
+        ( when
+          ( percent-ships-departed 100 "Theta 1" "Theta 2" "Theta 3" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Full evacuation: all Theta transports escape"
 
   goals:
     - name: "Evacuate Refugees"
