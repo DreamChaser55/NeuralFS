@@ -68,8 +68,13 @@ class MiscChecksMixin:
         """
         Validate message definitions.
         
-        Checks that referenced voice names exist in the TTS registry.
+        Checks that referenced voice names exist in the TTS registry when a
+        real TTS provider was explicitly specified.  If no provider is known,
+        voice-name validation is skipped because provider voice catalogs differ.
         """
+        if not self.should_validate_voice_names():
+            return
+
         for msg in self.mission.messages:
             # Voice Name
             if msg.voice_name and msg.voice_name not in self.voices:

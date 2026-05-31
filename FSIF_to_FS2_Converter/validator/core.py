@@ -48,14 +48,14 @@ class Validator(
         mission: Mission,
         root_dir: Path,
         fsif_path: Optional[Path] = None,
-        tts_provider: str = 'google',
+        tts_provider: Optional[str] = None,
         fsif_root_node: Optional[yaml.Node] = None,
     ):
         self.mission = mission
         self.root_dir = root_dir
         self.fsif_path = fsif_path
         self.fsif_root_node = fsif_root_node
-        self.tts_provider = tts_provider.lower()
+        self.tts_provider = tts_provider.lower() if tts_provider else None
         self.documentation_dir = root_dir / 'Documentation'
         
         self.errors: List[str] = []
@@ -133,9 +133,12 @@ class Validator(
             self.voices = fs_data.ALLOWED_VOICES_ELEVENLABS
         elif self.tts_provider == 'inworld':
             self.voices = fs_data.ALLOWED_VOICES_INWORLD
-        else:
-            # Default to Google
+        elif self.tts_provider == 'google':
             self.voices = fs_data.ALLOWED_VOICES_GOOGLE
+        else:
+            # No provider was specified.  Voice-name validation is skipped
+            # because there is no provider-specific registry to validate against.
+            self.voices = set()
 
         # 5. SEXPs
         self.allowed_sexp_operators = fs_data.ALLOWED_SEXP_OPERATORS
@@ -148,6 +151,11 @@ class Validator(
 
         # 8. Ship bounding boxes
         self.ship_bounding_boxes = getattr(fs_data, 'SHIP_BOUNDING_BOXES', {})
+
+
+    def should_validate_voice_names(self) -> bool:
+        """Return True when a real TTS provider was specified for voice validation."""
+        return self.tts_provider in {'google', 'elevenlabs', 'inworld'}
 
 
     def log_error(self, msg: str):

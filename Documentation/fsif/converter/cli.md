@@ -36,8 +36,8 @@ python FSIF_to_FS2_Converter/fsif_to_fs2.py <path_to_mission.fsif>
 ## TTS Options
 The converter supports automatic voice generation using Google GenAI, ElevenLabs, or Inworld TTS. The TTS provider should ideally be specified in the `.fsif` file itself under the `audio.tts_provider` field. The CLI arguments act as optional overrides.
 
-- `--enable-tts`: Force-enable TTS generation. If no provider is specified in the `.fsif` file or via CLI, Google is used as the default.
-- `--tts-provider <google|elevenlabs|inworld|none>`: Force a specific TTS provider, overriding the `.fsif` file setting. Use `none` to forcefully disable TTS generation even when `--enable-tts` is passed.
+- `--enable-tts`: Request TTS generation. Generation proceeds only when a real provider is specified by `--tts-provider` or by `audio.tts_provider` in the `.fsif` file. If no provider is specified, the converter emits a warning and skips TTS generation.
+- `--tts-provider <google|elevenlabs|inworld|none>`: Force a specific TTS provider, overriding the `.fsif` file setting. Using `none` will skip TTS generation with a warning when `--enable-tts` is passed.
 - `--tts-mode <mode>`: Voice filename strategy (default: `unique`).
   - `unique`: Generate unique filenames (e.g. `msg1.wav`) to avoid collisions with existing files. Useful for batch conversions or shared output directories.
   - `overwrite`: Use canonical filenames (e.g. `msg.wav`) and overwrite existing files on disk.
@@ -58,7 +58,9 @@ When `--enable-tts` is passed, the converter determines the active provider usin
 
 1. **`--tts-provider <value>` CLI argument** (or equivalent GUI selection) — always overrides everything else, including the FSIF file.
 2. **`audio.tts_provider` field in the `.fsif` file** — the recommended way to record the intended provider with the mission.
-3. **`"google"`** — built-in default when TTS is enabled and no provider is specified by either of the above sources.
+3. **No active provider** — if neither source specifies a real provider, or if the resolved provider is `none`, the converter logs a warning and skips TTS generation. There is no implicit default provider.
+
+Voice-name validation is provider-aware but independent from generation: if a real provider is specified by CLI/GUI or by `audio.tts_provider`, voice names are validated against that provider's voice catalogue even when `--enable-tts` is not passed. If no real provider is specified, voice-name validation is skipped because the converter cannot know which provider catalogue to use.
 
 ### API Key Resolution Priority
 

@@ -102,9 +102,9 @@ Generated voice files are automatically sorted into FSO-compliant subfolders wit
 
 ## Voice Generation Engine
 
-The converter supports multiple Text-to-Speech providers. The user selects the provider at conversion time via the CLI (`--tts-provider`) or the GUI.
+The converter supports multiple Text-to-Speech providers. The user selects the provider via the CLI (`--tts-provider`), the GUI, or the FSIF `audio.tts_provider` field. If TTS generation is requested but no real provider is selected, or if the resolved provider is `none`, the converter logs a warning and skips TTS generation. There is no implicit default provider.
 
-### 1. Google Gemini TTS (Default)
+### 1. Google Gemini TTS
 *   **Engine**: Google GenAI (`google-genai` library)
 *   **Model**: `gemini-3.1-flash-tts-preview`
 *   **Audio Format**: 24kHz, 16-bit Mono WAV
@@ -131,7 +131,7 @@ Allowed voice names for each provider are loaded from the documentation folder b
 
 All three files use the `Name -- Characteristic` format. For ElevenLabs, the internal converter maps these human-readable names to their specific Voice IDs.
 
-**Provider-aware voice validation**: `Validator.load_reference_data()` selects the correct voice set based on the active TTS provider: `elevenlabs` → `ALLOWED_VOICES_ELEVENLABS`, `inworld` → `ALLOWED_VOICES_INWORLD`, all others (including `google` and the disabled-TTS path) → `ALLOWED_VOICES_GOOGLE`. Voice name validation then runs against the selected set for all voiced lines in messages, briefing, debriefing, and command briefing.
+**Provider-aware voice validation**: `Validator.load_reference_data()` selects the correct voice set when a real provider is explicitly specified: `google` → `ALLOWED_VOICES_GOOGLE`, `elevenlabs` → `ALLOWED_VOICES_ELEVENLABS`, and `inworld` → `ALLOWED_VOICES_INWORLD`. Voice-name validation runs against the selected set for all voiced lines in messages, briefing, debriefing, and command briefing even when TTS generation is disabled. If no real provider is specified, voice-name validation is skipped because the converter cannot know which provider catalogue to use.
 
 ---
 
@@ -161,7 +161,7 @@ The validator checks the following areas:
 *   **Ship Classes**: Must exist in `spacecraft-classes.md`.
 *   **Dockpoints**: Must match the specific ship class in `ship-dockpoint-names.md`.
 *   **Subsystems**: Must match the specific ship class in `Ship subsystems/*.md`.
-*   **Voices**: TTS `voice_name` values are validated against the provider-specific voice registry loaded by `Validator.load_reference_data()`: `ALLOWED_VOICES_ELEVENLABS` for ElevenLabs, `ALLOWED_VOICES_INWORLD` for Inworld, and `ALLOWED_VOICES_GOOGLE` for all other cases (including when TTS generation is disabled). Voice registries are derived from the provider documentation files in `Documentation/<Provider> TTS/`. See the Voice Generation Engine section above for details.
+*   **Voices**: TTS `voice_name` values are validated against the provider-specific voice registry loaded by `Validator.load_reference_data()` when a real provider is specified: `ALLOWED_VOICES_GOOGLE` for Google, `ALLOWED_VOICES_ELEVENLABS` for ElevenLabs, and `ALLOWED_VOICES_INWORLD` for Inworld. Voice-name validation also runs when TTS generation is disabled as long as a real provider was specified by CLI/GUI or FSIF. If no provider is specified, voice-name validation is skipped. Voice registries are derived from the provider documentation files in `Documentation/<Provider> TTS/`. See the Voice Generation Engine section above for details.
 
 #### **Hardcoded Token Lists**:
 *   Validates against stable lists for: Music, Briefing Icons, Background Textures (Suns, Planets, Nebulae), and Weapon Names.

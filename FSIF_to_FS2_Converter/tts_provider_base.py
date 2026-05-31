@@ -22,10 +22,10 @@ _SECTION_SUBFOLDER = {
 @dataclass
 class TTSConfig:
     """Configuration for TTS generation."""
-    # Supported resolved provider names: 'google', 'elevenlabs', 'inworld', or 'none'.
+    # Supported resolved provider names: 'google', 'elevenlabs', or 'inworld'.
     # 'none' disables generation and is handled before get_provider() is called;
     # it is not a valid backend to pass to get_provider().
-    provider: str = 'google'
+    provider: str = 'none'
     skip_existing: bool = True  # Don't overwrite existing files
     dry_run: bool = False  # Print what would be done without calling API
     api_key: Optional[str] = None  # Provider-specific API Key

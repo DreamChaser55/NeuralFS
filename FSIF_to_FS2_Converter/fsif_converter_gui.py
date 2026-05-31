@@ -123,7 +123,7 @@ class ConverterGUI(LogMixin):
         provider_frame = ttk.LabelFrame(self.tts_options_inner, text="TTS Provider", padding=5)
         provider_frame.pack(fill="x", pady=(0, 5))
         
-        ttk.Radiobutton(provider_frame, text="From FSIF File", variable=self.tts_provider_var, 
+        ttk.Radiobutton(provider_frame, text="From FSIF File (no provider in FSIF = skip TTS)", variable=self.tts_provider_var, 
                         value="fsif", command=self.update_api_key_visibility).pack(side="left", padx=5)
         ttk.Radiobutton(provider_frame, text="Google (Gemini)", variable=self.tts_provider_var, 
                         value="google", command=self.update_api_key_visibility).pack(side="left", padx=5)
@@ -280,7 +280,7 @@ class ConverterGUI(LogMixin):
             has_file = self.has_inworld_key_file
             filename = "API_keys/Inworld_API_key.txt"
         else:
-            self.api_key_label.config(text="API Key (depends on FSIF):")
+            self.api_key_label.config(text="API Key:")
             has_file = False
             
         if has_file:

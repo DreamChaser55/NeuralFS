@@ -147,10 +147,11 @@ class BriefingChecksMixin:
         - Icon proximity (warns if any two icons are closer than 5% of the
           automatically calculated camera width, which would cause visual overlap).
         """
+        validate_voice_names = self.should_validate_voice_names()
 
         for i, stage in enumerate(self.mission.briefing.stages):
             # Validate voice name
-            if stage.voice_name and stage.voice_name not in self.voices:
+            if validate_voice_names and stage.voice_name and stage.voice_name not in self.voices:
                 self.log_error(f"Briefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")
 
             # Check for the absence of icons
@@ -243,6 +244,8 @@ class BriefingChecksMixin:
         - ``voice_name`` must exist in the TTS voice registry for the active
           provider.
         """
+        validate_voice_names = self.should_validate_voice_names()
+
         for i, stage in enumerate(self.mission.debriefing.stages):
             # Validate SEXP condition
             if stage.display_condition:
@@ -262,7 +265,7 @@ class BriefingChecksMixin:
                     )
 
             # Validate Voice
-            if stage.voice_name and stage.voice_name not in self.voices:
+            if validate_voice_names and stage.voice_name and stage.voice_name not in self.voices:
                 self.log_error(f"Debriefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")
 
     def validate_command_briefing(self):
@@ -274,6 +277,8 @@ class BriefingChecksMixin:
         content, ASCII encoding) are handled by the ASCII and briefing-span
         checks.
         """
+        validate_voice_names = self.should_validate_voice_names()
+
         for i, stage in enumerate(self.mission.command_briefing.stages):
-            if stage.voice_name and stage.voice_name not in self.voices:
+            if validate_voice_names and stage.voice_name and stage.voice_name not in self.voices:
                 self.log_error(f"Command Briefing stage {i+1} uses unknown voice_name '{stage.voice_name}'")
