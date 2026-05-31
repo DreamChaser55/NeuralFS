@@ -36,6 +36,22 @@ python common/parsers_and_generators/generate_fs_data.py
 ```
 This will re-parse the Markdown files and overwrite `fs_data.py` with the latest definitions.
 
+This scripts parses the following files:
+- `FSO_Tokens_Reference.md`
+- `spacecraft-classes.md`
+- `ship-dockpoint-names.md`
+- `terran-ships-subsystem-names.md`
+- `vasudan-ships-subsystem-names.md`
+- `shivan-ships-subsystem-names.md`
+- `FSO SEXPs/INDEX.md`
+- voice name files from the provider folders in Documentation directory
+- `secondary_bank_capacities.md`
+- `secondary_weapon_sizes.md`
+- `fighter_bomber_hardpoints.md`
+- `ship_bounding_boxes.md`
+
+If any of these files is modified enough to break the parsing logic, this script might need to be updated.
+
 ## `common/parsers_and_generators/fetch_inworld_voices.py`
 Fetches the current list of available Inworld TTS voices from the Inworld REST API and writes it to `Documentation/Inworld TTS/voices.txt`.
 
