@@ -90,8 +90,10 @@ Allied:
     through that node."
 
 - GTFr Aldrin 1, 2, 3 (GTFr Chronos-class): Following Stentor in column.
-  - Each can jump to Antares independently once within 2,000m of the node — they don't need
-    Stentor to already be through. They jump one by one.
+  - Each can commit to the final transit run independently once within 2,000m of the node —
+    they don't need Stentor to already be through. Actual hyperspace departure should occur
+    only once the ship is within 500m of the node center, placing it well inside the 660m
+    jump-node radius. They jump one by one.
   - Under attack from Krishna wing if player doesn't intercept.
 
 - GTT Rescue (GTT Elysium-class): Following freighters in column.
@@ -239,7 +241,7 @@ Message 8 — Commander Okafor, trigger: SC Malgor weapons subsystem destroyed
 Message 9 — Commander Okafor, trigger: SC Malgor destroyed
 "Malgor is gone. Node is clear. All convoy ships, advance and transit. Now. Don't wait."
 
-Message 10 — Commander Okafor, trigger: Stentor within 2,000m of node (beginning transit)
+Message 10 — Commander Okafor, trigger: Stentor within 2,000m of node (entering final danger zone)
 "Stentor is at the node. We're going through." [pause] "Alpha Lead — make sure everyone
 behind us gets through before you follow. That includes Theta Three."
 
@@ -250,7 +252,7 @@ has jumped, 30 seconds elapsed
 Message 12 — Command, trigger: GTT Rescue makes transit
 "Rescue is through. Meridian's crew is in Antares."
 
-Message 13 — Theta 3 pilot, trigger: Theta 3 begins transit
+Message 13 — Theta 3 pilot, trigger: Theta 3 enters the final node danger zone
 "This is Theta Three. We are... at the node." [pause, very quiet] "The Terran pilot — Alpha
 wing — thank you. I will tell the others that a Terran pilot held the door."
 
@@ -272,13 +274,16 @@ EVENT FLOW AND TIMING
   Player must engage Malgor's turrets / weapons subsystem.
 - T+05:00–T+08:00: Convoy reaches Nav Alpha (6 km from node). Arjuna (Dragons) activates —
   begins intercepting ships approaching within 2 km of node.
-- T+06:00 onward: Stentor reaches transit range (2 km from node) and begins transit sequence.
-  Malgor fires if weapons subsystem not yet destroyed. Arjuna intercepts.
+- T+06:00 onward: Stentor reaches the final danger zone (2 km from node). This is the dramatic
+  transit-commitment window: Malgor fires if her weapons subsystem is not yet destroyed, Arjuna
+  intercepts, and convoy ships are committed to the node run. Actual hyperspace departure occurs
+  deeper inside the node, at approximately 500m from node center, so ships visually enter the node
+  before jumping.
   Player must simultaneously fight Dragons, suppress Malgor if active, protect trailing ships.
 - T+06:00–T+12:00: Ships transit in sequence: Stentor first, then freighters, then Rescue,
-  then Theta 3. Each ship that reaches within 2 km of node begins an 8-second transit sequence.
-  Ships in transit sequence can still be killed (hull goes to 0% before transit completes =
-  dead). This is the maximum tension window.
+  then Theta 3. Each ship becomes exposed in the 2 km final danger zone, but does not actually
+  warp out until it reaches the 500m node-center threshold. Ships in the final run can still be
+  killed before departure. This is the maximum tension window.
 - When all ships that will transit have done so: Alpha wing is the last to go. Mission ends
   when Alpha 1 transits the node.
 
@@ -292,11 +297,13 @@ EVENT LOGIC SKETCH
   Malgor is suppressed.
 - "Arjuna wing activates": when any convoy ship (or Alpha 1) comes within 2,000m of the node.
   Arjuna changes AI goal from patrol to "attack all approaching ships." One-time trigger.
-- "Ship transit sequence": any ship within 2,000m of the node that is not under active fire
-  (or is willing to transit under fire) initiates an 8-second jump count. If hull reaches 0%
-  during this count, the ship is destroyed (fails to transit). Otherwise: transit complete.
-  Stentor initiates this. Freighters follow when Stentor's transit is confirmed. Rescue follows
-  freighters. Theta 3 follows Rescue (she's slowest, arrives last).
+- "Ship transit sequence": any convoy ship within 2,000m of the node is considered committed
+  to the final transit run and remains exposed to Malgor and Arjuna. Actual departure logic should
+  fire only when the ship is within 500m of the node center, so the ship is visibly inside the
+  660m jump-node radius before warping out. If hull reaches 0% before the ship reaches that
+  departure threshold, the ship is destroyed and fails to transit. Stentor initiates this.
+  Freighters follow when Stentor's transit is confirmed. Rescue follows freighters. Theta 3
+  follows Rescue (she's slowest, arrives last).
 - "Mission success" condition: GTC Stentor has "transit complete" flag set AND Alpha 1 has
   "transit complete" flag set (player jumps through node).
 - "Mission failure" condition: GTC Stentor hull = 0% at any point before transit complete flag.
@@ -369,6 +376,11 @@ QA NOTES
 - Arjuna (Dragon) activation within 2,000m of node: this is the last threat and must feel
   like a final gate rather than a trivial speed bump. Two Dragons near the node while the
   player is also managing Malgor fire is the intended difficulty spike.
+- Convoy departure distance: the 2,000m node radius is a dramatic danger-zone trigger, not the
+  actual warp-out point. Convoy and support ships should depart only inside the node, using a
+  500m distance check from node center, and their final waypoint endpoints should remain inside
+  that 500m sphere. This keeps departures inside the canonical 660m jump-node radius and avoids
+  ships visibly jumping out too far from the node.
 - "Player jumps last" design: the mission should not end until Alpha 1 transits the node.
   After all convoy ships have jumped, a grace period of 30 seconds allows the player to
   finish any Dragon/Malgor engagement before jumping. After 30 seconds, Command requests

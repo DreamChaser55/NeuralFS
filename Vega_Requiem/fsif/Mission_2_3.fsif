@@ -75,7 +75,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "StentorPath" 89 )
       departure_cue: |
-        ( < ( distance "GTC Stentor" "Node Center" ) 2000 )
+        ( < ( distance "GTC Stentor" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "GTFr Aldrin 1"
@@ -88,7 +88,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "Aldrin1Path" 89 )
       departure_cue: |
-        ( < ( distance "GTFr Aldrin 1" "Node Center" ) 2000 )
+        ( < ( distance "GTFr Aldrin 1" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "GTFr Aldrin 2"
@@ -101,7 +101,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "Aldrin2Path" 89 )
       departure_cue: |
-        ( < ( distance "GTFr Aldrin 2" "Node Center" ) 2000 )
+        ( < ( distance "GTFr Aldrin 2" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "GTFr Aldrin 3"
@@ -114,7 +114,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "Aldrin3Path" 89 )
       departure_cue: |
-        ( < ( distance "GTFr Aldrin 3" "Node Center" ) 2000 )
+        ( < ( distance "GTFr Aldrin 3" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "GTT Rescue"
@@ -127,7 +127,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "RescuePath" 89 )
       departure_cue: |
-        ( < ( distance "GTT Rescue" "Node Center" ) 2000 )
+        ( < ( distance "GTT Rescue" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "Theta 3"
@@ -140,7 +140,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "Theta3Path" 89 )
       departure_cue: |
-        ( < ( distance "Theta 3" "Node Center" ) 2000 )
+        ( < ( distance "Theta 3" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "GTS Casca"
@@ -151,7 +151,7 @@ entities:
       initial_orders: |
         ( ai-waypoints-once "CascaPath" 89 )
       departure_cue: |
-        ( < ( distance "GTS Casca" "Node Center" ) 2000 )
+        ( < ( distance "GTS Casca" "Node Center" ) 500 )
       departure_method: "Hyperspace"
 
     - name: "SC Malgor"
@@ -214,25 +214,25 @@ entities:
   waypoints:
     StentorPath:
       - [0.0, 0.0, 6000.0]
-      - [0.0, 0.0, 11800.0]
+      - [0.0, 0.0, 11950.0]
     CascaPath:
       - [-350.0, 0.0, 6100.0]
-      - [-350.0, 0.0, 11750.0]
+      - [-250.0, 0.0, 11900.0]
     Aldrin1Path:
       - [450.0, 0.0, 5600.0]
-      - [450.0, 0.0, 11650.0]
+      - [300.0, 0.0, 11900.0]
     Aldrin2Path:
       - [0.0, 350.0, 5500.0]
-      - [0.0, 350.0, 11600.0]
+      - [0.0, 250.0, 11900.0]
     Aldrin3Path:
       - [-450.0, 0.0, 5400.0]
-      - [-450.0, 0.0, 11550.0]
+      - [-300.0, 0.0, 11900.0]
     RescuePath:
       - [250.0, -250.0, 5200.0]
-      - [250.0, -250.0, 11500.0]
+      - [200.0, -200.0, 11900.0]
     Theta3Path:
       - [-250.0, -250.0, 5000.0]
-      - [-250.0, -250.0, 11450.0]
+      - [-200.0, -200.0, 11900.0]
 
 mission_flow:
   fiction_viewer: "Mission_2_3_story.txt"
