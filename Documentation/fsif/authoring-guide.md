@@ -588,7 +588,7 @@ entities:
         dockee_point: "Docking bay 1"
 ```
 Strict Rules:
-- **Arrival Conditions**: The Dockee (Leader) must have `arrival_cue: ( true )`. The Docker (Follower) must have `arrival_cue: ( false )`.
+- **Arrival Conditions**: The Dockee (Leader) must have `arrival_cue: ( true )`. The Docker (Follower) must have `arrival_cue: ( false )`. Docker's `position` field is ignored: its spawn position will be automatically adjusted to match the Dockee's position (specifically, the `dockee_point` coordinates).
 - **Pairs Only**: Multi-ship (daisy chained) docking is not supported.
 - **No Player Ships**: Player start ships cannot be pre-docked.
 - **Reference Checks**: Use only the dockpoint names from `../FSO and fs2 format/ship-dockpoint-names.md`.
