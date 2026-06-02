@@ -128,7 +128,6 @@ Notes:
   It checks for: non-ASCII characters (error), accidental use of the internal "fiction viewer" feature name (warning), and unclosed span-style color tags (warning). See `Fiction_Viewer_Validator/README.md` for details.
 
 ## Callable support ships
-
 In FSO, player can call in a support ship at any time. A generic `GTS Centaur` will jump in to rearm and repair the player as well as other friendly fighters. You can disable this option in your mission by setting `mission_info.disallow_support_ships` to `true`. Note that `disallow_support_ships` will not affect any support ships defined in `entities.ships`.
 
 ## Asteroid and debris fields
@@ -179,7 +178,7 @@ environment:
       - "Shivan Debris 3"
 ```
 
-### Authoring rules
+### Field authoring rules
 
 - Asteroid and debris variant names are **mutually incompatible** — the converter rejects mixing names from the two lists.
 - `object_variants: []` (explicit empty list) is not allowed. Omit the key to use defaults.
@@ -617,11 +616,9 @@ Example SEXP referring to a subsystem:
 ```
 
 ## Cargo
-
 You can define the `cargo` string field for transports (prefix GTT, PVT, ST) and cargo containers (TC 2, VC 3, SC 5, etc.). This string will be shown as "Cargo: your_cargo_string" on the HUD if player targets the ship and scans it (before scanning, it is shown as "Cargo: <unknown>"). Other types of ships do not support the `cargo` string, only cargo containers and transports. If the `cargo-known` flag is set for the ship, your cargo string will be visible immediately (without the need to scan the ship).
 
 ## Scanning
-
 You can set any ship as scannable with the `scannable` flag. This is a separate mechanism from cargo scanning and completely overrides it (`scannable` ship cannot have `cargo` string defined). Any ship with the `scannable` flag can be scanned (target and approach close, then wait for the scan to finish). It will initially show "Not scanned" on HUD. After scanning, it will show "Scanned". These strings cannot be customized.
 
 ## Reinforcements
