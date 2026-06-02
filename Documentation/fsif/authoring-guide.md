@@ -622,7 +622,7 @@ You can define the `cargo` string field for transports (prefix GTT, PVT, ST) and
 
 ## Scanning
 
-You can set any ship as scannable with the `scannable` flag. This is a separate mechanism from cargo scanning and completely overrides it. Any ship with the `scannable` flag can be scanned (target and approach close, then wait for the scan to finish). It will initially show "Not scanned" on HUD. After scanning, it will show "Scanned". These strings cannot be customized.
+You can set any ship as scannable with the `scannable` flag. This is a separate mechanism from cargo scanning and completely overrides it (`scannable` ship cannot have `cargo` string defined). Any ship with the `scannable` flag can be scanned (target and approach close, then wait for the scan to finish). It will initially show "Not scanned" on HUD. After scanning, it will show "Scanned". These strings cannot be customized.
 
 ## Reinforcements
 Author reinforcements in `entities`. Omit `arrival_cue` on the referenced units so they remain callable (defaults to true). Referenced ships/wings must exist in entities.ships/entities.wings.
