@@ -736,7 +736,7 @@ class ShipWingChecksMixin:
             self.log_warning(
                 f"Mission has {len(flagged_ships)} larger-than-fighter/bomber standalone ship(s) "
                 f"with the default identity orientation ({ships_str}). "
-                f"Default orientation makes the opening scene look grid-aligned and artificial. "
+                f"Default orientation could make the opening scene look grid-aligned and artificial. "
                 f"Consider authoring a deliberate `orientation` matrix (or a mission-start "
                 f"`set-object-facing-object` event) for important larger ships "
                 f"See the FSIF Authoring Guide - 'Initial ship orientation and facing direction'."
