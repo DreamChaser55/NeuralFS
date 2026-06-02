@@ -616,6 +616,14 @@ Example SEXP referring to a subsystem:
 )
 ```
 
+## Cargo
+
+You can define the `cargo` string field for transports (prefix GTT, PVT, ST) and cargo containers (TC 2, VC 3, SC 5, etc.). This string will be shown as "Cargo: your_cargo_string" on the HUD if player targets the ship and scans it (before scanning, it is shown as "Cargo: <unknown>"). Other types of ships do not support the `cargo` string, only cargo containers and transports. If the `cargo-known` flag is set for the ship, your cargo string will be visible immediately (without the need to scan the ship).
+
+## Scanning
+
+You can set any ship as scannable with the `scannable` flag. This is a separate mechanism from cargo scanning and completely overrides it. Any ship with the `scannable` flag can be scanned (target and approach close, then wait for the scan to finish). It will initially show "Not scanned" on HUD. After scanning, it will show "Scanned". These strings cannot be customized.
+
 ## Reinforcements
 Author reinforcements in `entities`. Omit `arrival_cue` on the referenced units so they remain callable (defaults to true). Referenced ships/wings must exist in entities.ships/entities.wings.
 

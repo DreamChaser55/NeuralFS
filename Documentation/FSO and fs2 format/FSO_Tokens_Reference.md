@@ -133,7 +133,7 @@ This section lists a subset of canonical flags generally useful for mission auth
 *   `no-arrival-music` — Don't play arrival music when ship arrives
 *   `invulnerable` — Ship cannot be damaged
 *   `hidden-from-sensors` — Ship doesn't show up on sensors, blinks in/out on radar
-*   `scannable` — Ship is "scannable". Play scan effect and report as "Scanned" or "not scanned". Required if your mission demands scanning the ship.
+*   `scannable` — Ship is "scannable". Play scan effect and report as "Scanned" or "Not scanned". Required if your mission demands scanning the ship.
 *   `kamikaze` — AI behavior: kamikaze
 *   `no-dynamic` — AI behavior: no dynamic goals
 *   `red-alert-carry` — Ship status should be stored/restored if red alert mission
