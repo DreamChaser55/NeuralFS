@@ -27,6 +27,24 @@ _SMALL_UTILITY_CLASSES: frozenset = frozenset({
     'GTDr Amazon', 'GTDr Amazon Advanced',
 })
 
+# Ship classes that support the `cargo` string field.
+# Only transports (prefixes GTT/PVT/ST) and cargo containers carry cargo.
+# Any other ship class with a cargo field defined is a validation error.
+_TRANSPORT_CLASSES: frozenset = frozenset({
+    'GTT Elysium',  # Terran transport (GTT prefix)
+    'PVT Isis',     # Vasudan transport (PVT prefix)
+    'ST Azrael',    # Shivan transport (ST prefix)
+})
+
+_CARGO_CONTAINER_CLASSES: frozenset = frozenset({
+    'TC 2', 'TSC 2', 'TAC 1', 'TTC 1',  # Terran cargo containers
+    'VC 3', 'VAC 4',                      # Vasudan cargo containers
+    'SC 5', 'SAC 2',                      # Shivan cargo containers
+})
+
+# Combined: all ship classes that are allowed to have the `cargo` field defined.
+_CARGO_CAPABLE_CLASSES: frozenset = _TRANSPORT_CLASSES | _CARGO_CONTAINER_CLASSES
+
 class ShipWingChecksMixin:
     # Broad canonical wing-name pattern for the advisory standalone-name warning.
     # Covers all Terran, Vasudan, and Shivan wing names from the FreeSpace Universe Bible.
@@ -205,6 +223,87 @@ class ShipWingChecksMixin:
                 
                 if len(ship.weapons.secondary) != req_secondary:
                     self.log_error(f"Ship '{ship.name}' ({ship.ship_class}) has {len(ship.weapons.secondary)} secondary banks specified, but requires {req_secondary}.")
+
+    @staticmethod
+    def _is_cargo_field_defined(ship) -> bool:
+        """Return True when the ship's cargo field has a meaningful value.
+
+        The runtime default is ``'Nothing'`` (case-insensitive).  An empty
+        string or the literal ``'Nothing'`` both count as "not defined."
+        """
+        c = (ship.cargo or '').strip()
+        return bool(c) and c.lower() != 'nothing'
+
+    def validate_cargo_field(self):
+        """Validate the ``cargo`` string field on all ships.
+
+        Four invariants are checked:
+
+        1. **Error** — ``cargo`` is defined on a ship whose class is not a
+           transport (``GTT*``, ``PVT*``, ``ST*``) or cargo container
+           (``TC 2``, ``TSC 2``, etc.).  Only those two categories support the
+           cargo string in FSO.
+
+        2. **Warning** — a *Friendly* transport or cargo container does *not*
+           have ``cargo`` defined.  Such ships almost always carry cargo in
+           playable missions; missing cargo is likely an authoring oversight.
+
+        3. **Warning** — a *Friendly* ship has ``cargo`` defined but is missing
+           the ``cargo-known`` flag.  Friendly ships generally have their cargo
+           visible immediately; if the author intentionally wants the player to
+           scan the ship, this warning can be ignored.
+
+        4. **Error** — a ship has both the ``scannable`` flag and ``cargo``
+           defined.  The ``scannable`` flag completely overrides the cargo
+           mechanism — the ship will only show "Scanned"/"Not Scanned" and the
+           cargo string is never displayed.  Remove one or the other.
+        """
+        for ship in self.mission.ships:
+            cargo_defined = self._is_cargo_field_defined(ship)
+            is_cargo_capable = ship.ship_class in _CARGO_CAPABLE_CLASSES
+            is_friendly = ship.team == 'Friendly'
+            has_scannable = 'scannable' in ship.flags
+            has_cargo_known = 'cargo-known' in ship.flags
+
+            # 1. cargo defined on a non-cargo-capable ship → error
+            if cargo_defined and not is_cargo_capable:
+                self.log_error(
+                    f"Ship '{ship.name}' (class '{ship.ship_class}') has a cargo field defined "
+                    f"('{ship.cargo}'), but only transports (GTT Elysium, PVT Isis, ST Azrael) "
+                    f"and cargo containers (TC 2, TSC 2, TAC 1, TTC 1, VC 3, VAC 4, SC 5, SAC 2) "
+                    f"support the cargo string in FSO. "
+                    f"Remove the cargo field from this ship."
+                )
+
+            # 2. Friendly transport/cargo container without cargo → warning
+            if is_friendly and is_cargo_capable and not cargo_defined:
+                self.log_warning(
+                    f"Friendly ship '{ship.name}' (class '{ship.ship_class}') is a transport or "
+                    f"cargo container but has no cargo defined (cargo defaults to 'Nothing'). "
+                    f"Such ships usually carry cargo in playable missions. "
+                    f"If this is intentional, ignore this warning."
+                )
+
+            # 3. Friendly ship with cargo defined but missing cargo-known flag → warning
+            if is_friendly and cargo_defined and not has_cargo_known:
+                self.log_warning(
+                    f"Friendly ship '{ship.name}' has cargo defined ('{ship.cargo}') "
+                    f"but is missing the 'cargo-known' flag. "
+                    f"Friendly ships generally have their cargo visible immediately. "
+                    f"If the intent is to require the player to scan this ship to reveal its cargo, "
+                    f"ignore this warning. Otherwise, add 'cargo-known' to the ship's flags."
+                )
+
+            # 4. scannable flag + cargo defined → error
+            if cargo_defined and has_scannable:
+                self.log_error(
+                    f"Ship '{ship.name}' has both the 'scannable' flag and a cargo field defined "
+                    f"('{ship.cargo}'). The 'scannable' flag completely overrides the cargo "
+                    f"mechanism — the ship will only report 'Scanned'/'Not Scanned' and the "
+                    f"cargo string is never shown. "
+                    f"Remove either the 'scannable' flag (to use the cargo scanning mechanism) "
+                    f"or the cargo field (to use the `scannable` flag)."
+                )
 
     def validate_wings(self):
         """

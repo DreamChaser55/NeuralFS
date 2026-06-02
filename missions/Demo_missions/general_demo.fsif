@@ -117,19 +117,19 @@ entities:
       position: [-1000.0, 500.0, -1000.0]
       orientation: "SomersetAttackPath:1"
 
-    - name: "SFr Mahishi"
-      class: "SFr Mephisto"
+    - name: "ST Mahishi"
+      class: "ST Azrael"
       team: "Hostile"
       position: [1500.0, 500.0, -1000.0]
       orientation: "Delta Serpentis Jump Node"
-      flags: ["scannable", "escort"]
+      flags: ["escort"]
       escort_list_priority: 50
       cargo: "Shivan Logistics Data"
       arrival_delay: 20
       arrival_method: "Hyperspace"
       departure_method: "Hyperspace"
       departure_cue: |
-        ( has-arrived-delay 60 "SFr Mahishi" )
+        ( has-arrived-delay 60 "ST Mahishi" )
       initial_orders: |
         ( ai-play-dead 89 )
 
@@ -293,7 +293,7 @@ mission_flow:
         text: "Outstanding work, pilot. Both the $f{ Dauntless $} and the $f{ Trent $} made it to the jump node safely."
         voice_name: "Gacrux"
       - display_condition: |
-          ( is-cargo-known-delay 0 "SFr Mahishi" )
+          ( is-cargo-known-delay 0 "ST Mahishi" )
         text: "Your scan of the Shivan transport provided us with valuable intelligence on their supply routes."
         voice_name: "Gacrux"
       - display_condition: |
@@ -324,24 +324,24 @@ mission_flow:
           ( has-arrived-delay 0 "Rama" )
           ( send-message "GTC Dauntless" "Normal" "RamaArrivedMsg" )
         )
-    - name: "MephistoArrived"
+    - name: "AzraelArrived"
       formula: |
         ( when
-          ( has-arrived-delay 0 "SFr Mahishi" )
-          ( send-message "#Command" "Normal" "MephistoArrivedMsg" )
+          ( has-arrived-delay 0 "ST Mahishi" )
+          ( send-message "#Command" "Normal" "AzraelArrivedMsg" )
         )
-    - name: "MephistoScanDirective"
+    - name: "AzraelScanDirective"
       formula: |
         ( when
-          ( is-cargo-known-delay 0 "SFr Mahishi" )
-          ( send-message "#Command" "Normal" "MephistoScannedMsg" )
+          ( is-cargo-known-delay 0 "ST Mahishi" )
+          ( send-message "#Command" "Normal" "AzraelScannedMsg" )
         )
-      hud_directive_text: "Scan the Shivan transport SFr Mahishi"
-    - name: "MephistoSpooling"
+      hud_directive_text: "Scan the Shivan transport ST Mahishi"
+    - name: "AzraelSpooling"
       formula: |
         ( when
-          ( has-arrived-delay 55 "SFr Mahishi" )
-          ( send-message "GTC Dauntless" "Normal" "MephistoSpoolingMsg" )
+          ( has-arrived-delay 55 "ST Mahishi" )
+          ( send-message "GTC Dauntless" "Normal" "AzraelSpoolingMsg" )
         )
     - name: "KrishnaWarning"
       formula: |
@@ -431,11 +431,11 @@ mission_flow:
           ( has-departed-delay 0 "GTC Dauntless" )
           ( has-departed-delay 0 "GTFr Trent" )
         )
-    - name: "ScanMephisto"
+    - name: "ScanAzrael"
       type: "Bonus"
       objective_text: "Scan the Shivan transport."
       formula: |
-        ( is-cargo-known-delay 0 "SFr Mahishi" )
+        ( is-cargo-known-delay 0 "ST Mahishi" )
     - name: "DestroyCainWeapons"
       type: "Secondary"
       objective_text: "Destroy the weapons subsystem of the Shivan cruiser."
@@ -451,15 +451,15 @@ mission_flow:
       text: "Command, we have Shivan fighters dropping in. Rama wing is engaging."
       voice_name: "Achird"
       voice_style_instructions: "Cruiser captain under fire"
-    - name: "MephistoArrivedMsg"
+    - name: "AzraelArrivedMsg"
       text: "Alpha, a Shivan transport just warped in, likely suffering from drive failure. Scan it if you can."
       voice_name: "Alnilam"
       voice_style_instructions: "Tactical update"
-    - name: "MephistoScannedMsg"
+    - name: "AzraelScannedMsg"
       text: "Good job. We have the data."
       voice_name: "Alnilam"
       voice_style_instructions: "Approving"
-    - name: "MephistoSpoolingMsg"
+    - name: "AzraelSpoolingMsg"
       text: "The Shivan transport's drives are active! It's spooling up to jump!"
       voice_name: "Achird"
       voice_style_instructions: "Urgent update"

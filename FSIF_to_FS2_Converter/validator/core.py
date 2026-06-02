@@ -186,6 +186,7 @@ class Validator(
         self.validate_waypoint_collisions()
         self.validate_shared_waypoint_orders()
         self.validate_ships()
+        self.validate_cargo_field()
         self.validate_wings()
         self.validate_standalone_wing_name_patterns()
         self.validate_large_ship_escort_recommendation()
