@@ -100,7 +100,6 @@ entities:
       team: "Friendly"
       position: [400.0, 0.0, 1500.0]
       flags: ["escort", "cargo-known"]
-      cargo: "TAC-1 Tech Cargo"
       arrival_cue: |
         ( true )
       arrival_delay: 45
@@ -130,7 +129,6 @@ entities:
       team: "Friendly"
       position: [100.0, 0.0, 1500.0]
       flags: ["escort"]
-      cargo: "Bridge Officers"
       arrival_method: "Docking Bay"
       arrival_anchor: "GTD Amadeus"
       initial_orders: |

@@ -194,21 +194,21 @@ entities:
       class: "TAC 1"
       team: "Friendly"
       position: [1500.0, 0.0, -1500.0]
-      flags: ["scannable"]
+      flags: []
       cargo: "Civilian Equipment"
 
     - name: "TAC-1 Container B"
       class: "TAC 1"
       team: "Friendly"
       position: [1800.0, 0.0, -1500.0]
-      flags: ["scannable"]
+      flags: []
       cargo: "Civilian Equipment"
 
     - name: "TAC-1 Container C"
       class: "TAC 1"
       team: "Friendly"
       position: [2100.0, 0.0, -1500.0]
-      flags: ["scannable"]
+      flags: []
       cargo: "Civilian Equipment"
 
     - name: "GTS Casca"

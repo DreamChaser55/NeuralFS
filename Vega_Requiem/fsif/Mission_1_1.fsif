@@ -64,7 +64,8 @@ entities:
       position: [0.0, 0.0, 6000.0]
       orientation: [0.939693, 0.0, -0.342020, 0.0, 1.0, 0.0, 0.342020, 0.0, 0.939693]
       destroyed_before_mission_seconds: 10
-      flags: ["ignore-count"]
+      flags: ["ignore-count", "cargo-known"]
+      cargo: "Patrol Crew"
        
     - name: "Nav Alpha"
       class: "Terran NavBuoy"

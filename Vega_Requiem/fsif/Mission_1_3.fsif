@@ -89,7 +89,8 @@ entities:
       team: "Friendly"
       position: [500.0, 0.0, 2500.0]
       orientation: "Nav Alpha"
-      flags: ["escort", "no-shields"]
+      flags: ["escort", "no-shields", "cargo-known"]
+      cargo: "Vasudan Refugees"
       arrival_cue: |
         ( has-time-elapsed 20 )
       arrival_method: "Hyperspace"
@@ -104,7 +105,8 @@ entities:
       team: "Friendly"
       position: [-500.0, 0.0, 2500.0]
       orientation: "Nav Alpha"
-      flags: ["escort", "no-shields"]
+      flags: ["escort", "no-shields", "cargo-known"]
+      cargo: "Vasudan Refugees"
       arrival_cue: |
         ( has-time-elapsed 20 )
       arrival_method: "Hyperspace"
@@ -119,7 +121,8 @@ entities:
       team: "Friendly"
       position: [0.0, 500.0, 2500.0]
       orientation: "Nav Alpha"
-      flags: ["escort", "no-shields"]
+      flags: ["escort", "no-shields", "cargo-known"]
+      cargo: "Vasudan Refugees"
       initial_speed_percent: 25
       arrival_cue: |
         ( has-time-elapsed 20 )

@@ -99,9 +99,21 @@ entities:
       position: [0.0, 0.0, 3000.0]
       orientation: "Aldrin1Path:1"
       flags: ["escort"]
-      cargo: "Vega Prime Data"
       initial_orders: |
         ( ai-waypoints-once "Aldrin1Path" 89 )
+
+    - name: "Aldrin 1 Cargo"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [0.0, 0.0, 3000.0]
+      flags: ["cargo-known"]
+      cargo: "Vega Prime Data"
+      arrival_cue: |
+        ( false )
+      dock:
+        dockee: "GTFr Aldrin 1"
+        docker_point: "cargo dockpoint"
+        dockee_point: "cargo dockpoint"
 
     - name: "GTFr Aldrin 2"
       class: "GTFr Chronos"
@@ -109,9 +121,21 @@ entities:
       position: [500.0, 0.0, 3000.0]
       orientation: "Aldrin2Path:1"
       flags: ["escort"]
-      cargo: "Sensor Data"
       initial_orders: |
         ( ai-waypoints-once "Aldrin2Path" 89 )
+
+    - name: "Aldrin 2 Cargo"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [500.0, 0.0, 3000.0]
+      flags: ["cargo-known"]
+      cargo: "Sensor Data"
+      arrival_cue: |
+        ( false )
+      dock:
+        dockee: "GTFr Aldrin 2"
+        docker_point: "cargo dockpoint"
+        dockee_point: "cargo dockpoint"
 
     - name: "GTFr Aldrin 3"
       class: "GTFr Chronos"
@@ -119,16 +143,28 @@ entities:
       position: [-500.0, 0.0, 3000.0]
       orientation: "Aldrin3Path:1"
       flags: ["escort"]
-      cargo: "Sensor Data"
       initial_orders: |
         ( ai-waypoints-once "Aldrin3Path" 89 )
+
+    - name: "Aldrin 3 Cargo"
+      class: "TAC 1"
+      team: "Friendly"
+      position: [-500.0, 0.0, 3000.0]
+      flags: ["cargo-known"]
+      cargo: "Sensor Data"
+      arrival_cue: |
+        ( false )
+      dock:
+        dockee: "GTFr Aldrin 3"
+        docker_point: "cargo dockpoint"
+        dockee_point: "cargo dockpoint"
 
     - name: "GTT Rescue"
       class: "GTT Elysium"
       team: "Friendly"
       position: [0.0, 500.0, 1500.0]
       orientation: "RescuePath:1"
-      flags: ["escort"]
+      flags: ["escort", "cargo-known"]
       cargo: "Meridian Survivors"
       initial_orders: |
         ( ai-waypoints-once "RescuePath" 89 )
@@ -138,7 +174,7 @@ entities:
       team: "Friendly"
       position: [0.0, 0.0, -1000.0]
       orientation: "Theta3Path:1"
-      flags: ["escort", "no-shields"]
+      flags: ["escort", "no-shields", "cargo-known"]
       cargo: "Vasudan Refugees"
       initial_orders: |
         ( ai-waypoints-once "Theta3Path" 89 )
@@ -452,6 +488,25 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "Protect at least 3 convoy ships"
+
+    - name: "FlawlessEscortDirective"
+      formula: |
+        ( when
+          ( and 
+            ( < ( distance "GTD Amadeus" "Nav Bravo" ) 2500 )
+            ( not ( percent-ships-destroyed 20 "GTFr Aldrin 1" "GTFr Aldrin 2" "GTFr Aldrin 3" "GTT Rescue" "Theta 3" ) )
+          )
+          ( do-nothing )
+        )
+      hud_directive_text: "Keep all convoy ships alive"
+
+    - name: "AhrimanDamagedDirective"
+      formula: |
+        ( when
+          ( < ( hits-left "SC Ahriman" ) 50 )
+          ( do-nothing )
+        )
+      hud_directive_text: "Reduce SC Ahriman hull below 50%"
 
   goals:
     - name: "Reach Nav Bravo"
