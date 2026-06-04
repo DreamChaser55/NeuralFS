@@ -417,10 +417,18 @@ mission_flow:
         voice_name: "Daniel"
         voice_style_instructions: "relieved, proud"
       - display_condition: |
-          ( percent-ships-destroyed 70 "Durga" "Kali" )
-        text: "Your wing inflicted heavy losses on the Shivan bomber force. That prevented a rout and saved thousands of lives."
+          ( and
+            ( percent-ships-destroyed 70 "Durga" "Kali" )
+            ( not ( percent-ships-destroyed 100 "Durga" "Kali" ) )
+          )
+        text: "Your wing inflicted heavy losses on the Shivan bomber force. Seventy percent of their bomber strength was destroyed, but enough survived to keep the fleet under pressure."
         voice_name: "Rachel"
         voice_style_instructions: "approving, composed"
+      - display_condition: |
+          ( percent-ships-destroyed 100 "Durga" "Kali" )
+        text: "Alpha wing eliminated every Shivan bomber wave in the combat zone. With the torpedo threat gone, the Actium and Aegis had the breathing room they needed to hold the Vega gate."
+        voice_name: "Rachel"
+        voice_style_instructions: "proud, relieved"
       - display_condition: |
           ( is-destroyed-delay 0 "SC Mandara" )
         text: "Destroying the $h{ SC Mandara $} broke the station assault. GTI Aegis control specifically commended Alpha wing."
@@ -505,7 +513,7 @@ mission_flow:
         ( when
           ( and
             ( < ( hits-left "GTD Actium" ) 75 )
-            ( not ( percent-ships-destroyed 70 "Durga" "Kali" ) )
+            ( not ( percent-ships-destroyed 100 "Durga" "Kali" ) )
             ( not ( is-destroyed-delay 0 "GTD Actium" ) )
             ( not ( is-event-true-delay "BattleComplete" 0 ) )
           )
@@ -563,7 +571,7 @@ mission_flow:
         ( when
           ( and
             ( < ( hits-left "SD Ravana" ) 65 )
-            ( not ( percent-ships-destroyed 70 "Durga" "Kali" ) )
+            ( not ( percent-ships-destroyed 100 "Durga" "Kali" ) )
             ( not ( is-destroyed-delay 0 "SD Ravana" ) )
             ( not ( is-event-true-delay "BattleComplete" 0 ) )
           )
@@ -631,7 +639,7 @@ mission_flow:
             ( or
               ( is-destroyed-delay 0 "GTI Aegis" )
               ( and
-                ( percent-ships-destroyed 70 "Durga" "Kali" )
+                ( percent-ships-destroyed 100 "Durga" "Kali" )
                 ( is-destroyed-delay 0 "SC Mandara" )
                 ( is-destroyed-delay 0 "SC Rakshasa" )
               )
@@ -648,7 +656,7 @@ mission_flow:
             ( or
               ( is-destroyed-delay 0 "GTD Actium" )
               ( and
-                ( percent-ships-destroyed 70 "Durga" "Kali" )
+                ( percent-ships-destroyed 100 "Durga" "Kali" )
                 ( is-destroyed-delay 0 "SC Mandara" )
                 ( is-destroyed-delay 0 "SC Rakshasa" )
               )
@@ -657,13 +665,20 @@ mission_flow:
           ( do-nothing )
         )
       hud_directive_text: "Protect GTI Aegis"
-    - name: "BomberDirective"
+    - name: "BomberAttritionDir"
       formula: |
         ( when
           ( percent-ships-destroyed 70 "Durga" "Kali" )
           ( do-nothing )
         )
-      hud_directive_text: "Destroy Shivan bomber wings"
+      hud_directive_text: "Destroy 70% of Shivan bombers"
+    - name: "BomberDirective"
+      formula: |
+        ( when
+          ( percent-ships-destroyed 100 "Durga" "Kali" )
+          ( do-nothing )
+        )
+      hud_directive_text: "Destroy all Shivan bomber wings"
     - name: "MandaraDirective"
       formula: |
         ( when
@@ -717,6 +732,12 @@ mission_flow:
           ( percent-ships-destroyed 70 "Durga" "Kali" )
           ( send-message "#Command" "Normal" "BomberBrokenMsg" )
         )
+    - name: "BombersDestroyed"
+      formula: |
+        ( when
+          ( percent-ships-destroyed 100 "Durga" "Kali" )
+          ( send-message "#Command" "High" "BombersDestroyedMsg" )
+        )
     - name: "MandaraDown"
       formula: |
         ( when
@@ -760,7 +781,7 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( percent-ships-destroyed 70 "Durga" "Kali" )
+            ( percent-ships-destroyed 100 "Durga" "Kali" )
             ( is-destroyed-delay 0 "SC Mandara" )
             ( is-destroyed-delay 0 "SC Rakshasa" )
             ( not ( is-destroyed-delay 0 "GTD Actium" ) )
@@ -794,7 +815,12 @@ mission_flow:
         )
     - name: "BreakBombers"
       type: "Primary"
-      objective_text: "Destroy the Shivan bomber wings."
+      objective_text: "Destroy all Shivan bomber wings."
+      formula: |
+        ( percent-ships-destroyed 100 "Durga" "Kali" )
+    - name: "BomberAttrition70"
+      type: "Secondary"
+      objective_text: "Destroy 70% of Shivan bombers."
       formula: |
         ( percent-ships-destroyed 70 "Durga" "Kali" )
     - name: "DestroyMandara"
@@ -842,9 +868,13 @@ mission_flow:
       voice_name: "Emily"
       voice_style_instructions: "frightened, disciplined"
     - name: "BomberBrokenMsg"
-      text: "Shivan bomber strength is collapsing. Keep pressing them."
+      text: "Shivan bomber strength is down by seventy percent. Good work, Alpha, but keep hunting the survivors."
       voice_name: "Daniel"
       voice_style_instructions: "relieved, forceful"
+    - name: "BombersDestroyedMsg"
+      text: "All Shivan bomber wings are destroyed. That removes the immediate torpedo threat."
+      voice_name: "Daniel"
+      voice_style_instructions: "relieved, authoritative"
     - name: "MandaraDownMsg"
       text: "The Mandara is breaking apart. Aegis control confirms the station assault is losing momentum."
       voice_name: "Emily"
@@ -866,7 +896,7 @@ mission_flow:
       voice_name: "Daniel"
       voice_style_instructions: "somber, urgent"
     - name: "BattleCompleteMsg"
-      text: "Command to all units. The bomber stream is broken and the station assault is collapsing. Alpha, the immediate defense is secure. Continue engaging high-value targets or depart at your discretion."
+      text: "Command to all units. The bomber stream is destroyed and the station assault is collapsing. Alpha, the immediate defense is secure. Continue engaging high-value targets or depart at your discretion."
       voice_name: "Daniel"
       voice_style_instructions: "relieved, authoritative"
     - name: "DeltaCallMsg"
