@@ -1854,6 +1854,10 @@ FSO engine capabilities:
     - debris sizes: small, medium, large
 - IFF: all ships should be Friendly (green), Hostile (red), or Unknown (purple) to the player. "Neutral" is not supported in FSO.
 - Docking: A pair of ships can be docked together. One is the Dockee (Leader), the other is the Docker (Follower). A docked ship can tow the partner.
+- Cargo and scanning:
+  - Cargo containers (e.g. TC 2, VC 3, SC 5) and transports (GTT, PVT, ST classes) can hold a short named cargo. The player reveals it by targeting the ship and flying close to scan it; until scanned, the cargo reads as unknown. This supports reconnaissance and intelligence-gathering objectives, such as scanning enemy containers or transports to learn what they carry.
+  - Freighters (GTFr, PVFr, SFr) do not hold cargo themselves; in FreeSpace they tow docked cargo containers.
+  - Any ship (including warships and installations) can instead be made "scannable" for inspection or visual-identification objectives. Such a ship reports as "Not scanned" until the player targets and closely scans it, after which it reports "Scanned". This game mechanic is distinct from the cargo scanning outlined above, and reveals no custom cargo text.
 - Arrival and departure methods for ships (entering and exiting the playing area):
   - Subspace
   - Docking Bay (Fighterbay): Despite the name, this arrival/departure method is unrelated to the inter-ship Docking mechanism outlined above. Requires a large ship (destroyer or installation) with the Fighterbay subsystem as the origin/departure point.
