@@ -357,7 +357,7 @@ mission_flow:
       - text: "The $h{ SD Ravana $} is leading a destroyer group through the node approach. Its cruisers are already moving to split our battle line from the installation sector."
         voice_name: "Daniel"
         voice_style_instructions: "grim, tactical"
-      - text: "Alpha wing will fly from the Actium screen. Intercept bombers, reinforce the station when ordered, and keep both anchors alive until Command orders withdrawal."
+      - text: "Alpha wing will fly from the Actium screen. Intercept bombers, reinforce the station when ordered, and keep both anchors alive while the fleet breaks the Shivan assault. If either anchor is lost, Command will order a forced retreat."
         voice_name: "Daniel"
         voice_style_instructions: "urgent, commanding"
 
@@ -413,7 +413,7 @@ mission_flow:
             ( not ( is-destroyed-delay 0 "GTD Actium" ) )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
-        text: "Excellent work, $rank $callsign. Both the $f{ GTD Actium $} and $f{ GTI Aegis $} survived the Shivan assault. The line held long enough for Command to regroup."
+        text: "Excellent work, $rank $callsign. Both the $f{ GTD Actium $} and $f{ GTI Aegis $} survived the Shivan assault. The immediate defense stabilized, and Command retained control of the Vega gate."
         voice_name: "Daniel"
         voice_style_instructions: "relieved, proud"
       - display_condition: |
@@ -615,10 +615,10 @@ mission_flow:
     - name: "WithdrawalChat"
       formula: |
         ( when
-          ( is-event-true-delay "BattleComplete" 8 )
+          ( is-event-true-delay "ForcedWithdrawal" 3 )
           ( send-message-list
-            "GTI Aegis" "Normal" "WithdrawAegisMsg" 0
-            "GTD Actium" "Normal" "WithdrawActiumMsg" 3500
+            "#Command" "High" "WithdrawAegisMsg" 0
+            "#Command" "High" "WithdrawActiumMsg" 3500
             "<any wingman>" "Normal" "WithdrawWingmanMsg" 3500
             "#Command" "High" "WithdrawFinalMsg" 4000
           )
@@ -627,8 +627,15 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( has-time-elapsed 480 )
             ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( or
+              ( is-destroyed-delay 0 "GTI Aegis" )
+              ( and
+                ( percent-ships-destroyed 70 "Durga" "Kali" )
+                ( is-destroyed-delay 0 "SC Mandara" )
+                ( is-destroyed-delay 0 "SC Rakshasa" )
+              )
+            )
           )
           ( do-nothing )
         )
@@ -637,8 +644,15 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( has-time-elapsed 480 )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
+            ( or
+              ( is-destroyed-delay 0 "GTD Actium" )
+              ( and
+                ( percent-ships-destroyed 70 "Durga" "Kali" )
+                ( is-destroyed-delay 0 "SC Mandara" )
+                ( is-destroyed-delay 0 "SC Rakshasa" )
+              )
+            )
           )
           ( do-nothing )
         )
@@ -733,37 +747,49 @@ mission_flow:
           ( is-destroyed-delay 0 "GTI Aegis" )
           ( send-message "#Command" "High" "AegisLostMsg" )
         )
-    - name: "BattleComplete"
+    - name: "ForcedWithdrawal"
       formula: |
         ( when
           ( or
-            ( has-time-elapsed 600 )
-            ( and
-              ( percent-ships-destroyed 70 "Durga" "Kali" )
-              ( is-destroyed-delay 0 "SC Mandara" )
-            )
+            ( is-event-true-delay "ActiumLost" 2 )
+            ( is-event-true-delay "AegisLost" 2 )
           )
-          ( send-message-list
-            "#Command" "High" "BattleCompleteMsg" 0
-            "#Command" "High" "RtbMsg" 4500
+          ( do-nothing )
+        )
+    - name: "BattleComplete"
+      formula: |
+        ( when
+          ( and
+            ( percent-ships-destroyed 70 "Durga" "Kali" )
+            ( is-destroyed-delay 0 "SC Mandara" )
+            ( is-destroyed-delay 0 "SC Rakshasa" )
+            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
+          ( send-message "#Command" "High" "BattleCompleteMsg" )
         )
 
   goals:
     - name: "ProtectActium"
       type: "Primary"
-      objective_text: "Protect the GTD Actium until Command orders withdrawal."
+      objective_text: "Protect the GTD Actium through the battle."
       formula: |
         ( and
-          ( is-event-true-delay "BattleComplete" 0 )
+          ( or
+            ( is-event-true-delay "BattleComplete" 0 )
+            ( is-event-true-delay "ForcedWithdrawal" 0 )
+          )
           ( not ( is-destroyed-delay 0 "GTD Actium" ) )
         )
     - name: "ProtectAegis"
       type: "Primary"
-      objective_text: "Protect the GTI Aegis installation."
+      objective_text: "Protect the GTI Aegis installation through the battle."
       formula: |
         ( and
-          ( is-event-true-delay "BattleComplete" 0 )
+          ( or
+            ( is-event-true-delay "BattleComplete" 0 )
+            ( is-event-true-delay "ForcedWithdrawal" 0 )
+          )
           ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
         )
     - name: "BreakBombers"
@@ -840,13 +866,9 @@ mission_flow:
       voice_name: "Daniel"
       voice_style_instructions: "somber, urgent"
     - name: "BattleCompleteMsg"
-      text: "Command to all units. We have bought the time we needed. Begin withdrawal."
+      text: "Command to all units. The bomber stream is broken and the station assault is collapsing. Alpha, the immediate defense is secure. Continue engaging high-value targets or depart at your discretion."
       voice_name: "Daniel"
-      voice_style_instructions: "relieved, commanding"
-    - name: "RtbMsg"
-      text: "Alpha, return to base. This battle is over for you."
-      voice_name: "Daniel"
-      voice_style_instructions: "firm, tired"
+      voice_style_instructions: "relieved, authoritative"
     - name: "DeltaCallMsg"
       text: "Delta wing is jumping in now. We will cover Aegis."
       voice_name: "Callum"
@@ -984,15 +1006,15 @@ mission_flow:
       voice_name: "Callum"
       voice_style_instructions: "determined, relieved"
     - name: "WithdrawAegisMsg"
-      text: "Aegis control is routing survivors to emergency bays. We can hold the net for withdrawal."
+      text: "Command to all units. One of our anchors is down and the defense is breaking apart."
       voice_name: "Emily"
-      voice_style_instructions: "exhausted, professional"
+      voice_style_instructions: "alarmed, urgent"
     - name: "WithdrawActiumMsg"
-      text: "Actium to all fighter wings. Screen the damaged ships and clear the corridor."
+      text: "Fleet control is routing survivors toward emergency jump lanes. Screen the damaged ships and clear the corridor."
       voice_name: "Rachel"
-      voice_style_instructions: "tired, commanding"
+      voice_style_instructions: "strained, commanding"
     - name: "WithdrawWingmanMsg"
-      text: "We are really leaving the Ravana if it is still alive?"
+      text: "We are pulling out now? There are still Shivans all over the grid."
       voice_name: "Josh"
       voice_style_instructions: "shaken, incredulous"
     - name: "WithdrawFinalMsg"
