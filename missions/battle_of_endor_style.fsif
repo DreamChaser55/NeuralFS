@@ -115,7 +115,7 @@ entities:
         secondary: ["Tsunami#Shivan"]
 
   ships:
-    - name: "GTD Actium"
+    - name: "GTD Resolution"
       class: "GTD Orion"
       team: "Friendly"
       position: [0.0, 0.0, 0.0]
@@ -164,7 +164,7 @@ entities:
       flags: ["escort"]
       escort_list_priority: 90
       initial_orders: |
-        ( ai-chase "GTD Actium" 70 )
+        ( ai-chase "GTD Resolution" 70 )
 
     - name: "SC Malphas"
       class: "SC Lilith"
@@ -225,14 +225,14 @@ entities:
       count: 4
       position: [0.0, 600.0, -2200.0]
       initial_orders: |
-        ( ai-guard "GTD Actium" 90 )
+        ( ai-guard "GTD Resolution" 90 )
 
     - name: "Beta"
       template: "beta_ulysses"
       count: 4
       position: [-900.0, 400.0, -2200.0]
       initial_orders: |
-        ( ai-guard "GTD Actium" 85 )
+        ( ai-guard "GTD Resolution" 85 )
 
     - name: "Gamma"
       template: "gamma_medusa"
@@ -293,7 +293,7 @@ entities:
       next_wave_delay_min: 18
       next_wave_delay_max: 28
       initial_orders: |
-        ( ai-chase "GTD Actium" 90 )
+        ( ai-chase "GTD Resolution" 90 )
 
     - name: "Kali"
       template: "shaitan_bomber"
@@ -351,34 +351,34 @@ entities:
 mission_flow:
   command_briefing:
     stages:
-      - text: "The Shivans have reached the Vega gate. Our fleet is forming a defensive wall around the $f{ GTD Actium $} and the $f{ GTI Aegis $}, an Arcadia-class command and logistics installation."
+      - text: "The Shivans have reached the Vega gate. Our fleet is forming a defensive wall around the $f{ GTD Resolution $} and the $f{ GTI Aegis $}, an Arcadia-class command and logistics installation."
         voice_name: "Daniel"
         voice_style_instructions: "grave, authoritative"
       - text: "The $h{ SD Ravana $} is leading a destroyer group through the node approach. Its cruisers are already moving to split our battle line from the installation sector."
         voice_name: "Daniel"
         voice_style_instructions: "grim, tactical"
-      - text: "Alpha wing will fly from the Actium screen. Intercept bombers, reinforce the station when ordered, and keep both anchors alive while the fleet breaks the Shivan assault. If either anchor is lost, Command will order a forced retreat."
+      - text: "Alpha wing will fly from the Resolution screen. Intercept bombers, reinforce the station when ordered, and keep both anchors alive while the fleet breaks the Shivan assault. If either anchor is lost, Command will order a forced retreat."
         voice_name: "Daniel"
         voice_style_instructions: "urgent, commanding"
 
   briefing:
     stages:
-      - text: "Alpha, you launch from the $f{ GTD Actium $}. The $f{ GTC Reliant $} and $f{ GTC Valiant $} are holding close formation while the $f{ GTI Aegis $} commits its own fighter reserve on our starboard flank."
+      - text: "Alpha, you launch from the $f{ GTD Resolution $}. The $f{ GTC Reliant $} and $f{ GTC Valiant $} are holding close formation while the $f{ GTI Aegis $} commits its own fighter reserve on our starboard flank."
         voice_name: "Rachel"
         voice_style_instructions: "focused, professional"
         icons:
           - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Hercules", map_position: [0, 0], label: "Alpha", highlighted: true }
           - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [-180, -80], label: "Beta" }
           - { icon_type: "Bomber Wing", team: "Friendly", display_class: "GTB Medusa", map_position: [160, -90], label: "Gamma" }
-          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Actium", highlighted: true }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-260, 260], label: "Reliant" }
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
           - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 900], label: "Vega Node" }
-      - text: "The Shivan line is centered on the $h{ SD Ravana $}. $h Brahma and $h Vishnu fighter screens will try to tie us down while $h Durga bombers make torpedo runs on the Actium."
+      - text: "The Shivan line is centered on the $h{ SD Ravana $}. $h Brahma and $h Vishnu fighter screens will try to tie us down while $h Durga bombers make torpedo runs on the Resolution."
         voice_name: "Rachel"
         voice_style_instructions: "controlled, warning"
         icons:
-          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Actium" }
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution" }
           - { icon_type: "Supercapital Ship", team: "Hostile", display_class: "SD Demon", map_position: [0, 620], label: "Ravana", highlighted: true }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [-260, 520], label: "Malphas" }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [260, 520], label: "Bane" }
@@ -398,8 +398,8 @@ mission_flow:
   debriefing:
     stages:
       - display_condition: |
-          ( is-destroyed-delay 0 "GTD Actium" )
-        text: "The $f{ GTD Actium $} was destroyed. With the flagship gone, the Vega gate defense collapsed into scattered withdrawals."
+          ( is-destroyed-delay 0 "GTD Resolution" )
+        text: "The $f{ GTD Resolution $} was destroyed. With the flagship gone, the Vega gate defense collapsed into scattered withdrawals."
         voice_name: "Daniel"
         voice_style_instructions: "somber, severe"
       - display_condition: |
@@ -410,10 +410,10 @@ mission_flow:
       - display_condition: |
           ( and
             ( is-event-true-delay "BattleComplete" 0 )
-            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
-        text: "Excellent work, $rank $callsign. Both the $f{ GTD Actium $} and $f{ GTI Aegis $} survived the Shivan assault. The immediate defense stabilized, and Command retained control of the Vega gate."
+        text: "Excellent work, $rank $callsign. Both the $f{ GTD Resolution $} and $f{ GTI Aegis $} survived the Shivan assault. The immediate defense stabilized, and Command retained control of the Vega gate."
         voice_name: "Daniel"
         voice_style_instructions: "relieved, proud"
       - display_condition: |
@@ -426,7 +426,7 @@ mission_flow:
         voice_style_instructions: "approving, composed"
       - display_condition: |
           ( percent-ships-destroyed 100 "Durga" "Kali" )
-        text: "Alpha wing eliminated every Shivan bomber wave in the combat zone. With the torpedo threat gone, the Actium and Aegis had the breathing room they needed to hold the Vega gate."
+        text: "Alpha wing eliminated every Shivan bomber wave in the combat zone. With the torpedo threat gone, the Resolution and Aegis had the breathing room they needed to hold the Vega gate."
         voice_name: "Rachel"
         voice_style_instructions: "proud, relieved"
       - display_condition: |
@@ -453,7 +453,7 @@ mission_flow:
           ( set-object-facing-object "Delta" "SC Mandara" )
           ( set-object-facing-object "Brahma" "Alpha" )
           ( set-object-facing-object "Vishnu" "Beta" )
-          ( set-object-facing-object "Durga" "GTD Actium" )
+          ( set-object-facing-object "Durga" "GTD Resolution" )
           ( set-object-facing-object "Kali" "GTI Aegis" )
           ( set-object-facing-object "Asura" "Zeta" )
           ( set-object-facing-object "Deva" "Alpha" )
@@ -464,7 +464,7 @@ mission_flow:
           ( true )
           ( send-message-list
             "#Command" "High" "StartMsg" 0
-            "GTD Actium" "Normal" "MainBattleMsg" 4500
+            "GTD Resolution" "Normal" "MainBattleMsg" 4500
           )
         )
     - name: "FleetWallChatter"
@@ -485,7 +485,7 @@ mission_flow:
           ( send-message-list
             "<any wingman>" "Normal" "DebrisWarningMsg" 0
             "Gamma" "Normal" "GammaRunMsg" 3500
-            "GTD Actium" "Normal" "ActiumLanesMsg" 3500
+            "GTD Resolution" "Normal" "ResolutionLanesMsg" 3500
           )
         )
     - name: "MidBattleChat"
@@ -508,17 +508,17 @@ mission_flow:
             "#Command" "Normal" "CommandScreenMsg" 4000
           )
         )
-    - name: "ActiumPressure"
+    - name: "ResolutionPressure"
       formula: |
         ( when
           ( and
-            ( < ( hits-left "GTD Actium" ) 75 )
+            ( < ( hits-left "GTD Resolution" ) 75 )
             ( not ( percent-ships-destroyed 100 "Durga" "Kali" ) )
-            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
             ( not ( is-event-true-delay "BattleComplete" 0 ) )
           )
           ( send-message-list
-            "GTD Actium" "High" "ActiumPressureMsg" 0
+            "GTD Resolution" "High" "ResolutionPressureMsg" 0
             "#Command" "High" "CommandBombersMsg" 3500
           )
         )
@@ -577,7 +577,7 @@ mission_flow:
           )
           ( send-message-list
             "#Command" "High" "RavanaFocusMsg" 0
-            "GTD Actium" "Normal" "ActiumFocusMsg" 3500
+            "GTD Resolution" "Normal" "ResolutionFocusMsg" 3500
           )
         )
     - name: "RavanaKillEcho"
@@ -585,7 +585,7 @@ mission_flow:
         ( when
           ( is-event-true-delay "RavanaDestroyed" 3 )
           ( send-message-list
-            "GTD Actium" "High" "ActiumRavanaMsg" 0
+            "GTD Resolution" "High" "ResolutionRavanaMsg" 0
             "<any wingman>" "Normal" "WingmanRavanaMsg" 3500
           )
         )
@@ -650,16 +650,16 @@ mission_flow:
           ( is-event-true-delay "ForcedWithdrawal" 3 )
           ( send-message-list
             "#Command" "High" "WithdrawAegisMsg" 0
-            "#Command" "High" "WithdrawActiumMsg" 3500
+            "#Command" "High" "WithdrawResolutionMsg" 3500
             "<any wingman>" "Normal" "WithdrawWingmanMsg" 3500
             "#Command" "High" "WithdrawFinalMsg" 4000
           )
         )
-    - name: "ProtectActiumDir"
+    - name: "ProtectResolutionDir"
       formula: |
         ( when
           ( and
-            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
             ( or
               ( is-destroyed-delay 0 "GTI Aegis" )
               ( and
@@ -671,14 +671,14 @@ mission_flow:
           )
           ( do-nothing )
         )
-      hud_directive_text: "Protect GTD Actium"
+      hud_directive_text: "Protect GTD Resolution"
     - name: "ProtectAegisDir"
       formula: |
         ( when
           ( and
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
             ( or
-              ( is-destroyed-delay 0 "GTD Actium" )
+              ( is-destroyed-delay 0 "GTD Resolution" )
               ( and
                 ( percent-ships-destroyed 100 "Durga" "Kali" )
                 ( is-destroyed-delay 0 "SC Mandara" )
@@ -738,11 +738,11 @@ mission_flow:
           ( has-time-elapsed 115 )
           ( send-message "Eta" "Normal" "EtaEngageMsg" )
         )
-    - name: "ActiumDamaged"
+    - name: "ResolutionDamaged"
       formula: |
         ( when
-          ( < ( hits-left "GTD Actium" ) 55 )
-          ( send-message "GTD Actium" "High" "ActiumDamagedMsg" )
+          ( < ( hits-left "GTD Resolution" ) 55 )
+          ( send-message "GTD Resolution" "High" "ResolutionDamagedMsg" )
         )
     - name: "AegisDamaged"
       formula: |
@@ -780,11 +780,11 @@ mission_flow:
           ( is-destroyed-delay 0 "SD Ravana" )
           ( send-message "#Command" "High" "RavanaDestroyedMsg" )
         )
-    - name: "ActiumLost"
+    - name: "ResolutionLost"
       formula: |
         ( when
-          ( is-destroyed-delay 0 "GTD Actium" )
-          ( send-message "#Command" "High" "ActiumLostMsg" )
+          ( is-destroyed-delay 0 "GTD Resolution" )
+          ( send-message "#Command" "High" "ResolutionLostMsg" )
         )
     - name: "AegisLost"
       formula: |
@@ -796,7 +796,7 @@ mission_flow:
       formula: |
         ( when
           ( or
-            ( is-event-true-delay "ActiumLost" 2 )
+            ( is-event-true-delay "ResolutionLost" 2 )
             ( is-event-true-delay "AegisLost" 2 )
           )
           ( do-nothing )
@@ -808,23 +808,23 @@ mission_flow:
             ( percent-ships-destroyed 100 "Durga" "Kali" )
             ( is-destroyed-delay 0 "SC Mandara" )
             ( is-destroyed-delay 0 "SC Rakshasa" )
-            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
           ( send-message "#Command" "High" "BattleCompleteMsg" )
         )
 
   goals:
-    - name: "ProtectActium"
+    - name: "ProtectResolution"
       type: "Primary"
-      objective_text: "Protect the GTD Actium through the battle."
+      objective_text: "Protect the GTD Resolution through the battle."
       formula: |
         ( and
           ( or
             ( is-event-true-delay "BattleComplete" 0 )
             ( is-event-true-delay "ForcedWithdrawal" 0 )
           )
-          ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+          ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
         )
     - name: "ProtectAegis"
       type: "Primary"
@@ -860,15 +860,15 @@ mission_flow:
 
   messages:
     - name: "StartMsg"
-      text: "Alpha, this is Command. The Shivan line is coming through. Keep the Actium alive."
+      text: "Alpha, this is Command. The Shivan line is coming through. Keep the Resolution alive."
       voice_name: "Daniel"
       voice_style_instructions: "urgent, commanding"
     - name: "MainBattleMsg"
-      text: "Actium to all wings. Batteries are engaging. Stay clear of our bow and cut down those bombers."
+      text: "Resolution to all wings. Batteries are engaging. Stay clear of our bow and cut down those bombers."
       voice_name: "Rachel"
       voice_style_instructions: "tense, focused"
     - name: "DurgaMsg"
-      text: "Durga bombers inbound on the Actium. Alpha, intercept immediately."
+      text: "Durga bombers inbound on the Resolution. Alpha, intercept immediately."
       voice_name: "Daniel"
       voice_style_instructions: "urgent, alarmed"
     - name: "StationAlertMsg"
@@ -883,8 +883,8 @@ mission_flow:
       text: "Eta wing engaging over Aegis. There are too many of them. Alpha, we could use help here."
       voice_name: "Josh"
       voice_style_instructions: "strained, determined"
-    - name: "ActiumDamagedMsg"
-      text: "Actium has taken heavy damage. Fighter screen, do not let another bomber through."
+    - name: "ResolutionDamagedMsg"
+      text: "Resolution has taken heavy damage. Fighter screen, do not let another bomber through."
       voice_name: "Rachel"
       voice_style_instructions: "urgent, controlled"
     - name: "AegisDamagedMsg"
@@ -911,8 +911,8 @@ mission_flow:
       text: "The Shivan destroyer is down. Repeat, the Ravana is down. Incredible work."
       voice_name: "Daniel"
       voice_style_instructions: "astonished, triumphant"
-    - name: "ActiumLostMsg"
-      text: "Command to all surviving units. The Actium is gone. Disengage if you can."
+    - name: "ResolutionLostMsg"
+      text: "Command to all surviving units. The Resolution is gone. Disengage if you can."
       voice_name: "Daniel"
       voice_style_instructions: "shocked, grim"
     - name: "AegisLostMsg"
@@ -932,7 +932,7 @@ mission_flow:
       voice_name: "Daniel"
       voice_style_instructions: "tense, clipped"
     - name: "ReliantOpenMsg"
-      text: "Reliant to Actium. Port batteries are hot. We have Shivan cruisers in our sights."
+      text: "Reliant to Resolution. Port batteries are hot. We have Shivan cruisers in our sights."
       voice_name: "Rachel"
       voice_style_instructions: "focused, tense"
     - name: "ValiantOpenMsg"
@@ -955,8 +955,8 @@ mission_flow:
       text: "Gamma wing beginning torpedo run. Keep those fighters off our tails."
       voice_name: "Rachel"
       voice_style_instructions: "urgent, professional"
-    - name: "ActiumLanesMsg"
-      text: "Actium batteries firing. Small craft, stay clear of our forward lanes."
+    - name: "ResolutionLanesMsg"
+      text: "Resolution batteries firing. Small craft, stay clear of our forward lanes."
       voice_name: "Rachel"
       voice_style_instructions: "controlled, warning"
     - name: "BetaSplitMsg"
@@ -980,11 +980,11 @@ mission_flow:
       voice_name: "Josh"
       voice_style_instructions: "strained, urgent"
     - name: "CommandScreenMsg"
-      text: "Alpha, prioritize threats closest to the Actium or Aegis. Do not chase stragglers."
+      text: "Alpha, prioritize threats closest to the Resolution or Aegis. Do not chase stragglers."
       voice_name: "Daniel"
       voice_style_instructions: "clear, tactical"
-    - name: "ActiumPressureMsg"
-      text: "Actium to fighter screen. Bomb impacts along the dorsal armor. Cut down those bombers."
+    - name: "ResolutionPressureMsg"
+      text: "Resolution to fighter screen. Bomb impacts along the dorsal armor. Cut down those bombers."
       voice_name: "Rachel"
       voice_style_instructions: "urgent, controlled"
     - name: "CommandBombersMsg"
@@ -1020,19 +1020,19 @@ mission_flow:
       voice_name: "Josh"
       voice_style_instructions: "strained, alarmed"
     - name: "WingmanDevaMsg"
-      text: "They are trying to split us between the Actium and Aegis."
+      text: "They are trying to split us between the Resolution and Aegis."
       voice_name: "Josh"
       voice_style_instructions: "worried, intense"
     - name: "RavanaFocusMsg"
       text: "The Ravana is hurt, but do not tunnel on the destroyer. Bombers are still the killer."
       voice_name: "Daniel"
       voice_style_instructions: "firm, tactical"
-    - name: "ActiumFocusMsg"
-      text: "Actium concurs. We can trade fire with Ravana. We cannot absorb more torpedo runs."
+    - name: "ResolutionFocusMsg"
+      text: "Resolution concurs. We can trade fire with Ravana. We cannot absorb more torpedo runs."
       voice_name: "Rachel"
       voice_style_instructions: "grim, controlled"
-    - name: "ActiumRavanaMsg"
-      text: "Actium to all units. Confirmed kill on the Ravana. The Shivan line just lost its anchor."
+    - name: "ResolutionRavanaMsg"
+      text: "Resolution to all units. Confirmed kill on the Ravana. The Shivan line just lost its anchor."
       voice_name: "Rachel"
       voice_style_instructions: "astonished, forceful"
     - name: "WingmanRavanaMsg"
@@ -1044,7 +1044,7 @@ mission_flow:
       voice_name: "Rachel"
       voice_style_instructions: "relieved, focused"
     - name: "BaneGoneMsg"
-      text: "Valiant reports the Bane is down. We have a clear lane to support Actium."
+      text: "Valiant reports the Bane is down. We have a clear lane to support Resolution."
       voice_name: "Josh"
       voice_style_instructions: "relieved, determined"
     - name: "ObsidianDownChatMsg"
@@ -1056,11 +1056,11 @@ mission_flow:
       voice_name: "Daniel"
       voice_style_instructions: "relieved, tactical"
     - name: "ReliantLostChatMsg"
-      text: "Command to all wings. Reliant is gone. Port screen is collapsing, cover Actium."
+      text: "Command to all wings. Reliant is gone. Port screen is collapsing, cover Resolution."
       voice_name: "Daniel"
       voice_style_instructions: "grim, urgent"
     - name: "ValiantLostChatMsg"
-      text: "Command to Alpha. Valiant is gone. Starboard screen is open - keep the bombers away from Actium."
+      text: "Command to Alpha. Valiant is gone. Starboard screen is open - keep the bombers away from Resolution."
       voice_name: "Daniel"
       voice_style_instructions: "grim, urgent"
     - name: "MeridianLostChatMsg"
@@ -1079,7 +1079,7 @@ mission_flow:
       text: "Command to all units. One of our anchors is down and the defense is breaking apart."
       voice_name: "Emily"
       voice_style_instructions: "alarmed, urgent"
-    - name: "WithdrawActiumMsg"
+    - name: "WithdrawResolutionMsg"
       text: "Fleet control is routing survivors toward emergency jump lanes. Screen the damaged ships and clear the corridor."
       voice_name: "Rachel"
       voice_style_instructions: "strained, commanding"
