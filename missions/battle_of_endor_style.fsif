@@ -459,6 +459,170 @@ mission_flow:
             "GTD Actium" "Normal" "MainBattleMsg" 4500
           )
         )
+    - name: "FleetWallChatter"
+      formula: |
+        ( when
+          ( has-time-elapsed 18 )
+          ( send-message-list
+            "GTC Reliant" "Normal" "ReliantOpenMsg" 0
+            "GTC Valiant" "Normal" "ValiantOpenMsg" 3500
+            "<any wingman>" "Normal" "WingmanWallMsg" 3500
+            "#Command" "High" "CommandFocusMsg" 4000
+          )
+        )
+    - name: "FleetStaticBurst"
+      formula: |
+        ( when
+          ( has-time-elapsed 45 )
+          ( send-message-list
+            "<any wingman>" "Normal" "DebrisWarningMsg" 0
+            "Gamma" "Normal" "GammaRunMsg" 3500
+            "GTD Actium" "Normal" "ActiumLanesMsg" 3500
+          )
+        )
+    - name: "MidBattleChat"
+      formula: |
+        ( when
+          ( has-time-elapsed 210 )
+          ( send-message-list
+            "Beta" "Normal" "BetaSplitMsg" 0
+            "GTI Aegis" "Normal" "AegisReserveMsg" 3500
+            "#Command" "Normal" "CommandLineMsg" 4000
+          )
+        )
+    - name: "FighterScreenChat"
+      formula: |
+        ( when
+          ( has-time-elapsed 300 )
+          ( send-message-list
+            "Zeta" "Normal" "ZetaStatusMsg" 0
+            "Eta" "Normal" "EtaCutoffMsg" 3500
+            "#Command" "Normal" "CommandScreenMsg" 4000
+          )
+        )
+    - name: "ActiumPressure"
+      formula: |
+        ( when
+          ( and
+            ( < ( hits-left "GTD Actium" ) 75 )
+            ( not ( percent-ships-destroyed 70 "Durga" "Kali" ) )
+            ( not ( is-destroyed-delay 0 "GTD Actium" ) )
+            ( not ( is-event-true-delay "BattleComplete" 0 ) )
+          )
+          ( send-message-list
+            "GTD Actium" "High" "ActiumPressureMsg" 0
+            "#Command" "High" "CommandBombersMsg" 3500
+          )
+        )
+    - name: "AegisBreach"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "StationAttack" 0 )
+            ( < ( hits-left "GTI Aegis" ) 75 )
+            ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
+            ( not ( is-event-true-delay "BattleComplete" 0 ) )
+          )
+          ( send-message-list
+            "GTI Aegis" "High" "AegisBreachMsg" 0
+            "#Command" "High" "CommandAegisMsg" 3500
+          )
+        )
+    - name: "DeltaReminder"
+      formula: |
+        ( when
+          ( and
+            ( is-event-true-delay "StationAttack" 20 )
+            ( < ( hits-left "GTI Aegis" ) 70 )
+            ( not ( has-arrived-delay 0 "Delta" ) )
+            ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
+          )
+          ( send-message "#Command" "Normal" "DeltaReminderMsg" )
+        )
+    - name: "DeltaAck"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Delta" )
+          ( send-message-list
+            "Delta" "High" "DeltaAckMsg" 0
+            "GTI Aegis" "Normal" "AegisDeltaThanksMsg" 3500
+          )
+        )
+    - name: "DevaBreak"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "Deva" )
+          ( send-message-list
+            "#Command" "High" "DevaBreakMsg" 0
+            "Eta" "Normal" "EtaDevaMsg" 3500
+            "<any wingman>" "Normal" "WingmanDevaMsg" 3500
+          )
+        )
+    - name: "RavanaFocus"
+      formula: |
+        ( when
+          ( and
+            ( < ( hits-left "SD Ravana" ) 65 )
+            ( not ( percent-ships-destroyed 70 "Durga" "Kali" ) )
+            ( not ( is-destroyed-delay 0 "SD Ravana" ) )
+            ( not ( is-event-true-delay "BattleComplete" 0 ) )
+          )
+          ( send-message-list
+            "#Command" "High" "RavanaFocusMsg" 0
+            "GTD Actium" "Normal" "ActiumFocusMsg" 3500
+          )
+        )
+    - name: "RavanaKillEcho"
+      formula: |
+        ( when
+          ( is-event-true-delay "RavanaDestroyed" 3 )
+          ( send-message-list
+            "GTD Actium" "High" "ActiumRavanaMsg" 0
+            "<any wingman>" "Normal" "WingmanRavanaMsg" 3500
+          )
+        )
+    - name: "MalphasDownChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Malphas" )
+          ( send-message "GTC Reliant" "Normal" "MalphasGoneMsg" )
+        )
+    - name: "BaneDownChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Bane" )
+          ( send-message "GTC Valiant" "Normal" "BaneGoneMsg" )
+        )
+    - name: "ReliantLostChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTC Reliant" )
+          ( send-message "#Command" "High" "ReliantLostChatMsg" )
+        )
+    - name: "AegisRelief"
+      formula: |
+        ( when
+          ( and
+            ( is-destroyed-delay 0 "SC Mandara" )
+            ( is-destroyed-delay 0 "SC Rakshasa" )
+            ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
+          )
+          ( send-message-list
+            "GTI Aegis" "High" "AegisReliefMsg" 0
+            "Zeta" "Normal" "ZetaReliefMsg" 3500
+          )
+        )
+    - name: "WithdrawalChat"
+      formula: |
+        ( when
+          ( is-event-true-delay "BattleComplete" 8 )
+          ( send-message-list
+            "GTI Aegis" "Normal" "WithdrawAegisMsg" 0
+            "GTD Actium" "Normal" "WithdrawActiumMsg" 3500
+            "<any wingman>" "Normal" "WithdrawWingmanMsg" 3500
+            "#Command" "High" "WithdrawFinalMsg" 4000
+          )
+        )
     - name: "ProtectActiumDir"
       formula: |
         ( when
@@ -691,6 +855,150 @@ mission_flow:
       text: "Delta wing is unavailable. All reserves are already committed."
       voice_name: "Daniel"
       voice_style_instructions: "tense, clipped"
+    - name: "ReliantOpenMsg"
+      text: "Reliant to Actium. Port batteries are hot. We have Shivan cruisers in our sights."
+      voice_name: "Rachel"
+      voice_style_instructions: "focused, tense"
+    - name: "ValiantOpenMsg"
+      text: "Valiant has target lock on the Bane. We are closing the gap."
+      voice_name: "Josh"
+      voice_style_instructions: "determined, steady"
+    - name: "WingmanWallMsg"
+      text: "Command, my scope is solid red. There are too many contacts to count."
+      voice_name: "Josh"
+      voice_style_instructions: "awed, alarmed"
+    - name: "CommandFocusMsg"
+      text: "Hold formation, Alpha. Bombers first, capital ships second."
+      voice_name: "Daniel"
+      voice_style_instructions: "firm, tactical"
+    - name: "DebrisWarningMsg"
+      text: "Debris field is thickening. Watch your closure rates."
+      voice_name: "Josh"
+      voice_style_instructions: "strained, alert"
+    - name: "GammaRunMsg"
+      text: "Gamma wing beginning torpedo run. Keep those fighters off our tails."
+      voice_name: "Rachel"
+      voice_style_instructions: "urgent, professional"
+    - name: "ActiumLanesMsg"
+      text: "Actium batteries firing. Small craft, stay clear of our forward lanes."
+      voice_name: "Rachel"
+      voice_style_instructions: "controlled, warning"
+    - name: "BetaSplitMsg"
+      text: "Beta wing is split across the screen. Alpha, cover the gaps where you can."
+      voice_name: "Josh"
+      voice_style_instructions: "strained, tactical"
+    - name: "AegisReserveMsg"
+      text: "Aegis control, reserve bays are empty. Every pilot we have is already in space."
+      voice_name: "Emily"
+      voice_style_instructions: "tense, disciplined"
+    - name: "CommandLineMsg"
+      text: "Command confirms the line is bending, not broken. Stay on mission."
+      voice_name: "Daniel"
+      voice_style_instructions: "steady, commanding"
+    - name: "ZetaStatusMsg"
+      text: "Zeta wing is holding station perimeter, but Shivan fighters keep slipping past us."
+      voice_name: "Callum"
+      voice_style_instructions: "urgent, focused"
+    - name: "EtaCutoffMsg"
+      text: "Eta to Alpha, we are getting cut off from Aegis control."
+      voice_name: "Josh"
+      voice_style_instructions: "strained, urgent"
+    - name: "CommandScreenMsg"
+      text: "Alpha, prioritize threats closest to the Actium or Aegis. Do not chase stragglers."
+      voice_name: "Daniel"
+      voice_style_instructions: "clear, tactical"
+    - name: "ActiumPressureMsg"
+      text: "Actium to fighter screen. Bomb impacts along the dorsal armor. Cut down those bombers."
+      voice_name: "Rachel"
+      voice_style_instructions: "urgent, controlled"
+    - name: "CommandBombersMsg"
+      text: "Alpha, leave the cruisers if you must. The bomber stream is the immediate threat."
+      voice_name: "Daniel"
+      voice_style_instructions: "urgent, forceful"
+    - name: "AegisBreachMsg"
+      text: "Aegis control to all wings. Shivan bombers are inside our defensive perimeter."
+      voice_name: "Emily"
+      voice_style_instructions: "alarmed, disciplined"
+    - name: "CommandAegisMsg"
+      text: "Alpha, if the station falls we lose the reserve and the command net. Reinforce Aegis."
+      voice_name: "Daniel"
+      voice_style_instructions: "urgent, tactical"
+    - name: "DeltaReminderMsg"
+      text: "Alpha, Delta interceptors are still available. Call them if Aegis needs cover."
+      voice_name: "Daniel"
+      voice_style_instructions: "firm, advisory"
+    - name: "DeltaAckMsg"
+      text: "Delta wing on station. We are taking the station screen."
+      voice_name: "Callum"
+      voice_style_instructions: "confident, urgent"
+    - name: "AegisDeltaThanksMsg"
+      text: "Aegis control confirms Delta arrival. That buys us breathing room."
+      voice_name: "Emily"
+      voice_style_instructions: "relieved, professional"
+    - name: "DevaBreakMsg"
+      text: "Command to Alpha. Deva wing has broken through the center. Watch your flank."
+      voice_name: "Daniel"
+      voice_style_instructions: "urgent, sharp"
+    - name: "EtaDevaMsg"
+      text: "Eta here, Deva is dragging our screen out of position."
+      voice_name: "Josh"
+      voice_style_instructions: "strained, alarmed"
+    - name: "WingmanDevaMsg"
+      text: "They are trying to split us between the Actium and Aegis."
+      voice_name: "Josh"
+      voice_style_instructions: "worried, intense"
+    - name: "RavanaFocusMsg"
+      text: "The Ravana is hurt, but do not tunnel on the destroyer. Bombers are still the killer."
+      voice_name: "Daniel"
+      voice_style_instructions: "firm, tactical"
+    - name: "ActiumFocusMsg"
+      text: "Actium concurs. We can trade fire with Ravana. We cannot absorb more torpedo runs."
+      voice_name: "Rachel"
+      voice_style_instructions: "grim, controlled"
+    - name: "ActiumRavanaMsg"
+      text: "Actium to all units. Confirmed kill on the Ravana. The Shivan line just lost its anchor."
+      voice_name: "Rachel"
+      voice_style_instructions: "astonished, forceful"
+    - name: "WingmanRavanaMsg"
+      text: "I cannot believe it. We actually brought down a Demon."
+      voice_name: "Josh"
+      voice_style_instructions: "awed, breathless"
+    - name: "MalphasGoneMsg"
+      text: "Reliant confirms the Malphas is breaking apart. Port flank pressure is easing."
+      voice_name: "Rachel"
+      voice_style_instructions: "relieved, focused"
+    - name: "BaneGoneMsg"
+      text: "Valiant reports the Bane is down. We have a clear lane to support Actium."
+      voice_name: "Josh"
+      voice_style_instructions: "relieved, determined"
+    - name: "ReliantLostChatMsg"
+      text: "Command to all wings. Reliant is gone. Port screen is collapsing, cover Actium."
+      voice_name: "Daniel"
+      voice_style_instructions: "grim, urgent"
+    - name: "AegisReliefMsg"
+      text: "Aegis control confirms Mandara and Rakshasa destroyed. Station assault is breaking."
+      voice_name: "Emily"
+      voice_style_instructions: "relieved, grateful"
+    - name: "ZetaReliefMsg"
+      text: "Zeta wing copies. We are pushing the last attackers off the station hull."
+      voice_name: "Callum"
+      voice_style_instructions: "determined, relieved"
+    - name: "WithdrawAegisMsg"
+      text: "Aegis control is routing survivors to emergency bays. We can hold the net for withdrawal."
+      voice_name: "Emily"
+      voice_style_instructions: "exhausted, professional"
+    - name: "WithdrawActiumMsg"
+      text: "Actium to all fighter wings. Screen the damaged ships and clear the corridor."
+      voice_name: "Rachel"
+      voice_style_instructions: "tired, commanding"
+    - name: "WithdrawWingmanMsg"
+      text: "We are really leaving the Ravana if it is still alive?"
+      voice_name: "Josh"
+      voice_style_instructions: "shaken, incredulous"
+    - name: "WithdrawFinalMsg"
+      text: "Survival is the mission. Alpha, withdraw now."
+      voice_name: "Daniel"
+      voice_style_instructions: "firm, final"
 
 audio:
   mission_music: "FS1-9: Monolith"
