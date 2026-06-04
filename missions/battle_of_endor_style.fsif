@@ -85,13 +85,13 @@ entities:
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
         secondary: ["Hornet#Shivan", "Interceptor#Shivan"]
-    asura_fighter:
-      class: "SF Basilisk"
+    scorpion_fighter:
+      class: "SF Scorpion"
       team: "Hostile"
       ai_class: "Captain"
       weapons:
         primary: ["Shivan Heavy Laser", "Shivan Light Laser"]
-        secondary: ["Hornet#Shivan", "Interceptor#Shivan"]
+        secondary: ["Hornet#Shivan"]
     manticore_fighter:
       class: "SF Manticore"
       team: "Hostile"
@@ -222,42 +222,42 @@ entities:
   wings:
     - name: "Alpha"
       template: "alpha_herc"
-      count: 4
+      count: 5
       position: [0.0, 600.0, -2200.0]
       initial_orders: |
         ( ai-guard "GTD Resolution" 90 )
 
     - name: "Beta"
       template: "beta_ulysses"
-      count: 4
+      count: 5
       position: [-900.0, 400.0, -2200.0]
       initial_orders: |
         ( ai-guard "GTD Resolution" 85 )
 
     - name: "Gamma"
       template: "gamma_medusa"
-      count: 4
+      count: 5
       position: [700.0, -300.0, -2300.0]
       initial_orders: |
         ( ai-chase "SC Malphas" 85 )
 
     - name: "Zeta"
       template: "zeta_apollo"
-      count: 4
+      count: 5
       position: [3800.0, 700.0, -3200.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 85 )
 
     - name: "Eta"
       template: "valk_interceptor"
-      count: 4
+      count: 5
       position: [6800.0, -400.0, -3200.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 88 )
 
     - name: "Delta"
       template: "valk_interceptor"
-      count: 4
+      count: 5
       position: [5200.0, 1000.0, -3600.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 88 )
@@ -310,7 +310,7 @@ entities:
         ( ai-chase "GTI Aegis" 90 )
 
     - name: "Asura"
-      template: "asura_fighter"
+      template: "scorpion_fighter"
       count: 4
       position: [7300.0, 500.0, -300.0]
       wave_count: 2
@@ -325,7 +325,7 @@ entities:
 
     - name: "Deva"
       template: "manticore_fighter"
-      count: 4
+      count: 3
       position: [2500.0, 600.0, 2500.0]
       wave_count: 2
       next_wave_threshold: 1
