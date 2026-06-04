@@ -683,8 +683,8 @@ mission_flow:
       formula: |
         ( when
           ( and
-            ( is-destroyed-delay 0 "SC Mandara" )
-            ( is-destroyed-delay 0 "SC Rakshasa" )
+            ( is-destroyed-delay 2 "SC Mandara" )
+            ( is-destroyed-delay 2 "SC Rakshasa" )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
           ( send-message-list
