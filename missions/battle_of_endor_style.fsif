@@ -601,11 +601,35 @@ mission_flow:
           ( is-destroyed-delay 0 "SC Bane" )
           ( send-message "GTC Valiant" "Normal" "BaneGoneMsg" )
         )
+    - name: "ObsidianDownChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Obsidian" )
+          ( send-message "#Command" "Normal" "ObsidianDownChatMsg" )
+        )
+    - name: "RakshasaDownChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "SC Rakshasa" )
+          ( send-message "#Command" "Normal" "RakshasaDownChatMsg" )
+        )
     - name: "ReliantLostChat"
       formula: |
         ( when
           ( is-destroyed-delay 0 "GTC Reliant" )
           ( send-message "#Command" "High" "ReliantLostChatMsg" )
+        )
+    - name: "ValiantLostChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTC Valiant" )
+          ( send-message "#Command" "High" "ValiantLostChatMsg" )
+        )
+    - name: "MeridianLostChat"
+      formula: |
+        ( when
+          ( is-destroyed-delay 0 "GTC Meridian" )
+          ( send-message "#Command" "High" "MeridianLostChatMsg" )
         )
     - name: "AegisRelief"
       formula: |
@@ -876,7 +900,7 @@ mission_flow:
       voice_name: "Daniel"
       voice_style_instructions: "relieved, authoritative"
     - name: "MandaraDownMsg"
-      text: "The Mandara is breaking apart. Aegis control confirms the station assault is losing momentum."
+      text: "The Mandara is breaking apart. Stay away from the shockwave!"
       voice_name: "Emily"
       voice_style_instructions: "relieved, grateful"
     - name: "RavanaWeakMsg"
@@ -1023,10 +1047,26 @@ mission_flow:
       text: "Valiant reports the Bane is down. We have a clear lane to support Actium."
       voice_name: "Josh"
       voice_style_instructions: "relieved, determined"
+    - name: "ObsidianDownChatMsg"
+      text: "Command confirms Obsidian destroyed. Pressure on the inner line is easing."
+      voice_name: "Daniel"
+      voice_style_instructions: "relieved, controlled"
+    - name: "RakshasaDownChatMsg"
+      text: "Command confirms Rakshasa destroyed. Aegis has one less cruiser tearing at its flank."
+      voice_name: "Daniel"
+      voice_style_instructions: "relieved, tactical"
     - name: "ReliantLostChatMsg"
       text: "Command to all wings. Reliant is gone. Port screen is collapsing, cover Actium."
       voice_name: "Daniel"
       voice_style_instructions: "grim, urgent"
+    - name: "ValiantLostChatMsg"
+      text: "Command to Alpha. Valiant is gone. Starboard screen is open - keep the bombers away from Actium."
+      voice_name: "Daniel"
+      voice_style_instructions: "grim, urgent"
+    - name: "MeridianLostChatMsg"
+      text: "Command to all wings. Meridian has been destroyed. Obsidian has a clear run at the fleet line."
+      voice_name: "Daniel"
+      voice_style_instructions: "grim, tactical"
     - name: "AegisReliefMsg"
       text: "Aegis control confirms Mandara and Rakshasa destroyed. Station assault is breaking."
       voice_name: "Emily"
