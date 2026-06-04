@@ -147,6 +147,8 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase "SC Obsidian" 70 )
+        ( ai-chase "SC Bane" 55 )
+        ( ai-chase "SC Malphas" 45 )
 
     - name: "GTI Aegis"
       class: "GTI Arcadia"
@@ -165,6 +167,9 @@ entities:
       escort_list_priority: 90
       initial_orders: |
         ( ai-chase "GTD Resolution" 70 )
+        ( ai-chase "GTC Reliant" 55 )
+        ( ai-chase "GTC Valiant" 45 )
+        ( ai-chase "GTI Aegis" 35 )
 
     - name: "SC Malphas"
       class: "SC Lilith"
@@ -175,6 +180,8 @@ entities:
       escort_list_priority: 55
       initial_orders: |
         ( ai-chase "GTC Reliant" 75 )
+        ( ai-chase "GTD Resolution" 60 )
+        ( ai-chase "GTC Valiant" 45 )
 
     - name: "SC Bane"
       class: "SC Cain"
@@ -183,6 +190,8 @@ entities:
       orientation: [-0.903738, 0.0, -0.428087, 0.0, 1.0, 0.0, 0.428087, 0.0, -0.903738]
       initial_orders: |
         ( ai-chase "GTC Valiant" 75 )
+        ( ai-chase "GTD Resolution" 60 )
+        ( ai-chase "GTC Reliant" 45 )
 
     - name: "SC Obsidian"
       class: "SC Cain"
@@ -194,6 +203,8 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase "GTC Meridian" 75 )
+        ( ai-chase "GTD Resolution" 60 )
+        ( ai-chase "GTI Aegis" 45 )
 
     - name: "SC Mandara"
       class: "SC Lilith"
@@ -207,6 +218,8 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase "GTI Aegis" 80 )
+        ( ai-chase "GTC Valiant" 60 )
+        ( ai-chase "GTD Resolution" 45 )
 
     - name: "SC Rakshasa"
       class: "SC Cain"
@@ -218,6 +231,8 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase "GTI Aegis" 75 )
+        ( ai-chase "GTC Valiant" 55 )
+        ( ai-chase "GTD Resolution" 40 )
 
   wings:
     - name: "Alpha"
@@ -226,6 +241,9 @@ entities:
       position: [0.0, 600.0, -2200.0]
       initial_orders: |
         ( ai-guard "GTD Resolution" 90 )
+        ( ai-chase-wing "Durga" 80 )
+        ( ai-chase-wing "Brahma" 65 )
+        ( ai-chase-any 45 )
 
     - name: "Beta"
       template: "beta_ulysses"
@@ -233,6 +251,9 @@ entities:
       position: [-900.0, 400.0, -2200.0]
       initial_orders: |
         ( ai-guard "GTD Resolution" 85 )
+        ( ai-chase-wing "Vishnu" 72 )
+        ( ai-chase-wing "Brahma" 60 )
+        ( ai-chase-any 45 )
 
     - name: "Gamma"
       template: "gamma_medusa"
@@ -240,6 +261,9 @@ entities:
       position: [700.0, -300.0, -2300.0]
       initial_orders: |
         ( ai-chase "SC Malphas" 85 )
+        ( ai-chase "SC Bane" 70 )
+        ( ai-chase "SD Kaikasi" 55 )
+        ( ai-chase-any 40 )
 
     - name: "Zeta"
       template: "zeta_apollo"
@@ -247,6 +271,9 @@ entities:
       position: [3800.0, 700.0, -3200.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 85 )
+        ( ai-chase-wing "Asura" 72 )
+        ( ai-chase-wing "Kali" 65 )
+        ( ai-chase-any 45 )
 
     - name: "Eta"
       template: "valk_interceptor"
@@ -254,6 +281,9 @@ entities:
       position: [6800.0, -400.0, -3200.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 88 )
+        ( ai-chase-wing "Kali" 78 )
+        ( ai-chase-wing "Asura" 65 )
+        ( ai-chase-any 45 )
 
     - name: "Delta"
       template: "valk_interceptor"
@@ -261,6 +291,9 @@ entities:
       position: [5200.0, 1000.0, -3600.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 88 )
+        ( ai-chase-wing "Kali" 78 )
+        ( ai-chase-wing "Deva" 65 )
+        ( ai-chase-any 45 )
 
     - name: "Brahma"
       template: "basilisk_fighter"
@@ -272,6 +305,8 @@ entities:
       next_wave_delay_max: 20
       initial_orders: |
         ( ai-chase-wing "Alpha" 75 )
+        ( ai-chase-wing "Beta" 65 )
+        ( ai-chase-any 45 )
 
     - name: "Vishnu"
       template: "manticore_fighter"
@@ -282,7 +317,9 @@ entities:
       next_wave_delay_min: 14
       next_wave_delay_max: 22
       initial_orders: |
-        ( ai-chase-any 78 )
+        ( ai-chase-wing "Beta" 78 )
+        ( ai-chase-wing "Alpha" 65 )
+        ( ai-chase-any 50 )
 
     - name: "Durga"
       template: "nephilim_bomber"
@@ -294,6 +331,9 @@ entities:
       next_wave_delay_max: 28
       initial_orders: |
         ( ai-chase "GTD Resolution" 90 )
+        ( ai-chase "GTC Reliant" 70 )
+        ( ai-chase "GTC Valiant" 60 )
+        ( ai-chase-any 40 )
 
     - name: "Kali"
       template: "shaitan_bomber"
@@ -308,6 +348,9 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase "GTI Aegis" 90 )
+        ( ai-chase "GTC Valiant" 70 )
+        ( ai-chase "GTD Resolution" 55 )
+        ( ai-chase-any 40 )
 
     - name: "Asura"
       template: "scorpion_fighter"
@@ -322,6 +365,9 @@ entities:
         ( has-time-elapsed 1 )
       initial_orders: |
         ( ai-chase-wing "Zeta" 80 )
+        ( ai-chase-wing "Eta" 68 )
+        ( ai-chase-wing "Delta" 58 )
+        ( ai-chase-any 45 )
 
     - name: "Deva"
       template: "manticore_fighter"
@@ -335,7 +381,9 @@ entities:
       arrival_cue: |
         ( has-time-elapsed 1 )
       initial_orders: |
-        ( ai-chase-any 82 )
+        ( ai-chase-wing "Alpha" 82 )
+        ( ai-chase-wing "Gamma" 70 )
+        ( ai-chase-any 50 )
 
   reinforcement_wings:
     - name: "Delta"
