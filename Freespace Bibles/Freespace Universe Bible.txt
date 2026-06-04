@@ -1852,7 +1852,7 @@ FSO engine capabilities:
   - debris field
     - types: Terran, Vasudan, Shivan
     - debris sizes: small, medium, large
-- All ships should be Friendly, Hostile, or Unknown to the player. "Neutral" is not supported in FSO.
+- IFF: all ships should be Friendly (green), Hostile (red), or Unknown (purple) to the player. "Neutral" is not supported in FSO.
 - Docking: A pair of ships can be docked together. One is the Dockee (Leader), the other is the Docker (Follower). A docked ship can tow the partner.
 - Arrival and departure methods for ships (entering and exiting the playing area):
   - Subspace
