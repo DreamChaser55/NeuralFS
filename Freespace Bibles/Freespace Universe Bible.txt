@@ -1838,6 +1838,7 @@ Useful tips:
 - Describe ship and wing arrival methods (subspace/docking bay), directions or distances, objectives, message triggers, and debrief outcomes.
 - Keep implementation-facing names short and distinct, ideally under 30 characters. FSO does not support very long ship or object names.
 - Repeating or inconsistent wing designations (Beta, Aries, Krishna, etc...) in different missions are not an issue; They are just ad-hoc monikers issued by the commander on a per-mission basis, not permanent names.
+- You can use advanced FSO mechanics for dramatic pacing: directional arrivals that reference existing ships (to guarantee intercept windows), pre-damaged arrivals, disguised reinforcements that reveal as hostile (runtime IFF change), scripted-invulnerable ships, and kamikaze attackers.
 
 FSO engine capabilities:
 - FSO supported mission environments:
@@ -1861,6 +1862,14 @@ FSO engine capabilities:
 - Arrival and departure methods for ships (entering and exiting the playing area):
   - Subspace
   - Docking Bay (Fighterbay): Despite the name, this arrival/departure method is unrelated to the inter-ship Docking mechanism outlined above. Requires a large ship (destroyer or installation) with the Fighterbay subsystem as the origin/departure point.
+  - Directional/relative (arrival method only): ships can warp in at a set distance (minimum ~300 m) in a specified direction relative to a named ship (in front of, behind, above, below, left, or right). Use this to guarantee bomber intercept windows, close-range ambushes, or precise reinforcement placement.
+- Runtime allegiance (IFF) change: a ship's team can be changed mid-mission. Enables disguised "friendly" reinforcements that turn hostile, defections, and ambush reveals (the canon "Hammer and the Anvil" trick).
+- Stealth / sensor-hidden ships: a ship can blink in and out on radar or be entirely hidden from sensors and untargetable. Useful for covert escorts, Shivan stealth, or running-silent freighters.
+- Kamikaze ships: ships can be set to suicide-attack a target rather than fight normally (canon Vasudan kamikaze tactics, PVC Mauler).
+- Pre-set spawn state: ships can arrive pre-damaged (a specific starting hull percentage), at a set initial speed, or as pre-existing wreckage (the ship is considered destroyed before the mission starts, leaving only debris).
+- Scripted protection: a ship can be made temporarily invulnerable, placed in a "guardianed" state (hull frozen at 1% — can take damage and lose subsystems but cannot die), or protected so no AI ship will attack it. Useful for "must survive until X" scripted beats. Use with caution to not break immersion.
+- Red-alert missions: the player's hull damage and weapon loadout carry over from the previous mission, with an abbreviated briefing. Use for immediate-continuation or post-battle scramble scenarios.
+- Scramble missions: no loadout customization at all; player launches with a fixed preset loadout.
 - FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship.
 
 NeuralFS limitations:
@@ -1868,6 +1877,8 @@ NeuralFS limitations:
 - Turret weapons cannot be changed.
 - Multi-ship (daisy chained) docking is not supported.
 - Branched campaigns are not supported.
+- Player-ship destruction or departure ends the mission immediately. Do not design event logic that depends on these as triggers.
+- No persistent variables or state carry over between missions (beyond what red-alert explicitly transfers). Keep event logic confined to observable, per-mission conditions.
 
 Adherence to FreeSpace canon lore:
 - If your campaign happens in established setting, you should take care to not violate FreeSpace canon and not include any anachronistic elements:
