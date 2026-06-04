@@ -236,7 +236,7 @@ entities:
 
     - name: "Gamma"
       template: "gamma_medusa"
-      count: 3
+      count: 4
       position: [700.0, -300.0, -2300.0]
       initial_orders: |
         ( ai-chase "SC Malphas" 85 )
@@ -275,7 +275,7 @@ entities:
 
     - name: "Vishnu"
       template: "manticore_fighter"
-      count: 4
+      count: 3
       position: [1400.0, 400.0, 3200.0]
       wave_count: 3
       next_wave_threshold: 1
