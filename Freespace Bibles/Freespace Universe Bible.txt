@@ -1838,7 +1838,6 @@ Useful tips:
 - Describe ship and wing arrival methods (subspace/docking bay), directions or distances, objectives, message triggers, and debrief outcomes.
 - Keep implementation-facing names short and distinct, ideally under 30 characters. FSO does not support very long ship or object names.
 - Repeating or inconsistent wing designations (Beta, Aries, Krishna, etc...) in different missions are not an issue; They are just ad-hoc monikers issued by the commander on a per-mission basis, not permanent names.
-- You can use advanced FSO mechanics for dramatic pacing: directional arrivals that reference existing ships (to guarantee intercept windows), pre-damaged arrivals, disguised reinforcements that reveal as hostile (runtime IFF change), scripted-invulnerable ships, and kamikaze attackers.
 
 FSO engine capabilities:
 - FSO supported mission environments:
