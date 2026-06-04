@@ -421,7 +421,7 @@ mission_flow:
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-260, 260], label: "Reliant" }
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
-          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 900], label: "Vega Node" }
+          - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 900], label: "Vega Jump Node" }
       - text: "The Shivan line is centered on the $h{ SD Kaikasi $}. $h Brahma and $h Vishnu fighter screens will try to tie us down while $h Durga bombers make torpedo runs on the Resolution."
         voice_name: "Rachel"
         voice_style_instructions: "controlled, warning"
