@@ -1,7 +1,7 @@
 fsif_version: "1.0"
 
 mission_info:
-  name: "Battle of the Vega Gate"
+  name: "Battle of the Vega Jump Node"
   author: "NeuralFS"
   description: "A massive Terran fleet battle against a Shivan destroyer group near a GTI Arcadia installation."
   game_type: "single"
@@ -351,7 +351,7 @@ entities:
 mission_flow:
   command_briefing:
     stages:
-      - text: "The Shivans have reached the Vega gate. Our fleet is forming a defensive wall around the $f{ GTD Resolution $} and the $f{ GTI Aegis $}, an Arcadia-class command and logistics installation."
+      - text: "The Shivans have reached the Vega jump node. Our fleet is forming a defensive wall around the $f{ GTD Resolution $} and the $f{ GTI Aegis $}, an Arcadia-class command and logistics installation."
         voice_name: "Daniel"
         voice_style_instructions: "grave, authoritative"
       - text: "The $h{ SD Kaikasi $} is leading a destroyer group through the node approach. Its cruisers are already moving to split our battle line from the installation sector."
@@ -399,7 +399,7 @@ mission_flow:
     stages:
       - display_condition: |
           ( is-destroyed-delay 0 "GTD Resolution" )
-        text: "The $f{ GTD Resolution $} was destroyed. With the flagship gone, the Vega gate defense collapsed into scattered withdrawals."
+        text: "The $f{ GTD Resolution $} was destroyed. With the flagship gone, the Vega jump node defense collapsed into scattered withdrawals."
         voice_name: "Daniel"
         voice_style_instructions: "somber, severe"
       - display_condition: |
@@ -413,7 +413,7 @@ mission_flow:
             ( not ( is-destroyed-delay 0 "GTD Resolution" ) )
             ( not ( is-destroyed-delay 0 "GTI Aegis" ) )
           )
-        text: "Excellent work, $rank $callsign. Both the $f{ GTD Resolution $} and $f{ GTI Aegis $} survived the Shivan assault. The immediate defense stabilized, and Command retained control of the Vega gate."
+        text: "Excellent work, $rank $callsign. Both the $f{ GTD Resolution $} and $f{ GTI Aegis $} survived the Shivan assault. The immediate defense stabilized, and Command retained control of the Vega jump node."
         voice_name: "Daniel"
         voice_style_instructions: "relieved, proud"
       - display_condition: |
@@ -426,7 +426,7 @@ mission_flow:
         voice_style_instructions: "approving, composed"
       - display_condition: |
           ( percent-ships-destroyed 100 "Durga" "Kali" )
-        text: "Alpha wing eliminated every Shivan bomber wave in the combat zone. With the torpedo threat gone, the Resolution and Aegis had the breathing room they needed to hold the Vega gate."
+        text: "Alpha wing eliminated every Shivan bomber wave in the combat zone. With the torpedo threat gone, the Resolution and Aegis had the breathing room they needed to hold the Vega jump node."
         voice_name: "Rachel"
         voice_style_instructions: "proud, relieved"
       - display_condition: |
