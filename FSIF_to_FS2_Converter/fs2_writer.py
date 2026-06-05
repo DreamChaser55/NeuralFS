@@ -788,12 +788,6 @@ class FS2Writer:
             
             if reinf.arrival_delay > 0:
                 self._write(f'+Arrival Delay: {reinf.arrival_delay}')
-            if reinf.unavailable_messages:
-                msg_list = ' '.join([f'"{msg}"' for msg in reinf.unavailable_messages])
-                self._write(f'+No Messages: ( {msg_list} )')
-            if reinf.available_messages:
-                msg_list = ' '.join([f'"{msg}"' for msg in reinf.available_messages])
-                self._write(f'+Yes Messages: ( {msg_list} )')
             self._write('')
 
     def write_environment(self):

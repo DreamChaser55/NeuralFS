@@ -389,8 +389,6 @@ entities:
     - name: "Delta"
       max_uses: 1
       arrival_delay: 0
-      available_messages: ["DeltaCallMsg"]
-      unavailable_messages: ["DeltaUnavailableMsg"]
 
   jump_nodes:
     - name: "Vega Jump Node"
@@ -971,14 +969,6 @@ mission_flow:
       text: "Command to all units. The bomber stream is destroyed and the station assault is collapsing. Alpha, the immediate defense is secure. Continue engaging high-value targets or depart at your discretion."
       voice_name: "Daniel"
       voice_style_instructions: "relieved, authoritative"
-    - name: "DeltaCallMsg"
-      text: "Delta wing is jumping in now. We will cover Aegis."
-      voice_name: "Callum"
-      voice_style_instructions: "confident, urgent"
-    - name: "DeltaUnavailableMsg"
-      text: "Delta wing is unavailable. All reserves are already committed."
-      voice_name: "Daniel"
-      voice_style_instructions: "tense, clipped"
     - name: "ReliantOpenMsg"
       text: "Reliant to Resolution. Port batteries are hot. We have Shivan cruisers in our sights."
       voice_name: "Rachel"

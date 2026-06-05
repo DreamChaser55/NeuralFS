@@ -57,8 +57,6 @@
     - `name` (String, required)
     - `max_uses` (Integer, optional, default: `1`). Maximum number of times this reinforcement can be called.
     - `arrival_delay` (Integer, optional, default: `0`)
-    - `unavailable_messages` (List[String], optional). Messages played when reinforcement cannot be called.
-    - `available_messages` (List[String], optional). Messages played when reinforcement is called and accepted.
   - `reinforcement_ships` (List[Mapping], optional). Same structure as `reinforcement_wings`.
   - `jump_nodes` (List[Mapping], optional):
     - `name` (String, required)

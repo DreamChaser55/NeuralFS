@@ -166,8 +166,6 @@ class AsciiChecksMixin:
         for i, reinforcement in enumerate(self.mission.reinforcements):
             prefix = f'reinforcements[{i}]'
             self._validate_ascii_text(f'{prefix}.name', reinforcement.name)
-            self._validate_ascii_text_list(f'{prefix}.unavailable_messages', reinforcement.unavailable_messages)
-            self._validate_ascii_text_list(f'{prefix}.available_messages', reinforcement.available_messages)
 
         for i, jump_node in enumerate(self.mission.jump_nodes):
             self._validate_ascii_text(f'entities.jump_nodes[{i}].name', jump_node.name)

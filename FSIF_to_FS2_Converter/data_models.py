@@ -489,8 +489,6 @@ class ReinforcementInput(BaseModel):
     name: str
     max_uses: Optional[int] = None
     arrival_delay: Optional[int] = None
-    unavailable_messages: Optional[List[str]] = None
-    available_messages: Optional[List[str]] = None
 
 
 class EntitiesInput(BaseModel):
@@ -921,13 +919,6 @@ class Reinforcement(BaseModel):
     name: str
     max_uses: int = Field(1, ge=1)
     arrival_delay: int = Field(0, ge=0)
-    unavailable_messages: List[str] = Field(default_factory=list)
-    available_messages: List[str] = Field(default_factory=list)
-
-    @field_validator('unavailable_messages', 'available_messages', mode='before')
-    @classmethod
-    def coerce_messages_null(cls, v):
-        return _none_to_empty_list(v)
 
 class JumpNode(BaseModel):
     """Runtime jump node with validated world-space position vector."""
