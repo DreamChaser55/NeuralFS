@@ -246,7 +246,7 @@ entities:
 
     - name: "Beta"
       template: "beta_ulysses"
-      count: 5
+      count: 6
       position: [-900.0, 400.0, -2200.0]
       initial_orders: |
         ( ai-guard "GTD Resolution" 85 )
@@ -276,7 +276,7 @@ entities:
 
     - name: "Eta"
       template: "valk_interceptor"
-      count: 5
+      count: 6
       position: [6800.0, -400.0, -3200.0]
       initial_orders: |
         ( ai-guard "GTI Aegis" 88 )
