@@ -46,14 +46,14 @@ entities:
     alpha_herc:
       class: "GTF Hercules"
       team: "Friendly"
-      ai_class: "Captain"
+      ai_class: "General"
       weapons:
         primary: ["Prometheus", "Avenger"]
         secondary: ["Hornet", "Phoenix V"]
     beta_ulysses:
       class: "GTF Ulysses"
       team: "Friendly"
-      ai_class: "Captain"
+      ai_class: "Colonel"
       weapons:
         primary: ["Prometheus", "Avenger"]
         secondary: ["Interceptor"]
@@ -74,7 +74,7 @@ entities:
     valk_interceptor:
       class: "GTF Valkyrie"
       team: "Friendly"
-      ai_class: "Captain"
+      ai_class: "General"
       weapons:
         primary: ["Banshee", "Avenger"]
         secondary: ["Interceptor"]
@@ -142,9 +142,8 @@ entities:
       team: "Friendly"
       position: [-2600.0, 0.0, -1200.0]
       orientation: [0.561501, 0.0, 0.827476, 0.0, 1.0, 0.0, -0.827476, 0.0, 0.561501]
-      arrival_delay: 120
       arrival_cue: |
-        ( has-time-elapsed 1 )
+        ( has-time-elapsed 120 )
       initial_orders: |
         ( ai-chase "SC Obsidian" 70 )
         ( ai-chase "SC Bane" 55 )
