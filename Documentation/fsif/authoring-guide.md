@@ -634,7 +634,6 @@ entities:
       arrival_delay: 0
   reinforcement_ships:
     - name: "GTC Fenris 10"
-      max_uses: 1
 ```
 
 ## Briefing, debriefing and fiction viewer text styling

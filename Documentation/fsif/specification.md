@@ -55,9 +55,11 @@
   - `waypoints` (Mapping, optional). Keys are path names, values are Lists of `[x,y,z]`. Invisible to the player; for AI paths and internal SEXP references only.
   - `reinforcement_wings` (List[Mapping], optional):
     - `name` (String, required)
-    - `max_uses` (Integer, optional, default: `1`). Maximum number of times this reinforcement can be called.
+    - `max_uses` (Integer, optional, default: `1`). Maximum number of times this reinforcement wing can be called.
     - `arrival_delay` (Integer, optional, default: `0`)
-  - `reinforcement_ships` (List[Mapping], optional). Same structure as `reinforcement_wings`.
+  - `reinforcement_ships` (List[Mapping], optional). References standalone ships as callable reinforcements. Does not support `max_uses`:
+    - `name` (String, required)
+    - `arrival_delay` (Integer, optional, default: `0`)
   - `jump_nodes` (List[Mapping], optional):
     - `name` (String, required)
     - `position` (List[Float], required). Format: `[x, y, z]`.

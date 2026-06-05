@@ -249,6 +249,37 @@ class FSIF10SchemaTests(unittest.TestCase):
             self._write_and_load(fsif_text)
         self.assertIn("Extra inputs are not permitted", str(ctx.exception))
 
+    def test_rejects_max_uses_in_reinforcement_ships(self):
+        """max_uses must be rejected in reinforcement_ships.
+
+        FSO's $Num times field is a no-op for single-ship reinforcements, so
+        max_uses is intentionally absent from ReinforcementShipInput and must
+        be rejected by the schema (extra='forbid').
+        """
+        fsif_text = MINIMAL_FSIF_1.replace(
+            "  wings:",
+            "  reinforcement_ships:\n    - name: \"Alpha 1\"\n      max_uses: 1\n  wings:",
+        )
+        with self.assertRaises(ValueError) as ctx:
+            self._write_and_load(fsif_text)
+        self.assertIn("Extra inputs are not permitted", str(ctx.exception))
+
+    def test_accepts_max_uses_in_reinforcement_wings(self):
+        """max_uses must be accepted in reinforcement_wings and stored in the runtime Reinforcement.
+
+        For wing reinforcements, $Num times controls how many times the wing
+        can be summoned and is meaningful in FSO.
+        """
+        fsif_text = MINIMAL_FSIF_1.replace(
+            "  wings:",
+            "  reinforcement_wings:\n    - name: \"Alpha\"\n      max_uses: 3\n  wings:",
+        )
+        mission = self._write_and_load(fsif_text)
+        alpha_reinf = next((r for r in mission.reinforcements if r.name == "Alpha"), None)
+        self.assertIsNotNone(alpha_reinf, "Alpha should appear in mission.reinforcements")
+        self.assertEqual(alpha_reinf.max_uses, 3,
+                         "Authored max_uses=3 for reinforcement_wings must be stored in runtime Reinforcement")
+
     def test_rejects_unknown_event_field(self):
         """An unknown field in an event must be rejected."""
         fsif_text = MINIMAL_FSIF_1.replace(

@@ -47,6 +47,10 @@ Reinforcement $Type emission: The converter chooses `$Type` automatically; autho
 - All other ship entries → $Type: Attack/Protect
 Any authored `type` field in FSIF is ignored; overriding the auto-detected reinforcement type is not supported.
 
+Reinforcement $Num times emission: The converter emits `$Num times` for every reinforcement entry because the FSO parser expects it.
+- Wing entry → emits `$Num times: <max_uses>` (the authored `max_uses` value; default 1).
+- Ship entry → always emits `$Num times: 1` (hardcoded). FSO's `$Num times` field is a no-op for single-ship reinforcements; `max_uses` is therefore not a supported field in `entities.reinforcement_ships`.
+
 Events: if `mission_flow.events[*].hud_directive_text` is present, the converter emits `+Objective: XSTR("...", -1)` under `#Events`. The directive appears on the HUD when it becomes possible for the player to fulfill the event and is greyed out once the event becomes true.
 
 Waypoints/Jump Nodes: waypoint lists are emitted; top-level `jump_nodes` are emitted in `#Waypoints` as `$Jump Node` and `$Jump Node Name` (not counted in "lists total").

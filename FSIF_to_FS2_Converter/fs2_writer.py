@@ -774,17 +774,20 @@ class FS2Writer:
         for reinf in self.mission.reinforcements:
             self._write(f'$Name: {reinf.name}')
             reinf_type = "Attack/Protect"
-            if reinf.name in wing_names:
-                pass # Default
-            elif reinf.name in ship_by_name:
-                cls = ship_by_name[reinf.name].ship_class.strip()
-                if cls.startswith("GTS ") or cls.startswith("PVS "):
-                    reinf_type = "Repair/Rearm"
-            else:
-                 logger.warning(f"[WARNING] [FSIF->FS2] Reinforcement '{reinf.name}' not found in mission ships or wings. Defaulting to 'Attack/Protect'.")
+            is_wing = reinf.name in wing_names
+            if not is_wing:
+                if reinf.name in ship_by_name:
+                    cls = ship_by_name[reinf.name].ship_class.strip()
+                    if cls.startswith("GTS ") or cls.startswith("PVS "):
+                        reinf_type = "Repair/Rearm"
+                else:
+                    logger.warning(f"[WARNING] [FSIF->FS2] Reinforcement '{reinf.name}' not found in mission ships or wings. Defaulting to 'Attack/Protect'.")
 
             self._write(f'$Type: {reinf_type}')
-            self._write(f'$Num times: {reinf.max_uses}')
+            # Wing reinforcements emit their authored max_uses; single-ship reinforcements
+            # always emit 1 because FSO's $Num times field is a no-op for ships.
+            num_times = reinf.max_uses if is_wing else 1
+            self._write(f'$Num times: {num_times}')
             
             if reinf.arrival_delay > 0:
                 self._write(f'+Arrival Delay: {reinf.arrival_delay}')

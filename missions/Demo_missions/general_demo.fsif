@@ -230,7 +230,6 @@ entities:
 
   reinforcement_ships:
     - name: "GTC Somerset"
-      max_uses: 1
 
   jump_nodes:
     - name: "Delta Serpentis Jump Node"

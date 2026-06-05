@@ -483,11 +483,26 @@ class JumpNodeInput(BaseModel):
     position: List[float]
 
 
-class ReinforcementInput(BaseModel):
-    """Raw FSIF reinforcement entry; references a ship or wing by name."""
+class ReinforcementWingInput(BaseModel):
+    """Raw FSIF reinforcement wing entry; references a wing by name.
+
+    ``max_uses`` controls how many times the wing reinforcement can be called
+    (maps to ``$Num times`` in the FS2 file, which FSO respects for wings).
+    """
     model_config = ConfigDict(extra='forbid')
     name: str
     max_uses: Optional[int] = None
+    arrival_delay: Optional[int] = None
+
+
+class ReinforcementShipInput(BaseModel):
+    """Raw FSIF reinforcement ship entry; references a standalone ship by name.
+
+    ``max_uses`` is intentionally absent: FSO's ``$Num times`` field is a
+    no-op for single-ship reinforcements, so the writer hardcodes it to 1.
+    """
+    model_config = ConfigDict(extra='forbid')
+    name: str
     arrival_delay: Optional[int] = None
 
 
@@ -501,8 +516,8 @@ class EntitiesInput(BaseModel):
     # Values are left as Any because the coordinate lists are validated later
     # by the loader and runtime models.
     waypoints: Optional[Dict[str, Any]] = None
-    reinforcement_wings: Optional[List[ReinforcementInput]] = None
-    reinforcement_ships: Optional[List[ReinforcementInput]] = None
+    reinforcement_wings: Optional[List[ReinforcementWingInput]] = None
+    reinforcement_ships: Optional[List[ReinforcementShipInput]] = None
     jump_nodes: Optional[List[JumpNodeInput]] = None
 
 
