@@ -408,7 +408,7 @@ mission_flow:
 
   briefing:
     stages:
-      - text: "Alpha, you launch from the $f{ GTD Resolution $} at the center of the fleet wall in Capella. The $y{ Capella-Vega jump node $} is behind our line. The $f{ GTI Aegis $} anchors our starboard command net and reserve bays protecting that corridor. If either anchor falls, the defense will break."
+      - text: "Alpha, you launch from the $f{ GTD Resolution $} at the center of the fleet wall in Capella. The $y{ Capella-Vega jump node $} is behind our line. The $f{ GTI Aegis $} anchors our starboard command net and reserve bays protecting that corridor. The $f{ GTC Meridian $} is being held in reserve and should reinforce the port side once its jump window opens. If either anchor falls, the defense will break."
         voice_name: "Rachel"
         voice_style_instructions: "focused, professional"
         icons:
@@ -418,6 +418,7 @@ mission_flow:
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-260, 260], label: "Reliant" }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [260, 260], label: "Valiant" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [-420, 80], label: "Meridian" }
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
           - { icon_type: "Jump Node", team: "Unknown", map_position: [0, -520], label: "Capella-Vega Node" }
       - text: "The Shivan line is centered on the $h{ SD Kaikasi $}. $h{ SC Malphas $} and $h{ SC Bane $} are already pressing toward our defensive wall, while $h Brahma and $h Vishnu fighters will try to pin down our interceptors."
@@ -819,6 +820,16 @@ mission_flow:
           ( has-time-elapsed 115 )
           ( send-message "Eta" "Normal" "EtaEngageMsg" )
         )
+    - name: "MeridianArrived"
+      formula: |
+        ( when
+          ( has-arrived-delay 0 "GTC Meridian" )
+          ( send-message-list
+            "#Command" "High" "MeridianArrivedMsg" 0
+            "GTC Meridian" "Normal" "MeridianEngageMsg" 3500
+            "<any wingman>" "Normal" "WingmanMeridianMsg" 3500
+          )
+        )
     - name: "ResolutionDamaged"
       formula: |
         ( when
@@ -1056,6 +1067,18 @@ mission_flow:
       text: "Alpha, prioritize threats closest to the Resolution or Aegis. Do not chase stragglers."
       voice_name: "Daniel"
       voice_style_instructions: "clear, tactical"
+    - name: "MeridianArrivedMsg"
+      text: "Command to Alpha. The Meridian has jumped in on the port side. That cruiser is moving to blunt Obsidian's attack run."
+      voice_name: "Daniel"
+      voice_style_instructions: "urgent, tactical"
+    - name: "MeridianEngageMsg"
+      text: "Meridian to fleet control. We are weapons free and engaging Obsidian."
+      voice_name: "Rachel"
+      voice_style_instructions: "focused, aggressive"
+    - name: "WingmanMeridianMsg"
+      text: "That gives the port screen some teeth. Keep the bombers off Resolution."
+      voice_name: "Josh"
+      voice_style_instructions: "relieved, intense"
     - name: "ResolutionPressureMsg"
       text: "Resolution to fighter screen. Bomb impacts along the dorsal armor. Cut down those bombers."
       voice_name: "Rachel"
