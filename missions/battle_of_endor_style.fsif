@@ -403,13 +403,13 @@ mission_flow:
       - text: "The $h{ SD Kaikasi $} is leading a destroyer group through the node approach. Its cruisers are already moving to split our battle line from the installation sector."
         voice_name: "Daniel"
         voice_style_instructions: "grim, tactical"
-      - text: "Alpha wing will fly from the Resolution screen. Intercept bombers, reinforce the station when ordered, and keep both anchors alive while the fleet breaks the Shivan assault. If either anchor is lost, Command will order a forced retreat."
+      - text: "Alpha wing will provide defensive screen to the allied assets forming the wall. Intercept bombers, reinforce the station when ordered, and keep both anchors alive while the fleet breaks the Shivan assault. If either anchor is lost, Command will order a forced retreat."
         voice_name: "Daniel"
         voice_style_instructions: "urgent, commanding"
 
   briefing:
     stages:
-      - text: "Alpha, you launch from the $f{ GTD Resolution $}. The $f{ GTC Reliant $} and $f{ GTC Valiant $} are holding close formation while the $f{ GTI Aegis $} commits its own fighter reserve on our starboard flank."
+      - text: "Alpha, you launch from the $f{ GTD Resolution $} at the center of the fleet wall. The $f{ GTI Aegis $} anchors our starboard command net and reserve bays near the $y{ Vega jump node $}. If either anchor falls, the defense will break."
         voice_name: "Rachel"
         voice_style_instructions: "focused, professional"
         icons:
@@ -418,19 +418,34 @@ mission_flow:
           - { icon_type: "Bomber Wing", team: "Friendly", display_class: "GTB Medusa", map_position: [160, -90], label: "Gamma" }
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
           - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Leviathan", map_position: [-260, 260], label: "Reliant" }
+          - { icon_type: "Cruiser", team: "Friendly", display_class: "GTC Fenris", map_position: [260, 260], label: "Valiant" }
           - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
           - { icon_type: "Jump Node", team: "Unknown", map_position: [0, 900], label: "Vega Jump Node" }
-      - text: "The Shivan line is centered on the $h{ SD Kaikasi $}. $h Brahma and $h Vishnu fighter screens will try to tie us down while $h Durga bombers make torpedo runs on the Resolution."
+      - text: "The Shivan line is centered on the $h{ SD Kaikasi $}. $h{ SC Malphas $} and $h{ SC Bane $} are already pressing the cruiser screen, while $h Brahma and $h Vishnu fighters will try to pin down our interceptors."
         voice_name: "Rachel"
-        voice_style_instructions: "controlled, warning"
+        voice_style_instructions: "controlled, tactical"
         icons:
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Hercules", map_position: [0, 0], label: "Alpha" }
+          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [-180, -80], label: "Beta" }
+          - { icon_type: "Bomber Wing", team: "Friendly", display_class: "GTB Medusa", map_position: [160, -90], label: "Gamma" }
           - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution" }
           - { icon_type: "Supercapital Ship", team: "Hostile", display_class: "SD Demon", map_position: [0, 620], label: "Kaikasi", highlighted: true }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [-260, 520], label: "Malphas" }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [260, 520], label: "Bane" }
           - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Basilisk", map_position: [-120, 410], label: "Brahma" }
+          - { icon_type: "Fighter Wing", team: "Hostile", display_class: "SF Manticore", map_position: [120, 410], label: "Vishnu" }
+      - text: "$h Durga bombers are the immediate killer threat to the $f{ GTD Resolution $}. Break their torpedo runs before chasing cruisers. $f Gamma bombers will make their own strikes on the Shivan line, but only if we keep hostile fighters off them."
+        voice_name: "Rachel"
+        voice_style_instructions: "urgent, tactical"
+        icons:
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
+          - { icon_type: "Player Fighter Wing", team: "Friendly", display_class: "GTF Hercules", map_position: [0, 0], label: "Alpha" }
+          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Ulysses", map_position: [-180, -80], label: "Beta" }
+          - { icon_type: "Bomber Wing", team: "Friendly", display_class: "GTB Medusa", map_position: [160, 80], label: "Gamma", highlighted: true }
           - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Nephilim", map_position: [120, 430], label: "Durga", highlighted: true }
-      - text: "Intelligence expects a second Shivan thrust against $f{ GTI Aegis $}. If $h Kali bombers or assault cruisers break through, abandon pursuit and defend the station. Delta interceptors are available as reinforcements."
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [-260, 520], label: "Malphas" }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [260, 520], label: "Bane" }
+      - text: "Intelligence expects a second Shivan thrust against $f{ GTI Aegis $}. $f Zeta and $f Eta are holding the station perimeter, but $h Kali bombers and the $h{ SC Mandara $} may force a breakthrough. Be ready to shift sectors."
         voice_name: "Rachel"
         voice_style_instructions: "urgent, clear"
         icons:
@@ -439,7 +454,27 @@ mission_flow:
           - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [740, -60], label: "Eta" }
           - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [820, 330], label: "Mandara" }
           - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Shaitan", map_position: [760, 240], label: "Kali", highlighted: true }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Cain", map_position: [930, 160], label: "Rakshasa" }
+      - text: "$f Delta interceptors are available as reinforcements. Call them if $f{ GTI Aegis $} comes under heavy pressure or if $h Kali bombers slip through the station screen. Do not wait until the installation is already collapsing."
+        voice_name: "Rachel"
+        voice_style_instructions: "firm, advisory"
+        icons:
+          - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
           - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [530, -250], label: "Delta" }
+          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Apollo", map_position: [610, -80], label: "Zeta" }
+          - { icon_type: "Fighter Wing", team: "Friendly", display_class: "GTF Valkyrie", map_position: [740, -60], label: "Eta" }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Shaitan", map_position: [760, 240], label: "Kali", highlighted: true }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [820, 330], label: "Mandara" }
+      - text: "Rules of engagement are simple. Protect the $f{ GTD Resolution $}, protect the $f{ GTI Aegis $}, and destroy the Shivan bomber wings. If the bombers are contained, neutralize $h{ SC Mandara $}. Engage the $h{ SD Kaikasi $} only when the anchors are secure."
+        voice_name: "Rachel"
+        voice_style_instructions: "grave, clear"
+        icons:
+          - { icon_type: "Capital Ship", team: "Friendly", display_class: "GTD Orion", map_position: [0, 220], label: "Resolution", highlighted: true }
+          - { icon_type: "Installation", team: "Friendly", display_class: "GTI Arcadia", map_position: [650, 80], label: "GTI Aegis", highlighted: true }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Nephilim", map_position: [120, 430], label: "Durga", highlighted: true }
+          - { icon_type: "Bomber Wing", team: "Hostile", display_class: "SB Shaitan", map_position: [760, 240], label: "Kali", highlighted: true }
+          - { icon_type: "Cruiser", team: "Hostile", display_class: "SC Lilith", map_position: [820, 330], label: "Mandara" }
+          - { icon_type: "Supercapital Ship", team: "Hostile", display_class: "SD Demon", map_position: [0, 620], label: "Kaikasi" }
 
   debriefing:
     stages:
