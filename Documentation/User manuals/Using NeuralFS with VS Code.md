@@ -17,7 +17,7 @@ Note: Using AI for this phase is optional. If you prefer to write your own Campa
 2. Copy the initial prompt from `VS Code prompts/fsif+fcif writing agent.txt` and paste it into Zoo Code.
 3. Replace the `<write_campaign_folder_name_here>` placeholder in the prompt with the name of the campaign folder created by the creative writing agent.
 4. Send the prompt and wait until the agent finishes its work. When it is done, there should be:
-   - A new `/plans/` folder inside your campaign folder, containing one per-mission implementation plan `.md` file per mission.
+   - A new `/plans/` folder inside your campaign folder, containing one implementation plan `.md` file per mission.
    - A new `/fsif/` folder inside your campaign folder, containing the `.fsif` files and converted `.fs2` files for all the missions.
    - A `.fcif` campaign definition file and a converted `.fc2` campaign file inside your campaign folder.
 
