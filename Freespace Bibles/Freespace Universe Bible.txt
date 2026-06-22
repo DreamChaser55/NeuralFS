@@ -1834,6 +1834,11 @@ Balance reminders:
 - Support ships and reinforcements should arrive early enough to matter.
 - In more challenging missions allow player to call in 1-2 reinforcement wings with the FSO Reinforcements feature, if the campaign lore allows it.
 
+Combat balance:
+- Keep in mind that allied and enemy teams should be approximately balanced, so that one side is not much more powerful than the other, which results in very hard or very easy missions.
+- Do not put unshielded fighters/bombers up against many shielded ones. Unshielded ships are at a significant disadvantage against shielded ships.
+- You can modify the AI class of wing members to increase/decrease the threat they pose.
+
 Useful tips:
 - Name exact ship classes, wing names and wing wave counts.
 - Describe ship and wing arrival methods (subspace/docking bay), directions or distances, objectives, message triggers, and debrief outcomes.
@@ -1871,6 +1876,7 @@ FSO engine capabilities:
 - Red-alert missions: the player's hull damage and weapon loadout carry over from the previous mission, with an abbreviated briefing. Use for immediate-continuation or post-battle scramble scenarios.
 - Scramble missions: no loadout customization at all; player launches with a fixed preset loadout.
 - FSO has issues if the player ship is not part of friendly player starting wings (Alpha, Beta, Gamma). Even if there is no other friendly ship in the mission except the player ship, it's best to define it as "Alpha 1" (a wing with one member), instead of standalone ship.
+- Only fighters and bombers can have shields in FSO; larger ships cannot have shields.
 
 NeuralFS limitations:
 - Wings are defined using a single position argument; wing formation is fixed. All ships in a wing are defined by a single ship template (all wing members have the same ship class and weapon configuration).

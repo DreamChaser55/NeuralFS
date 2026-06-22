@@ -204,8 +204,6 @@ class BalanceChecksMixin:
         max_score = max(allied, enemy)
         relative_diff = abs(allied - enemy) / max_score
 
-        self.log_warning(str(allied) + "  " + str(enemy) + "  " + str(relative_diff))
-
         if relative_diff < _IMBALANCE_THRESHOLD:
             return
 

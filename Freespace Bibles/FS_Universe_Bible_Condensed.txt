@@ -14,7 +14,7 @@ Intrasystem Jumps: Short-range jumps within a star system. Requires a gravitatio
 
 Intersystem Jumps: Travel between star systems via specific Jump Nodes.
 
-Mechanics: Shields do not function in subspace. Travel takes minutes. Large ships cannot jump near nodes without recharging; small ships gained intersystem jump capability in 2335.
+Mechanics: Shields do not function in subspace. Travel takes minutes. Large ships cannot jump near nodes without recharging; small ships gained intersystem jump capability in 2335. Only fighers and bombers can have shields in FSO; larger ships cannot have shields.
 
 Nodes: Most are unstable. Permanent nodes create the "roadmap" of the galaxy.
 
@@ -294,3 +294,8 @@ Repeating or inconsistent wing designations in different missions are not an iss
 Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions. Enemy wing waves should spawn less than 10 km from their target.
 All Great War-era weapon ranges are below 2,000 m. There are no long-range missiles or beams in this era. Keep this in mind when positioning ships that should engage each other.
 Jump node radius is 660 m.
+
+## Combat balance:
+- Keep in mind that allied and enemy teams should be approximately balanced, so that one side is not much more powerful than the other, which results in very hard or very easy missions.
+- Do not put unshielded fighters/bombers up against many shielded ones. Unshielded ships are at a significant disadvantage against shielded ships.
+- You can modify the AI class of wing members to increase/decrease the threat they pose.
