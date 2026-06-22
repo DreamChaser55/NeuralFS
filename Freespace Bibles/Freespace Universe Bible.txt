@@ -830,7 +830,7 @@ Terran Weaponry
 	GTW Flail: High velocity and rate of fire, low damage per shot, decent against shields. Has kinetic effects on target. Cannot be equipped by GFT Valkyrie and GTB Medusa.
 	GTW Prometheus: The ultimate hull killer, also pretty good against shields. High power consumption. Cannot be equipped by GTB Athena.
 	GTW Banshee: The ultimate shield killer. Low hull damage. High power consumption. Low compatibility: can only be equipped by GTF Valkyrie, GTF Hercules and GTF Loki.
-	GTW Disruptor / GTM D-Advanced: Low hull damage, high subsystem damage. Useful for disabling engines or destroying turrets on capital ships without killing the ship. Disruptor can be equipped by every fighter/bomber except the GTB Medusa. D-Advanced is experimental and only compatible with GTF Ulysses.
+	GTW Disruptor / GTW D-Advanced: Low hull damage, high subsystem damage. Useful for disabling engines or destroying turrets on capital ships without killing the ship. Disruptor can be equipped by every fighter/bomber except the GTB Medusa. D-Advanced is experimental, can penetrate shields, and is only compatible with GTF Ulysses.
 
 2. Secondary Weapons (Missiles)
 	GTM MX-50: Heat-seeking. Weak damage, weak tracking.

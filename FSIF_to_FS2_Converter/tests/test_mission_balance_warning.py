@@ -2,8 +2,9 @@
 Tests for the advisory mission balance validator warning.
 
 The balance check tallies allied (Friendly) and enemy (Hostile) combat weights,
-factors in fighter/bomber shield status (``no-shields`` flag) and AI class, plus
-wing ``wave_count``, then emits a non-fatal advisory warning when:
+factors in fighter/bomber shield status (``no-shields`` flag), primary-weapon
+shield penetration, and AI class, plus wing ``wave_count``, then emits a
+non-fatal advisory warning when:
 
     |allied - enemy| / max(allied, enemy) >= 0.5  (50 %)
 
@@ -11,6 +12,9 @@ Reference scoring rules:
   * base weight = 1.0 per combat ship
   * fighters/bombers only: ×0.5 if the ``no-shields`` flag is set (and
     ``force-shields-on`` is absent)
+  * fighters/bombers only: ×0.5 if the entire primary loadout consists only of
+    shield-ineffective weapons (ML-16 Laser, Vasudan Light Laser, Disruptor,
+    Training); stacks with the shield modifier above
   * fighters/bombers only: AI factor = 1 + 0.2*(tier_index - 2) where
     Coward=0, Lieutenant=1, Captain=2 (default), Major=3, Colonel=4, General=5
   * wings: sum of per-member weights × wave_count
@@ -29,6 +33,9 @@ Cases tested:
   - Larger-ship AI class is NOT modified       → no warning for equal cruisers
   - Installation (GTI Arcadia) counts as combat weight 1.0  → balances score
   - Sentry gun (GTSG Watchdog) counts as combat weight 1.0  → balances score
+  - ML-16-only primary loadout reduces weight (×0.5) → no warning when totals equal
+  - Mixed loadout (ML-16 + Avenger) is NOT penalised → warning at 50 %
+  - ML-16 penalty stacks with no-shields      → no warning when totals equal
   - Heavy enemy imbalance (67 %)              → warning
   - Exactly at 50 % threshold                 → warning
   - wave_count multiplies enemy (75 %)        → warning
@@ -170,6 +177,36 @@ def _cruiser(name: str, team: str = "Hostile", ai_class: str = None) -> Ship:
     if ai_class:
         d["ai_class"] = ai_class
     return Ship.model_validate(d)
+
+
+def _fighter_wing_w(name: str, team: str, count: int, weapons: Weapons,
+                    wave_count: int = 1, flags=None, pos_z: float = 1000.0) -> Wing:
+    """Wing of ``count`` GTF Ulysses fighters with an explicit ``weapons`` loadout.
+
+    Used by tests that need to control the primary-weapon set independently of
+    the default ``_ULYSSES_WEAPONS`` used by the other helpers.
+    """
+    ships = []
+    for i in range(count):
+        d = {
+            "name": f"{name} {i + 1}",
+            "class": "GTF Ulysses",
+            "team": team,
+            "position": [float(i * 60), 0.0, pos_z],
+            "arrival_cue": "( true )",
+            "flags": flags if flags is not None else ["cargo-known"],
+            "weapons": weapons,
+        }
+        ships.append(Ship.model_validate(d))
+    return Wing(
+        name=name,
+        count=count,
+        ships=ships,
+        position=[0.0, 0.0, pos_z],
+        arrival_cue="( true )",
+        wave_count=wave_count,
+        initial_orders="( ai-chase-any 89 )",
+    )
 
 
 def _make_mission(allied_count: int = 1, *extra_entities) -> Mission:
@@ -368,6 +405,55 @@ class TestMissionBalanceWarning(unittest.TestCase):
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(self._has_balance_warning(v),
                          f"Sentry gun must count as enemy combat weight 1.0; warnings: {v.warnings}")
+
+    def test_ml16_only_primary_reduces_weight_no_warning(self):
+        """4 ML-16-only enemy fighters (weight 0.5 each = 2.0 total) vs
+        2 allied Avenger fighters (weight 1.0 each = 2.0 total) → balanced, no warning.
+
+        Primary modifier: all primaries are in SHIELD_INEFFECTIVE_PRIMARIES → x0.5.
+        Without the modifier, 4 enemies vs 2 allies would be 66 % imbalance and
+        trigger a warning; the penalty correctly equalises the totals.
+        """
+        ml16_weapons = Weapons(primary=["ML-16 Laser", "ML-16 Laser"], secondary=["MX-50"])
+        enemy = _fighter_wing_w("Rama", "Hostile", 4, ml16_weapons)
+        m = _make_mission(2, enemy)
+        v = _make_validator(m)
+        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(self._has_balance_warning(v),
+                         f"4 ML-16-only enemies = 2.0 allied (2.0); warnings: {v.warnings}")
+
+    def test_mixed_primary_loadout_not_penalised(self):
+        """A primary loadout of [ML-16 Laser, Avenger] is NOT fully shield-ineffective
+        (Avenger can penetrate shields), so no penalty applies.
+
+        1 allied Avenger fighter (1.0) vs 2 mixed-loadout enemies (1.0 each = 2.0
+        total) → |1.0-2.0|/2.0 = 50 % → warning, proving no x0.5 reduction was applied.
+        If the penalty had been applied by mistake, enemy total would be 1.0 and
+        the scores would be equal, suppressing the warning.
+        """
+        mixed_weapons = Weapons(primary=["ML-16 Laser", "Avenger"], secondary=["MX-50"])
+        enemy = _fighter_wing_w("Rama", "Hostile", 2, mixed_weapons)
+        m = _make_mission(1, enemy)
+        v = _make_validator(m)
+        self.assertTrue(v.validate(), v.errors)
+        self.assertTrue(self._has_balance_warning(v),
+                        f"Mixed loadout must not be penalised; expected 50 % warning; warnings: {v.warnings}")
+
+    def test_ml16_primary_modifier_stacks_with_no_shields(self):
+        """Unshielded ML-16-only fighters receive both penalties:
+        shield modifier × 0.5 AND primary modifier × 0.5 → net weight 0.25 each.
+
+        4 such enemies (4 × 0.25 = 1.0 total) vs 1 allied Avenger fighter (1.0)
+        → |1.0-1.0|/1.0 = 0 % → no warning.
+        """
+        ml16_weapons = Weapons(primary=["ML-16 Laser", "ML-16 Laser"], secondary=["MX-50"])
+        enemy = _fighter_wing_w("Rama", "Hostile", 4, ml16_weapons,
+                                flags=["cargo-known", "no-shields"])
+        m = _make_mission(1, enemy)
+        v = _make_validator(m)
+        self.assertTrue(v.validate(), v.errors)
+        self.assertFalse(self._has_balance_warning(v),
+                         f"4 unshielded ML-16 enemies (0.25 each = 1.0) vs 1 allied (1.0); warnings: {v.warnings}")
 
     # ------------------------------------------------------------------
     # Cases that MUST trigger the balance warning

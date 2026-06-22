@@ -5,6 +5,23 @@
 # Classification constants
 # ---------------------------------------------------------------------------
 
+# Primary weapons that cannot penetrate shields.  Fighters and bombers whose
+# entire primary loadout consists only of weapons from this set are at a
+# significant tactical disadvantage against shielded ships and receive a
+# reduced combat weight.
+#
+# Sources: FSO weapon tables and FS lore references.
+SHIELD_INEFFECTIVE_PRIMARIES: frozenset = frozenset({
+    'ML-16 Laser',       # Low damage, negligible shield penetration
+    'Vasudan Light Laser',  # Vasudan equivalent of ML-16; same deficiency
+    'Disruptor',         # Hull/subsystem weapon; zero shield damage by design
+    'Training',          # Training weapon; no meaningful combat effect
+})
+
+# Weight penalty applied to a fighter/bomber whose entire primary loadout
+# consists only of shield-ineffective weapons.
+_SHIELD_INEFFECTIVE_PRIMARY_FACTOR = 0.5
+
 # Ship classes that are NOT combat-capable and must be excluded from the
 # balance tally.  Everything in the supported spacecraft roster that is NOT
 # in this set is treated as a combat ship with base weight 1.0.
@@ -78,6 +95,14 @@ class BalanceChecksMixin:
         ``no-shields`` flag **and** does not carry ``force-shields-on``.
         Larger ships cannot carry shields in FreeSpace, so their weight is
         never modified for shields.
+      - **Primary-weapon shield-penetration modifier** — weight *= 0.5 when
+        the ship's entire primary loadout consists only of weapons in
+        ``SHIELD_INEFFECTIVE_PRIMARIES`` (ML-16 Laser, Vasudan Light Laser,
+        Disruptor, Training).  A fighter/bomber that cannot penetrate shields
+        with any of its guns is at a significant disadvantage against shielded
+        opponents.  A mixed loadout containing at least one shield-penetrating
+        primary is not penalised.  An empty primary list is not penalised.
+        This modifier stacks with the shield modifier above.
       - **AI-class modifier** — weight *= ``1 + 0.2 * (ai_index - 2)``,
         where ``ai_index`` is the ship's position in the ordered ladder
         Coward / Lieutenant / **Captain** / Major / Colonel / General.
@@ -127,6 +152,14 @@ class BalanceChecksMixin:
             flags = set(ship.flags)
             if 'no-shields' in flags and 'force-shields-on' not in flags:
                 weight *= 0.5
+
+            # Primary-weapon shield-penetration modifier.
+            # If the ship has a non-empty primary list and every weapon in it
+            # cannot penetrate shields, the ship is at a significant
+            # disadvantage against shielded opponents.
+            primaries = ship.weapons.primary
+            if primaries and all(w in SHIELD_INEFFECTIVE_PRIMARIES for w in primaries):
+                weight *= _SHIELD_INEFFECTIVE_PRIMARY_FACTOR
 
             # AI-class modifier.
             ai_name = ship.ai_class if ship.ai_class else 'Captain'
@@ -217,8 +250,9 @@ class BalanceChecksMixin:
             f"threshold {int(_IMBALANCE_THRESHOLD * 100)}%). "
             f"The {stronger_side} side is significantly stronger. "
             f"Scores account for fighter/bomber shield status (unshielded = x0.5), "
+            f"primary weapons unable to penetrate shields (all-ineffective loadout = x0.5), "
             f"AI class relative to Captain (x{_AI_STEP} per tier above/below), "
             f"and wing wave counts. "
-            f"Consider adjusting ship counts, AI classes, or shield settings "
-            f"for a more balanced encounter."
+            f"Consider adjusting ship counts, AI classes, shield settings, "
+            f"or primary weapon loadouts for a more balanced encounter."
         )
