@@ -291,6 +291,6 @@ In most missions, the Player is the leader of Alpha wing (Alpha 1), but there ar
 Repeating or inconsistent wing designations in different missions are not an issue; They are just ad-hoc monikers issued by the commander on a per-mission basis, not permanent names.
 
 ## Mission scale:
-Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions.
+Given the common maximum speeds of ships in FreeSpace (around 80 m/s), distances between all points of interest (ships, wings, waypoints, jump nodes..) are kept below approx. 20 km, whenever possible. Distances exceeding this limit would result in very long travel times and thus boring missions. Enemy wing waves should spawn less than 10 km from their target.
 All Great War-era weapon ranges are below 2,000 m. There are no long-range missiles or beams in this era. Keep this in mind when positioning ships that should engage each other.
 Jump node radius is 660 m.
