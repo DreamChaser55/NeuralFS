@@ -1837,6 +1837,7 @@ Balance reminders:
 Combat balance:
 - Keep in mind that allied and enemy teams should be approximately balanced, so that one side is not much more powerful than the other, which results in very hard or very easy missions.
 - Do not put unshielded fighters/bombers up against many shielded ones. Unshielded ships are at a significant disadvantage against shielded ships.
+- Fighters and bombers whose entire primary weapon loadout cannot penetrate shields (ML-16 Laser, Vasudan Light Laser, Disruptor, Training) are at a significant disadvantage against shielded opponents. Do not require such ships to engage any significant number of shielded opponents.
 - You can modify the AI class of wing members to increase/decrease the threat they pose.
 
 Useful tips:
