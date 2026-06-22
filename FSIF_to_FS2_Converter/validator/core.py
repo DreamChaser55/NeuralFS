@@ -14,6 +14,7 @@ from .ship_wing_checks import ShipWingChecksMixin
 from .environment import EnvironmentChecksMixin
 from .briefing import BriefingChecksMixin
 from .misc import MiscChecksMixin
+from .balance import BalanceChecksMixin
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,8 @@ class Validator(
     ShipWingChecksMixin,
     EnvironmentChecksMixin,
     BriefingChecksMixin,
-    MiscChecksMixin
+    MiscChecksMixin,
+    BalanceChecksMixin,
 ):
     """Aggregate FSIF invariant checker.
 
@@ -210,6 +212,7 @@ class Validator(
         self.validate_audio()
         self.validate_goals_and_directives()
         self.validate_directive_text_sexp_compatibility()
+        self.validate_mission_balance()
 
         # Validate SEXP scalar styles (YAML block format check)
         if self.fsif_root_node is not None or self.fsif_path:

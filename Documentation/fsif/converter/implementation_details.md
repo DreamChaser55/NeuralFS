@@ -155,6 +155,7 @@ The validator is structured as a single `Validator` class built using a Python M
 | `environment` | Sun, background bitmap, and full-nebula token validation; asteroid/debris field object-variant and target-ship validation |
 | `briefing` | Span-style tag balancing; text-styling scope and mission-level color-tag presence checks; briefing stage voice/icon/proximity validation; debriefing stage condition and voice validation; command briefing stage voice validation |
 | `misc` | Global name uniqueness and length enforcement (Objects, Events, Goals, Messages namespaces); mission-info flag validation; message voice-name validation; audio music-token validation; goals-vs-directives count advisory |
+| `balance` | Advisory mission combat-balance check: tallies allied/enemy combat scores (including wing waves, shield and AI-class modifiers) and warns when one side outweighs the other by >= 50 % |
 
 This modular design prevents a monolithic class structure while allowing all checks to seamlessly share and modify the internal validation state.
 
@@ -320,6 +321,17 @@ The validator checks the following areas:
 
 #### **Goals vs. Directives Count**:
 *   Warns when a mission has more `mission_flow.goals` than events with `hud_directive_text`. It is strongly recommended that every important goal has a matching event with a `hud_directive_text` so the player can see the objective on the HUD.
+*   The warning is advisory and does not abort conversion.
+
+#### **Mission Balance**:
+*   Warns when the allied (Friendly) and enemy (Hostile) combat strength differ by **>= 50 %** of the stronger side's total score.
+*   **Combat ships**: every ship class that is **not** in the non-combat exclusion set is treated as a combat ship with base weight 1.0. The non-combat exclusion set contains: transports (`GTT Elysium`, `PVT Isis`, `ST Azrael`), freighters, cargo containers, nav buoys, escape pods (`GTEP Hermes`, `PVEP Ra`), science vessels (`GTSC Faustus`), support ships (`GTS Centaur`, `PVS Scarab`), and training drones. Installations (`GTI Arcadia`, `PVI Karnak`) and sentry guns are **included** as combat ships (weight 1.0 each).
+*   **Shield modifier (fighters/bombers only)**: weight × 0.5 when the ship has the `no-shields` flag and does not have `force-shields-on`. Larger ships cannot carry shields in FreeSpace and are never modified by this factor.
+*   **AI-class modifier (fighters/bombers only)**: weight × `(1 + 0.2 × (tier_index − 2))` where the tier order (worst → best) is Coward(0) / Lieutenant(1) / **Captain**(2) / Major(3) / Colonel(4) / General(5). Captain is the default and does not modify the weight. A missing `ai_class` field also defaults to Captain. This modifier does **not** apply to larger ships.
+*   **Wing waves**: each wing's contribution is the sum of per-member weights multiplied by `wave_count`, so multiple-wave wings are correctly counted.
+*   **Excluded**: pre-placed wreckage (`destroyed_before_mission_seconds > 0`) and `Unknown`-team ships are excluded from the tally.
+*   **Threshold formula**: `relative_difference = |allied − enemy| / max(allied, enemy)`. Warning fires when `relative_difference >= 0.5`.
+*   **No-opposition edge case**: if either side has zero combat weight (e.g. a pure escort / ferry mission with no enemy combat ships), the check is skipped — this is an intentional scenario rather than an imbalance.
 *   The warning is advisory and does not abort conversion.
 
 #### **Briefing Icon Proximity**:
