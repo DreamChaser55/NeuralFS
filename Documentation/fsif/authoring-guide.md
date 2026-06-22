@@ -752,7 +752,8 @@ Note: These also need to be unlocked. The maximum quantities needed to fully equ
 
 ## Maximum mission scale recommendation
 - Keep distances between all points of interest **below 20 km** whenever possible.
-- Avoid `arrival_distance` values above **20,000** — large mission spaces cause long, uneventful travel.
+- Avoid `arrival_distance` values above **20,000** for ships — large mission spaces cause long, uneventful travel.
+- For enemy wings using directional arrival methods, keep `arrival_distance` below **10,000 (10 km)**.
 
 ## ASCII-only requirement for FSO-facing strings
 FSO only supports ASCII characters reliably. This applies to all mission metadata, names, text fields, token strings, and SEXP literals. It does **not** apply to `voice_style_instructions`.

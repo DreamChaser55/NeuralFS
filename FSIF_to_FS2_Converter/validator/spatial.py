@@ -3,6 +3,10 @@ from typing import List, Optional, Set
 
 class SpatialChecksMixin:
     _MISSION_SCALE_RECOMMENDATION_METERS = 20_000.0
+    # Wings using directional (anchor-based) arrival methods are expected to
+    # spawn within shorter intercept range; their arrival_distance is held to a
+    # tighter 10 km recommendation.
+    _WING_ARRIVAL_DISTANCE_RECOMMENDATION_METERS = 10_000.0
 
     def validate_mission_scale_recommendations(self):
         """
@@ -118,22 +122,23 @@ class SpatialChecksMixin:
                 + "\n".join(violation_lines)
             )
 
-        def check_arrival_distance(context: str, arrival_anchor: Optional[str], arrival_distance: Optional[int]):
+        def check_arrival_distance(context: str, arrival_anchor: Optional[str], arrival_distance: Optional[int], threshold_m: float):
             if not arrival_anchor or arrival_distance is None:
                 return
 
-            if arrival_distance > limit_m:
+            if arrival_distance > threshold_m:
+                threshold_km = threshold_m / 1000.0
                 self.log_warning(
                     f"Mission scale recommendation: {context} arrival_distance {arrival_distance} m "
                     f"from arrival_anchor '{arrival_anchor}' exceeds the recommended maximum of "
-                    f"{limit_km:.1f} km. Keep anchor-based arrivals within 20 km to avoid long travel times."
+                    f"{threshold_km:.1f} km. Keep anchor-based arrivals within {threshold_km:.0f} km to avoid long travel times."
                 )
 
         for ship in self.mission.ships:
-            check_arrival_distance(f"Ship '{ship.name}'", ship.arrival_anchor, ship.arrival_distance)
+            check_arrival_distance(f"Ship '{ship.name}'", ship.arrival_anchor, ship.arrival_distance, limit_m)
 
         for wing in self.mission.wings:
-            check_arrival_distance(f"Wing '{wing.name}'", wing.arrival_anchor, wing.arrival_distance)
+            check_arrival_distance(f"Wing '{wing.name}'", wing.arrival_anchor, wing.arrival_distance, self._WING_ARRIVAL_DISTANCE_RECOMMENDATION_METERS)
 
     def validate_3d_mission_design(self):
         """

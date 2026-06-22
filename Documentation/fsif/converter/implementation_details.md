@@ -212,10 +212,13 @@ The validator checks the following areas:
 *   Warns if any sun in `environment.suns` has `angles: [0, 0]` — this places the sun directly in front of the player at default spawn orientation, causing a whiteout blinding effect. Sun angles are `[pitch, heading]`; bank is always hardcoded to `0.0` during FS2 emission.
 *   **Sparse background advisory**: warns when a non-subspace, non-full-nebula mission has fewer than 3 nebula bitmaps in `environment.background_bitmaps`. A sky with very few background nebulae looks unusually empty.
 *   **Background bitmaps forbidden in subspace or full-nebula missions**: emits an error if `environment.background_bitmaps` is non-empty when the `subspace` mission flag is set or when `environment.nebula.enabled: true` — background bitmaps are not visible in those contexts.
-*   **Mission scale recommendation**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any authored `arrival_distance` exceeds 20,000 meters, as large mission spaces lead to long travel times. The check is **arrival-method-aware**:
-    *   Objects arriving via `Hyperspace` use their authored `position` directly.
-    *   Objects arriving via `Docking Bay` inherit the effective position of their `arrival_anchor` ship (resolved recursively with cycle detection).
-    *   Objects arriving via any directional method (e.g., `Near Ship`, `In front of ship`) have no fixed initial position and are **excluded** from the distance check.
+*   **Mission scale recommendation**: warns when authored mission geometry exceeds recommended scale limits, as large mission spaces lead to long travel times. The check covers two categories:
+    *   **Object-pair distances and ship `arrival_distance`**: warns when any pair of positioned objects (standalone ships, wing centroids, jump nodes, waypoint points) or any ship's `arrival_distance` exceeds **20,000 meters (20 km)**.
+    *   **Wing `arrival_distance`**: warns when a wing's `arrival_distance` exceeds **10,000 meters (10 km)**. Wings are typically fighters or bombers intended to intercept targets; a tighter threshold applies because spawning them further out lengthens the interception window significantly.
+    *   The check is **arrival-method-aware**:
+        *   Objects arriving via `Hyperspace` use their authored `position` directly.
+        *   Objects arriving via `Docking Bay` inherit the effective position of their `arrival_anchor` ship (resolved recursively with cycle detection).
+        *   Objects arriving via any directional method (e.g., `Near Ship`, `In front of ship`) have no fixed initial position and are **excluded** from the object-pair distance check. Their `arrival_distance` is still checked against the appropriate threshold.
 
 #### **ASCII Enforcement for FSO-facing Strings**:
 *   FreeSpace Open only supports ASCII reliably for mission-facing content written into `.fs2`.

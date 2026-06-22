@@ -5,7 +5,9 @@ Covers:
 - Non-ASCII characters in briefing text are rejected with a clear error.
 - voice_style_instructions are excluded from ASCII validation.
 - Objects placed more than 20 km apart trigger a scale-recommendation warning.
-- ship arrival_distance and wing arrival_distance over 20 km trigger warnings.
+- ship arrival_distance over 20 km triggers a warning; between 10 km and 20 km does NOT.
+- wing arrival_distance over 10 km triggers a warning (tighter threshold than ships).
+- wing arrival_distance at exactly 10 km does NOT warn; at 10,001 m it does.
 - Distances/arrival distances at exactly 20 km do NOT warn.
 - All-objects-on-XZ-plane (Y=0) triggers a 3D-design warning.
 - Having at least one object with non-zero Y suppresses the 3D-design warning.
@@ -79,6 +81,150 @@ class MissionValidationWarningsTesting(SilencedTestCase):
             any(
                 "Mission scale recommendation: 1 object pair(s) exceed" in warning
                 and "Far Node" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_wing_arrival_distance_over_10km_warns(self):
+        """Wing arrival_distance between 10 km and 20 km triggers the wing-specific warning."""
+        mission = make_valid_mission()
+        wing_ship = Ship.model_validate(
+            {
+                "name": "Beta 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [1000.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        mission.ships.append(wing_ship)
+        mission.wings.append(
+            Wing(
+                name="Beta",
+                count=1,
+                ships=[wing_ship],
+                position=[1000.0, 0.0, 0.0],
+                arrival_method="In front of ship",
+                arrival_anchor="Alpha 1",
+                arrival_distance=15000,
+                arrival_cue="( true )",
+            )
+        )
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Mission scale recommendation: Wing 'Beta' arrival_distance 15000 m" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_ship_arrival_distance_between_10km_and_20km_does_not_warn(self):
+        """Ship arrival_distance between 10 km and 20 km does NOT warn (ship threshold stays 20 km)."""
+        mission = make_valid_mission()
+        mission.ships.append(
+            Ship.model_validate(
+                {
+                    "name": "Escort 1",
+                    "class": "GTC Fenris",
+                    "team": "Friendly",
+                    "position": [500.0, 0.0, 0.0],
+                    "arrival_method": "In front of ship",
+                    "arrival_anchor": "Alpha 1",
+                    "arrival_distance": 15000,
+                    "arrival_cue": "( true )",
+                }
+            )
+        )
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any(
+                "Mission scale recommendation: Ship 'Escort 1' arrival_distance 15000 m" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_wing_arrival_distance_at_exactly_10km_does_not_warn(self):
+        """Wing arrival_distance at exactly 10,000 m is at the threshold and must NOT warn."""
+        mission = make_valid_mission()
+        wing_ship = Ship.model_validate(
+            {
+                "name": "Beta 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [1000.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        mission.ships.append(wing_ship)
+        mission.wings.append(
+            Wing(
+                name="Beta",
+                count=1,
+                ships=[wing_ship],
+                position=[1000.0, 0.0, 0.0],
+                arrival_method="In front of ship",
+                arrival_anchor="Alpha 1",
+                arrival_distance=10000,
+                arrival_cue="( true )",
+            )
+        )
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertFalse(
+            any(
+                "Wing 'Beta' arrival_distance" in warning
+                for warning in validator.warnings
+            ),
+            validator.warnings,
+        )
+
+    def test_wing_arrival_distance_above_10km_warns_at_boundary(self):
+        """Wing arrival_distance at 10,001 m (just above 10 km) triggers the warning."""
+        mission = make_valid_mission()
+        wing_ship = Ship.model_validate(
+            {
+                "name": "Beta 1",
+                "class": "GTF Ulysses",
+                "team": "Friendly",
+                "position": [1000.0, 0.0, 0.0],
+                "arrival_cue": "( true )",
+                "weapons": Weapons(
+                    primary=["Avenger", "Avenger"],
+                    secondary=["MX-50"],
+                ),
+            }
+        )
+        mission.ships.append(wing_ship)
+        mission.wings.append(
+            Wing(
+                name="Beta",
+                count=1,
+                ships=[wing_ship],
+                position=[1000.0, 0.0, 0.0],
+                arrival_method="In front of ship",
+                arrival_anchor="Alpha 1",
+                arrival_distance=10001,
+                arrival_cue="( true )",
+            )
+        )
+        validator = make_validator(mission)
+        self.assertTrue(validator.validate(), validator.errors)
+        self.assertTrue(
+            any(
+                "Mission scale recommendation: Wing 'Beta' arrival_distance 10001 m" in warning
                 for warning in validator.warnings
             ),
             validator.warnings,
