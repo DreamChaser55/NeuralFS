@@ -32,7 +32,7 @@ Cases tested:
   - Pre-placed wreckage excluded               → no warning
   - Larger-ship AI class is NOT modified       → no warning for equal cruisers
   - Installation (GTI Arcadia) counts as combat weight 1.0  → balances score
-  - Sentry gun (GTSG Watchdog) counts as combat weight 1.0  → balances score
+  - Sentry gun (GTSG Watchdog) counts as combat weight 0.5  → 2 guns balance 1 fighter
   - ML-16-only primary loadout reduces weight (×0.5) → no warning when totals equal
   - Mixed loadout (ML-16 + Avenger) is NOT penalised → warning at 50 %
   - ML-16 penalty stacks with no-shields      → no warning when totals equal
@@ -153,7 +153,7 @@ def _installation(name: str, team: str = "Friendly") -> Ship:
 
 
 def _sentry_gun(name: str, team: str = "Hostile") -> Ship:
-    """GTSG Watchdog sentry gun — combat, weight 1.0 (not in NON_COMBAT_SHIP_CLASSES)."""
+    """GTSG Watchdog sentry gun — combat, weight 0.5 (sentry-gun factor applied)."""
     return Ship.model_validate({
         "name": name,
         "class": "GTSG Watchdog",
@@ -395,16 +395,22 @@ class TestMissionBalanceWarning(unittest.TestCase):
                          f"Installation should add allied combat weight; warnings: {v.warnings}")
 
     def test_sentry_gun_counts_as_combat_weight(self):
-        """GTSG Watchdog sentry gun is a combat ship (weight 1.0).
+        """GTSG Watchdog sentry gun receives the sentry-gun modifier (weight 0.5).
 
-        1 allied fighter (1.0) vs 1 enemy sentry gun (1.0) → 0 % diff → no warning.
+        2 enemy sentry guns (2 × 0.5 = 1.0 total) vs 1 allied fighter (1.0)
+        → |1.0-1.0|/1.0 = 0 % diff → no warning.
+
+        Demonstrates that the sentry-gun factor is applied: without the x0.5
+        reduction the enemy score would be 2.0 and the 50 % threshold would
+        be reached, triggering a spurious warning.
         """
-        sentry = _sentry_gun("GTSG Watchdog 1", team="Hostile")
-        m = _make_mission(1, sentry)
+        sentry1 = _sentry_gun("GTSG Watchdog 1", team="Hostile")
+        sentry2 = _sentry_gun("GTSG Watchdog 2", team="Hostile")
+        m = _make_mission(1, sentry1, sentry2)
         v = _make_validator(m)
         self.assertTrue(v.validate(), v.errors)
         self.assertFalse(self._has_balance_warning(v),
-                         f"Sentry gun must count as enemy combat weight 1.0; warnings: {v.warnings}")
+                         f"2 sentry guns (0.5 each = 1.0) must balance 1 allied fighter; warnings: {v.warnings}")
 
     def test_ml16_only_primary_reduces_weight_no_warning(self):
         """4 ML-16-only enemy fighters (weight 0.5 each = 2.0 total) vs

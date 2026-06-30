@@ -22,9 +22,26 @@ SHIELD_INEFFECTIVE_PRIMARIES: frozenset = frozenset({
 # consists only of shield-ineffective weapons.
 _SHIELD_INEFFECTIVE_PRIMARY_FACTOR = 0.5
 
+# Sentry-gun ship classes.  Sentry guns are combat ships (they carry turrets
+# and actively fire on enemies) but they are small, stationary, and easily
+# destroyed, so they receive a reduced weight of 0.5 instead of the default
+# 1.0.  This weight applies to all four canonical sentry gun classes.
+SENTRY_GUN_CLASSES: frozenset = frozenset({
+    'GTSG Watchdog',   # Standard Terran defensive turret
+    'GTSG Cerberus',   # Heavier Watchdog variant
+    'PVSG Ankh',       # Standard Vasudan defensive turret
+    'SSG Trident',     # Shivan repair/supply depot turret
+})
+
+# Weight factor applied to all sentry gun classes.  Sentry guns are weak and
+# easily destroyed in combat, so they contribute only half the combat value of
+# a normal warship of equivalent hitpoints.
+_SENTRY_GUN_FACTOR = 0.5
+
 # Ship classes that are NOT combat-capable and must be excluded from the
 # balance tally.  Everything in the supported spacecraft roster that is NOT
-# in this set is treated as a combat ship with base weight 1.0.
+# in this set is treated as a combat ship with base weight 1.0 (before any
+# per-class modifiers such as the sentry-gun factor above).
 #
 # Counted as combat (NOT in this set):
 #   fighters, bombers, cruisers, destroyers, juggernauts,
@@ -90,6 +107,9 @@ class BalanceChecksMixin:
     -------------
     * Every *combat* ship (any class **not** in ``NON_COMBAT_SHIP_CLASSES``)
       starts with a base weight of **1.0**.
+    * **Sentry-gun modifier** — weight *= 0.5 for all classes in
+      ``SENTRY_GUN_CLASSES``.  Sentry guns are small, stationary, and easily
+      destroyed, so they count for half the weight of a normal warship.
     * For fighters and bombers only:
       - **Shield modifier** — weight *= 0.5 when the ship carries the
         ``no-shields`` flag **and** does not carry ``force-shields-on``.
@@ -143,6 +163,12 @@ class BalanceChecksMixin:
             return 0.0
 
         weight = 1.0
+
+        # Sentry-gun modifier: sentry guns are small, stationary, and easily
+        # destroyed — they are worth only half a standard combat ship.
+        if ship.ship_class in SENTRY_GUN_CLASSES:
+            weight *= _SENTRY_GUN_FACTOR
+
         is_fighter_bomber = ship.ship_class in self.fighter_bomber_classes
 
         if is_fighter_bomber:
@@ -249,7 +275,8 @@ class BalanceChecksMixin:
             f"(relative difference {diff_pct:.0f}%, "
             f"threshold {int(_IMBALANCE_THRESHOLD * 100)}%). "
             f"The {stronger_side} side is significantly stronger. "
-            f"Scores account for fighter/bomber shield status (unshielded = x0.5), "
+            f"Scores account for sentry guns (x{_SENTRY_GUN_FACTOR}), "
+            f"fighter/bomber shield status (unshielded = x0.5), "
             f"primary weapons unable to penetrate shields (all-ineffective loadout = x0.5), "
             f"AI class relative to Captain (x{_AI_STEP} per tier above/below), "
             f"and wing wave counts. "
