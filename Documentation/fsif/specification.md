@@ -170,6 +170,7 @@
 Optional list and mapping fields in FSIF may be omitted entirely or set explicitly to `null`; both are treated identically by the converter — the value is normalized to the documented default (usually an empty list `[]` or an empty mapping `{}`).
 
 ## Constraints quicklist
+- `no-shields` flag: only valid on fighters and bombers. Larger ships (cruisers, destroyers, transports, etc.) cannot carry a shield mesh in FSO, so the flag is superfluous on them.
 - Player start: `player_setup.start_ship` **must** be a member of a Friendly `Alpha`, `Beta`, or `Gamma` wing.
 - Docking: pairs only; not allowed for player start; author on docker only; docker must explicitly set `arrival_cue: "( false )"`; dockee uses the default `"( true )"`.
 - Author only canonical per-ship subsystem and dockpoint names (see references)

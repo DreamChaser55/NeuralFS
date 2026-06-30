@@ -128,7 +128,7 @@ This section lists a subset of canonical flags generally useful for mission auth
 *   `ignore-count` — Ignore this ship when counting ship types for goals
 *   `protect-ship` — No AI-controlled ship will attack this ship
 *   `reinforcement` — (Deprecated; use `reinforcement_ships` list instead)
-*   `no-shields` — Disables shields for this ship (all fighters and bombers have shields by default; use this flag to disable them)
+*   `no-shields` — Disables shields for this ship. Only valid on fighters and bombers, as these are the only ship types that can carry a shield mesh in FSO.
 *   `escort` — Ship shown in the HUD escort overview table
 *   `no-arrival-music` — Don't play arrival music when ship arrives
 *   `invulnerable` — Ship cannot be damaged

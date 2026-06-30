@@ -839,6 +839,64 @@ class ShipWingChecksMixin:
                     f"Remove the `orientation` field from this wing."
                 )
 
+    def validate_no_shields_flag_applicability(self):
+        """Error: the ``no-shields`` flag is only meaningful on fighters and bombers.
+
+        In FSO, only fighters and bombers can have shields.  Larger ships (cruisers,
+        destroyers, transports, freighters, etc.) never have a shield mesh, so the
+        ``no-shields`` flag has no effect on them and is almost always the result of
+        an authoring mistake (e.g. a flag accidentally carried over to a non-fighter
+        template).
+
+        The check iterates ``self.mission.ships``, which includes both standalone
+        ships and expanded wing members.  To keep the output concise, only one error
+        is emitted per wing (reporting against the wing name and class) rather than
+        once per member.  Standalone ships are reported individually by name.
+
+        Ships with an unknown class (already caught by ``validate_ships``) are
+        skipped to avoid stacking a duplicate error on top of the class-validity
+        error for the same ship.
+        """
+        # Build a map from wing-member ship name to wing name so we can report
+        # once per wing instead of once per member.
+        member_name_to_wing: dict = {}
+        for wing in self.mission.wings:
+            for ws in wing.ships:
+                member_name_to_wing[ws.name] = wing.name
+
+        reported_wings: set = set()
+        for ship in self.mission.ships:
+            if 'no-shields' not in ship.flags:
+                continue
+            # Valid usage: fighters and bombers can have shields; the flag is meaningful.
+            if ship.ship_class in self.fighter_bomber_classes:
+                continue
+            # Unknown class: an invalid-class error is already raised in validate_ships.
+            # Skip to avoid stacking a confusing duplicate error.
+            if ship.ship_class not in self.ship_classes:
+                continue
+
+            wing_name = member_name_to_wing.get(ship.name)
+            if wing_name is not None:
+                # Wing member — report once for the whole wing.
+                if wing_name in reported_wings:
+                    continue
+                reported_wings.add(wing_name)
+                self.log_error(
+                    f"Wing '{wing_name}' (class '{ship.ship_class}') has the 'no-shields' flag, "
+                    f"but only fighters and bombers can have shields in FSO. "
+                    f"Larger ships never carry a shield mesh, so 'no-shields' is superfluous "
+                    f"and should be removed from the wing's ship template."
+                )
+            else:
+                # Standalone ship — report individually.
+                self.log_error(
+                    f"Ship '{ship.name}' (class '{ship.ship_class}') has the 'no-shields' flag, "
+                    f"but only fighters and bombers can have shields in FSO. "
+                    f"Larger ships never carry a shield mesh, so 'no-shields' is superfluous "
+                    f"and should be removed from this ship's flags."
+                )
+
     def validate_large_ship_escort_recommendation(self):
         """
         Advisory check: warn when the mission contains potentially important ships larger than
