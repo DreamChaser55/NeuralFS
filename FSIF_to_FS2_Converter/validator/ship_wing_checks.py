@@ -737,7 +737,7 @@ class ShipWingChecksMixin:
                 f"Mission has {len(flagged_ships)} larger-than-fighter/bomber standalone ship(s) "
                 f"with the default identity orientation ({ships_str}). "
                 f"Default orientation could make the opening scene look grid-aligned and artificial. "
-                f"Consider authoring a deliberate `orientation` matrix (or specifying an object the ship will be facing) for important larger ships "
+                f"Consider authoring a deliberate `orientation` matrix (or specifying an object the ship will be facing) for important larger ships. "
                 f"See the FSIF Authoring Guide - 'Initial ship orientation and facing direction'."
             )
 
