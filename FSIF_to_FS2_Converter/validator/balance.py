@@ -275,7 +275,7 @@ class BalanceChecksMixin:
             f"(relative difference {diff_pct:.0f}%, "
             f"threshold {int(_IMBALANCE_THRESHOLD * 100)}%). "
             f"The {stronger_side} side is significantly stronger. "
-            f"Scores account for sentry guns (x{_SENTRY_GUN_FACTOR}), "
+            f"Scores account for relative weakness of sentry guns (x{_SENTRY_GUN_FACTOR}), "
             f"fighter/bomber shield status (unshielded = x0.5), "
             f"primary weapons unable to penetrate shields (all-ineffective loadout = x0.5), "
             f"AI class relative to Captain (x{_AI_STEP} per tier above/below), "
